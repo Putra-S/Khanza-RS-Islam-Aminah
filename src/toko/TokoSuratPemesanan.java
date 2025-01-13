@@ -27,29 +27,41 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class TokoSuratPemesanan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private TokoSuplier suplier = new TokoSuplier(null, false);
+
     private double meterai = 0, ttl = 0, y = 0, w = 0, ttldisk = 0, sbttl = 0, ppn = 0;
+
     private int jml = 0, i = 0, row = 0, index = 0, pilihan = 1;
+
     private String[] kodebarang, namabarang, satuanbeli;
+
     private double[] h_beli, jumlah, subtotal, diskon, besardiskon, jmltotal;
 
     /**
      *
      */
     public boolean tampilkan = true;
+
     private boolean sukses = true;
 
     /**
@@ -62,17 +74,12 @@ public class TokoSuratPemesanan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Jml", "Satuan", "Kode Barang", "Nama Barang",
-            "Harga(Rp)", "Subtotal(Rp)", "Disk(%)", "Diskon(Rp)", "Total"}) {
+        tabMode = new DefaultTableModel(null, new Object[]{"Jml", "Satuan", "Kode Barang", "Nama Barang", "Harga(Rp)",
+            "Subtotal(Rp)", "Disk(%)", "Diskon(Rp)", "Total"}) {
 
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -124,8 +131,7 @@ public class TokoSuratPemesanan extends javax.swing.JDialog {
         kdptg.setDocument(new batasInput((byte) 20).getKata(kdptg));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -162,10 +168,8 @@ public class TokoSuratPemesanan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (suplier.getTable().getSelectedRow() != -1) {
-                    kdsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                    nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                 }
                 kdsup.requestFocus();
             }
@@ -219,19 +223,14 @@ public class TokoSuratPemesanan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        kdptg.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 0).toString());
-                        nmptg.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
-                        Departemen.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 5).toString());
+                        kdptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                        nmptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        Departemen.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 5).toString());
                         kdptg.requestFocus();
                     } else if (pilihan == 2) {
-                        Apoteker.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        Apoteker.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                     } else if (pilihan == 3) {
-                        KabidKeu.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        KabidKeu.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                     }
                 }
             }
@@ -276,7 +275,9 @@ public class TokoSuratPemesanan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -764,7 +765,7 @@ public class TokoSuratPemesanan extends javax.swing.JDialog {
         panelisi1.add(label17);
         label17.setBounds(340, 0, 40, 30);
 
-        tppn.setText("11");
+        tppn.setText("12");
         tppn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tppn.setName("tppn"); // NOI18N
         tppn.setPreferredSize(new java.awt.Dimension(80, 23));
@@ -861,14 +862,13 @@ public class TokoSuratPemesanan extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-    for (i = 0; i < tbDokter.getRowCount(); i++) {
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+    for (i = 0; i < tbDokter.getRowCount(); i++) {//GEN-FIRST:event_ppBersihkanActionPerformed
         tbDokter.setValueAt("", i, 0);
         tbDokter.setValueAt(0, i, 5);
         tbDokter.setValueAt(0, i, 6);
@@ -1383,8 +1383,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoSuratPemesanan dialog = new TokoSuratPemesanan(
-                    new javax.swing.JFrame(), true);
+            TokoSuratPemesanan dialog = new TokoSuratPemesanan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1488,21 +1487,15 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         for (i = 0; i < row; i++) {
             try {
                 if (Double.parseDouble(tbDokter.getValueAt(i, 0).toString()) > 0) {
-                    jumlah[index] = Double.parseDouble(
-                            tbDokter.getValueAt(i, 0).toString());
+                    jumlah[index] = Double.parseDouble(tbDokter.getValueAt(i, 0).toString());
                     satuanbeli[index] = tbDokter.getValueAt(i, 1).toString();
                     kodebarang[index] = tbDokter.getValueAt(i, 2).toString();
                     namabarang[index] = tbDokter.getValueAt(i, 3).toString();
-                    h_beli[index] = Double.parseDouble(
-                            tbDokter.getValueAt(i, 4).toString());
-                    subtotal[index] = Double.parseDouble(tbDokter.getValueAt(i,
-                            5).toString());
-                    diskon[index] = Double.parseDouble(
-                            tbDokter.getValueAt(i, 6).toString());
-                    besardiskon[index] = Double.parseDouble(tbDokter.getValueAt(
-                            i, 7).toString());
-                    jmltotal[index] = Double.parseDouble(tbDokter.getValueAt(i,
-                            8).toString());
+                    h_beli[index] = Double.parseDouble(tbDokter.getValueAt(i, 4).toString());
+                    subtotal[index] = Double.parseDouble(tbDokter.getValueAt(i, 5).toString());
+                    diskon[index] = Double.parseDouble(tbDokter.getValueAt(i, 6).toString());
+                    besardiskon[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).toString());
+                    jmltotal[index] = Double.parseDouble(tbDokter.getValueAt(i, 8).toString());
                     index++;
                 }
             } catch (Exception e) {
@@ -1510,14 +1503,12 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
         Valid.tabelKosong(tabMode);
         for (i = 0; i < jml; i++) {
-            tabMode.addRow(new Object[]{jumlah[i], satuanbeli[i], kodebarang[i],
-                namabarang[i], h_beli[i], subtotal[i], diskon[i], besardiskon[i],
-                jmltotal[i]});
+            tabMode.addRow(new Object[]{jumlah[i], satuanbeli[i], kodebarang[i], namabarang[i], h_beli[i],
+                subtotal[i], diskon[i], besardiskon[i], jmltotal[i]});
         }
 
         try {
-            ps = koneksi.prepareStatement(
-                    "select tokobarang.kode_brng, tokobarang.nama_brng,tokobarang.kode_sat, "
+            ps = koneksi.prepareStatement("select tokobarang.kode_brng, tokobarang.nama_brng,tokobarang.kode_sat, "
                     + " tokobarang.h_beli from tokobarang inner join tokojenisbarang on tokobarang.jenis=tokojenisbarang.kd_jenis "
                     + " where tokobarang.status='1' and tokobarang.kode_brng like ? or "
                     + " tokobarang.status='1' and tokobarang.nama_brng like ? or "
@@ -1528,10 +1519,8 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        "", rs.getString(3), rs.getString(1),
-                        rs.getString(2), rs.getDouble(4), 0, 0, 0, 0
-                    });
+                    tabMode.addRow(new Object[]{"", rs.getString(3), rs.getString(1), rs.getString(2),
+                        rs.getDouble(4), 0, 0, 0, 0});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1554,16 +1543,11 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         if (row != -1) {
             if (!tbDokter.getValueAt(row, 0).toString().isEmpty()) {
                 try {
-                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).
-                            toString()) > 0) {
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 0).toString()) * Double.
-                                parseDouble(tbDokter.getValueAt(row, 4).
-                                        toString()), row, 5);
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 5).toString()) - Double.
-                                parseDouble(tbDokter.getValueAt(row, 7).
-                                        toString()), row, 8);
+                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).toString()) > 0) {
+                        tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                * Double.parseDouble(tbDokter.getValueAt(row, 4).toString()), row, 5);
+                        tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 5).toString())
+                                - Double.parseDouble(tbDokter.getValueAt(row, 7).toString()), row, 8);
                     }
                 } catch (Exception e) {
                     tbDokter.setValueAt("", row, 0);
@@ -1635,19 +1619,18 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             BtnSimpan.setEnabled(akses.gettoko_surat_pemesanan());
             BtnTambah.setEnabled(akses.gettoko_barang());
             nmptg.setText(pegawai.tampil3(kdptg.getText()));
-            Sequel.cariIsi(
-                    "select pegawai.departemen from pegawai where pegawai.nik=?",
-                    Departemen, kdptg.getText());
+            Sequel.cariIsi("select pegawai.departemen from pegawai where pegawai.nik=?", Departemen, kdptg.getText());
         }
     }
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_pemesanan,3),signed)),0) from toko_surat_pemesanan where tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "SPT" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPemesanan);
+                "select ifnull(MAX(CONVERT(RIGHT(no_pemesanan,3),signed)),0) from toko_surat_pemesanan where tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "SPT" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPemesanan);
     }
 
     public DefaultTableModel tabMode() {
@@ -1672,12 +1655,9 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 ps.setString(1, nopengajuan);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("jumlah"), rs.getString("kode_sat"), rs.
-                        getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getDouble("h_pengajuan"), rs.getDouble("total"), 0, 0,
-                        rs.getDouble("total")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("jumlah"), rs.getString("kode_sat"),
+                        rs.getString("kode_brng"), rs.getString("nama_brng"), rs.getDouble("h_pengajuan"),
+                        rs.getDouble("total"), 0, 0, rs.getDouble("total")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1696,6 +1676,6 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         getData();
     }
 
-    private static final Logger LOG = Logger.getLogger(TokoSuratPemesanan.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(TokoSuratPemesanan.class.getName());
+
 }

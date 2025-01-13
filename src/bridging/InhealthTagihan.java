@@ -72,16 +72,11 @@ public class InhealthTagihan extends javax.swing.JDialog {
         this.setLocation(8, 1);
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"No.SJP", "No.Rawat", "Tanggal SJP",
-                    "Tanggal Rujukan", "No.Rujukan", "kdppkrujukan",
-                    "Nama PPK Rujukan", "kdppkpelayanan", "Nama PPK Pelayanan",
-                    "Jenis Pelayanan", "Catatan",
-                    "ICD X", "Diagnosa Awal", "ICD X 2", "Diagnosa Tambahan",
-                    "Kode Poli/Kamar", "Nama Poli/Kamar",
-                    "Kelas Rawat", "Kelas Desc", "Kode BU", "Nama BU",
-                    "Laka Lantas", "Lokasi Laka", "User",
-                    "No.R.M", "Nama Pasien", "Tgl.Lahir", "Jns.Kelamin",
-                    "No.Kartu", "Tanggal Pulang", "Plan",
+                new Object[]{"No.SJP", "No.Rawat", "Tanggal SJP", "Tanggal Rujukan", "No.Rujukan", "kdppkrujukan",
+                    "Nama PPK Rujukan", "kdppkpelayanan", "Nama PPK Pelayanan", "Jenis Pelayanan", "Catatan",
+                    "ICD X", "Diagnosa Awal", "ICD X 2", "Diagnosa Tambahan", "Kode Poli/Kamar", "Nama Poli/Kamar",
+                    "Kelas Rawat", "Kelas Desc", "Kode BU", "Nama BU", "Laka Lantas", "Lokasi Laka", "User",
+                    "No.R.M", "Nama Pasien", "Tgl.Lahir", "Jns.Kelamin", "No.Kartu", "Tanggal Pulang", "Plan",
                     "Plan Desc", "ID Akomodasi", "Tipe SJP", "Tipe COB"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -178,12 +173,9 @@ public class InhealthTagihan extends javax.swing.JDialog {
         tbSJP.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeTagihanKamar = new DefaultTableModel(null,
-                new Object[]{"P", "Kode Jenis", "Jenis Pelayanan Ruang Rawat",
-                    "Tarif", "Hari", "Total"}) {
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class};
+                new Object[]{"P", "Kode Jenis", "Jenis Pelayanan Ruang Rawat", "Tarif", "Hari", "Total"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -198,8 +190,7 @@ public class InhealthTagihan extends javax.swing.JDialog {
         };
         tbTagihanKamar.setModel(tabModeTagihanKamar);
         tbTagihanKamar.setDefaultRenderer(Object.class, new WarnaTable());
-        tbTagihanKamar.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        tbTagihanKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTagihanKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tbTagihanKamar.getColumnModel().getColumn(0).setPreferredWidth(20);
         tbTagihanKamar.getColumnModel().getColumn(1).setPreferredWidth(105);
@@ -209,12 +200,9 @@ public class InhealthTagihan extends javax.swing.JDialog {
         tbTagihanKamar.getColumnModel().getColumn(5).setPreferredWidth(80);
 
         tabModeTagihanRalan = new DefaultTableModel(null,
-                new Object[]{"P", "Kode Jenis", "Jenis Pelayanan Ruang Rawat",
-                    "Tarif", "Hari", "Total"}) {
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class};
+                new Object[]{"P", "Kode Jenis", "Jenis Pelayanan Ruang Rawat", "Tarif", "Hari", "Total"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -229,16 +217,14 @@ public class InhealthTagihan extends javax.swing.JDialog {
         };
         tbTagihanRawatJalan.setModel(tabModeTagihanRalan);
         tbTagihanRawatJalan.setDefaultRenderer(Object.class, new WarnaTable());
-        tbTagihanRawatJalan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        tbTagihanRawatJalan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTagihanRawatJalan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tbTagihanRawatJalan.getColumnModel().getColumn(0).setPreferredWidth(20);
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -268,7 +254,9 @@ public class InhealthTagihan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -783,8 +771,7 @@ public class InhealthTagihan extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InhealthTagihan dialog = new InhealthTagihan(
-                    new javax.swing.JFrame(), true);
+            InhealthTagihan dialog = new InhealthTagihan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -861,72 +848,43 @@ public class InhealthTagihan extends javax.swing.JDialog {
                     + "bridging_inhealth.tglsep between ? and ? and bridging_inhealth.no_rawat like ? or "
                     + "bridging_inhealth.tglsep between ? and ? and bridging_inhealth.nmpolitujuan like ? order by bridging_inhealth.tglsep");
             try {
-                ps.setString(1,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(2,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
-                ps.setString(4,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(5,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(6, "%" + TCari.getText().trim() + "%");
-                ps.setString(7,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(8,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(9, "%" + TCari.getText().trim() + "%");
-                ps.setString(10,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(11,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(12, "%" + TCari.getText().trim() + "%");
-                ps.setString(13,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(14,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(15, "%" + TCari.getText().trim() + "%");
-                ps.setString(16,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(17,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(16, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(17, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(18, "%" + TCari.getText().trim() + "%");
-                ps.setString(19,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(20,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(19, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(20, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(21, "%" + TCari.getText().trim() + "%");
-                ps.setString(22,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(23,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(24, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     if (rs.getString(19).equals("000")) {
                         kelas = "000 Non Kelas";
                     }
-                    tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3), rs.getString(4),
-                                rs.getString(5), rs.getString(6), rs.
-                                getString(7), rs.getString(8), rs.getString(
-                                9),
-                                rs.getString(10), rs.getString(11), rs.
-                                getString(12), rs.getString(13), rs.
-                                getString(14),
-                                rs.getString(15), rs.getString(16), rs.
-                                getString(17), kelas, rs.getString(19),
-                                rs.getString(20), rs.getString(21), rs.
-                                getString(22), rs.getString(23), rs.
-                                getString(24),
-                                rs.getString(25), rs.getString(26), rs.
-                                getString(27), rs.getString(28), rs.
-                                getString(29),
-                                rs.getString(30), rs.getString(31), rs.
-                                getString(32), rs.getString(33), rs.
-                                getString(34),
-                                rs.getString(35)});
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14),
+                        rs.getString(15), rs.getString(16), rs.getString(17), kelas, rs.getString(19),
+                        rs.getString(20), rs.getString(21), rs.getString(22), rs.getString(23), rs.getString(24),
+                        rs.getString(25), rs.getString(26), rs.getString(27), rs.getString(28), rs.getString(29),
+                        rs.getString(30), rs.getString(31), rs.getString(32), rs.getString(33), rs.getString(34),
+                        rs.getString(35)});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -969,10 +927,8 @@ public class InhealthTagihan extends javax.swing.JDialog {
 
     private void getData() {
         if (tbSJP.getSelectedRow() != -1) {
-            TNoRM.setText(tbSJP.getValueAt(tbSJP.getSelectedRow(), 24).
-                    toString());
-            TPasien.setText(tbSJP.getValueAt(tbSJP.getSelectedRow(), 25).
-                    toString());
+            TNoRM.setText(tbSJP.getValueAt(tbSJP.getSelectedRow(), 24).toString());
+            TPasien.setText(tbSJP.getValueAt(tbSJP.getSelectedRow(), 25).toString());
             totaltagihan = 0;
             tagihanKamar(tbSJP.getValueAt(tbSJP.getSelectedRow(), 1).toString());
             LTagihan.setText(Valid.SetAngka(totaltagihan));
@@ -995,10 +951,8 @@ public class InhealthTagihan extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     totaltagihan += rs.getDouble("total");
-                    tabModeTagihanKamar.addRow(new Object[]{true, rs.getString(
-                        "kode_jenpel_ruang_rawat"),
-                        rs.getString("nama_jenpel_ruang_rawat"), rs.getDouble(
-                        "tarif"), rs.getDouble("lama"),
+                    tabModeTagihanKamar.addRow(new Object[]{true, rs.getString("kode_jenpel_ruang_rawat"),
+                        rs.getString("nama_jenpel_ruang_rawat"), rs.getDouble("tarif"), rs.getDouble("lama"),
                         rs.getDouble("total")});
                 }
             } catch (Exception e) {
@@ -1032,10 +986,8 @@ public class InhealthTagihan extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     totaltagihan += rs.getDouble("total");
-                    tabModeTagihanKamar.addRow(new Object[]{true, rs.getString(
-                        "kode_jenpel_ruang_rawat"),
-                        rs.getString("nama_jenpel_ruang_rawat"), rs.getDouble(
-                        "tarif"), rs.getDouble("lama"),
+                    tabModeTagihanKamar.addRow(new Object[]{true, rs.getString("kode_jenpel_ruang_rawat"),
+                        rs.getString("nama_jenpel_ruang_rawat"), rs.getDouble("tarif"), rs.getDouble("lama"),
                         rs.getDouble("total")});
                 }
             } catch (Exception e) {
@@ -1053,7 +1005,6 @@ public class InhealthTagihan extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(InhealthTagihan.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(InhealthTagihan.class.getName());
 
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgResepObat.java
- *
- * Created on 31 Mei 10, 11:27:40
+* DlgResepObat.java
+*
+* Created on 31 Mei 10, 11:27:40
  */
 package inventory;
 
@@ -44,29 +44,41 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgResepObat extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabmodeUbahRacikan, tabmodeUbahRacikan2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2, psracikan;
+
     private ResultSet rs, rs2, rsracikan;
 
     /**
      *
      */
     public DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private Date date = new Date();
+
     private String now = dateFormat.format(date), lembarobat = "", status = "", rincianobat = "", finger = "";
+
     private double total = 0, jumlahtotal = 0;
+
     private Properties prop = new Properties();
+
     private DlgCariAturanPakai aturanpakai = new DlgCariAturanPakai(null, false);
+
     private int i = 0, pilihan = 0, getno = 0;
+
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
@@ -91,7 +103,8 @@ public class DlgResepObat extends javax.swing.JDialog {
         };
         tbResep.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbResep.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbResep.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -109,10 +122,8 @@ public class DlgResepObat extends javax.swing.JDialog {
         }
         tbResep.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabmodeUbahRacikan = new DefaultTableModel(null, new Object[]{
-            "Tgl.Rawat", "Jam Rawat", "No.Rawat", "Kode Barang", "Nama Barang",
-            "Aturan Pakai"
-        }) {
+        tabmodeUbahRacikan = new DefaultTableModel(null,
+                new Object[]{"Tgl.Rawat", "Jam Rawat", "No.Rawat", "Kode Barang", "Nama Barang", "Aturan Pakai"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -125,7 +136,8 @@ public class DlgResepObat extends javax.swing.JDialog {
         };
         tbTambahan.setModel(tabmodeUbahRacikan);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbTambahan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTambahan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -150,10 +162,8 @@ public class DlgResepObat extends javax.swing.JDialog {
         }
         tbTambahan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabmodeUbahRacikan2 = new DefaultTableModel(null, new Object[]{
-            "Tgl.Rawat", "Jam Rawat", "No.Rawat", "No.Racik", "Nama Racik",
-            "Aturan Pakai"
-        }) {
+        tabmodeUbahRacikan2 = new DefaultTableModel(null,
+                new Object[]{"Tgl.Rawat", "Jam Rawat", "No.Rawat", "No.Racik", "Nama Racik", "Aturan Pakai"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -166,7 +176,8 @@ public class DlgResepObat extends javax.swing.JDialog {
         };
         tbTambahan1.setModel(tabmodeUbahRacikan2);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbTambahan1.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTambahan1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -196,8 +207,7 @@ public class DlgResepObat extends javax.swing.JDialog {
         NoResep.setDocument(new batasInput((byte) 10).getKata(NoResep));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -236,10 +246,8 @@ public class DlgResepObat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 KdDokter.requestFocus();
             }
@@ -275,15 +283,14 @@ public class DlgResepObat extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (aturanpakai.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        tbTambahan.setValueAt(aturanpakai.getTable().getValueAt(
-                                aturanpakai.getTable().getSelectedRow(), 0).
-                                toString(), tbTambahan.getSelectedRow(), 5);
+                        tbTambahan.setValueAt(aturanpakai.getTable()
+                                .getValueAt(aturanpakai.getTable().getSelectedRow(), 0)
+                                .toString(), tbTambahan.getSelectedRow(), 5);
                         tbTambahan.requestFocus();
                     } else if (pilihan == 2) {
-                        tbTambahan1.setValueAt(aturanpakai.getTable().
-                                getValueAt(aturanpakai.getTable().
-                                        getSelectedRow(), 0).toString(),
-                                tbTambahan1.getSelectedRow(), 5);
+                        tbTambahan1.setValueAt(aturanpakai.getTable()
+                                .getValueAt(aturanpakai.getTable().getSelectedRow(), 0)
+                                .toString(), tbTambahan1.getSelectedRow(), 5);
                         tbTambahan1.requestFocus();
                     }
                 }
@@ -326,16 +333,15 @@ public class DlgResepObat extends javax.swing.JDialog {
         LoadHTML2.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
 
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
@@ -343,7 +349,9 @@ public class DlgResepObat extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1642,6 +1650,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             param.put("tanggal", Valid.SetTgl(DTPBeri.getSelectedItem() + ""));
             param.put("norawat", TNoRw.getText());
             param.put("pasien", TPasien.getText());
+            param.put("tgl_lahir", Sequel.cariIsi("select DATE_FORMAT(pasien.tgl_lahir, '%d-%m-%Y') as tgl_lahir from pasien where pasien.no_rkm_medis=?", TNoRm.getText()));
             param.put("norm", TNoRm.getText());
             param.put("peresep", NmDokter.getText());
             param.put("noresep", NoResep.getText());
@@ -2093,6 +2102,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             param.put("norawat", TNoRw.getText());
             param.put("pasien", TPasien.getText());
             param.put("norm", TNoRm.getText());
+            param.put("tgl_lahir", Sequel.cariIsi("select DATE_FORMAT(pasien.tgl_lahir, '%d-%m-%Y') as tgl_lahir from pasien where pasien.no_rkm_medis=?", TNoRm.getText()));
             param.put("peresep", NmDokter.getText());
             param.put("noresep", NoResep.getText());
             finger = Sequel.cariIsi(
@@ -2423,6 +2433,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             param.put("norawat", TNoRw.getText());
             param.put("pasien", TPasien.getText());
             param.put("norm", TNoRm.getText());
+            param.put("tgl_lahir", Sequel.cariIsi("select DATE_FORMAT(pasien.tgl_lahir, '%d-%m-%Y') as tgl_lahir from pasien where pasien.no_rkm_medis=?", TNoRm.getText()));
             param.put("peresep", NmDokter.getText());
             if (akses.getkode().equals("Admin Utama")) {
                 param.put("diserahkanoleh", "Petugas Farmasi");
@@ -2465,8 +2476,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgResepObat dialog = new DlgResepObat(new javax.swing.JFrame(),
-                    true);
+            DlgResepObat dialog = new DlgResepObat(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2569,23 +2579,19 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     public void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam,"
+            ps = koneksi.prepareStatement("select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam,"
                     + " resep_obat.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_obat.kd_dokter,dokter.nm_dokter "
                     + " from resep_obat inner join reg_periksa on resep_obat.no_rawat=reg_periksa.no_rawat "
                     + " inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + " inner join dokter on resep_obat.kd_dokter=dokter.kd_dokter "
                     + " where concat(resep_obat.tgl_perawatan,' ',resep_obat.jam) between ? and ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (resep_obat.no_resep like ? or resep_obat.no_rawat like ? or "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (resep_obat.no_resep like ? or resep_obat.no_rawat like ? or "
                     + "pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or dokter.nm_dokter like ?) ")
                     + " order by resep_obat.tgl_perawatan,resep_obat.jam");
             try {
-                ps.
-                        setString(1, Valid.SetTglJam(
-                                DTPCari1.getSelectedItem() + ""));
-                ps.
-                        setString(2, Valid.SetTglJam(
-                                DTPCari2.getSelectedItem() + ""));
+                ps.setString(1, Valid.SetTglJam(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTglJam(DTPCari2.getSelectedItem() + ""));
                 if (!TCari.getText().trim().isEmpty()) {
                     ps.setString(3, "%" + TCari.getText().trim() + "%");
                     ps.setString(4, "%" + TCari.getText().trim() + "%");
@@ -2597,25 +2603,20 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rs = ps.executeQuery();
                 jumlahtotal = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_resep"),
-                        rs.getString("tgl_perawatan") + " " + rs.
-                        getString("jam"),
-                        rs.getString("no_rawat") + " " + rs.getString(
-                        "no_rkm_medis") + " " + rs.getString("nm_pasien"),
-                        rs.getString("nm_dokter")
-                    });
-                    tabMode.addRow(new String[]{"", "Nama Obat",
-                        "Jumlah x Harga + Embalase + Tuslah = Total",
+                    tabMode.addRow(new String[]{rs.getString("no_resep"),
+                        rs.getString("tgl_perawatan") + " " + rs.getString("jam"), rs.getString("no_rawat") + " "
+                        + rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"),
+                        rs.getString("nm_dokter")});
+                    tabMode.addRow(new String[]{"", "Nama Obat", "Jumlah x Harga + Embalase + Tuslah = Total",
                         "Aturan Pakai"});
-                    ps2 = koneksi.prepareStatement(
-                            "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml,"
-                            + "detail_pemberian_obat.biaya_obat,detail_pemberian_obat.embalase,detail_pemberian_obat.tuslah,detail_pemberian_obat.total from "
-                            + "detail_pemberian_obat inner join databarang on detail_pemberian_obat.kode_brng=databarang.kode_brng "
-                            + "where detail_pemberian_obat.tgl_perawatan=? and detail_pemberian_obat.jam=? and detail_pemberian_obat.no_rawat=? "
-                            + "and databarang.kode_brng not in (select detail_obat_racikan.kode_brng from detail_obat_racikan "
-                            + "where detail_obat_racikan.tgl_perawatan=? and detail_obat_racikan.jam=? and detail_obat_racikan.no_rawat=?) "
-                            + "order by databarang.kode_brng");
+                    ps2 = koneksi
+                            .prepareStatement("select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml,"
+                                    + "detail_pemberian_obat.biaya_obat,detail_pemberian_obat.embalase,detail_pemberian_obat.tuslah,detail_pemberian_obat.total from "
+                                    + "detail_pemberian_obat inner join databarang on detail_pemberian_obat.kode_brng=databarang.kode_brng "
+                                    + "where detail_pemberian_obat.tgl_perawatan=? and detail_pemberian_obat.jam=? and detail_pemberian_obat.no_rawat=? "
+                                    + "and databarang.kode_brng not in (select detail_obat_racikan.kode_brng from detail_obat_racikan "
+                                    + "where detail_obat_racikan.tgl_perawatan=? and detail_obat_racikan.jam=? and detail_obat_racikan.no_rawat=?) "
+                                    + "order by databarang.kode_brng");
                     try {
                         ps2.setString(1, rs.getString("tgl_perawatan"));
                         ps2.setString(2, rs.getString("jam"));
@@ -2626,21 +2627,17 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         rs2 = ps2.executeQuery();
                         total = 0;
                         while (rs2.next()) {
-                            tabMode.addRow(new String[]{
-                                "", rs2.getString("nama_brng"), rs2.getString(
-                                "jml") + "  x  " + Valid.SetAngka(rs2.getDouble(
-                                "biaya_obat"))
-                                + " + " + Valid.SetAngka(rs2.getDouble(
-                                "embalase")) + " + " + Valid.SetAngka(rs2.
-                                getDouble("tuslah")) + " = " + Valid.SetAngka(
-                                rs2.getDouble("total")),
+                            tabMode.addRow(new String[]{"", rs2.getString("nama_brng"),
+                                rs2.getString("jml") + "  x  " + Valid.SetAngka(rs2.getDouble("biaya_obat")) + " + "
+                                + Valid.SetAngka(rs2.getDouble("embalase")) + " + "
+                                + Valid.SetAngka(rs2.getDouble("tuslah")) + " = "
+                                + Valid.SetAngka(rs2.getDouble("total")),
                                 Sequel.cariIsi(
-                                "select aturan_pakai.aturan from aturan_pakai where aturan_pakai.tgl_perawatan='" + rs.
-                                getString("tgl_perawatan") + "' and "
-                                + "aturan_pakai.jam='" + rs.getString("jam") + "' and aturan_pakai.no_rawat='" + rs.
-                                getString("no_rawat") + "' and aturan_pakai.kode_brng='" + rs2.
-                                getString("kode_brng") + "'")
-                            });
+                                "select aturan_pakai.aturan from aturan_pakai where aturan_pakai.tgl_perawatan='"
+                                + rs.getString("tgl_perawatan") + "' and " + "aturan_pakai.jam='"
+                                + rs.getString("jam") + "' and aturan_pakai.no_rawat='"
+                                + rs.getString("no_rawat") + "' and aturan_pakai.kode_brng='"
+                                + rs2.getString("kode_brng") + "'")});
                             total += rs2.getDouble("total");
                             jumlahtotal += rs2.getDouble("total");
                         }
@@ -2655,29 +2652,23 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         }
                     }
 
-                    psracikan = koneksi.prepareStatement(
-                            "select obat_racikan.no_racik,obat_racikan.nama_racik,"
+                    psracikan = koneksi.prepareStatement("select obat_racikan.no_racik,obat_racikan.nama_racik,"
                             + "obat_racikan.kd_racik,metode_racik.nm_racik as metode,"
                             + "obat_racikan.jml_dr,obat_racikan.aturan_pakai,"
                             + "obat_racikan.keterangan from obat_racikan inner join metode_racik "
                             + "on obat_racikan.kd_racik=metode_racik.kd_racik where "
-                            + "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? "
-                            + "and obat_racikan.no_rawat=? ");
+                            + "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? " + "and obat_racikan.no_rawat=? ");
                     try {
                         psracikan.setString(1, rs.getString("tgl_perawatan"));
                         psracikan.setString(2, rs.getString("jam"));
                         psracikan.setString(3, rs.getString("no_rawat"));
                         rsracikan = psracikan.executeQuery();
                         while (rsracikan.next()) {
-                            tabMode.addRow(new String[]{
-                                "",
-                                rsracikan.getString("no_racik") + ". " + rsracikan.
-                                getString("nama_racik"),
-                                rsracikan.getString("jml_dr") + " " + rsracikan.
-                                getString("metode") + ", Keterangan : " + rsracikan.
-                                getString("keterangan"),
-                                rsracikan.getString("aturan_pakai")
-                            });
+                            tabMode.addRow(new String[]{"",
+                                rsracikan.getString("no_racik") + ". " + rsracikan.getString("nama_racik"),
+                                rsracikan.getString("jml_dr") + " " + rsracikan.getString("metode")
+                                + ", Keterangan : " + rsracikan.getString("keterangan"),
+                                rsracikan.getString("aturan_pakai")});
 
                             ps2 = koneksi.prepareStatement(
                                     "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml,"
@@ -2694,28 +2685,21 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                                 ps2.setString(1, rs.getString("tgl_perawatan"));
                                 ps2.setString(2, rs.getString("jam"));
                                 ps2.setString(3, rs.getString("no_rawat"));
-                                ps2.
-                                        setString(4, rsracikan.getString(
-                                                "no_racik"));
+                                ps2.setString(4, rsracikan.getString("no_racik"));
                                 rs2 = ps2.executeQuery();
                                 total = 0;
                                 while (rs2.next()) {
-                                    tabMode.addRow(new String[]{
-                                        "", "   " + rs2.getString("nama_brng"),
-                                        rs2.getString("jml") + "  x  " + Valid.
-                                        SetAngka(rs2.getDouble("biaya_obat"))
-                                        + " + " + Valid.SetAngka(rs2.getDouble(
-                                        "embalase")) + " + " + Valid.SetAngka(
-                                        rs2.getDouble("tuslah")) + " = " + Valid.
-                                        SetAngka(rs2.getDouble("total")),
-                                        ""
-                                    });
+                                    tabMode.addRow(new String[]{"", "   " + rs2.getString("nama_brng"),
+                                        rs2.getString("jml") + "  x  " + Valid.SetAngka(rs2.getDouble("biaya_obat"))
+                                        + " + " + Valid.SetAngka(rs2.getDouble("embalase")) + " + "
+                                        + Valid.SetAngka(rs2.getDouble("tuslah")) + " = "
+                                        + Valid.SetAngka(rs2.getDouble("total")),
+                                        ""});
                                     total += rs2.getDouble("total");
                                     jumlahtotal += rs2.getDouble("total");
                                 }
                             } catch (Exception e) {
-                                System.out.println(
-                                        "Notifikasi Detail Racikan : " + e);
+                                System.out.println("Notifikasi Detail Racikan : " + e);
                             } finally {
                                 if (rs2 != null) {
                                     rs2.close();
@@ -2736,15 +2720,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         }
                     }
                     if (total > 0) {
-                        tabMode.addRow(new String[]{"", "",
-                            "Total Biaya Resep = " + Valid.SetAngka(total), ""});
+                        tabMode.addRow(new String[]{"", "", "Total Biaya Resep = " + Valid.SetAngka(total), ""});
                     }
                 }
                 rs.last();
                 if (rs.getRow() > 0) {
-                    tabMode.addRow(
-                            new String[]{">>", "Jumlah Total Biaya Resep",
-                                Valid.SetAngka(jumlahtotal), ""});
+                    tabMode.addRow(new String[]{">>", "Jumlah Total Biaya Resep", Valid.SetAngka(jumlahtotal), ""});
                 }
                 LCount.setText("" + rs.getRow());
             } catch (Exception ex) {
@@ -2777,30 +2758,21 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void getData() {
         if (tbResep.getSelectedRow() != -1) {
             getno = 1;
-            NoResep.setText(tbResep.getValueAt(tbResep.getSelectedRow(), 0).
-                    toString());
+            NoResep.setText(tbResep.getValueAt(tbResep.getSelectedRow(), 0).toString());
             if (!NoResep.getText().isEmpty()) {
-                Sequel.cariIsi(
-                        "select resep_obat.no_rawat from resep_obat where resep_obat.no_resep=?",
-                        TNoRw, NoResep.getText());
-                Sequel.cariIsi(
-                        "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                        TNoRm, TNoRw.getText());
-                Sequel.cariIsi(
-                        "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
-                        TPasien, TNoRm.getText());
-                Sequel.cariIsi(
-                        "select resep_obat.kd_dokter from resep_obat where resep_obat.no_resep=?",
-                        KdDokter, NoResep.getText());
+                Sequel.cariIsi("select resep_obat.no_rawat from resep_obat where resep_obat.no_resep=?", TNoRw,
+                        NoResep.getText());
+                Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRm,
+                        TNoRw.getText());
+                Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ", TPasien,
+                        TNoRm.getText());
+                Sequel.cariIsi("select resep_obat.kd_dokter from resep_obat where resep_obat.no_resep=?", KdDokter,
+                        NoResep.getText());
                 NmDokter.setText(dokter.tampil3(KdDokter.getText()));
-                cmbJam.setSelectedItem(tbResep.getValueAt(tbResep.
-                        getSelectedRow(), 1).toString().substring(11, 13));
-                cmbMnt.setSelectedItem(tbResep.getValueAt(tbResep.
-                        getSelectedRow(), 1).toString().substring(14, 16));
-                cmbDtk.setSelectedItem(tbResep.getValueAt(tbResep.
-                        getSelectedRow(), 1).toString().substring(17, 19));
-                Valid.SetTgl(DTPBeri, tbResep.getValueAt(tbResep.
-                        getSelectedRow(), 1).toString().substring(0, 10));
+                cmbJam.setSelectedItem(tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(11, 13));
+                cmbMnt.setSelectedItem(tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(14, 16));
+                cmbDtk.setSelectedItem(tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(17, 19));
+                Valid.SetTgl(DTPBeri, tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(0, 10));
 
                 TabDataMouseClicked(null);
             }
@@ -2808,15 +2780,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    public void setNoRm(String norwt, Date tgl1, Date tgl2, String jam,
-            String menit, String detik, String status) {
+    public void setNoRm(String norwt, Date tgl1, Date tgl2, String jam, String menit, String detik, String status) {
         TNoRw.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                TNoRm, TNoRw.getText());
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
-                TPasien, TNoRm.getText());
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRm,
+                TNoRw.getText());
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ", TPasien, TNoRm.getText());
         TCari.setText(norwt);
         DTPBeri.setDate(tgl1);
         Valid.SetTgl2(DTPCari1, format.format(tgl1) + " 00:00:00");
@@ -2830,7 +2798,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @param norwt
      * @param tgl1
      * @param tgl2
@@ -2841,16 +2808,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      * @param namadokter
      * @param status
      */
-    public void setNoRm(String norwt, Date tgl1, Date tgl2, String jam,
-            String menit, String detik, String kodedokter, String namadokter,
-            String status) {
+    public void setNoRm(String norwt, Date tgl1, Date tgl2, String jam, String menit, String detik, String kodedokter,
+            String namadokter, String status) {
         TNoRw.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                TNoRm, TNoRw.getText());
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
-                TPasien, TNoRm.getText());
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRm,
+                TNoRw.getText());
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ", TPasien, TNoRm.getText());
         TCari.setText(norwt);
         DTPBeri.setDate(tgl1);
         Valid.SetTgl2(DTPCari1, format.format(tgl1) + " 00:00:00");
@@ -2866,9 +2829,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     public void setDokterRalan() {
-        Sequel.cariIsi(
-                "select reg_periksa.kd_dokter from reg_periksa where reg_periksa.no_rawat=?",
-                KdDokter, TNoRw.getText());
+        Sequel.cariIsi("select reg_periksa.kd_dokter from reg_periksa where reg_periksa.no_rawat=?", KdDokter,
+                TNoRw.getText());
         NmDokter.setText(dokter.tampil3(KdDokter.getText()));
     }
 
@@ -2903,39 +2865,26 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         + "inner join databarang on detail_pemberian_obat.kode_brng=databarang.kode_brng where "
                         + "detail_pemberian_obat.tgl_perawatan=? and detail_pemberian_obat.jam=? and "
                         + "detail_pemberian_obat.no_rawat=? and databarang.kode_brng not in (select kode_brng from detail_obat_racikan where tgl_perawatan=? and jam=? and no_rawat=?)");
-                ps2.setString(1,
-                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).
-                                toString().substring(0, 10));
+                ps2.setString(1, tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(0, 10));
                 ps2.setString(2,
-                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).
-                                toString().substring(11, 13) + ":" + tbResep.
-                        getValueAt(tbResep.getSelectedRow(), 1).toString().
-                        substring(14, 16) + ":" + tbResep.getValueAt(tbResep.
-                        getSelectedRow(), 1).toString().substring(17, 19));
+                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(11, 13) + ":"
+                        + tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(14, 16) + ":"
+                        + tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(17, 19));
                 ps2.setString(3, TNoRw.getText());
-                ps2.setString(4,
-                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).
-                                toString().substring(0, 10));
+                ps2.setString(4, tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(0, 10));
                 ps2.setString(5,
-                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).
-                                toString().substring(11, 13) + ":" + tbResep.
-                        getValueAt(tbResep.getSelectedRow(), 1).toString().
-                        substring(14, 16) + ":" + tbResep.getValueAt(tbResep.
-                        getSelectedRow(), 1).toString().substring(17, 19));
+                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(11, 13) + ":"
+                        + tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(14, 16) + ":"
+                        + tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(17, 19));
                 ps2.setString(6, TNoRw.getText());
                 rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    tabmodeUbahRacikan.addRow(new String[]{
-                        rs2.getString("tgl_perawatan"), rs2.getString("jam"),
-                        rs2.getString("no_rawat"),
-                        rs2.getString("kode_brng"), rs2.getString("nama_brng"),
-                        Sequel.cariIsi(
-                        "select aturan from aturan_pakai where tgl_perawatan='" + rs2.
-                        getString("tgl_perawatan") + "' and "
-                        + "jam='" + rs2.getString("jam") + "' and no_rawat='" + rs2.
-                        getString("no_rawat") + "' and kode_brng='" + rs2.
-                        getString("kode_brng") + "'")
-                    });
+                    tabmodeUbahRacikan.addRow(new String[]{rs2.getString("tgl_perawatan"), rs2.getString("jam"),
+                        rs2.getString("no_rawat"), rs2.getString("kode_brng"), rs2.getString("nama_brng"),
+                        Sequel.cariIsi("select aturan from aturan_pakai where tgl_perawatan='"
+                        + rs2.getString("tgl_perawatan") + "' and " + "jam='" + rs2.getString("jam")
+                        + "' and no_rawat='" + rs2.getString("no_rawat") + "' and kode_brng='"
+                        + rs2.getString("kode_brng") + "'")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2956,30 +2905,22 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Valid.tabelKosong(tabmodeUbahRacikan2);
         try {
             try {
-                ps2 = koneksi.prepareStatement(
-                        "select obat_racikan.tgl_perawatan,obat_racikan.jam,obat_racikan.no_rawat,"
-                        + "obat_racikan.no_racik,obat_racikan.nama_racik,"
-                        + "obat_racikan.aturan_pakai from obat_racikan where "
-                        + "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? "
-                        + "and obat_racikan.no_rawat=?");
-                ps2.setString(1,
-                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).
-                                toString().substring(0, 10));
+                ps2 = koneksi
+                        .prepareStatement("select obat_racikan.tgl_perawatan,obat_racikan.jam,obat_racikan.no_rawat,"
+                                + "obat_racikan.no_racik,obat_racikan.nama_racik,"
+                                + "obat_racikan.aturan_pakai from obat_racikan where "
+                                + "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? " + "and obat_racikan.no_rawat=?");
+                ps2.setString(1, tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(0, 10));
                 ps2.setString(2,
-                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).
-                                toString().substring(11, 13) + ":" + tbResep.
-                        getValueAt(tbResep.getSelectedRow(), 1).toString().
-                        substring(14, 16) + ":" + tbResep.getValueAt(tbResep.
-                        getSelectedRow(), 1).toString().substring(17, 19));
+                        tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(11, 13) + ":"
+                        + tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(14, 16) + ":"
+                        + tbResep.getValueAt(tbResep.getSelectedRow(), 1).toString().substring(17, 19));
                 ps2.setString(3, TNoRw.getText());
                 rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    tabmodeUbahRacikan2.addRow(new String[]{
-                        rs2.getString("tgl_perawatan"), rs2.getString("jam"),
-                        rs2.getString("no_rawat"),
-                        rs2.getString("no_racik"), rs2.getString("nama_racik"),
-                        rs2.getString("aturan_pakai")
-                    });
+                    tabmodeUbahRacikan2.addRow(new String[]{rs2.getString("tgl_perawatan"), rs2.getString("jam"),
+                        rs2.getString("no_rawat"), rs2.getString("no_racik"), rs2.getString("nama_racik"),
+                        rs2.getString("aturan_pakai")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2999,20 +2940,20 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void autoresep() {
         if (ChkRM.isSelected() == true) {
             Valid.autoNomer3(
-                    "select ifnull(MAX(CONVERT(RIGHT(resep_obat.no_resep,4),signed)),0) from resep_obat where resep_obat.tgl_peresepan='" + Valid.
-                            SetTgl(DTPBeri.getSelectedItem() + "") + "' or resep_obat.tgl_perawatan='" + Valid.
-                    SetTgl(DTPBeri.getSelectedItem() + "") + "' ",
-                    DTPBeri.getSelectedItem().toString().substring(6, 10) + DTPBeri.
-                    getSelectedItem().toString().substring(3, 5) + DTPBeri.
-                    getSelectedItem().toString().substring(0, 2), 4, NoResep);
+                    "select ifnull(MAX(CONVERT(RIGHT(resep_obat.no_resep,4),signed)),0) from resep_obat where resep_obat.tgl_peresepan='"
+                    + Valid.SetTgl(DTPBeri.getSelectedItem() + "") + "' or resep_obat.tgl_perawatan='"
+                    + Valid.SetTgl(DTPBeri.getSelectedItem() + "") + "' ",
+                    DTPBeri.getSelectedItem().toString().substring(6, 10)
+                    + DTPBeri.getSelectedItem().toString().substring(3, 5)
+                    + DTPBeri.getSelectedItem().toString().substring(0, 2),
+                    4, NoResep);
         }
     }
 
     private void isPhoto() {
         if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(
-                    internalFrame1.getWidth() - 500, HEIGHT));
+            PanelAccor.setPreferredSize(new Dimension(internalFrame1.getWidth() - 500, HEIGHT));
             TabData.setVisible(true);
             ChkAccor.setVisible(true);
         } else if (ChkAccor.isSelected() == false) {
@@ -3032,21 +2973,18 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     ps.setString(1, NoResep.getText());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             LoadHTML.setText(
-                                    "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                                    "<html><body><center><br><br><font face='Tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                         } else {
-                            LoadHTML.setText(
-                                    "<html><body><center><img src='http://" + koneksiDB.
-                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                            PORTWEB() + "/" + koneksiDB.
-                                            HYBRIDWEB() + "/penyerahanresep/" + rs.
-                                            getString("photo") + "' alt='photo' width='550' height='500'/></center></body></html>");
+                            LoadHTML.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/penyerahanresep/"
+                                    + rs.getString("photo")
+                                    + "' alt='photo' width='550' height='500'/></center></body></html>");
                         }
                     } else {
                         LoadHTML.setText(
-                                "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                                "<html><body><center><br><br><font face='Tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                     }
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
@@ -3080,160 +3018,90 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     ps.setString(1, NoResep.getText());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        LoadHTML2.setText(
-                                "<html>"
+                        LoadHTML2.setText("<html>"
                                 + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
                                 + "<tr class='isi'>"
-                                + "<td valign='middle' align='center' colspan='3'>TELAAH RESEP</td>"
-                                + "</tr>"
+                                + "<td valign='middle' align='center' colspan='3'>TELAAH RESEP</td>" + "</tr>"
                                 + "<tr class='isi'>"
                                 + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>No</td>"
                                 + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='75%'>Penilaian</td>"
                                 + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='20%'>Ya/Tidak</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>1</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'>1</td>"
                                 + "<td valign='middle' align='left'>Tepat Identifikasi Pasien</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("resep_identifikasi_pasien") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString(
-                                                "resep_ket_identifikasi_pasien") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_identifikasi_pasien")
+                                + "</td>" + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_identifikasi_pasien") + "</td>" + "</tr>" + "<tr class='isi'>"
                                 + "<td valign='middle' align='center'>2</td>"
                                 + "<td valign='middle' align='left'>Tepat Obat</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("resep_tepat_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString("resep_ket_tepat_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_tepat_obat") + "</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_tepat_obat") + "</td>" + "</tr>" + "<tr class='isi'>"
                                 + "<td valign='middle' align='center'>3</td>"
                                 + "<td valign='middle' align='left'>Tepat Dosis</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("resep_tepat_dosis") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString("resep_ket_tepat_dosis") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_tepat_dosis") + "</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_tepat_dosis") + "</td>" + "</tr>" + "<tr class='isi'>"
                                 + "<td valign='middle' align='center'>4</td>"
                                 + "<td valign='middle' align='left'>Tepat Cara Pemberian</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("resep_tepat_cara_pemberian") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString(
-                                                "resep_ket_tepat_cara_pemberian") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>5</td>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_tepat_cara_pemberian")
+                                + "</td>" + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_tepat_cara_pemberian") + "</td>" + "</tr>"
+                                + "<tr class='isi'>" + "<td valign='middle' align='center'>5</td>"
                                 + "<td valign='middle' align='left'>Tepat Waktu Pemberian</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("resep_tepat_waktu_pemberian") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString(
-                                                "resep_ket_tepat_waktu_pemberian") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>6</td>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_tepat_waktu_pemberian")
+                                + "</td>" + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_tepat_waktu_pemberian") + "</td>" + "</tr>"
+                                + "<tr class='isi'>" + "<td valign='middle' align='center'>6</td>"
                                 + "<td valign='middle' align='left'>Ada Tidak Duplikasi Obat</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString(
-                                                "resep_ada_tidak_duplikasi_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString(
-                                                "resep_ket_ada_tidak_duplikasi_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>7</td>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_ada_tidak_duplikasi_obat")
+                                + "</td>" + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_ada_tidak_duplikasi_obat") + "</td>" + "</tr>"
+                                + "<tr class='isi'>" + "<td valign='middle' align='center'>7</td>"
                                 + "<td valign='middle' align='left'>Interaksi Obat</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("resep_interaksi_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString("resep_ket_interaksi_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_interaksi_obat") + "</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_interaksi_obat") + "</td>" + "</tr>" + "<tr class='isi'>"
                                 + "<td valign='middle' align='center'>8</td>"
                                 + "<td valign='middle' align='left'>Kontra Indikasi Obat</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("resep_kontra_indikasi_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'></td>"
-                                + "<td valign='middle' align='left' colspan='2'>Keterangan : " + rs.
-                                        getString(
-                                                "resep_ket_kontra_indikasi_obat") + "</td>"
-                                + "</tr>"
+                                + "<td valign='middle' align='center'>" + rs.getString("resep_kontra_indikasi_obat")
+                                + "</td>" + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                                + "<td valign='middle' align='left' colspan='2'>Keterangan : "
+                                + rs.getString("resep_ket_kontra_indikasi_obat") + "</td>" + "</tr>"
                                 + "<tr class='isi'>"
                                 + "<td valign='middle' align='center' colspan='3'><br>TELAAH OBAT ( VERIFIKASI OBAT )</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
+                                + "</tr>" + "<tr class='isi'>"
                                 + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>No</td>"
                                 + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='75%'>Penilaian</td>"
                                 + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='20%'>Ya/Tidak</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>1</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'>1</td>"
                                 + "<td valign='middle' align='left'>Tepat Pasien</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("obat_tepat_pasien") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>2</td>"
+                                + "<td valign='middle' align='center'>" + rs.getString("obat_tepat_pasien") + "</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'>2</td>"
                                 + "<td valign='middle' align='left'>Tepat Obat</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("obat_tepat_obat") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>3</td>"
+                                + "<td valign='middle' align='center'>" + rs.getString("obat_tepat_obat") + "</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'>3</td>"
                                 + "<td valign='middle' align='left'>Tepat Dosis</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("obat_tepat_dosis") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>4</td>"
+                                + "<td valign='middle' align='center'>" + rs.getString("obat_tepat_dosis") + "</td>"
+                                + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'>4</td>"
                                 + "<td valign='middle' align='left'>Tepat Cara Pemberian</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("obat_tepat_cara_pemberian") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>5</td>"
+                                + "<td valign='middle' align='center'>" + rs.getString("obat_tepat_cara_pemberian")
+                                + "</td>" + "</tr>" + "<tr class='isi'>" + "<td valign='middle' align='center'>5</td>"
                                 + "<td valign='middle' align='left'>Tepat Waktu Pemberian</td>"
-                                + "<td valign='middle' align='center'>" + rs.
-                                        getString("obat_tepat_waktu_pemberian") + "</td>"
-                                + "</tr>"
-                                + "<tr class='isi'>"
-                                + "<td valign='middle' align='center' colspan='3'><br>Petugas Farmasi : " + rs.
-                                        getString("nip") + " " + rs.getString(
-                                "nama") + "</td>"
-                                + "</tr>"
-                                + "</table>"
-                                + "</html>"
-                        );
+                                + "<td valign='middle' align='center'>" + rs.getString("obat_tepat_waktu_pemberian")
+                                + "</td>" + "</tr>" + "<tr class='isi'>"
+                                + "<td valign='middle' align='center' colspan='3'><br>Petugas Farmasi : "
+                                + rs.getString("nip") + " " + rs.getString("nama") + "</td>" + "</tr>" + "</table>"
+                                + "</html>");
                     } else {
                         LoadHTML2.setText(
-                                "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                                "<html><body><center><br><br><font face='Tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                     }
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
@@ -3251,6 +3119,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgResepObat.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgResepObat.class.getName());
+
 }

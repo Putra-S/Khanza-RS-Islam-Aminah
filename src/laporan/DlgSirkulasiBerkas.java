@@ -29,17 +29,22 @@ import kepegawaian.DlgCariPetugas;
 import simrskhanza.DlgCariPasien;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgSirkulasiBerkas extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement pspasien, ps;
+
     private ResultSet rs;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private InventarisRuang ruang = new InventarisRuang(null, false);
 
     /**
@@ -54,9 +59,8 @@ public class DlgSirkulasiBerkas extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"Peminjam", "Id Ruang", "Nama Ruang", "No.R.M.",
-            "Nama Pasien", "Tgl.Pinjam", "Tgl.Kembali", "Kode Petugas",
-            "Nama Petugas"};
+        Object[] row = {"Peminjam", "Id Ruang", "Nama Ruang", "No.R.M.", "Nama Pasien", "Tgl.Pinjam", "Tgl.Kembali",
+            "Kode Petugas", "Nama Petugas"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -66,7 +70,8 @@ public class DlgSirkulasiBerkas extends javax.swing.JDialog {
         };
         tbKamIn.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbKamIn.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamIn.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -100,8 +105,7 @@ public class DlgSirkulasiBerkas extends javax.swing.JDialog {
         NoRm.setDocument(new batasInput((byte) 10).getKata(NoRm));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -140,27 +144,23 @@ public class DlgSirkulasiBerkas extends javax.swing.JDialog {
                 if (pasien.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
                         try {
-                            NoRm.setText(pasien.getTable().getValueAt(pasien.
-                                    getTable().getSelectedRow(), 0).toString());
-                            NmPasien.setText(pasien.getTable().getValueAt(
-                                    pasien.getTable().getSelectedRow(), 1).
-                                    toString());
-                            Umur.setText(pasien.getTable().getValueAt(pasien.
-                                    getTable().getSelectedRow(), 14).toString());
-                            Alamat.setText(pasien.getTable().getValueAt(pasien.
-                                    getTable().getSelectedRow(), 7).toString());
-                            Pekerjaan.setText(pasien.getTable().getValueAt(
-                                    pasien.getTable().getSelectedRow(), 9).
-                                    toString());
-                            PertamaDaftar.setText(pasien.getTable().getValueAt(
-                                    pasien.getTable().getSelectedRow(), 12).
-                                    toString());
+                            NoRm.setText(
+                                    pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 0).toString());
+                            NmPasien.setText(
+                                    pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 1).toString());
+                            Umur.setText(
+                                    pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 14).toString());
+                            Alamat.setText(
+                                    pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 7).toString());
+                            Pekerjaan.setText(
+                                    pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 9).toString());
+                            PertamaDaftar.setText(
+                                    pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 12).toString());
                         } catch (Exception z) {
                         }
                         NoRm.requestFocus();
                     } else if (pilihan == 2) {
-                        RmCari.setText(pasien.getTable().getValueAt(pasien.
-                                getTable().getSelectedRow(), 0).toString());
+                        RmCari.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 0).toString());
                         RmCari.requestFocus();
                     }
                 }
@@ -214,10 +214,8 @@ public class DlgSirkulasiBerkas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    Nip.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    Nip.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 Nip.requestFocus();
             }
@@ -252,10 +250,8 @@ public class DlgSirkulasiBerkas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    KdRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 0).toString());
-                    NmRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 1).toString());
+                    KdRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 0).toString());
+                    NmRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                     KdRuang.requestFocus();
                 }
             }
@@ -302,11 +298,15 @@ public class DlgSirkulasiBerkas extends javax.swing.JDialog {
     }
 
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DlgCariPasien pasien = new DlgCariPasien(null, false);
+
     private int pilihan = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1445,8 +1445,7 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSirkulasiBerkas dialog = new DlgSirkulasiBerkas(
-                    new javax.swing.JFrame(), true);
+            DlgSirkulasiBerkas dialog = new DlgSirkulasiBerkas(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1554,103 +1553,71 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
 
             try {
                 if (ChkTanggal.isSelected() == true) {
-                    ps.setString(1, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
-                    ps.setString(2, Valid.SetTgl(
-                            TglPinjam1.getSelectedItem() + ""));
-                    ps.setString(3, Valid.SetTgl(
-                            TglPinjam2.getSelectedItem() + ""));
+                    ps.setString(1, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    ps.setString(2, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                    ps.setString(3, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                     ps.setString(4, "%" + RmCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText().trim() + "%");
-                    ps.setString(6, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
-                    ps.setString(7, Valid.SetTgl(
-                            TglPinjam1.getSelectedItem() + ""));
-                    ps.setString(8, Valid.SetTgl(
-                            TglPinjam2.getSelectedItem() + ""));
+                    ps.setString(6, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    ps.setString(7, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                    ps.setString(8, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                     ps.setString(9, "%" + RmCari.getText() + "%");
                     ps.setString(10, "%" + TCari.getText().trim() + "%");
-                    ps.setString(11, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
-                    ps.setString(12, Valid.SetTgl(
-                            TglPinjam1.getSelectedItem() + ""));
-                    ps.setString(13, Valid.SetTgl(
-                            TglPinjam2.getSelectedItem() + ""));
+                    ps.setString(11, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    ps.setString(12, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                    ps.setString(13, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                     ps.setString(14, "%" + RmCari.getText() + "%");
                     ps.setString(15, "%" + TCari.getText().trim() + "%");
-                    ps.setString(16, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
-                    ps.setString(17, Valid.SetTgl(
-                            TglPinjam1.getSelectedItem() + ""));
-                    ps.setString(18, Valid.SetTgl(
-                            TglPinjam2.getSelectedItem() + ""));
+                    ps.setString(16, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    ps.setString(17, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                    ps.setString(18, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                     ps.setString(19, "%" + RmCari.getText() + "%");
                     ps.setString(20, "%" + TCari.getText().trim() + "%");
-                    ps.setString(21, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
-                    ps.setString(22, Valid.SetTgl(
-                            TglPinjam1.getSelectedItem() + ""));
-                    ps.setString(23, Valid.SetTgl(
-                            TglPinjam2.getSelectedItem() + ""));
+                    ps.setString(21, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    ps.setString(22, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                    ps.setString(23, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                     ps.setString(24, "%" + RmCari.getText() + "%");
                     ps.setString(25, "%" + TCari.getText().trim() + "%");
-                    ps.setString(26, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
-                    ps.setString(27, Valid.SetTgl(
-                            TglPinjam1.getSelectedItem() + ""));
-                    ps.setString(28, Valid.SetTgl(
-                            TglPinjam2.getSelectedItem() + ""));
+                    ps.setString(26, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    ps.setString(27, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                    ps.setString(28, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                     ps.setString(29, "%" + RmCari.getText() + "%");
                     ps.setString(30, "%" + TCari.getText().trim() + "%");
-                    ps.setString(31, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
-                    ps.setString(32, Valid.SetTgl(
-                            TglPinjam1.getSelectedItem() + ""));
-                    ps.setString(33, Valid.SetTgl(
-                            TglPinjam2.getSelectedItem() + ""));
+                    ps.setString(31, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    ps.setString(32, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                    ps.setString(33, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                     ps.setString(34, "%" + RmCari.getText() + "%");
                     ps.setString(35, "%" + TCari.getText().trim() + "%");
                 } else {
-                    ps.setString(1, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
+                    ps.setString(1, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(2, "%" + RmCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText().trim() + "%");
-                    ps.setString(4, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
+                    ps.setString(4, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(5, "%" + RmCari.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
-                    ps.setString(7, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
+                    ps.setString(7, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(8, "%" + RmCari.getText() + "%");
                     ps.setString(9, "%" + TCari.getText().trim() + "%");
-                    ps.setString(10, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
+                    ps.setString(10, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(11, "%" + RmCari.getText() + "%");
                     ps.setString(12, "%" + TCari.getText().trim() + "%");
-                    ps.setString(13, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
+                    ps.setString(13, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(14, "%" + RmCari.getText() + "%");
                     ps.setString(15, "%" + TCari.getText().trim() + "%");
-                    ps.setString(16, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
+                    ps.setString(16, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(17, "%" + RmCari.getText() + "%");
                     ps.setString(18, "%" + TCari.getText().trim() + "%");
-                    ps.setString(19, "%" + StatusCari.getSelectedItem().
-                            toString().replaceAll("Semua", "") + "%");
+                    ps.setString(19, "%" + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(20, "%" + RmCari.getText() + "%");
                     ps.setString(21, "%" + TCari.getText().trim() + "%");
                 }
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("peminjam"), rs.getString("id_ruang"), rs.
-                        getString("nama_ruang"),
-                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("tgl_pinjam"),
-                        rs.getString("tgl_kembali"), rs.getString("nip"), rs.
-                        getString("nama"), rs.getString("status_pinjam")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("peminjam"), rs.getString("id_ruang"),
+                        rs.getString("nama_ruang"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("tgl_pinjam"), rs.getString("tgl_kembali"), rs.getString("nip"),
+                        rs.getString("nama"), rs.getString("status_pinjam")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1686,21 +1653,15 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
     private void getData() {
         if (tbKamIn.getSelectedRow() != -1) {
             try {
-                TOut.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 6).
-                        toString());
+                TOut.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 6).toString());
             } catch (Exception e) {
                 TOut.setText("");
             }
-            KdRuang.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 1).
-                    toString());
-            NmRuang.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 2).
-                    toString());
-            NoRm.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 3).
-                    toString());
-            peminjam.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).
-                    toString());
-            TIn.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 5).
-                    toString());
+            KdRuang.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 1).toString());
+            NmRuang.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 2).toString());
+            NoRm.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 3).toString());
+            peminjam.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString());
+            TIn.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 5).toString());
             isPasien();
         }
     }
@@ -1722,8 +1683,7 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
      */
     public void isPasien() {
         try {
-            pspasien = koneksi.prepareStatement(
-                    "select pasien.nm_pasien,pasien.pekerjaan, "
+            pspasien = koneksi.prepareStatement("select pasien.nm_pasien,pasien.pekerjaan, "
                     + "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat,"
                     + "pasien.tgl_daftar,pasien.umur from pasien inner join kelurahan inner join kecamatan inner join kabupaten "
                     + "inner join penjab on pasien.kd_pj=penjab.kd_pj and pasien.kd_kel=kelurahan.kd_kel "
@@ -1754,6 +1714,6 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgSirkulasiBerkas.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgSirkulasiBerkas.class.getName());
+
 }

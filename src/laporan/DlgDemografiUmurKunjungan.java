@@ -33,25 +33,39 @@ import simrskhanza.DlgKelurahan;
 public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
 
     private final validasi Valid = new validasi();
+
     private final Connection koneksi = koneksiDB.condb();
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+
     private DlgKecamatan kecamatan = new DlgKecamatan(null, false);
+
     private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private final sekuel Sequel = new sekuel();
+
     private PreparedStatement ps, ps2, ps3;
+
     private ResultSet rs, rs2;
+
     private String querytambahan, querydokter, querypoli, querycarabayar, tambahanquery;
+
     private StringBuilder htmlContent;
-    private int hr07l = 0, hr07p = 0, thk1l = 0, thk1p = 0, th14l = 0, th14p = 0, th59l = 0, th59p = 0, th1014l = 0, th1014p = 0,
-            th1519l = 0, th1519p = 0, th2044l = 0, th2044p = 0, th4554l = 0, th4554p = 0, th5559l = 0, th5559p = 0,
-            th6069l = 0, th6069p = 0, thl70l = 0, thl70p = 0, hr830l = 0, hr830p = 0, totall = 0, totalp = 0, totallp = 0,
-            registrasibaru = 0, registrasilama = 0, polilama = 0, polibaru = 0,
-            ttlhr07l = 0, ttlhr07p = 0, ttlthk1l = 0, ttlthk1p = 0, ttlth14l = 0, ttlth14p = 0, ttlth59l = 0, ttlth59p = 0, ttlth1014l = 0, ttlth1014p = 0,
-            ttlth1519l = 0, ttlth1519p = 0, ttlth2044l = 0, ttlth2044p = 0, ttlth4554l = 0, ttlth4554p = 0, ttlth5559l = 0, ttlth5559p = 0,
-            ttlth6069l = 0, ttlth6069p = 0, ttlthl70l = 0, ttlthl70p = 0, ttlhr830l = 0, ttlhr830p = 0, ttltotall = 0, ttltotalp = 0, ttltotallp = 0,
+
+    private int hr07l = 0, hr07p = 0, thk1l = 0, thk1p = 0, th14l = 0, th14p = 0, th59l = 0, th59p = 0, th1014l = 0,
+            th1014p = 0, th1519l = 0, th1519p = 0, th2044l = 0, th2044p = 0, th4554l = 0, th4554p = 0, th5559l = 0,
+            th5559p = 0, th6069l = 0, th6069p = 0, thl70l = 0, thl70p = 0, hr830l = 0, hr830p = 0, totall = 0,
+            totalp = 0, totallp = 0, registrasibaru = 0, registrasilama = 0, polilama = 0, polibaru = 0, ttlhr07l = 0,
+            ttlhr07p = 0, ttlthk1l = 0, ttlthk1p = 0, ttlth14l = 0, ttlth14p = 0, ttlth59l = 0, ttlth59p = 0,
+            ttlth1014l = 0, ttlth1014p = 0, ttlth1519l = 0, ttlth1519p = 0, ttlth2044l = 0, ttlth2044p = 0,
+            ttlth4554l = 0, ttlth4554p = 0, ttlth5559l = 0, ttlth5559p = 0, ttlth6069l = 0, ttlth6069p = 0,
+            ttlthl70l = 0, ttlthl70p = 0, ttlhr830l = 0, ttlhr830p = 0, ttltotall = 0, ttltotalp = 0, ttltotallp = 0,
             ttlregistrasibaru = 0, ttlregistrasilama = 0, ttlpolilama = 0, ttlpolibaru = 0;
 
     /**
@@ -72,8 +86,7 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
                 ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
                 + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
                 + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-        );
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -89,10 +102,8 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -128,10 +139,8 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -185,10 +194,8 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -242,8 +249,8 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
-                            kabupaten.getTable().getSelectedRow(), 0).toString());
+                    nmkabupaten
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkabupaten.requestFocus();
             }
@@ -297,8 +304,8 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kecamatan.getTable().getSelectedRow() != -1) {
-                    nmkecamatan.setText(kecamatan.getTable().getValueAt(
-                            kecamatan.getTable().getSelectedRow(), 0).toString());
+                    nmkecamatan
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkecamatan.requestFocus();
             }
@@ -352,8 +359,8 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kelurahan.getTable().getSelectedRow() != -1) {
-                    nmkelurahan.setText(kelurahan.getTable().getValueAt(
-                            kelurahan.getTable().getSelectedRow(), 0).toString());
+                    nmkelurahan
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkelurahan.requestFocus();
             }
@@ -400,10 +407,13 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
     }
 
     private final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     private int i = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -825,14 +835,13 @@ public class DlgDemografiUmurKunjungan extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         try {
             File g = new File("file2.css");
             try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
@@ -1055,8 +1064,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDemografiUmurKunjungan dialog = new DlgDemografiUmurKunjungan(
-                    new javax.swing.JFrame(), true);
+            DlgDemografiUmurKunjungan dialog = new DlgDemografiUmurKunjungan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1115,8 +1123,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
             htmlContent = new StringBuilder();
             querydokter = "";
             if (!nmdokter.getText().isEmpty()) {
-                querydokter = " and reg_periksa.kd_dokter='" + kddokter.
-                        getText() + "' ";
+                querydokter = " and reg_periksa.kd_dokter='" + kddokter.getText() + "' ";
             }
             querypoli = "";
             if (!nmpoli.getText().isEmpty()) {
@@ -1130,16 +1137,14 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
             querytambahan = querydokter + querypoli + querycarabayar;
 
             if (!nmkelurahan.getText().isEmpty()) {
-                htmlContent.append(
-                        "<tr class='isi'>"
+                htmlContent.append("<tr class='isi'>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='3'>No.</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='15%' rowspan='3'>Desa/Alamat</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55%' colspan='26'>Jumlah Kunjungan/Golongan Umur</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Total</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' colspan='2'>Jenis Kunjungan</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='13%' colspan='3'>Jumlah Kunjungan/Kasus</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
+                        + "</tr>" + "<tr class='isi'>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-7Hr</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>8-30hr</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>&lt;1Th</td>"
@@ -1157,10 +1162,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Baru</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>" + "</tr>"
+                        + "<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
@@ -1185,23 +1188,540 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "</tr>"
-                );
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>" + "</tr>");
 
-                ps = koneksi.prepareStatement(
-                        "select pasien.alamat as nama,kelurahan.kd_kel,"
+                ps = koneksi.prepareStatement("select pasien.alamat as nama,kelurahan.kd_kel,"
                         + "kabupaten.kd_kab,kecamatan.kd_kec from reg_periksa "
                         + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                         + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
                         + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
                         + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
-                        + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                        + "and '" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and kabupaten.nm_kab='" + nmkabupaten.
-                        getText() + "' "
-                        + "and kecamatan.nm_kec='" + nmkecamatan.getText() + "' and kelurahan.nm_kel='" + nmkelurahan.
-                        getText() + "' "
+                        + "where reg_periksa.tgl_registrasi between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "")
+                        + "' " + "and '" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and kabupaten.nm_kab='"
+                        + nmkabupaten.getText() + "' " + "and kecamatan.nm_kec='" + nmkecamatan.getText()
+                        + "' and kelurahan.nm_kel='" + nmkelurahan.getText() + "' " + querytambahan
+                        + " group by kelurahan.nm_kel");
+                try {
+                    rs = ps.executeQuery();
+                    i = 1;
+                    ttlhr07l = 0;
+                    ttlhr07p = 0;
+                    ttlthk1l = 0;
+                    ttlthk1p = 0;
+                    ttlth14l = 0;
+                    ttlth14p = 0;
+                    ttlth59l = 0;
+                    ttlth59p = 0;
+                    ttlth1014l = 0;
+                    ttlth1014p = 0;
+                    ttlth1519l = 0;
+                    ttlth1519p = 0;
+                    ttlth2044l = 0;
+                    ttlth2044p = 0;
+                    ttlth4554l = 0;
+                    ttlth4554p = 0;
+                    ttlth5559l = 0;
+                    ttlth5559p = 0;
+                    ttlth6069l = 0;
+                    ttlth6069p = 0;
+                    ttlthl70l = 0;
+                    ttlthl70p = 0;
+                    ttlhr830l = 0;
+                    ttlhr830p = 0;
+                    ttltotall = 0;
+                    ttltotalp = 0;
+                    ttltotallp = 0;
+                    ttlregistrasibaru = 0;
+                    ttlregistrasilama = 0;
+                    ttlpolilama = 0;
+                    ttlpolibaru = 0;
+                    while (rs.next()) {
+                        hr07l = 0;
+                        hr07p = 0;
+                        thk1l = 0;
+                        thk1p = 0;
+                        th14l = 0;
+                        th14p = 0;
+                        th59l = 0;
+                        th59p = 0;
+                        th1014l = 0;
+                        th1014p = 0;
+                        th1519l = 0;
+                        th1519p = 0;
+                        th2044l = 0;
+                        th2044p = 0;
+                        th4554l = 0;
+                        th4554p = 0;
+                        th5559l = 0;
+                        th5559p = 0;
+                        th6069l = 0;
+                        th6069p = 0;
+                        thl70l = 0;
+                        thl70p = 0;
+                        hr830l = 0;
+                        hr830p = 0;
+                        totall = 0;
+                        totalp = 0;
+                        totallp = 0;
+                        registrasibaru = 0;
+                        registrasilama = 0;
+                        polilama = 0;
+                        polibaru = 0;
+
+                        hr07l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        hr07p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        hr830l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        hr830p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        thk1l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kd_kec") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "and pasien.alamat='" + rs.getString("nama") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        thk1p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kd_kec") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "and pasien.alamat='" + rs.getString("nama") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th14l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th14p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th59l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th59p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th1014l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th1014p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th1519l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th1519p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th2044l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th2044p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th4554l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th4554p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th5559l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th5559p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th6069l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        th6069p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        thl70l = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        thl70p = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l
+                                + th6069l + thl70l + hr830l;
+                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p
+                                + th6069p + thl70p + hr830p;
+                        totallp = totall + totalp;
+                        registrasibaru = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and reg_periksa.stts_daftar='Baru' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        registrasilama = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and reg_periksa.stts_daftar='Lama' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        polibaru = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and reg_periksa.status_poli='Baru' " + querytambahan
+                                + " group by pasien.kd_kel");
+                        polilama = Sequel.cariInteger("select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kd_kel") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.alamat='"
+                                + rs.getString("nama") + "' " + "and reg_periksa.status_poli='Lama' " + querytambahan
+                                + " group by pasien.kd_kel");
+
+                        ttlhr07l += hr07l;
+                        ttlhr07p += hr07p;
+                        ttlthk1l += thk1l;
+                        ttlthk1p += thk1p;
+                        ttlth14l += th14l;
+                        ttlth14p += th14p;
+                        ttlth59l += th59l;
+                        ttlth59p += th59p;
+                        ttlth1014l += th1014l;
+                        ttlth1014p += th1014p;
+                        ttlth1519l += th1519l;
+                        ttlth1519p += th1519p;
+                        ttlth2044l += th2044l;
+                        ttlth2044p += th2044p;
+                        ttlth4554l += th4554l;
+                        ttlth4554p += th4554p;
+                        ttlth5559l += th5559l;
+                        ttlth5559p += th5559p;
+                        ttlth6069l += th6069l;
+                        ttlth6069p += th6069p;
+                        ttlthl70l += thl70l;
+                        ttlthl70p += thl70p;
+                        ttlhr830l += hr830l;
+                        ttlhr830p += hr830p;
+                        ttltotall += totall;
+                        ttltotalp += totalp;
+                        ttltotallp += totallp;
+                        ttlregistrasibaru += registrasibaru;
+                        ttlregistrasilama += registrasilama;
+                        ttlpolilama += polilama;
+                        ttlpolibaru += polibaru;
+
+                        htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'>" + i + "</td>"
+                                + "<td valign='middle' align='left'>" + rs.getString("nama") + "</td>"
+                                + "<td valign='middle' align='center'>" + hr07l + "</td>"
+                                + "<td valign='middle' align='center'>" + hr07p + "</td>"
+                                + "<td valign='middle' align='center'>" + hr830l + "</td>"
+                                + "<td valign='middle' align='center'>" + hr830p + "</td>"
+                                + "<td valign='middle' align='center'>" + thk1l + "</td>"
+                                + "<td valign='middle' align='center'>" + thk1p + "</td>"
+                                + "<td valign='middle' align='center'>" + th14l + "</td>"
+                                + "<td valign='middle' align='center'>" + th14p + "</td>"
+                                + "<td valign='middle' align='center'>" + th59l + "</td>"
+                                + "<td valign='middle' align='center'>" + th59p + "</td>"
+                                + "<td valign='middle' align='center'>" + th1014l + "</td>"
+                                + "<td valign='middle' align='center'>" + th1014p + "</td>"
+                                + "<td valign='middle' align='center'>" + th1519l + "</td>"
+                                + "<td valign='middle' align='center'>" + th1519p + "</td>"
+                                + "<td valign='middle' align='center'>" + th2044l + "</td>"
+                                + "<td valign='middle' align='center'>" + th2044p + "</td>"
+                                + "<td valign='middle' align='center'>" + th4554l + "</td>"
+                                + "<td valign='middle' align='center'>" + th4554p + "</td>"
+                                + "<td valign='middle' align='center'>" + th5559l + "</td>"
+                                + "<td valign='middle' align='center'>" + th5559p + "</td>"
+                                + "<td valign='middle' align='center'>" + th6069l + "</td>"
+                                + "<td valign='middle' align='center'>" + th6069p + "</td>"
+                                + "<td valign='middle' align='center'>" + thl70l + "</td>"
+                                + "<td valign='middle' align='center'>" + thl70p + "</td>"
+                                + "<td valign='middle' align='center'>" + totall + "</td>"
+                                + "<td valign='middle' align='center'>" + totalp + "</td>"
+                                + "<td valign='middle' align='center'>" + totallp + "</td>"
+                                + "<td valign='middle' align='center'>" + registrasibaru + "</td>"
+                                + "<td valign='middle' align='center'>" + registrasilama + "</td>"
+                                + "<td valign='middle' align='center'>" + polibaru + "</td>"
+                                + "<td valign='middle' align='center'>" + polilama + "</td>"
+                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>" + "</tr>");
+                        i++;
+                    }
+                    htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                            + "<td valign='middle' align='left'>TOTAL</td>" + "<td valign='middle' align='center'>"
+                            + ttlhr07l + "</td>" + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlhr830l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlhr830p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlthk1l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlthk1p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth14l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth14p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth59l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth59p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth1014l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth1014p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth1519l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth1519p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth2044l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth2044p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth4554l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth4554p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth5559l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth5559p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth6069l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlth6069p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlthl70l + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlthl70p + "</td>"
+                            + "<td valign='middle' align='center'>" + ttltotall + "</td>"
+                            + "<td valign='middle' align='center'>" + ttltotalp + "</td>"
+                            + "<td valign='middle' align='center'>" + ttltotallp + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlregistrasibaru + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlregistrasilama + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlpolibaru + "</td>"
+                            + "<td valign='middle' align='center'>" + ttlpolilama + "</td>"
+                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>" + "</tr>");
+                } catch (Exception e) {
+                    System.out.println("Notif : " + e);
+                } finally {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (ps != null) {
+                        ps.close();
+                    }
+                }
+            } else if (!nmkecamatan.getText().isEmpty()) {
+                htmlContent.append("<tr class='isi'>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='3'>No.</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='15%' rowspan='3'>Kelurahan</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55%' colspan='26'>Jumlah Kunjungan/Golongan Umur</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Total</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' colspan='2'>Jenis Kunjungan</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='13%' colspan='3'>Jumlah Kunjungan/Kasus</td>"
+                        + "</tr>" + "<tr class='isi'>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-7Hr</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>8-30hr</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>&lt;1Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>1-4Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>5-9Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>10-14Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>15-19Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>20-44Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>45-54Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>55-59Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>60-69Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>&gt;=70Th</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>Total<br>L|P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Baru</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Baru</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>" + "</tr>"
+                        + "<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>" + "</tr>");
+
+                ps = koneksi.prepareStatement("select kelurahan.kd_kel as kode,kelurahan.nm_kel as nama,"
+                        + "kabupaten.kd_kab,kecamatan.kd_kec from reg_periksa "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
+                        + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
+                        + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                        + "where reg_periksa.tgl_registrasi between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "")
+                        + "' " + "and '" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and kabupaten.nm_kab='"
+                        + nmkabupaten.getText() + "' " + "and kecamatan.nm_kec='" + nmkecamatan.getText() + "' "
                         + querytambahan + " group by kelurahan.nm_kel");
                 try {
                     rs = ps.executeQuery();
@@ -1270,963 +1790,255 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         polilama = 0;
                         polibaru = 0;
 
-                        hr07l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                        hr07l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        hr07p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        hr830l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        hr830p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        thk1l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kel='" + rs.getString("kode") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kd_kec") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        hr07p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                        thk1p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kel='" + rs.getString("kode") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kd_kec") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        hr830l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                        th14l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        hr830p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th14p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        thk1l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th59l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        thk1p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th59p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th14l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th1014l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th14p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th1014p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th59l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th1519l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th59p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th1519p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th1014l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th2044l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th1014p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th2044p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th1519l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th4554l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th1519p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th4554p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th2044l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th5559l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th2044p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th5559p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th4554l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th6069l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th4554p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        th6069p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th5559l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        thl70l = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th5559p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        thl70p = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th6069l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th6069p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        thl70l = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        thl70p = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l + th6069l + thl70l + hr830l;
-                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p + th6069p + thl70p + hr830p;
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kel");
+                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l
+                                + th6069l + thl70l + hr830l;
+                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p
+                                + th6069p + thl70p + hr830p;
                         totallp = totall + totalp;
-                        registrasibaru = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
+                        registrasibaru = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and reg_periksa.stts_daftar='Baru' " + querytambahan + " group by pasien.kd_kel");
-                        registrasilama = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and reg_periksa.stts_daftar='Lama' " + querytambahan + " group by pasien.kd_kel");
-                        polibaru = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and reg_periksa.status_poli='Baru' " + querytambahan + " group by pasien.kd_kel");
-                        polilama = Sequel.cariInteger(
-                                "select count(pasien.alamat)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kd_kel") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.alamat='" + rs.getString("nama") + "' "
-                                + "and reg_periksa.status_poli='Lama' " + querytambahan + " group by pasien.kd_kel");
-
-                        ttlhr07l += hr07l;
-                        ttlhr07p += hr07p;
-                        ttlthk1l += thk1l;
-                        ttlthk1p += thk1p;
-                        ttlth14l += th14l;
-                        ttlth14p += th14p;
-                        ttlth59l += th59l;
-                        ttlth59p += th59p;
-                        ttlth1014l += th1014l;
-                        ttlth1014p += th1014p;
-                        ttlth1519l += th1519l;
-                        ttlth1519p += th1519p;
-                        ttlth2044l += th2044l;
-                        ttlth2044p += th2044p;
-                        ttlth4554l += th4554l;
-                        ttlth4554p += th4554p;
-                        ttlth5559l += th5559l;
-                        ttlth5559p += th5559p;
-                        ttlth6069l += th6069l;
-                        ttlth6069p += th6069p;
-                        ttlthl70l += thl70l;
-                        ttlthl70p += thl70p;
-                        ttlhr830l += hr830l;
-                        ttlhr830p += hr830p;
-                        ttltotall += totall;
-                        ttltotalp += totalp;
-                        ttltotallp += totallp;
-                        ttlregistrasibaru += registrasibaru;
-                        ttlregistrasilama += registrasilama;
-                        ttlpolilama += polilama;
-                        ttlpolibaru += polibaru;
-
-                        htmlContent.append(
-                                "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>" + i + "</td>"
-                                + "<td valign='middle' align='left'>" + rs.
-                                        getString("nama") + "</td>"
-                                + "<td valign='middle' align='center'>" + hr07l + "</td>"
-                                + "<td valign='middle' align='center'>" + hr07p + "</td>"
-                                + "<td valign='middle' align='center'>" + hr830l + "</td>"
-                                + "<td valign='middle' align='center'>" + hr830p + "</td>"
-                                + "<td valign='middle' align='center'>" + thk1l + "</td>"
-                                + "<td valign='middle' align='center'>" + thk1p + "</td>"
-                                + "<td valign='middle' align='center'>" + th14l + "</td>"
-                                + "<td valign='middle' align='center'>" + th14p + "</td>"
-                                + "<td valign='middle' align='center'>" + th59l + "</td>"
-                                + "<td valign='middle' align='center'>" + th59p + "</td>"
-                                + "<td valign='middle' align='center'>" + th1014l + "</td>"
-                                + "<td valign='middle' align='center'>" + th1014p + "</td>"
-                                + "<td valign='middle' align='center'>" + th1519l + "</td>"
-                                + "<td valign='middle' align='center'>" + th1519p + "</td>"
-                                + "<td valign='middle' align='center'>" + th2044l + "</td>"
-                                + "<td valign='middle' align='center'>" + th2044p + "</td>"
-                                + "<td valign='middle' align='center'>" + th4554l + "</td>"
-                                + "<td valign='middle' align='center'>" + th4554p + "</td>"
-                                + "<td valign='middle' align='center'>" + th5559l + "</td>"
-                                + "<td valign='middle' align='center'>" + th5559p + "</td>"
-                                + "<td valign='middle' align='center'>" + th6069l + "</td>"
-                                + "<td valign='middle' align='center'>" + th6069p + "</td>"
-                                + "<td valign='middle' align='center'>" + thl70l + "</td>"
-                                + "<td valign='middle' align='center'>" + thl70p + "</td>"
-                                + "<td valign='middle' align='center'>" + totall + "</td>"
-                                + "<td valign='middle' align='center'>" + totalp + "</td>"
-                                + "<td valign='middle' align='center'>" + totallp + "</td>"
-                                + "<td valign='middle' align='center'>" + registrasibaru + "</td>"
-                                + "<td valign='middle' align='center'>" + registrasilama + "</td>"
-                                + "<td valign='middle' align='center'>" + polibaru + "</td>"
-                                + "<td valign='middle' align='center'>" + polilama + "</td>"
-                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>"
-                                + "</tr>"
-                        );
-                        i++;
-                    }
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td valign='middle' align='center'></td>"
-                            + "<td valign='middle' align='left'>TOTAL</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr830l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr830p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlthk1l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlthk1p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth14l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth14p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth59l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth59p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth1014l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth1014p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth1519l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth1519p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth2044l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth2044p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth4554l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth4554p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth5559l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth5559p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth6069l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlth6069p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlthl70l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlthl70p + "</td>"
-                            + "<td valign='middle' align='center'>" + ttltotall + "</td>"
-                            + "<td valign='middle' align='center'>" + ttltotalp + "</td>"
-                            + "<td valign='middle' align='center'>" + ttltotallp + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlregistrasibaru + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlregistrasilama + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlpolibaru + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlpolilama + "</td>"
-                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>"
-                            + "</tr>"
-                    );
-                } catch (Exception e) {
-                    System.out.println("Notif : " + e);
-                } finally {
-                    if (rs != null) {
-                        rs.close();
-                    }
-                    if (ps != null) {
-                        ps.close();
-                    }
-                }
-            } else if (!nmkecamatan.getText().isEmpty()) {
-                htmlContent.append(
-                        "<tr class='isi'>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='3'>No.</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='15%' rowspan='3'>Kelurahan</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55%' colspan='26'>Jumlah Kunjungan/Golongan Umur</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Total</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' colspan='2'>Jenis Kunjungan</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='13%' colspan='3'>Jumlah Kunjungan/Kasus</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-7Hr</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>8-30hr</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>&lt;1Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>1-4Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>5-9Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>10-14Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>15-19Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>20-44Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>45-54Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>55-59Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>60-69Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>&gt;=70Th</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>Total<br>L|P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Baru</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Baru</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "</tr>"
-                );
-
-                ps = koneksi.prepareStatement(
-                        "select kelurahan.kd_kel as kode,kelurahan.nm_kel as nama,"
-                        + "kabupaten.kd_kab,kecamatan.kd_kec from reg_periksa "
-                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                        + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
-                        + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
-                        + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
-                        + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                        + "and '" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and kabupaten.nm_kab='" + nmkabupaten.
-                        getText() + "' "
-                        + "and kecamatan.nm_kec='" + nmkecamatan.getText() + "' " + querytambahan + " group by kelurahan.nm_kel");
-                try {
-                    rs = ps.executeQuery();
-                    i = 1;
-                    ttlhr07l = 0;
-                    ttlhr07p = 0;
-                    ttlthk1l = 0;
-                    ttlthk1p = 0;
-                    ttlth14l = 0;
-                    ttlth14p = 0;
-                    ttlth59l = 0;
-                    ttlth59p = 0;
-                    ttlth1014l = 0;
-                    ttlth1014p = 0;
-                    ttlth1519l = 0;
-                    ttlth1519p = 0;
-                    ttlth2044l = 0;
-                    ttlth2044p = 0;
-                    ttlth4554l = 0;
-                    ttlth4554p = 0;
-                    ttlth5559l = 0;
-                    ttlth5559p = 0;
-                    ttlth6069l = 0;
-                    ttlth6069p = 0;
-                    ttlthl70l = 0;
-                    ttlthl70p = 0;
-                    ttlhr830l = 0;
-                    ttlhr830p = 0;
-                    ttltotall = 0;
-                    ttltotalp = 0;
-                    ttltotallp = 0;
-                    ttlregistrasibaru = 0;
-                    ttlregistrasilama = 0;
-                    ttlpolilama = 0;
-                    ttlpolibaru = 0;
-                    while (rs.next()) {
-                        hr07l = 0;
-                        hr07p = 0;
-                        thk1l = 0;
-                        thk1p = 0;
-                        th14l = 0;
-                        th14p = 0;
-                        th59l = 0;
-                        th59p = 0;
-                        th1014l = 0;
-                        th1014p = 0;
-                        th1519l = 0;
-                        th1519p = 0;
-                        th2044l = 0;
-                        th2044p = 0;
-                        th4554l = 0;
-                        th4554p = 0;
-                        th5559l = 0;
-                        th5559p = 0;
-                        th6069l = 0;
-                        th6069p = 0;
-                        thl70l = 0;
-                        thl70p = 0;
-                        hr830l = 0;
-                        hr830p = 0;
-                        totall = 0;
-                        totalp = 0;
-                        totallp = 0;
-                        registrasibaru = 0;
-                        registrasilama = 0;
-                        polilama = 0;
-                        polibaru = 0;
-
-                        hr07l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        hr07p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        hr830l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        hr830p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        thk1l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        thk1p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th14l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th14p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th59l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th59p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th1014l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th1014p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th1519l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th1519p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th2044l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th2044p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th4554l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th4554p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th5559l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th5559p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        th6069l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        th6069p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        thl70l = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kel");
-                        thl70p = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kel");
-                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l + th6069l + thl70l + hr830l;
-                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p + th6069p + thl70p + hr830p;
-                        totallp = totall + totalp;
-                        registrasibaru = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
                                 + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.stts_daftar='Baru' " + querytambahan + " group by pasien.kd_kel");
-                        registrasilama = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
+                        registrasilama = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
                                 + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.stts_daftar='Lama' " + querytambahan + " group by pasien.kd_kel");
-                        polibaru = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
+                        polibaru = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
                                 + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.status_poli='Baru' " + querytambahan + " group by pasien.kd_kel");
-                        polilama = Sequel.cariInteger(
-                                "select count(pasien.kd_kel)as jumlah from reg_periksa "
+                        polilama = Sequel.cariInteger("select count(pasien.kd_kel)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kel='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kel='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kec='" + rs.getString("kd_kec") + "' "
                                 + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.status_poli='Lama' " + querytambahan + " group by pasien.kd_kel");
 
@@ -2262,11 +2074,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         ttlpolilama += polilama;
                         ttlpolibaru += polibaru;
 
-                        htmlContent.append(
-                                "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>" + i + "</td>"
-                                + "<td valign='middle' align='left'>" + rs.
-                                        getString("nama") + "</td>"
+                        htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'>" + i + "</td>"
+                                + "<td valign='middle' align='left'>" + rs.getString("nama") + "</td>"
                                 + "<td valign='middle' align='center'>" + hr07l + "</td>"
                                 + "<td valign='middle' align='center'>" + hr07p + "</td>"
                                 + "<td valign='middle' align='center'>" + hr830l + "</td>"
@@ -2298,17 +2107,12 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                                 + "<td valign='middle' align='center'>" + registrasilama + "</td>"
                                 + "<td valign='middle' align='center'>" + polibaru + "</td>"
                                 + "<td valign='middle' align='center'>" + polilama + "</td>"
-                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>"
-                                + "</tr>"
-                        );
+                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>" + "</tr>");
                         i++;
                     }
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td valign='middle' align='center'></td>"
-                            + "<td valign='middle' align='left'>TOTAL</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
+                    htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                            + "<td valign='middle' align='left'>TOTAL</td>" + "<td valign='middle' align='center'>"
+                            + ttlhr07l + "</td>" + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
                             + "<td valign='middle' align='center'>" + ttlhr830l + "</td>"
                             + "<td valign='middle' align='center'>" + ttlhr830p + "</td>"
                             + "<td valign='middle' align='center'>" + ttlthk1l + "</td>"
@@ -2338,9 +2142,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                             + "<td valign='middle' align='center'>" + ttlregistrasilama + "</td>"
                             + "<td valign='middle' align='center'>" + ttlpolibaru + "</td>"
                             + "<td valign='middle' align='center'>" + ttlpolilama + "</td>"
-                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>"
-                            + "</tr>"
-                    );
+                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>" + "</tr>");
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
                 } finally {
@@ -2352,16 +2154,14 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                     }
                 }
             } else if (!nmkabupaten.getText().isEmpty()) {
-                htmlContent.append(
-                        "<tr class='isi'>"
+                htmlContent.append("<tr class='isi'>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='3'>No.</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='15%' rowspan='3'>Kecamatan</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55%' colspan='26'>Jumlah Kunjungan/Golongan Umur</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Total</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' colspan='2'>Jenis Kunjungan</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='13%' colspan='3'>Jumlah Kunjungan/Kasus</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
+                        + "</tr>" + "<tr class='isi'>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-7Hr</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>8-30hr</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>&lt;1Th</td>"
@@ -2379,10 +2179,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Baru</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>" + "</tr>"
+                        + "<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
@@ -2407,20 +2205,17 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "</tr>"
-                );
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>" + "</tr>");
 
                 ps = koneksi.prepareStatement(
                         "select kecamatan.kd_kec as kode,kecamatan.nm_kec as nama,kabupaten.kd_kab from reg_periksa "
                         + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                         + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
                         + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
-                        + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                        + "and '" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and kabupaten.nm_kab='" + nmkabupaten.
-                        getText() + "' "
-                        + querytambahan + " group by kecamatan.nm_kec");
+                        + "where reg_periksa.tgl_registrasi between '"
+                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                        + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and kabupaten.nm_kab='"
+                        + nmkabupaten.getText() + "' " + querytambahan + " group by kecamatan.nm_kec");
                 try {
                     rs = ps.executeQuery();
                     i = 1;
@@ -2488,312 +2283,230 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         polilama = 0;
                         polibaru = 0;
 
-                        hr07l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        hr07l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        hr07p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        hr07p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        hr830l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        hr830l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        hr830p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        hr830p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        thk1l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        thk1l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kec='" + rs.getString("kode") + "' " + "and pasien.kd_kab='"
+                                + rs.getString("kd_kab") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kec");
+                        thk1p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kec='" + rs.getString("kode") + "' " + "and pasien.kd_kab='"
+                                + rs.getString("kd_kab") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kec");
+                        th14l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        thk1p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th14p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th14l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th59l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th14p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th59p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th59l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th1014l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th59p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th1014p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th1014l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th1519l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th1014p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th1519p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th1519l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th2044l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th1519p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th2044p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th2044l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th4554l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th2044p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th4554p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th4554l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th5559l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th4554p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th5559p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th5559l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th6069l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th5559p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        th6069p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        th6069l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        thl70l = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        th6069p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        thl70p = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        thl70l = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kec");
-                        thl70p = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kec");
-                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l + th6069l + thl70l + hr830l;
-                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p + th6069p + thl70p + hr830p;
+                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l
+                                + th6069l + thl70l + hr830l;
+                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p
+                                + th6069p + thl70p + hr830p;
                         totallp = totall + totalp;
-                        registrasibaru = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        registrasibaru = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.stts_daftar='Baru' " + querytambahan + " group by pasien.kd_kec");
-                        registrasilama = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        registrasilama = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.stts_daftar='Lama' " + querytambahan + " group by pasien.kd_kec");
-                        polibaru = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        polibaru = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.status_poli='Baru' " + querytambahan + " group by pasien.kd_kec");
-                        polilama = Sequel.cariInteger(
-                                "select count(pasien.kd_kec)as jumlah from reg_periksa "
+                        polilama = Sequel.cariInteger("select count(pasien.kd_kec)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kec='" + rs.getString("kode") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kec='"
+                                + rs.getString("kode") + "' " + "and pasien.kd_kab='" + rs.getString("kd_kab") + "' "
                                 + "and reg_periksa.status_poli='Lama' " + querytambahan + " group by pasien.kd_kec");
 
                         ttlhr07l += hr07l;
@@ -2828,11 +2541,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         ttlpolilama += polilama;
                         ttlpolibaru += polibaru;
 
-                        htmlContent.append(
-                                "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>" + i + "</td>"
-                                + "<td valign='middle' align='left'>" + rs.
-                                        getString("nama") + "</td>"
+                        htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'>" + i + "</td>"
+                                + "<td valign='middle' align='left'>" + rs.getString("nama") + "</td>"
                                 + "<td valign='middle' align='center'>" + hr07l + "</td>"
                                 + "<td valign='middle' align='center'>" + hr07p + "</td>"
                                 + "<td valign='middle' align='center'>" + hr830l + "</td>"
@@ -2864,17 +2574,12 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                                 + "<td valign='middle' align='center'>" + registrasilama + "</td>"
                                 + "<td valign='middle' align='center'>" + polibaru + "</td>"
                                 + "<td valign='middle' align='center'>" + polilama + "</td>"
-                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>"
-                                + "</tr>"
-                        );
+                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>" + "</tr>");
                         i++;
                     }
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td valign='middle' align='center'></td>"
-                            + "<td valign='middle' align='left'>TOTAL</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
+                    htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                            + "<td valign='middle' align='left'>TOTAL</td>" + "<td valign='middle' align='center'>"
+                            + ttlhr07l + "</td>" + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
                             + "<td valign='middle' align='center'>" + ttlhr830l + "</td>"
                             + "<td valign='middle' align='center'>" + ttlhr830p + "</td>"
                             + "<td valign='middle' align='center'>" + ttlthk1l + "</td>"
@@ -2904,9 +2609,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                             + "<td valign='middle' align='center'>" + ttlregistrasilama + "</td>"
                             + "<td valign='middle' align='center'>" + ttlpolibaru + "</td>"
                             + "<td valign='middle' align='center'>" + ttlpolilama + "</td>"
-                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>"
-                            + "</tr>"
-                    );
+                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>" + "</tr>");
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
                 } finally {
@@ -2918,16 +2621,14 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                     }
                 }
             } else if (nmkabupaten.getText().isEmpty()) {
-                htmlContent.append(
-                        "<tr class='isi'>"
+                htmlContent.append("<tr class='isi'>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='3'>No.</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='15%' rowspan='3'>Kabupaten</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55%' colspan='26'>Jumlah Kunjungan/Golongan Umur</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>Total</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' colspan='2'>Jenis Kunjungan</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='13%' colspan='3'>Jumlah Kunjungan/Kasus</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
+                        + "</tr>" + "<tr class='isi'>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-7Hr</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>8-30hr</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>&lt;1Th</td>"
@@ -2945,10 +2646,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Baru</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Lama</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>"
-                        + "</tr>"
-                        + "<tr class='isi'>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2'>Total</td>" + "</tr>"
+                        + "<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
@@ -2973,17 +2672,15 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
                         + "<td valign='middle' bgcolor='#FFFAFA' align='center'>L</td>"
-                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>"
-                        + "</tr>"
-                );
+                        + "<td valign='middle' bgcolor='#FFFAFA' align='center'>P</td>" + "</tr>");
 
-                ps = koneksi.prepareStatement(
-                        "select kabupaten.kd_kab as kode,kabupaten.nm_kab as nama from reg_periksa "
-                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                        + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
-                        + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                        + "and '" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + querytambahan + " group by kabupaten.nm_kab");
+                ps = koneksi
+                        .prepareStatement("select kabupaten.kd_kab as kode,kabupaten.nm_kab as nama from reg_periksa "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
+                                + "where reg_periksa.tgl_registrasi between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "")
+                                + "' " + "and '" + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + querytambahan
+                                + " group by kabupaten.nm_kab");
                 try {
                     rs = ps.executeQuery();
                     i = 1;
@@ -3051,285 +2748,229 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         polilama = 0;
                         polibaru = 0;
 
-                        hr07l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                        hr07l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        hr07p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        hr07p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        hr830l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '0' and '7' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        hr830l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        hr830p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        hr830p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        thk1l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Hr' and umurdaftar between '8' and '31' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        thk1l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        thk1p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kab='" + rs.getString("kode") + "' " + "and pasien.jk='L' "
+                                + querytambahan + " group by pasien.kd_kab");
+                        thk1p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Bl' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th14l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and sttsumur='Bl' "
+                                + "and pasien.kd_kab='" + rs.getString("kode") + "' " + "and pasien.jk='P' "
+                                + querytambahan + " group by pasien.kd_kab");
+                        th14l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th14p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th14p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '1' and '4' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th59l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '1' and '4' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th59l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th59p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th59p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '5' and '9' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th1014l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '5' and '9' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th1014l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th1014p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th1014p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '10' and '14' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th1519l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '10' and '14' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th1519l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th1519p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th1519p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '15' and '19' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th2044l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '15' and '19' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th2044l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th2044p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th2044p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '20' and '44' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th4554l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '20' and '44' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th4554l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th4554p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th4554p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '45' and '54' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th5559l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '45' and '54' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th5559l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th5559p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th5559p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '55' and '59' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        th6069l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '55' and '59' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th6069l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        th6069p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        th6069p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar between '60' and '69' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        thl70l = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar between '60' and '69' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        thl70l = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='L' " + querytambahan + " group by pasien.kd_kab");
-                        thl70p = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='L' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        thl70p = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and sttsumur='Th' and umurdaftar >='70' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and pasien.jk='P' " + querytambahan + " group by pasien.kd_kab");
-                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l + th6069l + thl70l + hr830l;
-                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p + th6069p + thl70p + hr830p;
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' "
+                                + "and sttsumur='Th' and umurdaftar >='70' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and pasien.jk='P' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        totall = hr07l + thk1l + th14l + th59l + th1014l + th1519l + th2044l + th4554l + th5559l
+                                + th6069l + thl70l + hr830l;
+                        totalp = hr07p + thk1p + th14p + th59p + th1014p + th1519p + th2044p + th4554p + th5559p
+                                + th6069p + thl70p + hr830p;
                         totallp = totall + totalp;
-                        registrasibaru = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                        registrasibaru = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and reg_periksa.stts_daftar='Baru' " + querytambahan + " group by pasien.kd_kab");
-                        registrasilama = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and reg_periksa.stts_daftar='Baru' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        registrasilama = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and reg_periksa.stts_daftar='Lama' " + querytambahan + " group by pasien.kd_kab");
-                        polibaru = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and reg_periksa.stts_daftar='Lama' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        polibaru = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and reg_periksa.status_poli='Baru' " + querytambahan + " group by pasien.kd_kab");
-                        polilama = Sequel.cariInteger(
-                                "select count(pasien.kd_kab)as jumlah from reg_periksa "
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and reg_periksa.status_poli='Baru' " + querytambahan
+                                + " group by pasien.kd_kab");
+                        polilama = Sequel.cariInteger("select count(pasien.kd_kab)as jumlah from reg_periksa "
                                 + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "where reg_periksa.tgl_registrasi between '" + Valid.
-                                        SetTgl(Tgl1.getSelectedItem() + "") + "' "
-                                + "and '" + Valid.SetTgl(
-                                        Tgl2.getSelectedItem() + "") + "' "
-                                + "and pasien.kd_kab='" + rs.getString("kode") + "' "
-                                + "and reg_periksa.status_poli='Lama' " + querytambahan + " group by pasien.kd_kab");
+                                + "where reg_periksa.tgl_registrasi between '"
+                                + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' " + "and '"
+                                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' " + "and pasien.kd_kab='"
+                                + rs.getString("kode") + "' " + "and reg_periksa.status_poli='Lama' " + querytambahan
+                                + " group by pasien.kd_kab");
 
                         ttlhr07l += hr07l;
                         ttlhr07p += hr07p;
@@ -3363,11 +3004,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                         ttlpolilama += polilama;
                         ttlpolibaru += polibaru;
 
-                        htmlContent.append(
-                                "<tr class='isi'>"
-                                + "<td valign='middle' align='center'>" + i + "</td>"
-                                + "<td valign='middle' align='left'>" + rs.
-                                        getString("nama") + "</td>"
+                        htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'>" + i + "</td>"
+                                + "<td valign='middle' align='left'>" + rs.getString("nama") + "</td>"
                                 + "<td valign='middle' align='center'>" + hr07l + "</td>"
                                 + "<td valign='middle' align='center'>" + hr07p + "</td>"
                                 + "<td valign='middle' align='center'>" + hr830l + "</td>"
@@ -3399,17 +3037,12 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                                 + "<td valign='middle' align='center'>" + registrasilama + "</td>"
                                 + "<td valign='middle' align='center'>" + polibaru + "</td>"
                                 + "<td valign='middle' align='center'>" + polilama + "</td>"
-                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>"
-                                + "</tr>"
-                        );
+                                + "<td valign='middle' align='center'>" + (polibaru + polilama) + "</td>" + "</tr>");
                         i++;
                     }
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td valign='middle' align='center'></td>"
-                            + "<td valign='middle' align='left'>TOTAL</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07l + "</td>"
-                            + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
+                    htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'></td>"
+                            + "<td valign='middle' align='left'>TOTAL</td>" + "<td valign='middle' align='center'>"
+                            + ttlhr07l + "</td>" + "<td valign='middle' align='center'>" + ttlhr07p + "</td>"
                             + "<td valign='middle' align='center'>" + ttlhr830l + "</td>"
                             + "<td valign='middle' align='center'>" + ttlhr830p + "</td>"
                             + "<td valign='middle' align='center'>" + ttlthk1l + "</td>"
@@ -3439,9 +3072,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                             + "<td valign='middle' align='center'>" + ttlregistrasilama + "</td>"
                             + "<td valign='middle' align='center'>" + ttlpolibaru + "</td>"
                             + "<td valign='middle' align='center'>" + ttlpolilama + "</td>"
-                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>"
-                            + "</tr>"
-                    );
+                            + "<td valign='middle' align='center'>" + (ttlpolibaru + ttlpolilama) + "</td>" + "</tr>");
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
                 } finally {
@@ -3454,12 +3085,9 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                 }
             }
 
-            LoadHTML.setText(
-                    "<html>"
+            LoadHTML.setText("<html>"
                     + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>");
+                    + htmlContent.toString() + "</table>" + "</html>");
         } catch (Exception e) {
             System.out.println("laporan.DlgRL4A.prosesCari() 5 : " + e);
         }
@@ -3485,6 +3113,6 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgDemografiUmurKunjungan.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgDemografiUmurKunjungan.class.getName());
+
 }

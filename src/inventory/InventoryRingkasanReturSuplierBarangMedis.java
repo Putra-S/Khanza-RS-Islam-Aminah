@@ -28,10 +28,15 @@ import kepegawaian.DlgCariPetugas;
 public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -43,9 +48,13 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
      *
      */
     public DlgBarang barang = new DlgBarang(null, false);
+
     private double ttlretur = 0;
+
     private String tanggal, noret = "", ptg = "", sat = "", bar = "", nofak = "";
+
     private String order = "order by databarang.nama_brng";
+
     private int i;
 
     /**
@@ -54,29 +63,24 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
      * @param parent
      * @param modal
      */
-    public InventoryRingkasanReturSuplierBarangMedis(java.awt.Frame parent,
-            boolean modal) {
+    public InventoryRingkasanReturSuplierBarangMedis(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis",
-            "Jumlah", "Total", "Kode Sat"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Jumlah", "Total", "Kode Sat"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -126,10 +130,8 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariReturBeli")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        Kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        Nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        Kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        Nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     Kdptg.requestFocus();
                 }
@@ -154,8 +156,7 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -193,10 +194,8 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariReturBeli")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -253,12 +252,12 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariReturBeli")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -284,7 +283,9 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1221,9 +1222,8 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
         bar = "";
         nofak = "";
         ptg = "";
-        tanggal = " returbeli.tgl_retur between '" + Valid.SetTgl(TglRetur1.
-                getSelectedItem() + "") + "' and '" + Valid.SetTgl(TglRetur2.
-                        getSelectedItem() + "") + "' ";
+        tanggal = " returbeli.tgl_retur between '" + Valid.SetTgl(TglRetur1.getSelectedItem() + "") + "' and '"
+                + Valid.SetTgl(TglRetur2.getSelectedItem() + "") + "' ";
         if (!NoRetur.getText().isEmpty()) {
             noret = " and returbeli.no_retur_beli='" + NoFaktur.getText() + "' ";
         }
@@ -1246,54 +1246,39 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
 
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select detreturbeli.kode_brng,databarang.nama_brng, "
+            ps = koneksi.prepareStatement("select detreturbeli.kode_brng,databarang.nama_brng, "
                     + "detreturbeli.kode_sat,kodesatuan.satuan,jenis.nama as namajenis, "
                     + "sum(detreturbeli.jml_retur2) as jumlah,sum(detreturbeli.total) as total "
                     + " from returbeli inner join petugas inner join bangsal inner join jenis  "
                     + " inner join detreturbeli inner join databarang inner join kodesatuan inner join datasuplier "
                     + " on detreturbeli.kode_brng=databarang.kode_brng "
-                    + " and databarang.kode_sat=kodesatuan.kode_sat "
-                    + " and returbeli.kd_bangsal=bangsal.kd_bangsal "
+                    + " and databarang.kode_sat=kodesatuan.kode_sat " + " and returbeli.kd_bangsal=bangsal.kd_bangsal "
                     + " and returbeli.kode_suplier=datasuplier.kode_suplier "
                     + " and returbeli.no_retur_beli=detreturbeli.no_retur_beli "
-                    + " and returbeli.nip=petugas.nip and databarang.kdjns=jenis.kdjns "
-                    + " where " + tanggal + noret + ptg + sat + bar + nofak + " and returbeli.no_retur_beli like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and returbeli.nip like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and petugas.nama like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and detreturbeli.kode_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and databarang.nama_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and returbeli.kode_suplier like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and bangsal.nm_bangsal like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and datasuplier.nama_suplier like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and detreturbeli.no_faktur like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and detreturbeli.no_batch like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and jenis.nama like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + nofak + " and detreturbeli.kode_sat like '%" + TCari.
-                            getText() + "%' "
+                    + " and returbeli.nip=petugas.nip and databarang.kdjns=jenis.kdjns " + " where " + tanggal + noret
+                    + ptg + sat + bar + nofak + " and returbeli.no_retur_beli like '%" + TCari.getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nofak + " and returbeli.nip like '%" + TCari.getText()
+                    + "%' or " + tanggal + noret + ptg + sat + bar + nofak + " and petugas.nama like '%"
+                    + TCari.getText() + "%' or " + tanggal + noret + ptg + sat + bar + nofak
+                    + " and detreturbeli.kode_brng like '%" + TCari.getText() + "%' or " + tanggal + noret + ptg + sat
+                    + bar + nofak + " and databarang.nama_brng like '%" + TCari.getText() + "%' or " + tanggal + noret
+                    + ptg + sat + bar + nofak + " and returbeli.kode_suplier like '%" + TCari.getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + nofak + " and bangsal.nm_bangsal like '%" + TCari.getText()
+                    + "%' or " + tanggal + noret + ptg + sat + bar + nofak + " and datasuplier.nama_suplier like '%"
+                    + TCari.getText() + "%' or " + tanggal + noret + ptg + sat + bar + nofak
+                    + " and detreturbeli.no_faktur like '%" + TCari.getText() + "%' or " + tanggal + noret + ptg + sat
+                    + bar + nofak + " and detreturbeli.no_batch like '%" + TCari.getText() + "%' or " + tanggal + noret
+                    + ptg + sat + bar + nofak + " and jenis.nama like '%" + TCari.getText() + "%' or " + tanggal + noret
+                    + ptg + sat + bar + nofak + " and detreturbeli.kode_sat like '%" + TCari.getText() + "%' "
                     + " group by detreturbeli.kode_brng " + order);
             try {
                 rs = ps.executeQuery();
                 ttlretur = 0;
                 while (rs.next()) {
                     ttlretur += rs.getDouble("total");
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("satuan"), rs.getString("namajenis"), rs.
-                        getDouble("jumlah"), rs.getDouble("total"), rs.
-                        getString("kode_sat")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("satuan"), rs.getString("namajenis"), rs.getDouble("jumlah"),
+                        rs.getDouble("total"), rs.getString("kode_sat")});
                 }
                 LTotal.setText(Valid.SetAngka(ttlretur));
             } catch (Exception e) {
@@ -1316,7 +1301,6 @@ public class InventoryRingkasanReturSuplierBarangMedis extends javax.swing.JDial
         BtnPrint.setEnabled(akses.getringkasan_retur_suplier_obat());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryRingkasanReturSuplierBarangMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryRingkasanReturSuplierBarangMedis.class.getName());
 
 }

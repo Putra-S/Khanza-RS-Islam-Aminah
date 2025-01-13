@@ -36,21 +36,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author windiartohugroho
  */
 public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPegawai petugas = new DlgCariPegawai(null, false);
-    private DlgCariMasterMenolakAnjuranMedis penolakan = new DlgCariMasterMenolakAnjuranMedis(
-            null, false);
+
+    private DlgCariMasterMenolakAnjuranMedis penolakan = new DlgCariMasterMenolakAnjuranMedis(null, false);
+
     private StringBuilder htmlContent;
 
     public SuratPenolakanAnjuranMedis(java.awt.Frame parent, boolean modal) {
@@ -59,14 +66,11 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Persetujuan", "No.Rawat", "No.R.M.", "Nama Pasien", "Umur",
-            "J.K.", "Tgl.Lahir", "Tanggal", "Kode", "Penolakan Anjuran",
-            "Alasan Penolakan",
-            "Risiko Penolakan", "Nama Penanggung Jawab", "Umur P.J.",
-            "Nomor KTP P.J.", "J.K. P.J.", "Nomor Telp/HP", "Hubungan", "NIP",
-            "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Persetujuan", "No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "J.K.", "Tgl.Lahir",
+                    "Tanggal", "Kode", "Penolakan Anjuran", "Alasan Penolakan", "Risiko Penolakan",
+                    "Nama Penanggung Jawab", "Umur P.J.", "Nomor KTP P.J.", "J.K. P.J.", "Nomor Telp/HP",
+                    "Hubungan", "NIP", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -75,7 +79,8 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -126,21 +131,17 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
-        NoPernyataan.
-                setDocument(new batasInput((byte) 20).getKata(NoPernyataan));
+        NoPernyataan.setDocument(new batasInput((byte) 20).getKata(NoPernyataan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
         NamaPJ.setDocument(new batasInput((byte) 50).getKata(NamaPJ));
         NoKTP.setDocument(new batasInput((byte) 20).getKata(NoKTP));
         UmurPJ.setDocument(new batasInput((byte) 3).getKata(UmurPJ));
         NoTelp.setDocument(new batasInput((byte) 30).getKata(NoTelp));
-        AlasanPenolakan.setDocument(new batasInput((byte) 60).getKata(
-                AlasanPenolakan));
-        RisikoPenolakan.setDocument(new batasInput((byte) 100).getKata(
-                RisikoPenolakan));
+        AlasanPenolakan.setDocument(new batasInput((byte) 60).getKata(AlasanPenolakan));
+        RisikoPenolakan.setDocument(new batasInput((byte) 100).getKata(RisikoPenolakan));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -177,10 +178,10 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodePetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 KodePenolakan.requestFocus();
             }
@@ -215,10 +216,10 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penolakan.getTable().getSelectedRow() != -1) {
-                    KodePenolakan.setText(penolakan.getTable().getValueAt(
-                            penolakan.getTable().getSelectedRow(), 0).toString());
-                    NamaPenolakan.setText(penolakan.getTable().getValueAt(
-                            penolakan.getTable().getSelectedRow(), 1).toString());
+                    KodePenolakan
+                            .setText(penolakan.getTable().getValueAt(penolakan.getTable().getSelectedRow(), 0).toString());
+                    NamaPenolakan
+                            .setText(penolakan.getTable().getValueAt(penolakan.getTable().getSelectedRow(), 1).toString());
                 }
                 KodePenolakan.requestFocus();
             }
@@ -260,8 +261,7 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
         LoadHTML2.setEditable(true);
@@ -270,7 +270,9 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1498,8 +1500,7 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SuratPenolakanAnjuranMedis dialog = new SuratPenolakanAnjuranMedis(
-                    new javax.swing.JFrame(), true);
+            SuratPenolakanAnjuranMedis dialog = new SuratPenolakanAnjuranMedis(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1627,15 +1628,11 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1648,22 +1645,15 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_surat"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"), rs.getString("jk"), rs.getString(
-                        "tgl_lahir"),
-                        rs.getString("tanggal"), rs.getString("kode_penolakan"),
-                        rs.getString("nama_penolakan"), rs.getString(
-                        "alasan_penolakan"),
-                        rs.getString("informasi_risiko_penolakan"), rs.
-                        getString("nama_pj"), rs.getString("umur_pj"), rs.
-                        getString("no_ktppj"),
-                        rs.getString("jkpj"), rs.getString("no_telp"), rs.
-                        getString("hubungan"), rs.getString("nik"), rs.
-                        getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_surat"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("umurdaftar") + " " + rs.getString("sttsumur"), rs.getString("jk"),
+                        rs.getString("tgl_lahir"), rs.getString("tanggal"), rs.getString("kode_penolakan"),
+                        rs.getString("nama_penolakan"), rs.getString("alasan_penolakan"),
+                        rs.getString("informasi_risiko_penolakan"), rs.getString("nama_pj"),
+                        rs.getString("umur_pj"), rs.getString("no_ktppj"), rs.getString("jkpj"),
+                        rs.getString("no_telp"), rs.getString("hubungan"), rs.getString("nik"),
+                        rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1694,52 +1684,38 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
         NoTelp.setText("");
         NoKTP.setText("");
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(surat_penolakan_anjuran_medis.no_surat,3),signed)),0) from surat_penolakan_anjuran_medis where surat_penolakan_anjuran_medis.tanggal like '%" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "%' ",
-                "PAM" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPernyataan);
+                "select ifnull(MAX(CONVERT(RIGHT(surat_penolakan_anjuran_medis.no_surat,3),signed)),0) from surat_penolakan_anjuran_medis where surat_penolakan_anjuran_medis.tanggal like '%"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "%' ",
+                "PAM" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPernyataan);
         AlasanPenolakan.requestFocus();
     }
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            NoPernyataan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
+            NoPernyataan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
-            LahirPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            KodePenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            NamaPenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            AlasanPenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    10).toString());
-            RisikoPenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    11).toString());
-            NamaPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            UmurPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            NoKTP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            JKPJ.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString().replaceAll("L", "Laki-laki").replaceAll("P",
-                    "Perempuan"));
-            NoTelp.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            Hubungan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    17).toString());
-            Valid.SetTgl2(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            LahirPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            KodePenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            NamaPenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            AlasanPenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            RisikoPenolakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            NamaPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            UmurPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            NoKTP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            JKPJ.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15)
+                    .toString()
+                    .replaceAll("L", "Laki-laki")
+                    .replaceAll("P", "Perempuan"));
+            NoTelp.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Hubungan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
         }
     }
 
@@ -1758,8 +1734,7 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     LahirPasien.setText(rs.getString("tgl_lahir"));
-                    Umur.setText(rs.getString("umurdaftar") + " " + rs.
-                            getString("sttsumur"));
+                    Umur.setText(rs.getString("umurdaftar") + " " + rs.getString("sttsumur"));
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1815,64 +1790,42 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
     private void ganti() {
         if (Sequel.mengedittf("surat_penolakan_anjuran_medis", "no_surat=?",
                 "no_surat=?,no_rawat=?,tanggal=?,hubungan=?,nama_pj=?,umur_pj=?,no_ktppj=?,jkpj=?,no_telp=?,kode_penolakan=?,"
-                + "alasan_penolakan=?,informasi_risiko_penolakan=?,nik=?", 14,
-                new String[]{
-                    NoPernyataan.getText(), TNoRw.getText(), Valid.SetTgl(
-                    Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19),
-                    Hubungan.getSelectedItem().toString(), NamaPJ.getText(),
-                    UmurPJ.getText(), NoKTP.getText(), JKPJ.getSelectedItem().
-                    toString().substring(0, 1), NoTelp.getText(),
-                    KodePenolakan.getText(), AlasanPenolakan.getText(),
-                    RisikoPenolakan.getText(), KodePetugas.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
-            tbObat.
-                    setValueAt(NoPernyataan.getText(), tbObat.getSelectedRow(),
-                            0);
+                + "alasan_penolakan=?,informasi_risiko_penolakan=?,nik=?",
+                14,
+                new String[]{NoPernyataan.getText(), TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    Hubungan.getSelectedItem().toString(), NamaPJ.getText(), UmurPJ.getText(), NoKTP.getText(),
+                    JKPJ.getSelectedItem().toString().substring(0, 1), NoTelp.getText(), KodePenolakan.getText(),
+                    AlasanPenolakan.getText(), RisikoPenolakan.getText(), KodePetugas.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
+            tbObat.setValueAt(NoPernyataan.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(Umur.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(LahirPasien.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(KodePenolakan.getText(), tbObat.getSelectedRow(),
-                    8);
-            tbObat.setValueAt(NamaPenolakan.getText(), tbObat.getSelectedRow(),
-                    9);
-            tbObat.
-                    setValueAt(AlasanPenolakan.getText(), tbObat.
-                            getSelectedRow(), 10);
-            tbObat.
-                    setValueAt(RisikoPenolakan.getText(), tbObat.
-                            getSelectedRow(), 11);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(KodePenolakan.getText(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(NamaPenolakan.getText(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(AlasanPenolakan.getText(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(RisikoPenolakan.getText(), tbObat.getSelectedRow(), 11);
             tbObat.setValueAt(NamaPJ.getText(), tbObat.getSelectedRow(), 12);
             tbObat.setValueAt(UmurPJ.getText(), tbObat.getSelectedRow(), 13);
             tbObat.setValueAt(NoKTP.getText(), tbObat.getSelectedRow(), 14);
-            tbObat.setValueAt(JKPJ.getSelectedItem().toString().substring(0, 1),
-                    tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(JKPJ.getSelectedItem().toString().substring(0, 1), tbObat.getSelectedRow(), 15);
             tbObat.setValueAt(NoTelp.getText(), tbObat.getSelectedRow(), 16);
-            tbObat.setValueAt(Hubungan.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.
-                    setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(),
-                            18);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            19);
+            tbObat.setValueAt(Hubungan.getSelectedItem().toString(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 19);
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from surat_penolakan_anjuran_medis where no_surat=?", 1,
-                new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from surat_penolakan_anjuran_medis where no_surat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -1901,21 +1854,17 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
                 ps = koneksi.prepareStatement(
                         "select surat_penolakan_anjuran_medis_pembuat_pernyataan.photo from surat_penolakan_anjuran_medis_pembuat_pernyataan where surat_penolakan_anjuran_medis_pembuat_pernyataan.no_surat=?");
                 try {
-                    ps.setString(1, tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    ps.setString(1, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             LoadHTML2.setText(
                                     "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                         } else {
-                            LoadHTML2.setText(
-                                    "<html><body><center><img src='http://" + koneksiDB.
-                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                            PORTWEB() + "/" + koneksiDB.
-                                            HYBRIDWEB() + "/penolakananjuranmedis/" + rs.
-                                            getString("photo") + "' alt='photo' width='500' height='500'/></center></body></html>");
+                            LoadHTML2.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/penolakananjuranmedis/"
+                                    + rs.getString("photo")
+                                    + "' alt='photo' width='500' height='500'/></center></body></html>");
                         }
                     } else {
                         LoadHTML2.setText(
@@ -1937,6 +1886,6 @@ public class SuratPenolakanAnjuranMedis extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            SuratPenolakanAnjuranMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(SuratPenolakanAnjuranMedis.class.getName());
+
 }

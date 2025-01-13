@@ -88,12 +88,16 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         setSize(628, 674);
 
         tabMode = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Kode Dokter", "Nama Dokter", "No.KTP Dokter", "Kode Poli",
-                    "Nama Poli/Unit", "ID Lokasi Unit",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Kode Dokter", "Nama Dokter", "No.KTP Dokter", "Kode Poli", "Nama Poli/Unit", "ID Lokasi Unit",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -102,16 +106,6 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -167,8 +161,7 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -204,21 +197,23 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -227,6 +222,7 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         jPopupMenu1 = new javax.swing.JPopupMenu();
         ppPilihSemua = new javax.swing.JMenuItem();
         ppBersihkan = new javax.swing.JMenuItem();
+        ppPilih100 = new javax.swing.JMenuItem();
         LoadHTML = new widget.editorpane();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
@@ -284,6 +280,22 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
             }
         });
         jPopupMenu1.add(ppBersihkan);
+
+        ppPilih100.setBackground(new java.awt.Color(255, 255, 254));
+        ppPilih100.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        ppPilih100.setForeground(new java.awt.Color(50, 50, 50));
+        ppPilih100.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppPilih100.setText("Pilih 100");
+        ppPilih100.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppPilih100.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppPilih100.setName("ppPilih100"); // NOI18N
+        ppPilih100.setPreferredSize(new java.awt.Dimension(150, 26));
+        ppPilih100.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppPilih100ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(ppPilih100);
 
         LoadHTML.setBorder(null);
         LoadHTML.setName("LoadHTML"); // NOI18N
@@ -428,7 +440,7 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         jLabel15.setPreferredSize(new java.awt.Dimension(85, 23));
         panelGlass9.add(jLabel15);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-08-2024" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-12-2024" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -441,7 +453,7 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         jLabel17.setPreferredSize(new java.awt.Dimension(24, 23));
         panelGlass9.add(jLabel17);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-08-2024" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-12-2024" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -573,15 +585,15 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
             File g = new File("file2.css");
             try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
                 bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                        + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                        + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                        + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                        + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                        + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                        + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                        + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                        + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                 );
             }
 
@@ -655,77 +667,98 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
                         headers.add("Authorization", "Bearer " + api.
                                 TokenSatuSehat());
                         json = "{"
-                                + "\"resourceType\": \"Encounter\","
-                                + "\"status\": \"arrived\","
-                                + "\"class\": {"
-                                + "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\","
-                                + "\"code\": \"" + (tbObat.getValueAt(i, 13).
-                                        toString().equals("Ralan") ? "AMB" : "IMP") + "\","
-                                + "\"display\": \"" + (tbObat.getValueAt(i, 13).
-                                        toString().equals("Ralan") ? "ambulatory" : "inpatient encounter") + "\""
-                                + "},"
-                                + "\"subject\": {"
-                                + "\"reference\": \"Patient/" + idpasien + "\","
-                                + "\"display\": \"" + tbObat.getValueAt(i, 4).
-                                        toString() + "\""
-                                + "},"
-                                + "\"participant\": ["
-                                + "{"
-                                + "\"type\": ["
-                                + "{"
-                                + "\"coding\": ["
-                                + "{"
-                                + "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\","
-                                + "\"code\": \"ATND\","
-                                + "\"display\": \"attender\""
-                                + "}"
-                                + "]"
-                                + "}"
-                                + "],"
-                                + "\"individual\": {"
-                                + "\"reference\": \"Practitioner/" + iddokter + "\","
-                                + "\"display\": \"" + tbObat.getValueAt(i, 7).
-                                        toString() + "\""
-                                + "}"
-                                + "}"
-                                + "],"
-                                + "\"period\": {"
-                                + "\"start\": \"" + tbObat.getValueAt(i, 1).
-                                        toString() + "\""
-                                + "},"
-                                + "\"location\": ["
-                                + "{"
-                                + "\"location\": {"
-                                + "\"reference\": \"Location/" + tbObat.
-                                        getValueAt(i, 11).toString() + "\","
-                                + "\"display\": \"" + tbObat.getValueAt(i, 10).
-                                        toString() + "\""
-                                + "}"
-                                + "}"
-                                + "],"
-                                + "\"statusHistory\": ["
-                                + "{"
-                                + "\"status\": \"arrived\","
-                                + "\"period\": {"
-                                + "\"start\": \"" + tbObat.getValueAt(i, 1).
-                                        toString() + "\","
-                                + "\"end\": \"" + tbObat.getValueAt(i, 14).
-                                        toString() + "\""
-                                + "}"
-                                + "}"
-                                + "],"
-                                + "\"serviceProvider\": {"
-                                + "\"reference\": \"Organization/" + koneksiDB.
-                                        IDSATUSEHAT() + "\""
-                                + "},"
-                                + "\"identifier\": ["
-                                + "{"
-                                + "\"system\": \"http://sys-ids.kemkes.go.id/encounter/" + koneksiDB.
-                                        IDSATUSEHAT() + "\","
-                                + "\"value\": \"" + tbObat.getValueAt(i, 2).
-                                        toString() + "\""
-                                + "}"
-                                + "]"
+                                    + "\"resourceType\": \"Encounter\","
+                                    + "\"identifier\": ["
+                                        + "{"
+                                            + "\"system\": \"http://sys-ids.kemkes.go.id/encounter/" + koneksiDB.IDSATUSEHAT() + "\","
+                                            + "\"value\": \"" + tbObat.getValueAt(i, 2).toString() + "\""
+                                        + "}"
+                                    + "],"
+                                    + "\"status\": \"" + (tbObat.getValueAt(i, 13).toString().equals("Ralan") ? "arrived" : "in-progress") + "\","
+                                    + "\"class\": {"
+                                        + "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\","
+                                        + "\"code\": \"" + (tbObat.getValueAt(i, 13).toString().equals("Ralan") ? "AMB" : "IMP") + "\","
+                                        + "\"display\": \"" + (tbObat.getValueAt(i, 13).toString().equals("Ralan") ? "ambulatory" : "inpatient encounter") + "\""
+                                    + "},"
+                                    + "\"subject\": {"
+                                        + "\"reference\": \"Patient/" + idpasien + "\","
+                                        + "\"display\": \"" + tbObat.getValueAt(i, 4).toString() + "\""
+                                    + "},"
+                                    + "\"participant\": ["
+                                        + "{"
+                                            + "\"type\": ["
+                                                + "{"
+                                                    + "\"coding\": ["
+                                                        + "{"
+                                                            + "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\","
+                                                            + "\"code\": \"ATND\","
+                                                            + "\"display\": \"attender\""
+                                                        + "}"
+                                                    + "]"
+                                                + "}"
+                                            + "],"
+                                            + "\"individual\": {"
+                                                + "\"reference\": \"Practitioner/" + iddokter + "\","
+                                                + "\"display\": \"" + tbObat.getValueAt(i, 7).toString() + "\""
+                                            + "}"
+                                        + "}"
+                                    + "],"
+                                    + "\"period\": {"
+                                        + "\"start\": \"" + tbObat.getValueAt(i, 1).toString() + "\""
+                                    + "},"
+                                    + "\"location\": ["
+                                        + "{"
+                                            + "\"location\": {"
+                                                + "\"reference\": \"Location/" + tbObat.getValueAt(i, 11).toString() + "\","
+                                                + "\"display\": \"" + tbObat.getValueAt(i, 10).toString() + "\""
+                                            + "},"
+                                            + "\"period\": {"
+                                                + "\"start\": \"" + tbObat.getValueAt(i, 1).toString() + "\""
+                                            + "},"
+                                            + "\"extension\": ["
+                                                + "{"
+                                                    + "\"url\": \"https://fhir.kemkes.go.id/r4/StructureDefinition/ServiceClass\","
+                                                    + "\"extension\": ["
+                                                        + "{"
+                                                            + "\"url\": \"value\","
+                                                            + "\"valueCodeableConcept\": {"
+                                                                + "\"coding\": ["
+                                                                    + "{"
+                                                                        + "\"system\": \"http://terminology.kemkes.go.id/CodeSystem/locationServiceClass-Outpatient\","
+                                                                        + "\"code\": \"reguler\","
+                                                                        + "\"display\": \"Kelas Reguler\""
+                                                                    + "}"
+                                                                + "]"
+                                                            + "}"
+                                                        + "},"
+                                                        + "{"
+                                                            + "\"url\": \"upgradeClassIndicator\","
+                                                            + "\"valueCodeableConcept\": {"
+                                                                + "\"coding\": ["
+                                                                    + "{"
+                                                                        + "\"system\": \"http://terminology.kemkes.go.id/CodeSystem/locationUpgradeClass\","
+                                                                        + "\"code\": \"kelas-tetap\","
+                                                                        + "\"display\": \"Kelas Tetap Perawatan\""
+                                                                    + "}"
+                                                                + "]"
+                                                            + "}"
+                                                        + "}"
+                                                    + "]"
+                                                + "}"
+                                            + "]"
+                                        + "}"
+                                    + "],"
+                                    + "\"statusHistory\": ["
+                                        + "{"
+                                            + "\"status\": \"" + (tbObat.getValueAt(i, 13).toString().equals("Ralan") ? "arrived" : "in-progress") + "\","
+                                            + "\"period\": {"
+                                                + "\"start\": \"" + tbObat.getValueAt(i, 1).toString() + "\""
+                                            + "}"
+                                        + "}"
+                                    + "],"
+                                    + "\"serviceProvider\": {"
+                                        + "\"reference\": \"Organization/" + koneksiDB.IDSATUSEHAT() + "\""
+                                    + "}"
                                 + "}";
                         System.out.println("URL : " + link + "/Encounter");
                         System.out.println("Request JSON : " + json);
@@ -748,20 +781,21 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
                         }
                         Thread.sleep(1500);
                     } catch (HttpClientErrorException | HttpServerErrorException ea) {
-                        // Handle client and server errors
-                        System.err.println("Error Response Status Code: " + ea.
-                                getStatusCode());
+                        System.err.println("HTTP Error Status Code: " + ea.getStatusCode());
 
-                        // You can further parse the error response body if needed
-                        ObjectMapper mapper = new ObjectMapper();
-                        JsonNode errorResponse = mapper.readTree(ea.
-                                getResponseBodyAsString());
-                        ObjectWriter writer = mapper.
-                                writerWithDefaultPrettyPrinter();
-                        String prettyErrorResponse = writer.writeValueAsString(
-                                errorResponse);
-                        System.err.println(
-                                "Error Response JSON: \n" + prettyErrorResponse);
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.getResponseBodyAsString());
+
+                            // Pretty-print JSON error response
+                            ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.writeValueAsString(errorResponse);
+                            System.err.println("Error Response JSON:\n" + prettyErrorResponse);
+
+                        } catch (Exception parseException) {
+                            System.err.println("Failed to parse error response: " + parseException.getMessage());
+                            System.err.println("Original Response Body: " + ea.getResponseBodyAsString());
+                        }
                     }
                 } catch (Exception e) {
                     System.out.println("Notifikasi : " + e);
@@ -1103,13 +1137,18 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_BtnUpdateEnActionPerformed
 
+    private void ppPilih100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilih100ActionPerformed
+        for (i = 0; i <= 100; i++) {
+            tbObat.setValueAt(true, i, 0);
+        }
+    }//GEN-LAST:event_ppPilih100ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatKirimEncounter dialog = new SatuSehatKirimEncounter(
-                    new javax.swing.JFrame(), true);
+            SatuSehatKirimEncounter dialog = new SatuSehatKirimEncounter(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1146,6 +1185,7 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private javax.swing.JMenuItem ppBersihkan;
+    private javax.swing.JMenuItem ppPilih100;
     private javax.swing.JMenuItem ppPilihSemua;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
@@ -1185,16 +1225,11 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabMode.addRow(new Object[]{false,
-                        rs.getString("tgl_registrasi") + "T" + rs.getString(
-                        "jam_reg") + "+07:00",
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("kd_dokter"), rs.
-                        getString("nama"),
-                        rs.getString("ktpdokter"), rs.getString("kd_poli"), rs.
-                        getString("nm_poli"),
-                        rs.getString("id_lokasi_satusehat"), rs.
-                        getString("stts"), rs.getString("status_lanjut"),
+                        rs.getString("tgl_registrasi") + "T" + rs.getString("jam_reg") + "+07:00",
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("kd_dokter"), rs.getString("nama"),
+                        rs.getString("ktpdokter"), rs.getString("kd_poli"), rs.getString("nm_poli"),
+                        rs.getString("id_lokasi_satusehat"), rs.getString("stts"), rs.getString("status_lanjut"),
                         rs.getString("pulang"), rs.getString("id_encounter")});
                 }
             } catch (Exception e) {
@@ -1236,16 +1271,11 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabMode.addRow(new Object[]{false,
-                        rs.getString("tgl_registrasi") + "T" + rs.getString(
-                        "jam_reg") + "+07:00",
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("kd_dokter"), rs.
-                        getString("nama"),
-                        rs.getString("ktpdokter"), rs.getString("kd_poli"), rs.
-                        getString("nm_poli"),
-                        rs.getString("id_lokasi_satusehat"), rs.
-                        getString("stts"), rs.getString("status_lanjut"),
+                        rs.getString("tgl_registrasi") + "T" + rs.getString("jam_reg") + "+07:00",
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("kd_dokter"), rs.getString("nama"),
+                        rs.getString("ktpdokter"), rs.getString("kd_poli"), rs.getString("nm_poli"),
+                        rs.getString("id_lokasi_satusehat"), rs.getString("stts"), rs.getString("status_lanjut"),
                         rs.getString("pulang"), rs.getString("id_encounter")});
                 }
             } catch (Exception e) {
@@ -1276,7 +1306,6 @@ public class SatuSehatKirimEncounter extends javax.swing.JDialog {
         return tbObat;
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            SatuSehatKirimEncounter.class.getName());
+    private static final Logger LOG = Logger.getLogger(SatuSehatKirimEncounter.class.getName());
 
 }

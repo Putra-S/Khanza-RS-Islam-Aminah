@@ -26,28 +26,42 @@ import keuangan.Jurnal;
 public class IPSRSReturBeli extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private riwayatnonmedis Trackbarang = new riwayatnonmedis();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private IPSRSCariReturBeli form = new IPSRSCariReturBeli(null, false);
+
     private double ttl = 0, y = 0, kolom, stokbarang;
+
     private int jml = 0, i = 0, row = 0, index = 0;
+
     private String[] kodebarang, namabarang, satuan, nofaktur;
+
     private double[] h_retur, jumlah, jmltotal, harga, stok;
+
     private WarnaTable2 warna = new WarnaTable2();
 
     /**
      *
      */
     public boolean tampikan = true;
+
     private boolean sukses = true;
-    private String Retur_Beli_Non_Medis = Sequel.cariIsi(
-            "select set_akun.Retur_Beli_Non_Medis from set_akun"), Kontra_Retur_Beli_Non_Medis = Sequel.
-                    cariIsi("select set_akun.Kontra_Retur_Beli_Non_Medis from set_akun");
+
+    private String Retur_Beli_Non_Medis = Sequel.cariIsi("select set_akun.Retur_Beli_Non_Medis from set_akun"),
+            Kontra_Retur_Beli_Non_Medis = Sequel.cariIsi("select set_akun.Kontra_Retur_Beli_Non_Medis from set_akun");
 
     /**
      * Creates new form DlgProgramStudi
@@ -59,16 +73,12 @@ public class IPSRSReturBeli extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Satuan",
-            "Harga(Rp)", "Total(Rp)", "No.Faktur", "Stok", "Dasar"};
+        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Satuan", "Harga(Rp)", "Total(Rp)", "No.Faktur", "Stok",
+            "Dasar"};
         tabMode = new DefaultTableModel(null, judul) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -122,8 +132,7 @@ public class IPSRSReturBeli extends javax.swing.JDialog {
         Catatan.setDocument(new batasInput(40).getKata(Catatan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -193,12 +202,12 @@ public class IPSRSReturBeli extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("IPSRSReturBeli")) {
                     if (form.suplier.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(form.suplier.getTable().getValueAt(
-                                form.suplier.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsup.setText(form.suplier.getTable().getValueAt(
-                                form.suplier.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsup.setText(form.suplier.getTable()
+                                .getValueAt(form.suplier.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsup.setText(form.suplier.getTable()
+                                .getValueAt(form.suplier.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -255,12 +264,12 @@ public class IPSRSReturBeli extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("IPSRSReturBeli")) {
                     if (form.petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(form.petugas.getTable().getValueAt(
-                                form.petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmptg.setText(form.petugas.getTable().getValueAt(
-                                form.petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdptg.setText(form.petugas.getTable()
+                                .getValueAt(form.petugas.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmptg.setText(form.petugas.getTable()
+                                .getValueAt(form.petugas.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -287,7 +296,9 @@ public class IPSRSReturBeli extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -635,14 +646,13 @@ public class IPSRSReturBeli extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-    for (i = 0; i < tbDokter.getRowCount(); i++) {
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+    for (i = 0; i < tbDokter.getRowCount(); i++) {//GEN-FIRST:event_ppBersihkanActionPerformed
         tbDokter.setValueAt("", i, 0);
         tbDokter.setValueAt(0, i, 5);
     }
@@ -931,8 +941,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            IPSRSReturBeli dialog = new IPSRSReturBeli(new javax.swing.JFrame(),
-                    true);
+            IPSRSReturBeli dialog = new IPSRSReturBeli(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1005,20 +1014,15 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         for (i = 0; i < row; i++) {
             try {
                 if (Double.parseDouble(tbDokter.getValueAt(i, 0).toString()) > 0) {
-                    jumlah[index] = Double.parseDouble(
-                            tbDokter.getValueAt(i, 0).toString());
+                    jumlah[index] = Double.parseDouble(tbDokter.getValueAt(i, 0).toString());
                     kodebarang[index] = tbDokter.getValueAt(i, 1).toString();
                     namabarang[index] = tbDokter.getValueAt(i, 2).toString();
                     satuan[index] = tbDokter.getValueAt(i, 3).toString();
-                    h_retur[index] = Double.parseDouble(tbDokter.
-                            getValueAt(i, 4).toString());
-                    jmltotal[index] = Double.parseDouble(tbDokter.getValueAt(i,
-                            5).toString());
+                    h_retur[index] = Double.parseDouble(tbDokter.getValueAt(i, 4).toString());
+                    jmltotal[index] = Double.parseDouble(tbDokter.getValueAt(i, 5).toString());
                     nofaktur[index] = tbDokter.getValueAt(i, 6).toString();
-                    stok[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).
-                            toString());
-                    harga[index] = Double.parseDouble(tbDokter.getValueAt(i, 8).
-                            toString());
+                    stok[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).toString());
+                    harga[index] = Double.parseDouble(tbDokter.getValueAt(i, 8).toString());
                     index++;
                 }
             } catch (Exception e) {
@@ -1026,9 +1030,8 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
         Valid.tabelKosong(tabMode);
         for (i = 0; i < jml; i++) {
-            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i],
-                satuan[i], h_retur[i], jmltotal[i], nofaktur[i], stok[i],
-                harga[i]});
+            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], satuan[i], h_retur[i], jmltotal[i],
+                nofaktur[i], stok[i], harga[i]});
         }
         try {
             ps = koneksi.prepareStatement(
@@ -1042,10 +1045,9 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{"", rs.getString("kode_brng"),
-                        rs.getString("nama_brng"), rs.getString("kode_sat"), rs.
-                        getDouble("harga"), 0, "", rs.getDouble("stok"), rs.
-                        getDouble("harga")});
+                    tabMode.addRow(new Object[]{"", rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("kode_sat"), rs.getDouble("harga"), 0, "", rs.getDouble("stok"),
+                        rs.getDouble("harga")});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -1070,20 +1072,15 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 kolom = tbDokter.getSelectedColumn();
                 if (Valid.SetAngka(tabMode.getValueAt(row, 0).toString()) > 0) {
                     try {
-                        stokbarang = Double.parseDouble(tabMode.getValueAt(row,
-                                7).toString());
-                        y = Valid.SetAngka(tbDokter.getValueAt(row, 0).
-                                toString());
+                        stokbarang = Double.parseDouble(tabMode.getValueAt(row, 7).toString());
+                        y = Valid.SetAngka(tbDokter.getValueAt(row, 0).toString());
                         if (stokbarang < y) {
                             tabMode.setValueAt("", row, 0);
-                            JOptionPane.showMessageDialog(rootPane,
-                                    "Maaf stok tidak mencukupi..!!");
+                            JOptionPane.showMessageDialog(rootPane, "Maaf stok tidak mencukupi..!!");
                             tbDokter.requestFocus();
                         } else {
-                            tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                    getValueAt(row, 0).toString()) * Double.
-                                    parseDouble(tbDokter.getValueAt(row, 4).
-                                            toString()), row, 5);
+                            tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                    * Double.parseDouble(tbDokter.getValueAt(row, 4).toString()), row, 5);
                         }
                     } catch (Exception e) {
                         tbDokter.setValueAt(0, row, 5);
@@ -1126,14 +1123,14 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(ipsrsreturbeli.no_retur_beli,3),signed)),0) from ipsrsreturbeli where ipsrsreturbeli.tgl_retur='" + Valid.
-                        SetTgl(TglRetur.getSelectedItem() + "") + "'",
-                "TRB" + TglRetur.getSelectedItem().toString().substring(6, 10) + TglRetur.
-                getSelectedItem().toString().substring(3, 5) + TglRetur.
-                getSelectedItem().toString().substring(0, 2), 3, NoRetur);
+                "select ifnull(MAX(CONVERT(RIGHT(ipsrsreturbeli.no_retur_beli,3),signed)),0) from ipsrsreturbeli where ipsrsreturbeli.tgl_retur='"
+                + Valid.SetTgl(TglRetur.getSelectedItem() + "") + "'",
+                "TRB" + TglRetur.getSelectedItem().toString().substring(6, 10)
+                + TglRetur.getSelectedItem().toString().substring(3, 5)
+                + TglRetur.getSelectedItem().toString().substring(0, 2),
+                3, NoRetur);
     }
 
-    private static final Logger LOG = Logger.getLogger(IPSRSReturBeli.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(IPSRSReturBeli.class.getName());
 
 }

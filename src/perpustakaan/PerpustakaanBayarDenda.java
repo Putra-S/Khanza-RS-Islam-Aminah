@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgSpesialis.java
- *
- * Created on May 23, 2010, 1:25:13 AM
+* DlgSpesialis.java
+*
+* Created on May 23, 2010, 1:25:13 AM
  */
 package perpustakaan;
 
@@ -36,23 +36,30 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
-    private PerpustakaanInventaris perpustakaan_inventaris = new PerpustakaanInventaris(
-            null, false);
+
+    private PerpustakaanInventaris perpustakaan_inventaris = new PerpustakaanInventaris(null, false);
+
     private PerpustakaanAnggota anggota = new PerpustakaanAnggota(null, false);
+
     private PerpustakaanDenda denda = new PerpustakaanDenda(null, false);
-    private double perhari = Sequel.cariIsiAngka(
-            "select denda_perhari from perpustakaan_set_peminjaman"), besardenda = 0;
+
+    private double perhari = Sequel.cariIsiAngka("select denda_perhari from perpustakaan_set_peminjaman"),
+            besardenda = 0;
 
     /**
      * Creates new form DlgSpesialis
@@ -64,15 +71,10 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tgl.Denda", "No.Anggota", "Nama Anggota", "No.Inventaris",
-            "Judul Koleksi", "Terlambat(Hari)", "Denda(Rp)"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Integer.class,
-                java.lang.Double.class,};
+        tabMode = new DefaultTableModel(null, new Object[]{"Tgl.Denda", "No.Anggota", "Nama Anggota", "No.Inventaris",
+            "Judul Koleksi", "Terlambat(Hari)", "Denda(Rp)"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Double.class,};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -110,20 +112,14 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
             }
         }
         tbBayarDenda.setDefaultRenderer(Object.class, new WarnaTable());
-        //------------------denda lain------------------------------------
+        // ------------------denda lain------------------------------------
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "Tgl.Denda", "No.Anggota", "Nama Anggota", "No.Inventaris",
-            "Judul Koleksi", "Kode Jenis", "Jenis Denda", "Denda",
-            "Besar Denda(Rp)", "Keterangan"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class
-            };
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"Tgl.Denda", "No.Anggota", "Nama Anggota", "No.Inventaris", "Judul Koleksi",
+                    "Kode Jenis", "Jenis Denda", "Denda", "Besar Denda(Rp)", "Keterangan"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -172,14 +168,12 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 
         TNoA.setDocument(new batasInput((byte) 10).getFilter(TNoA));
         TNoI.setDocument(new batasInput((byte) 20).getKata(TNoI));
-        Keterlambatan.setDocument(new batasInput((byte) 10).getOnlyAngka(
-                Keterlambatan));
+        Keterlambatan.setDocument(new batasInput((byte) 10).getOnlyAngka(Keterlambatan));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         Keterangan.setDocument(new batasInput((byte) 50).getKata(Keterangan));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -270,19 +264,19 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (perpustakaan_inventaris.getTable().getSelectedRow() != -1) {
-                    TNoI.setText(perpustakaan_inventaris.getTable().getValueAt(
-                            perpustakaan_inventaris.getTable().getSelectedRow(),
-                            0).toString());
-                    TJudul.setText(perpustakaan_inventaris.getTable().
-                            getValueAt(perpustakaan_inventaris.getTable().
-                                    getSelectedRow(), 1).toString() + ", " + perpustakaan_inventaris.
-                                    getTable().getValueAt(
-                                            perpustakaan_inventaris.getTable().
-                                                    getSelectedRow(), 2).
-                                    toString());
-                    Harga.setText(perpustakaan_inventaris.getTable().getValueAt(
-                            perpustakaan_inventaris.getTable().getSelectedRow(),
-                            11).toString());
+                    TNoI.setText(perpustakaan_inventaris.getTable()
+                            .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 0)
+                            .toString());
+                    TJudul.setText(perpustakaan_inventaris.getTable()
+                            .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 1)
+                            .toString()
+                            + ", "
+                            + perpustakaan_inventaris.getTable()
+                                    .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 2)
+                                    .toString());
+                    Harga.setText(perpustakaan_inventaris.getTable()
+                            .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 11)
+                            .toString());
                     TNoI.requestFocus();
                 }
             }
@@ -335,10 +329,8 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (anggota.getTable().getSelectedRow() != -1) {
-                    TNoA.setText(anggota.getTable().getValueAt(anggota.
-                            getTable().getSelectedRow(), 0).toString());
-                    TNmA.setText(anggota.getTable().getValueAt(anggota.
-                            getTable().getSelectedRow(), 1).toString());
+                    TNoA.setText(anggota.getTable().getValueAt(anggota.getTable().getSelectedRow(), 0).toString());
+                    TNmA.setText(anggota.getTable().getValueAt(anggota.getTable().getSelectedRow(), 1).toString());
                 }
                 TNoA.requestFocus();
             }
@@ -391,12 +383,9 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (denda.getTable().getSelectedRow() != -1) {
-                    KdJenisDenda.setText(denda.getTable().getValueAt(denda.
-                            getTable().getSelectedRow(), 0).toString());
-                    JenisDenda.setText(denda.getTable().getValueAt(denda.
-                            getTable().getSelectedRow(), 1).toString());
-                    DendaLain.setText(denda.getTable().getValueAt(denda.
-                            getTable().getSelectedRow(), 2).toString());
+                    KdJenisDenda.setText(denda.getTable().getValueAt(denda.getTable().getSelectedRow(), 0).toString());
+                    JenisDenda.setText(denda.getTable().getValueAt(denda.getTable().getSelectedRow(), 1).toString());
+                    DendaLain.setText(denda.getTable().getValueAt(denda.getTable().getSelectedRow(), 2).toString());
                 }
                 KdJenisDenda.requestFocus();
             }
@@ -439,7 +428,9 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1509,8 +1500,7 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanBayarDenda dialog = new PerpustakaanBayarDenda(
-                    new javax.swing.JFrame(), true);
+            PerpustakaanBayarDenda dialog = new PerpustakaanBayarDenda(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1597,8 +1587,7 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
                     + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_anggota.nama_anggota like ? or "
                     + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_inventaris.no_inventaris like ? or "
                     + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_buku.kode_buku like ? or "
-                    + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda_harian.tgl_denda desc"
-            );
+                    + "perpustakaan_bayar_denda_harian.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda_harian.tgl_denda desc");
             try {
                 ps.setString(1, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
@@ -1609,31 +1598,19 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
                 ps.setString(7, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
                 ps.setString(8, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                 ps.setString(9, "%" + TCari.getText().trim() + "%");
-                ps.
-                        setString(10, Valid.SetTgl(
-                                TglPinjam1.getSelectedItem() + ""));
-                ps.
-                        setString(11, Valid.SetTgl(
-                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(10, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(11, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                 ps.setString(12, "%" + TCari.getText().trim() + "%");
-                ps.
-                        setString(13, Valid.SetTgl(
-                                TglPinjam1.getSelectedItem() + ""));
-                ps.
-                        setString(14, Valid.SetTgl(
-                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(13, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(14, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                 ps.setString(15, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 besardenda = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tgl_denda"), rs.getString("no_anggota"),
-                        rs.getString("nama_anggota"), rs.getString(
-                        "no_inventaris"),
-                        rs.getString("kode_buku") + " " + rs.getString(
-                        "judul_buku"), rs.getInt("keterlambatan"), rs.getDouble(
-                        "besar_denda")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("tgl_denda"), rs.getString("no_anggota"),
+                        rs.getString("nama_anggota"), rs.getString("no_inventaris"),
+                        rs.getString("kode_buku") + " " + rs.getString("judul_buku"), rs.getInt("keterlambatan"),
+                        rs.getDouble("besar_denda")});
                     besardenda += rs.getDouble("besar_denda");
                 }
             } catch (Exception e) {
@@ -1669,8 +1646,7 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
                     + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_inventaris.no_inventaris like ? or "
                     + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_denda.jenis_denda like ? or "
                     + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_buku.kode_buku like ? or "
-                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda.tgl_denda desc"
-            );
+                    + "perpustakaan_bayar_denda.tgl_denda between ? and ? and perpustakaan_buku.judul_buku like ? order by perpustakaan_bayar_denda.tgl_denda desc");
             try {
                 ps.setString(1, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
@@ -1681,41 +1657,24 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
                 ps.setString(7, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
                 ps.setString(8, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                 ps.setString(9, "%" + TCari.getText().trim() + "%");
-                ps.
-                        setString(10, Valid.SetTgl(
-                                TglPinjam1.getSelectedItem() + ""));
-                ps.
-                        setString(11, Valid.SetTgl(
-                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(10, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(11, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                 ps.setString(12, "%" + TCari.getText().trim() + "%");
-                ps.
-                        setString(13, Valid.SetTgl(
-                                TglPinjam1.getSelectedItem() + ""));
-                ps.
-                        setString(14, Valid.SetTgl(
-                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(13, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(14, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                 ps.setString(15, "%" + TCari.getText().trim() + "%");
-                ps.
-                        setString(16, Valid.SetTgl(
-                                TglPinjam1.getSelectedItem() + ""));
-                ps.
-                        setString(17, Valid.SetTgl(
-                                TglPinjam2.getSelectedItem() + ""));
+                ps.setString(16, Valid.SetTgl(TglPinjam1.getSelectedItem() + ""));
+                ps.setString(17, Valid.SetTgl(TglPinjam2.getSelectedItem() + ""));
                 ps.setString(18, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
 
                 besardenda = 0;
                 while (rs.next()) {
-                    tabMode2.addRow(new Object[]{
-                        rs.getString("tgl_denda"), rs.getString("no_anggota"),
-                        rs.getString("nama_anggota"), rs.getString(
-                        "no_inventaris"),
-                        rs.getString("kode_buku") + " " + rs.getString(
-                        "judul_buku"), rs.getString("kode_denda"), rs.getString(
-                        "jenis_denda"),
-                        rs.getDouble("denda"), rs.getDouble("besar_denda"), rs.
-                        getString("keterangan_denda")
-                    });
+                    tabMode2.addRow(new Object[]{rs.getString("tgl_denda"), rs.getString("no_anggota"),
+                        rs.getString("nama_anggota"), rs.getString("no_inventaris"),
+                        rs.getString("kode_buku") + " " + rs.getString("judul_buku"), rs.getString("kode_denda"),
+                        rs.getString("jenis_denda"), rs.getDouble("denda"), rs.getDouble("besar_denda"),
+                        rs.getString("keterangan_denda")});
                     besardenda += rs.getDouble("besar_denda");
                 }
             } catch (Exception e) {
@@ -1758,48 +1717,30 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
 
     private void getData() {
         if (tbBayarDenda.getSelectedRow() != -1) {
-            Valid.SetTgl(tgl, tbBayarDenda.getValueAt(tbBayarDenda.
-                    getSelectedRow(), 0).toString());
-            TNoA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),
-                    1).toString());
-            TNmA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),
-                    2).toString());
-            TNoI.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(),
-                    3).toString());
+            Valid.SetTgl(tgl, tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 0).toString());
+            TNoA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 1).toString());
+            TNmA.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 2).toString());
+            TNoI.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 3).toString());
             isInventaris();
-            Keterlambatan.setText(tbBayarDenda.getValueAt(tbBayarDenda.
-                    getSelectedRow(), 5).toString());
-            DendaKeterlambatan.setText(Valid.SetAngka(Double.parseDouble(
-                    tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 6).
-                            toString())));
+            Keterlambatan.setText(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 5).toString());
+            DendaKeterlambatan.setText(Valid
+                    .SetAngka(Double.parseDouble(tbBayarDenda.getValueAt(tbBayarDenda.getSelectedRow(), 6).toString())));
             isDendaHarian();
         }
     }
 
     private void getData2() {
         if (tbDendaLain.getSelectedRow() != -1) {
-            Valid.SetTgl(tgl, tbDendaLain.getValueAt(tbDendaLain.
-                    getSelectedRow(), 0).toString());
-            TNoA.setText(
-                    tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 1).
-                            toString());
-            TNmA.setText(
-                    tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 2).
-                            toString());
-            TNoI.setText(
-                    tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 3).
-                            toString());
+            Valid.SetTgl(tgl, tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 0).toString());
+            TNoA.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 1).toString());
+            TNmA.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 2).toString());
+            TNoI.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 3).toString());
             isInventaris();
-            KdJenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.
-                    getSelectedRow(), 5).toString());
-            JenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.
-                    getSelectedRow(), 6).toString());
-            DendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.
-                    getSelectedRow(), 7).toString());
-            BesarDendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.
-                    getSelectedRow(), 8).toString());
-            Keterangan.setText(tbDendaLain.getValueAt(tbDendaLain.
-                    getSelectedRow(), 9).toString());
+            KdJenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 5).toString());
+            JenisDenda.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 6).toString());
+            DendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 7).toString());
+            BesarDendaLain.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 8).toString());
+            Keterangan.setText(tbDendaLain.getValueAt(tbDendaLain.getSelectedRow(), 9).toString());
             isDendaLain();
         }
     }
@@ -1817,8 +1758,7 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
                 ps.setString(1, TNoI.getText());
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    TJudul.setText(rs.getString("kode_buku") + ", " + rs.
-                            getString("judul_buku"));
+                    TJudul.setText(rs.getString("kode_buku") + ", " + rs.getString("judul_buku"));
                     Harga.setText(rs.getString("harga"));
                 } else {
                     TJudul.setText("");
@@ -1847,8 +1787,7 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     private void isDendaHarian() {
         if (TabRawat.getSelectedIndex() == 0) {
             if (!Keterlambatan.getText().isEmpty()) {
-                DendaKeterlambatan.setText(Valid.SetAngka(Double.parseDouble(
-                        Keterlambatan.getText()) * perhari));
+                DendaKeterlambatan.setText(Valid.SetAngka(Double.parseDouble(Keterlambatan.getText()) * perhari));
             }
         }
     }
@@ -1856,12 +1795,12 @@ public class PerpustakaanBayarDenda extends javax.swing.JDialog {
     private void isDendaLain() {
         if (TabRawat.getSelectedIndex() == 1) {
             if ((!Harga.getText().isEmpty()) && (!DendaLain.getText().isEmpty())) {
-                BesarDendaLain.setText(Valid.SetAngka(Double.parseDouble(Harga.
-                        getText()) * (Double.parseDouble(DendaLain.getText()) / 100)));
+                BesarDendaLain.setText(Valid
+                        .SetAngka(Double.parseDouble(Harga.getText()) * (Double.parseDouble(DendaLain.getText()) / 100)));
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PerpustakaanBayarDenda.class.getName());
+    private static final Logger LOG = Logger.getLogger(PerpustakaanBayarDenda.class.getName());
+
 }

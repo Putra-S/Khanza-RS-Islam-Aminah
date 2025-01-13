@@ -31,24 +31,36 @@ import simrskhanza.DlgCariPoli;
 import simrskhanza.DlgCariPoli2;
 
 /**
- *
  * @author dosen
  */
 public class SuratKontrol extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private int i = 0, kuota = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariDokter2 dokter2 = new DlgCariDokter2(null, false);
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariPoli2 poli2 = new DlgCariPoli2(null, false);
+
     private String URUTNOREG = "", status = "", kdpoli = "", nmpoli = "", noantri = "", aktifjadwal = "";
+
     private DlgCariPenyakit penyakit = new DlgCariPenyakit(null, false);
+
     private String finger = "";
 
     /**
@@ -61,14 +73,10 @@ public class SuratKontrol extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tahun", "No.RM", "Nama Pasien", "Diagnosa", "Terapi", "Alasan 1",
-            "Alasan 2",
-            "Rencana Tindak Lanjut 1", "Rencana Tindak Lanjut 2",
-            "Periksa Kembali",
-            "Tanggal Surat", "No.Surat", "No.Reg", "Kode Dokter", "Nama Dokter",
-            "Kode Poli", "Nama Poli", "Status"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Tahun", "No.RM", "Nama Pasien", "Diagnosa", "Terapi", "Alasan 1", "Alasan 2",
+                    "Rencana Tindak Lanjut 1", "Rencana Tindak Lanjut 2", "Periksa Kembali", "Tanggal Surat",
+                    "No.Surat", "No.Reg", "Kode Dokter", "Nama Dokter", "Kode Poli", "Nama Poli", "Status"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -77,7 +85,8 @@ public class SuratKontrol extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -137,8 +146,7 @@ public class SuratKontrol extends javax.swing.JDialog {
         NoReg.setDocument(new batasInput((byte) 6).getKata(NoReg));
         KdDokter.setDocument(new batasInput((byte) 20).getKata(KdDokter));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -178,23 +186,23 @@ public class SuratKontrol extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penyakit.getTable().getSelectedRow() != -1) {
-                    if ((penyakit.getTable().getValueAt(penyakit.getTable().
-                            getSelectedRow(), 0).toString() + " - " + penyakit.
-                                    getTable().getValueAt(penyakit.getTable().
-                                            getSelectedRow(), 1).toString()).
-                            length() < 50) {
-                        Diagnosa.setText(penyakit.getTable().getValueAt(
-                                penyakit.getTable().getSelectedRow(), 0).
-                                toString() + " - " + penyakit.getTable().
-                                        getValueAt(penyakit.getTable().
-                                                getSelectedRow(), 1).toString());
+                    if ((penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString() + " - "
+                            + penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString())
+                            .length() < 50) {
+                        Diagnosa
+                                .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString()
+                                        + " - "
+                                        + penyakit.getTable()
+                                                .getValueAt(penyakit.getTable().getSelectedRow(), 1)
+                                                .toString());
                     } else {
-                        Diagnosa.setText((penyakit.getTable().getValueAt(
-                                penyakit.getTable().getSelectedRow(), 0).
-                                toString() + " - " + penyakit.getTable().
-                                        getValueAt(penyakit.getTable().
-                                                getSelectedRow(), 1).toString()).
-                                substring(0, 50));
+                        Diagnosa
+                                .setText((penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString()
+                                        + " - "
+                                        + penyakit.getTable()
+                                                .getValueAt(penyakit.getTable().getSelectedRow(), 1)
+                                                .toString())
+                                        .substring(0, 50));
                     }
                 }
                 Diagnosa.requestFocus();
@@ -230,10 +238,8 @@ public class SuratKontrol extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     isNomer();
                 }
             }
@@ -268,14 +274,11 @@ public class SuratKontrol extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter2.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 1).toString());
                     if (aktifjadwal.equals("aktif")) {
-                        kuota = Integer.parseInt(dokter2.getTable().getValueAt(
-                                dokter2.getTable().getSelectedRow(), 13).
-                                toString());
+                        kuota = Integer.parseInt(
+                                dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 13).toString());
                     }
                     isNomer();
                 }
@@ -311,10 +314,8 @@ public class SuratKontrol extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                     isNomer();
                 }
             }
@@ -349,10 +350,8 @@ public class SuratKontrol extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli2.getTable().getSelectedRow() != -1) {
-                    KdPoli.setText(poli2.getTable().getValueAt(poli2.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmPoli.setText(poli2.getTable().getValueAt(poli2.getTable().
-                            getSelectedRow(), 1).toString());
+                    KdPoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(), 0).toString());
+                    NmPoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(), 1).toString());
                     isNomer();
                 }
             }
@@ -387,7 +386,9 @@ public class SuratKontrol extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1741,8 +1742,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SuratKontrol dialog = new SuratKontrol(new javax.swing.JFrame(),
-                    true);
+            SuratKontrol dialog = new SuratKontrol(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1829,29 +1829,25 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         if (R1.isSelected() == true) {
             status = " skdp_bpjs.status='Menunggu' ";
         } else if (R2.isSelected() == true) {
-            status = " skdp_bpjs.tanggal_rujukan between '" + Valid.SetTgl(
-                    DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(
-                    DTPCari2.getSelectedItem() + "") + "' ";
+            status = " skdp_bpjs.tanggal_rujukan between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '"
+                    + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' ";
         } else if (R3.isSelected() == true) {
-            status = " skdp_bpjs.status<>'Menunggu' and skdp_bpjs.tanggal_rujukan between '" + Valid.
-                    SetTgl(DTPCari3.getSelectedItem() + "") + "' and '" + Valid.
-                    SetTgl(DTPCari4.getSelectedItem() + "") + "' ";
+            status = " skdp_bpjs.status<>'Menunggu' and skdp_bpjs.tanggal_rujukan between '"
+                    + Valid.SetTgl(DTPCari3.getSelectedItem() + "") + "' and '"
+                    + Valid.SetTgl(DTPCari4.getSelectedItem() + "") + "' ";
         }
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select skdp_bpjs.tahun,skdp_bpjs.no_rkm_medis,pasien.nm_pasien,"
+            ps = koneksi.prepareStatement("select skdp_bpjs.tahun,skdp_bpjs.no_rkm_medis,pasien.nm_pasien,"
                     + "skdp_bpjs.diagnosa,skdp_bpjs.terapi,skdp_bpjs.alasan1,skdp_bpjs.alasan2,"
                     + "skdp_bpjs.rtl1,skdp_bpjs.rtl2,skdp_bpjs.tanggal_datang,skdp_bpjs.tanggal_rujukan,"
                     + "skdp_bpjs.no_antrian,skdp_bpjs.kd_dokter,dokter.nm_dokter,skdp_bpjs.status "
                     + "from skdp_bpjs inner join pasien inner join dokter on "
-                    + "skdp_bpjs.no_rkm_medis=pasien.no_rkm_medis and skdp_bpjs.kd_dokter=dokter.kd_dokter "
-                    + "where " + status + " and skdp_bpjs.no_rkm_medis like ? or "
-                    + status + " and pasien.nm_pasien like ? or "
-                    + status + " and skdp_bpjs.diagnosa like ? or "
-                    + status + " and skdp_bpjs.terapi like ? or "
-                    + status + " and skdp_bpjs.no_antrian like ? or "
-                    + status + " and dokter.nm_dokter like ? order by skdp_bpjs.tanggal_rujukan,skdp_bpjs.no_antrian");
+                    + "skdp_bpjs.no_rkm_medis=pasien.no_rkm_medis and skdp_bpjs.kd_dokter=dokter.kd_dokter " + "where "
+                    + status + " and skdp_bpjs.no_rkm_medis like ? or " + status + " and pasien.nm_pasien like ? or "
+                    + status + " and skdp_bpjs.diagnosa like ? or " + status + " and skdp_bpjs.terapi like ? or "
+                    + status + " and skdp_bpjs.no_antrian like ? or " + status
+                    + " and dokter.nm_dokter like ? order by skdp_bpjs.tanggal_rujukan,skdp_bpjs.no_antrian");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -1870,8 +1866,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             + "where booking_registrasi.kd_dokter=? and booking_registrasi.tanggal_periksa=? and booking_registrasi.no_rkm_medis=?");
                     try {
                         ps2.setString(1, rs.getString("kd_dokter"));
-                        ps2.setString(2, rs.getString("tanggal_datang").
-                                substring(0, 10));
+                        ps2.setString(2, rs.getString("tanggal_datang").substring(0, 10));
                         ps2.setString(3, rs.getString("no_rkm_medis"));
                         rs2 = ps2.executeQuery();
                         if (rs2.next()) {
@@ -1889,19 +1884,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             ps2.close();
                         }
                     }
-                    tabMode.addRow(new Object[]{
-                        rs.getInt("tahun"), rs.getString("no_rkm_medis"), rs.
-                        getString("nm_pasien"),
-                        rs.getString("diagnosa"), rs.getString("terapi"), rs.
-                        getString("alasan1"),
-                        rs.getString("alasan2"), rs.getString("rtl1"), rs.
-                        getString("rtl2"),
-                        rs.getString("tanggal_datang"), rs.getString(
-                        "tanggal_rujukan"), rs.getString("no_antrian"),
-                        noantri, rs.getString("kd_dokter"), rs.getString(
-                        "nm_dokter"), kdpoli,
-                        nmpoli, rs.getString("status")
-                    });
+                    tabMode.addRow(new Object[]{rs.getInt("tahun"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("diagnosa"), rs.getString("terapi"),
+                        rs.getString("alasan1"), rs.getString("alasan2"), rs.getString("rtl1"),
+                        rs.getString("rtl2"), rs.getString("tanggal_datang"), rs.getString("tanggal_rujukan"),
+                        rs.getString("no_antrian"), noantri, rs.getString("kd_dokter"), rs.getString("nm_dokter"),
+                        kdpoli, nmpoli, rs.getString("status")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1939,76 +1927,59 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         switch (URUTNOREG) {
             case "poli":
                 Valid.autoNomer3(
-                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_poli='" + KdPoli.
-                                getText() + "' and booking_registrasi.tanggal_periksa='" + Valid.
-                                SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
+                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_poli='"
+                        + KdPoli.getText() + "' and booking_registrasi.tanggal_periksa='"
+                        + Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
                         "", 3, NoReg);
                 break;
             case "dokter":
                 Valid.autoNomer3(
-                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_dokter='" + KdDokter.
-                                getText() + "' and booking_registrasi.tanggal_periksa='" + Valid.
-                                SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
+                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_dokter='"
+                        + KdDokter.getText() + "' and booking_registrasi.tanggal_periksa='"
+                        + Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
                         "", 3, NoReg);
                 break;
             case "dokter + poli":
                 Valid.autoNomer3(
-                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_dokter='" + KdDokter.
-                                getText() + "' and booking_registrasi.kd_poli='" + KdPoli.
-                                getText() + "' and booking_registrasi.tanggal_periksa='" + Valid.
-                                SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
+                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_dokter='"
+                        + KdDokter.getText() + "' and booking_registrasi.kd_poli='" + KdPoli.getText()
+                        + "' and booking_registrasi.tanggal_periksa='"
+                        + Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
                         "", 3, NoReg);
                 break;
             default:
                 Valid.autoNomer3(
-                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_dokter='" + KdDokter.
-                                getText() + "' and booking_registrasi.tanggal_periksa='" + Valid.
-                                SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
+                        "select ifnull(MAX(CONVERT(booking_registrasi.no_reg,signed)),0) from booking_registrasi where booking_registrasi.kd_dokter='"
+                        + KdDokter.getText() + "' and booking_registrasi.tanggal_periksa='"
+                        + Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + "'",
                         "", 3, NoReg);
                 break;
         }
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(skdp_bpjs.no_antrian,6),signed)),0) from skdp_bpjs where skdp_bpjs.tahun='" + TanggalPeriksa.
-                        getSelectedItem().toString().substring(6, 10) + "' ", "",
-                6, NoSurat);
+                "select ifnull(MAX(CONVERT(RIGHT(skdp_bpjs.no_antrian,6),signed)),0) from skdp_bpjs where skdp_bpjs.tahun='"
+                + TanggalPeriksa.getSelectedItem().toString().substring(6, 10) + "' ",
+                "", 6, NoSurat);
     }
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            Terapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            Alasan1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Alasan2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Rtl1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            Rtl2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            Valid.SetTgl2(TanggalPeriksa, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 9).toString());
-            Valid.SetTgl2(TanggalSurat, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            NoSurat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            NoReg.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            KdPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            NmPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            Status.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 17).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            Terapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Alasan1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Alasan2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Rtl1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Rtl2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Valid.SetTgl2(TanggalPeriksa, tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Valid.SetTgl2(TanggalSurat, tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            NoSurat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            NoReg.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            KdPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            NmPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Status.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
         }
     }
 
@@ -2022,7 +1993,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @param norm
      * @param nama
      * @param kodepoli
@@ -2030,8 +2000,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      * @param kodedokter
      * @param namadokter
      */
-    public void setNoRm(String norm, String nama, String kodepoli,
-            String namapoli, String kodedokter, String namadokter) {
+    public void setNoRm(String norm, String nama, String kodepoli, String namapoli, String kodedokter,
+            String namadokter) {
         TNoRM.setText(norm);
         TPasien.setText(nama);
         KdPoli.setText(kodepoli);
@@ -2066,7 +2036,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -2074,57 +2043,42 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private void isBooking() {
-        if (Sequel.menyimpantf("skdp_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?,?",
-                "Tahun dan nomor surat", 13, new String[]{
-                    TanggalPeriksa.getSelectedItem().toString().substring(6, 10),
-                    TNoRM.getText(), Diagnosa.getText(), Terapi.getText(),
-                    Alasan1.getText(), Alasan2.getText(), Rtl1.getText(), Rtl2.
-                    getText(), Valid.SetTgl(
-                            TanggalPeriksa.getSelectedItem() + "") + " " + TanggalPeriksa.
-                    getSelectedItem().toString().substring(11, 19),
-                    Valid.SetTgl(TanggalSurat.getSelectedItem() + "") + " " + TanggalSurat.
-                    getSelectedItem().toString().substring(11, 19), NoSurat.
-                    getText(), KdDokter.getText(), Status.getSelectedItem().
-                    toString()
-                }) == true) {
-            Sequel.menyimpan2("booking_registrasi", "?,?,?,?,?,?,?,?,?,?,?",
-                    "Pasien dan Tanggal", 11, new String[]{
-                        Valid.SetTgl(TanggalSurat.getSelectedItem() + ""),
-                        TanggalSurat.getSelectedItem().toString().substring(11,
-                                19), TNoRM.getText(),
-                        Valid.SetTgl(TanggalPeriksa.getSelectedItem() + ""),
-                        KdDokter.getText(),
-                        KdPoli.getText(), NoReg.getText(), Sequel.cariIsi(
-                        "select pasien.kd_pj from pasien where pasien.no_rkm_medis=?",
-                        TNoRM.getText()), "0",
-                        Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + " " + TanggalPeriksa.
-                        getSelectedItem().toString().substring(11, 19),
-                        "belum"
-                    });
+        if (Sequel.menyimpantf("skdp_bpjs", "?,?,?,?,?,?,?,?,?,?,?,?,?", "Tahun dan nomor surat", 13,
+                new String[]{TanggalPeriksa.getSelectedItem().toString().substring(6, 10), TNoRM.getText(),
+                    Diagnosa.getText(), Terapi.getText(), Alasan1.getText(), Alasan2.getText(), Rtl1.getText(),
+                    Rtl2.getText(),
+                    Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + " "
+                    + TanggalPeriksa.getSelectedItem().toString().substring(11, 19),
+                    Valid.SetTgl(TanggalSurat.getSelectedItem() + "") + " "
+                    + TanggalSurat.getSelectedItem().toString().substring(11, 19),
+                    NoSurat.getText(), KdDokter.getText(), Status.getSelectedItem().toString()}) == true) {
+            Sequel.menyimpan2("booking_registrasi", "?,?,?,?,?,?,?,?,?,?,?", "Pasien dan Tanggal", 11,
+                    new String[]{Valid.SetTgl(TanggalSurat.getSelectedItem() + ""),
+                        TanggalSurat.getSelectedItem().toString().substring(11, 19), TNoRM.getText(),
+                        Valid.SetTgl(TanggalPeriksa.getSelectedItem() + ""), KdDokter.getText(), KdPoli.getText(),
+                        NoReg.getText(),
+                        Sequel.cariIsi("select pasien.kd_pj from pasien where pasien.no_rkm_medis=?",
+                                TNoRM.getText()),
+                        "0", Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + " "
+                        + TanggalPeriksa.getSelectedItem().toString().substring(11, 19),
+                        "belum"});
             Sequel.menyimpan3("list_wa", "?,?,?,?", "Pasien dan Tanggal", 4,
-                    new String[]{
-                        TNoRM.getText(), Valid.SetTgl(TanggalPeriksa.
-                        getSelectedItem() + ""), Valid.SetTgl(TanggalSurat.
-                                getSelectedItem() + ""),
-                        "Belum"});
-            tabMode.addRow(new String[]{
-                TanggalPeriksa.getSelectedItem().toString().substring(6, 10),
-                TNoRM.getText(), TPasien.getText(), Diagnosa.getText(), Terapi.
-                getText(), Alasan1.getText(), Alasan2.getText(),
-                Rtl1.getText(), Rtl2.getText(), Valid.SetTgl(TanggalPeriksa.
-                getSelectedItem() + "") + " " + TanggalPeriksa.getSelectedItem().
-                toString().substring(11, 19),
-                Valid.SetTgl(TanggalSurat.getSelectedItem() + "") + " " + TanggalSurat.
-                getSelectedItem().toString().substring(11, 19), NoSurat.
-                getText(), NoReg.getText(),
-                KdDokter.getText(), NmDokter.getText(), KdPoli.getText(),
-                NmPoli.getText(), Status.getSelectedItem().toString()
-            });
+                    new String[]{TNoRM.getText(), Valid.SetTgl(TanggalPeriksa.getSelectedItem() + ""),
+                        Valid.SetTgl(TanggalSurat.getSelectedItem() + ""), "Belum"});
+            tabMode.addRow(new String[]{TanggalPeriksa.getSelectedItem().toString().substring(6, 10), TNoRM.getText(),
+                TPasien.getText(), Diagnosa.getText(), Terapi.getText(), Alasan1.getText(), Alasan2.getText(),
+                Rtl1.getText(), Rtl2.getText(),
+                Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + " "
+                + TanggalPeriksa.getSelectedItem().toString().substring(11, 19),
+                Valid.SetTgl(TanggalSurat.getSelectedItem() + "") + " "
+                + TanggalSurat.getSelectedItem().toString().substring(11, 19),
+                NoSurat.getText(), NoReg.getText(), KdDokter.getText(), NmDokter.getText(), KdPoli.getText(),
+                NmPoli.getText(), Status.getSelectedItem().toString()});
             emptTeks();
             LCount.setText("" + tabMode.getRowCount());
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(SuratKontrol.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(SuratKontrol.class.getName());
+
 }

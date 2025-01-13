@@ -27,14 +27,16 @@ import kepegawaian.DlgCariPegawai;
 import simrskhanza.DlgCariBangsal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgCariPermintaan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -46,8 +48,11 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
      *
      */
     public DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     public DlgBarang barang = new DlgBarang(null, false);
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
 
     /**
@@ -60,8 +65,7 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Tanggal", "No.Permintaan", "Asal Permintaan", "Pegawai",
-            "Ditujukan Ke"};
+        Object[] row = {"Tanggal", "No.Permintaan", "Asal Permintaan", "Pegawai", "Ditujukan Ke"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -90,15 +94,13 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NoPermintaan.
-                setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
+        NoPermintaan.setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
         KdBangsal.setDocument(new batasInput((byte) 5).getKata(KdBangsal));
         KdPeg.setDocument(new batasInput((byte) 20).getKata(KdPeg));
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -134,10 +136,8 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (suplier.getTable().getSelectedRow() != -1) {
-                    KdBangsal.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmBangsal.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdBangsal.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                    NmBangsal.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                 }
                 KdBangsal.requestFocus();
             }
@@ -190,10 +190,8 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPeg.requestFocus();
             }
@@ -228,10 +226,8 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kdbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 1).toString());
-                    nmbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 2).toString());
+                    kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                    nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                 }
                 kdbar.requestFocus();
             }
@@ -284,12 +280,10 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 0).
-                            toString());
-                    nmjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 1).
-                            toString());
+                    kdjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 kdjenis.requestFocus();
             }
@@ -324,12 +318,12 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.golongan.getTable().getSelectedRow() != -1) {
-                    kdgolongan.setText(barang.golongan.getTable().getValueAt(
-                            barang.golongan.getTable().getSelectedRow(), 0).
-                            toString());
-                    nmgolongan.setText(barang.golongan.getTable().getValueAt(
-                            barang.golongan.getTable().getSelectedRow(), 1).
-                            toString());
+                    kdgolongan.setText(barang.golongan.getTable()
+                            .getValueAt(barang.golongan.getTable().getSelectedRow(), 0)
+                            .toString());
+                    nmgolongan.setText(barang.golongan.getTable()
+                            .getValueAt(barang.golongan.getTable().getSelectedRow(), 1)
+                            .toString());
                 }
             }
 
@@ -364,12 +358,12 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.kategori.getTable().getSelectedRow() != -1) {
-                    kdkategori.setText(barang.kategori.getTable().getValueAt(
-                            barang.kategori.getTable().getSelectedRow(), 0).
-                            toString());
-                    nmkategori.setText(barang.kategori.getTable().getValueAt(
-                            barang.kategori.getTable().getSelectedRow(), 1).
-                            toString());
+                    kdkategori.setText(barang.kategori.getTable()
+                            .getValueAt(barang.kategori.getTable().getSelectedRow(), 0)
+                            .toString());
+                    nmkategori.setText(barang.kategori.getTable()
+                            .getValueAt(barang.kategori.getTable().getSelectedRow(), 1)
+                            .toString());
                 }
             }
 
@@ -397,7 +391,9 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -991,13 +987,12 @@ public class DlgCariPermintaan extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        suplier.emptTeks();
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        suplier.emptTeks();//GEN-FIRST:event_btnSuplierActionPerformed
         suplier.isCek();
         suplier.setSize(internalFrame1.getWidth() - 20, internalFrame1.
                 getHeight() - 20);
@@ -1316,8 +1311,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPermintaan dialog = new DlgCariPermintaan(
-                    new javax.swing.JFrame(), true);
+            DlgCariPermintaan dialog = new DlgCariPermintaan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1389,15 +1383,11 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            if (NoPermintaan.getText().isEmpty() && NmBangsal.getText().
-                    isEmpty() && NmPeg.getText().isEmpty() && nmjenis.getText().
-                    isEmpty()
-                    && nmkategori.getText().isEmpty() && nmgolongan.getText().
-                    isEmpty() && nmbar.getText().isEmpty() && TCari.getText().
-                    isEmpty()
+            if (NoPermintaan.getText().isEmpty() && NmBangsal.getText().isEmpty() && NmPeg.getText().isEmpty()
+                    && nmjenis.getText().isEmpty() && nmkategori.getText().isEmpty() && nmgolongan.getText().isEmpty()
+                    && nmbar.getText().isEmpty() && TCari.getText().isEmpty()
                     && Status.getSelectedItem().toString().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select permintaan_medis.tanggal,permintaan_medis.no_permintaan, "
+                ps = koneksi.prepareStatement("select permintaan_medis.tanggal,permintaan_medis.no_permintaan, "
                         + "permintaan_medis.kd_bangsal,bangsal.nm_bangsal as asal, "
                         + "permintaan_medis.nip,pegawai.nama,permintaan_medis.status, "
                         + "permintaan_medis.kd_bangsaltujuan,tujuan.nm_bangsal as tujuan "
@@ -1412,8 +1402,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         + "inner join bangsal as tujuan on permintaan_medis.kd_bangsaltujuan=tujuan.kd_bangsal "
                         + " where permintaan_medis.tanggal between ? and ? group by permintaan_medis.no_permintaan order by permintaan_medis.tanggal,permintaan_medis.no_permintaan ");
             } else {
-                ps = koneksi.prepareStatement(
-                        "select permintaan_medis.tanggal,permintaan_medis.no_permintaan, "
+                ps = koneksi.prepareStatement("select permintaan_medis.tanggal,permintaan_medis.no_permintaan, "
                         + "permintaan_medis.kd_bangsal,bangsal.nm_bangsal as asal, "
                         + "permintaan_medis.nip,pegawai.nama,permintaan_medis.status, "
                         + "permintaan_medis.kd_bangsaltujuan,tujuan.nm_bangsal as tujuan "
@@ -1441,218 +1430,143 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             }
 
             try {
-                if (NoPermintaan.getText().isEmpty() && NmBangsal.getText().
-                        isEmpty() && NmPeg.getText().isEmpty() && nmjenis.
-                        getText().isEmpty()
-                        && nmkategori.getText().isEmpty() && nmgolongan.
-                        getText().isEmpty() && nmbar.getText().isEmpty() && TCari.
-                        getText().isEmpty()
+                if (NoPermintaan.getText().isEmpty() && NmBangsal.getText().isEmpty() && NmPeg.getText().isEmpty()
+                        && nmjenis.getText().isEmpty() && nmkategori.getText().isEmpty()
+                        && nmgolongan.getText().isEmpty() && nmbar.getText().isEmpty() && TCari.getText().isEmpty()
                         && Status.getSelectedItem().toString().equals("Semua")) {
-                    ps.setString(1, Valid.
-                            SetTgl(Tanggal1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(Tanggal1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(Tanggal2.getSelectedItem() + ""));
-                    ps.setString(3, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(1, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(4, "%" + NoPermintaan.getText() + "%");
                     ps.setString(5, "%" + NmBangsal.getText() + "%");
                     ps.setString(6, "%" + NmPeg.getText() + "%");
-                    ps.setString(7,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(8, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(9, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(7, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(8, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(9, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(10, "%" + nmbar.getText() + "%");
                     ps.setString(11, "%" + TCari.getText() + "%");
-                    ps.setString(12, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(13, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(14, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(12, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(13, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(14, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(15, "%" + NoPermintaan.getText() + "%");
                     ps.setString(16, "%" + NmBangsal.getText() + "%");
                     ps.setString(17, "%" + NmPeg.getText() + "%");
-                    ps.setString(18,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(19, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(20, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(18, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(19, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(20, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(21, "%" + nmbar.getText() + "%");
                     ps.setString(22, "%" + TCari.getText() + "%");
-                    ps.setString(23, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(24, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(25, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(23, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(24, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(25, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(26, "%" + NoPermintaan.getText() + "%");
                     ps.setString(27, "%" + NmBangsal.getText() + "%");
                     ps.setString(28, "%" + NmPeg.getText() + "%");
-                    ps.setString(29,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(30, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(31, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(29, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(30, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(31, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(32, "%" + nmbar.getText() + "%");
                     ps.setString(33, "%" + TCari.getText() + "%");
-                    ps.setString(34, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(35, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(36, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(34, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(35, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(36, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(37, "%" + NoPermintaan.getText() + "%");
                     ps.setString(38, "%" + NmBangsal.getText() + "%");
                     ps.setString(39, "%" + NmPeg.getText() + "%");
-                    ps.setString(40,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(41, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(42, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(40, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(41, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(42, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(43, "%" + nmbar.getText() + "%");
                     ps.setString(44, "%" + TCari.getText() + "%");
-                    ps.setString(45, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(46, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(47, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(45, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(46, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(47, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(48, "%" + NoPermintaan.getText() + "%");
                     ps.setString(49, "%" + NmBangsal.getText() + "%");
                     ps.setString(50, "%" + NmPeg.getText() + "%");
-                    ps.setString(51,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(52, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(53, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(51, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(52, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(53, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(54, "%" + nmbar.getText() + "%");
                     ps.setString(55, "%" + TCari.getText() + "%");
-                    ps.setString(56, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(57, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(58, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(56, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(57, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(58, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(59, "%" + NoPermintaan.getText() + "%");
                     ps.setString(60, "%" + NmBangsal.getText() + "%");
                     ps.setString(61, "%" + NmPeg.getText() + "%");
-                    ps.setString(62,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(63, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(64, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(62, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(63, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(64, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(65, "%" + nmbar.getText() + "%");
                     ps.setString(66, "%" + TCari.getText() + "%");
-                    ps.setString(67, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(68, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(69, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(67, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(68, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(69, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(70, "%" + NoPermintaan.getText() + "%");
                     ps.setString(71, "%" + NmBangsal.getText() + "%");
                     ps.setString(72, "%" + NmPeg.getText() + "%");
-                    ps.setString(73,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(74, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(75, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(73, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(74, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(75, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(76, "%" + nmbar.getText() + "%");
                     ps.setString(77, "%" + TCari.getText() + "%");
-                    ps.setString(78, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(79, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(80, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(78, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(79, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(80, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(81, "%" + NoPermintaan.getText() + "%");
                     ps.setString(82, "%" + NmBangsal.getText() + "%");
                     ps.setString(83, "%" + NmPeg.getText() + "%");
-                    ps.setString(84,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(85, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(86, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(84, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(85, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(86, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(87, "%" + nmbar.getText() + "%");
                     ps.setString(88, "%" + TCari.getText() + "%");
-                    ps.setString(89, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(90, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(91, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(89, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(90, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(91, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(92, "%" + NoPermintaan.getText() + "%");
                     ps.setString(93, "%" + NmBangsal.getText() + "%");
                     ps.setString(94, "%" + NmPeg.getText() + "%");
-                    ps.setString(95,
-                            "%" + kdjenis.getText() + nmjenis.getText() + "%");
-                    ps.setString(96, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(97, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(95, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(96, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(97, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(98, "%" + nmbar.getText() + "%");
                     ps.setString(99, "%" + TCari.getText() + "%");
-                    ps.setString(100, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(101, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(102, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(100, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(101, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(102, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(103, "%" + NoPermintaan.getText() + "%");
                     ps.setString(104, "%" + NmBangsal.getText() + "%");
                     ps.setString(105, "%" + NmPeg.getText() + "%");
-                    ps.setString(106, "%" + kdjenis.getText() + nmjenis.
-                            getText() + "%");
-                    ps.setString(107, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(108, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(106, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(107, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(108, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(109, "%" + nmbar.getText() + "%");
                     ps.setString(110, "%" + TCari.getText() + "%");
-                    ps.setString(111, Valid.SetTgl(
-                            Tanggal1.getSelectedItem() + ""));
-                    ps.setString(112, Valid.SetTgl(
-                            Tanggal2.getSelectedItem() + ""));
-                    ps.setString(113, "%" + Status.getSelectedItem().toString().
-                            replaceAll("Semua", "") + "%");
+                    ps.setString(111, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
+                    ps.setString(112, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
+                    ps.setString(113, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                     ps.setString(114, "%" + NoPermintaan.getText() + "%");
                     ps.setString(115, "%" + NmBangsal.getText() + "%");
                     ps.setString(116, "%" + NmPeg.getText() + "%");
-                    ps.setString(117, "%" + kdjenis.getText() + nmjenis.
-                            getText() + "%");
-                    ps.setString(118, "%" + kdkategori.getText() + nmkategori.
-                            getText() + "%");
-                    ps.setString(119, "%" + kdgolongan.getText() + nmgolongan.
-                            getText() + "%");
+                    ps.setString(117, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                    ps.setString(118, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                    ps.setString(119, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                     ps.setString(120, "%" + nmbar.getText() + "%");
                     ps.setString(121, "%" + TCari.getText() + "%");
                 }
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tanggal"), rs.getString("no_permintaan"),
-                        rs.getString("asal"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getString("tujuan") + " ( " + rs.getString("status") + " )"
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("tanggal"), rs.getString("no_permintaan"),
+                        rs.getString("asal"), rs.getString("nip") + " " + rs.getString("nama"),
+                        rs.getString("tujuan") + " ( " + rs.getString("status") + " )"});
 
-                    ps2 = koneksi.prepareStatement(
-                            "select detail_permintaan_medis.kode_brng,databarang.nama_brng, "
+                    ps2 = koneksi.prepareStatement("select detail_permintaan_medis.kode_brng,databarang.nama_brng, "
                             + "detail_permintaan_medis.kode_sat,kodesatuan.satuan,"
                             + "detail_permintaan_medis.jumlah,detail_permintaan_medis.keterangan "
                             + "from detail_permintaan_medis inner join databarang on detail_permintaan_medis.kode_brng=databarang.kode_brng "
@@ -1667,58 +1581,34 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     try {
                         ps2.setString(1, rs.getString(2));
                         ps2.setString(2, "%" + nmbar.getText() + "%");
-                        ps2.setString(3, "%" + kdjenis.getText() + nmjenis.
-                                getText() + "%");
-                        ps2.setString(4,
-                                "%" + kdkategori.getText() + nmkategori.
-                                getText() + "%");
-                        ps2.setString(5,
-                                "%" + kdgolongan.getText() + nmgolongan.
-                                getText() + "%");
+                        ps2.setString(3, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                        ps2.setString(4, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                        ps2.setString(5, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                         ps2.setString(6, "%" + TCari.getText() + "%");
                         ps2.setString(7, rs.getString(2));
                         ps2.setString(8, "%" + nmbar.getText() + "%");
-                        ps2.setString(9, "%" + kdjenis.getText() + nmjenis.
-                                getText() + "%");
-                        ps2.setString(10,
-                                "%" + kdkategori.getText() + nmkategori.
-                                getText() + "%");
-                        ps2.setString(11,
-                                "%" + kdgolongan.getText() + nmgolongan.
-                                getText() + "%");
+                        ps2.setString(9, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                        ps2.setString(10, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                        ps2.setString(11, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                         ps2.setString(12, "%" + TCari.getText() + "%");
                         ps2.setString(13, rs.getString(2));
                         ps2.setString(14, "%" + nmbar.getText() + "%");
-                        ps2.setString(15, "%" + kdjenis.getText() + nmjenis.
-                                getText() + "%");
-                        ps2.setString(16,
-                                "%" + kdkategori.getText() + nmkategori.
-                                getText() + "%");
-                        ps2.setString(17,
-                                "%" + kdgolongan.getText() + nmgolongan.
-                                getText() + "%");
+                        ps2.setString(15, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                        ps2.setString(16, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                        ps2.setString(17, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                         ps2.setString(18, "%" + TCari.getText() + "%");
                         ps2.setString(19, rs.getString(2));
                         ps2.setString(20, "%" + nmbar.getText() + "%");
-                        ps2.setString(21, "%" + kdjenis.getText() + nmjenis.
-                                getText() + "%");
-                        ps2.setString(22,
-                                "%" + kdkategori.getText() + nmkategori.
-                                getText() + "%");
-                        ps2.setString(23,
-                                "%" + kdgolongan.getText() + nmgolongan.
-                                getText() + "%");
+                        ps2.setString(21, "%" + kdjenis.getText() + nmjenis.getText() + "%");
+                        ps2.setString(22, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                        ps2.setString(23, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                         ps2.setString(24, "%" + TCari.getText() + "%");
                         rs2 = ps2.executeQuery();
                         int no = 1;
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{
-                                "",
-                                no + ". " + rs2.getString("kode_brng") + " " + rs2.
-                                getString("nama_brng"),
-                                rs2.getString("jumlah"), rs2.getString("satuan"),
-                                rs2.getString("keterangan")
-                            });
+                            tabMode.addRow(new Object[]{"",
+                                no + ". " + rs2.getString("kode_brng") + " " + rs2.getString("nama_brng"),
+                                rs2.getString("jumlah"), rs2.getString("satuan"), rs2.getString("keterangan")});
                             no++;
                         }
                     } catch (Exception e) {
@@ -1771,8 +1661,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
         ppDisetujui.setEnabled(akses.getmutasi_barang());
         ppDisetujui1.setEnabled(akses.getpengeluaran_stok_apotek());
-        if ((akses.getpengeluaran_stok_apotek() == false) && (akses.
-                getmutasi_barang() == false)) {
+        if ((akses.getpengeluaran_stok_apotek() == false) && (akses.getmutasi_barang() == false)) {
             ppTidakDisetujui.setEnabled(false);
         } else {
             ppTidakDisetujui.setEnabled(true);
@@ -1793,6 +1682,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgCariPermintaan.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPermintaan.class.getName());
+
 }

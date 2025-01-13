@@ -22,17 +22,22 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgParkirMasuk extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private int i;
+
     private DlgParkirJenis jenis = new DlgParkirJenis(null, false);
+
     private DlgPetugas petugas = new DlgPetugas(null, false);
 
     /**
@@ -47,11 +52,9 @@ public class DlgParkirMasuk extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"No.Rawat", "Nomer RM", "Nama Pasien", "Alamat Pasien",
-            "Jenis Bayar", "Kamar", "Tarif Kamar",
-            "Diagnosa Awal", "Diagnosa Akhir", "Tgl.Masuk", "Jam Masuk",
-            "Tgl.Keluar", "Jam Keluar",
-            "Ttl.Biaya", "Stts.Pulang", "Lama", "Dokter P.J."};
+        Object[] row = {"No.Rawat", "Nomer RM", "Nama Pasien", "Alamat Pasien", "Jenis Bayar", "Kamar", "Tarif Kamar",
+            "Diagnosa Awal", "Diagnosa Akhir", "Tgl.Masuk", "Jam Masuk", "Tgl.Keluar", "Jam Keluar", "Ttl.Biaya",
+            "Stts.Pulang", "Lama", "Dokter P.J."};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -61,7 +64,8 @@ public class DlgParkirMasuk extends javax.swing.JDialog {
         };
         tbKamIn.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbKamIn.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamIn.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -111,8 +115,7 @@ public class DlgParkirMasuk extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -151,14 +154,10 @@ public class DlgParkirMasuk extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    KdJenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 0).toString());
-                    NmJenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 1).toString());
-                    Tarif.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 2).toString());
-                    SIstem.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 3).toString());
+                    KdJenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    NmJenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
+                    Tarif.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 2).toString());
+                    SIstem.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 3).toString());
                 }
             }
 
@@ -210,10 +209,8 @@ public class DlgParkirMasuk extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -254,14 +251,16 @@ public class DlgParkirMasuk extends javax.swing.JDialog {
         });
 
         try {
-            //  
+            //
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1002,8 +1001,7 @@ private void KdPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgParkirMasuk dialog = new DlgParkirMasuk(new javax.swing.JFrame(),
-                    true);
+            DlgParkirMasuk dialog = new DlgParkirMasuk(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1060,63 +1058,50 @@ private void KdPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
         Valid.tabelKosong(tabMode);
         try {
-            /*if(stts_pulang='Pindah Kamar',(IFNULL(to_days(concat(tgl_keluar,' ',jam_keluar))-to_days(concat(tgl_masuk,' ',jam_masuk)),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))),"+
-                   "(IFNULL(to_days(concat(tgl_keluar,' ',jam_keluar))-to_days(concat(tgl_masuk,' ',jam_masuk)),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))+1)) as */
- /*rs=koneksi.prepareStatement(
-                   "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab),"+
-                   "penjab.png_jawab,concat(kamar_inap.kd_kamar,' ',bangsal.nm_bangsal),kamar.trf_kamar,kamar_inap.diagnosa_awal,kamar_inap.diagnosa_akhir," +
-                   "kamar_inap.tgl_masuk,kamar_inap.jam_masuk,if(kamar_inap.tgl_keluar='0000-00-00','',kamar_inap.tgl_keluar),"+
-                   "if(kamar_inap.jam_keluar='00:00:00','',kamar_inap.jam_keluar),kamar_inap.ttl_biaya,kamar_inap.stts_pulang, lama,dokter.nm_dokter "+
-                   "from kamar_inap inner join reg_periksa inner join pasien inner join kamar inner join bangsal inner join kelurahan inner join kecamatan inner join kabupaten inner join dokter inner join penjab " +
-                   "on kamar_inap.no_rawat=reg_periksa.no_rawat " +
-                   "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
-                   "and reg_periksa.kd_dokter=dokter.kd_dokter " +
-                   "and reg_periksa.kd_pj=penjab.kd_pj " +
-                   "and kamar_inap.kd_kamar=kamar.kd_kamar " +
-                   "and kamar.kd_bangsal=bangsal.kd_bangsal and pasien.kd_kel=kelurahan.kd_kel "+
-                   "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab " +
-                   "where  "+key+" order by bangsal.nm_bangsal,kamar_inap.tgl_masuk,kamar_inap.jam_masuk").executeQuery();
-            while(rs.next()){
-                tabMode.addRow(new String[]{rs.getString(1),
-                               rs.getString(2),
-                               rs.getString(3),
-                               rs.getString(4),
-                               rs.getString(5),
-                               rs.getString(6),
-                               Valid.SetAngka(rs.getDouble(7)),
-                               rs.getString(8),
-                               rs.getString(9),
-                               rs.getString(10),
-                               rs.getString(11),
-                               rs.getString(12),
-                               rs.getString(13),
-                               Valid.SetAngka(rs.getDouble(14)),
-                               rs.getString(15),
-                               rs.getString(16),
-                               rs.getString(17)});
-                psanak.setString(1,rs.getString(1));
-                rs2=psanak.executeQuery();
-                if(rs2.next()){
-                    tabMode.addRow(new String[]{"",
-                                    rs2.getString("no_rkm_medis"),
-                                    rs2.getString("nm_pasien"),
-                                    rs.getString(4),
-                                    rs.getString(5),
-                                    rs.getString(6),
-                                    "0","-","-",
-                                    rs.getString(10),
-                                    rs.getString(11),
-                                    rs.getString(12),
-                                    rs.getString(13),
-                                    "0",
-                                    rs.getString(15),
-                                    rs.getString(16),
-                                    rs.getString(17)});
-                }
-                
-                
-            }
-            //rs.close();*/
+            /*
+			 * if(stts_pulang='Pindah Kamar',(IFNULL(to_days(concat(tgl_keluar,'
+			 * ',jam_keluar))-to_days(concat(tgl_masuk,'
+			 * ',jam_masuk)),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))),"+
+			 * "(IFNULL(to_days(concat(tgl_keluar,'
+			 * ',jam_keluar))-to_days(concat(tgl_masuk,'
+			 * ',jam_masuk)),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))+1))
+			 * as
+             */
+ /*
+			 * rs=koneksi.prepareStatement(
+			 * "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab),"
+			 * +
+			 * "penjab.png_jawab,concat(kamar_inap.kd_kamar,' ',bangsal.nm_bangsal),kamar.trf_kamar,kamar_inap.diagnosa_awal,kamar_inap.diagnosa_akhir,"
+			 * +
+			 * "kamar_inap.tgl_masuk,kamar_inap.jam_masuk,if(kamar_inap.tgl_keluar='0000-00-00','',kamar_inap.tgl_keluar),"+
+			 * "if(kamar_inap.jam_keluar='00:00:00','',kamar_inap.jam_keluar),kamar_inap.ttl_biaya,kamar_inap.stts_pulang, lama,dokter.nm_dokter "
+			 * +
+			 * "from kamar_inap inner join reg_periksa inner join pasien inner join kamar inner join bangsal inner join kelurahan inner join kecamatan inner join kabupaten inner join dokter inner join penjab "
+			 * + "on kamar_inap.no_rawat=reg_periksa.no_rawat " +
+			 * "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
+			 * "and reg_periksa.kd_dokter=dokter.kd_dokter " +
+			 * "and reg_periksa.kd_pj=penjab.kd_pj " +
+			 * "and kamar_inap.kd_kamar=kamar.kd_kamar " +
+			 * "and kamar.kd_bangsal=bangsal.kd_bangsal and pasien.kd_kel=kelurahan.kd_kel "
+			 * + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab "
+			 * + "where  "
+			 * +key+" order by bangsal.nm_bangsal,kamar_inap.tgl_masuk,kamar_inap.jam_masuk"
+			 * ).executeQuery(); while(rs.next()){ tabMode.addRow(new
+			 * String[]{rs.getString(1), rs.getString(2), rs.getString(3),
+			 * rs.getString(4), rs.getString(5), rs.getString(6),
+			 * Valid.SetAngka(rs.getDouble(7)), rs.getString(8), rs.getString(9),
+			 * rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13),
+			 * Valid.SetAngka(rs.getDouble(14)), rs.getString(15), rs.getString(16),
+			 * rs.getString(17)}); psanak.setString(1,rs.getString(1));
+			 * rs2=psanak.executeQuery(); if(rs2.next()){ tabMode.addRow(new String[]{"",
+			 * rs2.getString("no_rkm_medis"), rs2.getString("nm_pasien"), rs.getString(4),
+			 * rs.getString(5), rs.getString(6), "0","-","-", rs.getString(10),
+			 * rs.getString(11), rs.getString(12), rs.getString(13), "0",
+			 * rs.getString(15), rs.getString(16), rs.getString(17)}); }
+			 * 
+			 * 
+			 * } //rs.close();
+             */
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
@@ -1133,8 +1118,7 @@ private void KdPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
     private void getData() {
         if (tbKamIn.getSelectedRow() != -1) {
-            NomorKendaraan.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(),
-                    0).toString());
+            NomorKendaraan.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString());
         }
     }
 
@@ -1149,9 +1133,7 @@ private void KdPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
             BtnHapus.setEnabled(akses.getparkir_in());
             BtnPrint.setEnabled(akses.getparkir_in());
             KdPetugas.setText(akses.getkode());
-            Sequel.cariIsi(
-                    "select petugas.nama from petugas where petugas.nip=?",
-                    NmPetugas, KdPetugas.getText());
+            Sequel.cariIsi("select petugas.nama from petugas where petugas.nip=?", NmPetugas, KdPetugas.getText());
         } else {
             KdPetugas.setEditable(true);
             NmPetugas.setEnabled(true);
@@ -1166,7 +1148,6 @@ private void KdPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         tampil();
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgParkirMasuk.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgParkirMasuk.class.getName());
 
 }

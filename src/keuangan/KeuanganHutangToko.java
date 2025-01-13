@@ -32,32 +32,51 @@ import kepegawaian.DlgCariPetugas;
 import toko.TokoSuplier;
 
 /**
- *
  * @author perpustakaan
  */
 public class KeuanganHutangToko extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private TokoSuplier suplier = new TokoSuplier(null, false);
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private int row = 0, i;
-    private String koderekening = "", tanggaldatang = "", tanggaltempo = "", Bayar_Pemesanan_Toko = Sequel.
-            cariIsi("select Bayar_Pemesanan_Toko from set_akun");
+
+    private String koderekening = "", tanggaldatang = "", tanggaltempo = "",
+            Bayar_Pemesanan_Toko = Sequel.cariIsi("select Bayar_Pemesanan_Toko from set_akun");
+
     private double sisahutang = 0, cicilan = 0, bayar = 0;
+
     private Jurnal jur = new Jurnal();
+
     private WarnaTable3 warna = new WarnaTable3();
+
     private boolean sukses = false;
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -72,23 +91,13 @@ public class KeuanganHutangToko extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {
-            "P", "No.Faktur", "No.Order", "Supplier", "Petugas Penerima",
-            "Tgl.Faktur", "Tgl.Datang", "Tgl.Tempo", "Tagihan",
-            "Sisa Hutang", "Pembayaran", "Sisa", "Bank Suplier", "No.Rekening"
-        };
+        Object[] rowRwJlDr = {"P", "No.Faktur", "No.Order", "Supplier", "Petugas Penerima", "Tgl.Faktur", "Tgl.Datang",
+            "Tgl.Tempo", "Tagihan", "Sisa Hutang", "Pembayaran", "Sisa", "Bank Suplier", "No.Rekening"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -106,7 +115,8 @@ public class KeuanganHutangToko extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -147,8 +157,7 @@ public class KeuanganHutangToko extends javax.swing.JDialog {
         keterangan.setDocument(new batasInput((byte) 100).getKata(keterangan));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -185,10 +194,8 @@ public class KeuanganHutangToko extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (suplier.getTable().getSelectedRow() != -1) {
-                    kdsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                    nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     tampil();
                 }
                 kdsup.requestFocus();
@@ -243,10 +250,9 @@ public class KeuanganHutangToko extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    nip.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    nama_petugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    nip.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    nama_petugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 nip.requestFocus();
             }
@@ -271,7 +277,9 @@ public class KeuanganHutangToko extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1232,8 +1240,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganHutangToko dialog = new KeuanganHutangToko(
-                    new javax.swing.JFrame(), true);
+            KeuanganHutangToko dialog = new KeuanganHutangToko(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1304,27 +1311,29 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         Valid.tabelKosong(tabMode);
         try {
             if (ChkTanggalDatang.isSelected() == true) {
-                tanggaldatang = " tokopemesanan.tgl_pesan between '" + Valid.
-                        SetTgl(TglDatang1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(TglDatang2.getSelectedItem() + "") + "' and ";
+                tanggaldatang = " tokopemesanan.tgl_pesan between '" + Valid.SetTgl(TglDatang1.getSelectedItem() + "")
+                        + "' and '" + Valid.SetTgl(TglDatang2.getSelectedItem() + "") + "' and ";
             }
             if (ChkTanggalTempo.isSelected() == true) {
-                tanggaltempo = " tokopemesanan.tgl_tempo between '" + Valid.
-                        SetTgl(TglTempo1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(TglTempo2.getSelectedItem() + "") + "' and ";
+                tanggaltempo = " tokopemesanan.tgl_tempo between '" + Valid.SetTgl(TglTempo1.getSelectedItem() + "")
+                        + "' and '" + Valid.SetTgl(TglTempo2.getSelectedItem() + "") + "' and ";
             }
-            ps = koneksi.prepareStatement(
-                    "select tokopemesanan.no_faktur,tokopemesanan.no_order,tokosuplier.nama_suplier, "
-                    + "petugas.nama,tokopemesanan.tgl_tempo,tokopemesanan.tgl_pesan,tokopemesanan.tgl_faktur,tokopemesanan.tagihan,"
-                    + "(SELECT ifnull(SUM(besar_bayar),0) FROM toko_bayar_pemesanan where toko_bayar_pemesanan.no_faktur=tokopemesanan.no_faktur) as bayar, "
-                    + "tokosuplier.nama_bank,tokosuplier.rekening from tokopemesanan inner join tokosuplier inner join petugas "
-                    + "on tokopemesanan.kode_suplier=tokosuplier.kode_suplier "
-                    + "and tokopemesanan.nip=petugas.nip where "
-                    + tanggaldatang + tanggaltempo + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokopemesanan.no_faktur like ? or "
-                    + tanggaldatang + tanggaltempo + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokopemesanan.no_order like ? or "
-                    + tanggaldatang + tanggaltempo + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokopemesanan.tgl_tempo like ? or "
-                    + tanggaldatang + tanggaltempo + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokosuplier.nama_suplier like ? or "
-                    + tanggaldatang + tanggaltempo + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and petugas.nama like ? order by tokopemesanan.tgl_tempo ");
+            ps = koneksi
+                    .prepareStatement("select tokopemesanan.no_faktur,tokopemesanan.no_order,tokosuplier.nama_suplier, "
+                            + "petugas.nama,tokopemesanan.tgl_tempo,tokopemesanan.tgl_pesan,tokopemesanan.tgl_faktur,tokopemesanan.tagihan,"
+                            + "(SELECT ifnull(SUM(besar_bayar),0) FROM toko_bayar_pemesanan where toko_bayar_pemesanan.no_faktur=tokopemesanan.no_faktur) as bayar, "
+                            + "tokosuplier.nama_bank,tokosuplier.rekening from tokopemesanan inner join tokosuplier inner join petugas "
+                            + "on tokopemesanan.kode_suplier=tokosuplier.kode_suplier "
+                            + "and tokopemesanan.nip=petugas.nip where " + tanggaldatang + tanggaltempo
+                            + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokopemesanan.no_faktur like ? or "
+                            + tanggaldatang + tanggaltempo
+                            + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokopemesanan.no_order like ? or "
+                            + tanggaldatang + tanggaltempo
+                            + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokopemesanan.tgl_tempo like ? or "
+                            + tanggaldatang + tanggaltempo
+                            + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and tokosuplier.nama_suplier like ? or "
+                            + tanggaldatang + tanggaltempo
+                            + "tokopemesanan.status<>'Sudah Dibayar' and tokosuplier.nama_suplier like ? and petugas.nama like ? order by tokopemesanan.tgl_tempo ");
             try {
                 ps.setString(1, "%" + nmsup.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -1340,18 +1349,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 sisahutang = 0;
                 cicilan = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("no_faktur"), rs.getString(
-                        "no_order"),
-                        rs.getString("nama_suplier"), rs.getString("nama"), rs.
-                        getString("tgl_faktur"),
-                        rs.getString("tgl_pesan"), rs.getString("tgl_tempo"),
-                        rs.getDouble("tagihan"), (rs.getDouble("tagihan") - rs.
-                        getDouble("bayar")),
-                        0, (rs.getDouble("tagihan") - rs.getDouble("bayar")),
-                        rs.getString("nama_bank"),
-                        rs.getString("rekening")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("no_faktur"), rs.getString("no_order"),
+                        rs.getString("nama_suplier"), rs.getString("nama"), rs.getString("tgl_faktur"),
+                        rs.getString("tgl_pesan"), rs.getString("tgl_tempo"), rs.getDouble("tagihan"),
+                        (rs.getDouble("tagihan") - rs.getDouble("bayar")), 0,
+                        (rs.getDouble("tagihan") - rs.getDouble("bayar")), rs.getString("nama_bank"),
+                        rs.getString("rekening")});
                     sisahutang += rs.getDouble("tagihan");
                     cicilan += rs.getDouble("bayar");
                 }
@@ -1376,8 +1379,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         bayar = 0;
         for (i = 0; i < row; i++) {
             if (tbBangsal.getValueAt(i, 0).toString().equals("true")) {
-                bayar += Double.parseDouble(tbBangsal.getValueAt(i, 11).
-                        toString());
+                bayar += Double.parseDouble(tbBangsal.getValueAt(i, 11).toString());
             }
         }
         LCount1.setText(Valid.SetAngka(bayar));
@@ -1389,16 +1391,14 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select * from akun_bayar_hutang order by akun_bayar_hutang.nama_bayar");
+            ps = koneksi.prepareStatement("select * from akun_bayar_hutang order by akun_bayar_hutang.nama_bayar");
             try {
                 rs = ps.executeQuery();
                 AkunBayar.removeAllItems();
                 while (rs.next()) {
                     AkunBayar.addItem(rs.getString(1).replaceAll("\"", ""));
-                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).
-                            replaceAll("\"", "") + "\",\"KodeRek\":\"" + rs.
-                            getString(2) + "\"},";
+                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).replaceAll("\"", "") + "\",\"KodeRek\":\""
+                            + rs.getString(2) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1411,8 +1411,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
             }
 
-            fileWriter.write("{\"akunbayarhutang\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"akunbayarhutang\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1428,8 +1427,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             response = root.path("akunbayarhutang");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll(
-                            "\"", ""));
+                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll("\"", ""));
                 }
             }
             myObj.close();
@@ -1438,6 +1436,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(KeuanganHutangToko.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganHutangToko.class.getName());
+
 }

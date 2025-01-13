@@ -15,39 +15,42 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class WarnaTablePerkiraan extends DefaultTableCellRenderer {
 
-  /** */
-  public int kolom = 24;
+    /**
+     *
+     */
+    public int kolom = 24;
 
-  public int bayar = 25;
+    public int bayar = 25;
 
-  /**
-   * @param table
-   * @param value
-   * @param isSelected
-   * @param hasFocus
-   * @param row
-   * @param column
-   * @return
-   */
-  @Override
-  public Component getTableCellRendererComponent(
-      JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component component =
-        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (row % 2 == 1) {
-      component.setBackground(new Color(255, 246, 244));
-    } else {
-      component.setBackground(new Color(255, 255, 255));
-    }
-    if (table.getValueAt(row, kolom).toString().equals("Tidak Aman")) {
-      component.setBackground(new Color(255, 153, 153));
-    }
-    if (!table.getValueAt(row, bayar).toString().equals("BPJS Kesehatan")
-        && !table.getValueAt(row, bayar).toString().isEmpty()) {
-      component.setBackground(new Color(255, 255, 153));
-    }
-    return component;
-  }
+    /**
+     * @param table
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return
+     */
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+            int row, int column) {
+        Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-  private static final Logger LOG = Logger.getLogger(WarnaTablePerkiraan.class.getName());
+        if (row % 2 == 1) {
+            component.setBackground(new Color(255, 246, 244));
+        } else {
+            component.setBackground(new Color(255, 255, 255));
+        }
+        if (table.getValueAt(row, kolom).toString().equals("Tidak Aman")) {
+            component.setBackground(new Color(255, 153, 153));
+        }
+        if (!table.getValueAt(row, bayar).toString().equals("BPJS Kesehatan")
+                && !table.getValueAt(row, bayar).toString().isEmpty()) {
+            component.setBackground(new Color(255, 255, 153));
+        }
+        return component;
+    }
+
+    private static final Logger LOG = Logger.getLogger(WarnaTablePerkiraan.class.getName());
+
 }

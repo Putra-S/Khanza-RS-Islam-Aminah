@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package inventory;
 
@@ -32,19 +32,26 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgKegiatanFarmasi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2, tabMode3;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private int i = 0;
+
     private double itempengadaan = 0, jmlitempengadaan = 0, itemtersedia = 0, jmlitemtersedia = 0;
+
     private String qrystok = "", aktifkanbatch = "no";
 
     /**
@@ -58,9 +65,8 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
         initComponents();
         this.setLocation(8, 1);
         setSize(885, 674);
-        tabMode = new DefaultTableModel(null, new String[]{"No.",
-            "Golongan Obat", "Jumlah Item Obat",
-            "Jumlah Item Obat Yang Tersedia di RS"}) {
+        tabMode = new DefaultTableModel(null,
+                new String[]{"No.", "Golongan Obat", "Jumlah Item Obat", "Jumlah Item Obat Yang Tersedia di RS"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -68,7 +74,8 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -86,8 +93,8 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new String[]{"No.", "Jenis Obat",
-            "Jumlah Item Obat", "Jumlah Item Obat Yang Tersedia di RS"}) {
+        tabMode2 = new DefaultTableModel(null,
+                new String[]{"No.", "Jenis Obat", "Jumlah Item Obat", "Jumlah Item Obat Yang Tersedia di RS"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -95,7 +102,8 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
 
         };
         tbBangsal2.setModel(tabMode2);
-        //tbBangsal2.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
+        // tbBangsal2.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
         tbBangsal2.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -113,9 +121,8 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
         }
         tbBangsal2.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode3 = new DefaultTableModel(null, new String[]{"No.",
-            "Kategori Obat", "Jumlah Item Obat",
-            "Jumlah Item Obat Yang Tersedia di RS"}) {
+        tabMode3 = new DefaultTableModel(null,
+                new String[]{"No.", "Kategori Obat", "Jumlah Item Obat", "Jumlah Item Obat Yang Tersedia di RS"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -123,7 +130,8 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
 
         };
         tbBangsal3.setModel(tabMode3);
-        //tbBangsal3.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal3.getBackground()));
+        // tbBangsal3.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal3.getBackground()));
         tbBangsal3.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal3.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -143,8 +151,7 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
 
         TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TabRawat.getSelectedIndex() == 0) {
@@ -207,7 +214,9 @@ public class DlgKegiatanFarmasi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -568,8 +577,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgKegiatanFarmasi dialog = new DlgKegiatanFarmasi(
-                    new javax.swing.JFrame(), true);
+            DlgKegiatanFarmasi dialog = new DlgKegiatanFarmasi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -609,8 +617,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Valid.tabelKosong(tabMode);
-            ps = koneksi.prepareStatement(
-                    "select * from golongan_barang where nama like ? order by nama ");
+            ps = koneksi.prepareStatement("select * from golongan_barang where nama like ? order by nama ");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
@@ -627,17 +634,15 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rs.next()) {
                     itempengadaan = 0;
                     itemtersedia = 0;
-                    //pemesanan
+                    // pemesanan
                     ps2 = koneksi.prepareStatement(
                             "select count(distinct detailpesan.kode_brng) as jumlah from pemesanan inner join detailpesan "
                             + " inner join databarang on pemesanan.no_faktur=detailpesan.no_faktur and databarang.kode_brng=detailpesan.kode_brng "
                             + " where databarang.kode_golongan=? and pemesanan.tgl_pesan between ? and ?");
                     try {
                         ps2.setString(1, rs.getString("kode"));
-                        ps2.setString(2, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps2.setString(3, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps2.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps2.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rs2 = ps2.executeQuery();
                         if (rs2.next()) {
                             itempengadaan = rs2.getDouble("jumlah");
@@ -673,10 +678,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         }
                     }
 
-                    tabMode.addRow(new String[]{
-                        i + "", rs.getString("nama"), itempengadaan + "",
-                        itemtersedia + ""
-                    });
+                    tabMode
+                            .addRow(new String[]{i + "", rs.getString("nama"), itempengadaan + "", itemtersedia + ""});
                     i++;
                 }
             } catch (Exception e) {
@@ -689,9 +692,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     ps.close();
                 }
             }
-            tabMode.addRow(new String[]{
-                "", "Total : ", jmlitempengadaan + "", jmlitemtersedia + ""
-            });
+            tabMode.addRow(new String[]{"", "Total : ", jmlitempengadaan + "", jmlitemtersedia + ""});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
@@ -705,8 +706,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Valid.tabelKosong(tabMode2);
-            ps = koneksi.prepareStatement(
-                    "select * from jenis where nama like ? order by nama ");
+            ps = koneksi.prepareStatement("select * from jenis where nama like ? order by nama ");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
@@ -722,17 +722,15 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rs.next()) {
                     itempengadaan = 0;
                     itemtersedia = 0;
-                    //pemesanan
+                    // pemesanan
                     ps2 = koneksi.prepareStatement(
                             "select count(distinct detailpesan.kode_brng) as jumlah from pemesanan inner join detailpesan "
                             + " inner join databarang on pemesanan.no_faktur=detailpesan.no_faktur and databarang.kode_brng=detailpesan.kode_brng "
                             + " where databarang.kdjns=? and pemesanan.tgl_pesan between ? and ?");
                     try {
                         ps2.setString(1, rs.getString("kdjns"));
-                        ps2.setString(2, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps2.setString(3, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps2.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps2.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rs2 = ps2.executeQuery();
                         if (rs2.next()) {
                             itempengadaan = rs2.getDouble("jumlah");
@@ -768,10 +766,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         }
                     }
 
-                    tabMode2.addRow(new String[]{
-                        i + "", rs.getString("nama"), itempengadaan + "",
-                        itemtersedia + ""
-                    });
+                    tabMode2
+                            .addRow(new String[]{i + "", rs.getString("nama"), itempengadaan + "", itemtersedia + ""});
                     i++;
                 }
             } catch (Exception e) {
@@ -784,9 +780,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     ps.close();
                 }
             }
-            tabMode2.addRow(new String[]{
-                "", "Total : ", jmlitempengadaan + "", jmlitemtersedia + ""
-            });
+            tabMode2.addRow(new String[]{"", "Total : ", jmlitempengadaan + "", jmlitemtersedia + ""});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
@@ -797,8 +791,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Valid.tabelKosong(tabMode3);
-            ps = koneksi.prepareStatement(
-                    "select * from kategori_barang where nama like ? order by nama ");
+            ps = koneksi.prepareStatement("select * from kategori_barang where nama like ? order by nama ");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
@@ -815,17 +808,15 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rs.next()) {
                     itempengadaan = 0;
                     itemtersedia = 0;
-                    //pemesanan
+                    // pemesanan
                     ps2 = koneksi.prepareStatement(
                             "select count(distinct detailpesan.kode_brng) as jumlah from pemesanan inner join detailpesan "
                             + " inner join databarang on pemesanan.no_faktur=detailpesan.no_faktur and databarang.kode_brng=detailpesan.kode_brng "
                             + " where databarang.kode_kategori=? and pemesanan.tgl_pesan between ? and ?");
                     try {
                         ps2.setString(1, rs.getString("kode"));
-                        ps2.setString(2, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps2.setString(3, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps2.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps2.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rs2 = ps2.executeQuery();
                         if (rs2.next()) {
                             itempengadaan = rs2.getDouble("jumlah");
@@ -861,10 +852,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         }
                     }
 
-                    tabMode3.addRow(new String[]{
-                        i + "", rs.getString("nama"), itempengadaan + "",
-                        itemtersedia + ""
-                    });
+                    tabMode3
+                            .addRow(new String[]{i + "", rs.getString("nama"), itempengadaan + "", itemtersedia + ""});
                     i++;
                 }
             } catch (Exception e) {
@@ -877,16 +866,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     ps.close();
                 }
             }
-            tabMode3.addRow(new String[]{
-                "", "Total : ", jmlitempengadaan + "", jmlitemtersedia + ""
-            });
+            tabMode3.addRow(new String[]{"", "Total : ", jmlitempengadaan + "", jmlitemtersedia + ""});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgKegiatanFarmasi.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgKegiatanFarmasi.class.getName());
 
 }

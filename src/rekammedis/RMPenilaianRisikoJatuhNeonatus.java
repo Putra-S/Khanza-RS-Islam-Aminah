@@ -42,20 +42,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
 
     /**
@@ -70,25 +78,17 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Tanggal",
-            "Pasang Gelang Risiko Jatuh", "Edukasi Orang Tua/Keluarga",
-            "Dekatkan Box Bayi Dengan Ibu",
-            "Orentasi Ruangan Pada Orang Tua/Keluarga",
-            "Pastikan Lantai & Alas Kaki Tidak Licin",
-            "Pastikan Selalu Ada Pendamping",
-            "Bila Dirawat Dalam Inkubator, Pastikan Semua Jendela Terkunci",
-            "Kontrol Rutin Oleh Perawat/Bidan",
-            "Pasang Tanda Risiko Jatuh Pada Box/Inkubator",
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
+            "Tanggal", "Pasang Gelang Risiko Jatuh", "Edukasi Orang Tua/Keluarga", "Dekatkan Box Bayi Dengan Ibu",
+            "Orentasi Ruangan Pada Orang Tua/Keluarga", "Pastikan Lantai & Alas Kaki Tidak Licin",
+            "Pastikan Selalu Ada Pendamping", "Bila Dirawat Dalam Inkubator, Pastikan Semua Jendela Terkunci",
+            "Kontrol Rutin Oleh Perawat/Bidan", "Pasang Tanda Risiko Jatuh Pada Box/Inkubator",
             "Tempatkan Bayi Pada Tempat Yang Aman",
-            "Segera Istirahat Apabila Merasa Lelah & Tempatkan Bayi Pada Boxnya",
-            "Cara Membedong Bayi",
+            "Segera Istirahat Apabila Merasa Lelah & Tempatkan Bayi Pada Boxnya", "Cara Membedong Bayi",
             "Libatkan Keluarga Untuk Mendampingi/Segera Panggil Perawat/Bidan Jika Diperlukan",
-            "Teknip Menggendong Bayi", "Bapak", "Ibu", "Keluarga",
-            "Wali Lainnya", "Memahami & Mampu Menjelaskan Kembali",
-            "Perlu Edukasi Ulang", "Mampu Mendemonstrasikan", "Kode Petugas",
-            "Nama Petugas"
-        }) {
+            "Teknip Menggendong Bayi", "Bapak", "Ibu", "Keluarga", "Wali Lainnya",
+            "Memahami & Mampu Menjelaskan Kembali", "Perlu Edukasi Ulang", "Mampu Mendemonstrasikan",
+            "Kode Petugas", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -97,7 +97,8 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -129,8 +130,7 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -167,10 +167,10 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodePetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     btnPetugas.requestFocus();
                 }
 
@@ -211,14 +211,15 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1806,8 +1807,7 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPenilaianRisikoJatuhNeonatus dialog = new RMPenilaianRisikoJatuhNeonatus(
-                    new javax.swing.JFrame(), true);
+            RMPenilaianRisikoJatuhNeonatus dialog = new RMPenilaianRisikoJatuhNeonatus(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1973,15 +1973,11 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1991,23 +1987,16 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("tanggal"),
-                        rs.getString("intervensi1"), rs.getString("intervensi2"),
-                        rs.getString("intervensi3"), rs.getString("intervensi4"),
-                        rs.getString("intervensi5"), rs.getString("intervensi6"),
-                        rs.getString("intervensi7"), rs.getString("intervensi8"),
-                        rs.getString("intervensi9"), rs.getString("edukasi1"),
-                        rs.getString("edukasi2"), rs.getString("edukasi3"),
-                        rs.getString("edukasi4"), rs.getString("edukasi5"), rs.
-                        getString("sasaran1"), rs.getString("sasaran2"), rs.
-                        getString("sasaran3"), rs.getString("sasaran4"),
-                        rs.getString("evaluasi1"), rs.getString("evaluasi2"),
-                        rs.getString("evaluasi3"), rs.getString("nip"), rs.
-                        getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("intervensi1"), rs.getString("intervensi2"),
+                        rs.getString("intervensi3"), rs.getString("intervensi4"), rs.getString("intervensi5"),
+                        rs.getString("intervensi6"), rs.getString("intervensi7"), rs.getString("intervensi8"),
+                        rs.getString("intervensi9"), rs.getString("edukasi1"), rs.getString("edukasi2"),
+                        rs.getString("edukasi3"), rs.getString("edukasi4"), rs.getString("edukasi5"),
+                        rs.getString("sasaran1"), rs.getString("sasaran2"), rs.getString("sasaran3"),
+                        rs.getString("sasaran4"), rs.getString("evaluasi1"), rs.getString("evaluasi2"),
+                        rs.getString("evaluasi3"), rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2056,65 +2045,36 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Intervensi1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString());
-            Intervensi2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 7).toString());
-            Intervensi3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            Intervensi4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 9).toString());
-            Intervensi5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            Intervensi6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 11).toString());
-            Intervensi7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            Intervensi8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            Intervensi9.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            Edukasi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    15).toString());
-            Edukasi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    16).toString());
-            Edukasi3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    17).toString());
-            Edukasi4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    18).toString());
-            Edukasi5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    19).toString());
-            Sasaran1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    20).toString());
-            Sasaran2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    21).toString());
-            Sasaran3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    22).toString());
-            Sasaran4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    23).toString());
-            Evaluasi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    24).toString());
-            Evaluasi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    25).toString());
-            Evaluasi3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    26).toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(14, 16));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(17, 19));
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
+            Intervensi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Intervensi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Intervensi3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Intervensi4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Intervensi5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Intervensi6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Intervensi7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Intervensi8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Intervensi9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Edukasi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Edukasi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Edukasi3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Edukasi4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Edukasi5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            Sasaran1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Sasaran2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Sasaran3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Sasaran4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Evaluasi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            Evaluasi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            Evaluasi3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(14, 16));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(17, 19));
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
@@ -2167,8 +2127,7 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 182));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 182));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2192,109 +2151,71 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(KodePetugas.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 KodePetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("penilaian_risiko_jatuh_neonatus",
-                "no_rawat=? and tanggal=?",
+        if (Sequel.mengedittf("penilaian_risiko_jatuh_neonatus", "no_rawat=? and tanggal=?",
                 "no_rawat=?,tanggal=?,intervensi1=?,intervensi2=?,intervensi3=?,intervensi4=?,intervensi5=?,intervensi6=?,"
                 + "intervensi7=?,intervensi8=?,intervensi9=?,edukasi1=?,edukasi2=?,edukasi3=?,edukasi4=?,edukasi5=?,sasaran1=?,sasaran2=?,sasaran3=?,sasaran4=?,evaluasi1=?,evaluasi2=?,evaluasi3=?,"
-                + "nip=?", 26, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), Intervensi1.getSelectedItem().toString(),
-                    Intervensi2.getSelectedItem().toString(), Intervensi3.
-                    getSelectedItem().toString(), Intervensi4.getSelectedItem().
-                            toString(), Intervensi5.getSelectedItem().toString(),
-                    Intervensi6.getSelectedItem().toString(), Intervensi7.
-                    getSelectedItem().toString(), Intervensi8.getSelectedItem().
-                            toString(), Intervensi9.getSelectedItem().toString(),
-                    Edukasi1.getSelectedItem().toString(), Edukasi2.
-                    getSelectedItem().toString(), Edukasi3.getSelectedItem().
-                            toString(), Edukasi4.getSelectedItem().toString(),
-                    Edukasi5.getSelectedItem().toString(),
-                    Sasaran1.getSelectedItem().toString(), Sasaran2.
-                    getSelectedItem().toString(), Sasaran3.getSelectedItem().
-                            toString(), Sasaran4.getSelectedItem().toString(),
-                    Evaluasi1.getSelectedItem().toString(),
-                    Evaluasi2.getSelectedItem().toString(), Evaluasi3.
-                    getSelectedItem().toString(), KodePetugas.getText(),
+                + "nip=?",
+                26,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    Intervensi1.getSelectedItem().toString(), Intervensi2.getSelectedItem().toString(),
+                    Intervensi3.getSelectedItem().toString(), Intervensi4.getSelectedItem().toString(),
+                    Intervensi5.getSelectedItem().toString(), Intervensi6.getSelectedItem().toString(),
+                    Intervensi7.getSelectedItem().toString(), Intervensi8.getSelectedItem().toString(),
+                    Intervensi9.getSelectedItem().toString(), Edukasi1.getSelectedItem().toString(),
+                    Edukasi2.getSelectedItem().toString(), Edukasi3.getSelectedItem().toString(),
+                    Edukasi4.getSelectedItem().toString(), Edukasi5.getSelectedItem().toString(),
+                    Sasaran1.getSelectedItem().toString(), Sasaran2.getSelectedItem().toString(),
+                    Sasaran3.getSelectedItem().toString(), Sasaran4.getSelectedItem().toString(),
+                    Evaluasi1.getSelectedItem().toString(), Evaluasi2.getSelectedItem().toString(),
+                    Evaluasi3.getSelectedItem().toString(), KodePetugas.getText(),
                     tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(Intervensi1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 6);
-            tbObat.setValueAt(Intervensi2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(Intervensi3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
-            tbObat.setValueAt(Intervensi4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 9);
-            tbObat.setValueAt(Intervensi5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 10);
-            tbObat.setValueAt(Intervensi6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 11);
-            tbObat.setValueAt(Intervensi7.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(Intervensi8.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 13);
-            tbObat.setValueAt(Intervensi9.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(Edukasi1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(Edukasi2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(Edukasi3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.setValueAt(Edukasi4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 18);
-            tbObat.setValueAt(Edukasi5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.setValueAt(Sasaran1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 20);
-            tbObat.setValueAt(Sasaran2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 21);
-            tbObat.setValueAt(Sasaran3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 22);
-            tbObat.setValueAt(Sasaran4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 23);
-            tbObat.setValueAt(Evaluasi1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 24);
-            tbObat.setValueAt(Evaluasi2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 25);
-            tbObat.setValueAt(Evaluasi3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 26);
-            tbObat.
-                    setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(),
-                            27);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            28);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(Intervensi1.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(Intervensi2.getSelectedItem().toString(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Intervensi3.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(Intervensi4.getSelectedItem().toString(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(Intervensi5.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(Intervensi6.getSelectedItem().toString(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(Intervensi7.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(Intervensi8.getSelectedItem().toString(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(Intervensi9.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(Edukasi1.getSelectedItem().toString(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(Edukasi2.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(Edukasi3.getSelectedItem().toString(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(Edukasi4.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(Edukasi5.getSelectedItem().toString(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(Sasaran1.getSelectedItem().toString(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(Sasaran2.getSelectedItem().toString(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(Sasaran3.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(Sasaran4.getSelectedItem().toString(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(Evaluasi1.getSelectedItem().toString(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(Evaluasi2.getSelectedItem().toString(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(Evaluasi3.getSelectedItem().toString(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 28);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_risiko_jatuh_neonatus where no_rawat=? and tanggal=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_risiko_jatuh_neonatus where no_rawat=? and tanggal=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2306,7 +2227,9 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -2348,7 +2271,7 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -2359,6 +2282,6 @@ public class RMPenilaianRisikoJatuhNeonatus extends javax.swing.JDialog {
         new Timer(1240, taskPerformer).start();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianRisikoJatuhNeonatus.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianRisikoJatuhNeonatus.class.getName());
+
 }

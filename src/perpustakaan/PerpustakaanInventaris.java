@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package perpustakaan;
 
@@ -37,18 +37,24 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class PerpustakaanInventaris extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private final Properties prop = new Properties();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private String namaruang = "";
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -64,11 +70,9 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"No.Inventaris", "Kode", "Nama/Judul", "Penerbit",
-            "Pengarang/Penulis", "Terbit", "Barcode SN", "Kategori", "Jenis",
-            "Asal Koleksi", "Pengadaan", "Harga", "Stts.Koleksi", "Ruang",
-            "No.Rak", "No.Box"
-        };
+        Object[] row = {"No.Inventaris", "Kode", "Nama/Judul", "Penerbit", "Pengarang/Penulis", "Terbit", "Barcode SN",
+            "Kategori", "Jenis", "Asal Koleksi", "Pengadaan", "Harga", "Stts.Koleksi", "Ruang", "No.Rak",
+            "No.Box"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -78,9 +82,9 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 16; i++) {
@@ -121,8 +125,7 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        no_inventaris.setDocument(new batasInput((byte) 20).getKata(
-                no_inventaris));
+        no_inventaris.setDocument(new batasInput((byte) 20).getKata(no_inventaris));
         kode_buku.setDocument(new batasInput((byte) 10).getKata(kode_buku));
         harga.setDocument(new batasInput((byte) 15).getOnlyAngka(harga));
         kd_ruang.setDocument(new batasInput((byte) 5).getKata(kd_ruang));
@@ -144,18 +147,12 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kode_buku.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 0).toString());
-                    judul_buku.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 1).toString());
-                    nm_produsen.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 3).toString());
-                    nm_merk.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 4).toString());
-                    nm_kategori.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 7).toString());
-                    nm_jenis.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 8).toString());
+                    kode_buku.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                    judul_buku.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                    nm_produsen.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 3).toString());
+                    nm_merk.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 4).toString());
+                    nm_kategori.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 7).toString());
+                    nm_jenis.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 8).toString());
                 }
                 kode_buku.requestFocus();
             }
@@ -209,14 +206,12 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        kd_ruang.setText(ruang.getTable().getValueAt(ruang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nm_ruang.setText(ruang.getTable().getValueAt(ruang.
-                                getTable().getSelectedRow(), 1).toString());
+                        kd_ruang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 0).toString());
+                        nm_ruang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                         kd_ruang.requestFocus();
                     } else if (pilihan == 2) {
-                        nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.
-                                getTable().getSelectedRow(), 1).toString());
+                        nm_ruangcari
+                                .setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                         TCari.requestFocus();
                     }
                 }
@@ -259,8 +254,7 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -287,12 +281,17 @@ public class PerpustakaanInventaris extends javax.swing.JDialog {
     }
 
     private PerpustakaanKoleksi barang = new PerpustakaanKoleksi(null, false);
+
     private PerpustakaanRuang ruang = new PerpustakaanRuang(null, false);
+
     private double nilai_inven = 0;
+
     private int pilihan = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1351,8 +1350,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanInventaris dialog = new PerpustakaanInventaris(
-                    new javax.swing.JFrame(), true);
+            PerpustakaanInventaris dialog = new PerpustakaanInventaris(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1470,8 +1468,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
             }
 
             try {
-                if (TCari.getText().isEmpty() && nm_ruangcari.getText().
-                        isEmpty()) {
+                if (TCari.getText().isEmpty() && nm_ruangcari.getText().isEmpty()) {
                 } else {
                     ps.setString(1, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -1506,19 +1503,12 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
                 rs = ps.executeQuery();
                 nilai_inven = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_inventaris"), rs.getString("kode_buku"),
-                        rs.getString("judul_buku"),
-                        rs.getString("nama_penerbit"), rs.getString(
-                        "nama_pengarang"), rs.getString("thn_terbit").substring(
-                        0, 4),
-                        rs.getString("isbn"), rs.getString("nama_kategori"), rs.
-                        getString("nama_jenis"),
-                        rs.getString("asal_buku"), rs.getString("tgl_pengadaan"),
-                        rs.getString("harga"),
-                        rs.getString("status_buku"), rs.getString("nm_ruang"),
-                        rs.getString("no_rak"), rs.getString("no_box")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_inventaris"), rs.getString("kode_buku"),
+                        rs.getString("judul_buku"), rs.getString("nama_penerbit"), rs.getString("nama_pengarang"),
+                        rs.getString("thn_terbit").substring(0, 4), rs.getString("isbn"),
+                        rs.getString("nama_kategori"), rs.getString("nama_jenis"), rs.getString("asal_buku"),
+                        rs.getString("tgl_pengadaan"), rs.getString("harga"), rs.getString("status_buku"),
+                        rs.getString("nm_ruang"), rs.getString("no_rak"), rs.getString("no_box")});
                     nilai_inven += rs.getDouble("harga");
                 }
             } catch (Exception e) {
@@ -1531,8 +1521,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
                     ps.close();
                 }
             }
-            LCount.setText(tabMode.getRowCount() + " | " + Valid.SetAngka(
-                    nilai_inven));
+            LCount.setText(tabMode.getRowCount() + " | " + Valid.SetAngka(nilai_inven));
         } catch (Exception e) {
             System.out.println("Notif : " + e);
         }
@@ -1559,46 +1548,31 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
         no_box.setSelectedIndex(0);
         TCari.setText("");
         no_inventaris.requestFocus();
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_inventaris,8),signed)),0) from perpustakaan_inventaris  ",
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(no_inventaris,8),signed)),0) from perpustakaan_inventaris  ",
                 "IP", 8, no_inventaris);
         no_inventaris.requestFocus();
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 0).toString());
-            kode_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            judul_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            nm_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
-            nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 8).toString());
-            asal_buku.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 9).toString());
-            Valid.SetTgl(tgl_pengadaan, tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 10).toString());
-            harga.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 11).toString());
-            status_buku.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 12).toString());
+            no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            kode_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            judul_buku.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            nm_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            asal_buku.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            Valid.SetTgl(tgl_pengadaan, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString());
+            harga.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString());
+            status_buku.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 12).toString());
             Sequel.cariIsi(
-                    "select perpustakaan_inventaris.kd_ruang from perpustakaan_inventaris where perpustakaan_inventaris.no_inventaris='" + tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 0).
-                            toString() + "'", kd_ruang);
-            nm_ruang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 13).toString());
-            no_rak.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 14).toString());
-            no_box.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 15).toString());
+                    "select perpustakaan_inventaris.kd_ruang from perpustakaan_inventaris where perpustakaan_inventaris.no_inventaris='"
+                    + tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString() + "'",
+                    kd_ruang);
+            nm_ruang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 13).toString());
+            no_rak.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 14).toString());
+            no_box.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 15).toString());
         }
     }
 
@@ -1629,8 +1603,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
 
     private void isBarang() {
         try {
-            ps = koneksi.prepareStatement(
-                    "select perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
+            ps = koneksi.prepareStatement("select perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, "
                     + "perpustakaan_penerbit.nama_penerbit, perpustakaan_pengarang.nama_pengarang,"
                     + "perpustakaan_kategori.nama_kategori, perpustakaan_jenis_buku.nama_jenis "
                     + "from perpustakaan_buku inner join perpustakaan_penerbit "
@@ -1671,7 +1644,6 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PerpustakaanInventaris.class.getName());
+    private static final Logger LOG = Logger.getLogger(PerpustakaanInventaris.class.getName());
 
 }

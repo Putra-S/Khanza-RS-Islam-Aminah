@@ -26,129 +26,131 @@ import org.springframework.web.client.RestTemplate;
 
 public class ApiPcare {
 
-  private String Key, Consid;
+    private static final Logger LOG = Logger.getLogger(ApiPcare.class.getName());
 
-  private ApiBPJSAesKeySpec mykey;
+    private String Key, Consid;
 
-  private String salt;
+    private ApiBPJSAesKeySpec mykey;
 
-  private String generateHmacSHA256Signature;
+    private String salt;
 
-  private byte[] hmacData;
+    private String generateHmacSHA256Signature;
 
-  private Mac mac;
+    private byte[] hmacData;
 
-  private long millis;
+    private Mac mac;
 
-  private SSLContext sslContext;
+    private long millis;
 
-  private SSLSocketFactory sslFactory;
+    private SSLContext sslContext;
 
-  private SecretKeySpec secretKey;
+    private SSLSocketFactory sslFactory;
 
-  private Scheme scheme;
+    private SecretKeySpec secretKey;
 
-  private HttpComponentsClientHttpRequestFactory factory;
+    private Scheme scheme;
 
-  public ApiPcare() {
-    try {
-      Key = koneksiDB.SECRETKEYAPIPCARE();
-      Consid = koneksiDB.CONSIDAPIPCARE();
-    } catch (Exception ex) {
-      System.out.println("Notifikasi : " + ex);
-    }
-  }
+    private HttpComponentsClientHttpRequestFactory factory;
 
-  /**
-   * @return
-   */
-  public String getHmac() {
-    long GetUTCdatetimeAsString = GetUTCdatetimeAsString();
-    salt = Consid + "&" + String.valueOf(GetUTCdatetimeAsString);
-    generateHmacSHA256Signature = null;
-    try {
-      generateHmacSHA256Signature = generateHmacSHA256Signature(salt, Key);
-    } catch (GeneralSecurityException e) {
-      System.out.println("Error Signature : " + e);
-      e.printStackTrace();
-    }
-    return generateHmacSHA256Signature;
-  }
-
-  /**
-   * @param data
-   * @param key
-   * @return
-   * @throws GeneralSecurityException
-   */
-  public String generateHmacSHA256Signature(String data, String key)
-      throws GeneralSecurityException {
-    hmacData = null;
-
-    try {
-      secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
-      mac = Mac.getInstance("HmacSHA256");
-      mac.init(secretKey);
-      hmacData = mac.doFinal(data.getBytes("UTF-8"));
-      return new String(Base64.encode(hmacData), "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      System.out.println("Error Generate HMac: e");
-      throw new GeneralSecurityException(e);
-    }
-  }
-
-  public String Decrypt(String data, String utc)
-      throws NoSuchPaddingException,
-          NoSuchAlgorithmException,
-          InvalidAlgorithmParameterException,
-          InvalidKeyException,
-          BadPaddingException,
-          IllegalBlockSizeException {
-    System.out.println(data);
-    mykey = ApiBPJSEnc.generateKey(Consid + Key + utc);
-    data = ApiBPJSEnc.decrypt(data, mykey.getKey(), mykey.getIv());
-    data = ApiBPJSLZString.decompressFromEncodedURIComponent(data);
-    System.out.println(data);
-    return data;
-  }
-
-  /**
-   * @return
-   */
-  public long GetUTCdatetimeAsString() {
-    millis = System.currentTimeMillis();
-    return millis / 1000;
-  }
-
-  /**
-   * @return @throws NoSuchAlgorithmException
-   * @throws KeyManagementException
-   */
-  public RestTemplate getRest() throws NoSuchAlgorithmException, KeyManagementException {
-    sslContext = SSLContext.getInstance("SSL");
-    javax.net.ssl.TrustManager[] trustManagers = {
-      new X509TrustManager() {
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-          return null;
+    public ApiPcare() {
+        try {
+            Key = koneksiDB.SECRETKEYAPIPCARE();
+            Consid = koneksiDB.CONSIDAPIPCARE();
+        } catch (Exception ex) {
+            System.out.println("Notifikasi : " + ex);
         }
+    }
 
-        @Override
-        public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-            throws CertificateException {}
+    /**
+     * @return
+     */
+    public String getHmac() {
+        long GetUTCdatetimeAsString = GetUTCdatetimeAsString();
+        salt = Consid + "&" + String.valueOf(GetUTCdatetimeAsString);
+        generateHmacSHA256Signature = null;
+        try {
+            generateHmacSHA256Signature = generateHmacSHA256Signature(salt, Key);
+        } catch (GeneralSecurityException e) {
+            System.out.println("Error Signature : " + e);
+            e.printStackTrace();
+        }
+        return generateHmacSHA256Signature;
+    }
 
-        @Override
-        public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-            throws CertificateException {}
-      }
-    };
-    sslContext.init(null, trustManagers, new SecureRandom());
-    sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-    scheme = new Scheme("https", 443, sslFactory);
-    factory = new HttpComponentsClientHttpRequestFactory();
-    factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
-    return new RestTemplate(factory);
-  }
+    /**
+     * @param data
+     * @param key
+     * @return
+     * @throws GeneralSecurityException
+     */
+    public String generateHmacSHA256Signature(String data, String key)
+            throws GeneralSecurityException {
+        hmacData = null;
 
-  private static final Logger LOG = Logger.getLogger(ApiPcare.class.getName());
+        try {
+            secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
+            mac = Mac.getInstance("HmacSHA256");
+            mac.init(secretKey);
+            hmacData = mac.doFinal(data.getBytes("UTF-8"));
+            return new String(Base64.encode(hmacData), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            System.out.println("Error Generate HMac: e");
+            throw new GeneralSecurityException(e);
+        }
+    }
+
+    public String Decrypt(String data, String utc)
+            throws NoSuchPaddingException,
+            NoSuchAlgorithmException,
+            InvalidAlgorithmParameterException,
+            InvalidKeyException,
+            BadPaddingException,
+            IllegalBlockSizeException {
+        System.out.println(data);
+        mykey = ApiBPJSEnc.generateKey(Consid + Key + utc);
+        data = ApiBPJSEnc.decrypt(data, mykey.getKey(), mykey.getIv());
+        data = ApiBPJSLZString.decompressFromEncodedURIComponent(data);
+        System.out.println(data);
+        return data;
+    }
+
+    /**
+     * @return
+     */
+    public long GetUTCdatetimeAsString() {
+        millis = System.currentTimeMillis();
+        return millis / 1000;
+    }
+
+    /**
+     * @return @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     */
+    public RestTemplate getRest() throws NoSuchAlgorithmException, KeyManagementException {
+        sslContext = SSLContext.getInstance("SSL");
+        javax.net.ssl.TrustManager[] trustManagers = {
+            new X509TrustManager() {
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] arg0, String arg1)
+                        throws CertificateException {
+                }
+
+                @Override
+                public void checkClientTrusted(X509Certificate[] arg0, String arg1)
+                        throws CertificateException {
+                }
+            }
+        };
+        sslContext.init(null, trustManagers, new SecureRandom());
+        sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        scheme = new Scheme("https", 443, sslFactory);
+        factory = new HttpComponentsClientHttpRequestFactory();
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
+        return new RestTemplate(factory);
+    }
 }

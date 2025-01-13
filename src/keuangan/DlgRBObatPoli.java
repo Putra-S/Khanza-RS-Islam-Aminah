@@ -32,19 +32,33 @@ import simrskhanza.DlgCariPoli;
 public class DlgRBObatPoli extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement pspoli, psdokter, psobat;
+
     private ResultSet rspoli, rsdokter, rsobat;
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private DlgCariJenis jenis = new DlgCariJenis(null, false);
+
     private DlgCariKategori kategori = new DlgCariKategori(null, false);
+
     private DlgCariGolongan golongan = new DlgCariGolongan(null, false);
+
     private DlgCariBangsal asalstok = new DlgCariBangsal(null, false);
+
     private int i = 0, a = 0;
-    private double jmlbiaya = 0, ttlbiaya = 0, jmlembalase = 0, ttlembalase = 0, jmltuslah = 0, ttltuslah = 0, jmltotal = 0, ttltotal = 0;
+
+    private double jmlbiaya = 0, ttlbiaya = 0, jmlembalase = 0, ttlembalase = 0, jmltuslah = 0, ttltuslah = 0,
+            jmltotal = 0, ttltotal = 0;
 
     /**
      * Creates new form DlgProgramStudi
@@ -56,8 +70,7 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.", "Poliklinik", "Jml", "Nama Obat", "Biaya Obat",
-            "Embalase", "Tuslah", "Total"};
+        Object[] row = {"No.", "Poliklinik", "Jml", "Nama Obat", "Biaya Obat", "Embalase", "Tuslah", "Total"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -100,10 +113,8 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -139,10 +150,8 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -196,10 +205,8 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (asalstok.getTable().getSelectedRow() != -1) {
-                    kdasal.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmasal.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdasal.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 0).toString());
+                    nmasal.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 1).toString());
                 }
                 kdasal.requestFocus();
             }
@@ -252,10 +259,8 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -289,10 +294,10 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongan.getTable().getSelectedRow() != -1) {
-                    kdgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 0).toString());
+                    nmgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -327,10 +332,10 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    kdkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                    nmkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -359,7 +364,9 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -809,14 +816,13 @@ public class DlgRBObatPoli extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         if (tabMode.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null,
                     "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
@@ -1051,8 +1057,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRBObatPoli dialog = new DlgRBObatPoli(new javax.swing.JFrame(),
-                    true);
+            DlgRBObatPoli dialog = new DlgRBObatPoli(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1113,8 +1118,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Valid.tabelKosong(tabMode);
             if (kdpoli.getText().isEmpty()) {
-                pspoli = koneksi.prepareStatement(
-                        "select poliklinik.kd_poli,poliklinik.nm_poli from poliklinik");
+                pspoli = koneksi.prepareStatement("select poliklinik.kd_poli,poliklinik.nm_poli from poliklinik");
             } else {
                 pspoli = koneksi.prepareStatement(
                         "select poliklinik.kd_poli,poliklinik.nm_poli from poliklinik where concat(poliklinik.kd_poli,poliklinik.nm_poli) like ?");
@@ -1123,8 +1127,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             try {
                 if (kdpoli.getText().isEmpty()) {
                 } else {
-                    pspoli.setString(1, "%" + kdpoli.getText() + nmpoli.
-                            getText() + "%");
+                    pspoli.setString(1, "%" + kdpoli.getText() + nmpoli.getText() + "%");
                 }
 
                 rspoli = pspoli.executeQuery();
@@ -1134,24 +1137,19 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 ttltuslah = 0;
                 ttltotal = 0;
                 while (rspoli.next()) {
-                    tabMode.addRow(new Object[]{i + ". ", rspoli.getString(2),
-                        "", "", "", "", "", ""});
+                    tabMode.addRow(new Object[]{i + ". ", rspoli.getString(2), "", "", "", "", "", ""});
                     psdokter = koneksi.prepareStatement(
                             "select dokter.kd_dokter,dokter.nm_dokter from dokter inner join reg_periksa on reg_periksa.kd_dokter=dokter.kd_dokter where reg_periksa.kd_poli=? and reg_periksa.tgl_registrasi between ? and ? group by dokter.kd_dokter");
                     try {
                         psdokter.setString(1, rspoli.getString(1));
-                        psdokter.setString(2, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdokter.setString(3, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdokter.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdokter.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdokter = psdokter.executeQuery();
                         a = 1;
                         while (rsdokter.next()) {
-                            if (nmjns.getText().isEmpty() && nmkategori.
-                                    getText().isEmpty() && nmgolongan.getText().
-                                            isEmpty() && nmasal.getText().
-                                            isEmpty() && nmpenjab.getText().
-                                            isEmpty()) {
+                            if (nmjns.getText().isEmpty() && nmkategori.getText().isEmpty()
+                                    && nmgolongan.getText().isEmpty() && nmasal.getText().isEmpty()
+                                    && nmpenjab.getText().isEmpty()) {
                                 psobat = koneksi.prepareStatement(
                                         "select detail_pemberian_obat.kode_brng,databarang.nama_brng,sum(detail_pemberian_obat.jml) as jml,"
                                         + "(sum(detail_pemberian_obat.total)-sum(detail_pemberian_obat.embalase+detail_pemberian_obat.tuslah)) as biaya,"
@@ -1182,37 +1180,23 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                             }
 
                             try {
-                                if (nmjns.getText().isEmpty() && nmkategori.
-                                        getText().isEmpty() && nmgolongan.
-                                                getText().isEmpty() && nmasal.
-                                                getText().isEmpty() && nmpenjab.
-                                                getText().isEmpty()) {
+                                if (nmjns.getText().isEmpty() && nmkategori.getText().isEmpty()
+                                        && nmgolongan.getText().isEmpty() && nmasal.getText().isEmpty()
+                                        && nmpenjab.getText().isEmpty()) {
                                     psobat.setString(1, rsdokter.getString(1));
-                                    psobat.setString(2, Valid.SetTgl(Tgl1.
-                                            getSelectedItem() + ""));
-                                    psobat.setString(3, Valid.SetTgl(Tgl2.
-                                            getSelectedItem() + ""));
+                                    psobat.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                                    psobat.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                                     psobat.setString(4, rspoli.getString(1));
                                 } else {
                                     psobat.setString(1, rsdokter.getString(1));
-                                    psobat.setString(2, Valid.SetTgl(Tgl1.
-                                            getSelectedItem() + ""));
-                                    psobat.setString(3, Valid.SetTgl(Tgl2.
-                                            getSelectedItem() + ""));
+                                    psobat.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                                    psobat.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                                     psobat.setString(4, rspoli.getString(1));
-                                    psobat.setString(5,
-                                            "%" + kdjenis.getText() + nmjns.
-                                            getText() + "%");
-                                    psobat.setString(6, "%" + kdkategori.
-                                            getText() + nmkategori.getText() + "%");
-                                    psobat.setString(7, "%" + kdgolongan.
-                                            getText() + nmgolongan.getText() + "%");
-                                    psobat.setString(8,
-                                            "%" + kdasal.getText() + nmasal.
-                                            getText() + "%");
-                                    psobat.setString(9,
-                                            "%" + kdpenjab.getText() + nmpenjab.
-                                            getText() + "%");
+                                    psobat.setString(5, "%" + kdjenis.getText() + nmjns.getText() + "%");
+                                    psobat.setString(6, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                                    psobat.setString(7, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
+                                    psobat.setString(8, "%" + kdasal.getText() + nmasal.getText() + "%");
+                                    psobat.setString(9, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                                 }
 
                                 rsobat = psobat.executeQuery();
@@ -1221,20 +1205,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                 jmltotal = 0;
                                 jmltuslah = 0;
                                 if (rsobat.next()) {
-                                    tabMode.addRow(new Object[]{"",
-                                        a + ". " + rsdokter.getString(2), "", "",
-                                        "", "", "", ""});
+                                    tabMode.addRow(new Object[]{"", a + ". " + rsdokter.getString(2), "", "", "", "",
+                                        "", ""});
                                     rsobat.beforeFirst();
                                     while (rsobat.next()) {
-                                        tabMode.addRow(new Object[]{
-                                            "", "", rsobat.getString(3), rsobat.
-                                            getString(1) + " " + rsobat.
-                                            getString(2), Valid.SetAngka(rsobat.
-                                            getDouble(4)),
+                                        tabMode.addRow(new Object[]{"", "", rsobat.getString(3),
+                                            rsobat.getString(1) + " " + rsobat.getString(2),
+                                            Valid.SetAngka(rsobat.getDouble(4)),
                                             Valid.SetAngka(rsobat.getDouble(5)),
                                             Valid.SetAngka(rsobat.getDouble(6)),
-                                            Valid.SetAngka(rsobat.getDouble(7))
-                                        });
+                                            Valid.SetAngka(rsobat.getDouble(7))});
                                         jmlbiaya += rsobat.getDouble(4);
                                         ttlbiaya += rsobat.getDouble(4);
                                         jmlembalase += rsobat.getDouble(5);
@@ -1247,13 +1227,9 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                 }
 
                                 if (jmltotal > 0) {
-                                    tabMode.addRow(new Object[]{
-                                        "", "", "", "Subtotal :", Valid.
-                                        SetAngka(jmlbiaya), Valid.SetAngka(
-                                        jmlembalase),
-                                        Valid.SetAngka(jmltuslah), Valid.
-                                        SetAngka(jmltotal)
-                                    });
+                                    tabMode.addRow(new Object[]{"", "", "", "Subtotal :", Valid.SetAngka(jmlbiaya),
+                                        Valid.SetAngka(jmlembalase), Valid.SetAngka(jmltuslah),
+                                        Valid.SetAngka(jmltotal)});
                                 }
                                 a++;
                             } catch (Exception e) {
@@ -1279,9 +1255,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         }
                     }
                 }
-                tabMode.addRow(new Object[]{">>", "Total ", ":", "", Valid.
-                    SetAngka(ttlbiaya), Valid.SetAngka(ttlembalase), Valid.
-                    SetAngka(ttltuslah), Valid.SetAngka(ttltotal)});
+                tabMode.addRow(new Object[]{">>", "Total ", ":", "", Valid.SetAngka(ttlbiaya),
+                    Valid.SetAngka(ttlembalase), Valid.SetAngka(ttltuslah), Valid.SetAngka(ttltotal)});
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
             } finally {
@@ -1313,7 +1288,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgRBObatPoli.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgRBObatPoli.class.getName());
 
 }

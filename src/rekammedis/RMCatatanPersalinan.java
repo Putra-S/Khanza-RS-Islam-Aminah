@@ -37,21 +37,30 @@ import kepegawaian.DlgCariDokter;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMCatatanPersalinan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "", finger2 = "";
 
     /**
@@ -64,21 +73,15 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
-            "Kode Dokter", "Dokter Penanggung Jawab", "NIP", "Nama Bidan",
-            "Mulai Persalinan", "Selesai Persalinan",
-            "Catatan Persalinan", "W.P.Kala 1", "W.P.Kala 2", "W.P.Kala 3",
-            "W.P.Jumlah", "Perineum", "Jahitan Luar 1", "Jahitan Luar 2",
-            "Jahitan Dalam 1", "Jahitan Dalam 2",
-            "J.K. Anak", "Status Lahir", "APGAR Score", "BB(gram)", "PB(cm)",
-            "Kelainan", "Ketuban", "Placenta", "Ukuran(gr)", "Tali Pusat(cm)",
-            "Insertio", "D.K.Kala 1",
-            "D.K.Kala 2", "D.K.Kala 3", "D.K.Kala 4", "D.K. Jumlah",
-            "Kondisi Umum", "TD(mmHg)", "Nadi(x/menit)", "RR(x/menit)",
-            "Suhu(°C)", "Kontraksi Uterus",
-            "Perdarahan Per Vaginam (PPV)", "Pengobatan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Kode Dokter",
+                    "Dokter Penanggung Jawab", "NIP", "Nama Bidan", "Mulai Persalinan", "Selesai Persalinan",
+                    "Catatan Persalinan", "W.P.Kala 1", "W.P.Kala 2", "W.P.Kala 3", "W.P.Jumlah", "Perineum",
+                    "Jahitan Luar 1", "Jahitan Luar 2", "Jahitan Dalam 1", "Jahitan Dalam 2", "J.K. Anak",
+                    "Status Lahir", "APGAR Score", "BB(gram)", "PB(cm)", "Kelainan", "Ketuban", "Placenta",
+                    "Ukuran(gr)", "Tali Pusat(cm)", "Insertio", "D.K.Kala 1", "D.K.Kala 2", "D.K.Kala 3",
+                    "D.K.Kala 4", "D.K. Jumlah", "Kondisi Umum", "TD(mmHg)", "Nadi(x/menit)", "RR(x/menit)",
+                    "Suhu(°C)", "Kontraksi Uterus", "Perdarahan Per Vaginam (PPV)", "Pengobatan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -188,14 +191,10 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         Catatan.setDocument(new batasInput(2000).getKata(Catatan));
-        WaktuPersalinanKala1.setDocument(new batasInput(5).getKata(
-                WaktuPersalinanKala1));
-        WaktuPersalinanKala2.setDocument(new batasInput(5).getKata(
-                WaktuPersalinanKala2));
-        WaktuPersalinanKala3.setDocument(new batasInput(5).getKata(
-                WaktuPersalinanKala3));
-        WaktuPersalinanJumlah.setDocument(new batasInput(5).getKata(
-                WaktuPersalinanJumlah));
+        WaktuPersalinanKala1.setDocument(new batasInput(5).getKata(WaktuPersalinanKala1));
+        WaktuPersalinanKala2.setDocument(new batasInput(5).getKata(WaktuPersalinanKala2));
+        WaktuPersalinanKala3.setDocument(new batasInput(5).getKata(WaktuPersalinanKala3));
+        WaktuPersalinanJumlah.setDocument(new batasInput(5).getKata(WaktuPersalinanJumlah));
         JahitanLuar1.setDocument(new batasInput(5).getKata(JahitanLuar1));
         JahitanLuar2.setDocument(new batasInput(5).getKata(JahitanLuar2));
         JahitanDalam1.setDocument(new batasInput(5).getKata(JahitanDalam1));
@@ -209,30 +208,23 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
         Ukuran.setDocument(new batasInput(5).getKata(Ukuran));
         TaliPusat.setDocument(new batasInput(5).getKata(TaliPusat));
         Insertio.setDocument(new batasInput(20).getKata(Insertio));
-        DarahKeluarKala1.
-                setDocument(new batasInput(5).getKata(DarahKeluarKala1));
-        DarahKeluarKala2.
-                setDocument(new batasInput(5).getKata(DarahKeluarKala2));
-        DarahKeluarKala3.
-                setDocument(new batasInput(5).getKata(DarahKeluarKala3));
-        DarahKeluarKala4.
-                setDocument(new batasInput(5).getKata(DarahKeluarKala4));
-        DarahKeluarJumlah.setDocument(new batasInput(5).getKata(
-                DarahKeluarJumlah));
+        DarahKeluarKala1.setDocument(new batasInput(5).getKata(DarahKeluarKala1));
+        DarahKeluarKala2.setDocument(new batasInput(5).getKata(DarahKeluarKala2));
+        DarahKeluarKala3.setDocument(new batasInput(5).getKata(DarahKeluarKala3));
+        DarahKeluarKala4.setDocument(new batasInput(5).getKata(DarahKeluarKala4));
+        DarahKeluarJumlah.setDocument(new batasInput(5).getKata(DarahKeluarJumlah));
         KondisiUmum.setDocument(new batasInput(100).getKata(KondisiUmum));
         TD.setDocument(new batasInput(8).getKata(TD));
         Nadi.setDocument(new batasInput(5).getKata(Nadi));
         RR.setDocument(new batasInput(5).getKata(RR));
         Suhu.setDocument(new batasInput(5).getKata(Suhu));
-        KontraksiUterus.
-                setDocument(new batasInput(100).getKata(KontraksiUterus));
+        KontraksiUterus.setDocument(new batasInput(100).getKata(KontraksiUterus));
         Perdarahan.setDocument(new batasInput(100).getKata(Perdarahan));
         Pengobatan.setDocument(new batasInput(600).getKata(Pengobatan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -269,10 +261,8 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
@@ -307,10 +297,8 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     NIP.requestFocus();
                 }
             }
@@ -333,8 +321,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         });
 
-        WaktuPersalinanKala1.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        WaktuPersalinanKala1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isWaktuPersalinan();
@@ -352,8 +339,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         });
 
-        WaktuPersalinanKala2.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        WaktuPersalinanKala2.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isWaktuPersalinan();
@@ -371,8 +357,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         });
 
-        WaktuPersalinanKala3.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        WaktuPersalinanKala3.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isWaktuPersalinan();
@@ -390,8 +375,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         });
 
-        DarahKeluarKala1.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        DarahKeluarKala1.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isDarahKeluar();
@@ -409,8 +393,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         });
 
-        DarahKeluarKala2.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        DarahKeluarKala2.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isDarahKeluar();
@@ -428,8 +411,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         });
 
-        DarahKeluarKala3.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        DarahKeluarKala3.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isDarahKeluar();
@@ -447,8 +429,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
         });
 
-        DarahKeluarKala4.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        DarahKeluarKala4.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isDarahKeluar();
@@ -479,14 +460,15 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2481,8 +2463,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMCatatanPersalinan dialog = new RMCatatanPersalinan(
-                    new javax.swing.JFrame(), true);
+            RMCatatanPersalinan dialog = new RMCatatanPersalinan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2678,15 +2659,11 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2695,37 +2672,24 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("kd_dokter"), rs.
-                        getString("nm_dokter"), rs.getString("nip"), rs.
-                        getString("nama"),
-                        rs.getString("mulai"), rs.getString("selesai"), rs.
-                        getString("catatan"), rs.getString(
-                        "waktu_persalinan_kala_1"), rs.getString(
-                        "waktu_persalinan_kala_2"), rs.getString(
-                        "waktu_persalinan_kala_3"), rs.getString(
-                        "waktu_persalinan_jumlah"),
-                        rs.getString("perineum"), rs.getString("jahitan_luar_1"),
-                        rs.getString("jahitan_luar_2"), rs.getString(
-                        "jahitan_dalam_1"), rs.getString("jahitan_dalam_2"), rs.
-                        getString("anak"), rs.getString("status_lahir"), rs.
-                        getString("apgar_score"),
-                        rs.getString("bb"), rs.getString("pb"), rs.getString(
-                        "kelainan"), rs.getString("ketuban"), rs.getString(
-                        "placenta"), rs.getString("ukuran"), rs.getString(
-                        "tali_pusat"), rs.getString("insertio"), rs.getString(
-                        "darah_keluar_kala_1"),
-                        rs.getString("darah_keluar_kala_2"), rs.getString(
-                        "darah_keluar_kala_3"), rs.getString(
-                        "darah_keluar_kala_4"), rs.getString(
-                        "darah_keluar_jumlah"), rs.getString("kondisi_umum"),
-                        rs.getString("td"), rs.getString("nadi"), rs.getString(
-                        "rr"),
-                        rs.getString("suhu"), rs.getString("kontraksi_uterus"),
-                        rs.getString("ppv"), rs.getString("pengobatan")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"), rs.getString("nip"),
+                        rs.getString("nama"), rs.getString("mulai"), rs.getString("selesai"),
+                        rs.getString("catatan"), rs.getString("waktu_persalinan_kala_1"),
+                        rs.getString("waktu_persalinan_kala_2"), rs.getString("waktu_persalinan_kala_3"),
+                        rs.getString("waktu_persalinan_jumlah"), rs.getString("perineum"),
+                        rs.getString("jahitan_luar_1"), rs.getString("jahitan_luar_2"),
+                        rs.getString("jahitan_dalam_1"), rs.getString("jahitan_dalam_2"), rs.getString("anak"),
+                        rs.getString("status_lahir"), rs.getString("apgar_score"), rs.getString("bb"),
+                        rs.getString("pb"), rs.getString("kelainan"), rs.getString("ketuban"),
+                        rs.getString("placenta"), rs.getString("ukuran"), rs.getString("tali_pusat"),
+                        rs.getString("insertio"), rs.getString("darah_keluar_kala_1"),
+                        rs.getString("darah_keluar_kala_2"), rs.getString("darah_keluar_kala_3"),
+                        rs.getString("darah_keluar_kala_4"), rs.getString("darah_keluar_jumlah"),
+                        rs.getString("kondisi_umum"), rs.getString("td"), rs.getString("nadi"), rs.getString("rr"),
+                        rs.getString("suhu"), rs.getString("kontraksi_uterus"), rs.getString("ppv"),
+                        rs.getString("pengobatan")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2786,95 +2750,49 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            WaktuPersalinanKala1.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            WaktuPersalinanKala2.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            WaktuPersalinanKala3.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            WaktuPersalinanJumlah.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 15).toString());
-            Perineum.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    16).toString());
-            JahitanLuar1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            JahitanLuar2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            JahitanDalam1.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
-            JahitanDalam2.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
-            Anak.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            StatusLahir.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            ApgarScore.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            BB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).
-                            toString());
-            PB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).
-                            toString());
-            Kelainan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).
-                    toString());
-            Ketuban.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).
-                    toString());
-            Placenta.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).
-                    toString());
-            Ukuran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).
-                    toString());
-            TaliPusat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).
-                    toString());
-            Insertio.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).
-                    toString());
-            DarahKeluarKala1.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    32).toString());
-            DarahKeluarKala2.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    33).toString());
-            DarahKeluarKala3.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    34).toString());
-            DarahKeluarKala4.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    35).toString());
-            DarahKeluarJumlah.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    36).toString());
-            KondisiUmum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 37).
-                    toString());
-            TD.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 38).
-                            toString());
-            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 39).
-                    toString());
-            RR.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).
-                            toString());
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).
-                    toString());
-            KontraksiUterus.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    42).toString());
-            Perdarahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).
-                    toString());
-            Pengobatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).
-                    toString());
-            Valid.SetTgl2(WaktuMulai, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    9).toString());
-            Valid.SetTgl2(WaktuSelesai, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            WaktuPersalinanKala1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            WaktuPersalinanKala2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            WaktuPersalinanKala3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            WaktuPersalinanJumlah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Perineum.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            JahitanLuar1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            JahitanLuar2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            JahitanDalam1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            JahitanDalam2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Anak.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            StatusLahir.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            ApgarScore.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            BB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            PB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            Kelainan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            Ketuban.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            Placenta.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            Ukuran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            TaliPusat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            Insertio.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            DarahKeluarKala1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            DarahKeluarKala2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            DarahKeluarKala3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            DarahKeluarKala4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            DarahKeluarJumlah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
+            KondisiUmum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
+            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            RR.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            KontraksiUterus.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            Perdarahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
+            Pengobatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
+            Valid.SetTgl2(WaktuMulai, tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Valid.SetTgl2(WaktuSelesai, tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
         }
     }
 
@@ -2893,9 +2811,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2913,7 +2829,6 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
@@ -2939,8 +2854,7 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
             NmPetugas.setText(petugas.tampil3(NIP.getText()));
             if (NmPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
@@ -2953,10 +2867,8 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf("delete from catatan_persalinan where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from catatan_persalinan where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -2971,34 +2883,24 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
                 + "waktu_persalinan_kala_2=?,waktu_persalinan_kala_3=?,waktu_persalinan_jumlah=?,perineum=?,jahitan_luar_1=?,jahitan_luar_2=?,jahitan_dalam_1=?,"
                 + "jahitan_dalam_2=?,anak=?,status_lahir=?,apgar_score=?,bb=?,pb=?,kelainan=?,ketuban=?,placenta=?,ukuran=?,tali_pusat=?,insertio=?,"
                 + "darah_keluar_kala_1=?,darah_keluar_kala_2=?,darah_keluar_kala_3=?,darah_keluar_kala_4=?,darah_keluar_jumlah=?,kondisi_umum=?,td=?,nadi=?,rr=?,"
-                + "suhu=?,kontraksi_uterus=?,ppv=?,pengobatan=?", 40,
-                new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    WaktuMulai.getSelectedItem() + "") + " " + WaktuMulai.
-                    getSelectedItem().toString().substring(11, 19),
-                    Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " " + WaktuSelesai.
-                    getSelectedItem().toString().substring(11, 19),
-                    KdDokter.getText(), NIP.getText(), Catatan.getText(),
-                    WaktuPersalinanKala1.getText(), WaktuPersalinanKala2.
-                    getText(),
-                    WaktuPersalinanKala3.getText(), WaktuPersalinanJumlah.
-                    getText(), Perineum.getSelectedItem().toString(),
-                    JahitanLuar1.getText(),
-                    JahitanLuar2.getText(), JahitanDalam1.getText(),
-                    JahitanDalam2.getText(), Anak.getSelectedItem().toString(),
-                    StatusLahir.getSelectedItem().toString(),
-                    ApgarScore.getText(), BB.getText(), PB.getText(), Kelainan.
-                    getText(), Ketuban.getText(), Placenta.getText(), Ukuran.
-                    getText(), TaliPusat.getText(),
-                    Insertio.getText(), DarahKeluarKala1.getText(),
-                    DarahKeluarKala2.getText(), DarahKeluarKala3.getText(),
-                    DarahKeluarKala4.getText(),
-                    DarahKeluarJumlah.getText(), KondisiUmum.getText(), TD.
-                    getText(), Nadi.getText(), RR.getText(), Suhu.getText(),
-                    KontraksiUterus.getText(),
-                    Perdarahan.getText(), Pengobatan.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                + "suhu=?,kontraksi_uterus=?,ppv=?,pengobatan=?",
+                40,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(WaktuMulai.getSelectedItem() + "") + " "
+                    + WaktuMulai.getSelectedItem().toString().substring(11, 19),
+                    Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " "
+                    + WaktuSelesai.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), NIP.getText(), Catatan.getText(), WaktuPersalinanKala1.getText(),
+                    WaktuPersalinanKala2.getText(), WaktuPersalinanKala3.getText(), WaktuPersalinanJumlah.getText(),
+                    Perineum.getSelectedItem().toString(), JahitanLuar1.getText(), JahitanLuar2.getText(),
+                    JahitanDalam1.getText(), JahitanDalam2.getText(), Anak.getSelectedItem().toString(),
+                    StatusLahir.getSelectedItem().toString(), ApgarScore.getText(), BB.getText(), PB.getText(),
+                    Kelainan.getText(), Ketuban.getText(), Placenta.getText(), Ukuran.getText(),
+                    TaliPusat.getText(), Insertio.getText(), DarahKeluarKala1.getText(), DarahKeluarKala2.getText(),
+                    DarahKeluarKala3.getText(), DarahKeluarKala4.getText(), DarahKeluarJumlah.getText(),
+                    KondisiUmum.getText(), TD.getText(), Nadi.getText(), RR.getText(), Suhu.getText(),
+                    KontraksiUterus.getText(), Perdarahan.getText(), Pengobatan.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
@@ -3008,37 +2910,22 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
             tbObat.setValueAt(NmDokter.getText(), tbObat.getSelectedRow(), 6);
             tbObat.setValueAt(NIP.getText(), tbObat.getSelectedRow(), 7);
             tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 8);
-            tbObat.setValueAt(
-                    Valid.SetTgl(WaktuMulai.getSelectedItem() + "") + " " + WaktuMulai.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 9);
-            tbObat.setValueAt(
-                    Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " " + WaktuSelesai.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 10);
+            tbObat.setValueAt(Valid.SetTgl(WaktuMulai.getSelectedItem() + "") + " "
+                    + WaktuMulai.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " "
+                    + WaktuSelesai.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 10);
             tbObat.setValueAt(Catatan.getText(), tbObat.getSelectedRow(), 11);
-            tbObat.setValueAt(WaktuPersalinanKala1.getText(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(WaktuPersalinanKala2.getText(), tbObat.
-                    getSelectedRow(), 13);
-            tbObat.setValueAt(WaktuPersalinanKala3.getText(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(WaktuPersalinanJumlah.getText(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(Perineum.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(JahitanLuar1.getText(), tbObat.getSelectedRow(),
-                    17);
-            tbObat.setValueAt(JahitanLuar2.getText(), tbObat.getSelectedRow(),
-                    18);
-            tbObat.setValueAt(JahitanDalam1.getText(), tbObat.getSelectedRow(),
-                    19);
-            tbObat.setValueAt(JahitanDalam2.getText(), tbObat.getSelectedRow(),
-                    20);
-            tbObat.setValueAt(Anak.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 21);
-            tbObat.setValueAt(StatusLahir.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 22);
+            tbObat.setValueAt(WaktuPersalinanKala1.getText(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(WaktuPersalinanKala2.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(WaktuPersalinanKala3.getText(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(WaktuPersalinanJumlah.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(Perineum.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(JahitanLuar1.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(JahitanLuar2.getText(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(JahitanDalam1.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(JahitanDalam2.getText(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(Anak.getSelectedItem().toString(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(StatusLahir.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
             tbObat.setValueAt(ApgarScore.getText(), tbObat.getSelectedRow(), 23);
             tbObat.setValueAt(BB.getText(), tbObat.getSelectedRow(), 24);
             tbObat.setValueAt(PB.getText(), tbObat.getSelectedRow(), 25);
@@ -3048,26 +2935,17 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
             tbObat.setValueAt(Ukuran.getText(), tbObat.getSelectedRow(), 29);
             tbObat.setValueAt(TaliPusat.getText(), tbObat.getSelectedRow(), 30);
             tbObat.setValueAt(Insertio.getText(), tbObat.getSelectedRow(), 31);
-            tbObat.setValueAt(DarahKeluarKala1.getText(), tbObat.
-                    getSelectedRow(), 32);
-            tbObat.setValueAt(DarahKeluarKala2.getText(), tbObat.
-                    getSelectedRow(), 33);
-            tbObat.setValueAt(DarahKeluarKala3.getText(), tbObat.
-                    getSelectedRow(), 34);
-            tbObat.setValueAt(DarahKeluarKala4.getText(), tbObat.
-                    getSelectedRow(), 35);
-            tbObat.setValueAt(DarahKeluarJumlah.getText(), tbObat.
-                    getSelectedRow(), 36);
-            tbObat.
-                    setValueAt(KondisiUmum.getText(), tbObat.getSelectedRow(),
-                            37);
+            tbObat.setValueAt(DarahKeluarKala1.getText(), tbObat.getSelectedRow(), 32);
+            tbObat.setValueAt(DarahKeluarKala2.getText(), tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(DarahKeluarKala3.getText(), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(DarahKeluarKala4.getText(), tbObat.getSelectedRow(), 35);
+            tbObat.setValueAt(DarahKeluarJumlah.getText(), tbObat.getSelectedRow(), 36);
+            tbObat.setValueAt(KondisiUmum.getText(), tbObat.getSelectedRow(), 37);
             tbObat.setValueAt(TD.getText(), tbObat.getSelectedRow(), 38);
             tbObat.setValueAt(Nadi.getText(), tbObat.getSelectedRow(), 39);
             tbObat.setValueAt(RR.getText(), tbObat.getSelectedRow(), 40);
             tbObat.setValueAt(Suhu.getText(), tbObat.getSelectedRow(), 41);
-            tbObat.
-                    setValueAt(KontraksiUterus.getText(), tbObat.
-                            getSelectedRow(), 42);
+            tbObat.setValueAt(KontraksiUterus.getText(), tbObat.getSelectedRow(), 42);
             tbObat.setValueAt(Perdarahan.getText(), tbObat.getSelectedRow(), 43);
             tbObat.setValueAt(Pengobatan.getText(), tbObat.getSelectedRow(), 44);
             emptTeks();
@@ -3076,14 +2954,13 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
     }
 
     private void isWaktuPersalinan() {
-        if ((!WaktuPersalinanKala1.getText().isEmpty()) && (!WaktuPersalinanKala2.
-                getText().isEmpty()) && (!WaktuPersalinanKala3.getText().
-                        isEmpty())) {
+        if ((!WaktuPersalinanKala1.getText().isEmpty()) && (!WaktuPersalinanKala2.getText().isEmpty())
+                && (!WaktuPersalinanKala3.getText().isEmpty())) {
             try {
-                WaktuPersalinanJumlah.setText(Valid.SetAngka8(Valid.SetAngka(
-                        WaktuPersalinanKala1.getText()) + Valid.SetAngka(
-                        WaktuPersalinanKala2.getText()) + Valid.SetAngka(
-                        WaktuPersalinanKala3.getText()), 2) + "");
+                WaktuPersalinanJumlah.setText(Valid.SetAngka8(
+                        Valid.SetAngka(WaktuPersalinanKala1.getText()) + Valid.SetAngka(WaktuPersalinanKala2.getText())
+                        + Valid.SetAngka(WaktuPersalinanKala3.getText()),
+                        2) + "");
             } catch (Exception e) {
                 WaktuPersalinanJumlah.setText("");
             }
@@ -3091,15 +2968,14 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
     }
 
     private void isDarahKeluar() {
-        if ((!DarahKeluarKala1.getText().isEmpty()) && (!DarahKeluarKala2.
-                getText().isEmpty()) && (!DarahKeluarKala3.getText().isEmpty()) && (!DarahKeluarKala4.
-                getText().isEmpty())) {
+        if ((!DarahKeluarKala1.getText().isEmpty()) && (!DarahKeluarKala2.getText().isEmpty())
+                && (!DarahKeluarKala3.getText().isEmpty()) && (!DarahKeluarKala4.getText().isEmpty())) {
             try {
-                DarahKeluarJumlah.setText(Valid.SetAngka8(Valid.SetAngka(
-                        DarahKeluarKala1.getText()) + Valid.SetAngka(
-                        DarahKeluarKala2.getText()) + Valid.SetAngka(
-                        DarahKeluarKala3.getText()) + Valid.SetAngka(
-                        DarahKeluarKala4.getText()), 2) + "");
+                DarahKeluarJumlah.setText(Valid
+                        .SetAngka8(Valid.SetAngka(DarahKeluarKala1.getText()) + Valid.SetAngka(DarahKeluarKala2.getText())
+                                + Valid.SetAngka(DarahKeluarKala3.getText()) + Valid.SetAngka(DarahKeluarKala4.getText()),
+                                2)
+                        + "");
             } catch (Exception e) {
                 DarahKeluarJumlah.setText("");
             }
@@ -3108,65 +2984,43 @@ public class RMCatatanPersalinan extends javax.swing.JDialog {
 
     private void simpan() {
         if (Sequel.menyimpantf("catatan_persalinan",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                "No.Rawat", 39, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    WaktuMulai.getSelectedItem() + "") + " " + WaktuMulai.
-                    getSelectedItem().toString().substring(11, 19),
-                    Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " " + WaktuSelesai.
-                    getSelectedItem().toString().substring(11, 19),
-                    KdDokter.getText(), NIP.getText(), Catatan.getText(),
-                    WaktuPersalinanKala1.getText(), WaktuPersalinanKala2.
-                    getText(),
-                    WaktuPersalinanKala3.getText(), WaktuPersalinanJumlah.
-                    getText(), Perineum.getSelectedItem().toString(),
-                    JahitanLuar1.getText(),
-                    JahitanLuar2.getText(), JahitanDalam1.getText(),
-                    JahitanDalam2.getText(), Anak.getSelectedItem().toString(),
-                    StatusLahir.getSelectedItem().toString(),
-                    ApgarScore.getText(), BB.getText(), PB.getText(), Kelainan.
-                    getText(), Ketuban.getText(), Placenta.getText(), Ukuran.
-                    getText(), TaliPusat.getText(),
-                    Insertio.getText(), DarahKeluarKala1.getText(),
-                    DarahKeluarKala2.getText(), DarahKeluarKala3.getText(),
-                    DarahKeluarKala4.getText(),
-                    DarahKeluarJumlah.getText(), KondisiUmum.getText(), TD.
-                    getText(), Nadi.getText(), RR.getText(), Suhu.getText(),
-                    KontraksiUterus.getText(),
-                    Perdarahan.getText(), Pengobatan.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), Jk.getText(), KdDokter.getText(), NmDokter.getText(),
-                NIP.getText(),
-                NmPetugas.getText(), Valid.SetTgl(
-                WaktuMulai.getSelectedItem() + "") + " " + WaktuMulai.
-                getSelectedItem().toString().substring(11, 19),
-                Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " " + WaktuSelesai.
-                getSelectedItem().toString().substring(11, 19), Catatan.
-                getText(),
-                WaktuPersalinanKala1.getText(), WaktuPersalinanKala2.getText(),
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 39,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(WaktuMulai.getSelectedItem() + "") + " "
+                    + WaktuMulai.getSelectedItem().toString().substring(11, 19),
+                    Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " "
+                    + WaktuSelesai.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), NIP.getText(), Catatan.getText(), WaktuPersalinanKala1.getText(),
+                    WaktuPersalinanKala2.getText(), WaktuPersalinanKala3.getText(), WaktuPersalinanJumlah.getText(),
+                    Perineum.getSelectedItem().toString(), JahitanLuar1.getText(), JahitanLuar2.getText(),
+                    JahitanDalam1.getText(), JahitanDalam2.getText(), Anak.getSelectedItem().toString(),
+                    StatusLahir.getSelectedItem().toString(), ApgarScore.getText(), BB.getText(), PB.getText(),
+                    Kelainan.getText(), Ketuban.getText(), Placenta.getText(), Ukuran.getText(),
+                    TaliPusat.getText(), Insertio.getText(), DarahKeluarKala1.getText(), DarahKeluarKala2.getText(),
+                    DarahKeluarKala3.getText(), DarahKeluarKala4.getText(), DarahKeluarJumlah.getText(),
+                    KondisiUmum.getText(), TD.getText(), Nadi.getText(), RR.getText(), Suhu.getText(),
+                    KontraksiUterus.getText(), Perdarahan.getText(), Pengobatan.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                Jk.getText(), KdDokter.getText(), NmDokter.getText(), NIP.getText(), NmPetugas.getText(),
+                Valid.SetTgl(WaktuMulai.getSelectedItem() + "") + " "
+                + WaktuMulai.getSelectedItem().toString().substring(11, 19),
+                Valid.SetTgl(WaktuSelesai.getSelectedItem() + "") + " "
+                + WaktuSelesai.getSelectedItem().toString().substring(11, 19),
+                Catatan.getText(), WaktuPersalinanKala1.getText(), WaktuPersalinanKala2.getText(),
                 WaktuPersalinanKala3.getText(), WaktuPersalinanJumlah.getText(),
-                Perineum.getSelectedItem().toString(), JahitanLuar1.getText(),
-                JahitanLuar2.getText(), JahitanDalam1.getText(), JahitanDalam2.
-                getText(),
-                Anak.getSelectedItem().toString(),
-                StatusLahir.getSelectedItem().toString(), ApgarScore.getText(),
-                BB.getText(), PB.getText(), Kelainan.getText(),
-                Ketuban.getText(), Placenta.getText(), Ukuran.getText(),
-                TaliPusat.getText(), Insertio.getText(), DarahKeluarKala1.
-                getText(), DarahKeluarKala2.getText(),
-                DarahKeluarKala3.getText(), DarahKeluarKala4.getText(),
-                DarahKeluarJumlah.getText(), KondisiUmum.getText(), TD.getText(),
-                Nadi.getText(),
-                RR.getText(), Suhu.getText(), KontraksiUterus.getText(),
-                Perdarahan.getText(), Pengobatan.getText()
-            });
+                Perineum.getSelectedItem().toString(), JahitanLuar1.getText(), JahitanLuar2.getText(),
+                JahitanDalam1.getText(), JahitanDalam2.getText(), Anak.getSelectedItem().toString(),
+                StatusLahir.getSelectedItem().toString(), ApgarScore.getText(), BB.getText(), PB.getText(),
+                Kelainan.getText(), Ketuban.getText(), Placenta.getText(), Ukuran.getText(), TaliPusat.getText(),
+                Insertio.getText(), DarahKeluarKala1.getText(), DarahKeluarKala2.getText(),
+                DarahKeluarKala3.getText(), DarahKeluarKala4.getText(), DarahKeluarJumlah.getText(),
+                KondisiUmum.getText(), TD.getText(), Nadi.getText(), RR.getText(), Suhu.getText(),
+                KontraksiUterus.getText(), Perdarahan.getText(), Pengobatan.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMCatatanPersalinan.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMCatatanPersalinan.class.getName());
+
 }

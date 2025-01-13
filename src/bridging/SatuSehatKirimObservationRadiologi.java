@@ -83,8 +83,7 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public SatuSehatKirimObservationRadiologi(java.awt.Frame parent,
-            boolean modal) {
+    public SatuSehatKirimObservationRadiologi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
@@ -92,14 +91,17 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
         setSize(628, 674);
 
         tabMode = new DefaultTableModel(null,
-                new String[]{"P", "No.Rawat", "No.RM", "Nama Pasien",
-                    "No.KTP Pasien", "No.Permintaan",
-                    "Tgl & Jam Hasil", "Nama Pemeriksaan", "Radiologi Code",
-                    "Radiologi System",
-                    "Radiologi Display", "Hasil Radiologi", "Kode Pemeriksaan",
-                    "ID Specimen", "Kode Dokter",
-                    "Nama Dokter", "No.KTP Dokter", "ID Encounter",
-                    "ID Observation"}) {
+                new String[]{"P", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien", "No.Permintaan",
+                    "Tgl & Jam Hasil", "Nama Pemeriksaan", "Radiologi Code", "Radiologi System",
+                    "Radiologi Display", "Hasil Radiologi", "Kode Pemeriksaan", "ID Specimen", "Kode Dokter",
+                    "Nama Dokter", "No.KTP Dokter", "ID Encounter", "ID Observation"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -108,17 +110,6 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -181,8 +172,7 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -218,21 +208,23 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -579,15 +571,15 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
             File g = new File("file2.css");
             try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
                 bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                        + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                        + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                        + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                        + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                        + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                        + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                        + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                        + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                 );
             }
 
@@ -905,8 +897,7 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatKirimObservationRadiologi dialog = new SatuSehatKirimObservationRadiologi(
-                    new javax.swing.JFrame(),
+            SatuSehatKirimObservationRadiologi dialog = new SatuSehatKirimObservationRadiologi(new javax.swing.JFrame(),
                     true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
@@ -993,20 +984,13 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{false, rs.getString("no_rawat"),
-                        rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("no_ktp"), rs.
-                        getString("noorder"),
-                        rs.getString("tgl_hasil") + " " + rs.getString(
-                        "jam_hasil"), rs.getString("nm_perawatan"),
-                        rs.getString("code"), rs.getString("system"), rs.
-                        getString("display"),
-                        rs.getString("hasil"), rs.getString("kd_jenis_prw"), rs.
-                        getString("id_specimen"),
-                        rs.getString("kd_dokter"), rs.getString("nama"), rs.
-                        getString("ktppraktisi"),
-                        rs.getString("id_encounter"), rs.getString(
-                        "id_observation")});
+                    tabMode.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("no_ktp"), rs.getString("noorder"),
+                        rs.getString("tgl_hasil") + " " + rs.getString("jam_hasil"), rs.getString("nm_perawatan"),
+                        rs.getString("code"), rs.getString("system"), rs.getString("display"),
+                        rs.getString("hasil"), rs.getString("kd_jenis_prw"), rs.getString("id_specimen"),
+                        rs.getString("kd_dokter"), rs.getString("nama"), rs.getString("ktppraktisi"),
+                        rs.getString("id_encounter"), rs.getString("id_observation")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1058,20 +1042,13 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{false, rs.getString("no_rawat"),
-                        rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("no_ktp"), rs.
-                        getString("noorder"),
-                        rs.getString("tgl_hasil") + " " + rs.getString(
-                        "jam_hasil"), rs.getString("nm_perawatan"),
-                        rs.getString("code"), rs.getString("system"), rs.
-                        getString("display"),
-                        rs.getString("hasil"), rs.getString("kd_jenis_prw"), rs.
-                        getString("id_specimen"),
-                        rs.getString("kd_dokter"), rs.getString("nama"), rs.
-                        getString("ktppraktisi"),
-                        rs.getString("id_encounter"), rs.getString(
-                        "id_observation")});
+                    tabMode.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("no_ktp"), rs.getString("noorder"),
+                        rs.getString("tgl_hasil") + " " + rs.getString("jam_hasil"), rs.getString("nm_perawatan"),
+                        rs.getString("code"), rs.getString("system"), rs.getString("display"),
+                        rs.getString("hasil"), rs.getString("kd_jenis_prw"), rs.getString("id_specimen"),
+                        rs.getString("kd_dokter"), rs.getString("nama"), rs.getString("ktppraktisi"),
+                        rs.getString("id_encounter"), rs.getString("id_observation")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1101,7 +1078,6 @@ public class SatuSehatKirimObservationRadiologi extends javax.swing.JDialog {
         return tbObat;
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            SatuSehatKirimObservationRadiologi.class.getName());
+    private static final Logger LOG = Logger.getLogger(SatuSehatKirimObservationRadiologi.class.getName());
 
 }

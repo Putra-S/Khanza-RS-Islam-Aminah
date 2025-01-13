@@ -25,26 +25,34 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
      *
      */
     public IPSRSBarang barang = new IPSRSBarang(null, false);
+
     private PreparedStatement ps;
+
     private ResultSet rs;
-    private double tagihan = 0, totaltagihan = 0, januari = 0, totaljanuari = 0, februari = 0, totalfebruari = 0, maret = 0, totalmaret = 0, april = 0, totalapril = 0, mei = 0, totalmei = 0,
-            juni = 0, totaljuni = 0, juli = 0, totaljuli = 0, agustus = 0, totalagustus = 0, september = 0, totalseptember = 0, oktober = 0, totaloktober = 0, november = 0, totalnovember = 0,
-            desember = 0, totaldesember = 0;
+
+    private double tagihan = 0, totaltagihan = 0, januari = 0, totaljanuari = 0, februari = 0, totalfebruari = 0,
+            maret = 0, totalmaret = 0, april = 0, totalapril = 0, mei = 0, totalmei = 0, juni = 0, totaljuni = 0,
+            juli = 0, totaljuli = 0, agustus = 0, totalagustus = 0, september = 0, totalseptember = 0, oktober = 0,
+            totaloktober = 0, november = 0, totalnovember = 0, desember = 0, totaldesember = 0;
+
     private int i = 0;
+
     private String kodejenis = "", kodebarang = "";
 
     /**
@@ -53,26 +61,17 @@ public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDia
      * @param parent
      * @param modal
      */
-    public IPSRSNilaiPenerimaanVendorNonMedisPerBulan(java.awt.Frame parent,
-            boolean modal) {
+    public IPSRSNilaiPenerimaanVendorNonMedisPerBulan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Kode Suplier", "Nama Suplier", "Januari", "Februari",
-            "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September",
-            "Oktober", "November", "Desember", "Total"};
+        Object[] row = {"Kode Suplier", "Nama Suplier", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli",
+            "Agustus", "September", "Oktober", "November", "Desember", "Total"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -107,8 +106,7 @@ public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDia
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -144,15 +142,14 @@ public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDia
 
             @Override
             public void windowClosed(WindowEvent e) {
-                if (akses.getform().equals(
-                        "InventoryNilaiPenerimaanVendorNonMedisPerBulan")) {
+                if (akses.getform().equals("InventoryNilaiPenerimaanVendorNonMedisPerBulan")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -187,13 +184,10 @@ public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDia
 
             @Override
             public void windowClosed(WindowEvent e) {
-                if (akses.getform().equals(
-                        "InventoryNilaiPenerimaanVendorNonMedisPerBulan")) {
+                if (akses.getform().equals("InventoryNilaiPenerimaanVendorNonMedisPerBulan")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -224,8 +218,7 @@ public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDia
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (akses.getform().equals(
-                        "InventoryNilaiPenerimaanVendorNonMedisPerBulan")) {
+                if (akses.getform().equals("InventoryNilaiPenerimaanVendorNonMedisPerBulan")) {
                     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                         barang.dispose();
                     }
@@ -242,7 +235,9 @@ public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDia
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -509,13 +504,12 @@ public class IPSRSNilaiPenerimaanVendorNonMedisPerBulan extends javax.swing.JDia
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBarangActionPerformed
-        akses.setform("InventoryNilaiPenerimaanVendorNonMedisPerBulan");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("InventoryNilaiPenerimaanVendorNonMedisPerBulan");//GEN-FIRST:event_btnBarangActionPerformed
         barang.emptTeks();
         barang.isCek();
         barang.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -738,9 +732,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select ipsrssuplier.kode_suplier,ipsrssuplier.nama_suplier from ipsrssuplier where "
-                    + "ipsrssuplier.kode_suplier like ? or ipsrssuplier.nama_suplier like ? order by ipsrssuplier.nama_suplier");
+            ps = koneksi
+                    .prepareStatement("select ipsrssuplier.kode_suplier,ipsrssuplier.nama_suplier from ipsrssuplier where "
+                            + "ipsrssuplier.kode_suplier like ? or ipsrssuplier.nama_suplier like ? order by ipsrssuplier.nama_suplier");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -751,8 +745,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     kodejenis = " and ipsrsbarang.jenis='" + kdjenis.getText() + "' ";
                 }
                 if (!kdbar.getText().isEmpty()) {
-                    kodebarang = " and ipsrsbarang.kode_brng='" + kdbar.
-                            getText() + "' ";
+                    kodebarang = " and ipsrsbarang.kode_brng='" + kdbar.getText() + "' ";
                 }
 
                 totaltagihan = 0;
@@ -769,155 +762,114 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 totalnovember = 0;
                 totaldesember = 0;
                 while (rs.next()) {
-                    januari = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    januari = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-01' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-01' "
                             + kodejenis + kodebarang);
                     totaljanuari += januari;
 
-                    februari = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    februari = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-02' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-02' "
                             + kodejenis + kodebarang);
                     totalfebruari += februari;
 
-                    maret = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    maret = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-03' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-03' "
                             + kodejenis + kodebarang);
                     totalmaret += maret;
 
-                    april = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    april = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-04' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-04' "
                             + kodejenis + kodebarang);
                     totalapril += april;
 
-                    mei = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    mei = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-05' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-05' "
                             + kodejenis + kodebarang);
                     totalmei += mei;
 
-                    juni = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    juni = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-06' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-06' "
                             + kodejenis + kodebarang);
                     totaljuni += juni;
 
-                    juli = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    juli = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-07' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-07' "
                             + kodejenis + kodebarang);
                     totaljuli += juli;
 
-                    agustus = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    agustus = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-08' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-08' "
                             + kodejenis + kodebarang);
                     totalagustus += agustus;
 
-                    september = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    september = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-09' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-09' "
                             + kodejenis + kodebarang);
                     totalseptember += september;
 
-                    oktober = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    oktober = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-10' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-10' "
                             + kodejenis + kodebarang);
                     totaloktober += oktober;
 
-                    november = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    november = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-11' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-11' "
                             + kodejenis + kodebarang);
                     totalnovember += november;
 
-                    desember = Sequel.cariIsiAngka(
-                            "select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
+                    desember = Sequel.cariIsiAngka("select sum(ipsrsdetailpesan.total) as total from ipsrspemesanan "
                             + "inner join ipsrsdetailpesan on ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                             + "inner join ipsrsbarang on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
-                            + "where ipsrspemesanan.kode_suplier='" + rs.
-                                    getString("kode_suplier") + "' and "
-                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.
-                                    getSelectedItem().toString() + "-12' "
+                            + "where ipsrspemesanan.kode_suplier='" + rs.getString("kode_suplier") + "' and "
+                            + "left(ipsrspemesanan.tgl_pesan,7)='" + ThnCari.getSelectedItem().toString() + "-12' "
                             + kodejenis + kodebarang);
                     totaldesember += desember;
 
-                    tagihan = januari + februari + maret + april + mei + juni + juli + agustus + september + oktober + november + desember;
+                    tagihan = januari + februari + maret + april + mei + juni + juli + agustus + september + oktober
+                            + november + desember;
                     totaltagihan += tagihan;
 
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_suplier"), rs.getString(
-                        "nama_suplier"), januari, februari, maret, april, mei,
-                        juni, juli, agustus, september, oktober, november,
-                        desember, tagihan
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_suplier"), rs.getString("nama_suplier"), januari,
+                        februari, maret, april, mei, juni, juli, agustus, september, oktober, november, desember,
+                        tagihan});
                 }
                 if (tabMode.getRowCount() > 0) {
-                    tabMode.addRow(new Object[]{
-                        "Total :", "", totaljanuari, totalfebruari, totalmaret,
-                        totalapril, totalmei, totaljuni, totaljuli, totalagustus,
-                        totalseptember, totaloktober, totalnovember,
-                        totaldesember, totaltagihan
-                    });
+                    tabMode.addRow(new Object[]{"Total :", "", totaljanuari, totalfebruari, totalmaret, totalapril,
+                        totalmei, totaljuni, totaljuli, totalagustus, totalseptember, totaloktober, totalnovember,
+                        totaldesember, totaltagihan});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -937,11 +889,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }
 
     public void isCek() {
-        BtnPrint.
-                setEnabled(akses.getnilai_penerimaan_vendor_nonmedis_perbulan());
+        BtnPrint.setEnabled(akses.getnilai_penerimaan_vendor_nonmedis_perbulan());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            IPSRSNilaiPenerimaanVendorNonMedisPerBulan.class.getName());
+    private static final Logger LOG = Logger.getLogger(IPSRSNilaiPenerimaanVendorNonMedisPerBulan.class.getName());
 
 }

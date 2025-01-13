@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -39,23 +39,34 @@ import simrskhanza.DlgCariCaraBayar;
 import simrskhanza.DlgCariPoli;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgStatusDataRM extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
-    private int i = 0, adasoapiralan = 0, tidakadasoapiralan = 0, adasoapiranap = 0, tidakadasoapiranap = 0, adaresumeralan = 0, tidakadaresumeralan = 0,
-            adaresumeranap = 0, tidakadaresumeranap = 0, adatriaseigd = 0, tidakadatriaseigd = 0, adaaskepigd = 0, tidakadaaskepigd = 0, adaicd10 = 0, tidakadaicd10 = 0,
-            adaicd9 = 0, tidakadaicd9 = 0;
-    private String soapiralan = "", soapiranap = "", resumeralan = "", resumeranap = "", pilihan = "", triaseigd = "", askepigd = "", icd10 = "", icd9 = "";
+
+    private int i = 0, adasoapiralan = 0, tidakadasoapiralan = 0, adasoapiranap = 0, tidakadasoapiranap = 0,
+            adaresumeralan = 0, tidakadaresumeralan = 0, adaresumeranap = 0, tidakadaresumeranap = 0, adatriaseigd = 0,
+            tidakadatriaseigd = 0, adaaskepigd = 0, tidakadaaskepigd = 0, adaicd10 = 0, tidakadaicd10 = 0, adaicd9 = 0,
+            tidakadaicd9 = 0;
+
+    private String soapiralan = "", soapiranap = "", resumeralan = "", resumeranap = "", pilihan = "", triaseigd = "",
+            askepigd = "", icd10 = "", icd9 = "";
+
     private StringBuilder htmlContent;
 
     /**
@@ -70,11 +81,10 @@ public class DlgStatusDataRM extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "Tanggal", "Dokter Dituju", "Nomer RM", "Pasien",
-            "Poliklinik", "Status", "SOAPI Ralan", "SOAPI Ranap", "Resume Ralan",
-            "Resume Ranap", "Triase IGD", "Askep IGD", "ICD 10", "ICD 9"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "Tanggal", "Dokter Dituju", "Nomer RM", "Pasien", "Poliklinik", "Status",
+                    "SOAPI Ralan", "SOAPI Ranap", "Resume Ralan", "Resume Ranap", "Triase IGD", "Askep IGD",
+                    "ICD 10", "ICD 9"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -124,8 +134,7 @@ public class DlgStatusDataRM extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput(90).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -162,10 +171,8 @@ public class DlgStatusDataRM extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -201,10 +208,8 @@ public class DlgStatusDataRM extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -251,7 +256,9 @@ public class DlgStatusDataRM extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -945,8 +952,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgStatusDataRM dialog = new DlgStatusDataRM(
-                    new javax.swing.JFrame(), true);
+            DlgStatusDataRM dialog = new DlgStatusDataRM(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1000,16 +1006,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join penjab on reg_periksa.kd_pj=penjab.kd_pj where  "
                     + "concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? "
                     + "and reg_periksa.tgl_registrasi between ? and ? and reg_periksa.status_lanjut like ? "
-                    + (TCari.getText().isEmpty() ? "" : "and (reg_periksa.no_rawat like ? or dokter.nm_dokter like ? or reg_periksa.no_rkm_medis like ? or "
-                    + "pasien.nm_pasien like ? or poliklinik.nm_poli like ? or penjab.png_jawab like ?) ") + "order by reg_periksa.tgl_registrasi");
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or dokter.nm_dokter like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or poliklinik.nm_poli like ? or penjab.png_jawab like ?) ")
+                    + "order by reg_periksa.tgl_registrasi");
             try {
                 ps.setString(1, "%" + kdpoli.getText() + nmpoli.getText() + "%");
-                ps.setString(2,
-                        "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
+                ps.setString(2, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                 ps.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
-                ps.setString(5, "%" + Status.getSelectedItem().toString().
-                        replaceAll("Semua", "") + "%");
+                ps.setString(5, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 if (!TCari.getText().trim().isEmpty()) {
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
@@ -1101,29 +1107,18 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     } else {
                         tidakadaicd9++;
                     }
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_rawat"), rs.getString("tgl_registrasi"),
-                        rs.getString("nm_dokter"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("nm_poli"), rs.
-                        getString("status_lanjut"),
-                        soapiralan, soapiranap, resumeralan, resumeranap,
-                        triaseigd, askepigd, icd10, icd9
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_rawat"), rs.getString("tgl_registrasi"),
+                        rs.getString("nm_dokter"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("nm_poli"), rs.getString("status_lanjut"), soapiralan, soapiranap, resumeralan,
+                        resumeranap, triaseigd, askepigd, icd10, icd9});
                 }
                 if (tabMode.getRowCount() > 0) {
-                    tabMode.addRow(new Object[]{
-                        "", "", "", "", "", "Status Data Ada", ":",
-                        adasoapiralan, adasoapiranap, adaresumeralan,
-                        adaresumeranap, adatriaseigd, adaaskepigd, adaicd10,
-                        adaicd9
-                    });
-                    tabMode.addRow(new Object[]{
-                        "", "", "", "", "", "Status Data Tidak Ada", ":",
-                        tidakadasoapiralan, tidakadasoapiranap,
-                        tidakadaresumeralan, tidakadaresumeranap,
-                        tidakadatriaseigd, tidakadaaskepigd, tidakadaicd10,
-                        tidakadaicd9
-                    });
+                    tabMode
+                            .addRow(new Object[]{"", "", "", "", "", "Status Data Ada", ":", adasoapiralan, adasoapiranap,
+                        adaresumeralan, adaresumeranap, adatriaseigd, adaaskepigd, adaicd10, adaicd9});
+                    tabMode.addRow(new Object[]{"", "", "", "", "", "Status Data Tidak Ada", ":", tidakadasoapiralan,
+                        tidakadasoapiranap, tidakadaresumeralan, tidakadaresumeranap, tidakadatriaseigd,
+                        tidakadaaskepigd, tidakadaicd10, tidakadaicd9});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1162,7 +1157,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgStatusDataRM.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgStatusDataRM.class.getName());
 
 }

@@ -35,33 +35,54 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabModeObatRacikan, tabModeDetailObatRacikan;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private int i, index = 0, jml = 0, r = 0;
+
     private String[] kode, nama, ciripny, keterangan, kategori, cirium, satuan, no;
+
     private double[] jumlah, p1, p2, kps;
+
     private WarnaTable2 warna2 = new WarnaTable2();
+
     private WarnaTable2 warna3 = new WarnaTable2();
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem, noracik = "";
+
     private double jumlahracik = 0, persenracik = 0, kapasitasracik = 0;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
+
     private DlgCariMetodeRacik metoderacik = new DlgCariMetodeRacik(null, false);
+
     private DlgCariAturanPakai aturanpakai = new DlgCariAturanPakai(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private StringBuilder htmlContent;
 
     /**
@@ -70,13 +91,11 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public MasterTemplatePemberianObatRacikan(java.awt.Frame parent,
-            boolean modal) {
+    public MasterTemplatePemberianObatRacikan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.Template", "Kode Dokter", "Nama Dokter",
-            "Nama Paket"};
+        Object[] row = {"No.Template", "Kode Dokter", "Nama Dokter", "Nama Paket"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -103,16 +122,10 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeObatRacikan = new DefaultTableModel(null, new Object[]{
-            "No", "Nama Racikan", "Kode Racik", "Metode Racik", "Jml.Racik",
-            "Aturan Pakai", "Keterangan"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class
-            };
+        tabModeObatRacikan = new DefaultTableModel(null, new Object[]{"No", "Nama Racikan", "Kode Racik",
+            "Metode Racik", "Jml.Racik", "Aturan Pakai", "Keterangan"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -131,8 +144,7 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
         };
 
         tbObatRacikan.setModel(tabModeObatRacikan);
-        tbObatRacikan.
-                setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbObatRacikan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObatRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
@@ -158,21 +170,12 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
         warna2.kolom = 4;
         tbObatRacikan.setDefaultRenderer(Object.class, warna2);
 
-        tabModeDetailObatRacikan = new DefaultTableModel(null, new Object[]{
-            "No", "Kode Barang", "Nama Barang", "Satuan", "Jenis Obat",
-            "Kps", "P1", "/", "P2", "Kandungan", "Jml", "I.F.", "Komposisi"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class,
-                java.lang.Object.class
-            };
+        tabModeDetailObatRacikan = new DefaultTableModel(null, new Object[]{"No", "Kode Barang", "Nama Barang",
+            "Satuan", "Jenis Obat", "Kps", "P1", "/", "P2", "Kandungan", "Jml", "I.F.", "Komposisi"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -191,13 +194,11 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
         };
 
         tbDetailObatRacikan.setModel(tabModeDetailObatRacikan);
-        tbDetailObatRacikan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        tbDetailObatRacikan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbDetailObatRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 13; i++) {
-            TableColumn column = tbDetailObatRacikan.getColumnModel().getColumn(
-                    i);
+            TableColumn column = tbDetailObatRacikan.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(25);
             } else if (i == 1) {
@@ -232,13 +233,11 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
         tbDetailObatRacikan.setDefaultRenderer(Object.class, warna3);
 
         Kd.setDocument(new batasInput((byte) 20).getKata(Kd));
-        CariObatRacikan.setDocument(new batasInput((byte) 100).getKata(
-                CariObatRacikan));
+        CariObatRacikan.setDocument(new batasInput((byte) 100).getKata(CariObatRacikan));
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -275,9 +274,9 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (aturanpakai.getTable().getSelectedRow() != -1) {
-                    tbObatRacikan.setValueAt(aturanpakai.getTable().getValueAt(
-                            aturanpakai.getTable().getSelectedRow(), 0).
-                            toString(), tbObatRacikan.getSelectedRow(), 5);
+                    tbObatRacikan.setValueAt(
+                            aturanpakai.getTable().getValueAt(aturanpakai.getTable().getSelectedRow(), 0).toString(),
+                            tbObatRacikan.getSelectedRow(), 5);
                     tbObatRacikan.requestFocus();
                 }
             }
@@ -312,12 +311,12 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (metoderacik.getTable().getSelectedRow() != -1) {
-                    tbObatRacikan.setValueAt(metoderacik.getTable().getValueAt(
-                            metoderacik.getTable().getSelectedRow(), 1).
-                            toString(), tbObatRacikan.getSelectedRow(), 2);
-                    tbObatRacikan.setValueAt(metoderacik.getTable().getValueAt(
-                            metoderacik.getTable().getSelectedRow(), 2).
-                            toString(), tbObatRacikan.getSelectedRow(), 3);
+                    tbObatRacikan.setValueAt(
+                            metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(), 1).toString(),
+                            tbObatRacikan.getSelectedRow(), 2);
+                    tbObatRacikan.setValueAt(
+                            metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(), 2).toString(),
+                            tbObatRacikan.getSelectedRow(), 3);
                     tbObatRacikan.requestFocus();
                 }
             }
@@ -370,10 +369,8 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 KdDokter.requestFocus();
             }
@@ -412,14 +409,15 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1191,13 +1189,12 @@ public class MasterTemplatePemberianObatRacikan extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnBatalKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdKeyPressed
-        //Valid.pindah(evt,TCari,Nm,TCari);
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        //Valid.pindah(evt,TCari,Nm,TCari);//GEN-FIRST:event_KdKeyPressed
     }//GEN-LAST:event_KdKeyPressed
 
     private void KdDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdDokterKeyPressed
@@ -1455,8 +1452,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            MasterTemplatePemberianObatRacikan dialog = new MasterTemplatePemberianObatRacikan(
-                    new javax.swing.JFrame(), true);
+            MasterTemplatePemberianObatRacikan dialog = new MasterTemplatePemberianObatRacikan(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1527,7 +1524,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         + "template_pemeriksaan_dokter.keluhan,template_pemeriksaan_dokter.pemeriksaan,template_pemeriksaan_dokter.penilaian,"
                         + "template_pemeriksaan_dokter.rencana,template_pemeriksaan_dokter.instruksi,template_pemeriksaan_dokter.evaluasi "
                         + "from template_pemeriksaan_dokter inner join dokter on dokter.kd_dokter=template_pemeriksaan_dokter.kd_dokter "
-                        + (TCari.getText().isEmpty() ? "" : "where template_pemeriksaan_dokter.no_template like ? or template_pemeriksaan_dokter.nm_dokter like ? or "
+                        + (TCari.getText().isEmpty() ? ""
+                        : "where template_pemeriksaan_dokter.no_template like ? or template_pemeriksaan_dokter.nm_dokter like ? or "
                         + "template_pemeriksaan_dokter.keluhan like ? or template_pemeriksaan_dokter.pemeriksaan like ? or "
                         + "template_pemeriksaan_dokter.penilaian like ? or template_pemeriksaan_dokter.rencana like ? or "
                         + "template_pemeriksaan_dokter.instruksi like ? or template_pemeriksaan_dokter.evaluasi like ? ")
@@ -1538,11 +1536,12 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         + "template_pemeriksaan_dokter.keluhan,template_pemeriksaan_dokter.pemeriksaan,template_pemeriksaan_dokter.penilaian,"
                         + "template_pemeriksaan_dokter.rencana,template_pemeriksaan_dokter.instruksi,template_pemeriksaan_dokter.evaluasi "
                         + "from template_pemeriksaan_dokter inner join dokter on dokter.kd_dokter=template_pemeriksaan_dokter.kd_dokter "
-                        + "where template_pemeriksaan_dokter.kd_dokter=? " + (TCari.
-                                getText().isEmpty() ? "" : "and (template_pemeriksaan_dokter.no_template like ? or "
-                                + "template_pemeriksaan_dokter.keluhan like ? or template_pemeriksaan_dokter.pemeriksaan like ? or "
-                                + "template_pemeriksaan_dokter.penilaian like ? or template_pemeriksaan_dokter.rencana like ? or "
-                                + "template_pemeriksaan_dokter.instruksi like ? or template_pemeriksaan_dokter.evaluasi like ?) ")
+                        + "where template_pemeriksaan_dokter.kd_dokter=? "
+                        + (TCari.getText().isEmpty() ? ""
+                        : "and (template_pemeriksaan_dokter.no_template like ? or "
+                        + "template_pemeriksaan_dokter.keluhan like ? or template_pemeriksaan_dokter.pemeriksaan like ? or "
+                        + "template_pemeriksaan_dokter.penilaian like ? or template_pemeriksaan_dokter.rencana like ? or "
+                        + "template_pemeriksaan_dokter.instruksi like ? or template_pemeriksaan_dokter.evaluasi like ?) ")
                         + "order by template_pemeriksaan_dokter.no_template");
             }
 
@@ -1573,13 +1572,10 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_template"), rs.getString("kd_dokter"),
-                        rs.getString("nm_dokter"), rs.getString("keluhan"), rs.
-                        getString("pemeriksaan"), rs.getString("penilaian"), rs.
-                        getString("rencana"), rs.getString("instruksi"), rs.
-                        getString("evaluasi")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_template"), rs.getString("kd_dokter"),
+                        rs.getString("nm_dokter"), rs.getString("keluhan"), rs.getString("pemeriksaan"),
+                        rs.getString("penilaian"), rs.getString("rencana"), rs.getString("instruksi"),
+                        rs.getString("evaluasi")});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -1612,13 +1608,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void getData() {
         if (tbDokter.getSelectedRow() != -1) {
-            Kd.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 0).
-                    toString());
+            Kd.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 0).toString());
         }
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1636,8 +1630,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
             NmDokter.setText(dokter.tampil3(KdDokter.getText()));
             if (NmDokter.getText().isEmpty()) {
                 KdDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan Dokter...!!");
             }
         }
     }
@@ -1659,12 +1652,10 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    iyem = iyem + "{\"KodeBarang\":\"" + rs.getString(1) + "\",\"NamaBarang\":\"" + rs.
-                            getString(2).replaceAll("\"", "") + "\",\"Satuan\":\"" + rs.
-                            getString(3) + "\",\"Komposisi\":\"" + rs.getString(
-                            4) + "\",\"JenisObat\":\"" + rs.getString(5) + "\",\"Industri\":\"" + rs.
-                            getString(6) + "\",\"Kapasitas\":\"" + rs.getString(
-                            7) + "\"},";
+                    iyem = iyem + "{\"KodeBarang\":\"" + rs.getString(1) + "\",\"NamaBarang\":\""
+                            + rs.getString(2).replaceAll("\"", "") + "\",\"Satuan\":\"" + rs.getString(3)
+                            + "\",\"Komposisi\":\"" + rs.getString(4) + "\",\"JenisObat\":\"" + rs.getString(5)
+                            + "\",\"Industri\":\"" + rs.getString(6) + "\",\"Kapasitas\":\"" + rs.getString(7) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi 1 : " + e);
@@ -1676,8 +1667,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     ps.close();
                 }
             }
-            fileWriter.write("{\"permintaanobatnonracikan\":[" + iyem.substring(
-                    0, iyem.length() - 1) + "]}");
+            fileWriter.write("{\"permintaanobatnonracikan\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1690,8 +1680,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         try {
             jml = 0;
             for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 10).
-                        toString()) > 0) {
+                if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 10).toString()) > 0) {
                     jml++;
                 }
             }
@@ -1723,58 +1712,43 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
             index = 0;
             for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 10).
-                        toString()) > 0) {
+                if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 10).toString()) > 0) {
                     no[index] = tbDetailObatRacikan.getValueAt(i, 0).toString();
-                    kode[index] = tbDetailObatRacikan.getValueAt(i, 1).
-                            toString();
-                    nama[index] = tbDetailObatRacikan.getValueAt(i, 2).
-                            toString();
-                    satuan[index] = tbDetailObatRacikan.getValueAt(i, 3).
-                            toString();
-                    kategori[index] = tbDetailObatRacikan.getValueAt(i, 4).
-                            toString();
+                    kode[index] = tbDetailObatRacikan.getValueAt(i, 1).toString();
+                    nama[index] = tbDetailObatRacikan.getValueAt(i, 2).toString();
+                    satuan[index] = tbDetailObatRacikan.getValueAt(i, 3).toString();
+                    kategori[index] = tbDetailObatRacikan.getValueAt(i, 4).toString();
                     try {
-                        kps[index] = Double.parseDouble(tbDetailObatRacikan.
-                                getValueAt(i, 5).toString());
+                        kps[index] = Double.parseDouble(tbDetailObatRacikan.getValueAt(i, 5).toString());
                     } catch (Exception e) {
                         kps[index] = 0;
                     }
                     try {
-                        p1[index] = Double.parseDouble(tbDetailObatRacikan.
-                                getValueAt(i, 6).toString());
+                        p1[index] = Double.parseDouble(tbDetailObatRacikan.getValueAt(i, 6).toString());
                     } catch (Exception e) {
                         p1[index] = 0;
                     }
                     try {
-                        p2[index] = Double.parseDouble(tbDetailObatRacikan.
-                                getValueAt(i, 8).toString());
+                        p2[index] = Double.parseDouble(tbDetailObatRacikan.getValueAt(i, 8).toString());
                     } catch (Exception e) {
                         p2[index] = 0;
                     }
-                    keterangan[index] = tbDetailObatRacikan.getValueAt(i, 9).
-                            toString();
+                    keterangan[index] = tbDetailObatRacikan.getValueAt(i, 9).toString();
                     try {
-                        jumlah[index] = Double.parseDouble(tbDetailObatRacikan.
-                                getValueAt(i, 10).toString());
+                        jumlah[index] = Double.parseDouble(tbDetailObatRacikan.getValueAt(i, 10).toString());
                     } catch (Exception e) {
                         jumlah[index] = 0;
                     }
-                    cirium[index] = tbDetailObatRacikan.getValueAt(i, 11).
-                            toString();
-                    ciripny[index] = tbDetailObatRacikan.getValueAt(i, 12).
-                            toString();
+                    cirium[index] = tbDetailObatRacikan.getValueAt(i, 11).toString();
+                    ciripny[index] = tbDetailObatRacikan.getValueAt(i, 12).toString();
                     index++;
                 }
             }
 
             Valid.tabelKosong(tabModeDetailObatRacikan);
             for (i = 0; i < index; i++) {
-                tabModeDetailObatRacikan.addRow(new Object[]{
-                    no[i], kode[i], nama[i], satuan[i], kategori[i], kps[i],
-                    p1[i], "/", p2[i], keterangan[i], jumlah[i], cirium[i],
-                    ciripny[i]
-                });
+                tabModeDetailObatRacikan.addRow(new Object[]{no[i], kode[i], nama[i], satuan[i], kategori[i], kps[i],
+                    p1[i], "/", p2[i], keterangan[i], jumlah[i], cirium[i], ciripny[i]});
             }
 
             myObj = new FileReader("./cache/permintaanobatnonracikan.iyem");
@@ -1782,26 +1756,28 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
             response = root.path("permintaanobatnonracikan");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    if ((list.path("KodeBarang").asText().toLowerCase().
-                            contains(CariObatRacikan.getText().toLowerCase()) || list.
-                            path("NamaBarang").asText().toLowerCase().contains(
-                            CariObatRacikan.getText().toLowerCase())
-                            || list.path("Komposisi").asText().toLowerCase().
-                                    contains(CariObatRacikan.getText().
-                                            toLowerCase()) || list.path(
-                                    "JenisObat").asText().toLowerCase().
-                                    contains(CariObatRacikan.getText().
-                                            toLowerCase()))) {
-                        tabModeDetailObatRacikan.addRow(new Object[]{
-                            tbObatRacikan.getValueAt(tbObatRacikan.
-                            getSelectedRow(), 0).toString(), list.path(
-                            "KodeBarang").asText(), list.path("NamaBarang").
-                            asText(), list.path("Satuan").asText(),
-                            list.path("JenisObat").asText(), list.path(
-                            "Kapasitas").asDouble(), 1, "/", 1, "", 0, list.
-                            path("Industri").asText(), list.path("Komposisi").
-                            asText()
-                        });
+                    if ((list.path("KodeBarang")
+                            .asText()
+                            .toLowerCase()
+                            .contains(CariObatRacikan.getText().toLowerCase())
+                            || list.path("NamaBarang")
+                                    .asText()
+                                    .toLowerCase()
+                                    .contains(CariObatRacikan.getText().toLowerCase())
+                            || list.path("Komposisi")
+                                    .asText()
+                                    .toLowerCase()
+                                    .contains(CariObatRacikan.getText().toLowerCase())
+                            || list.path("JenisObat")
+                                    .asText()
+                                    .toLowerCase()
+                                    .contains(CariObatRacikan.getText().toLowerCase()))) {
+                        tabModeDetailObatRacikan.addRow(
+                                new Object[]{tbObatRacikan.getValueAt(tbObatRacikan.getSelectedRow(), 0).toString(),
+                                    list.path("KodeBarang").asText(), list.path("NamaBarang").asText(),
+                                    list.path("Satuan").asText(), list.path("JenisObat").asText(),
+                                    list.path("Kapasitas").asDouble(), 1, "/", 1, "", 0,
+                                    list.path("Industri").asText(), list.path("Komposisi").asText()});
                     }
                 }
             }
@@ -1814,8 +1790,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void isDetail() {
         if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(
-                    internalFrame3.getWidth() - 200, HEIGHT));
+            PanelAccor.setPreferredSize(new Dimension(internalFrame3.getWidth() - 200, HEIGHT));
             FormDetail.setVisible(true);
             ChkAccor.setVisible(true);
         } else if (ChkAccor.isSelected() == false) {
@@ -1837,13 +1812,10 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "template_pemeriksaan_dokter_resep_racikan.keterangan from template_pemeriksaan_dokter_resep_racikan inner join metode_racik on metode_racik.kd_racik=template_pemeriksaan_dokter_resep_racikan.kd_racik where template_pemeriksaan_dokter_resep_racikan.no_template=? "
                             + "order by template_pemeriksaan_dokter_resep_racikan.no_racik");
                     try {
-                        ps.setString(1, tabMode.getValueAt(tbDokter.
-                                getSelectedRow(), 0).toString());
+                        ps.setString(1, tabMode.getValueAt(tbDokter.getSelectedRow(), 0).toString());
                         rs = ps.executeQuery();
                         if (rs.next()) {
-                            htmlContent.append(
-                                    "<tr class='isi'>"
-                                    + "<td valign='top' align='left' width='100%'>"
+                            htmlContent.append("<tr class='isi'>" + "<td valign='top' align='left' width='100%'>"
                                     + "Obat Racikan : "
                                     + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
                                     + "<tr class='isi'>"
@@ -1853,31 +1825,20 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                     + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='6%'>Jml.Racik</td>"
                                     + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='25%'>Aturan Pakai</td>"
                                     + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='22%'>Keterangan</td>"
-                                    + "</tr>"
-                            );
+                                    + "</tr>");
                             Valid.tabelKosong(tabModeObatRacikan);
                             rs.beforeFirst();
                             while (rs.next()) {
-                                htmlContent.append(
-                                        "<tr class='isi'>"
-                                        + "<td align='center'>" + rs.getString(
-                                                "no_racik") + "</td>"
-                                        + "<td>" + rs.getString("nama_racik") + "</td>"
-                                        + "<td align='center'>" + rs.getString(
-                                                "nm_racik") + "</td>"
-                                        + "<td align='center'>" + rs.getString(
-                                                "jml_dr") + "</td>"
-                                        + "<td>" + rs.getString("aturan_pakai") + "</td>"
-                                        + "<td>" + rs.getString("keterangan") + "</td>"
-                                        + "</tr>"
-                                );
-                                tabModeObatRacikan.addRow(new Object[]{
-                                    rs.getString("no_racik"), rs.getString(
-                                    "nama_racik"), rs.getString("kd_racik"), rs.
-                                    getString("nm_racik"), rs.
-                                    getString("jml_dr"), rs.getString(
-                                    "aturan_pakai"), rs.getString("keterangan")
-                                });
+                                htmlContent.append("<tr class='isi'>" + "<td align='center'>" + rs.getString("no_racik")
+                                        + "</td>" + "<td>" + rs.getString("nama_racik") + "</td>"
+                                        + "<td align='center'>" + rs.getString("nm_racik") + "</td>"
+                                        + "<td align='center'>" + rs.getString("jml_dr") + "</td>" + "<td>"
+                                        + rs.getString("aturan_pakai") + "</td>" + "<td>" + rs.getString("keterangan")
+                                        + "</td>" + "</tr>");
+                                tabModeObatRacikan
+                                        .addRow(new Object[]{rs.getString("no_racik"), rs.getString("nama_racik"),
+                                    rs.getString("kd_racik"), rs.getString("nm_racik"), rs.getString("jml_dr"),
+                                    rs.getString("aturan_pakai"), rs.getString("keterangan")});
                                 try {
                                     ps2 = koneksi.prepareStatement(
                                             "select template_pemeriksaan_dokter_resep_racikan_detail.kode_brng,databarang.nama_brng,kodesatuan.satuan,template_pemeriksaan_dokter_resep_racikan_detail.jml,jenis.nama,"
@@ -1885,15 +1846,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                             + "industrifarmasi.nama_industri,databarang.letak_barang from template_pemeriksaan_dokter_resep_racikan_detail inner join databarang on template_pemeriksaan_dokter_resep_racikan_detail.kode_brng=databarang.kode_brng "
                                             + "inner join jenis on databarang.kdjns=jenis.kdjns inner join kodesatuan on kodesatuan.kode_sat=databarang.kode_sat inner join industrifarmasi on industrifarmasi.kode_industri=databarang.kode_industri "
                                             + "where template_pemeriksaan_dokter_resep_racikan_detail.no_template=? and template_pemeriksaan_dokter_resep_racikan_detail.no_racik=? order by template_pemeriksaan_dokter_resep_racikan_detail.kode_brng");
-                                    ps2.setString(1, tabMode.getValueAt(
-                                            tbDokter.getSelectedRow(), 0).
-                                            toString());
+                                    ps2.setString(1, tabMode.getValueAt(tbDokter.getSelectedRow(), 0).toString());
                                     ps2.setString(2, rs.getString("no_racik"));
                                     rs2 = ps2.executeQuery();
                                     if (rs2.next()) {
-                                        htmlContent.append(
-                                                "<tr class='isi'>"
-                                                + "<td align='center' width='15%'></td>"
+                                        htmlContent.append("<tr class='isi'>" + "<td align='center' width='15%'></td>"
                                                 + "<td width='85%' colspan='5'>"
                                                 + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
                                                 + "<tr class='isi'>"
@@ -1901,53 +1858,24 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                                 + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='20%'>Satuan</td>"
                                                 + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='20%'>Kode Obat</td>"
                                                 + "<td valign='middle' bgcolor='#FFFAF8' align='center' width='50%'>Nama Obat</td>"
-                                                + "</tr>"
-                                        );
-                                        Valid.tabelKosong(
-                                                tabModeDetailObatRacikan);
+                                                + "</tr>");
+                                        Valid.tabelKosong(tabModeDetailObatRacikan);
                                         rs2.beforeFirst();
                                         while (rs2.next()) {
-                                            htmlContent.append(
-                                                    "<tr class='isi'>"
-                                                    + "<td align='center'>" + rs2.
-                                                            getString("jml") + "</td>"
-                                                    + "<td align='center'>" + rs2.
-                                                            getString("satuan") + "</td>"
-                                                    + "<td align='center'>" + rs2.
-                                                            getString(
-                                                                    "kode_brng") + "</td>"
-                                                    + "<td align='left'>" + rs2.
-                                                            getString(
-                                                                    "nama_brng") + "</td>"
-                                                    + "</tr>"
-                                            );
-                                            tabModeDetailObatRacikan.addRow(
-                                                    new Object[]{
-                                                        rs.getString("no_racik"),
-                                                        rs2.getString(
-                                                                "kode_brng"),
-                                                        rs2.getString(
-                                                                "nama_brng"),
-                                                        rs2.getString("satuan"),
-                                                        rs2.getString("nama"),
-                                                        rs2.getDouble(
-                                                                "kapasitas"),
-                                                        rs2.getDouble("p1"), "/",
-                                                        rs2.getDouble("p2"),
-                                                        rs2.getString(
-                                                                "kandungan"),
-                                                        rs2.getDouble("jml"),
-                                                        rs2.getString(
-                                                                "nama_industri"),
-                                                        rs2.getString(
-                                                                "letak_barang")
-                                                    });
+                                            htmlContent.append("<tr class='isi'>" + "<td align='center'>"
+                                                    + rs2.getString("jml") + "</td>" + "<td align='center'>"
+                                                    + rs2.getString("satuan") + "</td>" + "<td align='center'>"
+                                                    + rs2.getString("kode_brng") + "</td>" + "<td align='left'>"
+                                                    + rs2.getString("nama_brng") + "</td>" + "</tr>");
+                                            tabModeDetailObatRacikan.addRow(new Object[]{rs.getString("no_racik"),
+                                                rs2.getString("kode_brng"), rs2.getString("nama_brng"),
+                                                rs2.getString("satuan"), rs2.getString("nama"),
+                                                rs2.getDouble("kapasitas"), rs2.getDouble("p1"), "/",
+                                                rs2.getDouble("p2"), rs2.getString("kandungan"),
+                                                rs2.getDouble("jml"), rs2.getString("nama_industri"),
+                                                rs2.getString("letak_barang")});
                                         }
-                                        htmlContent.append(
-                                                "</table>"
-                                                + "</td>"
-                                                + "</tr>"
-                                        );
+                                        htmlContent.append("</table>" + "</td>" + "</tr>");
                                     }
                                 } catch (Exception e) {
                                     System.out.println("Notif : " + e);
@@ -1960,11 +1888,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                     }
                                 }
                             }
-                            htmlContent.append(
-                                    "</table>"
-                                    + "</td>"
-                                    + "</tr>"
-                            );
+                            htmlContent.append("</table>" + "</td>" + "</tr>");
                         }
                     } catch (Exception e) {
                         System.out.println("Notif : " + e);
@@ -1977,12 +1901,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         }
                     }
 
-                    LoadHTML.setText(
-                            "<html>"
+                    LoadHTML.setText("<html>"
                             + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                            + htmlContent.toString()
-                            + "</table>"
-                            + "</html>");
+                            + htmlContent.toString() + "</table>" + "</html>");
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
                 }
@@ -1991,61 +1912,40 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }
 
     private void ganti() {
-        if (Sequel.queryu2tf(
-                "delete from template_pemeriksaan_dokter where no_template=?", 1,
-                new String[]{
-                    tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString()
-                }) == true) {
-            if (Sequel.menyimpantf("template_pemeriksaan_dokter",
-                    "?,?,?,?,?,?,?,?", "No.Template", 8, new String[]{
-                        tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).
-                                toString(), KdDokter.getText(), NmResep.
-                        getText()
-                    }) == true) {
+        if (Sequel.queryu2tf("delete from template_pemeriksaan_dokter where no_template=?", 1,
+                new String[]{tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString()}) == true) {
+            if (Sequel.menyimpantf("template_pemeriksaan_dokter", "?,?,?,?,?,?,?,?", "No.Template", 8,
+                    new String[]{tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString(), KdDokter.getText(),
+                        NmResep.getText()}) == true) {
 
                 for (i = 0; i < tbObatRacikan.getRowCount(); i++) {
-                    if (Valid.
-                            SetAngka(tbObatRacikan.getValueAt(i, 4).toString()) > 0) {
-                        Sequel.menyimpan(
-                                "template_pemeriksaan_dokter_resep_racikan",
-                                "?,?,?,?,?,?,?", "Obat Racikan", 7,
-                                new String[]{
-                                    tbDokter.getValueAt(tbDokter.
-                                            getSelectedRow(), 0).toString(),
+                    if (Valid.SetAngka(tbObatRacikan.getValueAt(i, 4).toString()) > 0) {
+                        Sequel.menyimpan("template_pemeriksaan_dokter_resep_racikan", "?,?,?,?,?,?,?", "Obat Racikan",
+                                7,
+                                new String[]{tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString(),
                                     tbObatRacikan.getValueAt(i, 0).toString(),
                                     tbObatRacikan.getValueAt(i, 1).toString(),
                                     tbObatRacikan.getValueAt(i, 2).toString(),
                                     tbObatRacikan.getValueAt(i, 4).toString(),
                                     tbObatRacikan.getValueAt(i, 5).toString(),
-                                    tbObatRacikan.getValueAt(i, 6).toString()
-                                });
+                                    tbObatRacikan.getValueAt(i, 6).toString()});
                     }
                 }
                 for (i = 0; i < tbDetailObatRacikan.getRowCount(); i++) {
-                    if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 10).
-                            toString()) > 0) {
-                        Sequel.menyimpan(
-                                "template_pemeriksaan_dokter_resep_racikan_detail",
-                                "?,?,?,?,?,?,?", "Detail Obat Racikan", 7,
-                                new String[]{
-                                    tbDokter.getValueAt(tbDokter.
-                                            getSelectedRow(), 0).toString(),
-                                    tbDetailObatRacikan.getValueAt(i, 0).
-                                            toString(), tbDetailObatRacikan.
-                                            getValueAt(i, 1).toString(),
-                                    tbDetailObatRacikan.getValueAt(i, 6).
-                                            toString(), tbDetailObatRacikan.
-                                            getValueAt(i, 8).toString(),
-                                    tbDetailObatRacikan.getValueAt(i, 9).
-                                            toString(), tbDetailObatRacikan.
-                                            getValueAt(i, 10).toString()
-                                });
+                    if (Valid.SetAngka(tbDetailObatRacikan.getValueAt(i, 10).toString()) > 0) {
+                        Sequel.menyimpan("template_pemeriksaan_dokter_resep_racikan_detail", "?,?,?,?,?,?,?",
+                                "Detail Obat Racikan", 7,
+                                new String[]{tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString(),
+                                    tbDetailObatRacikan.getValueAt(i, 0).toString(),
+                                    tbDetailObatRacikan.getValueAt(i, 1).toString(),
+                                    tbDetailObatRacikan.getValueAt(i, 6).toString(),
+                                    tbDetailObatRacikan.getValueAt(i, 8).toString(),
+                                    tbDetailObatRacikan.getValueAt(i, 9).toString(),
+                                    tbDetailObatRacikan.getValueAt(i, 10).toString()});
                     }
                 }
-                tabMode.addRow(new String[]{
-                    tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString(),
-                    KdDokter.getText(), NmDokter.getText(), NmResep.getText()
-                });
+                tabMode.addRow(new String[]{tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString(),
+                    KdDokter.getText(), NmDokter.getText(), NmResep.getText()});
                 tabMode.removeRow(tbDokter.getSelectedRow());
                 ChkAccor.setSelected(false);
                 isDetail();
@@ -2057,11 +1957,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from template_pemeriksaan_dokter where no_template=?", 1,
-                new String[]{
-                    tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from template_pemeriksaan_dokter where no_template=?", 1,
+                new String[]{tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbDokter.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             LoadHTML.setText("");
@@ -2071,6 +1968,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            MasterTemplatePemberianObatRacikan.class.getName());
+    private static final Logger LOG = Logger.getLogger(MasterTemplatePemberianObatRacikan.class.getName());
+
 }

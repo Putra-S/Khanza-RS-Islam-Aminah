@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="585" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5">
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="585" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5" uuid="3f912793-5141-4027-af1a-fa9a099442d4">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -12,13 +13,12 @@
 	<parameter name="logo" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[select pasien.no_rkm_medis, pasien.nm_pasien, pasien.no_ktp, pasien.jk, 
-pasien.tmp_lahir, pasien.tgl_lahir,pasien.nm_ibu, concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat, pasien.gol_darah, pasien.pekerjaan,
-pasien.stts_nikah,pasien.agama,pasien.tgl_daftar,pasien.no_tlp,pasien.umur,
-pasien.pnd, pasien.keluarga, pasien.namakeluarga,penjab.png_jawab,pasien.pekerjaanpj,
-concat(pasien.alamatpj,', ',pasien.kelurahanpj,', ',pasien.kecamatanpj,', ',pasien.kabupatenpj) as alamatpj from pasien 
-inner join kelurahan inner join kecamatan inner join kabupaten 
-inner join penjab on pasien.kd_pj=penjab.kd_pj and pasien.kd_kel=kelurahan.kd_kel 
-and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab]]>
+		pasien.tmp_lahir, pasien.tgl_lahir,pasien.nm_ibu, concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat, pasien.gol_darah, pasien.pekerjaan,
+		pasien.stts_nikah,pasien.agama,pasien.tgl_daftar,pasien.no_tlp,pasien.umur,
+		pasien.pnd, pasien.keluarga, pasien.namakeluarga,penjab.png_jawab,pasien.pekerjaanpj,
+		concat(pasien.alamatpj,', ',pasien.kelurahanpj,', ',pasien.kecamatanpj,', ',pasien.kabupatenpj) as alamatpj from pasien 
+		inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab
+		inner join penjab on pasien.kd_pj=penjab.kd_pj]]>
 	</queryString>
 	<field name="no_rkm_medis" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -89,577 +89,649 @@ and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab]]>
 	<title>
 		<band height="832">
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="19" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="19" width="46" height="13" uuid="5073398d-1bec-4045-8dd4-2b2ee124ac33"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="14" y="66" width="146" height="31"/>
+				<reportElement x="14" y="66" width="146" height="31" uuid="cb94e828-11f5-4f7b-9a8b-173af4b929a3"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="19" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="19" width="118" height="13" uuid="a26c3a7d-6687-41f5-9f1e-b1a42b988ecd"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="31" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="31" width="118" height="13" uuid="a08d9b82-62d2-4a1e-9ec9-593fbe1e75f7"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="31" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="31" width="46" height="14" uuid="048f2807-e0c1-465c-bba2-d37aa5bd1f50"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="44" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="44" width="168" height="9" uuid="04a5ee1b-c1d1-41ef-bd9d-2c03f955dbc5"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="14" y="164" width="146" height="31"/>
+				<reportElement x="14" y="164" width="146" height="31" uuid="0a101bab-ef38-4edc-b807-d6a3b1db9a98"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="129" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="129" width="46" height="14" uuid="0a5a0155-181b-4ff7-9fda-1f045b3b99ac"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="129" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="129" width="118" height="13" uuid="b708cc75-7f06-4989-a0e7-018e3b331a4e"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="117" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="117" width="46" height="13" uuid="a22abc7d-ecbf-47f2-b830-de7ce1c6aa09"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="142" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="142" width="168" height="9" uuid="8a56efe1-5fca-41ea-9325-ba304465dd8c"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="117" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="117" width="118" height="13" uuid="71315ec4-fff7-4c60-a3f8-15d6a263accb"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="231" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="231" width="46" height="14" uuid="f1de349d-ec2e-47cf-a463-d391ec0ce216"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="219" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="219" width="46" height="13" uuid="515b3e28-104e-478f-b364-e57845c0decb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="244" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="244" width="168" height="9" uuid="185e9a6a-2ad6-4a76-ac15-06d287805943"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="219" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="219" width="118" height="13" uuid="f0469d67-c4df-44ee-b487-ca9f312d011f"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="231" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="231" width="118" height="13" uuid="5afcde5e-b193-446e-a7af-2b1ceed2dfee"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="14" y="266" width="146" height="31"/>
+				<reportElement x="14" y="266" width="146" height="31" uuid="fd3866bb-5d85-4e10-a891-e2bbd965ff82"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="321" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="321" width="118" height="13" uuid="540b733e-1fee-4afd-a360-e17d7dba0f21"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="321" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="321" width="46" height="13" uuid="eb3171dd-accd-4378-ada7-f545d0426f7c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="346" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="7" y="346" width="168" height="9" uuid="c99ca7e2-e133-4f9e-8f1c-9668db523b6c"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="14" y="368" width="146" height="31"/>
+				<reportElement x="14" y="368" width="146" height="31" uuid="916d1a8c-978a-4658-90b6-3770124b7592"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="333" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="333" width="118" height="13" uuid="6973eb5a-a35f-4460-8ce0-dafe79c4e9d5"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="129" y="333" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="129" y="333" width="46" height="14" uuid="13d6bda4-d77b-47ce-acc5-87dd75327260"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="6" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="6" width="168" height="13" uuid="d818d5c6-588e-4821-800d-2fd33bcc17d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="104" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="104" width="168" height="13" uuid="2cd67f64-0c12-450e-9c88-0acfe2f9443b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="206" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="206" width="168" height="13" uuid="fdd65ca5-42ec-458c-909e-22d14ad2da8e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="7" y="308" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="7" y="308" width="168" height="13" uuid="f4529c1f-7f1d-493d-a6d0-8816b893c011"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="206" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="206" width="168" height="13" uuid="59a25ac7-f2cf-4656-92b3-dbd9171ec065"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="129" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="129" width="118" height="13" uuid="48f15e06-50bf-4070-95a4-6a7ee210f01e"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="6" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="6" width="168" height="13" uuid="10efa427-e8a7-4abc-8ee9-0925909af759"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="410" y="164" width="146" height="31"/>
+				<reportElement x="410" y="164" width="146" height="31" uuid="29c649a4-1321-4f94-974c-d3d7e886ac4f"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="219" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="219" width="118" height="13" uuid="ad166de9-1bd0-41d9-bcff-cdd79717bc4a"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="321" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="321" width="46" height="13" uuid="f5434439-10b5-4b25-bd2d-2965115ac9db"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="129" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="129" width="46" height="14" uuid="cc6ab12d-1aec-4421-b3a1-6c36bfe25c64"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="321" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="321" width="118" height="13" uuid="049608da-c510-4db0-8a5f-69a4c9e895ff"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="308" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="308" width="168" height="13" uuid="b8544411-aec5-4ced-a65e-b2feb24c5a5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="333" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="333" width="46" height="14" uuid="fb780970-1f38-41f4-bdd0-1fe683f5bb08"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="231" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="231" width="118" height="13" uuid="c29709ef-e02e-4357-ab11-9308422530d2"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="231" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="231" width="46" height="14" uuid="4fbfab35-48ae-48bc-bc5f-3415af7ec61f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="31" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="31" width="118" height="13" uuid="bc47ba75-573b-4ebd-96f8-3073e78297fb"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="333" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="333" width="118" height="13" uuid="a6343817-5a27-4229-a3b9-44228a75e772"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="31" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="31" width="46" height="14" uuid="ff65bfc3-a0b7-4360-928f-034c91b52052"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="410" y="368" width="146" height="31"/>
+				<reportElement x="410" y="368" width="146" height="31" uuid="0c1fdd8e-c14f-4246-9e1a-0c1147cb5449"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="244" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="244" width="168" height="9" uuid="e5cec098-24d8-45e6-8980-4578df439533"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="19" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="19" width="118" height="13" uuid="bdfdda82-d258-4723-ad9b-fc5f78e22ce6"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="117" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="117" width="118" height="13" uuid="ef959ca7-2c89-42b7-b201-9da3aea784da"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="346" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="346" width="168" height="9" uuid="84fe1fab-c333-45ff-bd1c-4f03a084a3c7"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="219" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="219" width="46" height="13" uuid="18261b16-04ae-48b1-ae0f-c91a92220456"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="410" y="66" width="146" height="31"/>
+				<reportElement x="410" y="66" width="146" height="31" uuid="93a634fc-560d-4935-9a36-918b85c5ed0e"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="44" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="44" width="168" height="9" uuid="e4c9f60f-02a4-44ec-97b8-8c349b2a49b6"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="142" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="403" y="142" width="168" height="9" uuid="de0ebf96-20c6-441c-95e8-5ce04da37346"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="403" y="104" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="403" y="104" width="168" height="13" uuid="34937816-1078-4c20-b847-e6b28f171ef3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="19" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="19" width="46" height="13" uuid="a02b5057-68f1-469c-84f9-ecbb299ce885"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="525" y="117" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="525" y="117" width="46" height="13" uuid="1ebf4472-66d4-4ba3-b7a3-3bc4db141a09"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="410" y="266" width="146" height="31"/>
+				<reportElement x="410" y="266" width="146" height="31" uuid="cb6413d6-01f8-462a-a8c7-54ca91b0ce95"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="206" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="206" width="168" height="13" uuid="164b3dc6-d5a6-41b4-ba96-e2832327909d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="129" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="129" width="118" height="13" uuid="fef7b914-fbc9-4e2b-82a1-b6b19d4369c9"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="6" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="6" width="168" height="13" uuid="4aaef09b-d588-4a65-8f9c-03a94c128e38"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="209" y="164" width="146" height="31"/>
+				<reportElement x="209" y="164" width="146" height="31" uuid="fe9573ee-7034-4b18-b45d-54f6adc8d28e"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="219" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="219" width="118" height="13" uuid="357a838f-d432-4a80-aa71-7f4268d745f0"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="321" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="321" width="46" height="13" uuid="4001ca69-dd7d-42be-8d85-4d0481343ab8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="129" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="129" width="46" height="14" uuid="6e5beb1a-13cb-4124-9713-7c40a067ed35"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="321" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="321" width="118" height="13" uuid="28733916-e97c-41f0-86a4-ef5701cc1ef4"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="308" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="308" width="168" height="13" uuid="06362480-5bdb-492d-8c26-1afc1337297d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="333" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="333" width="46" height="14" uuid="bea4faa7-079f-4c3e-be7f-1bb8e19aeff8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="231" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="231" width="118" height="13" uuid="3a59ffc6-80a7-486d-9354-7099a56fb781"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="231" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="231" width="46" height="14" uuid="1a8ba9fc-ca8f-4f9e-b858-3b92a1c8d99e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="31" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="31" width="118" height="13" uuid="420cf2d4-318d-4f09-9b5c-8b2c13fc23e3"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="333" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="333" width="118" height="13" uuid="e0e210a3-78fe-45a5-a462-834408af42d9"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tmp_lahir}+", "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="31" width="46" height="14"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="31" width="46" height="14" uuid="601f3104-a858-4bd1-8f12-6e72091adf2a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="11" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jk}+" "+$F{umur}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="209" y="368" width="146" height="31"/>
+				<reportElement x="209" y="368" width="146" height="31" uuid="191526a8-0a9f-4620-a046-216bcd82cb57"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="244" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="244" width="168" height="9" uuid="b86b034a-4f0e-4b7b-b9bd-54e19aab1aa0"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="19" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="19" width="118" height="13" uuid="8840b0e5-e559-4cc9-bfdd-5aaf58edebf4"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="117" width="118" height="13"/>
-				<textElement verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="117" width="118" height="13" uuid="eb030e74-ef5e-4df1-9e9b-61e29776e0f5"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="346" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="346" width="168" height="9" uuid="d10cd1d6-e248-462a-8cd1-a2fdfc9f94b2"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="219" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="219" width="46" height="13" uuid="4e568fdf-fa2f-43e7-87ff-ada80cc7ed70"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="209" y="66" width="146" height="31"/>
+				<reportElement x="209" y="66" width="146" height="31" uuid="02e8d656-9644-4458-9565-ed2bb4c35992"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="44" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="44" width="168" height="9" uuid="d0ac772f-1205-425c-86c0-0a581d2afbf9"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="142" width="168" height="9"/>
-				<textElement verticalAlignment="Top" lineSpacing="Single">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="202" y="142" width="168" height="9" uuid="56cc8404-5171-479a-8f5c-cdf5a04a5207"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="7" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{alamat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="202" y="104" width="168" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="202" y="104" width="168" height="13" uuid="8146ba47-2b11-4c96-a6c5-4f1160a84425"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="19" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="19" width="46" height="13" uuid="516b2487-6914-415d-9a2c-baaa48f31606"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Opaque" x="324" y="117" width="46" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+				<reportElement mode="Opaque" x="324" y="117" width="46" height="13" uuid="ba0118dd-19b9-421f-8d08-6a4feaaad11e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10" isBold="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="209" y="266" width="146" height="31"/>
+				<reportElement x="209" y="266" width="146" height="31" uuid="4fad8995-bbcb-44eb-a864-991e9bd64cae"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barHeight="60">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:barbecue>

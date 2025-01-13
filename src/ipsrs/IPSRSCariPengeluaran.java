@@ -27,14 +27,16 @@ import kepegawaian.DlgCariPetugas;
 import keuangan.Jurnal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class IPSRSCariPengeluaran extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -46,12 +48,19 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
      *
      */
     public IPSRSBarang barang = new IPSRSBarang(null, false);
+
     private riwayatnonmedis Trackbarang = new riwayatnonmedis();
+
     private PreparedStatement ps, ps2, psdetailpengeluaran;
+
     private Jurnal jur = new Jurnal();
+
     private ResultSet rs, rs2;
+
     private double tagihan = 0, ttltagihan = 0, total = 0;
+
     private int i = 0;
+
     private boolean sukses = false;
 
     /**
@@ -64,9 +73,8 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{"Tgl.Keluar",
-            "No.Keluar", "Keterangan", "Petugas", "Barang", "Satuan", "Jml",
-            "Harga(Rp)", "Total(Rp)"}) {
+        tabMode = new DefaultTableModel(null, new Object[]{"Tgl.Keluar", "No.Keluar", "Keterangan", "Petugas",
+            "Barang", "Satuan", "Jml", "Harga(Rp)", "Total(Rp)"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -102,20 +110,11 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "No.Keluar", "Tanggal", "NIP", "Petugas", "Keterangan",
-            "Kode Barang",
-            "Nama Barang", "Satuan", "Jml", "Harga(Rp)", "Total(Rp)"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+        tabMode2 = new DefaultTableModel(null, new Object[]{"No.Keluar", "Tanggal", "NIP", "Petugas", "Keterangan",
+            "Kode Barang", "Nama Barang", "Satuan", "Jml", "Harga(Rp)", "Total(Rp)"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -166,8 +165,7 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TabRawat.getSelectedIndex() == 0) {
@@ -222,10 +220,8 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPengeluaranIpsrs")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -262,10 +258,8 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPengeluaranIpsrs")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -322,12 +316,12 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPembelianIpsrs")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -353,7 +347,9 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -772,13 +768,12 @@ public class IPSRSCariPengeluaran extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
-        akses.setform("DlgCariPengeluaranIpsrs");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgCariPengeluaranIpsrs");//GEN-FIRST:event_btnPetugasActionPerformed
         petugas.emptTeks();
         petugas.isCek();
         petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1109,8 +1104,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            IPSRSCariPengeluaran dialog = new IPSRSCariPengeluaran(
-                    new javax.swing.JFrame(), true);
+            IPSRSCariPengeluaran dialog = new IPSRSCariPengeluaran(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1195,11 +1189,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 rs = ps.executeQuery();
                 ttltagihan = 0;
                 while (rs.next()) {
-                    tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3),
-                                rs.getString(4) + ", " + rs.getString(5),
-                                "Stok Keluar :", "", "", "", "", ""});
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4) + ", " + rs.getString(5), "Stok Keluar :", "", "", "", "", ""});
                     ps2 = koneksi.prepareStatement(
                             "select ipsrsdetailpengeluaran.kode_brng,ipsrsbarang.nama_brng, ipsrsdetailpengeluaran.kode_sat,kodesatuan.satuan,"
                             + "ipsrsdetailpengeluaran.jumlah,ipsrsdetailpengeluaran.harga,ipsrsdetailpengeluaran.total "
@@ -1223,16 +1214,12 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             tagihan += rs2.getDouble(7);
                             ttltagihan += rs2.getDouble(7);
                             tabMode.addRow(new Object[]{"", "", "", "",
-                                no + ". " + rs2.getString(1) + ", " + rs2.
-                                getString(2),
-                                rs2.getString(3) + ", " + rs2.getString(4), rs2.
-                                getString(5), Valid.SetAngka(rs2.getDouble(6)),
-                                Valid.SetAngka(rs2.getDouble(7))});
+                                no + ". " + rs2.getString(1) + ", " + rs2.getString(2),
+                                rs2.getString(3) + ", " + rs2.getString(4), rs2.getString(5),
+                                Valid.SetAngka(rs2.getDouble(6)), Valid.SetAngka(rs2.getDouble(7))});
                             no++;
                         }
-                        tabMode.addRow(
-                                new Object[]{"", "", "", "", "Total ", "",
-                                    "", "", Valid.SetAngka(tagihan)});
+                        tabMode.addRow(new Object[]{"", "", "", "", "Total ", "", "", "", Valid.SetAngka(tagihan)});
                     } catch (Exception e) {
                         System.out.println("Notif2 : " + e);
                     } finally {
@@ -1273,19 +1260,19 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil2() {
         Valid.tabelKosong(tabMode2);
         try {
-            ps = koneksi.prepareStatement(
-                    "select ipsrspengeluaran.no_keluar,ipsrspengeluaran.tanggal,ipsrspengeluaran.nip,"
-                    + "ipsrspengeluaran.keterangan,petugas.nama,ipsrsdetailpengeluaran.kode_brng,"
-                    + "ipsrsbarang.nama_brng,kodesatuan.satuan,ipsrsdetailpengeluaran.jumlah,"
-                    + "ipsrsdetailpengeluaran.harga,ipsrsdetailpengeluaran.total from ipsrspengeluaran "
-                    + "inner join ipsrsdetailpengeluaran on ipsrspengeluaran.no_keluar=ipsrsdetailpengeluaran.no_keluar "
-                    + "inner join petugas on ipsrspengeluaran.nip=petugas.nip "
-                    + "inner join ipsrsbarang on ipsrsdetailpengeluaran.kode_brng=ipsrsbarang.kode_brng "
-                    + "inner join kodesatuan on ipsrsdetailpengeluaran.kode_sat=kodesatuan.kode_sat "
-                    + "where ipsrspengeluaran.tanggal between ? and ? and ipsrspengeluaran.no_keluar like ? and petugas.nama like ?  and ipsrsbarang.jenis like ? and ipsrsbarang.nama_brng like ? and "
-                    + "(ipsrspengeluaran.no_keluar like ? or ipsrspengeluaran.keterangan like ? or ipsrspengeluaran.nip like ? or petugas.nama like ? or ipsrsbarang.jenis like ? or "
-                    + "ipsrsdetailpengeluaran.kode_brng like ? or ipsrsbarang.nama_brng like ? or ipsrsdetailpengeluaran.kode_sat like ? or kodesatuan.satuan like ?) "
-                    + " order by ipsrspengeluaran.tanggal,ipsrspengeluaran.no_keluar ");
+            ps = koneksi
+                    .prepareStatement("select ipsrspengeluaran.no_keluar,ipsrspengeluaran.tanggal,ipsrspengeluaran.nip,"
+                            + "ipsrspengeluaran.keterangan,petugas.nama,ipsrsdetailpengeluaran.kode_brng,"
+                            + "ipsrsbarang.nama_brng,kodesatuan.satuan,ipsrsdetailpengeluaran.jumlah,"
+                            + "ipsrsdetailpengeluaran.harga,ipsrsdetailpengeluaran.total from ipsrspengeluaran "
+                            + "inner join ipsrsdetailpengeluaran on ipsrspengeluaran.no_keluar=ipsrsdetailpengeluaran.no_keluar "
+                            + "inner join petugas on ipsrspengeluaran.nip=petugas.nip "
+                            + "inner join ipsrsbarang on ipsrsdetailpengeluaran.kode_brng=ipsrsbarang.kode_brng "
+                            + "inner join kodesatuan on ipsrsdetailpengeluaran.kode_sat=kodesatuan.kode_sat "
+                            + "where ipsrspengeluaran.tanggal between ? and ? and ipsrspengeluaran.no_keluar like ? and petugas.nama like ?  and ipsrsbarang.jenis like ? and ipsrsbarang.nama_brng like ? and "
+                            + "(ipsrspengeluaran.no_keluar like ? or ipsrspengeluaran.keterangan like ? or ipsrspengeluaran.nip like ? or petugas.nama like ? or ipsrsbarang.jenis like ? or "
+                            + "ipsrsdetailpengeluaran.kode_brng like ? or ipsrsbarang.nama_brng like ? or ipsrsdetailpengeluaran.kode_sat like ? or kodesatuan.satuan like ?) "
+                            + " order by ipsrspengeluaran.tanggal,ipsrspengeluaran.no_keluar ");
             try {
                 ps.setString(1, Valid.SetTgl(TglBeli1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(TglBeli2.getSelectedItem() + ""));
@@ -1306,15 +1293,10 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ttltagihan = 0;
                 while (rs.next()) {
                     ttltagihan += rs.getDouble("total");
-                    tabMode2.addRow(new Object[]{
-                        rs.getString("no_keluar"), rs.getString("tanggal"), rs.
-                        getString("nip"),
-                        rs.getString("nama"), rs.getString("keterangan"), rs.
-                        getString("kode_brng"),
-                        rs.getString("nama_brng"), rs.getString("satuan"), rs.
-                        getDouble("jumlah"),
-                        rs.getDouble("harga"), rs.getDouble("total")
-                    });
+                    tabMode2.addRow(new Object[]{rs.getString("no_keluar"), rs.getString("tanggal"),
+                        rs.getString("nip"), rs.getString("nama"), rs.getString("keterangan"),
+                        rs.getString("kode_brng"), rs.getString("nama_brng"), rs.getString("satuan"),
+                        rs.getDouble("jumlah"), rs.getDouble("harga"), rs.getDouble("total")});
                 }
                 LTotal.setText("" + Valid.SetAngka(ttltagihan));
             } catch (Exception e) {
@@ -1333,7 +1315,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            IPSRSCariPengeluaran.class.getName());
+    private static final Logger LOG = Logger.getLogger(IPSRSCariPengeluaran.class.getName());
 
 }

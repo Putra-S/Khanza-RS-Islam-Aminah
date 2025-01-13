@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgAbout.java
- *
- * Created on 23 Jun 10, 19:03:08
+* DlgAbout.java
+*
+* Created on 23 Jun 10, 19:03:08
  */
 package kepegawaian;
 
@@ -54,26 +54,33 @@ import javax.swing.event.DocumentEvent;
 import simrskhanza.DlgPilihanCetakDokumen;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgKegiatanIlmiah extends javax.swing.JDialog {
 
     private final JFXPanel jfxPanel = new JFXPanel();
+
     private WebEngine engine;
 
     private final JLabel lblStatus = new JLabel();
 
     private final JTextField txtURL = new JTextField();
+
     private final JProgressBar progressBar = new JProgressBar();
+
     private final Properties prop = new Properties();
+
     private final validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private final validasi validasi = new validasi();
+
     private final Connection koneksi = koneksiDB.condb();
-    private final DlgPilihanCetakDokumen pilihan = new DlgPilihanCetakDokumen(
-            null, false);
+
+    private final DlgPilihanCetakDokumen pilihan = new DlgPilihanCetakDokumen(null, false);
 
     public DlgKegiatanIlmiah(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -82,8 +89,7 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -132,8 +138,7 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -142,12 +147,13 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
 
                 });
 
-                engine.titleProperty().addListener(
-                        (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
-                            SwingUtilities.invokeLater(() -> {
-                                DlgKegiatanIlmiah.this.setTitle(newValue);
-                            });
-                        });
+                engine.titleProperty()
+                        .addListener(
+                                (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
+                                    SwingUtilities.invokeLater(() -> {
+                                        DlgKegiatanIlmiah.this.setTitle(newValue);
+                                    });
+                                });
 
                 engine.setOnStatusChanged((final WebEvent<String> event) -> {
                     SwingUtilities.invokeLater(() -> {
@@ -155,65 +161,53 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
                     });
                 });
 
-                engine.getLoadWorker().workDoneProperty().addListener(
-                        (ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
+                engine.getLoadWorker()
+                        .workDoneProperty()
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 progressBar.setValue(newValue.intValue());
                             });
                         });
 
-                engine.getLoadWorker().exceptionProperty().addListener(
-                        (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                engine.getLoadWorker()
+                        .exceptionProperty()
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
                             if (engine.getLoadWorker().getState() == FAILED) {
                                 SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(
-                                            panel,
-                                            (value != null)
-                                                    ? engine.getLocation() + "\n" + value.
-                                                    getMessage()
+                                    JOptionPane.showMessageDialog(panel,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
                                                     : engine.getLocation() + "\nUnexpected Catatan.",
-                                            "Loading Catatan...",
-                                            JOptionPane.ERROR_MESSAGE);
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
                             }
                         });
 
-                engine.locationProperty().addListener(
-                        (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                engine.locationProperty()
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 txtURL.setText(newValue);
                             });
                         });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState,
-                            State newState) {
+                    public void changed(ObservableValue ov, State oldState, State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
-                                prop.loadFromXML(new FileInputStream(
-                                        "setting/database.xml"));
-                                if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
-                                        getProperty("PORTWEB") + "/" + prop.
-                                        getProperty("HYBRIDWEB") + "/", "").
-                                        contains("penggajian/pages")) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
-                                    Valid.panggilUrl(engine.getLocation().
-                                            replaceAll("http://" + koneksiDB.
-                                                    HOSTHYBRIDWEB() + ":" + prop.
-                                                            getProperty(
-                                                                    "PORTWEB") + "/" + prop.
-                                                            getProperty(
-                                                                    "HYBRIDWEB") + "/",
-                                                    "").replaceAll(
-                                                    "http://" + koneksiDB.
-                                                            HOSTHYBRIDWEB() + "/" + prop.
-                                                            getProperty(
-                                                                    "HYBRIDWEB") + "/",
-                                                    ""));
+                                prop.loadFromXML(new FileInputStream("setting/database.xml"));
+                                if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/",
+                                                "")
+                                        .contains("penggajian/pages")) {
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    Valid.panggilUrl(engine.getLocation()
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                    + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB")
+                                                    + "/", "")
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + "/"
+                                                    + prop.getProperty("HYBRIDWEB") + "/", ""));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
                                 }
@@ -254,17 +248,14 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param node
      */
     public void print(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
-                PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.
-                getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.
-                getBoundsInParent().getHeight();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT,
+                Printer.MarginType.DEFAULT);
+        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -277,7 +268,9 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -481,8 +474,7 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgKegiatanIlmiah dialog = new DlgKegiatanIlmiah(
-                    new javax.swing.JFrame(), true);
+            DlgKegiatanIlmiah dialog = new DlgKegiatanIlmiah(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -505,7 +497,6 @@ public class DlgKegiatanIlmiah extends javax.swing.JDialog {
     private widget.panelisi panel;
     private widget.panelisi panelGlass5;
     // End of variables declaration//GEN-END:variables
-    private static final Logger LOG = Logger.getLogger(DlgKegiatanIlmiah.class.
-            getName());
+	private static final Logger LOG = Logger.getLogger(DlgKegiatanIlmiah.class.getName());
 
 }

@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="javascript" pageWidth="56" pageHeight="822" columnWidth="50" leftMargin="3" rightMargin="3" topMargin="3" bottomMargin="3" uuid="0df4d502-8feb-4380-a5e6-4159bf64725f">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="56" pageHeight="255" columnWidth="56" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0df4d502-8feb-4380-a5e6-4159bf64725f">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="135"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
 	<parameter name="namars" class="java.lang.String"/>
 	<parameter name="alamatrs" class="java.lang.String"/>
 	<parameter name="kotars" class="java.lang.String"/>
@@ -99,9 +92,10 @@ and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where pasi
 		<band/>
 	</background>
 	<title>
-		<band height="816">
+		<band height="255">
+			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 			<textField pattern="">
-				<reportElement mode="Transparent" x="37" y="659" width="13" height="108" uuid="815e9504-5614-4858-8921-9673c5ab8c83"/>
+				<reportElement mode="Transparent" x="39" y="138" width="13" height="108" uuid="815e9504-5614-4858-8921-9673c5ab8c83"/>
 				<textElement verticalAlignment="Middle" rotation="Left">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
@@ -109,7 +103,7 @@ and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where pasi
 				<textFieldExpression><![CDATA["No. RM : "+$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Transparent" x="13" y="593" width="13" height="174" uuid="617d33d0-5cb1-4d26-887d-dcba6e10b0f5"/>
+				<reportElement mode="Transparent" x="15" y="72" width="13" height="174" uuid="617d33d0-5cb1-4d26-887d-dcba6e10b0f5"/>
 				<textElement verticalAlignment="Middle" rotation="Left">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
@@ -117,7 +111,7 @@ and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where pasi
 				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Transparent" x="25" y="626" width="13" height="141" uuid="f00dbd7a-bb64-49b7-ae76-ed7e09f82568"/>
+				<reportElement mode="Transparent" x="27" y="105" width="13" height="141" uuid="f00dbd7a-bb64-49b7-ae76-ed7e09f82568"/>
 				<textElement verticalAlignment="Middle" rotation="Left">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
@@ -125,7 +119,7 @@ and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where pasi
 				<textFieldExpression><![CDATA["Tgl Lahir : "+$F{tgl_lahir}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement mode="Transparent" x="2" y="522" width="13" height="244" uuid="2945df43-9341-41cb-b213-21c072d0997f"/>
+				<reportElement mode="Transparent" x="4" y="1" width="13" height="244" uuid="2945df43-9341-41cb-b213-21c072d0997f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
@@ -133,13 +127,13 @@ and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where pasi
 				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="13" y="522" width="37" height="104" uuid="b6ffda64-fd0a-4ac5-a2c3-a29c95ee2a66"/>
+				<reportElement x="15" y="1" width="37" height="104" uuid="b6ffda64-fd0a-4ac5-a2c3-a29c95ee2a66"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" orientation="left" textPosition="bottom">
 					<jr:codeExpression><![CDATA[$F{no_rkm_medis}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
 			<textField>
-				<reportElement x="37" y="586" width="13" height="90" uuid="5f497f5a-948b-4f64-98f4-ce50b5c9b35a"/>
+				<reportElement x="39" y="68" width="13" height="90" uuid="5f497f5a-948b-4f64-98f4-ce50b5c9b35a"/>
 				<textElement rotation="Left">
 					<font fontName="Tahoma" size="8" isBold="true"/>
 				</textElement>

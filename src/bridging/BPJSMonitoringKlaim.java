@@ -63,11 +63,9 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
 
     private ApiBPJS api = new ApiBPJS();
 
-    private BPJSCekReferensiFaskes faskes = new BPJSCekReferensiFaskes(null,
-            false);
+    private BPJSCekReferensiFaskes faskes = new BPJSCekReferensiFaskes(null, false);
 
-    private BPJSCekReferensiPenyakit penyakit = new BPJSCekReferensiPenyakit(
-            null, false);
+    private BPJSCekReferensiPenyakit penyakit = new BPJSCekReferensiPenyakit(null, false);
 
     private BPJSCekReferensiPoli poli = new BPJSCekReferensiPoli(null, false);
 
@@ -100,18 +98,12 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
         initComponents();
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"No.SEP", "No.Rawat", "No.RM", "Nama Pasien",
-                    "Tanggal SEP", "Tanggal Rujukan",
-                    "No.Rujukan", "Kode PPK Rujukan", "Nama PPK Rujukan",
-                    "Kode PPK Pelayanan",
-                    "Nama PPK Pelayanan", "Jenis Pelayanan", "Catatan",
-                    "Kode Diagnosa", "Nama Diagnosa",
-                    "Kode Poli", "Nama Poli", "Kelas Rawat", "Laka Lantas",
-                    "Lokasi Laka Lantas", "User Input",
-                    "Tgl.Lahir", "Peserta", "J.Kel", "No.Kartu",
-                    "Tanggal Pulang", "Asal Rujukan", "Eksekutif",
-                    "COB", "Penjamin", "No.Telp", "INACBG", "Status", "No.FPK",
-                    "Pengajuan", "Disetujui",
+                new Object[]{"No.SEP", "No.Rawat", "No.RM", "Nama Pasien", "Tanggal SEP", "Tanggal Rujukan",
+                    "No.Rujukan", "Kode PPK Rujukan", "Nama PPK Rujukan", "Kode PPK Pelayanan",
+                    "Nama PPK Pelayanan", "Jenis Pelayanan", "Catatan", "Kode Diagnosa", "Nama Diagnosa",
+                    "Kode Poli", "Nama Poli", "Kelas Rawat", "Laka Lantas", "Lokasi Laka Lantas", "User Input",
+                    "Tgl.Lahir", "Peserta", "J.Kel", "No.Kartu", "Tanggal Pulang", "Asal Rujukan", "Eksekutif",
+                    "COB", "Penjamin", "No.Telp", "INACBG", "Status", "No.FPK", "Pengajuan", "Disetujui",
                     "Tarif Gruper", "Tarif RS", "Topup", "Untung/Rugi"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -197,8 +189,7 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -236,11 +227,9 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (faskes.getTable().getSelectedRow() != -1) {
                     KdPpkRujukan
-                            .setText(faskes.getTable().getValueAt(faskes.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 1).toString());
                     NmPpkRujukan
-                            .setText(faskes.getTable().getValueAt(faskes.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 2).toString());
                 }
                 KdPpkRujukan.requestFocus();
             }
@@ -294,11 +283,9 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (penyakit.getTable().getSelectedRow() != -1) {
                     KdPenyakit
-                            .setText(penyakit.getTable().getValueAt(penyakit.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                     NmPenyakit
-                            .setText(penyakit.getTable().getValueAt(penyakit.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 2).toString());
                 }
                 KdPenyakit.requestFocus();
             }
@@ -351,10 +338,8 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 2).toString());
+                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 2).toString());
                 }
                 KdPoli.requestFocus();
             }
@@ -405,7 +390,9 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -909,8 +896,7 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            BPJSMonitoringKlaim dialog = new BPJSMonitoringKlaim(
-                    new javax.swing.JFrame(), true);
+            BPJSMonitoringKlaim dialog = new BPJSMonitoringKlaim(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -965,16 +951,14 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
     public void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select DISTINCT bridging_sep.tglsep as tanggal from bridging_sep where "
+            ps = koneksi.prepareStatement("select DISTINCT bridging_sep.tglsep as tanggal from bridging_sep where "
                     + "bridging_sep.tglsep between ? and ? order by bridging_sep.tglsep");
             try {
                 ps.setString(1, Valid.SetTgl(TglSEP1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(TglSEP2.getSelectedItem() + ""));
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    if (JenisPelayanan.getSelectedItem().toString().equals(
-                            "Semua")) {
+                    if (JenisPelayanan.getSelectedItem().toString().equals("Semua")) {
                         if (Status.getSelectedItem().toString().equals("Semua")) {
                             Monitor(rs.getString("tanggal"), "1", "1");
                             Monitor(rs.getString("tanggal"), "1", "2");
@@ -983,37 +967,27 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
                             Monitor(rs.getString("tanggal"), "2", "2");
                             Monitor(rs.getString("tanggal"), "2", "3");
                         } else {
-                            Monitor(rs.getString("tanggal"), "1", Status.
-                                    getSelectedItem().toString().substring(0, 1));
-                            Monitor(rs.getString("tanggal"), "2", Status.
-                                    getSelectedItem().toString().substring(0, 1));
+                            Monitor(rs.getString("tanggal"), "1", Status.getSelectedItem().toString().substring(0, 1));
+                            Monitor(rs.getString("tanggal"), "2", Status.getSelectedItem().toString().substring(0, 1));
                         }
                     } else {
                         if (Status.getSelectedItem().toString().equals("Semua")) {
                             Monitor(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "1");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "1");
                             Monitor(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "2");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "2");
                             Monitor(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "3");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "3");
                             Monitor(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "1");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "1");
                             Monitor(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "2");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "2");
                             Monitor(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "3");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "3");
                         } else {
                             Monitor(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1),
-                                    Status.getSelectedItem().toString().
-                                            substring(0, 1));
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1),
+                                    Status.getSelectedItem().toString().substring(0, 1));
                         }
                     }
                 }
@@ -1036,8 +1010,7 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
                 ps.setString(2, Valid.SetTgl(TglSEP2.getSelectedItem() + ""));
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    if (JenisPelayanan.getSelectedItem().toString().equals(
-                            "Semua")) {
+                    if (JenisPelayanan.getSelectedItem().toString().equals("Semua")) {
                         if (Status.getSelectedItem().toString().equals("Semua")) {
                             MonitorInternal(rs.getString("tanggal"), "1", "1");
                             MonitorInternal(rs.getString("tanggal"), "1", "2");
@@ -1047,38 +1020,28 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
                             MonitorInternal(rs.getString("tanggal"), "2", "3");
                         } else {
                             MonitorInternal(rs.getString("tanggal"), "1",
-                                    Status.getSelectedItem().toString().
-                                            substring(0, 1));
+                                    Status.getSelectedItem().toString().substring(0, 1));
                             MonitorInternal(rs.getString("tanggal"), "2",
-                                    Status.getSelectedItem().toString().
-                                            substring(0, 1));
+                                    Status.getSelectedItem().toString().substring(0, 1));
                         }
                     } else {
                         if (Status.getSelectedItem().toString().equals("Semua")) {
                             MonitorInternal(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "1");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "1");
                             MonitorInternal(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "2");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "2");
                             MonitorInternal(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "3");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "3");
                             MonitorInternal(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "1");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "1");
                             MonitorInternal(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "2");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "2");
                             MonitorInternal(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1), "3");
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1), "3");
                         } else {
                             MonitorInternal(rs.getString("tanggal"),
-                                    JenisPelayanan.getSelectedItem().toString().
-                                            substring(0, 1),
-                                    Status.getSelectedItem().toString().
-                                            substring(0, 1));
+                                    JenisPelayanan.getSelectedItem().toString().substring(0, 1),
+                                    Status.getSelectedItem().toString().substring(0, 1));
                         }
                     }
                 }
@@ -1121,65 +1084,42 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
             headers.add("X-Signature", api.getHmac(utc));
             headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
             requestEntity = new HttpEntity(headers);
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
-                    requestEntity, String.class).getBody());
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
-                response = mapper.readTree(api.Decrypt(root.path("response").
-                        asText(), utc));
+                response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
                 // response = root.path("response");
                 if (response.path("klaim").isArray()) {
                     for (JsonNode list : response.path("klaim")) {
-                        pssep = koneksi.prepareStatement(
-                                "select * from bridging_sep where bridging_sep.no_sep=?");
+                        pssep = koneksi.prepareStatement("select * from bridging_sep where bridging_sep.no_sep=?");
                         try {
                             pssep.setString(1, list.path("noSEP").asText());
                             rssep = pssep.executeQuery();
                             while (rssep.next()) {
-                                tabMode.addRow(new Object[]{rssep.getString(1),
-                                    rssep.getString(2),
-                                    rssep.getString(3), rssep.getString(4),
-                                    rssep.getString(5), rssep.getString(6),
-                                    rssep.getString(7), rssep.getString(8),
-                                    rssep.getString(9), rssep.getString(10),
-                                    rssep.getString(11), rssep.getString(12),
-                                    rssep.getString(13),
-                                    rssep.getString(14),
-                                    rssep.getString(14) + " " + rssep.getString(
-                                    15),
-                                    rssep.getString(16), rssep.getString(17),
-                                    rssep.getString(18),
-                                    rssep.getString(19), rssep.getString(20),
-                                    rssep.getString(21),
-                                    rssep.getString(22), rssep.getString(23),
-                                    rssep.getString(24),
-                                    rssep.getString(25), rssep.getString(26),
-                                    rssep.getString(27),
-                                    rssep.getString(28), rssep.getString(29),
-                                    rssep.getString(30),
+                                tabMode.addRow(new Object[]{rssep.getString(1), rssep.getString(2),
+                                    rssep.getString(3), rssep.getString(4), rssep.getString(5), rssep.getString(6),
+                                    rssep.getString(7), rssep.getString(8), rssep.getString(9), rssep.getString(10),
+                                    rssep.getString(11), rssep.getString(12), rssep.getString(13),
+                                    rssep.getString(14), rssep.getString(14) + " " + rssep.getString(15),
+                                    rssep.getString(16), rssep.getString(17), rssep.getString(18),
+                                    rssep.getString(19), rssep.getString(20), rssep.getString(21),
+                                    rssep.getString(22), rssep.getString(23), rssep.getString(24),
+                                    rssep.getString(25), rssep.getString(26), rssep.getString(27),
+                                    rssep.getString(28), rssep.getString(29), rssep.getString(30),
                                     rssep.getString(31),
                                     list.path("Inacbg").path("kode").asText() + " "
                                     + list.path("Inacbg").path("nama").asText(),
-                                    list.path("status").asText(), list.path(
-                                    "noFPK").asText(),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byPengajuan").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "bySetujui").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byTarifGruper").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byTarifRS").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byTopup").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "bySetujui").asDouble()
-                                    - list.path("biaya").path("byTopup").
-                                    asDouble()
-                                    - list.path("biaya").path("byTarifRS").
-                                    asDouble())
+                                    list.path("status").asText(), list.path("noFPK").asText(),
+                                    Valid.SetAngka(list.path("biaya").path("byPengajuan").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("bySetujui").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("byTarifGruper").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("byTarifRS").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("byTopup").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("bySetujui").asDouble()
+                                    - list.path("biaya").path("byTopup").asDouble()
+                                    - list.path("biaya").path("byTarifRS").asDouble())
 
                                 });
                             }
@@ -1203,15 +1143,13 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
                 | NoSuchPaddingException | RestClientException ex) {
             System.out.println("Notifikasi Peserta : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(rootPane,
-                        "Koneksi ke server BPJS terputus...!");
+                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                 dispose();
             }
         }
     }
 
-    private void MonitorInternal(String tanggal, String jenispelayanan,
-            String status) {
+    private void MonitorInternal(String tanggal, String jenispelayanan, String status) {
         try {
             URL = link + "/Monitoring/Klaim/Tanggal/" + tanggal + "/JnsPelayanan/" + jenispelayanan + "/Status/"
                     + status;
@@ -1224,14 +1162,12 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
             headers.add("X-Signature", api.getHmac(utc));
             headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
             requestEntity = new HttpEntity(headers);
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
-                    requestEntity, String.class).getBody());
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
-                response = mapper.readTree(api.Decrypt(root.path("response").
-                        asText(), utc));
+                response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
                 // response = root.path("response");
                 if (response.path("klaim").isArray()) {
                     for (JsonNode list : response.path("klaim")) {
@@ -1241,48 +1177,28 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
                             pssep.setString(1, list.path("noSEP").asText());
                             rssep = pssep.executeQuery();
                             while (rssep.next()) {
-                                tabMode.addRow(new Object[]{rssep.getString(1),
-                                    rssep.getString(2),
-                                    rssep.getString(3), rssep.getString(4),
-                                    rssep.getString(5), rssep.getString(6),
-                                    rssep.getString(7), rssep.getString(8),
-                                    rssep.getString(9), rssep.getString(10),
-                                    rssep.getString(11), rssep.getString(12),
-                                    rssep.getString(13),
-                                    rssep.getString(14),
-                                    rssep.getString(14) + " " + rssep.getString(
-                                    15),
-                                    rssep.getString(16), rssep.getString(17),
-                                    rssep.getString(18),
-                                    rssep.getString(19), rssep.getString(20),
-                                    rssep.getString(21),
-                                    rssep.getString(22), rssep.getString(23),
-                                    rssep.getString(24),
-                                    rssep.getString(25), rssep.getString(26),
-                                    rssep.getString(27),
-                                    rssep.getString(28), rssep.getString(29),
-                                    rssep.getString(30),
+                                tabMode.addRow(new Object[]{rssep.getString(1), rssep.getString(2),
+                                    rssep.getString(3), rssep.getString(4), rssep.getString(5), rssep.getString(6),
+                                    rssep.getString(7), rssep.getString(8), rssep.getString(9), rssep.getString(10),
+                                    rssep.getString(11), rssep.getString(12), rssep.getString(13),
+                                    rssep.getString(14), rssep.getString(14) + " " + rssep.getString(15),
+                                    rssep.getString(16), rssep.getString(17), rssep.getString(18),
+                                    rssep.getString(19), rssep.getString(20), rssep.getString(21),
+                                    rssep.getString(22), rssep.getString(23), rssep.getString(24),
+                                    rssep.getString(25), rssep.getString(26), rssep.getString(27),
+                                    rssep.getString(28), rssep.getString(29), rssep.getString(30),
                                     rssep.getString(31),
                                     list.path("Inacbg").path("kode").asText() + " "
                                     + list.path("Inacbg").path("nama").asText(),
-                                    list.path("status").asText(), list.path(
-                                    "noFPK").asText(),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byPengajuan").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "bySetujui").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byTarifGruper").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byTarifRS").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "byTopup").asDouble()),
-                                    Valid.SetAngka(list.path("biaya").path(
-                                    "bySetujui").asDouble()
-                                    - list.path("biaya").path("byTopup").
-                                    asDouble()
-                                    - list.path("biaya").path("byTarifRS").
-                                    asDouble())
+                                    list.path("status").asText(), list.path("noFPK").asText(),
+                                    Valid.SetAngka(list.path("biaya").path("byPengajuan").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("bySetujui").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("byTarifGruper").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("byTarifRS").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("byTopup").asDouble()),
+                                    Valid.SetAngka(list.path("biaya").path("bySetujui").asDouble()
+                                    - list.path("biaya").path("byTopup").asDouble()
+                                    - list.path("biaya").path("byTarifRS").asDouble())
 
                                 });
                             }
@@ -1306,14 +1222,12 @@ public class BPJSMonitoringKlaim extends javax.swing.JDialog {
                 | NoSuchPaddingException | RestClientException ex) {
             System.out.println("Notifikasi Peserta : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(rootPane,
-                        "Koneksi ke server BPJS terputus...!");
+                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
                 dispose();
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            BPJSMonitoringKlaim.class.getName());
+    private static final Logger LOG = Logger.getLogger(BPJSMonitoringKlaim.class.getName());
 
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -41,23 +41,34 @@ import simrskhanza.DlgKecamatan;
 import simrskhanza.DlgKelurahan;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+
     private DlgKecamatan kecamatan = new DlgKecamatan(null, false);
+
     private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private int i = 0;
 
     /**
@@ -72,11 +83,8 @@ public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {
-            "No.", "No.Rawat", "No.RM", "Nama Pasien", "Alamat", "No.KTP",
-            "Tanggal Lahir", "No.Telp", "Tanggal Registrasi", "Asal Poli",
-            "Jenis Pemeriksaan", "Hasil"
-        };
+        Object[] rowRwJlDr = {"No.", "No.Rawat", "No.RM", "Nama Pasien", "Alamat", "No.KTP", "Tanggal Lahir",
+            "No.Telp", "Tanggal Registrasi", "Asal Poli", "Jenis Pemeriksaan", "Hasil"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -85,7 +93,8 @@ public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -121,8 +130,7 @@ public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput(90).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -241,8 +249,8 @@ public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
-                            kabupaten.getTable().getSelectedRow(), 0).toString());
+                    nmkabupaten
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkabupaten.requestFocus();
             }
@@ -296,8 +304,8 @@ public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kecamatan.getTable().getSelectedRow() != -1) {
-                    nmkecamatan.setText(kecamatan.getTable().getValueAt(
-                            kecamatan.getTable().getSelectedRow(), 0).toString());
+                    nmkecamatan
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkecamatan.requestFocus();
             }
@@ -351,8 +359,8 @@ public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kelurahan.getTable().getSelectedRow() != -1) {
-                    nmkelurahan.setText(kelurahan.getTable().getValueAt(
-                            kelurahan.getTable().getSelectedRow(), 0).toString());
+                    nmkelurahan
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkelurahan.requestFocus();
             }
@@ -450,7 +458,9 @@ public class DlgLaporanPeriksaLab extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -948,8 +958,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgLaporanPeriksaLab dialog = new DlgLaporanPeriksaLab(
-                    new javax.swing.JFrame(), true);
+            DlgLaporanPeriksaLab dialog = new DlgLaporanPeriksaLab(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1036,22 +1045,14 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 rs = ps.executeQuery();
                 i = 1;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        i, rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("alamat"), rs.
-                        getString("no_ktp"),
-                        rs.getString("tgl_lahir"), rs.getString("no_tlp"), rs.
-                        getString("tgl_registrasi"), rs.getString("nm_poli"),
-                        rs.getString("Pemeriksaan"), rs.getString("nilai")
-                    });
+                    tabMode.addRow(new Object[]{i, rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("alamat"), rs.getString("no_ktp"),
+                        rs.getString("tgl_lahir"), rs.getString("no_tlp"), rs.getString("tgl_registrasi"),
+                        rs.getString("nm_poli"), rs.getString("Pemeriksaan"), rs.getString("nilai")});
                     i++;
                 }
                 if (i > 1) {
-                    tabMode.addRow(new Object[]{
-                        ">>", "Total : ", (i - 1), "", "", "", "", "", "", "",
-                        ""
-                    });
+                    tabMode.addRow(new Object[]{">>", "Total : ", (i - 1), "", "", "", "", "", "", "", ""});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1090,7 +1091,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgLaporanPeriksaLab.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgLaporanPeriksaLab.class.getName());
 
 }

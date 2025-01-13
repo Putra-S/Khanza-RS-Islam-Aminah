@@ -86,41 +86,29 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
 
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
 
-    private SisruteCekReferensiFaskes faskes = new SisruteCekReferensiFaskes(
-            null, false);
+    private SisruteCekReferensiFaskes faskes = new SisruteCekReferensiFaskes(null, false);
 
-    private SisruteCekReferensiAlasanRujuk alasanrujuk = new SisruteCekReferensiAlasanRujuk(
-            null, false);
+    private SisruteCekReferensiAlasanRujuk alasanrujuk = new SisruteCekReferensiAlasanRujuk(null, false);
 
-    private SisruteCekReferensiDiagnosa diagnosa = new SisruteCekReferensiDiagnosa(
-            null, false);
+    private SisruteCekReferensiDiagnosa diagnosa = new SisruteCekReferensiDiagnosa(null, false);
 
-    private SisruteCekReferensiPelayanan pelayanan = new SisruteCekReferensiPelayanan(
-            null, false);
+    private SisruteCekReferensiPelayanan pelayanan = new SisruteCekReferensiPelayanan(null, false);
 
-    private SisruteCekReferensiKriteriaRujukan kriteriarujukan = new SisruteCekReferensiKriteriaRujukan(
-            null, false);
+    private SisruteCekReferensiKriteriaRujukan kriteriarujukan = new SisruteCekReferensiKriteriaRujukan(null, false);
 
-    private SisruteCekReferensiKriteriaKhusus kriteriakhusus = new SisruteCekReferensiKriteriaKhusus(
-            null, false);
+    private SisruteCekReferensiKriteriaKhusus kriteriakhusus = new SisruteCekReferensiKriteriaKhusus(null, false);
 
-    private SisruteCekReferensiKriteriaSDM kriteriasdm = new SisruteCekReferensiKriteriaSDM(
-            null, false);
+    private SisruteCekReferensiKriteriaSDM kriteriasdm = new SisruteCekReferensiKriteriaSDM(null, false);
 
-    private SisruteCekReferensiKriteriaAlat kriteriaalat = new SisruteCekReferensiKriteriaAlat(
-            null, false);
+    private SisruteCekReferensiKriteriaAlat kriteriaalat = new SisruteCekReferensiKriteriaAlat(null, false);
 
-    private SisruteCekReferensiKriteriaLayanan kriterialayanan = new SisruteCekReferensiKriteriaLayanan(
-            null, false);
+    private SisruteCekReferensiKriteriaLayanan kriterialayanan = new SisruteCekReferensiKriteriaLayanan(null, false);
 
-    private SisruteCekReferensiKriteriaKelas kriteriakelas = new SisruteCekReferensiKriteriaKelas(
-            null, false);
+    private SisruteCekReferensiKriteriaKelas kriteriakelas = new SisruteCekReferensiKriteriaKelas(null, false);
 
-    private SisruteCekReferensiKriteriaJenis kriteriaJenis = new SisruteCekReferensiKriteriaJenis(
-            null, false);
+    private SisruteCekReferensiKriteriaJenis kriteriaJenis = new SisruteCekReferensiKriteriaJenis(null, false);
 
-    private SisruteCekReferensiKriteriaSarana kriteriaSarana = new SisruteCekReferensiKriteriaSarana(
-            null, false);
+    private SisruteCekReferensiKriteriaSarana kriteriaSarana = new SisruteCekReferensiKriteriaSarana(null, false);
 
     /**
      * Creates new form DlgRujuk
@@ -134,18 +122,12 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
         this.setLocation(8, 1);
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"No.Rujuk", "No.Rawat", "No.RM", "No.KTP/NIK",
-                    "No.Kartu JKN", "Nama Pasien", "J.K.",
-                    "Tgl.Lahir", "Tempat Lahir", "Alamat", "Kontak",
-                    "Jenis Rujukan", "Tanggal Rujuk",
-                    "Kd.Fas.Tujuan", "Nama Faskes Tujuan", "Kd Alasan",
-                    "Alasan Rujuk", "Alasan Lainnya", "ICD X",
-                    "Diagnosa Rujuk", "NIK Dokter", "Dokter Perujuk",
-                    "NIK Petugas", "Petugas Perujuk",
-                    "Anamnesis & Pemeriksaan Fisik", "Kesadaran",
-                    "Tekanan Darah", "Nadi", "Suhu", "Respirasi",
-                    "Keadaan Umum", "Tingkat Nyeri", "Alergi", "Laboratorium",
-                    "Radiologi", "Terapi/Tindakan"}) {
+                new Object[]{"No.Rujuk", "No.Rawat", "No.RM", "No.KTP/NIK", "No.Kartu JKN", "Nama Pasien", "J.K.",
+                    "Tgl.Lahir", "Tempat Lahir", "Alamat", "Kontak", "Jenis Rujukan", "Tanggal Rujuk",
+                    "Kd.Fas.Tujuan", "Nama Faskes Tujuan", "Kd Alasan", "Alasan Rujuk", "Alasan Lainnya", "ICD X",
+                    "Diagnosa Rujuk", "NIK Dokter", "Dokter Perujuk", "NIK Petugas", "Petugas Perujuk",
+                    "Anamnesis & Pemeriksaan Fisik", "Kesadaran", "Tekanan Darah", "Nadi", "Suhu", "Respirasi",
+                    "Keadaan Umum", "Tingkat Nyeri", "Alergi", "Laboratorium", "Radiologi", "Terapi/Tindakan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -238,8 +220,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{"No.Rujuk", "No.RM",
-            "Nama Pasien", "Nama Faskes Tujuan",
+        tabMode2 = new DefaultTableModel(null, new Object[]{"No.Rujuk", "No.RM", "Nama Pasien", "Nama Faskes Tujuan",
             "Status Direspon", "Status Diterima"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -273,12 +254,10 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
         tbObat2.setDefaultRenderer(Object.class, new WarnaTable());
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
-        AlasanLainnya.setDocument(new batasInput((byte) 50).getKata(
-                AlasanLainnya));
+        AlasanLainnya.setDocument(new batasInput((byte) 50).getKata(AlasanLainnya));
         Anamnesis.setDocument(new batasInput(700).getKata(Anamnesis));
         TekananDarah.setDocument(new batasInput((byte) 7).getKata(TekananDarah));
-        FrekuensiNadi.setDocument(new batasInput((byte) 3).
-                getKata(FrekuensiNadi));
+        FrekuensiNadi.setDocument(new batasInput((byte) 3).getKata(FrekuensiNadi));
         SuhuBadan.setDocument(new batasInput((byte) 5).getKata(SuhuBadan));
         Respirasi.setDocument(new batasInput((byte) 3).getKata(Respirasi));
         KeadaanUmum.setDocument(new batasInput(300).getKata(KeadaanUmum));
@@ -288,8 +267,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
         TerapiTindakan.setDocument(new batasInput(1000).getKata(TerapiTindakan));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -326,10 +304,8 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (faskes.getTable().getSelectedRow() != -1) {
-                    KdFaskes.setText(faskes.getTable().getValueAt(faskes.
-                            getTable().getSelectedRow(), 1).toString());
-                    NmFaskes.setText(faskes.getTable().getValueAt(faskes.
-                            getTable().getSelectedRow(), 2).toString());
+                    KdFaskes.setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 1).toString());
+                    NmFaskes.setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 2).toString());
                     KdFaskes.requestFocus();
                 }
             }
@@ -383,11 +359,9 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (alasanrujuk.getTable().getSelectedRow() != -1) {
                     KdAlasan.setText(
-                            alasanrujuk.getTable().getValueAt(alasanrujuk.
-                                    getTable().getSelectedRow(), 1).toString());
+                            alasanrujuk.getTable().getValueAt(alasanrujuk.getTable().getSelectedRow(), 1).toString());
                     NmAlasan.setText(
-                            alasanrujuk.getTable().getValueAt(alasanrujuk.
-                                    getTable().getSelectedRow(), 2).toString());
+                            alasanrujuk.getTable().getValueAt(alasanrujuk.getTable().getSelectedRow(), 2).toString());
                     KdAlasan.requestFocus();
                 }
             }
@@ -441,11 +415,9 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (pelayanan.getTable().getSelectedRow() != -1) {
                     KdPelayanan
-                            .setText(pelayanan.getTable().getValueAt(pelayanan.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(pelayanan.getTable().getValueAt(pelayanan.getTable().getSelectedRow(), 1).toString());
                     NmPelayanan
-                            .setText(pelayanan.getTable().getValueAt(pelayanan.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(pelayanan.getTable().getValueAt(pelayanan.getTable().getSelectedRow(), 2).toString());
                     KdPelayanan.requestFocus();
                 }
             }
@@ -499,11 +471,9 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (diagnosa.getTable().getSelectedRow() != -1) {
                     KdDiagnosa
-                            .setText(diagnosa.getTable().getValueAt(diagnosa.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(diagnosa.getTable().getValueAt(diagnosa.getTable().getSelectedRow(), 1).toString());
                     NmDiagnosa
-                            .setText(diagnosa.getTable().getValueAt(diagnosa.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(diagnosa.getTable().getValueAt(diagnosa.getTable().getSelectedRow(), 2).toString());
                     KdDiagnosa.requestFocus();
                 }
             }
@@ -557,12 +527,10 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriteriarujukan.getTable().getSelectedRow() != -1) {
                     KriteriaKdRujukan.setText(kriteriarujukan.getTable()
-                            .getValueAt(kriteriarujukan.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(kriteriarujukan.getTable().getSelectedRow(), 1)
                             .toString());
                     KriteriaNmRujukan.setText(kriteriarujukan.getTable()
-                            .getValueAt(kriteriarujukan.getTable().
-                                    getSelectedRow(), 2)
+                            .getValueAt(kriteriarujukan.getTable().getSelectedRow(), 2)
                             .toString());
                     KriteriaKdRujukan.requestFocus();
                 }
@@ -617,12 +585,10 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriteriakhusus.getTable().getSelectedRow() != -1) {
                     KriteriaKdKhusus.setText(kriteriakhusus.getTable()
-                            .getValueAt(kriteriakhusus.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(kriteriakhusus.getTable().getSelectedRow(), 1)
                             .toString());
                     KriteriaNmKhusus.setText(kriteriakhusus.getTable()
-                            .getValueAt(kriteriakhusus.getTable().
-                                    getSelectedRow(), 2)
+                            .getValueAt(kriteriakhusus.getTable().getSelectedRow(), 2)
                             .toString());
                     KriteriaKdKhusus.requestFocus();
                 }
@@ -677,11 +643,9 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriteriasdm.getTable().getSelectedRow() != -1) {
                     KriteriaKdSDM.setText(
-                            kriteriasdm.getTable().getValueAt(kriteriasdm.
-                                    getTable().getSelectedRow(), 1).toString());
+                            kriteriasdm.getTable().getValueAt(kriteriasdm.getTable().getSelectedRow(), 1).toString());
                     KriteriaNmSDM.setText(
-                            kriteriasdm.getTable().getValueAt(kriteriasdm.
-                                    getTable().getSelectedRow(), 2).toString());
+                            kriteriasdm.getTable().getValueAt(kriteriasdm.getTable().getSelectedRow(), 2).toString());
                     KriteriaKdSDM.requestFocus();
                 }
             }
@@ -735,11 +699,9 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriteriaalat.getTable().getSelectedRow() != -1) {
                     KriteriaKdAlat.setText(
-                            kriteriaalat.getTable().getValueAt(kriteriaalat.
-                                    getTable().getSelectedRow(), 1).toString());
+                            kriteriaalat.getTable().getValueAt(kriteriaalat.getTable().getSelectedRow(), 1).toString());
                     KriteriaNmAlat.setText(
-                            kriteriaalat.getTable().getValueAt(kriteriaalat.
-                                    getTable().getSelectedRow(), 2).toString());
+                            kriteriaalat.getTable().getValueAt(kriteriaalat.getTable().getSelectedRow(), 2).toString());
                     KriteriaKdAlat.requestFocus();
                 }
             }
@@ -793,12 +755,10 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriterialayanan.getTable().getSelectedRow() != -1) {
                     KriteriaKdPelayanan.setText(kriterialayanan.getTable()
-                            .getValueAt(kriterialayanan.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(kriterialayanan.getTable().getSelectedRow(), 1)
                             .toString());
                     KriteriaNmPelayanan.setText(kriterialayanan.getTable()
-                            .getValueAt(kriterialayanan.getTable().
-                                    getSelectedRow(), 2)
+                            .getValueAt(kriterialayanan.getTable().getSelectedRow(), 2)
                             .toString());
                     KriteriaKdPelayanan.requestFocus();
                 }
@@ -853,12 +813,10 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriteriakelas.getTable().getSelectedRow() != -1) {
                     KriteriaKdKelas.setText(kriteriakelas.getTable()
-                            .getValueAt(kriteriakelas.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(kriteriakelas.getTable().getSelectedRow(), 1)
                             .toString());
                     KriteriaNmKelas.setText(kriteriakelas.getTable()
-                            .getValueAt(kriteriakelas.getTable().
-                                    getSelectedRow(), 2)
+                            .getValueAt(kriteriakelas.getTable().getSelectedRow(), 2)
                             .toString());
                     KriteriaKdKelas.requestFocus();
                 }
@@ -913,12 +871,10 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriteriaJenis.getTable().getSelectedRow() != -1) {
                     KriteriaKdJenis.setText(kriteriaJenis.getTable()
-                            .getValueAt(kriteriaJenis.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(kriteriaJenis.getTable().getSelectedRow(), 1)
                             .toString());
                     KriteriaNmJenis.setText(kriteriaJenis.getTable()
-                            .getValueAt(kriteriaJenis.getTable().
-                                    getSelectedRow(), 2)
+                            .getValueAt(kriteriaJenis.getTable().getSelectedRow(), 2)
                             .toString());
                     KriteriaKdJenis.requestFocus();
                 }
@@ -973,12 +929,10 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kriteriaSarana.getTable().getSelectedRow() != -1) {
                     KriteriaKdSarana.setText(kriteriaSarana.getTable()
-                            .getValueAt(kriteriaSarana.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(kriteriaSarana.getTable().getSelectedRow(), 1)
                             .toString());
                     KriteriaNmSarana.setText(kriteriaSarana.getTable()
-                            .getValueAt(kriteriaSarana.getTable().
-                                    getSelectedRow(), 2)
+                            .getValueAt(kriteriaSarana.getTable().getSelectedRow(), 2)
                             .toString());
                     KriteriaKdSarana.requestFocus();
                 }
@@ -1033,20 +987,14 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        KdDokter.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 23).toString());
+                        KdDokter.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 23).toString());
                         DokterPerujuk
-                                .setText(pegawai.tbKamar.getValueAt(
-                                        pegawai.tbKamar.getSelectedRow(), 1).
-                                        toString());
+                                .setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                         KdDokter.requestFocus();
                     } else if (pilihan == 2) {
-                        KdPetugas.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 23).toString());
+                        KdPetugas.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 23).toString());
                         PetugasEntry
-                                .setText(pegawai.tbKamar.getValueAt(
-                                        pegawai.tbKamar.getSelectedRow(), 1).
-                                        toString());
+                                .setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                         KdPetugas.requestFocus();
                     }
                 }
@@ -1097,7 +1045,9 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -3591,8 +3541,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SisruteRujukanKeluar dialog = new SisruteRujukanKeluar(
-                    new javax.swing.JFrame(), true);
+            SisruteRujukanKeluar dialog = new SisruteRujukanKeluar(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -3795,114 +3744,69 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                     + "sisrute_rujukan_keluar.tgl_rujuk between ? and ? and sisrute_rujukan_keluar.kesadaran like ? "
                     + "order by sisrute_rujukan_keluar.tgl_rujuk desc");
             try {
-                ps.setString(1,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(2,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
-                ps.setString(4,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(5,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(6, "%" + TCari.getText().trim() + "%");
-                ps.setString(7,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(8,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(9, "%" + TCari.getText().trim() + "%");
-                ps.setString(10,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(11,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(12, "%" + TCari.getText().trim() + "%");
-                ps.setString(13,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(14,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(15, "%" + TCari.getText().trim() + "%");
-                ps.setString(16,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(17,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(16, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(17, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(18, "%" + TCari.getText().trim() + "%");
-                ps.setString(19,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(20,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(19, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(20, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(21, "%" + TCari.getText().trim() + "%");
-                ps.setString(22,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(23,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(24, "%" + TCari.getText().trim() + "%");
-                ps.setString(22,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(23,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(24, "%" + TCari.getText().trim() + "%");
-                ps.setString(25,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(26,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(25, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(26, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(27, "%" + TCari.getText().trim() + "%");
-                ps.setString(28,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(29,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(28, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(29, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(30, "%" + TCari.getText().trim() + "%");
-                ps.setString(31,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(32,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(31, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(32, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(33, "%" + TCari.getText().trim() + "%");
-                ps.setString(34,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(35,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(34, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(35, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(36, "%" + TCari.getText().trim() + "%");
-                ps.setString(37,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(38,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(37, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(38, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(39, "%" + TCari.getText().trim() + "%");
-                ps.setString(40,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(41,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(40, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(41, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(42, "%" + TCari.getText().trim() + "%");
-                ps.setString(43,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(44,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(43, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(44, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(45, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{rs.getString("no_rujuk"), rs.
-                        getString("no_rawat"),
-                        rs.getString("no_rkm_medis"), rs.getString("no_ktp"),
-                        rs.getString("no_peserta"),
-                        rs.getString("nm_pasien"), rs.getString("jk"), rs.
-                        getString("tgl_lahir"),
-                        rs.getString("tmp_lahir"), rs.getString("alamat"), rs.
-                        getString("no_tlp"),
-                        rs.getString("jns_rujukan"), rs.getString("tgl_rujuk"),
-                        rs.getString("kd_faskes_tujuan"),
-                        rs.getString("nm_faskes_tujuan"), rs.getString(
-                        "kd_alasan"), rs.getString("alasan_rujuk"),
-                        rs.getString("alasan_lainnya"), rs.getString(
-                        "kd_diagnosa"), rs.getString("diagnosa_rujuk"),
-                        rs.getString("nik_dokter"), rs.getString(
-                        "dokter_perujuk"), rs.getString("nik_petugas"),
-                        rs.getString("petugas_entry"), rs.getString(
-                        "anamnesis_pemeriksaan"),
-                        rs.getString("kesadaran"), rs.getString("tekanan_darah"),
-                        rs.getString("nadi"),
-                        rs.getString("suhu"), rs.getString("respirasi"), rs.
-                        getString("keadaan_umum"),
-                        rs.getString("tingkat_nyeri"), rs.getString("alergi"),
-                        rs.getString("laboratorium"),
-                        rs.getString("radiologi"), rs.
-                        getString("terapitindakan")});
+                    tabMode.addRow(new Object[]{rs.getString("no_rujuk"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"), rs.getString("no_ktp"), rs.getString("no_peserta"),
+                        rs.getString("nm_pasien"), rs.getString("jk"), rs.getString("tgl_lahir"),
+                        rs.getString("tmp_lahir"), rs.getString("alamat"), rs.getString("no_tlp"),
+                        rs.getString("jns_rujukan"), rs.getString("tgl_rujuk"), rs.getString("kd_faskes_tujuan"),
+                        rs.getString("nm_faskes_tujuan"), rs.getString("kd_alasan"), rs.getString("alasan_rujuk"),
+                        rs.getString("alasan_lainnya"), rs.getString("kd_diagnosa"), rs.getString("diagnosa_rujuk"),
+                        rs.getString("nik_dokter"), rs.getString("dokter_perujuk"), rs.getString("nik_petugas"),
+                        rs.getString("petugas_entry"), rs.getString("anamnesis_pemeriksaan"),
+                        rs.getString("kesadaran"), rs.getString("tekanan_darah"), rs.getString("nadi"),
+                        rs.getString("suhu"), rs.getString("respirasi"), rs.getString("keadaan_umum"),
+                        rs.getString("tingkat_nyeri"), rs.getString("alergi"), rs.getString("laboratorium"),
+                        rs.getString("radiologi"), rs.getString("terapitindakan")});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -3923,8 +3827,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
     private void tampilData2() {
         Valid.tabelKosong(tabMode2);
         try {
-            ps = koneksi.prepareStatement(
-                    "select sisrute_rujukan_keluar.no_rujuk,sisrute_rujukan_keluar.no_rkm_medis,"
+            ps = koneksi.prepareStatement("select sisrute_rujukan_keluar.no_rujuk,sisrute_rujukan_keluar.no_rkm_medis,"
                     + "sisrute_rujukan_keluar.nm_pasien,sisrute_rujukan_keluar.nm_faskes_tujuan from sisrute_rujukan_keluar where "
                     + "sisrute_rujukan_keluar.tgl_rujuk between ? and ? and sisrute_rujukan_keluar.no_rawat like ? or "
                     + "sisrute_rujukan_keluar.tgl_rujuk between ? and ? and sisrute_rujukan_keluar.no_rujuk like ? or "
@@ -3943,85 +3846,53 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                     + "sisrute_rujukan_keluar.tgl_rujuk between ? and ? and sisrute_rujukan_keluar.kesadaran like ? "
                     + "order by sisrute_rujukan_keluar.tgl_rujuk desc");
             try {
-                ps.setString(1,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(2,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
-                ps.setString(4,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(5,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(6, "%" + TCari.getText().trim() + "%");
-                ps.setString(7,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(8,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(9, "%" + TCari.getText().trim() + "%");
-                ps.setString(10,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(11,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(12, "%" + TCari.getText().trim() + "%");
-                ps.setString(13,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(14,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(15, "%" + TCari.getText().trim() + "%");
-                ps.setString(16,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(17,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(16, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(17, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(18, "%" + TCari.getText().trim() + "%");
-                ps.setString(19,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(20,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(19, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(20, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(21, "%" + TCari.getText().trim() + "%");
-                ps.setString(22,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(23,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(24, "%" + TCari.getText().trim() + "%");
-                ps.setString(22,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(23,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(24, "%" + TCari.getText().trim() + "%");
-                ps.setString(25,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(26,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(25, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(26, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(27, "%" + TCari.getText().trim() + "%");
-                ps.setString(28,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(29,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(28, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(29, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(30, "%" + TCari.getText().trim() + "%");
-                ps.setString(31,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(32,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(31, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(32, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(33, "%" + TCari.getText().trim() + "%");
-                ps.setString(34,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(35,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(34, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(35, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(36, "%" + TCari.getText().trim() + "%");
-                ps.setString(37,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(38,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(37, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(38, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(39, "%" + TCari.getText().trim() + "%");
-                ps.setString(40,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(41,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(40, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(41, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(42, "%" + TCari.getText().trim() + "%");
-                ps.setString(43,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(44,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(43, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(44, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(45, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
@@ -4029,31 +3900,24 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                     StatusDiterima = "";
                     try {
                         Valid.tabelKosong(tabMode);
-                        URL = link + "/rujukan?nomor=" + rs.
-                                getString("no_rujuk") + "&create=true";
+                        URL = link + "/rujukan?nomor=" + rs.getString("no_rujuk") + "&create=true";
                         headers = new HttpHeaders();
                         headers.add("X-cons-id", idrs);
-                        headers.add("X-Timestamp", String.valueOf(api.
-                                GetUTCdatetimeAsString()));
+                        headers.add("X-Timestamp", String.valueOf(api.GetUTCdatetimeAsString()));
                         headers.add("X-signature", api.getHmac());
                         headers.add("Content-type", "application/json");
                         headers.add("Content-length", null);
                         requestEntity = new HttpEntity(headers);
                         root = mapper.readTree(
-                                api.getRest().exchange(URL, HttpMethod.GET,
-                                        requestEntity, String.class).getBody());
+                                api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
                         nameNode = root.path("status");
-                        System.out.println("Result : " + root.path("status").
-                                asText());
+                        System.out.println("Result : " + root.path("status").asText());
                         if (nameNode.asText().equals("200")) {
                             response = root.path("data");
                             if (response.isArray()) {
                                 for (JsonNode list : response) {
-                                    StatusDirespon = list.path("RUJUKAN").path(
-                                            "STATUS").path("NAMA").asText();
-                                    if (!list.path("RUJUKAN").path(
-                                            "STATUS_DITERIMA").path("NAMA").
-                                            asText().isEmpty()) {
+                                    StatusDirespon = list.path("RUJUKAN").path("STATUS").path("NAMA").asText();
+                                    if (!list.path("RUJUKAN").path("STATUS_DITERIMA").path("NAMA").asText().isEmpty()) {
                                         StatusDiterima = list.path("RUJUKAN")
                                                 .path("STATUS_DITERIMA")
                                                 .path("NAMA")
@@ -4071,10 +3935,8 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                             | RestClientException ex) {
                         System.out.println("Notifikasi : " + ex);
                     }
-                    tabMode2.addRow(new Object[]{rs.getString("no_rujuk"), rs.
-                        getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString(
-                        "nm_faskes_tujuan"), StatusDirespon,
+                    tabMode2.addRow(new Object[]{rs.getString("no_rujuk"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("nm_faskes_tujuan"), StatusDirespon,
                         StatusDiterima});
                 }
             } catch (Exception e) {
@@ -4135,9 +3997,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
         if (akses.getjml2() >= 1) {
             KdPetugas.setEditable(false);
             BtnPetugas.setEnabled(false);
-            Sequel.cariIsi(
-                    "select pegawai.no_ktp from pegawai where pegawai.nik=?",
-                    KdPetugas, akses.getkode());
+            Sequel.cariIsi("select pegawai.no_ktp from pegawai where pegawai.nik=?", KdPetugas, akses.getkode());
             PetugasEntry.setText(pegawai.tampil3(akses.getkode()));
         }
     }
@@ -4152,75 +4012,41 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            NoKTP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            NoKartu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            NoKTP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            NoKartu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            TmpLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            Alamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            Kontak.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            JenisRujukan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 11).toString());
-            Valid.SetTgl2(TanggalRujuk, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            KdFaskes.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            NmFaskes.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            KdAlasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            NmAlasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            AlasanLainnya.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
-            KdDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            NmDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            DokterPerujuk.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
-            KdPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            PetugasEntry.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            Anamnesis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).
-                    toString());
-            JenisKesadaran.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 25).toString());
-            TekananDarah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).
-                    toString());
-            FrekuensiNadi.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
-            SuhuBadan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).
-                    toString());
-            Respirasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).
-                    toString());
-            KeadaanUmum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).
-                    toString());
-            TingkatNyeri.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 31).toString());
-            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).
-                    toString());
-            Laborat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).
-                    toString());
-            Radiologi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).
-                    toString());
-            TerapiTindakan.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 35).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            TmpLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Alamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Kontak.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            JenisRujukan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Valid.SetTgl2(TanggalRujuk, tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            KdFaskes.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            NmFaskes.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            KdAlasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            NmAlasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            AlasanLainnya.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            KdDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            NmDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            DokterPerujuk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            KdPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            PetugasEntry.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Anamnesis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            JenisKesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            TekananDarah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            FrekuensiNadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            SuhuBadan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            Respirasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            KeadaanUmum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            TingkatNyeri.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            Laborat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            Radiologi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            TerapiTindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
         }
     }
 
@@ -4253,8 +4079,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                     KdDokter.setText(rs.getString("ktpdokter"));
                     DokterPerujuk.setText(rs.getString("nama"));
                     ps2 = koneksi
-                            .prepareStatement(
-                                    "select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit from penyakit "
+                            .prepareStatement("select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit from penyakit "
                                     + "inner join diagnosa_pasien on penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit "
                                     + "where diagnosa_pasien.status='Ralan' and diagnosa_pasien.prioritas='1' and diagnosa_pasien.no_rawat=?");
                     try {
@@ -4310,8 +4135,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                         rs2 = ps2.executeQuery();
                         cari = "";
                         while (rs2.next()) {
-                            cari = cari + rs2.getString("Pemeriksaan") + ":" + rs2.
-                                    getString("nilai") + ";";
+                            cari = cari + rs2.getString("Pemeriksaan") + ":" + rs2.getString("nilai") + ";";
                         }
 
                         Laborat.setText(cari);
@@ -4375,8 +4199,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
 
                     cari2 = "";
                     ps2 = koneksi
-                            .prepareStatement(
-                                    "select jns_perawatan.nm_perawatan from jns_perawatan inner join rawat_jl_dr "
+                            .prepareStatement("select jns_perawatan.nm_perawatan from jns_perawatan inner join rawat_jl_dr "
                                     + "on jns_perawatan.kd_jenis_prw=rawat_jl_dr.kd_jenis_prw where no_rawat=? group by jns_perawatan.nm_perawatan");
                     try {
                         ps2.setString(1, NoRawat);
@@ -4396,8 +4219,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                     }
 
                     ps2 = koneksi
-                            .prepareStatement(
-                                    "select jns_perawatan.nm_perawatan from jns_perawatan inner join rawat_jl_pr "
+                            .prepareStatement("select jns_perawatan.nm_perawatan from jns_perawatan inner join rawat_jl_pr "
                                     + "on jns_perawatan.kd_jenis_prw=rawat_jl_pr.kd_jenis_prw where no_rawat=? group by jns_perawatan.nm_perawatan");
                     try {
                         ps2.setString(1, NoRawat);
@@ -4493,8 +4315,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                     KdDokter.setText(rs.getString("ktpdokter"));
                     DokterPerujuk.setText(rs.getString("nama"));
                     ps2 = koneksi
-                            .prepareStatement(
-                                    "select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit from penyakit "
+                            .prepareStatement("select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit from penyakit "
                                     + "inner join diagnosa_pasien on penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit "
                                     + "where diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and diagnosa_pasien.no_rawat=?");
                     try {
@@ -4550,8 +4371,7 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
                         rs2 = ps2.executeQuery();
                         cari = "";
                         while (rs2.next()) {
-                            cari = cari + rs2.getString("Pemeriksaan") + ":" + rs2.
-                                    getString("nilai") + ";";
+                            cari = cari + rs2.getString("Pemeriksaan") + ":" + rs2.getString("nilai") + ";";
                         }
 
                         Laborat.setText(cari);
@@ -4698,7 +4518,6 @@ public class SisruteRujukanKeluar extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            SisruteRujukanKeluar.class.getName());
+    private static final Logger LOG = Logger.getLogger(SisruteRujukanKeluar.class.getName());
 
 }

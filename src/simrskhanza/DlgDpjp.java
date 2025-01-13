@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPemberianObat.java
- *
- * Created on 27 Mei 10, 14:52:31
+* DlgPemberianObat.java
+*
+* Created on 27 Mei 10, 14:52:31
  */
 package simrskhanza;
 
@@ -38,20 +38,28 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgDokter;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgDpjp extends javax.swing.JDialog {
 
     private final DefaultTableModel TabModePasien, tabModeDiagnosa;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private DlgCariPasien pasien = new DlgCariPasien(null, false);
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs;
+
     private int jml = 0, i = 0, index = 0;
+
     private String[] kode, nama;
+
     private boolean[] pilih;
 
     /**
@@ -64,15 +72,12 @@ public class DlgDpjp extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"P", "Tgl.Rawat", "No.Rawat", "No.R.M.", "Nama Pasien",
-            "Kode Dokter", "Nama Dokter", "DPJP Ranap Ke"};
+        Object[] row = {"P", "Tgl.Rawat", "No.Rawat", "No.R.M.", "Nama Pasien", "Kode Dokter", "Nama Dokter",
+            "DPJP Ranap Ke"};
         TabModePasien = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -90,7 +95,7 @@ public class DlgDpjp extends javax.swing.JDialog {
 
         };
         tbPasien.setModel(TabModePasien);
-        //tamipl("");
+        // tamipl("");
 
         tbPasien.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPasien.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -119,10 +124,7 @@ public class DlgDpjp extends javax.swing.JDialog {
 
         Object[] row2 = {"P", "Kode Dokter", "Nama Dokter"};
         tabModeDiagnosa = new DefaultTableModel(null, row2) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -140,7 +142,8 @@ public class DlgDpjp extends javax.swing.JDialog {
 
         };
         tbDiagnosa.setModel(tabModeDiagnosa);
-        //tbDokter.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbDokter.getBackground()));
+        // tbDokter.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbDokter.getBackground()));
         tbDiagnosa.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbDiagnosa.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (i = 0; i < 3; i++) {
@@ -162,8 +165,7 @@ public class DlgDpjp extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TCariPasien.setDocument(new batasInput((byte) 20).getKata(TCariPasien));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -188,8 +190,7 @@ public class DlgDpjp extends javax.swing.JDialog {
             });
         }
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            Dokter.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            Dokter.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (Dokter.getText().length() > 2) {
@@ -228,8 +229,7 @@ public class DlgDpjp extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pasien.getTable().getSelectedRow() != -1) {
-                    TCariPasien.setText(pasien.getTable().getValueAt(pasien.
-                            getTable().getSelectedRow(), 0).toString());
+                    TCariPasien.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 0).toString());
                 }
                 TCariPasien.requestFocus();
             }
@@ -271,9 +271,11 @@ public class DlgDpjp extends javax.swing.JDialog {
         });
     }
 
-    //private DlgCariObatDokter dlgobtpny=new DlgCariObatDokter(null,false);
+    // private DlgCariObatDokter dlgobtpny=new DlgCariObatDokter(null,false);
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1179,13 +1181,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 ps2.setString(24, "%" + TCari.getText().trim() + "%");
                 rs = ps2.executeQuery();
                 while (rs.next()) {
-                    TabModePasien.addRow(new Object[]{false, rs.getString(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getString(7)});
+                    TabModePasien.addRow(new Object[]{false, rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1204,30 +1201,24 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                TNoRM, TNoRw.getText());
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRM,
+                TNoRw.getText());
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
-                TPasien, TNoRM.getText());
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ", TPasien, TNoRM.getText());
     }
 
     private void getData() {
         if (tbPasien.getSelectedRow() != -1) {
-            TNoRw.setText(tbPasien.getValueAt(tbPasien.getSelectedRow(), 2).
-                    toString());
+            TNoRw.setText(tbPasien.getValueAt(tbPasien.getSelectedRow(), 2).toString());
             isRawat();
             isPsien();
-            Tanggal.setText(tbPasien.getValueAt(tbPasien.getSelectedRow(), 1).
-                    toString());
+            Tanggal.setText(tbPasien.getValueAt(tbPasien.getSelectedRow(), 1).toString());
         }
     }
 
     /**
-     *
      * @param norwt
      * @param tgl1
      * @param tgl2
@@ -1301,16 +1292,14 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 tabModeDiagnosa.addRow(new Object[]{pilih[i], kode[i], nama[i]});
             }
 
-            ps = koneksi.prepareStatement(
-                    "select dokter.kd_dokter,dokter.nm_dokter from dokter "
+            ps = koneksi.prepareStatement("select dokter.kd_dokter,dokter.nm_dokter from dokter "
                     + "where  status='1' and dokter.kd_dokter like ? or status='1' and dokter.nm_dokter like ? order by dokter.nm_dokter");
             try {
                 ps.setString(1, "%" + Dokter.getText().trim() + "%");
                 ps.setString(2, "%" + Dokter.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModeDiagnosa.addRow(new Object[]{false, rs.getString(1),
-                        rs.getString(2)});
+                    tabModeDiagnosa.addRow(new Object[]{false, rs.getString(1), rs.getString(2)});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -1328,4 +1317,5 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private static final Logger LOG = Logger.getLogger(DlgDpjp.class.getName());
+
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -22,7 +22,9 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -31,24 +33,30 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgDkkPenyakitTidakMenularRalan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
-    private int i = 0, hr0s7l = 0, hr0s7p = 0, hr8s28l = 0, hr8s28p = 0, hr29sth1l = 0, hr29sth1p = 0, th1s4l = 0, th1s4p = 0,
-            th5s9l = 0, th5s9p = 0, th10s14l = 0, th10s14p = 0, th15s19l = 0, th15s19p = 0, th20s44l = 0, th20s44p = 0, th45s54l = 0,
-            th45s54p = 0, th55s59l = 0, th55s59p = 0, th60s69l = 0, th60s69p = 0, th70plusl = 0, th70plusp = 0, totall = 0,
-            totalp = 0, totaljml = 0, matil = 0, matip = 0, thr0s7l = 0, thr0s7p = 0, thr8s28l = 0, thr8s28p = 0, thr29sth1l = 0,
-            thr29sth1p = 0, tth1s4l = 0, tth1s4p = 0, tth5s9l = 0, tth5s9p = 0, tth10s14l = 0, tth10s14p = 0, tth15s19l = 0,
-            tth15s19p = 0, tth20s44l = 0, tth20s44p = 0, tth45s54l = 0, tth45s54p = 0, tth55s59l = 0, tth55s59p = 0,
-            tth60s69l = 0, tth60s69p = 0, tth70plusl = 0, tth70plusp = 0, ttotall = 0, ttotalp = 0, ttotaljml = 0, tmatil = 0, tmatip = 0;
+
+    private int i = 0, hr0s7l = 0, hr0s7p = 0, hr8s28l = 0, hr8s28p = 0, hr29sth1l = 0, hr29sth1p = 0, th1s4l = 0,
+            th1s4p = 0, th5s9l = 0, th5s9p = 0, th10s14l = 0, th10s14p = 0, th15s19l = 0, th15s19p = 0, th20s44l = 0,
+            th20s44p = 0, th45s54l = 0, th45s54p = 0, th55s59l = 0, th55s59p = 0, th60s69l = 0, th60s69p = 0,
+            th70plusl = 0, th70plusp = 0, totall = 0, totalp = 0, totaljml = 0, matil = 0, matip = 0, thr0s7l = 0,
+            thr0s7p = 0, thr8s28l = 0, thr8s28p = 0, thr29sth1l = 0, thr29sth1p = 0, tth1s4l = 0, tth1s4p = 0,
+            tth5s9l = 0, tth5s9p = 0, tth10s14l = 0, tth10s14p = 0, tth15s19l = 0, tth15s19p = 0, tth20s44l = 0,
+            tth20s44p = 0, tth45s54l = 0, tth45s54p = 0, tth55s59l = 0, tth55s59p = 0, tth60s69l = 0, tth60s69p = 0,
+            tth70plusl = 0, tth70plusp = 0, ttotall = 0, ttotalp = 0, ttotaljml = 0, tmatil = 0, tmatip = 0;
 
     /**
      * Creates new form DlgLhtBiaya
@@ -62,15 +70,11 @@ public class DlgDkkPenyakitTidakMenularRalan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {"No.", "ICD 10", "Jenis Penyakit", "0-7 Hr(L)",
-            "0-7 Hr(P)", "8-28 Hr(L)", "8-28 Hr(P)", "29 Hr-1 Th(L)",
-            "29 Hr-1 Th(P)", "1-4 Th(L)", "1-4 Th(P)",
-            "5-9 Th(L)", "5-9 Th(P)", "10-14 Th(L)", "10-14 Th(P)",
-            "15-19 Th(L)", "15-19 Th(P)", "20-44 Th(L)", "20-44 Th(P)",
-            "45-54 Th(L)", "45-54 Th(P)",
-            "55-59 Th(L)", "55-59 Th(P)", "60-69 Th(L)", "60-69 Th(P)",
-            ">70 Th(L)", ">70 Th(P)", "Total(L)", "Total(P)", "Total(Jml)",
-            "Meninggal(L)", "Meninggal(P)"};
+        Object[] rowRwJlDr = {"No.", "ICD 10", "Jenis Penyakit", "0-7 Hr(L)", "0-7 Hr(P)", "8-28 Hr(L)", "8-28 Hr(P)",
+            "29 Hr-1 Th(L)", "29 Hr-1 Th(P)", "1-4 Th(L)", "1-4 Th(P)", "5-9 Th(L)", "5-9 Th(P)", "10-14 Th(L)",
+            "10-14 Th(P)", "15-19 Th(L)", "15-19 Th(P)", "20-44 Th(L)", "20-44 Th(P)", "45-54 Th(L)", "45-54 Th(P)",
+            "55-59 Th(L)", "55-59 Th(P)", "60-69 Th(L)", "60-69 Th(P)", ">70 Th(L)", ">70 Th(P)", "Total(L)",
+            "Total(P)", "Total(Jml)", "Meninggal(L)", "Meninggal(P)"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -79,7 +83,8 @@ public class DlgDkkPenyakitTidakMenularRalan extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -116,7 +121,9 @@ public class DlgDkkPenyakitTidakMenularRalan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -134,6 +141,7 @@ public class DlgDkkPenyakitTidakMenularRalan extends javax.swing.JDialog {
         BtnCari1 = new widget.Button();
         label12 = new widget.Label();
         BtnPrint = new widget.Button();
+        BtnExcel = new widget.Button();
         BtnKeluar = new widget.Button();
 
         TKd.setForeground(new java.awt.Color(255, 255, 255));
@@ -148,7 +156,7 @@ public class DlgDkkPenyakitTidakMenularRalan extends javax.swing.JDialog {
             }
         });
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Penyakit Tidak Menular di Rawat Jalan ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50,50,50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Penyakit Tidak Menular di Rawat Jalan ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -233,6 +241,24 @@ public class DlgDkkPenyakitTidakMenularRalan extends javax.swing.JDialog {
             }
         });
         panelGlass5.add(BtnPrint);
+
+        BtnExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/excel.png"))); // NOI18N
+        BtnExcel.setMnemonic('T');
+        BtnExcel.setText("Excel");
+        BtnExcel.setToolTipText("Alt+T");
+        BtnExcel.setName("BtnExcel"); // NOI18N
+        BtnExcel.setPreferredSize(new java.awt.Dimension(100, 30));
+        BtnExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnExcelActionPerformed(evt);
+            }
+        });
+        BtnExcel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnExcelKeyPressed(evt);
+            }
+        });
+        panelGlass5.add(BtnExcel);
 
         BtnKeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
         BtnKeluar.setMnemonic('K');
@@ -401,13 +427,21 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         tampil();
     }//GEN-LAST:event_formWindowOpened
 
+    private void BtnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExcelActionPerformed
+        Valid.exportToExcel(tbBangsal);
+    }//GEN-LAST:event_BtnExcelActionPerformed
+
+    private void BtnExcelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnExcelKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnExcelKeyPressed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDkkPenyakitTidakMenularRalan dialog = new DlgDkkPenyakitTidakMenularRalan(
-                    new javax.swing.JFrame(), true);
+            DlgDkkPenyakitTidakMenularRalan dialog = new DlgDkkPenyakitTidakMenularRalan(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -421,6 +455,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private widget.Button BtnCari1;
+    private widget.Button BtnExcel;
     private widget.Button BtnKeluar;
     private widget.Button BtnPrint;
     private widget.ScrollPane Scroll;
@@ -479,6 +514,8 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             ttotaljml = 0;
             tmatil = 0;
             tmatip = 0;
+
+            List<Object[]> dataList = new ArrayList<>();
             while (rs.next()) {
                 hr0s7l = 0;
                 hr0s7p = 0;
@@ -533,16 +570,16 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                             break;
                     }
 
-                    if (rs2.getString("umur").contains("Hr") || rs2.getString(
-                            "umur").contains("Bl") || rs2.getString("umur").
-                            contains("Th")) {
-                        double umur1 = Valid.SetAngka(rs2.getString("umur").
-                                replaceAll(" Hr", "").replaceAll("Hr", "").
-                                replaceAll(" ", ""));
-                        double umur2 = Valid.SetAngka(rs2.getString("umur").
-                                replaceAll(" Th", "").replaceAll("Th", "").
-                                replaceAll(" ", ""));
-                        if (umur1 >= 0 && umur1 <= 7) {
+                    String umur = rs2.getString("umur");
+                    double umurDalamHari = 0, umurDalamBulan = 0, umurDalamTahun = 0;
+
+                    // Periksa satuan umur dan ubah ke dalam tahun/hari
+                    if (umur.contains("Hr")) {
+                        umurDalamHari = Valid
+                                .SetAngka(umur.replaceAll(" Hr", "").replaceAll("Hr", "").replaceAll(" ", ""));
+                        // Jika umur dalam hari, misalkan setiap 30 hari dianggap sebagai
+                        // 1 bulan, maka konversi ke bulan atau langsung kategori bayi
+                        if (umurDalamHari >= 0 && umurDalamHari <= 7) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     hr0s7l += 1;
@@ -553,7 +590,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     thr0s7p += 1;
                                     break;
                             }
-                        } else if (umur1 >= 8 && umur1 <= 28) {
+                        } else if (umurDalamHari >= 8 && umurDalamHari <= 28) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     hr8s28l += 1;
@@ -564,7 +601,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     thr8s28p += 1;
                                     break;
                             }
-                        } else if (umur1 >= 29 && umur2 <= 1) {
+                        } else if (umurDalamHari >= 29) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     hr29sth1l += 1;
@@ -575,7 +612,29 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     thr29sth1p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 1 && umur2 <= 4) {
+                        }
+                    } else if (umur.contains("Bl")) {
+                        umurDalamBulan = Valid
+                                .SetAngka(umur.replaceAll(" Bl", "").replaceAll("Bl", "").replaceAll(" ", ""));
+
+                        if (umurDalamBulan >= 1 && umurDalamBulan <= 12) {
+                            switch (rs2.getString("jk")) {
+                                case "L":
+                                    hr29sth1l += 1;
+                                    thr29sth1l += 1;
+                                    break;
+                                case "P":
+                                    hr29sth1p += 1;
+                                    thr29sth1p += 1;
+                                    break;
+                            }
+                        }
+                    } else if (umur.contains("Th")) {
+                        umurDalamTahun = Valid
+                                .SetAngka(umur.replaceAll(" Th", "").replaceAll("Th", "").replaceAll(" ", ""));
+
+                        // Pengelompokan berdasarkan umur dalam tahun
+                        if (umurDalamTahun >= 1 && umurDalamTahun <= 4) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th1s4l += 1;
@@ -586,7 +645,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth1s4p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 5 && umur2 <= 9) {
+                        } else if (umurDalamTahun >= 5 && umurDalamTahun <= 9) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th5s9l += 1;
@@ -597,7 +656,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth5s9p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 10 && umur2 <= 14) {
+                        } else if (umurDalamTahun >= 10 && umurDalamTahun <= 14) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th10s14l += 1;
@@ -608,7 +667,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth10s14p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 15 && umur2 <= 19) {
+                        } else if (umurDalamTahun >= 15 && umurDalamTahun <= 19) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th15s19l += 1;
@@ -619,7 +678,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth15s19p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 20 && umur2 <= 44) {
+                        } else if (umurDalamTahun >= 20 && umurDalamTahun <= 44) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th20s44l += 1;
@@ -630,7 +689,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth20s44p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 45 && umur2 <= 54) {
+                        } else if (umurDalamTahun >= 45 && umurDalamTahun <= 54) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th45s54l += 1;
@@ -641,7 +700,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth45s54p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 55 && umur2 <= 59) {
+                        } else if (umurDalamTahun >= 55 && umurDalamTahun <= 59) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th55s59l += 1;
@@ -652,7 +711,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth55s59p += 1;
                                     break;
                             }
-                        } else if (umur2 >= 60 && umur2 <= 69) {
+                        } else if (umurDalamTahun >= 60 && umurDalamTahun <= 69) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th60s69l += 1;
@@ -663,7 +722,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     tth60s69p += 1;
                                     break;
                             }
-                        } else if (umur2 > 70) {
+                        } else if (umurDalamTahun > 70) {
                             switch (rs2.getString("jk")) {
                                 case "L":
                                     th70plusl += 1;
@@ -676,31 +735,38 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                             }
                         }
                     }
+
                 }
-                totall = hr0s7l + hr8s28l + hr29sth1l + th1s4l + th5s9l + th10s14l + th15s19l + th20s44l + th45s54l + th55s59l + th60s69l + th70plusl;
-                totalp = hr0s7p + hr8s28p + hr29sth1p + th1s4p + th5s9p + th10s14p + th15s19p + th20s44p + th45s54p + th55s59p + th60s69p + th70plusp;
+                totall = hr0s7l + hr8s28l + hr29sth1l + th1s4l + th5s9l + th10s14l + th15s19l + th20s44l + th45s54l
+                        + th55s59l + th60s69l + th70plusl;
+                totalp = hr0s7p + hr8s28p + hr29sth1p + th1s4p + th5s9p + th10s14p + th15s19p + th20s44p + th45s54p
+                        + th55s59p + th60s69p + th70plusp;
                 totaljml = totall + totalp;
-                ttotall = ttotall + hr0s7l + hr8s28l + hr29sth1l + th1s4l + th5s9l + th10s14l + th15s19l + th20s44l + th45s54l + th55s59l + th60s69l + th70plusl;
-                ttotalp = ttotalp + hr0s7p + hr8s28p + hr29sth1p + th1s4p + th5s9p + th10s14p + th15s19p + th20s44p + th45s54p + th55s59p + th60s69p + th70plusp;
+                ttotall = ttotall + hr0s7l + hr8s28l + hr29sth1l + th1s4l + th5s9l + th10s14l + th15s19l + th20s44l
+                        + th45s54l + th55s59l + th60s69l + th70plusl;
+                ttotalp = ttotalp + hr0s7p + hr8s28p + hr29sth1p + th1s4p + th5s9p + th10s14p + th15s19p + th20s44p
+                        + th45s54p + th55s59p + th60s69p + th70plusp;
                 ttotaljml = ttotall + ttotalp;
-                tabMode.addRow(new Object[]{
-                    i, rs.getString("kd_penyakit"), rs.getString("nm_penyakit"),
-                    hr0s7l, hr0s7p, hr8s28l, hr8s28p, hr29sth1l, hr29sth1p,
-                    th1s4l, th1s4p, th5s9l, th5s9p, th10s14l, th10s14p, th15s19l,
-                    th15s19p, th20s44l, th20s44p, th45s54l, th45s54p, th55s59l,
-                    th55s59p, th60s69l, th60s69p, th70plusl, th70plusp, totall,
-                    totalp, totaljml, matil, matip
+//				tabMode.addRow(new Object[] { i, rs.getString("kd_penyakit"), rs.getString("nm_penyakit"), hr0s7l,
+//						hr0s7p, hr8s28l, hr8s28p, hr29sth1l, hr29sth1p, th1s4l, th1s4p, th5s9l, th5s9p, th10s14l,
+//						th10s14p, th15s19l, th15s19p, th20s44l, th20s44p, th45s54l, th45s54p, th55s59l, th55s59p,
+//						th60s69l, th60s69p, th70plusl, th70plusp, totall, totalp, totaljml, matil, matip });
+                dataList.add(new Object[]{
+                    i, rs.getString("kd_penyakit"), rs.getString("nm_penyakit"), hr0s7l,
+                    hr0s7p, hr8s28l, hr8s28p, hr29sth1l, hr29sth1p, th1s4l, th1s4p, th5s9l, th5s9p, th10s14l,
+                    th10s14p, th15s19l, th15s19p, th20s44l, th20s44p, th45s54l, th45s54p, th55s59l, th55s59p,
+                    th60s69l, th60s69p, th70plusl, th70plusp, totall, totalp, totaljml, matil, matip
                 });
                 i++;
             }
-            tabMode.addRow(new Object[]{
-                "", "", "RUMAH SAKIT", thr0s7l, thr0s7p, thr8s28l, thr8s28p,
-                thr29sth1l, thr29sth1p, tth1s4l, tth1s4p, tth5s9l, tth5s9p,
-                tth10s14l, tth10s14p, tth15s19l, tth15s19p, tth20s44l, tth20s44p,
-                tth45s54l, tth45s54p, tth55s59l, tth55s59p, tth60s69l, tth60s69p,
-                tth70plusl, tth70plusp, ttotall, ttotalp, ttotaljml, tmatil,
-                tmatip
-            });
+
+            for (Object[] row : dataList) {
+                tabMode.addRow(row);
+            }
+            tabMode.addRow(new Object[]{"", "", "RUMAH SAKIT", thr0s7l, thr0s7p, thr8s28l, thr8s28p, thr29sth1l,
+                thr29sth1p, tth1s4l, tth1s4p, tth5s9l, tth5s9p, tth10s14l, tth10s14p, tth15s19l, tth15s19p,
+                tth20s44l, tth20s44p, tth45s54l, tth45s54p, tth55s59l, tth55s59p, tth60s69l, tth60s69p, tth70plusl,
+                tth70plusp, ttotall, ttotalp, ttotaljml, tmatil, tmatip});
 
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
@@ -715,7 +781,6 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgDkkPenyakitTidakMenularRalan.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgDkkPenyakitTidakMenularRalan.class.getName());
 
 }

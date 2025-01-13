@@ -42,20 +42,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
 
     /**
@@ -64,33 +72,23 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public RMPenilaianTambahanPerilakuKekerasan(java.awt.Frame parent,
-            boolean modal) {
+    public RMPenilaianTambahanPerilakuKekerasan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "JK", "Tanggal",
-            "Faktor Statik 1", "Skor Statik 1", "Faktor Statik 2",
-            "Skor Statik 2",
-            "Faktor Statik 3", "Skor Statik 3", "Faktor Statik 4",
-            "Skor Statik 4", "Faktor Statik 5", "Skor Statik 5",
-            "Faktor Statik 6", "Skor Statik 6",
-            "Faktor Statik 7", "Skor Statik 7", "Faktor Statik 8",
-            "Skor Statik 8", "Faktor Statik 9", "Skor Statik 9",
-            "Jml Skor Statik",
-            "Faktor Dinamis 1", "Skor Dinamis 1", "Faktor Dinamis 2",
-            "Skor Dinamis 2", "Faktor Dinamis 3", "Skor Dinamis 3",
-            "Faktor Dinamis 4", "Skor Dinamis 4",
-            "Faktor Dinamis 5", "Skor Dinamis 5", "Faktor Dinamis 6",
-            "Skor Dinamis 6", "Faktor Dinamis 7", "Skor Dinamis 7",
-            "Faktor Dinamis 8", "Skor Dinamis 8",
-            "Faktor Dinamis 9", "Skor Dinamis 9", "Jml Skor Dinamis",
-            "Faktor-faktor Pencegahan", "Total Skor", "Level Skor", "NIP",
-            "Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "JK", "Tanggal", "Faktor Statik 1",
+                    "Skor Statik 1", "Faktor Statik 2", "Skor Statik 2", "Faktor Statik 3", "Skor Statik 3",
+                    "Faktor Statik 4", "Skor Statik 4", "Faktor Statik 5", "Skor Statik 5", "Faktor Statik 6",
+                    "Skor Statik 6", "Faktor Statik 7", "Skor Statik 7", "Faktor Statik 8", "Skor Statik 8",
+                    "Faktor Statik 9", "Skor Statik 9", "Jml Skor Statik", "Faktor Dinamis 1", "Skor Dinamis 1",
+                    "Faktor Dinamis 2", "Skor Dinamis 2", "Faktor Dinamis 3", "Skor Dinamis 3", "Faktor Dinamis 4",
+                    "Skor Dinamis 4", "Faktor Dinamis 5", "Skor Dinamis 5", "Faktor Dinamis 6", "Skor Dinamis 6",
+                    "Faktor Dinamis 7", "Skor Dinamis 7", "Faktor Dinamis 8", "Skor Dinamis 8", "Faktor Dinamis 9",
+                    "Skor Dinamis 9", "Jml Skor Dinamis", "Faktor-faktor Pencegahan", "Total Skor", "Level Skor",
+                    "NIP", "Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -99,7 +97,8 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -209,13 +208,11 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         NIP.setDocument(new batasInput((byte) 20).getKata(NIP));
-        FaktorPencegahan.setDocument(new batasInput(500).getKata(
-                FaktorPencegahan));
+        FaktorPencegahan.setDocument(new batasInput(500).getKata(FaktorPencegahan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -252,10 +249,9 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 NIP.requestFocus();
             }
@@ -295,14 +291,15 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2630,15 +2627,11 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2648,52 +2641,33 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("tanggal"),
-                        rs.getString("statik_insiden_kekerasan_baru_ini"), rs.
-                        getString("statik_skorinsiden_kekerasan_baru_ini"), rs.
-                        getString("statik_riwayat_penggunaan_senjata"), rs.
-                        getString("statik_skorriwayat_penggunaan_senjata"),
-                        rs.getString("statik_laki_laki"), rs.getString(
-                        "statik_skorlaki_laki"), rs.getString(
-                        "statik_usia_dibawah_35"), rs.getString(
-                        "statik_skorusia_dibawah_35"), rs.getString(
-                        "statik_riwayat_kriminal"),
-                        rs.getString("statik_skorriwayat_kriminal"), rs.
-                        getString("statik_ide_kekerasan"), rs.getString(
-                        "statik_skoride_kekerasan"), rs.getString(
-                        "statik_kekerasan_anak_anak"), rs.getString(
-                        "statik_skorkekerasan_anak_anak"),
-                        rs.getString("statik_peran_dalam_hidup"), rs.getString(
-                        "statik_skorperan_dalam_hidup"), rs.getString(
-                        "statik_penggunaan_napza"), rs.getString(
-                        "statik_skorpenggunaan_napza"), rs.getString(
-                        "statik_skortotal"),
-                        rs.getString("dinamis_ide_melukai_orang_lain"), rs.
-                        getString("dinamis_skoride_melukai_orang_lain"), rs.
-                        getString("dinamis_akses_kekerasan"), rs.getString(
-                        "dinamis_skorakses_kekerasan"), rs.getString(
-                        "dinamis_ide_paranoid"),
-                        rs.getString("dinamis_skoride_paranoid"), rs.getString(
-                        "dinamis_perintah_halusinasi"), rs.getString(
-                        "dinamis_skorperintah_halusinasi"), rs.getString(
-                        "dinamis_frustasi_agitasi"), rs.getString(
-                        "dinamis_skorfrustasi_agitasi"),
-                        rs.getString("dinamis_kesenangan_kekerasan"), rs.
-                        getString("dinamis_skorkesenangan_kekerasan"), rs.
-                        getString("dinamis_seksual_tidak_wajar"), rs.getString(
-                        "dinamis_skorseksual_tidak_wajar"),
-                        rs.getString("dinamis_hilangnya_kontrol_diri"), rs.
-                        getString("dinamis_skorhilangnya_kontrol_diri"), rs.
-                        getString("dinamis_pengguaan_napza"), rs.getString(
-                        "dinamis_skorpengguaan_napza"), rs.getString(
-                        "dinamis_skortotal"),
-                        rs.getString("faktor_faktor_pencegahan"), rs.getString(
-                        "total_skor"), rs.getString("level_skor"), rs.getString(
-                        "nip"), rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("statik_insiden_kekerasan_baru_ini"),
+                        rs.getString("statik_skorinsiden_kekerasan_baru_ini"),
+                        rs.getString("statik_riwayat_penggunaan_senjata"),
+                        rs.getString("statik_skorriwayat_penggunaan_senjata"), rs.getString("statik_laki_laki"),
+                        rs.getString("statik_skorlaki_laki"), rs.getString("statik_usia_dibawah_35"),
+                        rs.getString("statik_skorusia_dibawah_35"), rs.getString("statik_riwayat_kriminal"),
+                        rs.getString("statik_skorriwayat_kriminal"), rs.getString("statik_ide_kekerasan"),
+                        rs.getString("statik_skoride_kekerasan"), rs.getString("statik_kekerasan_anak_anak"),
+                        rs.getString("statik_skorkekerasan_anak_anak"), rs.getString("statik_peran_dalam_hidup"),
+                        rs.getString("statik_skorperan_dalam_hidup"), rs.getString("statik_penggunaan_napza"),
+                        rs.getString("statik_skorpenggunaan_napza"), rs.getString("statik_skortotal"),
+                        rs.getString("dinamis_ide_melukai_orang_lain"),
+                        rs.getString("dinamis_skoride_melukai_orang_lain"), rs.getString("dinamis_akses_kekerasan"),
+                        rs.getString("dinamis_skorakses_kekerasan"), rs.getString("dinamis_ide_paranoid"),
+                        rs.getString("dinamis_skoride_paranoid"), rs.getString("dinamis_perintah_halusinasi"),
+                        rs.getString("dinamis_skorperintah_halusinasi"), rs.getString("dinamis_frustasi_agitasi"),
+                        rs.getString("dinamis_skorfrustasi_agitasi"), rs.getString("dinamis_kesenangan_kekerasan"),
+                        rs.getString("dinamis_skorkesenangan_kekerasan"),
+                        rs.getString("dinamis_seksual_tidak_wajar"),
+                        rs.getString("dinamis_skorseksual_tidak_wajar"),
+                        rs.getString("dinamis_hilangnya_kontrol_diri"),
+                        rs.getString("dinamis_skorhilangnya_kontrol_diri"), rs.getString("dinamis_pengguaan_napza"),
+                        rs.getString("dinamis_skorpengguaan_napza"), rs.getString("dinamis_skortotal"),
+                        rs.getString("faktor_faktor_pencegahan"), rs.getString("total_skor"),
+                        rs.getString("level_skor"), rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2762,114 +2736,64 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
 
-            FaktorStatik1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString());
-            SkorStatik1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            FaktorStatik2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            SkorStatik2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            FaktorStatik3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            SkorStatik3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            FaktorStatik4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            SkorStatik4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            FaktorStatik5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            SkorStatik5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            FaktorStatik6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            SkorStatik6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            FaktorStatik7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            SkorStatik7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            FaktorStatik8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            SkorStatik8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            FaktorStatik9.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            SkorStatik9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            TotalStatik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).
-                    toString());
-            FaktorDinamis1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 25).toString());
-            SkorDinamis1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).
-                    toString());
-            FaktorDinamis2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 27).toString());
-            SkorDinamis2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).
-                    toString());
-            FaktorDinamis3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 29).toString());
-            SkorDinamis3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).
-                    toString());
-            FaktorDinamis4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 31).toString());
-            SkorDinamis4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).
-                    toString());
-            FaktorDinamis5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 33).toString());
-            SkorDinamis5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).
-                    toString());
-            FaktorDinamis6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 35).toString());
-            SkorDinamis6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).
-                    toString());
-            FaktorDinamis7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 37).toString());
-            SkorDinamis7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 38).
-                    toString());
-            FaktorDinamis8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 39).toString());
-            SkorDinamis8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).
-                    toString());
-            FaktorDinamis9.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 41).toString());
-            SkorDinamis9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).
-                    toString());
-            TotalDinamis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).
-                    toString());
-            FaktorPencegahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    44).toString());
-            SkorTotal.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).
-                    toString());
-            Level.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 46).
-                    toString());
+            FaktorStatik1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            SkorStatik1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            FaktorStatik2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            SkorStatik2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            FaktorStatik3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            SkorStatik3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            FaktorStatik4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            SkorStatik4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            FaktorStatik5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            SkorStatik5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            FaktorStatik6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            SkorStatik6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            FaktorStatik7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            SkorStatik7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            FaktorStatik8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            SkorStatik8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            FaktorStatik9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            SkorStatik9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            TotalStatik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            FaktorDinamis1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            SkorDinamis1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            FaktorDinamis2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            SkorDinamis2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            FaktorDinamis3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            SkorDinamis3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            FaktorDinamis4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            SkorDinamis4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            FaktorDinamis5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            SkorDinamis5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            FaktorDinamis6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            SkorDinamis6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
+            FaktorDinamis7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            SkorDinamis7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
+            FaktorDinamis8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            SkorDinamis8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            FaktorDinamis9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            SkorDinamis9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            TotalDinamis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
+            FaktorPencegahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
+            SkorTotal.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
+            Level.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 46).toString());
 
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(14, 16));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(17, 19));
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(14, 16));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(17, 19));
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.getText()
+                + "' ", TNoRM);
     }
 
     private void isPsien() {
@@ -2900,15 +2824,13 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -2926,8 +2848,7 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 172));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2954,8 +2875,7 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(NIP.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
@@ -2963,7 +2883,9 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -3005,7 +2927,7 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -3017,157 +2939,94 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("penilaian_tambahan_perilaku_kekerasan",
-                "no_rawat=?",
+        if (Sequel.mengedittf("penilaian_tambahan_perilaku_kekerasan", "no_rawat=?",
                 "no_rawat=?,tanggal=?,nip=?,statik_insiden_kekerasan_baru_ini=?,statik_skorinsiden_kekerasan_baru_ini=?,statik_riwayat_penggunaan_senjata=?,"
                 + "statik_skorriwayat_penggunaan_senjata=?,statik_laki_laki=?,statik_skorlaki_laki=?,statik_usia_dibawah_35=?,statik_skorusia_dibawah_35=?,statik_riwayat_kriminal=?,statik_skorriwayat_kriminal=?,statik_ide_kekerasan=?,"
                 + "statik_skoride_kekerasan=?,statik_kekerasan_anak_anak=?,statik_skorkekerasan_anak_anak=?,statik_peran_dalam_hidup=?,statik_skorperan_dalam_hidup=?,statik_penggunaan_napza=?,statik_skorpenggunaan_napza=?,statik_skortotal=?,"
                 + "dinamis_ide_melukai_orang_lain=?,dinamis_skoride_melukai_orang_lain=?,dinamis_akses_kekerasan=?,dinamis_skorakses_kekerasan=?,dinamis_ide_paranoid=?,dinamis_skoride_paranoid=?,dinamis_perintah_halusinasi=?,"
                 + "dinamis_skorperintah_halusinasi=?,dinamis_frustasi_agitasi=?,dinamis_skorfrustasi_agitasi=?,dinamis_kesenangan_kekerasan=?,dinamis_skorkesenangan_kekerasan=?,dinamis_seksual_tidak_wajar=?,dinamis_skorseksual_tidak_wajar=?,"
                 + "dinamis_hilangnya_kontrol_diri=?,dinamis_skorhilangnya_kontrol_diri=?,dinamis_pengguaan_napza=?,dinamis_skorpengguaan_napza=?,dinamis_skortotal=?,faktor_faktor_pencegahan=?,total_skor=?,level_skor=?",
-                45, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), NIP.getText(),
-                    FaktorStatik1.getSelectedItem().toString(), SkorStatik1.
-                    getText(), FaktorStatik2.getSelectedItem().toString(),
-                    SkorStatik2.getText(), FaktorStatik3.getSelectedItem().
-                    toString(), SkorStatik3.getText(),
-                    FaktorStatik4.getSelectedItem().toString(), SkorStatik4.
-                    getText(), FaktorStatik5.getSelectedItem().toString(),
-                    SkorStatik5.getText(), FaktorStatik6.getSelectedItem().
-                    toString(), SkorStatik6.getText(),
-                    FaktorStatik7.getSelectedItem().toString(), SkorStatik7.
-                    getText(), FaktorStatik8.getSelectedItem().toString(),
-                    SkorStatik8.getText(), FaktorStatik9.getSelectedItem().
-                    toString(), SkorStatik9.getText(),
-                    TotalStatik.getText(), FaktorDinamis1.getSelectedItem().
-                    toString(), SkorDinamis1.getText(), FaktorDinamis2.
-                    getSelectedItem().toString(), SkorDinamis2.getText(),
-                    FaktorDinamis3.getSelectedItem().toString(),
-                    SkorDinamis3.getText(), FaktorDinamis4.getSelectedItem().
-                    toString(), SkorDinamis4.getText(), FaktorDinamis5.
-                    getSelectedItem().toString(), SkorDinamis5.getText(),
-                    FaktorDinamis6.getSelectedItem().toString(),
-                    SkorDinamis6.getText(), FaktorDinamis7.getSelectedItem().
-                    toString(), SkorDinamis7.getText(), FaktorDinamis8.
-                    getSelectedItem().toString(), SkorDinamis8.getText(),
-                    FaktorDinamis9.getSelectedItem().toString(),
-                    SkorDinamis9.getText(), TotalDinamis.getText(),
-                    FaktorPencegahan.getText(), SkorTotal.getText(), Level.
-                    getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                            toString()
-                }) == true) {
+                45,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    NIP.getText(), FaktorStatik1.getSelectedItem().toString(), SkorStatik1.getText(),
+                    FaktorStatik2.getSelectedItem().toString(), SkorStatik2.getText(),
+                    FaktorStatik3.getSelectedItem().toString(), SkorStatik3.getText(),
+                    FaktorStatik4.getSelectedItem().toString(), SkorStatik4.getText(),
+                    FaktorStatik5.getSelectedItem().toString(), SkorStatik5.getText(),
+                    FaktorStatik6.getSelectedItem().toString(), SkorStatik6.getText(),
+                    FaktorStatik7.getSelectedItem().toString(), SkorStatik7.getText(),
+                    FaktorStatik8.getSelectedItem().toString(), SkorStatik8.getText(),
+                    FaktorStatik9.getSelectedItem().toString(), SkorStatik9.getText(), TotalStatik.getText(),
+                    FaktorDinamis1.getSelectedItem().toString(), SkorDinamis1.getText(),
+                    FaktorDinamis2.getSelectedItem().toString(), SkorDinamis2.getText(),
+                    FaktorDinamis3.getSelectedItem().toString(), SkorDinamis3.getText(),
+                    FaktorDinamis4.getSelectedItem().toString(), SkorDinamis4.getText(),
+                    FaktorDinamis5.getSelectedItem().toString(), SkorDinamis5.getText(),
+                    FaktorDinamis6.getSelectedItem().toString(), SkorDinamis6.getText(),
+                    FaktorDinamis7.getSelectedItem().toString(), SkorDinamis7.getText(),
+                    FaktorDinamis8.getSelectedItem().toString(), SkorDinamis8.getText(),
+                    FaktorDinamis9.getSelectedItem().toString(), SkorDinamis9.getText(), TotalDinamis.getText(),
+                    FaktorPencegahan.getText(), SkorTotal.getText(), Level.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(FaktorStatik1.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(FaktorStatik1.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
             tbObat.setValueAt(SkorStatik1.getText(), tbObat.getSelectedRow(), 7);
-            tbObat.setValueAt(FaktorStatik2.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(FaktorStatik2.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(SkorStatik2.getText(), tbObat.getSelectedRow(), 9);
-            tbObat.setValueAt(FaktorStatik3.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 10);
-            tbObat.
-                    setValueAt(SkorStatik3.getText(), tbObat.getSelectedRow(),
-                            11);
-            tbObat.setValueAt(FaktorStatik4.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 12);
-            tbObat.
-                    setValueAt(SkorStatik4.getText(), tbObat.getSelectedRow(),
-                            13);
-            tbObat.setValueAt(FaktorStatik5.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 14);
-            tbObat.
-                    setValueAt(SkorStatik5.getText(), tbObat.getSelectedRow(),
-                            15);
-            tbObat.setValueAt(FaktorStatik6.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 16);
-            tbObat.
-                    setValueAt(SkorStatik6.getText(), tbObat.getSelectedRow(),
-                            17);
-            tbObat.setValueAt(FaktorStatik7.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 18);
-            tbObat.
-                    setValueAt(SkorStatik7.getText(), tbObat.getSelectedRow(),
-                            19);
-            tbObat.setValueAt(FaktorStatik8.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 20);
-            tbObat.
-                    setValueAt(SkorStatik8.getText(), tbObat.getSelectedRow(),
-                            21);
-            tbObat.setValueAt(FaktorStatik9.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 22);
-            tbObat.
-                    setValueAt(SkorStatik9.getText(), tbObat.getSelectedRow(),
-                            23);
-            tbObat.
-                    setValueAt(TotalStatik.getText(), tbObat.getSelectedRow(),
-                            24);
-            tbObat.setValueAt(FaktorDinamis1.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 25);
-            tbObat.setValueAt(SkorDinamis1.getText(), tbObat.getSelectedRow(),
-                    26);
-            tbObat.setValueAt(FaktorDinamis2.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 27);
-            tbObat.setValueAt(SkorDinamis2.getText(), tbObat.getSelectedRow(),
-                    28);
-            tbObat.setValueAt(FaktorDinamis3.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 29);
-            tbObat.setValueAt(SkorDinamis3.getText(), tbObat.getSelectedRow(),
-                    30);
-            tbObat.setValueAt(FaktorDinamis4.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 31);
-            tbObat.setValueAt(SkorDinamis4.getText(), tbObat.getSelectedRow(),
-                    32);
-            tbObat.setValueAt(FaktorDinamis5.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 33);
-            tbObat.setValueAt(SkorDinamis5.getText(), tbObat.getSelectedRow(),
-                    34);
-            tbObat.setValueAt(FaktorDinamis6.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 35);
-            tbObat.setValueAt(SkorDinamis6.getText(), tbObat.getSelectedRow(),
-                    36);
-            tbObat.setValueAt(FaktorDinamis7.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 37);
-            tbObat.setValueAt(SkorDinamis7.getText(), tbObat.getSelectedRow(),
-                    38);
-            tbObat.setValueAt(FaktorDinamis8.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 39);
-            tbObat.setValueAt(SkorDinamis8.getText(), tbObat.getSelectedRow(),
-                    40);
-            tbObat.setValueAt(FaktorDinamis9.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 41);
-            tbObat.setValueAt(SkorDinamis9.getText(), tbObat.getSelectedRow(),
-                    42);
-            tbObat.setValueAt(TotalDinamis.getText(), tbObat.getSelectedRow(),
-                    43);
-            tbObat.setValueAt(FaktorPencegahan.getText(), tbObat.
-                    getSelectedRow(), 44);
+            tbObat.setValueAt(FaktorStatik3.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(SkorStatik3.getText(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(FaktorStatik4.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(SkorStatik4.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(FaktorStatik5.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(SkorStatik5.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(FaktorStatik6.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(SkorStatik6.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(FaktorStatik7.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(SkorStatik7.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(FaktorStatik8.getSelectedItem().toString(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(SkorStatik8.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(FaktorStatik9.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(SkorStatik9.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(TotalStatik.getText(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(FaktorDinamis1.getSelectedItem().toString(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(SkorDinamis1.getText(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(FaktorDinamis2.getSelectedItem().toString(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(SkorDinamis2.getText(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(FaktorDinamis3.getSelectedItem().toString(), tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(SkorDinamis3.getText(), tbObat.getSelectedRow(), 30);
+            tbObat.setValueAt(FaktorDinamis4.getSelectedItem().toString(), tbObat.getSelectedRow(), 31);
+            tbObat.setValueAt(SkorDinamis4.getText(), tbObat.getSelectedRow(), 32);
+            tbObat.setValueAt(FaktorDinamis5.getSelectedItem().toString(), tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(SkorDinamis5.getText(), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(FaktorDinamis6.getSelectedItem().toString(), tbObat.getSelectedRow(), 35);
+            tbObat.setValueAt(SkorDinamis6.getText(), tbObat.getSelectedRow(), 36);
+            tbObat.setValueAt(FaktorDinamis7.getSelectedItem().toString(), tbObat.getSelectedRow(), 37);
+            tbObat.setValueAt(SkorDinamis7.getText(), tbObat.getSelectedRow(), 38);
+            tbObat.setValueAt(FaktorDinamis8.getSelectedItem().toString(), tbObat.getSelectedRow(), 39);
+            tbObat.setValueAt(SkorDinamis8.getText(), tbObat.getSelectedRow(), 40);
+            tbObat.setValueAt(FaktorDinamis9.getSelectedItem().toString(), tbObat.getSelectedRow(), 41);
+            tbObat.setValueAt(SkorDinamis9.getText(), tbObat.getSelectedRow(), 42);
+            tbObat.setValueAt(TotalDinamis.getText(), tbObat.getSelectedRow(), 43);
+            tbObat.setValueAt(FaktorPencegahan.getText(), tbObat.getSelectedRow(), 44);
             tbObat.setValueAt(SkorTotal.getText(), tbObat.getSelectedRow(), 45);
             tbObat.setValueAt(Level.getText(), tbObat.getSelectedRow(), 46);
             tbObat.setValueAt(NIP.getText(), tbObat.getSelectedRow(), 47);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            48);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 48);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_tambahan_perilaku_kekerasan where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_tambahan_perilaku_kekerasan where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             emptTeks();
             LCount.setText("" + tabMode.getRowCount());
@@ -3178,25 +3037,18 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
 
     private void isTotalSkor() {
         try {
-            TotalStatik.setText(
-                    (Integer.parseInt(SkorStatik1.getText()) + Integer.parseInt(
-                    SkorStatik2.getText()) + Integer.parseInt(SkorStatik3.
-                    getText()) + Integer.parseInt(SkorStatik4.getText()) + Integer.
-                    parseInt(SkorStatik5.getText()) + Integer.parseInt(
-                    SkorStatik6.getText()) + Integer.parseInt(SkorStatik7.
-                    getText()) + Integer.parseInt(SkorStatik8.getText()) + Integer.
-                    parseInt(SkorStatik9.getText())) + "");
-            TotalDinamis.setText(
-                    (Integer.parseInt(SkorDinamis1.getText()) + Integer.
-                    parseInt(SkorDinamis2.getText()) + Integer.parseInt(
-                    SkorDinamis3.getText()) + Integer.parseInt(SkorDinamis4.
-                    getText()) + Integer.parseInt(SkorDinamis5.getText()) + Integer.
-                    parseInt(SkorDinamis6.getText()) + Integer.parseInt(
-                    SkorDinamis7.getText()) + Integer.parseInt(SkorDinamis8.
-                    getText()) + Integer.parseInt(SkorDinamis9.getText())) + "");
-            SkorTotal.setText(
-                    (Integer.parseInt(TotalStatik.getText()) + Integer.parseInt(
-                    TotalDinamis.getText())) + "");
+            TotalStatik.setText((Integer.parseInt(SkorStatik1.getText()) + Integer.parseInt(SkorStatik2.getText())
+                    + Integer.parseInt(SkorStatik3.getText()) + Integer.parseInt(SkorStatik4.getText())
+                    + Integer.parseInt(SkorStatik5.getText()) + Integer.parseInt(SkorStatik6.getText())
+                    + Integer.parseInt(SkorStatik7.getText()) + Integer.parseInt(SkorStatik8.getText())
+                    + Integer.parseInt(SkorStatik9.getText())) + "");
+            TotalDinamis.setText((Integer.parseInt(SkorDinamis1.getText()) + Integer.parseInt(SkorDinamis2.getText())
+                    + Integer.parseInt(SkorDinamis3.getText()) + Integer.parseInt(SkorDinamis4.getText())
+                    + Integer.parseInt(SkorDinamis5.getText()) + Integer.parseInt(SkorDinamis6.getText())
+                    + Integer.parseInt(SkorDinamis7.getText()) + Integer.parseInt(SkorDinamis8.getText())
+                    + Integer.parseInt(SkorDinamis9.getText())) + "");
+            SkorTotal
+                    .setText((Integer.parseInt(TotalStatik.getText()) + Integer.parseInt(TotalDinamis.getText())) + "");
             if (Integer.parseInt(SkorTotal.getText()) < 7) {
                 Level.setText("Rendah(<7)");
             } else if (Integer.parseInt(SkorTotal.getText()) <= 14) {
@@ -3210,6 +3062,6 @@ public class RMPenilaianTambahanPerilakuKekerasan extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianTambahanPerilakuKekerasan.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianTambahanPerilakuKekerasan.class.getName());
+
 }

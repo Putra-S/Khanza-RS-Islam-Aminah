@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgRujuk.java
- *
- * Created on 31 Mei 10, 20:19:56
+* DlgRujuk.java
+*
+* Created on 31 Mei 10, 20:19:56
  */
 package rekammedis;
 
@@ -40,43 +40,66 @@ import laporan.DlgBerkasRawat;
 import laporan.DlgDiagnosaPenyakit;
 
 /**
- *
  * @author perpustakaan
  */
 public class ValidasiSBAR extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private String FileName;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private RMCariKeluhan carikeluhan = new RMCariKeluhan(null, false);
-    private RMCariPemeriksaan caripemeriksaan = new RMCariPemeriksaan(null,
-            false);
-    private RMCariHasilRadiologi cariradiologi = new RMCariHasilRadiologi(null,
-            false);
+
+    private RMCariPemeriksaan caripemeriksaan = new RMCariPemeriksaan(null, false);
+
+    private RMCariHasilRadiologi cariradiologi = new RMCariHasilRadiologi(null, false);
+
     private RMCariHasilLaborat carilaborat = new RMCariHasilLaborat(null, false);
+
     private RMCariJumlahObat cariobat = new RMCariJumlahObat(null, false);
+
     private DlgDiagnosaPenyakit penyakit = new DlgDiagnosaPenyakit(null, false);
+
     private RMCariDiagnosa1 rmcaridiagnosa1 = new RMCariDiagnosa1(null, false);
+
     private RMCariDiagnosa2 rmcaridiagnosa2 = new RMCariDiagnosa2(null, false);
+
     private RMCariDiagnosa3 rmcaridiagnosa3 = new RMCariDiagnosa3(null, false);
+
     private RMCariDiagnosa4 rmcaridiagnosa4 = new RMCariDiagnosa4(null, false);
+
     private RMCariDiagnosa5 rmcaridiagnosa5 = new RMCariDiagnosa5(null, false);
+
     private RMCariProsedur1 rmcariprosedur1 = new RMCariProsedur1(null, false);
+
     private RMCariProsedur2 rmcariprosedur2 = new RMCariProsedur2(null, false);
+
     private RMCariProsedur3 rmcariprosedur3 = new RMCariProsedur3(null, false);
+
     private RMCariProsedur4 rmcariprosedur4 = new RMCariProsedur4(null, false);
+
     // private RMCariRadRalan rmcariradralan=new RMCariRadRalan(null,false);
-    //  private RMCariLabRalan rmcarilabralan=new RMCariLabRalan(null,false);
+    // private RMCariLabRalan rmcarilabralan=new RMCariLabRalan(null,false);
     private RMCariTindakan caritindakan = new RMCariTindakan(null, false);
+
     // private RMCariKeluhanAssMedis carikeluhanass=new RMCariKeluhanAssMedis(null,false);
     SimpleDateFormat tanggalNow = new SimpleDateFormat("yyyy-MM-dd");
-//    private SimpleDateFormat tanggalNow = new SimpleDateFormat("dd-MM-yyyy");
+
+    // private SimpleDateFormat tanggalNow = new SimpleDateFormat("dd-MM-yyyy");
     private SimpleDateFormat jamNow = new SimpleDateFormat("HH:mm:ss");
 
     /**
@@ -89,12 +112,10 @@ public class ValidasiSBAR extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien", "NIP",
-            "Nama Pemeriksa", "Tanggal SBAR", "Jam SBAR", "S (SITUATION)",
-            "B (BACKGROUND)",
-            "A (ASSESSMENT)", "R (RECOMENDATION)"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien", "NIP", "Nama Pemeriksa",
+                    "Tanggal SBAR", "Jam SBAR", "S (SITUATION)", "B (BACKGROUND)", "A (ASSESSMENT)",
+                    "R (RECOMENDATION)"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -103,7 +124,8 @@ public class ValidasiSBAR extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -143,8 +165,7 @@ public class ValidasiSBAR extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -181,10 +202,8 @@ public class ValidasiSBAR extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KodeDokter.requestFocus();
                 }
             }
@@ -213,12 +232,14 @@ public class ValidasiSBAR extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
-
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    private void initComponents() {
+//GEN-BEGIN:initComponents
     jPopupMenu1 = new javax.swing.JPopupMenu();
     MnDigitalTTE = new javax.swing.JMenuItem();
     MnLaporanResume = new javax.swing.JMenuItem();
@@ -1102,8 +1123,7 @@ public class ValidasiSBAR extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            ValidasiSBAR dialog = new ValidasiSBAR(new javax.swing.JFrame(),
-                    true);
+            ValidasiSBAR dialog = new ValidasiSBAR(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1115,11 +1135,13 @@ public class ValidasiSBAR extends javax.swing.JDialog {
         });
     }
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private widget.Button BtnAll;
-  private widget.Button BtnBatal;
-  private widget.Button BtnCari;
-  private widget.Button BtnDokter;
+    // Variables declaration - do not modify
+    private widget.Button BtnAll;
+
+    private widget.Button BtnBatal;
+
+    private widget.Button BtnCari;
+  private widget.Button BtnDokter;//GEN-BEGIN:variables
   private widget.Button BtnKeluar;
   private widget.Button BtnSimpan;
   private widget.CekBox ChkInput;
@@ -1194,34 +1216,25 @@ public class ValidasiSBAR extends javax.swing.JDialog {
             }
             try {
                 if (!TCari.getText().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, KodeDokter.getText());
 
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, KodeDokter.getText());
 
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("tgl_registrasi"), rs.getString(
-                        "status_lanjut"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("nip"), rs.getString("nama"),
-                        rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
-                        rs.getString("situation"), rs.getString("background"),
-                        rs.getString("assesment"), rs.
-                        getString("recommendation")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("tgl_registrasi"), rs.getString("status_lanjut"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("nip"), rs.getString("nama"), rs.getString("tgl_perawatan"),
+                        rs.getString("jam_rawat"), rs.getString("situation"), rs.getString("background"),
+                        rs.getString("assesment"), rs.getString("recommendation")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1257,52 +1270,36 @@ public class ValidasiSBAR extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            KodeDokter1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            NamaDokter1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            TanggalPemeriksaan.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 7).toString());
-            JamPemeriksaan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
-            TSituation.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            TBackground.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            TAssesment.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            TRecomendation.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 12).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            KodeDokter1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            NamaDokter1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            TanggalPemeriksaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            JamPemeriksaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            TSituation.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            TBackground.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            TAssesment.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            TRecomendation.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select no_rkm_medis from reg_periksa where no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select no_rkm_medis from reg_periksa where no_rawat='" + TNoRw.getText() + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select nm_pasien from pasien where no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
+        Sequel.cariIsi("select nm_pasien from pasien where no_rkm_medis='" + TNoRM.getText() + "' ", TPasien);
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi("select subdate(DATE(NOW()),INTERVAL 1 DAY) ", DTPCari1);
+        Sequel.cariIsi("select tgl_registrasi from reg_periksa where no_rawat='" + norwt + "'", DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
         isPsien();
@@ -1314,8 +1311,7 @@ public class ValidasiSBAR extends javax.swing.JDialog {
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,
-                    this.getHeight() - 330));
+            PanelInput.setPreferredSize(new Dimension(WIDTH, this.getHeight() - 330));
             scrollInput.setVisible(true);
             ChkInput.setVisible(true);
         } else if (ChkInput.isSelected() == false) {
@@ -1328,27 +1324,24 @@ public class ValidasiSBAR extends javax.swing.JDialog {
 
     public void isCek() {
         BtnSimpan.setEnabled(akses.getvalidasi_sbar());
-//        BtnHapus.setEnabled(akses.getdata_resume_pasien());
-//        BtnEdit.setEnabled(akses.getdata_resume_pasien());
-//        BtnPrint.setEnabled(akses.getdata_resume_pasien()); 
+        // BtnHapus.setEnabled(akses.getdata_resume_pasien());
+        // BtnEdit.setEnabled(akses.getdata_resume_pasien());
+        // BtnPrint.setEnabled(akses.getdata_resume_pasien());
         MnInputDiagnosa.setEnabled(akses.getdiagnosa_pasien());
         ppBerkasDigital.setEnabled(akses.getberkas_digital_perawatan());
         if (akses.getjml2() >= 1) {
             KodeDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KodeDokter.setText(akses.getkode());
-            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?",
-                    NamaDokter, KodeDokter.getText());
+            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?", NamaDokter, KodeDokter.getText());
             if (NamaDokter.getText().isEmpty()) {
                 KodeDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan dokter...!!");
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(ValidasiSBAR.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(ValidasiSBAR.class.getName());
 
 }
-//import digitalsignature.DlgViewPdf;
+// import digitalsignature.DlgViewPdf;

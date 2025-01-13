@@ -40,21 +40,30 @@ import javax.swing.table.TableColumn;
 import simrskhanza.DlgCariBangsal;
 
 /**
- *
  * @author dosen
  */
 public class DlgStokOpname extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement pstampil;
+
     private ResultSet rstampil;
+
     private DlgCariJenis jenis = new DlgCariJenis(null, false);
+
     private DlgCariKategori kategori = new DlgCariKategori(null, false);
+
     private DlgCariGolongan golongan = new DlgCariGolongan(null, false);
+
     private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+
     private String order = "order by opname.tanggal";
 
     /**
@@ -69,11 +78,9 @@ public class DlgStokOpname extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(628, 674);
 
-        Object[] row = {
-            "Kode Barang", "Nama Barang", "Harga Beli", "Satuan", "Tanggal",
-            "Stok", "Real", "Selisih", "Lebih", "Total Real",
-            "Nominal Hilang(Rp)", "Nominal Lebih(Rp)", "Keterangan",
-            "Kode Lokasi", "Nama Lokasi", "No.Batch", "No.Faktur"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Harga Beli", "Satuan", "Tanggal", "Stok", "Real", "Selisih",
+            "Lebih", "Total Real", "Nominal Hilang(Rp)", "Nominal Lebih(Rp)", "Keterangan", "Kode Lokasi",
+            "Nama Lokasi", "No.Batch", "No.Faktur"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -82,7 +89,8 @@ public class DlgStokOpname extends javax.swing.JDialog {
 
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -133,8 +141,7 @@ public class DlgStokOpname extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -171,10 +178,8 @@ public class DlgStokOpname extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 TCari.requestFocus();
             }
@@ -209,10 +214,10 @@ public class DlgStokOpname extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongan.getTable().getSelectedRow() != -1) {
-                    kdgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 0).toString());
+                    nmgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
                 }
 
                 TCari.requestFocus();
@@ -249,10 +254,10 @@ public class DlgStokOpname extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    kdkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                    nmkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
                 TCari.requestFocus();
             }
@@ -288,10 +293,8 @@ public class DlgStokOpname extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (bangsal.getTable().getSelectedRow() != -1) {
-                    KdGudang.setText(bangsal.getTable().getValueAt(bangsal.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmGudang.setText(bangsal.getTable().getValueAt(bangsal.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdGudang.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                    NmGudang.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                 }
                 KdGudang.requestFocus();
             }
@@ -316,10 +319,13 @@ public class DlgStokOpname extends javax.swing.JDialog {
     }
 
     private DecimalFormat df2 = new DecimalFormat("###,###,###,###,###,###,###");
+
     double total = 0, totalreal = 0, totallebih = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1532,8 +1538,7 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgStokOpname dialog = new DlgStokOpname(new javax.swing.JFrame(),
-                    true);
+            DlgStokOpname dialog = new DlgStokOpname(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1637,9 +1642,8 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
         totalreal = 0;
         totallebih = 0;
         try {
-            if (nmjns.getText().isEmpty() && nmkategori.getText().isEmpty() && nmgolongan.
-                    getText().isEmpty() && NmGudang.getText().isEmpty() && TCari.
-                    getText().isEmpty()) {
+            if (nmjns.getText().isEmpty() && nmkategori.getText().isEmpty() && nmgolongan.getText().isEmpty()
+                    && NmGudang.getText().isEmpty() && TCari.getText().isEmpty()) {
                 pstampil = koneksi.prepareStatement(
                         "select opname.kode_brng, databarang.nama_brng,opname.h_beli, databarang.kode_sat, opname.tanggal, opname.stok, "
                         + "opname.real, opname.selisih, opname.lebih, (opname.real*opname.h_beli) as totalreal,opname.nomihilang,opname.nomilebih, opname.keterangan, bangsal.kd_bangsal, bangsal.nm_bangsal, "
@@ -1659,32 +1663,22 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
                         + "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode "
                         + "inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode where "
                         + "opname.tanggal between ? and ? and concat(databarang.kdjns,jenis.nama) like ? and concat(databarang.kode_kategori,kategori_barang.nama) like ? and concat(databarang.kode_golongan,golongan_barang.nama) like ? and concat(bangsal.kd_bangsal,bangsal.nm_bangsal) like ? and "
-                        + "(opname.kode_brng like ? or databarang.nama_brng like ? or opname.kode_brng like ? or bangsal.kd_bangsal like ? or bangsal.nm_bangsal like ? or databarang.kode_sat like ? or opname.keterangan like ?) " + order);
+                        + "(opname.kode_brng like ? or databarang.nama_brng like ? or opname.kode_brng like ? or bangsal.kd_bangsal like ? or bangsal.nm_bangsal like ? or databarang.kode_sat like ? or opname.keterangan like ?) "
+                        + order);
             }
 
             try {
-                if (nmjns.getText().isEmpty() && nmkategori.getText().isEmpty() && nmgolongan.
-                        getText().isEmpty() && NmGudang.getText().isEmpty() && TCari.
-                        getText().isEmpty()) {
-                    pstampil.setString(1, Valid.SetTgl(
-                            Tgl1.getSelectedItem() + ""));
-                    pstampil.setString(2, Valid.SetTgl(
-                            Tgl2.getSelectedItem() + ""));
+                if (nmjns.getText().isEmpty() && nmkategori.getText().isEmpty() && nmgolongan.getText().isEmpty()
+                        && NmGudang.getText().isEmpty() && TCari.getText().isEmpty()) {
+                    pstampil.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    pstampil.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 } else {
-                    pstampil.setString(1, Valid.SetTgl(
-                            Tgl1.getSelectedItem() + ""));
-                    pstampil.setString(2, Valid.SetTgl(
-                            Tgl2.getSelectedItem() + ""));
-                    pstampil.setString(3, "%" + kdjenis.getText() + nmjns.
-                            getText().trim() + "%");
-                    pstampil.setString(4,
-                            "%" + kdkategori.getText() + nmkategori.getText().
-                            trim() + "%");
-                    pstampil.setString(5,
-                            "%" + kdgolongan.getText() + nmgolongan.getText().
-                            trim() + "%");
-                    pstampil.setString(6, "%" + KdGudang.getText() + NmGudang.
-                            getText().trim() + "%");
+                    pstampil.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    pstampil.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                    pstampil.setString(3, "%" + kdjenis.getText() + nmjns.getText().trim() + "%");
+                    pstampil.setString(4, "%" + kdkategori.getText() + nmkategori.getText().trim() + "%");
+                    pstampil.setString(5, "%" + kdgolongan.getText() + nmgolongan.getText().trim() + "%");
+                    pstampil.setString(6, "%" + KdGudang.getText() + NmGudang.getText().trim() + "%");
                     pstampil.setString(7, "%" + TCari.getText().trim() + "%");
                     pstampil.setString(8, "%" + TCari.getText().trim() + "%");
                     pstampil.setString(9, "%" + TCari.getText().trim() + "%");
@@ -1699,18 +1693,12 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
                     totalreal += rstampil.getDouble(10);
                     total += rstampil.getDouble(11);
                     totallebih += rstampil.getDouble(12);
-                    tabMode.addRow(new Object[]{
-                        rstampil.getString(1), rstampil.getString(2), df2.
-                        format(rstampil.getDouble(3)),
-                        rstampil.getString(4), rstampil.getString(5), rstampil.
-                        getString(6), rstampil.getString(7),
-                        rstampil.getString(8), rstampil.getString(9), df2.
-                        format(rstampil.getDouble(10)), df2.format(rstampil.
-                        getDouble(11)),
-                        df2.format(rstampil.getDouble(12)), rstampil.getString(
-                        13), rstampil.getString(14), rstampil.getString(15),
-                        rstampil.getString(16), rstampil.getString(17)
-                    });
+                    tabMode.addRow(new Object[]{rstampil.getString(1), rstampil.getString(2),
+                        df2.format(rstampil.getDouble(3)), rstampil.getString(4), rstampil.getString(5),
+                        rstampil.getString(6), rstampil.getString(7), rstampil.getString(8), rstampil.getString(9),
+                        df2.format(rstampil.getDouble(10)), df2.format(rstampil.getDouble(11)),
+                        df2.format(rstampil.getDouble(12)), rstampil.getString(13), rstampil.getString(14),
+                        rstampil.getString(15), rstampil.getString(16), rstampil.getString(17)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif Opname : " + e);
@@ -1779,7 +1767,6 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
     }
 
     /**
-     *
      * @return
      */
     public JButton getButton() {
@@ -1794,6 +1781,6 @@ private void StokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Stok
         BtnPrint.setEnabled(akses.getstok_opname_obat());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgStokOpname.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgStokOpname.class.getName());
+
 }

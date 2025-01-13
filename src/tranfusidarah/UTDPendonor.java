@@ -30,22 +30,32 @@ import simrskhanza.DlgKelurahan;
 import simrskhanza.DlgPropinsi;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class UTDPendonor extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i;
+
     private String kdkel = "", kdkec = "", kdkab = "", kdprop = "", sql = "";
+
     private DlgKabupaten kab = new DlgKabupaten(null, false);
+
     private DlgKecamatan kec = new DlgKecamatan(null, false);
+
     private DlgKelurahan kel = new DlgKelurahan(null, false);
+
     private DlgPropinsi prop = new DlgPropinsi(null, false);
 
     /**
@@ -58,12 +68,10 @@ public class UTDPendonor extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.ID", "Nama Pendonor", "No.KTP", "J.K.", "Tempat Lahir",
-            "Tgl.Lahir", "Alamat", "Kd.Kel", "Kelurahan",
-            "Kd.Kec", "Kecamatan", "Kd.Kab", "Kabupaten", "Kd.Prop", "Propinsi",
-            "G.D.", "Resus", "No.Telp"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.ID", "Nama Pendonor", "No.KTP", "J.K.", "Tempat Lahir", "Tgl.Lahir", "Alamat",
+                    "Kd.Kel", "Kelurahan", "Kd.Kec", "Kecamatan", "Kd.Kab", "Kabupaten", "Kd.Prop", "Propinsi",
+                    "G.D.", "Resus", "No.Telp"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -129,8 +137,7 @@ public class UTDPendonor extends javax.swing.JDialog {
         Telp.setDocument(new batasInput((byte) 40).getKata(Telp));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -167,10 +174,8 @@ public class UTDPendonor extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (prop.getTable().getSelectedRow() != -1) {
-                    Propinsi.setText(prop.getTable().getValueAt(prop.getTable().
-                            getSelectedRow(), 0).toString());
-                    kdprop = prop.getTable().getValueAt(prop.getTable().
-                            getSelectedRow(), 1).toString();
+                    Propinsi.setText(prop.getTable().getValueAt(prop.getTable().getSelectedRow(), 0).toString());
+                    kdprop = prop.getTable().getValueAt(prop.getTable().getSelectedRow(), 1).toString();
                     BtnPropinsi.requestFocus();
                 }
             }
@@ -205,10 +210,8 @@ public class UTDPendonor extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kab.getTable().getSelectedRow() != -1) {
-                    Kabupaten.setText(kab.getTable().getValueAt(kab.getTable().
-                            getSelectedRow(), 0).toString());
-                    kdkab = kab.getTable().getValueAt(kab.getTable().
-                            getSelectedRow(), 1).toString();
+                    Kabupaten.setText(kab.getTable().getValueAt(kab.getTable().getSelectedRow(), 0).toString());
+                    kdkab = kab.getTable().getValueAt(kab.getTable().getSelectedRow(), 1).toString();
                     BtnKabupaten.requestFocus();
                 }
             }
@@ -243,10 +246,8 @@ public class UTDPendonor extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kec.getTable().getSelectedRow() != -1) {
-                    Kecamatan.setText(kec.getTable().getValueAt(kec.getTable().
-                            getSelectedRow(), 0).toString());
-                    kdkec = kec.getTable().getValueAt(kec.getTable().
-                            getSelectedRow(), 1).toString();
+                    Kecamatan.setText(kec.getTable().getValueAt(kec.getTable().getSelectedRow(), 0).toString());
+                    kdkec = kec.getTable().getValueAt(kec.getTable().getSelectedRow(), 1).toString();
                     BtnKecamatan.requestFocus();
                 }
             }
@@ -281,10 +282,8 @@ public class UTDPendonor extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kel.getTable().getSelectedRow() != -1) {
-                    Kelurahan.setText(kel.getTable().getValueAt(kel.getTable().
-                            getSelectedRow(), 0).toString());
-                    kdkel = kel.getTable().getValueAt(kel.getTable().
-                            getSelectedRow(), 1).toString();
+                    Kelurahan.setText(kel.getTable().getValueAt(kel.getTable().getSelectedRow(), 0).toString());
+                    kdkel = kel.getTable().getValueAt(kel.getTable().getSelectedRow(), 1).toString();
                     BtnKeluar.requestFocus();
                 }
             }
@@ -312,7 +311,9 @@ public class UTDPendonor extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1325,13 +1326,12 @@ private void KTPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KTPKe
     Valid.pindah(evt, Nama, JK);
 }//GEN-LAST:event_KTPKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void NoIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoIdKeyPressed
-        Valid.pindah(evt, Alamat, Telp, TCari);
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void NoIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        Valid.pindah(evt, Alamat, Telp, TCari);//GEN-FIRST:event_NoIdKeyPressed
     }//GEN-LAST:event_NoIdKeyPressed
 
     private void TelpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TelpMouseExited
@@ -1679,9 +1679,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         try {
             sql = "";
             if (cmbHlm.getSelectedItem().toString().equals("Semua")) {
-                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().
-                        toString().equals("Semua") && ResusCari.
-                        getSelectedItem().toString().equals("Semua")) {
+                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().toString().equals("Semua")
+                        && ResusCari.getSelectedItem().toString().equals("Semua")) {
                     sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
                             + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
                             + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
@@ -1694,74 +1693,57 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
                             + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
                             + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
-                            + "where utd_pendonor.golongan_darah like '%" + GDCari.
-                                    getSelectedItem().toString().replaceAll(
-                                            "Semua", "") + "%' and utd_pendonor.resus like '%" + ResusCari.
-                                    getSelectedItem().toString().replaceAll(
-                                            "Semua", "") + "%' and "
-                            + "(utd_pendonor.no_pendonor like '%" + TCari.
-                                    getText() + "%' or utd_pendonor.nama like '%" + TCari.
-                                    getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.
-                                    getText() + "%' or "
-                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%" + TCari.
-                            getText() + "%' or kelurahan.nm_kel like '%" + TCari.
-                                    getText() + "%' or "
-                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%" + TCari.
-                            getText() + "%' or propinsi.nm_prop like '%" + TCari.
-                                    getText() + "%') "
+                            + "where utd_pendonor.golongan_darah like '%"
+                            + GDCari.getSelectedItem().toString().replaceAll("Semua", "")
+                            + "%' and utd_pendonor.resus like '%"
+                            + ResusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and "
+                            + "(utd_pendonor.no_pendonor like '%" + TCari.getText() + "%' or utd_pendonor.nama like '%"
+                            + TCari.getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.getText() + "%' or "
+                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%"
+                            + TCari.getText() + "%' or kelurahan.nm_kel like '%" + TCari.getText() + "%' or "
+                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%"
+                            + TCari.getText() + "%' or propinsi.nm_prop like '%" + TCari.getText() + "%') "
                             + "order by utd_pendonor.no_pendonor desc";
                 }
             } else {
-                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().
-                        toString().equals("Semua") && ResusCari.
-                        getSelectedItem().toString().equals("Semua")) {
+                if (TCari.getText().isEmpty() && GDCari.getSelectedItem().toString().equals("Semua")
+                        && ResusCari.getSelectedItem().toString().equals("Semua")) {
                     sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
                             + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
                             + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
                             + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
                             + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
-                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.
-                                    getSelectedItem().toString();
+                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.getSelectedItem().toString();
                 } else {
                     sql = "select utd_pendonor.no_pendonor,utd_pendonor.nama,utd_pendonor.no_ktp,utd_pendonor.jk,utd_pendonor.tmp_lahir,utd_pendonor.tgl_lahir,"
                             + "utd_pendonor.alamat,utd_pendonor.kd_kel,utd_pendonor.kd_kec,utd_pendonor.kd_kab,utd_pendonor.kd_prop,utd_pendonor.golongan_darah,"
                             + "utd_pendonor.resus,utd_pendonor.no_telp,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop "
                             + "from utd_pendonor inner join kelurahan on utd_pendonor.kd_kel=kelurahan.kd_kel inner join kecamatan on utd_pendonor.kd_kec=kecamatan.kd_kec "
                             + "inner join kabupaten on utd_pendonor.kd_kab=kabupaten.kd_kab inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
-                            + "where utd_pendonor.golongan_darah like '%" + GDCari.
-                                    getSelectedItem().toString().replaceAll(
-                                            "Semua", "") + "%' and utd_pendonor.resus like '%" + ResusCari.
-                                    getSelectedItem().toString().replaceAll(
-                                            "Semua", "") + "%' and "
-                            + "(utd_pendonor.no_pendonor like '%" + TCari.
-                                    getText() + "%' or utd_pendonor.nama like '%" + TCari.
-                                    getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.
-                                    getText() + "%' or "
-                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%" + TCari.
-                            getText() + "%' or kelurahan.nm_kel like '%" + TCari.
-                                    getText() + "%' or "
-                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%" + TCari.
-                            getText() + "%' or propinsi.nm_prop like '%" + TCari.
-                                    getText() + "%') "
-                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.
-                                    getSelectedItem().toString();
+                            + "where utd_pendonor.golongan_darah like '%"
+                            + GDCari.getSelectedItem().toString().replaceAll("Semua", "")
+                            + "%' and utd_pendonor.resus like '%"
+                            + ResusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and "
+                            + "(utd_pendonor.no_pendonor like '%" + TCari.getText() + "%' or utd_pendonor.nama like '%"
+                            + TCari.getText() + "%' or utd_pendonor.no_ktp like '%" + TCari.getText() + "%' or "
+                            + "utd_pendonor.alamat like '%" + TCari.getText() + "%' or utd_pendonor.no_telp like '%"
+                            + TCari.getText() + "%' or kelurahan.nm_kel like '%" + TCari.getText() + "%' or "
+                            + "kecamatan.nm_kec like '%" + TCari.getText() + "%' or kabupaten.nm_kab like '%"
+                            + TCari.getText() + "%' or propinsi.nm_prop like '%" + TCari.getText() + "%') "
+                            + "order by utd_pendonor.no_pendonor desc limit " + cmbHlm.getSelectedItem().toString();
                 }
             }
             ps = koneksi.prepareStatement(sql);
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_pendonor"), rs.getString("nama"), rs.
-                        getString("no_ktp"), rs.getString("jk"),
-                        rs.getString("tmp_lahir"), rs.getString("tgl_lahir"),
-                        rs.getString("alamat"), rs.getString("kd_kel"),
-                        rs.getString("nm_kel"), rs.getString("kd_kec"), rs.
-                        getString("nm_kec"), rs.getString("kd_kab"),
-                        rs.getString("nm_kab"), rs.getString("kd_prop"), rs.
-                        getString("nm_prop"), rs.getString("golongan_darah"),
-                        rs.getString("resus"), rs.getString("no_telp")
-                    });
+                    tabMode.addRow(
+                            new Object[]{rs.getString("no_pendonor"), rs.getString("nama"), rs.getString("no_ktp"),
+                                rs.getString("jk"), rs.getString("tmp_lahir"), rs.getString("tgl_lahir"),
+                                rs.getString("alamat"), rs.getString("kd_kel"), rs.getString("nm_kel"),
+                                rs.getString("kd_kec"), rs.getString("nm_kec"), rs.getString("kd_kab"),
+                                rs.getString("nm_kab"), rs.getString("kd_prop"), rs.getString("nm_prop"),
+                                rs.getString("golongan_darah"), rs.getString("resus"), rs.getString("no_telp")});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -1792,47 +1774,33 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Propinsi.setText("PROPINSI");
         DTPLahir.setDate(new Date());
         NoId.requestFocus();
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(utd_pendonor.no_pendonor,6),signed)),0) from utd_pendonor",
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(utd_pendonor.no_pendonor,6),signed)),0) from utd_pendonor",
                 "UTD", 6, NoId);
     }
 
     private void getData() {
         if (tbDokter.getSelectedRow() != -1) {
-            NoId.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 0).
-                    toString());
-            Nama.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 1).
-                    toString());
-            KTP.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 2).
-                    toString());
-            JK.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(), 3).
-                    toString().replaceAll("P", "PEREMPUAN").replaceAll("L",
-                    "LAKI-LAKI"));
-            Lahir.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 4).
-                    toString());
-            Valid.SetTgl(DTPLahir, tbDokter.
-                    getValueAt(tbDokter.getSelectedRow(), 5).toString());
-            Alamat.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 6).
-                    toString());
+            NoId.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 0).toString());
+            Nama.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 1).toString());
+            KTP.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 2).toString());
+            JK.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(), 3)
+                    .toString()
+                    .replaceAll("P", "PEREMPUAN")
+                    .replaceAll("L", "LAKI-LAKI"));
+            Lahir.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 4).toString());
+            Valid.SetTgl(DTPLahir, tbDokter.getValueAt(tbDokter.getSelectedRow(), 5).toString());
+            Alamat.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 6).toString());
             kdkel = tabMode.getValueAt(tbDokter.getSelectedRow(), 7).toString();
-            Kelurahan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 8).
-                    toString());
+            Kelurahan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 8).toString());
             kdkec = tabMode.getValueAt(tbDokter.getSelectedRow(), 9).toString();
-            Kecamatan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 10).
-                    toString());
+            Kecamatan.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 10).toString());
             kdkab = tabMode.getValueAt(tbDokter.getSelectedRow(), 11).toString();
-            Kabupaten.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 12).
-                    toString());
-            kdprop = tabMode.getValueAt(tbDokter.getSelectedRow(), 13).
-                    toString();
-            Propinsi.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 14).
-                    toString());
-            GD.setSelectedItem(
-                    tabMode.getValueAt(tbDokter.getSelectedRow(), 15).toString());
-            Resus.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(),
-                    16).toString());
-            Telp.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 17).
-                    toString());
+            Kabupaten.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 12).toString());
+            kdprop = tabMode.getValueAt(tbDokter.getSelectedRow(), 13).toString();
+            Propinsi.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 14).toString());
+            GD.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(), 15).toString());
+            Resus.setSelectedItem(tabMode.getValueAt(tbDokter.getSelectedRow(), 16).toString());
+            Telp.setText(tabMode.getValueAt(tbDokter.getSelectedRow(), 17).toString());
         }
     }
 
@@ -1861,7 +1829,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(UTDPendonor.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(UTDPendonor.class.getName());
 
 }

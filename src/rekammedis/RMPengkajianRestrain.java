@@ -37,25 +37,33 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author windiartohugroho
  */
 public class RMPengkajianRestrain extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "", lokasifile = "";
+
     private String TANGGALMUNDUR = "yes";
 
     /**
-     *
      * @param parent
      * @param modal
      */
@@ -65,15 +73,12 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "J.K.", "Tgl.Lahir",
-            "Tanggal", "GCS(E,V,M)", "Refleka Kanan", "Refleka Kiri",
-            "Pupil Kanan", "Pupil Kiri", "TD(mmHg)", "Suhu(°C)", "RR(x/menit)",
-            "Nadi(x/menit)", "Hasil Observasi", "Pertimbangan Klinis",
-            "Restrain Non Farmakologi", "Keterangan Restrain Non Farmakologi",
-            "Restrain Farmakologi", "Dijelaskan Keluarga",
-            "Keluarga Yang Menyetujui", "NIP", "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "J.K.", "Tgl.Lahir", "Tanggal",
+                    "GCS(E,V,M)", "Refleka Kanan", "Refleka Kiri", "Pupil Kanan", "Pupil Kiri", "TD(mmHg)",
+                    "Suhu(°C)", "RR(x/menit)", "Nadi(x/menit)", "Hasil Observasi", "Pertimbangan Klinis",
+                    "Restrain Non Farmakologi", "Keterangan Restrain Non Farmakologi", "Restrain Farmakologi",
+                    "Dijelaskan Keluarga", "Keluarga Yang Menyetujui", "NIP", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -82,7 +87,8 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -144,27 +150,21 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         TCari.setDocument(new batasInput(100).getKata(TCari));
-        ReflekaCahayaKanan.setDocument(new batasInput(3).getKata(
-                ReflekaCahayaKanan));
-        ReflekaCahayaKiri.setDocument(new batasInput(3).getKata(
-                ReflekaCahayaKiri));
-        UkuranPupilKanan.
-                setDocument(new batasInput(3).getKata(UkuranPupilKanan));
+        ReflekaCahayaKanan.setDocument(new batasInput(3).getKata(ReflekaCahayaKanan));
+        ReflekaCahayaKiri.setDocument(new batasInput(3).getKata(ReflekaCahayaKiri));
+        UkuranPupilKanan.setDocument(new batasInput(3).getKata(UkuranPupilKanan));
         UkuranPupilKiri.setDocument(new batasInput(3).getKata(UkuranPupilKiri));
         GCS.setDocument(new batasInput(5).getKata(GCS));
         TD.setDocument(new batasInput(8).getKata(TD));
         Suhu.setDocument(new batasInput(5).getKata(Suhu));
         Nadi.setDocument(new batasInput(5).getKata(Nadi));
         RR.setDocument(new batasInput(5).getKata(RR));
-        KeteranganNonRestrainFarmakologi.setDocument(new batasInput(50).getKata(
-                KeteranganNonRestrainFarmakologi));
-        RestrainFarmakologi.setDocument(new batasInput(200).getKata(
-                RestrainFarmakologi));
+        KeteranganNonRestrainFarmakologi.setDocument(new batasInput(50).getKata(KeteranganNonRestrainFarmakologi));
+        RestrainFarmakologi.setDocument(new batasInput(200).getKata(RestrainFarmakologi));
         Keluarga.setDocument(new batasInput(100).getKata(Keluarga));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -201,8 +201,10 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
+                    KodePetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 btnPetugas.requestFocus();
             }
@@ -244,8 +246,7 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
         LoadHTML2.setEditable(true);
@@ -260,7 +261,9 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1768,8 +1771,7 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPengkajianRestrain dialog = new RMPengkajianRestrain(
-                    new javax.swing.JFrame(), true);
+            RMPengkajianRestrain dialog = new RMPengkajianRestrain(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1920,15 +1922,11 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1938,26 +1936,17 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"),
-                        rs.getString("jk"), rs.getString("tgl_lahir"), rs.
-                        getString("tanggal"), rs.getString("gcs"), rs.getString(
-                        "refleka_cahaya_ka"), rs.getString("refleka_cahaya_ki"),
-                        rs.getString("ukuran_pupil_ka"), rs.getString(
-                        "ukuran_pupil_ki"), rs.getString("td"), rs.getString(
-                        "suhu"), rs.getString("rr"), rs.getString("nadi"),
-                        rs.getString("hasil_observasi"), rs.getString(
-                        "pertimbangan_klinis"), rs.getString(
-                        "restrain_non_farmakologi"), rs.getString(
-                        "restrain_non_farmakologi_keterangan"),
-                        rs.getString("restrain_farmakologi"), rs.getString(
-                        "sudah_dijelaskan_keluarga"), rs.getString(
-                        "keluarga_yang_menyetujui"), rs.getString("nip"), rs.
-                        getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("umurdaftar") + " " + rs.getString("sttsumur"),
+                        rs.getString("jk"), rs.getString("tgl_lahir"), rs.getString("tanggal"), rs.getString("gcs"),
+                        rs.getString("refleka_cahaya_ka"), rs.getString("refleka_cahaya_ki"),
+                        rs.getString("ukuran_pupil_ka"), rs.getString("ukuran_pupil_ki"), rs.getString("td"),
+                        rs.getString("suhu"), rs.getString("rr"), rs.getString("nadi"),
+                        rs.getString("hasil_observasi"), rs.getString("pertimbangan_klinis"),
+                        rs.getString("restrain_non_farmakologi"),
+                        rs.getString("restrain_non_farmakologi_keterangan"), rs.getString("restrain_farmakologi"),
+                        rs.getString("sudah_dijelaskan_keluarga"), rs.getString("keluarga_yang_menyetujui"),
+                        rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1998,54 +1987,29 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            LahirPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            GCS.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                            toString());
-            ReflekaCahayaKanan.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 8).toString());
-            ReflekaCahayaKiri.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    9).toString());
-            UkuranPupilKanan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    10).toString());
-            UkuranPupilKiri.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    11).toString());
-            TD.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                            toString());
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            RR.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                            toString());
-            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            HasilObservasi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            PertimbanganKlinis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 17).toString());
-            RestrainNonFarmakologi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            KeteranganNonRestrainFarmakologi.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            RestrainFarmakologi.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            SudahDijelaskan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            Keluarga.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            Valid.SetTgl2(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            LahirPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            GCS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            ReflekaCahayaKanan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            ReflekaCahayaKiri.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            UkuranPupilKanan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            UkuranPupilKiri.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            RR.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            HasilObservasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            PertimbanganKlinis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            RestrainNonFarmakologi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            KeteranganNonRestrainFarmakologi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            RestrainFarmakologi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            SudahDijelaskan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Keluarga.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
         }
     }
 
@@ -2064,11 +2028,8 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     LahirPasien.setText(rs.getString("tgl_lahir"));
-                    Umur.setText(rs.getString("umurdaftar") + " " + rs.
-                            getString("sttsumur"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    Umur.setText(rs.getString("umurdaftar") + " " + rs.getString("sttsumur"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2103,8 +2064,7 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 172));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2128,8 +2088,7 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(KodePetugas.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 KodePetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
 
@@ -2145,76 +2104,50 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
         if (Sequel.mengedittf("pengkajian_restrain", "no_rawat=?",
                 "no_rawat=?,tanggal=?,nip=?,gcs=?,refleka_cahaya_ka=?,refleka_cahaya_ki=?,ukuran_pupil_ka=?,ukuran_pupil_ki=?,"
                 + "td=?,suhu=?,rr=?,nadi=?,hasil_observasi=?,pertimbangan_klinis=?,restrain_non_farmakologi=?,restrain_non_farmakologi_keterangan=?,restrain_farmakologi=?,"
-                + "sudah_dijelaskan_keluarga=?,keluarga_yang_menyetujui=?", 20,
-                new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), KodePetugas.
-                    getText(),
-                    GCS.getText(), ReflekaCahayaKanan.getText(),
-                    ReflekaCahayaKiri.getText(), UkuranPupilKanan.getText(),
-                    UkuranPupilKiri.getText(), TD.getText(),
-                    Suhu.getText(), RR.getText(), Nadi.getText(),
-                    HasilObservasi.getSelectedItem().toString(),
+                + "sudah_dijelaskan_keluarga=?,keluarga_yang_menyetujui=?",
+                20,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    KodePetugas.getText(), GCS.getText(), ReflekaCahayaKanan.getText(), ReflekaCahayaKiri.getText(),
+                    UkuranPupilKanan.getText(), UkuranPupilKiri.getText(), TD.getText(), Suhu.getText(),
+                    RR.getText(), Nadi.getText(), HasilObservasi.getSelectedItem().toString(),
                     PertimbanganKlinis.getSelectedItem().toString(),
-                    RestrainNonFarmakologi.getSelectedItem().toString(),
-                    KeteranganNonRestrainFarmakologi.getText(),
-                    RestrainFarmakologi.getText(),
-                    SudahDijelaskan.getSelectedItem().toString(), Keluarga.
-                    getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                            toString()
-                }) == true) {
+                    RestrainNonFarmakologi.getSelectedItem().toString(), KeteranganNonRestrainFarmakologi.getText(),
+                    RestrainFarmakologi.getText(), SudahDijelaskan.getSelectedItem().toString(), Keluarga.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(Umur.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(LahirPasien.getText(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 6);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 6);
             tbObat.setValueAt(GCS.getText(), tbObat.getSelectedRow(), 7);
-            tbObat.setValueAt(ReflekaCahayaKanan.getText(), tbObat.
-                    getSelectedRow(), 8);
-            tbObat.setValueAt(ReflekaCahayaKiri.getText(), tbObat.
-                    getSelectedRow(), 9);
-            tbObat.setValueAt(UkuranPupilKanan.getText(), tbObat.
-                    getSelectedRow(), 10);
-            tbObat.
-                    setValueAt(UkuranPupilKiri.getText(), tbObat.
-                            getSelectedRow(), 11);
+            tbObat.setValueAt(ReflekaCahayaKanan.getText(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(ReflekaCahayaKiri.getText(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(UkuranPupilKanan.getText(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(UkuranPupilKiri.getText(), tbObat.getSelectedRow(), 11);
             tbObat.setValueAt(TD.getText(), tbObat.getSelectedRow(), 12);
             tbObat.setValueAt(Suhu.getText(), tbObat.getSelectedRow(), 13);
             tbObat.setValueAt(RR.getText(), tbObat.getSelectedRow(), 14);
             tbObat.setValueAt(Nadi.getText(), tbObat.getSelectedRow(), 15);
-            tbObat.setValueAt(HasilObservasi.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 16);
-            tbObat.setValueAt(PertimbanganKlinis.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 17);
-            tbObat.setValueAt(RestrainNonFarmakologi.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 18);
-            tbObat.setValueAt(KeteranganNonRestrainFarmakologi.getText(),
-                    tbObat.getSelectedRow(), 19);
-            tbObat.setValueAt(RestrainFarmakologi.getText(), tbObat.
-                    getSelectedRow(), 20);
-            tbObat.setValueAt(SudahDijelaskan.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(HasilObservasi.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(PertimbanganKlinis.getSelectedItem().toString(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(RestrainNonFarmakologi.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(KeteranganNonRestrainFarmakologi.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(RestrainFarmakologi.getText(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(SudahDijelaskan.getSelectedItem().toString(), tbObat.getSelectedRow(), 21);
             tbObat.setValueAt(Keluarga.getText(), tbObat.getSelectedRow(), 22);
-            tbObat.
-                    setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(),
-                            23);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            24);
+            tbObat.setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 24);
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf("delete from pengkajian_restrain where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from pengkajian_restrain where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2244,23 +2177,19 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
                 ps = koneksi.prepareStatement(
                         "select pengkajian_restrain_yang_menyetujui.photo from pengkajian_restrain_yang_menyetujui where pengkajian_restrain_yang_menyetujui.no_rawat=?");
                 try {
-                    ps.setString(1, tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    ps.setString(1, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             lokasifile = "";
                             LoadHTML2.setText(
                                     "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                         } else {
                             lokasifile = rs.getString("photo");
-                            LoadHTML2.setText(
-                                    "<html><body><center><img src='http://" + koneksiDB.
-                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                            PORTWEB() + "/" + koneksiDB.
-                                            HYBRIDWEB() + "/pengkajianrestrain/" + rs.
-                                            getString("photo") + "' alt='photo' width='500' height='500'/></center></body></html>");
+                            LoadHTML2.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/pengkajianrestrain/"
+                                    + rs.getString("photo")
+                                    + "' alt='photo' width='500' height='500'/></center></body></html>");
                         }
                     } else {
                         lokasifile = "";
@@ -2285,46 +2214,33 @@ public class RMPengkajianRestrain extends javax.swing.JDialog {
     }
 
     private void simpan() {
-        if (Sequel.menyimpantf("pengkajian_restrain",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 19,
-                new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), KodePetugas.
-                    getText(),
-                    GCS.getText(), ReflekaCahayaKanan.getText(),
-                    ReflekaCahayaKiri.getText(), UkuranPupilKanan.getText(),
-                    UkuranPupilKiri.getText(), TD.getText(),
-                    Suhu.getText(), RR.getText(), Nadi.getText(),
-                    HasilObservasi.getSelectedItem().toString(),
+        if (Sequel.menyimpantf("pengkajian_restrain", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 19,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    KodePetugas.getText(), GCS.getText(), ReflekaCahayaKanan.getText(), ReflekaCahayaKiri.getText(),
+                    UkuranPupilKanan.getText(), UkuranPupilKiri.getText(), TD.getText(), Suhu.getText(),
+                    RR.getText(), Nadi.getText(), HasilObservasi.getSelectedItem().toString(),
                     PertimbanganKlinis.getSelectedItem().toString(),
-                    RestrainNonFarmakologi.getSelectedItem().toString(),
-                    KeteranganNonRestrainFarmakologi.getText(),
-                    RestrainFarmakologi.getText(),
-                    SudahDijelaskan.getSelectedItem().toString(), Keluarga.
-                    getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), Umur.
-                getText(), JK.getText(), LahirPasien.getText(), Valid.SetTgl(
-                Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                getSelectedItem().toString().substring(11, 19),
-                GCS.getText(), ReflekaCahayaKanan.getText(), ReflekaCahayaKiri.
-                getText(), UkuranPupilKanan.getText(), UkuranPupilKiri.getText(),
-                TD.getText(), Suhu.getText(), RR.getText(), Nadi.getText(),
-                HasilObservasi.getSelectedItem().toString(), PertimbanganKlinis.
-                getSelectedItem().toString(), RestrainNonFarmakologi.
-                getSelectedItem().toString(), KeteranganNonRestrainFarmakologi.
-                getText(),
-                RestrainFarmakologi.getText(),
-                SudahDijelaskan.getSelectedItem().toString(), Keluarga.getText(),
-                KodePetugas.getText(), NamaPetugas.getText()
-            });
+                    RestrainNonFarmakologi.getSelectedItem().toString(), KeteranganNonRestrainFarmakologi.getText(),
+                    RestrainFarmakologi.getText(), SudahDijelaskan.getSelectedItem().toString(),
+                    Keluarga.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), Umur.getText(),
+                JK.getText(), LahirPasien.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                + Tanggal.getSelectedItem().toString().substring(11, 19),
+                GCS.getText(), ReflekaCahayaKanan.getText(), ReflekaCahayaKiri.getText(),
+                UkuranPupilKanan.getText(), UkuranPupilKiri.getText(), TD.getText(), Suhu.getText(), RR.getText(),
+                Nadi.getText(), HasilObservasi.getSelectedItem().toString(),
+                PertimbanganKlinis.getSelectedItem().toString(),
+                RestrainNonFarmakologi.getSelectedItem().toString(), KeteranganNonRestrainFarmakologi.getText(),
+                RestrainFarmakologi.getText(), SudahDijelaskan.getSelectedItem().toString(), Keluarga.getText(),
+                KodePetugas.getText(), NamaPetugas.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPengkajianRestrain.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPengkajianRestrain.class.getName());
+
 }

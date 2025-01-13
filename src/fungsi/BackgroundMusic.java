@@ -20,59 +20,66 @@ import javazoom.jl.player.Player;
  */
 public class BackgroundMusic {
 
-  private static Player player;
-  private final String filename;
-  Thread playMusic;
+    private static Player player;
 
-  // constructor that takes the name of an MP3 file
+    private final String filename;
 
-  /**
-   * @param filename
-   */
-  public BackgroundMusic(String filename) {
-    this.filename = filename;
-  }
+    Thread playMusic;
 
-  // play the MP3 file to the sound card
-  /** */
-  public void play() {
-    try {
-      FileInputStream fis = new FileInputStream(filename);
-      BufferedInputStream bis = new BufferedInputStream(fis);
-      player = new Player(bis);
-    } catch (FileNotFoundException | JavaLayerException e) {
-      System.out.println("Problem playing file " + filename);
+    // constructor that takes the name of an MP3 file
+    /**
+     * @param filename
+     */
+    public BackgroundMusic(String filename) {
+        this.filename = filename;
     }
-  }
 
-  /** */
-  public void start() {
-    play();
-    playMusic = new Thread(new PlayMusic());
-    playMusic.start();
-  }
-
-  public void stop() {
-    close();
-    playMusic = null;
-  }
-
-  public void close() {
-    if (player != null) {
-      player.close();
+    // play the MP3 file to the sound card
+    /**
+     *
+     */
+    public void play() {
+        try {
+            FileInputStream fis = new FileInputStream(filename);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            player = new Player(bis);
+        } catch (FileNotFoundException | JavaLayerException e) {
+            System.out.println("Problem playing file " + filename);
+        }
     }
-  }
 
-  class PlayMusic implements Runnable {
-
-    @Override
-    public void run() {
-      try {
-        player.play();
-      } catch (JavaLayerException e) {
-      }
+    /**
+     *
+     */
+    public void start() {
+        play();
+        playMusic = new Thread(new PlayMusic());
+        playMusic.start();
     }
-  }
 
-  private static final Logger LOG = Logger.getLogger(BackgroundMusic.class.getName());
+    public void stop() {
+        close();
+        playMusic = null;
+    }
+
+    public void close() {
+        if (player != null) {
+            player.close();
+        }
+    }
+
+    class PlayMusic implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                player.play();
+            } catch (JavaLayerException e) {
+            }
+        }
+
+    }
+
+    private static final Logger LOG = Logger.getLogger(BackgroundMusic.class.getName());
+
 }

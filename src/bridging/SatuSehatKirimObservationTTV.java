@@ -94,12 +94,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         setSize(628, 674);
 
         tabModeSuhu = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "Suhu (°C)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation Suhu"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "Suhu (°C)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation Suhu"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -108,16 +112,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -171,12 +165,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbSuhu.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeRespirasi = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "Resp(/menit)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation Respirasi"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "Resp(/menit)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation Respirasi"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -185,16 +183,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -248,12 +236,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbRespirasi.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeNadi = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "Nadi(/menit)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation Nadi"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "Nadi(/menit)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation Nadi"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -262,16 +254,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -325,12 +307,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbNadi.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeSpO2 = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "SpO2(%)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation SpO2"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "SpO2(%)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation SpO2"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -339,16 +325,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -402,11 +378,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbSpO2.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeGCS = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "GCS", "Petugas/Dokter/Praktisi",
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "GCS", "Petugas/Dokter/Praktisi",
                     "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation GCS"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -415,16 +396,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -478,12 +449,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbGCS.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeKesadaran = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "Kesadaran",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation Kesadaran"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "Kesadaran",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation Kesadaran"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -492,16 +467,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -555,12 +520,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbKesadaran.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeTensi = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "Tensi(mmHg)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation Tensi"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "Tensi(mmHg)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation Tensi"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -569,16 +538,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -632,12 +591,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbTensi.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeTB = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "TB(Cm)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation TB"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "TB(Cm)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation TB"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -646,16 +609,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -709,12 +662,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbTB.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeBB = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "BB(Kg)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation BB"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "BB(Kg)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation BB"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -723,16 +680,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -786,12 +733,16 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         tbBB.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModeLP = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang",
-                    "ID Encounter", "LP(Cm)",
-                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal",
-                    "Jam", "ID Observation LP"}) {
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Stts Rawat", "Stts Lanjut", "Tanggal Pulang", "ID Encounter", "LP(Cm)",
+                    "Petugas/Dokter/Praktisi", "No.KTP Praktisi", "Tanggal", "Jam", "ID Observation LP"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -800,16 +751,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -865,8 +806,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -902,21 +842,23 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1399,15 +1341,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -1507,15 +1449,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -1617,15 +1559,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -1726,15 +1668,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -1835,15 +1777,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -1944,15 +1886,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -2054,15 +1996,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -2163,15 +2105,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -2273,15 +2215,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -2383,15 +2325,15 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                     try (BufferedWriter bg = new BufferedWriter(
                             new FileWriter(g))) {
                         bg.write(
-                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                         );
                     }
 
@@ -4879,8 +4821,7 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatKirimObservationTTV dialog = new SatuSehatKirimObservationTTV(
-                    new javax.swing.JFrame(), true);
+            SatuSehatKirimObservationTTV dialog = new SatuSehatKirimObservationTTV(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -4978,16 +4919,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeSuhu
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("suhu_tubuh"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("suhu_tubuh"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvsuhu")});
                 }
             } catch (Exception e) {
@@ -5031,16 +4967,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeSuhu
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("suhu_tubuh"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("suhu_tubuh"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvsuhu")});
                 }
             } catch (Exception e) {
@@ -5097,16 +5028,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeRespirasi
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("respirasi"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("respirasi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvrespirasi")});
                 }
             } catch (Exception e) {
@@ -5150,16 +5076,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeRespirasi
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("respirasi"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("respirasi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvrespirasi")});
                 }
             } catch (Exception e) {
@@ -5216,16 +5137,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeNadi
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("nadi"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("nadi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvnadi")});
                 }
             } catch (Exception e) {
@@ -5269,16 +5185,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeNadi
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("nadi"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("nadi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvnadi")});
                 }
             } catch (Exception e) {
@@ -5335,16 +5246,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeSpO2
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("spo2"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("spo2"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvspo2")});
                 }
             } catch (Exception e) {
@@ -5388,16 +5294,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeSpO2
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("spo2"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("spo2"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvspo2")});
                 }
             } catch (Exception e) {
@@ -5454,16 +5355,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeGCS
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("gcs"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("gcs"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvgcs")});
                 }
             } catch (Exception e) {
@@ -5507,16 +5403,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeGCS
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("gcs"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("gcs"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvgcs")});
                 }
             } catch (Exception e) {
@@ -5573,16 +5464,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeKesadaran
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("kesadaran"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("kesadaran"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvkesadaran")});
                 }
             } catch (Exception e) {
@@ -5626,16 +5512,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeKesadaran
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("kesadaran"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("kesadaran"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvkesadaran")});
                 }
             } catch (Exception e) {
@@ -5692,16 +5573,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeTensi
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("tensi"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tensi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvtensi")});
                 }
             } catch (Exception e) {
@@ -5745,16 +5621,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeTensi
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("tensi"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tensi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvtensi")});
                 }
             } catch (Exception e) {
@@ -5811,16 +5682,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeTB
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("tinggi"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tinggi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvtb")});
                 }
             } catch (Exception e) {
@@ -5864,16 +5730,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeTB
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("tinggi"),
-                        rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("tinggi"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvtb")});
                 }
             } catch (Exception e) {
@@ -5930,16 +5791,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeBB
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("berat"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("berat"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvbb")});
                 }
             } catch (Exception e) {
@@ -5983,16 +5839,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeBB
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString("berat"), rs.
-                        getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("berat"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvbb")});
                 }
             } catch (Exception e) {
@@ -6049,16 +5900,11 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabModeLP
-                            .addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan",
-                        rs.getString("pulang"),
-                        rs.getString("id_encounter"), rs.getString(
-                        "lingkar_perut"), rs.getString("nama"),
-                        rs.getString("ktppraktisi"), rs.getString(
-                        "tgl_perawatan"), rs.getString("jam_rawat"),
+                            .addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("stts"), "Ralan", rs.getString("pulang"),
+                        rs.getString("id_encounter"), rs.getString("lingkar_perut"), rs.getString("nama"),
+                        rs.getString("ktppraktisi"), rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
                         rs.getString("satu_sehat_observationttvlp")});
                 }
             } catch (Exception e) {
@@ -6089,7 +5935,6 @@ public class SatuSehatKirimObservationTTV extends javax.swing.JDialog {
         return tbSuhu;
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            SatuSehatKirimObservationTTV.class.getName());
+    private static final Logger LOG = Logger.getLogger(SatuSehatKirimObservationTTV.class.getName());
 
 }

@@ -36,22 +36,36 @@ import simrskhanza.DlgPeriksaLaboratoriumPA;
 public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2, tabMode3, tabMode4;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private int i, nilai_detik, permintaanbaru = 0;
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariBangsal ruang = new DlgCariBangsal(null, false);
+
     private BackgroundMusic music;
+
     private Date now;
+
     private boolean aktif = false, semua;
-    private String pilihan = "", alarm = "", formalarm = "", nol_detik, detik, tglsampel = "", tglhasil = "", norm = "", kamar = "", namakamar = "", InformasiTambahan, DiagnosaKlinis,
-            tanggalbahan, diperolehdengan, lokasijaringan, diawetkandengan, pernahdilakukandi, tanggalpa, diagnosapa, nomorpa,
-            NoPermintaan = "", NoRawat = "", Pasien = "", Permintaan = "", JamPermintaan = "", Sampel = "", JamSampel = "", Hasil = "", JamHasil = "", KodeDokter = "", DokterPerujuk = "", Ruang = "",
-            itempermintaan = "", finger = "";
+
+    private String pilihan = "", alarm = "", formalarm = "", nol_detik, detik, tglsampel = "", tglhasil = "", norm = "",
+            kamar = "", namakamar = "", InformasiTambahan, DiagnosaKlinis, tanggalbahan, diperolehdengan,
+            lokasijaringan, diawetkandengan, pernahdilakukandi, tanggalpa, diagnosapa, nomorpa, NoPermintaan = "",
+            NoRawat = "", Pasien = "", Permintaan = "", JamPermintaan = "", Sampel = "", JamSampel = "", Hasil = "",
+            JamHasil = "", KodeDokter = "", DokterPerujuk = "", Ruang = "", itempermintaan = "", finger = "";
 
     /**
      * Creates new form DlgProgramStudi
@@ -64,16 +78,12 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
         initComponents();
 
         WindowAmbilSampel.setSize(530, 80);
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel",
-            "Jam", "Hasil", "Jam",
-            "Kode Dokter", "Dokter Perujuk", "Poli Registrasi",
-            "Informasi Tambahan", "Diagnosis Klinis",
-            "Kode Bayar", "Jenis Bayar", "Tgl.Bahan", "Diperoleh Dengan",
-            "Lokasi Jaringan", "Diawetkan Dengan",
-            "Pernah Dilakukan PA Di", "Pada Tanggal", "Dengan Nomor PA",
-            "Dengan Diagnosa PA", "Permintaan Pemeriksaan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel", "Jam", "Hasil",
+                    "Jam", "Kode Dokter", "Dokter Perujuk", "Poli Registrasi", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar", "Tgl.Bahan", "Diperoleh Dengan",
+                    "Lokasi Jaringan", "Diawetkan Dengan", "Pernah Dilakukan PA Di", "Pada Tanggal",
+                    "Dengan Nomor PA", "Dengan Diagnosa PA", "Permintaan Pemeriksaan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -143,17 +153,12 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
         }
         tbLabRalan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan",
-            "Jam", "Sampel", "Jam", "Hasil",
-            "Jam", "Kode Dokter", "Dokter Perujuk", "Poli Registrasi",
-            "Informasi Tambahan", "Diagnosis Klinis", "Kode Bayar",
-            "Jenis Bayar",
-            "Tgl.Bahan", "Diperoleh Dengan", "Lokasi Jaringan",
-            "Diawetkan Dengan",
-            "Pernah Dilakukan PA Di", "Pada Tanggal", "Dengan Nomor PA",
-            "Dengan Diagnosa PA"
-        }) {
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan", "Jam", "Sampel",
+                    "Jam", "Hasil", "Jam", "Kode Dokter", "Dokter Perujuk", "Poli Registrasi", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar", "Tgl.Bahan", "Diperoleh Dengan",
+                    "Lokasi Jaringan", "Diawetkan Dengan", "Pernah Dilakukan PA Di", "Pada Tanggal",
+                    "Dengan Nomor PA", "Dengan Diagnosa PA"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -223,15 +228,12 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
         }
         tbLabRalan2.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode3 = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel",
-            "Jam", "Hasil", "Jam", "Kode Dokter",
-            "Dokter Perujuk", "Kamar Terakhir", "Informasi Tambahan",
-            "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar",
-            "Tgl.Bahan", "Diperoleh Dengan", "Lokasi Jaringan",
-            "Diawetkan Dengan", "Pernah Dilakukan PA Di", "Pada Tanggal",
-            "Dengan Nomor PA", "Dengan Diagnosa PA", "Permintaan Pemeriksaan"
-        }) {
+        tabMode3 = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel", "Jam", "Hasil",
+                    "Jam", "Kode Dokter", "Dokter Perujuk", "Kamar Terakhir", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar", "Tgl.Bahan", "Diperoleh Dengan",
+                    "Lokasi Jaringan", "Diawetkan Dengan", "Pernah Dilakukan PA Di", "Pada Tanggal",
+                    "Dengan Nomor PA", "Dengan Diagnosa PA", "Permintaan Pemeriksaan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -301,15 +303,12 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
         }
         tbLabRanap.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode4 = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan",
-            "Jam", "Sampel", "Jam", "Hasil", "Jam", "Kode Dokter",
-            "Dokter Perujuk", "Kamar Terakhir", "Informasi Tambahan",
-            "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar", "Tgl.Bahan",
-            "Diperoleh Dengan", "Lokasi Jaringan", "Diawetkan Dengan",
-            "Pernah Dilakukan PA Di", "Pada Tanggal",
-            "Dengan Nomor PA", "Dengan Diagnosa PA"
-        }) {
+        tabMode4 = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan", "Jam", "Sampel",
+                    "Jam", "Hasil", "Jam", "Kode Dokter", "Dokter Perujuk", "Kamar Terakhir", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar", "Tgl.Bahan", "Diperoleh Dengan",
+                    "Lokasi Jaringan", "Diawetkan Dengan", "Pernah Dilakukan PA Di", "Pada Tanggal",
+                    "Dengan Nomor PA", "Dengan Diagnosa PA"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -381,8 +380,7 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -420,12 +418,12 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
                     if (TabPilihRawat.getSelectedIndex() == 0) {
-                        CrDokter.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 1).toString());
+                        CrDokter
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         CrDokter.requestFocus();
                     } else if (TabPilihRawat.getSelectedIndex() == 1) {
-                        CrDokter2.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 1).toString());
+                        CrDokter2
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         CrDokter2.requestFocus();
                     }
                 }
@@ -461,8 +459,7 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    CrPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    CrPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                     CrPoli.requestFocus();
                 }
             }
@@ -497,8 +494,7 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    Kamar.setText(ruang.getTable().getValueAt(ruang.getTable().
-                            getSelectedRow(), 1).toString());
+                    Kamar.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                     Kamar.requestFocus();
                 }
             }
@@ -538,7 +534,9 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1248,14 +1246,13 @@ public class DlgCariPermintaanLabPA extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void Tgl1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tgl1KeyPressed
-        Valid.pindah(evt, BtnKeluar, Tgl2);
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void Tgl1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        Valid.pindah(evt, BtnKeluar, Tgl2);//GEN-FIRST:event_Tgl1KeyPressed
     }//GEN-LAST:event_Tgl1KeyPressed
 
     private void Tgl2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tgl2KeyPressed
@@ -2472,8 +2469,7 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPermintaanLabPA dialog = new DlgCariPermintaanLabPA(
-                    new javax.swing.JFrame(), true);
+            DlgCariPermintaanLabPA dialog = new DlgCariPermintaanLabPA(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2552,8 +2548,8 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             ps = koneksi.prepareStatement(
                     "select permintaan_labpa.noorder,permintaan_labpa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,permintaan_labpa.tgl_permintaan,"
                     + "if(permintaan_labpa.jam_permintaan='00:00:00','',permintaan_labpa.jam_permintaan) as jam_permintaan,reg_periksa.kd_pj,penjab.png_jawab,"
@@ -2611,28 +2607,18 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                             ps2.close();
                         }
                     }
-                    itempermintaan = itempermintaan.substring(0, itempermintaan.
-                            length() - 2);
-                    tabMode.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + " "
-                        + rs.getString("nm_pasien"), rs.getString(
-                        "tgl_permintaan"), rs.getString("jam_permintaan"),
-                        rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
-                        rs.getString("tgl_hasil"),
-                        rs.getString("jam_hasil"), rs.
-                        getString("dokter_perujuk"), rs.getString("nm_dokter"),
-                        rs.getString("nm_poli"), rs.getString(
-                        "informasi_tambahan"), rs.getString("diagnosa_klinis"),
-                        rs.getString("kd_pj"), rs.getString("png_jawab"), rs.
-                        getString("pengambilan_bahan"),
-                        rs.getString("diperoleh_dengan"), rs.getString(
-                        "lokasi_jaringan"), rs.getString("diawetkan_dengan"),
-                        rs.getString("pernah_dilakukan_di"), rs.getString(
-                        "tanggal_pa_sebelumnya"), rs.getString(
-                        "nomor_pa_sebelumnya"),
-                        rs.getString("diagnosa_pa_sebelumnya"), itempermintaan
-                    });
+                    itempermintaan = itempermintaan.substring(0, itempermintaan.length() - 2);
+                    tabMode.addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"),
+                        rs.getString("tgl_permintaan"), rs.getString("jam_permintaan"), rs.getString("tgl_sampel"),
+                        rs.getString("jam_sampel"), rs.getString("tgl_hasil"), rs.getString("jam_hasil"),
+                        rs.getString("dokter_perujuk"), rs.getString("nm_dokter"), rs.getString("nm_poli"),
+                        rs.getString("informasi_tambahan"), rs.getString("diagnosa_klinis"), rs.getString("kd_pj"),
+                        rs.getString("png_jawab"), rs.getString("pengambilan_bahan"),
+                        rs.getString("diperoleh_dengan"), rs.getString("lokasi_jaringan"),
+                        rs.getString("diawetkan_dengan"), rs.getString("pernah_dilakukan_di"),
+                        rs.getString("tanggal_pa_sebelumnya"), rs.getString("nomor_pa_sebelumnya"),
+                        rs.getString("diagnosa_pa_sebelumnya"), itempermintaan});
                 }
                 rs.last();
                 LCount.setText("" + rs.getRow());
@@ -2654,8 +2640,8 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil2() {
         Valid.tabelKosong(tabMode2);
         try {
-            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             ps = koneksi.prepareStatement(
                     "select permintaan_labpa.noorder,permintaan_labpa.no_rawat,reg_periksa.no_rkm_medis,reg_periksa.kd_pj,"
                     + "pasien.nm_pasien,jns_perawatan_lab.nm_perawatan,permintaan_labpa.tgl_permintaan,penjab.png_jawab,"
@@ -2698,28 +2684,17 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + " " + rs.getString(
-                        "nm_pasien"),
-                        rs.getString("nm_perawatan"), rs.getString(
-                        "tgl_permintaan"), rs.getString("jam_permintaan"), rs.
-                        getString("tgl_sampel"),
-                        rs.getString("jam_sampel"), rs.getString("tgl_hasil"),
-                        rs.getString("jam_hasil"), rs.
-                        getString("dokter_perujuk"),
-                        rs.getString("nm_dokter"), rs.getString("nm_poli"), rs.
-                        getString("informasi_tambahan"),
-                        rs.getString("diagnosa_klinis"), rs.getString("kd_pj"),
-                        rs.getString("png_jawab"), rs.getString(
-                        "pengambilan_bahan"),
-                        rs.getString("diperoleh_dengan"), rs.getString(
-                        "lokasi_jaringan"), rs.getString("diawetkan_dengan"),
-                        rs.getString("pernah_dilakukan_di"), rs.getString(
-                        "tanggal_pa_sebelumnya"), rs.getString(
-                        "nomor_pa_sebelumnya"),
-                        rs.getString("diagnosa_pa_sebelumnya")
-                    });
+                    tabMode2.addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"),
+                        rs.getString("nm_perawatan"), rs.getString("tgl_permintaan"),
+                        rs.getString("jam_permintaan"), rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
+                        rs.getString("tgl_hasil"), rs.getString("jam_hasil"), rs.getString("dokter_perujuk"),
+                        rs.getString("nm_dokter"), rs.getString("nm_poli"), rs.getString("informasi_tambahan"),
+                        rs.getString("diagnosa_klinis"), rs.getString("kd_pj"), rs.getString("png_jawab"),
+                        rs.getString("pengambilan_bahan"), rs.getString("diperoleh_dengan"),
+                        rs.getString("lokasi_jaringan"), rs.getString("diawetkan_dengan"),
+                        rs.getString("pernah_dilakukan_di"), rs.getString("tanggal_pa_sebelumnya"),
+                        rs.getString("nomor_pa_sebelumnya"), rs.getString("diagnosa_pa_sebelumnya")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2739,99 +2714,55 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 
     private void getData() {
         if (tbLabRalan.getSelectedRow() != -1) {
-            NoPermintaan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 0).
-                    toString();
-            NoRawat = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 1).
-                    toString();
-            Pasien = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 2).
-                    toString();
-            Permintaan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 3).
-                    toString();
-            JamPermintaan = tbLabRalan.
-                    getValueAt(tbLabRalan.getSelectedRow(), 4).toString();
-            Sampel = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 5).
-                    toString();
-            JamSampel = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 6).
-                    toString();
-            Hasil = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 7).
-                    toString();
-            JamHasil = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 8).
-                    toString();
-            KodeDokter = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 9).
-                    toString();
-            DokterPerujuk = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(),
-                    10).toString();
-            Ruang = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 11).
-                    toString();
-            InformasiTambahan = tbLabRalan.getValueAt(tbLabRalan.
-                    getSelectedRow(), 12).toString();
-            DiagnosaKlinis = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(),
-                    13).toString();
-            tanggalbahan = tbLabRalan.
-                    getValueAt(tbLabRalan.getSelectedRow(), 16).toString();
-            diperolehdengan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(),
-                    17).toString();
-            lokasijaringan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(),
-                    18).toString();
-            diawetkandengan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(),
-                    19).toString();
-            pernahdilakukandi = tbLabRalan.getValueAt(tbLabRalan.
-                    getSelectedRow(), 20).toString();
-            tanggalpa = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 21).
-                    toString();
-            nomorpa = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 22).
-                    toString();
-            diagnosapa = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 23).
-                    toString();
+            NoPermintaan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 0).toString();
+            NoRawat = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 1).toString();
+            Pasien = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 2).toString();
+            Permintaan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 3).toString();
+            JamPermintaan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 4).toString();
+            Sampel = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 5).toString();
+            JamSampel = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 6).toString();
+            Hasil = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 7).toString();
+            JamHasil = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 8).toString();
+            KodeDokter = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 9).toString();
+            DokterPerujuk = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 10).toString();
+            Ruang = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 11).toString();
+            InformasiTambahan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 12).toString();
+            DiagnosaKlinis = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 13).toString();
+            tanggalbahan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 16).toString();
+            diperolehdengan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 17).toString();
+            lokasijaringan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 18).toString();
+            diawetkandengan = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 19).toString();
+            pernahdilakukandi = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 20).toString();
+            tanggalpa = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 21).toString();
+            nomorpa = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 22).toString();
+            diagnosapa = tbLabRalan.getValueAt(tbLabRalan.getSelectedRow(), 23).toString();
         }
     }
 
     private void getData2() {
         if (tbLabRanap.getSelectedRow() != -1) {
-            NoPermintaan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 0).
-                    toString();
-            NoRawat = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 1).
-                    toString();
-            Pasien = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 2).
-                    toString();
-            Permintaan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 3).
-                    toString();
-            JamPermintaan = tbLabRanap.
-                    getValueAt(tbLabRanap.getSelectedRow(), 4).toString();
-            Sampel = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 5).
-                    toString();
-            JamSampel = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 6).
-                    toString();
-            Hasil = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 7).
-                    toString();
-            JamHasil = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 8).
-                    toString();
-            KodeDokter = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 9).
-                    toString();
-            DokterPerujuk = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(),
-                    10).toString();
-            Ruang = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 11).
-                    toString();
-            InformasiTambahan = tbLabRanap.getValueAt(tbLabRanap.
-                    getSelectedRow(), 12).toString();
-            DiagnosaKlinis = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(),
-                    13).toString();
-            tanggalbahan = tbLabRanap.
-                    getValueAt(tbLabRanap.getSelectedRow(), 16).toString();
-            diperolehdengan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(),
-                    17).toString();
-            lokasijaringan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(),
-                    18).toString();
-            diawetkandengan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(),
-                    19).toString();
-            pernahdilakukandi = tbLabRanap.getValueAt(tbLabRanap.
-                    getSelectedRow(), 20).toString();
-            tanggalpa = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 21).
-                    toString();
-            nomorpa = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 22).
-                    toString();
-            diagnosapa = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 23).
-                    toString();
+            NoPermintaan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 0).toString();
+            NoRawat = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 1).toString();
+            Pasien = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 2).toString();
+            Permintaan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 3).toString();
+            JamPermintaan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 4).toString();
+            Sampel = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 5).toString();
+            JamSampel = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 6).toString();
+            Hasil = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 7).toString();
+            JamHasil = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 8).toString();
+            KodeDokter = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 9).toString();
+            DokterPerujuk = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 10).toString();
+            Ruang = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 11).toString();
+            InformasiTambahan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 12).toString();
+            DiagnosaKlinis = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 13).toString();
+            tanggalbahan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 16).toString();
+            diperolehdengan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 17).toString();
+            lokasijaringan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 18).toString();
+            diawetkandengan = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 19).toString();
+            pernahdilakukandi = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 20).toString();
+            tanggalpa = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 21).toString();
+            nomorpa = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 22).toString();
+            diagnosapa = tbLabRanap.getValueAt(tbLabRanap.getSelectedRow(), 23).toString();
         }
     }
 
@@ -2895,8 +2826,8 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil3() {
         Valid.tabelKosong(tabMode3);
         try {
-            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             if (cmbStatus.getSelectedIndex() == 0) {
                 ps = koneksi.prepareStatement(
                         "select permintaan_labpa.noorder,permintaan_labpa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,permintaan_labpa.tgl_permintaan,"
@@ -2980,28 +2911,18 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                             ps2.close();
                         }
                     }
-                    itempermintaan = itempermintaan.substring(0, itempermintaan.
-                            length() - 2);
-                    tabMode3.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + " "
-                        + rs.getString("nm_pasien"), rs.getString(
-                        "tgl_permintaan"), rs.getString("jam_permintaan"),
-                        rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
-                        rs.getString("tgl_hasil"),
-                        rs.getString("jam_hasil"), rs.
-                        getString("dokter_perujuk"), rs.getString("nm_dokter"),
-                        rs.getString("nm_bangsal"), rs.getString(
-                        "informasi_tambahan"), rs.getString("diagnosa_klinis"),
-                        rs.getString("kd_pj"), rs.getString("png_jawab"), rs.
-                        getString("pengambilan_bahan"),
-                        rs.getString("diperoleh_dengan"), rs.getString(
-                        "lokasi_jaringan"), rs.getString("diawetkan_dengan"),
-                        rs.getString("pernah_dilakukan_di"), rs.getString(
-                        "tanggal_pa_sebelumnya"), rs.getString(
-                        "nomor_pa_sebelumnya"),
-                        rs.getString("diagnosa_pa_sebelumnya"), itempermintaan
-                    });
+                    itempermintaan = itempermintaan.substring(0, itempermintaan.length() - 2);
+                    tabMode3.addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"),
+                        rs.getString("tgl_permintaan"), rs.getString("jam_permintaan"), rs.getString("tgl_sampel"),
+                        rs.getString("jam_sampel"), rs.getString("tgl_hasil"), rs.getString("jam_hasil"),
+                        rs.getString("dokter_perujuk"), rs.getString("nm_dokter"), rs.getString("nm_bangsal"),
+                        rs.getString("informasi_tambahan"), rs.getString("diagnosa_klinis"), rs.getString("kd_pj"),
+                        rs.getString("png_jawab"), rs.getString("pengambilan_bahan"),
+                        rs.getString("diperoleh_dengan"), rs.getString("lokasi_jaringan"),
+                        rs.getString("diawetkan_dengan"), rs.getString("pernah_dilakukan_di"),
+                        rs.getString("tanggal_pa_sebelumnya"), rs.getString("nomor_pa_sebelumnya"),
+                        rs.getString("diagnosa_pa_sebelumnya"), itempermintaan});
                 }
                 rs.last();
                 LCount.setText("" + rs.getRow());
@@ -3023,8 +2944,8 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil4() {
         Valid.tabelKosong(tabMode4);
         try {
-            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             if (cmbStatus.getSelectedIndex() == 0) {
                 ps = koneksi.prepareStatement(
                         "select distinct permintaan_labpa.noorder,permintaan_labpa.no_rawat,reg_periksa.no_rkm_medis,reg_periksa.kd_pj,"
@@ -3099,27 +3020,17 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode4.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + " " + rs.getString(
-                        "nm_pasien"),
-                        rs.getString("nm_perawatan"), rs.getString(
-                        "tgl_permintaan"), rs.getString("jam_permintaan"), rs.
-                        getString("tgl_sampel"), rs.getString("jam_sampel"),
-                        rs.getString("tgl_hasil"), rs.getString("jam_hasil"),
-                        rs.getString("dokter_perujuk"), rs.
-                        getString("nm_dokter"),
-                        rs.getString("nm_bangsal"), rs.getString(
-                        "informasi_tambahan"), rs.getString("diagnosa_klinis"),
-                        rs.getString("kd_pj"), rs.getString("png_jawab"), rs.
-                        getString("pengambilan_bahan"),
-                        rs.getString("diperoleh_dengan"), rs.getString(
-                        "lokasi_jaringan"), rs.getString("diawetkan_dengan"),
-                        rs.getString("pernah_dilakukan_di"), rs.getString(
-                        "tanggal_pa_sebelumnya"), rs.getString(
-                        "nomor_pa_sebelumnya"),
-                        rs.getString("diagnosa_pa_sebelumnya")
-                    });
+                    tabMode4.addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"),
+                        rs.getString("nm_perawatan"), rs.getString("tgl_permintaan"),
+                        rs.getString("jam_permintaan"), rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
+                        rs.getString("tgl_hasil"), rs.getString("jam_hasil"), rs.getString("dokter_perujuk"),
+                        rs.getString("nm_dokter"), rs.getString("nm_bangsal"), rs.getString("informasi_tambahan"),
+                        rs.getString("diagnosa_klinis"), rs.getString("kd_pj"), rs.getString("png_jawab"),
+                        rs.getString("pengambilan_bahan"), rs.getString("diperoleh_dengan"),
+                        rs.getString("lokasi_jaringan"), rs.getString("diawetkan_dengan"),
+                        rs.getString("pernah_dilakukan_di"), rs.getString("tanggal_pa_sebelumnya"),
+                        rs.getString("nomor_pa_sebelumnya"), rs.getString("diagnosa_pa_sebelumnya")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -3153,9 +3064,8 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                     if (formalarm.contains("ralan")) {
                         tampil();
                         for (i = 0; i < tbLabRalan.getRowCount(); i++) {
-                            if ((!tbLabRalan.getValueAt(i, 0).toString().
-                                    isEmpty()) && tbLabRalan.getValueAt(i, 5).
-                                            toString().isEmpty()) {
+                            if ((!tbLabRalan.getValueAt(i, 0).toString().isEmpty())
+                                    && tbLabRalan.getValueAt(i, 5).toString().isEmpty()) {
                                 permintaanbaru++;
                             }
                         }
@@ -3164,9 +3074,8 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                     if (formalarm.contains("ranap")) {
                         tampil3();
                         for (i = 0; i < tbLabRanap.getRowCount(); i++) {
-                            if ((!tbLabRanap.getValueAt(i, 0).toString().
-                                    isEmpty()) && tbLabRanap.getValueAt(i, 5).
-                                            toString().isEmpty()) {
+                            if ((!tbLabRanap.getValueAt(i, 0).toString().isEmpty())
+                                    && tbLabRanap.getValueAt(i, 5).toString().isEmpty()) {
                                 permintaanbaru++;
                             }
                         }
@@ -3201,7 +3110,6 @@ private void tbLabRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgCariPermintaanLabPA.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPermintaanLabPA.class.getName());
 
 }

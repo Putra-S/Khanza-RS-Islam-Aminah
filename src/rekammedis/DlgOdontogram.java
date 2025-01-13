@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgRujuk.java
- *
- * Created on 31 Mei 10, 20:19:56
+* DlgRujuk.java
+*
+* Created on 31 Mei 10, 20:19:56
  */
 package rekammedis;
 
@@ -35,39 +35,62 @@ import laporan.DlgCariPenyakit;
 import laporan.DlgDiagnosaPenyakit;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgOdontogram extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private String bagian;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private RMCariKeluhan carikeluhan = new RMCariKeluhan(null, false);
-    private RMCariPemeriksaan caripemeriksaan = new RMCariPemeriksaan(null,
-            false);
-    private RMCariHasilRadiologi cariradiologi = new RMCariHasilRadiologi(null,
-            false);
+
+    private RMCariPemeriksaan caripemeriksaan = new RMCariPemeriksaan(null, false);
+
+    private RMCariHasilRadiologi cariradiologi = new RMCariHasilRadiologi(null, false);
+
     private RMCariHasilLaborat carilaborat = new RMCariHasilLaborat(null, false);
+
     private RMCariJumlahObat cariobat = new RMCariJumlahObat(null, false);
+
     private DlgDiagnosaPenyakit penyakit = new DlgDiagnosaPenyakit(null, false);
+
     private RMCariDiagnosa1 rmcaridiagnosa1 = new RMCariDiagnosa1(null, false);
+
     private RMCariDiagnosa2 rmcaridiagnosa2 = new RMCariDiagnosa2(null, false);
+
     private RMCariDiagnosa3 rmcaridiagnosa3 = new RMCariDiagnosa3(null, false);
+
     private RMCariDiagnosa4 rmcaridiagnosa4 = new RMCariDiagnosa4(null, false);
+
     private RMCariDiagnosa5 rmcaridiagnosa5 = new RMCariDiagnosa5(null, false);
+
     private RMCariProsedur1 rmcariprosedur1 = new RMCariProsedur1(null, false);
+
     private RMCariProsedur2 rmcariprosedur2 = new RMCariProsedur2(null, false);
+
     private RMCariProsedur3 rmcariprosedur3 = new RMCariProsedur3(null, false);
+
     private RMCariProsedur4 rmcariprosedur4 = new RMCariProsedur4(null, false);
+
     private RMCariRencana carirencana = new RMCariRencana(null, false);
+
     private RMCariTerapi cariterapi = new RMCariTerapi(null, false);
+
     private DlgCariPenyakit penyakit1 = new DlgCariPenyakit(null, false);
 
     /**
@@ -80,13 +103,10 @@ public class DlgOdontogram extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien",
-            "Kode Dokter", "Dokter Gigi", "Bagian Gigi", "Diagnosa Gigi",
-            "ICD10",
-            "Hasil Pemeriksaan", "Catatan Pemeriksaan", "Tanggal Permintaan",
-            "No Permintaan", "Rahang"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien", "Kode Dokter", "Dokter Gigi",
+                    "Bagian Gigi", "Diagnosa Gigi", "ICD10", "Hasil Pemeriksaan", "Catatan Pemeriksaan",
+                    "Tanggal Permintaan", "No Permintaan", "Rahang"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -95,7 +115,8 @@ public class DlgOdontogram extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -135,12 +156,10 @@ public class DlgOdontogram extends javax.swing.JDialog {
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien", "Occlusi",
-            "Torus Palatinus", "Torus Mandibularis", "Palatum", "Diastema",
-            "Tambahan Diastema", "Gigi Anomali", "Tambahan Gigi Anomali",
-            "Lain-Lain", "D", "M", "F"
-        }) {
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"Tgl.Rawat", "Status", "No.Rawat", "No.RM", "Nama Pasien", "Occlusi", "Torus Palatinus",
+                    "Torus Mandibularis", "Palatum", "Diastema", "Tambahan Diastema", "Gigi Anomali",
+                    "Tambahan Gigi Anomali", "Lain-Lain", "D", "M", "F"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -149,7 +168,8 @@ public class DlgOdontogram extends javax.swing.JDialog {
         };
         tbObat1.setModel(tabMode2);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat1.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -193,18 +213,15 @@ public class DlgOdontogram extends javax.swing.JDialog {
         }
         tbObat1.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TNoPermintaan.setDocument(new batasInput((byte) 15).getKata(
-                TNoPermintaan));
+        TNoPermintaan.setDocument(new batasInput((byte) 15).getKata(TNoPermintaan));
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         DiagnosaUtama.setDocument(new batasInput(80).getKata(DiagnosaUtama));
-        KodeDiagnosaUtama.setDocument(new batasInput(10).getKata(
-                KodeDiagnosaUtama));
+        KodeDiagnosaUtama.setDocument(new batasInput(10).getKata(KodeDiagnosaUtama));
         Catatan.setDocument(new batasInput(1000).getKata(Catatan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -241,10 +258,8 @@ public class DlgOdontogram extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KodeDokter.requestFocus();
                 }
             }
@@ -279,8 +294,8 @@ public class DlgOdontogram extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (cariobat.getTable().getSelectedRow() != -1) {
-                    Catatan.append(cariobat.getTable().getValueAt(cariobat.
-                            getTable().getSelectedRow(), 2).toString() + ", ");
+                    Catatan.append(
+                            cariobat.getTable().getValueAt(cariobat.getTable().getSelectedRow(), 2).toString() + ", ");
                     Catatan.requestFocus();
                 }
             }
@@ -347,12 +362,12 @@ public class DlgOdontogram extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (rmcaridiagnosa1.getTable().getSelectedRow() != -1) {
-                    KodeDiagnosaUtama.setText(rmcaridiagnosa1.getTable().
-                            getValueAt(rmcaridiagnosa1.getTable().
-                                    getSelectedRow(), 0).toString());
-                    DiagnosaUtama.setText(rmcaridiagnosa1.getTable().getValueAt(
-                            rmcaridiagnosa1.getTable().getSelectedRow(), 1).
-                            toString());
+                    KodeDiagnosaUtama.setText(rmcaridiagnosa1.getTable()
+                            .getValueAt(rmcaridiagnosa1.getTable().getSelectedRow(), 0)
+                            .toString());
+                    DiagnosaUtama.setText(rmcaridiagnosa1.getTable()
+                            .getValueAt(rmcaridiagnosa1.getTable().getSelectedRow(), 1)
+                            .toString());
                     KodeDiagnosaUtama.requestFocus();
                 }
             }
@@ -387,9 +402,9 @@ public class DlgOdontogram extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (carirencana.getTable().getSelectedRow() != -1) {
-                    Catatan.append(carirencana.getTable().getValueAt(
-                            carirencana.getTable().getSelectedRow(), 2).
-                            toString() + ", ");
+                    Catatan
+                            .append(carirencana.getTable().getValueAt(carirencana.getTable().getSelectedRow(), 2).toString()
+                                    + ", ");
                     Catatan.requestFocus();
                 }
             }
@@ -424,10 +439,10 @@ public class DlgOdontogram extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penyakit1.getTable().getSelectedRow() != -1) {
-                    KodeDiagnosaUtama.setText(penyakit1.getTable().getValueAt(
-                            penyakit1.getTable().getSelectedRow(), 0).toString());
-                    DiagnosaUtama.setText(penyakit1.getTable().getValueAt(
-                            penyakit1.getTable().getSelectedRow(), 1).toString());
+                    KodeDiagnosaUtama
+                            .setText(penyakit1.getTable().getValueAt(penyakit1.getTable().getSelectedRow(), 0).toString());
+                    DiagnosaUtama
+                            .setText(penyakit1.getTable().getValueAt(penyakit1.getTable().getSelectedRow(), 1).toString());
                 }
                 DiagnosaUtama.requestFocus();
             }
@@ -456,7 +471,9 @@ public class DlgOdontogram extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2671,10 +2688,9 @@ public class DlgOdontogram extends javax.swing.JDialog {
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "OD" + Valid.SetTgl(Tanggal.getSelectedItem() + "").replaceAll(
-                        "-", ""), 5, TNoPermintaan);
+                "select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "OD" + Valid.SetTgl(Tanggal.getSelectedItem() + "").replaceAll("-", ""), 5, TNoPermintaan);
     }
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
@@ -3783,8 +3799,7 @@ public class DlgOdontogram extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgOdontogram dialog = new DlgOdontogram(new javax.swing.JFrame(),
-                    true);
+            DlgOdontogram dialog = new DlgOdontogram(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -4021,59 +4036,39 @@ public class DlgOdontogram extends javax.swing.JDialog {
             }
             try {
                 if (TCari.getText().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(3, "%" + TCari.getText() + "%");
-                    ps.setString(4, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(5, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(6, "%" + TCari.getText() + "%");
-                    ps.setString(7, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(8, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(9, "%" + TCari.getText() + "%");
-                    ps.setString(10, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(11, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(12, "%" + TCari.getText() + "%");
-                    ps.setString(13, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(14, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(15, "%" + TCari.getText() + "%");
-                    ps.setString(16, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(17, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(16, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(17, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(18, "%" + TCari.getText() + "%");
-                    ps.setString(19, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(20, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(19, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(20, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(21, "%" + TCari.getText() + "%");
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("tgl_registrasi"), rs.getString(
-                        "status_lanjut"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("kd_dokter"), rs.getString("nm_dokter"),
-                        rs.getString("bagian"), rs.getString("nm_penyakit"),
-                        rs.getString("kd_diagnosa"), rs.getString("hasil"), rs.
-                        getString("catatan"), rs.getString("tanggal"), rs.
-                        getString("noorder"), rs.getString("rahang")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("tgl_registrasi"), rs.getString("status_lanjut"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"), rs.getString("bagian"),
+                        rs.getString("nm_penyakit"), rs.getString("kd_diagnosa"), rs.getString("hasil"),
+                        rs.getString("catatan"), rs.getString("tanggal"), rs.getString("noorder"),
+                        rs.getString("rahang")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -4121,47 +4116,31 @@ public class DlgOdontogram extends javax.swing.JDialog {
             }
             try {
                 if (TCari.getText().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(3, "%" + TCari.getText() + "%");
-                    ps.setString(4, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(5, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(6, "%" + TCari.getText() + "%");
-                    ps.setString(7, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(8, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(9, "%" + TCari.getText() + "%");
-                    ps.setString(10, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(11, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(12, "%" + TCari.getText() + "%");
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new String[]{
-                        rs.getString("tgl_registrasi"), rs.getString(
-                        "status_lanjut"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                    tabMode2.addRow(new String[]{rs.getString("tgl_registrasi"), rs.getString("status_lanjut"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
                         rs.getString("occlusi"), rs.getString("torus_palatinus"),
-                        rs.getString("torus_mandibularis"), rs.getString(
-                        "palatum"),
-                        rs.getString("diastema"), rs.getString(
-                        "tambahan_diastema"), rs.getString("gigi_anomali"), rs.
-                        getString("tambahan_gigi_anomali"), rs.getString("lain"),
-                        rs.getString("d"),
-                        rs.getString("m"), rs.getString("f")
-                    });
+                        rs.getString("torus_mandibularis"), rs.getString("palatum"), rs.getString("diastema"),
+                        rs.getString("tambahan_diastema"), rs.getString("gigi_anomali"),
+                        rs.getString("tambahan_gigi_anomali"), rs.getString("lain"), rs.getString("d"),
+                        rs.getString("m"), rs.getString("f")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -4184,10 +4163,9 @@ public class DlgOdontogram extends javax.swing.JDialog {
         switch (TabOdontogram.getSelectedIndex()) {
             case 0:
                 Valid.autoNomer3(
-                        "select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='" + Valid.
-                                SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                        "OD" + Valid.SetTgl(Tanggal.getSelectedItem() + "").
-                                replaceAll("-", ""), 5, TNoPermintaan);
+                        "select ifnull(MAX(CONVERT(RIGHT(noorder,4),signed)),0) from pemeriksaan_gigi where tanggal='"
+                        + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                        "OD" + Valid.SetTgl(Tanggal.getSelectedItem() + "").replaceAll("-", ""), 5, TNoPermintaan);
                 Catatan.setText("");
                 DiagnosaUtama.setText("");
                 KodeDiagnosaUtama.setText("");
@@ -4218,272 +4196,193 @@ public class DlgOdontogram extends javax.swing.JDialog {
         switch (TabOdontogram.getSelectedIndex()) {
             case 0:
                 if (tbObat.getSelectedRow() != -1) {
-                    TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                            toString());
-                    TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                            toString());
-                    TPasien.setText(tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 4).toString());
-                    KodeDokter.setText(tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 5).toString());
-                    NamaDokter.setText(tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 6).toString());
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.1")) {
+                    TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+                    TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+                    TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+                    KodeDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+                    NamaDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.1")) {
                         gigi11.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.2")) {
                         gigi12.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.3")) {
                         gigi13.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.4")) {
                         gigi14.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.5")) {
                         gigi15.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.6")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.6")) {
                         gigi16.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.7")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.7")) {
                         gigi17.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("1.8")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("1.8")) {
                         gigi18.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.1")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.1")) {
                         gigi21.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.2")) {
                         gigi22.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.3")) {
                         gigi23.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.4")) {
                         gigi24.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.5")) {
                         gigi25.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.6")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.6")) {
                         gigi26.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.7")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.7")) {
                         gigi27.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("2.8")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("2.8")) {
                         gigi28.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.1")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.1")) {
                         gigi31.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.2")) {
                         gigi32.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.3")) {
                         gigi33.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.4")) {
                         gigi34.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.5")) {
                         gigi35.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.6")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.6")) {
                         gigi36.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.7")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.7")) {
                         gigi37.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("3.8")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("3.8")) {
                         gigi38.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.1")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.1")) {
                         gigi41.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.2")) {
                         gigi42.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.3")) {
                         gigi43.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.4")) {
                         gigi44.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.5")) {
                         gigi45.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.6")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.6")) {
                         gigi46.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.7")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.7")) {
                         gigi47.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("4.8")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("4.8")) {
                         gigi48.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("5.1")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("5.1")) {
                         gigi51.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("5.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("5.2")) {
                         gigi52.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("5.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("5.3")) {
                         gigi53.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("5.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("5.4")) {
                         gigi54.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("5.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("5.5")) {
                         gigi55.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("6.1")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("6.1")) {
                         gigi61.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("6.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("6.2")) {
                         gigi62.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("6.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("6.3")) {
                         gigi63.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("6.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("6.4")) {
                         gigi64.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("6.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("6.5")) {
                         gigi65.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("7.1")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("7.1")) {
                         gigi71.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("7.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("7.2")) {
                         gigi72.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("7.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("7.3")) {
                         gigi73.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("7.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("7.4")) {
                         gigi74.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("7.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("7.5")) {
                         gigi75.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("8.1")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("8.1")) {
                         gigi81.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("8.2")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("8.2")) {
                         gigi82.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("8.3")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("8.3")) {
                         gigi83.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("8.4")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("8.4")) {
                         gigi84.setSelected(true);
                     }
-                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().
-                            equals("8.5")) {
+                    if (tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().equals("8.5")) {
                         gigi85.setSelected(true);
                     }
-                    DiagnosaUtama.setText(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 8).toString());
-                    KodeDiagnosaUtama.setText(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 9).toString());
-                    Hasil.setSelectedItem(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 10).toString());
-                    Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                            11).toString());
-                    Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 12).toString());
-                    TNoPermintaan.setText(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 13).toString());
-                    Rahang.setSelectedItem(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 14).toString());
+                    DiagnosaUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+                    KodeDiagnosaUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+                    Hasil.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+                    Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+                    Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+                    TNoPermintaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+                    Rahang.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
                 }
                 break;
             case 1:
                 if (tbObat1.getSelectedRow() != -1) {
-                    TNoRw.setText(tbObat1.
-                            getValueAt(tbObat1.getSelectedRow(), 2).toString());
-                    TNoRM.setText(tbObat1.
-                            getValueAt(tbObat1.getSelectedRow(), 3).toString());
-                    TPasien.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
-                            4).toString());
-                    Occlusi.setSelectedItem(tbObat1.getValueAt(tbObat1.
-                            getSelectedRow(), 5).toString());
-                    TorusPalatinus.setSelectedItem(tbObat1.getValueAt(tbObat1.
-                            getSelectedRow(), 6).toString());
-                    TorusMandibularis.setSelectedItem(tbObat1.getValueAt(
-                            tbObat1.getSelectedRow(), 7).toString());
-                    Palatum.setSelectedItem(tbObat1.getValueAt(tbObat1.
-                            getSelectedRow(), 8).toString());
-                    Diastema.setSelectedItem(tbObat1.getValueAt(tbObat1.
-                            getSelectedRow(), 9).toString());
-                    TDiastema.setText(tbObat1.getValueAt(tbObat1.
-                            getSelectedRow(), 10).toString());
-                    GigiAnomali.setSelectedItem(tbObat1.getValueAt(tbObat1.
-                            getSelectedRow(), 11).toString());
-                    TGigiAnomali.setText(tbObat1.getValueAt(tbObat1.
-                            getSelectedRow(), 12).toString());
-                    TLain.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
-                            13).toString());
-                    TextD.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
-                            14).toString());
-                    TextM.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
-                            15).toString());
-                    TextF.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(),
-                            16).toString());
+                    TNoRw.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 2).toString());
+                    TNoRM.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 3).toString());
+                    TPasien.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 4).toString());
+                    Occlusi.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(), 5).toString());
+                    TorusPalatinus.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(), 6).toString());
+                    TorusMandibularis.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(), 7).toString());
+                    Palatum.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(), 8).toString());
+                    Diastema.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(), 9).toString());
+                    TDiastema.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 10).toString());
+                    GigiAnomali.setSelectedItem(tbObat1.getValueAt(tbObat1.getSelectedRow(), 11).toString());
+                    TGigiAnomali.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 12).toString());
+                    TLain.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 13).toString());
+                    TextD.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 14).toString());
+                    TextM.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 15).toString());
+                    TextF.setText(tbObat1.getValueAt(tbObat1.getSelectedRow(), 16).toString());
                 }
                 break;
         }
@@ -4491,28 +4390,21 @@ public class DlgOdontogram extends javax.swing.JDialog {
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select no_rkm_medis from reg_periksa where no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select no_rkm_medis from reg_periksa where no_rawat='" + TNoRw.getText() + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select nm_pasien from pasien where no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
+        Sequel.cariIsi("select nm_pasien from pasien where no_rkm_medis='" + TNoRM.getText() + "' ", TPasien);
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select tgl_registrasi from reg_periksa where no_rawat='" + norwt + "'",
-                DTPCari1);
+        Sequel.cariIsi("select tgl_registrasi from reg_periksa where no_rawat='" + norwt + "'", DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
         isPsien();
@@ -4521,10 +4413,10 @@ public class DlgOdontogram extends javax.swing.JDialog {
         emptTeks();
         Hasil.requestFocus();
         try {
-            ps = koneksi.prepareStatement(
-                    "select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "
-                    + "from diagnosa_pasien inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "
-                    + "where diagnosa_pasien.no_rawat=? order by diagnosa_pasien.prioritas ");
+            ps = koneksi
+                    .prepareStatement("select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "
+                            + "from diagnosa_pasien inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "
+                            + "where diagnosa_pasien.no_rawat=? order by diagnosa_pasien.prioritas ");
             try {
                 ps.setString(1, norwt);
                 rs = ps.executeQuery();
@@ -4534,15 +4426,15 @@ public class DlgOdontogram extends javax.swing.JDialog {
                         DiagnosaUtama.setText(rs.getString("nm_penyakit"));
                     }
 
-//                    if(rs.getInt("prioritas")==2){
-//                        KodeDiagnosaSekunder1.setText(rs.getString("kd_penyakit"));
-//                        DiagnosaSekunder1.setText(rs.getString("nm_penyakit"));
-//                    }
-//                    
-//                    if(rs.getInt("prioritas")==3){
-//                        KodeDiagnosaSekunder2.setText(rs.getString("kd_penyakit"));
-//                        DiagnosaSekunder2.setText(rs.getString("nm_penyakit"));
-//                    }
+                    // if(rs.getInt("prioritas")==2){
+                    // KodeDiagnosaSekunder1.setText(rs.getString("kd_penyakit"));
+                    // DiagnosaSekunder1.setText(rs.getString("nm_penyakit"));
+                    // }
+                    //
+                    // if(rs.getInt("prioritas")==3){
+                    // KodeDiagnosaSekunder2.setText(rs.getString("kd_penyakit"));
+                    // DiagnosaSekunder2.setText(rs.getString("nm_penyakit"));
+                    // }
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -4558,33 +4450,33 @@ public class DlgOdontogram extends javax.swing.JDialog {
             System.out.println("Notif : " + e);
         }
         try {
-            ps = koneksi.prepareStatement(
-                    "select prosedur_pasien.kode,icd9.deskripsi_panjang, prosedur_pasien.prioritas "
-                    + "from prosedur_pasien inner join icd9 on prosedur_pasien.kode=icd9.kode "
-                    + "where prosedur_pasien.no_rawat=? order by prosedur_pasien.prioritas ");
+            ps = koneksi
+                    .prepareStatement("select prosedur_pasien.kode,icd9.deskripsi_panjang, prosedur_pasien.prioritas "
+                            + "from prosedur_pasien inner join icd9 on prosedur_pasien.kode=icd9.kode "
+                            + "where prosedur_pasien.no_rawat=? order by prosedur_pasien.prioritas ");
             try {
                 ps.setString(1, norwt);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-//                    if(rs.getInt("prioritas")==1){
-//                        KodeProsedurUtama.setText(rs.getString("kode"));
-//                        ProsedurUtama.setText(rs.getString("deskripsi_panjang"));
-//                    }
-//                    
-//                    if(rs.getInt("prioritas")==2){
-//                        KodeProsedurSekunder1.setText(rs.getString("kode"));
-//                        ProsedurSekunder1.setText(rs.getString("deskripsi_panjang"));
-//                    }
-//                    
-//                    if(rs.getInt("prioritas")==3){
-//                        KodeProsedurSekunder2.setText(rs.getString("kode"));
-//                        ProsedurSekunder2.setText(rs.getString("deskripsi_panjang"));
-//                    }
-//                    
-//                    if(rs.getInt("prioritas")==4){
-//                        KodeProsedurSekunder3.setText(rs.getString("kode"));
-//                        ProsedurSekunder3.setText(rs.getString("deskripsi_panjang"));
-//                    }
+                    // if(rs.getInt("prioritas")==1){
+                    // KodeProsedurUtama.setText(rs.getString("kode"));
+                    // ProsedurUtama.setText(rs.getString("deskripsi_panjang"));
+                    // }
+                    //
+                    // if(rs.getInt("prioritas")==2){
+                    // KodeProsedurSekunder1.setText(rs.getString("kode"));
+                    // ProsedurSekunder1.setText(rs.getString("deskripsi_panjang"));
+                    // }
+                    //
+                    // if(rs.getInt("prioritas")==3){
+                    // KodeProsedurSekunder2.setText(rs.getString("kode"));
+                    // ProsedurSekunder2.setText(rs.getString("deskripsi_panjang"));
+                    // }
+                    //
+                    // if(rs.getInt("prioritas")==4){
+                    // KodeProsedurSekunder3.setText(rs.getString("kode"));
+                    // ProsedurSekunder3.setText(rs.getString("deskripsi_panjang"));
+                    // }
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -4604,7 +4496,7 @@ public class DlgOdontogram extends javax.swing.JDialog {
     private void isForm() {
         if (ChkInput.isSelected() == true || ChkInput1.isSelected() == true) {
             ChkInput.setVisible(false);
-//            PanelInput.setPreferredSize(new Dimension(WIDTH,this.getHeight()-122));
+            // PanelInput.setPreferredSize(new Dimension(WIDTH,this.getHeight()-122));
             PanelInput.setPreferredSize(new Dimension(WIDTH, 350));
             scrollInput.setVisible(true);
             ChkInput.setVisible(true);
@@ -4633,12 +4525,10 @@ public class DlgOdontogram extends javax.swing.JDialog {
             KodeDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KodeDokter.setText(akses.getkode());
-            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?",
-                    NamaDokter, KodeDokter.getText());
+            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?", NamaDokter, KodeDokter.getText());
             if (NamaDokter.getText().isEmpty()) {
                 KodeDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan dokter...!!");
             }
         }
     }
@@ -4656,7 +4546,6 @@ public class DlgOdontogram extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgOdontogram.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgOdontogram.class.getName());
 
 }

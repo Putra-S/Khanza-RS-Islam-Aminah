@@ -73,16 +73,13 @@ public class InhealthDataSJP extends javax.swing.JDialog {
 
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
 
-    private InhealthCariReferensiJenpelRuang kamar = new InhealthCariReferensiJenpelRuang(
-            null, false);
+    private InhealthCariReferensiJenpelRuang kamar = new InhealthCariReferensiJenpelRuang(null, false);
 
-    private InhealthCekReferensiFaskes faskes = new InhealthCekReferensiFaskes(
-            null, false);
+    private InhealthCekReferensiFaskes faskes = new InhealthCekReferensiFaskes(null, false);
 
     private DlgCariPenyakit penyakit = new DlgCariPenyakit(null, false);
 
-    private InhealthCekReferensiPoli poli = new InhealthCekReferensiPoli(null,
-            false);
+    private InhealthCekReferensiPoli poli = new InhealthCekReferensiPoli(null, false);
 
     /**
      * Creates new form DlgRujuk
@@ -98,16 +95,11 @@ public class InhealthDataSJP extends javax.swing.JDialog {
         WindowUpdatePulang.setSize(630, 80);
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"No.SJP", "No.Rawat", "Tanggal SJP",
-                    "Tanggal Rujukan", "No.Rujukan", "kdppkrujukan",
-                    "Nama PPK Rujukan", "kdppkpelayanan", "Nama PPK Pelayanan",
-                    "Jenis Pelayanan", "Catatan",
-                    "ICD X", "Diagnosa Awal", "ICD X 2", "Diagnosa Tambahan",
-                    "Kode Poli/Kamar", "Nama Poli/Kamar",
-                    "Kelas Rawat", "Kelas Desc", "Kode BU", "Nama BU",
-                    "Laka Lantas", "Lokasi Laka", "User",
-                    "No.R.M", "Nama Pasien", "Tgl.Lahir", "Jns.Kelamin",
-                    "No.Kartu", "Tanggal Pulang", "Plan",
+                new Object[]{"No.SJP", "No.Rawat", "Tanggal SJP", "Tanggal Rujukan", "No.Rujukan", "kdppkrujukan",
+                    "Nama PPK Rujukan", "kdppkpelayanan", "Nama PPK Pelayanan", "Jenis Pelayanan", "Catatan",
+                    "ICD X", "Diagnosa Awal", "ICD X 2", "Diagnosa Tambahan", "Kode Poli/Kamar", "Nama Poli/Kamar",
+                    "Kelas Rawat", "Kelas Desc", "Kode BU", "Nama BU", "Laka Lantas", "Lokasi Laka", "User",
+                    "No.R.M", "Nama Pasien", "Tgl.Lahir", "Jns.Kelamin", "No.Kartu", "Tanggal Pulang", "Plan",
                     "Plan Desc", "ID Akomodasi", "Tipe SJP", "Tipe COB"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -209,8 +201,7 @@ public class InhealthDataSJP extends javax.swing.JDialog {
         LokasiLaka.setDocument(new batasInput((byte) 100).getKata(LokasiLaka));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -248,11 +239,9 @@ public class InhealthDataSJP extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (faskes.getTable().getSelectedRow() != -1) {
                     KdPpkRujukan
-                            .setText(faskes.getTable().getValueAt(faskes.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 1).toString());
                     NmPpkRujukan
-                            .setText(faskes.getTable().getValueAt(faskes.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 2).toString());
                 }
                 KdPpkRujukan.requestFocus();
             }
@@ -307,22 +296,14 @@ public class InhealthDataSJP extends javax.swing.JDialog {
                 if (penyakit.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
                         KdPenyakit.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString());
                         NmPenyakit.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                     } else if (pilih == 2) {
                         KdPenyakit2.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString());
                         NmPenyakit2.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                     }
 
                 }
@@ -377,10 +358,8 @@ public class InhealthDataSJP extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 2).toString());
+                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 2).toString());
                     KdPoli.requestFocus();
                 }
             }
@@ -433,18 +412,13 @@ public class InhealthDataSJP extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kamar.getTable().getSelectedRow() != -1) {
-                    if (kamar.getTable().getValueAt(kamar.getTable().
-                            getSelectedRow(), 7).toString().equals("KOSONG")) {
-                        KdKamar.setText(kamar.getTable().getValueAt(kamar.
-                                getTable().getSelectedRow(), 0).toString());
-                        NmBangsal.setText(kamar.getTable().getValueAt(kamar.
-                                getTable().getSelectedRow(), 2).toString());
-                        KdJenpel.setText(kamar.getTable().getValueAt(kamar.
-                                getTable().getSelectedRow(), 3).toString());
+                    if (kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 7).toString().equals("KOSONG")) {
+                        KdKamar.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 0).toString());
+                        NmBangsal.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 2).toString());
+                        KdJenpel.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 3).toString());
                         KdPoli.requestFocus();
                     } else {
-                        JOptionPane.showMessageDialog(null,
-                                "Maaf, status kamar isi. Silahkan cari yang kosong..!!");
+                        JOptionPane.showMessageDialog(null, "Maaf, status kamar isi. Silahkan cari yang kosong..!!");
                         KdPoli.requestFocus();
                     }
                 }
@@ -487,11 +461,8 @@ public class InhealthDataSJP extends javax.swing.JDialog {
         });
 
         try {
-            KdPPK.
-                    setText(Sequel.cariIsi(
-                            "select kode_ppkinhealth from setting"));
-            NmPPK.setText(Sequel.cariIsi(
-                    "select setting.nama_instansi from setting"));
+            KdPPK.setText(Sequel.cariIsi("select kode_ppkinhealth from setting"));
+            NmPPK.setText(Sequel.cariIsi("select setting.nama_instansi from setting"));
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -510,7 +481,9 @@ public class InhealthDataSJP extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1948,8 +1921,7 @@ public class InhealthDataSJP extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InhealthDataSJP dialog = new InhealthDataSJP(
-                    new javax.swing.JFrame(), true);
+            InhealthDataSJP dialog = new InhealthDataSJP(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2069,72 +2041,43 @@ public class InhealthDataSJP extends javax.swing.JDialog {
                     + "bridging_inhealth.tglsep between ? and ? and bridging_inhealth.no_rawat like ? or "
                     + "bridging_inhealth.tglsep between ? and ? and bridging_inhealth.nmpolitujuan like ? order by bridging_inhealth.tglsep");
             try {
-                ps.setString(1,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(2,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
-                ps.setString(4,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(5,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(6, "%" + TCari.getText().trim() + "%");
-                ps.setString(7,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(8,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(9, "%" + TCari.getText().trim() + "%");
-                ps.setString(10,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(11,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(12, "%" + TCari.getText().trim() + "%");
-                ps.setString(13,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(14,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(15, "%" + TCari.getText().trim() + "%");
-                ps.setString(16,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(17,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(16, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(17, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(18, "%" + TCari.getText().trim() + "%");
-                ps.setString(19,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(20,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(19, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(20, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(21, "%" + TCari.getText().trim() + "%");
-                ps.setString(22,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(23,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 ps.setString(24, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     if (rs.getString(19).equals("000")) {
                         kelas = "000 Non Kelas";
                     }
-                    tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3), rs.getString(4),
-                                rs.getString(5), rs.getString(6), rs.
-                                getString(7), rs.getString(8), rs.getString(
-                                9),
-                                rs.getString(10), rs.getString(11), rs.
-                                getString(12), rs.getString(13), rs.
-                                getString(14),
-                                rs.getString(15), rs.getString(16), rs.
-                                getString(17), kelas, rs.getString(19),
-                                rs.getString(20), rs.getString(21), rs.
-                                getString(22), rs.getString(23), rs.
-                                getString(24),
-                                rs.getString(25), rs.getString(26), rs.
-                                getString(27), rs.getString(28), rs.
-                                getString(29),
-                                rs.getString(30), rs.getString(31), rs.
-                                getString(32), rs.getString(33), rs.
-                                getString(34),
-                                rs.getString(35)});
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14),
+                        rs.getString(15), rs.getString(16), rs.getString(17), kelas, rs.getString(19),
+                        rs.getString(20), rs.getString(21), rs.getString(22), rs.getString(23), rs.getString(24),
+                        rs.getString(25), rs.getString(26), rs.getString(27), rs.getString(28), rs.getString(29),
+                        rs.getString(30), rs.getString(31), rs.getString(32), rs.getString(33), rs.getString(34),
+                        rs.getString(35)});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -2153,9 +2096,7 @@ public class InhealthDataSJP extends javax.swing.JDialog {
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                TNoRM,
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRM,
                 TNoRw.getText());
         TNoRM.setText(TNoRM.getText());
         Catatan.setText("-");
@@ -2190,8 +2131,7 @@ public class InhealthDataSJP extends javax.swing.JDialog {
         Valid.autoNomer3(
                 "select ifnull(MAX(CONVERT(RIGHT(rujuk_masuk.no_rawat,4),signed)),0) from reg_periksa inner join rujuk_masuk on reg_periksa.no_rawat=rujuk_masuk.no_rawat where reg_periksa.tgl_registrasi='"
                 + Valid.SetTgl(TanggalSEP.getSelectedItem() + "") + "' ",
-                "BR/" + dateformat.format(TanggalSEP.getDate()) + "/", 4,
-                NoBalasan);
+                "BR/" + dateformat.format(TanggalSEP.getDate()) + "/", 4, NoBalasan);
 
     }
 
@@ -2202,8 +2142,7 @@ public class InhealthDataSJP extends javax.swing.JDialog {
      * @param kdpoli
      * @param namapoli
      */
-    public void setNoRm(String norwt, Date tgl1, String status, String kdpoli,
-            String namapoli) {
+    public void setNoRm(String norwt, Date tgl1, String status, String kdpoli, String namapoli) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
         KdPoli.setText(kdpoli);
@@ -2222,47 +2161,26 @@ public class InhealthDataSJP extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).
-                    toString());
-            JK.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).
-                            toString());
-            NoKartu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).
-                    toString());
-            NoRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            KdPPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            NmPPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            KdPpkRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            NmPpkRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            KdPenyakit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            NmPenyakit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            KdPenyakit2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            NmPenyakit2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            LakaLantas.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 21).toString());
-            LokasiLaka.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            Valid.SetTgl2(TanggalSEP, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    2).toString());
-            Valid.SetTgl2(TanggalRujuk, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 3).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            NoKartu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            NoRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            KdPPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            NmPPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            KdPpkRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            NmPpkRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            KdPenyakit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            NmPenyakit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            KdPenyakit2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            NmPenyakit2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            LakaLantas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            LokasiLaka.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Valid.SetTgl2(TanggalSEP, tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Valid.SetTgl2(TanggalRujuk, tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
 
         }
     }
@@ -2289,17 +2207,13 @@ public class InhealthDataSJP extends javax.swing.JDialog {
             requestJson = "{ \"token\": \"" + koneksiDB.TOKENINHEALTH() + "\"," + "\"kodeprovider\": \""
                     + KdPPK.getText() + "\"," + "\"tanggalpelayanan\": \""
                     + Valid.SetTgl(TanggalSEP.getSelectedItem() + "") + "\"," + "\"jenispelayanan\": \""
-                    + JenisPelayanan.getSelectedItem().toString().
-                            substring(0, 1) + "\"," + "\"nokainhealth\": \""
-                    + NoKartu.getText() + "\"," + "\"nomormedicalreport\": \"" + TNoRM.
-                    getText() + "\","
+                    + JenisPelayanan.getSelectedItem().toString().substring(0, 1) + "\"," + "\"nokainhealth\": \""
+                    + NoKartu.getText() + "\"," + "\"nomormedicalreport\": \"" + TNoRM.getText() + "\","
                     + "\"nomorasalrujukan\": \"" + NoRujukan.getText() + "\"," + "\"kodeproviderasalrujukan\": \""
                     + KdPpkRujukan.getText() + "\"," + "\"tanggalasalrujukan\": \""
                     + Valid.SetTgl(TanggalRujuk.getSelectedItem() + "") + "\"," + "\"kodediagnosautama\": \""
-                    + KdPenyakit.getText() + "\"," + "\"poli\": \"" + KdPoli.
-                    getText() + "\"," + "\"username\": \""
-                    + user + "\"," + "\"informasitambahan\": \"" + Catatan.
-                            getText() + "\","
+                    + KdPenyakit.getText() + "\"," + "\"poli\": \"" + KdPoli.getText() + "\"," + "\"username\": \""
+                    + user + "\"," + "\"informasitambahan\": \"" + Catatan.getText() + "\","
                     + "\"kodediagnosatambahan\": \"" + KdPenyakit2.getText() + "\"," + "\"kecelakaankerja\": \""
                     + LakaLantas.getSelectedItem().toString().substring(0, 1) + "\"," + "\"kelasrawat\": \""
                     + Kelas.getSelectedItem().toString().substring(0, 3) + "\"," + "\"kodejenpelruangrawat\": \""
@@ -2307,62 +2221,41 @@ public class InhealthDataSJP extends javax.swing.JDialog {
             HttpEntity requestEntity = new HttpEntity(requestJson, headers);
             RestTemplate rest = new RestTemplate();
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST,
-                    requestEntity, String.class).getBody());
+            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
             if (root.path("ERRORCODE").asText().equals("00")) {
                 if (Sequel.menyimpantf("bridging_inhealth",
-                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                        "Data SJP", 35,
-                        new String[]{root.path("NOSJP").asText(), TNoRw.
-                            getText(),
+                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data SJP", 35,
+                        new String[]{root.path("NOSJP").asText(), TNoRw.getText(),
                             Valid.SetTgl(TanggalSEP.getSelectedItem() + "") + " "
-                            + TanggalSEP.getSelectedItem().toString().substring(
-                                    11, 19),
+                            + TanggalSEP.getSelectedItem().toString().substring(11, 19),
                             Valid.SetTgl(TanggalRujuk.getSelectedItem() + "") + " "
-                            + TanggalRujuk.getSelectedItem().toString().
-                                    substring(11, 19),
-                            NoRujukan.getText(), KdPpkRujukan.getText(),
-                            NmPpkRujukan.getText(), KdPPK.getText(),
-                            NmPPK.getText(), JenisPelayanan.getSelectedItem().
-                            toString().substring(0, 1),
-                            Catatan.getText(), KdPenyakit.getText(), NmPenyakit.
-                            getText(), KdPenyakit2.getText(),
-                            NmPenyakit2.getText(), KdPoli.getText(), NmPoli.
-                            getText(),
-                            Kelas.getSelectedItem().toString().substring(0, 3),
-                            root.path("KELASDESC").asText(),
-                            root.path("KDBU").asText(), root.path("NMBU").
-                            asText(),
-                            LakaLantas.getSelectedItem().toString().substring(0,
-                                    1), LokasiLaka.getText(), user,
-                            root.path("NOMEDICALRECORD").asText(), root.path(
-                            "NAMAPESERTA").asText(),
-                            root.path("TGLLAHIR").asText().replaceAll("T", " ").
-                                    replaceAll("Z", ""), JK.getText(),
-                            root.path("NOKAPESERTA").asText(),
-                            "0000-00-00 00:00:00", root.path("PLAN").asText(),
-                            root.path("PLANDESC").asText(), root.path(
-                            "IDAKOMODASI").asText(),
-                            root.path("TIPESJP").asText(), root.path("TIPECOB").
-                            asText()}) == true) {
+                            + TanggalRujuk.getSelectedItem().toString().substring(11, 19),
+                            NoRujukan.getText(), KdPpkRujukan.getText(), NmPpkRujukan.getText(), KdPPK.getText(),
+                            NmPPK.getText(), JenisPelayanan.getSelectedItem().toString().substring(0, 1),
+                            Catatan.getText(), KdPenyakit.getText(), NmPenyakit.getText(), KdPenyakit2.getText(),
+                            NmPenyakit2.getText(), KdPoli.getText(), NmPoli.getText(),
+                            Kelas.getSelectedItem().toString().substring(0, 3), root.path("KELASDESC").asText(),
+                            root.path("KDBU").asText(), root.path("NMBU").asText(),
+                            LakaLantas.getSelectedItem().toString().substring(0, 1), LokasiLaka.getText(), user,
+                            root.path("NOMEDICALRECORD").asText(), root.path("NAMAPESERTA").asText(),
+                            root.path("TGLLAHIR").asText().replaceAll("T", " ").replaceAll("Z", ""), JK.getText(),
+                            root.path("NOKAPESERTA").asText(), "0000-00-00 00:00:00", root.path("PLAN").asText(),
+                            root.path("PLANDESC").asText(), root.path("IDAKOMODASI").asText(),
+                            root.path("TIPESJP").asText(), root.path("TIPECOB").asText()}) == true) {
                     Sequel.menyimpan("rujuk_masuk", "?,?,?,?,?,?,?,?,?,?", 10,
-                            new String[]{TNoRw.getText(), NmPpkRujukan.getText(),
-                                "-", NoRujukan.getText(), "0",
-                                NmPpkRujukan.getText(), KdPenyakit.getText(),
-                                "-", "-", NoBalasan.getText()});
+                            new String[]{TNoRw.getText(), NmPpkRujukan.getText(), "-", NoRujukan.getText(), "0",
+                                NmPpkRujukan.getText(), KdPenyakit.getText(), "-", "-", NoBalasan.getText()});
                     tampil();
                     emptTeks();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").
-                        asText());
+                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").asText());
                 NoKartu.requestFocus();
             }
         } catch (HeadlessException | IOException | RestClientException ex) {
             System.out.println("Notifikasi Bridging : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server Inhealth terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server Inhealth terputus...!");
             }
         }
     }
@@ -2375,52 +2268,40 @@ public class InhealthDataSJP extends javax.swing.JDialog {
             requestJson = "{ \"token\": \"" + koneksiDB.TOKENINHEALTH() + "\"," + "\"kodeprovider\": \""
                     + KdPPK.getText() + "\"," + "\"nosjp\": \""
                     + tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString() + "\"," + "\"nomormedicalreport\": \""
-                    + TNoRM.getText() + "\"," + "\"nomorasalrujukan\": \"" + NoRujukan.
-                    getText() + "\","
+                    + TNoRM.getText() + "\"," + "\"nomorasalrujukan\": \"" + NoRujukan.getText() + "\","
                     + "\"kodeproviderasalrujukan\": \"" + KdPpkRujukan.getText() + "\"," + "\"tanggalasalrujukan\": \""
                     + Valid.SetTgl(TanggalRujuk.getSelectedItem() + "") + "\"," + "\"kodediagnosautama\": \""
-                    + KdPenyakit.getText() + "\"," + "\"poli\": \"" + KdPoli.
-                    getText() + "\"," + "\"username\": \""
-                    + user + "\"," + "\"informasitambahan\": \"" + Catatan.
-                            getText() + "\","
+                    + KdPenyakit.getText() + "\"," + "\"poli\": \"" + KdPoli.getText() + "\"," + "\"username\": \""
+                    + user + "\"," + "\"informasitambahan\": \"" + Catatan.getText() + "\","
                     + "\"kodediagnosatambahan\": \"" + KdPenyakit2.getText() + "\"," + "\"kecelakaankerja\": \""
                     + LakaLantas.getSelectedItem().toString().substring(0, 1) + "\"" + "}";
             HttpEntity requestEntity = new HttpEntity(requestJson, headers);
             RestTemplate rest = new RestTemplate();
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST,
-                    requestEntity, String.class).getBody());
+            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
             if (root.path("ERRORCODE").asText().equals("00")) {
                 if (Sequel.mengedittf("bridging_inhealth", "no_sjp=?",
                         "kdppkrujukan=?,nmppkrujukan=?,no_rawat=?,nomr=?,nama_pasien=?,no_rujukan=?,tglrujukan=?,diagawal=?,nmdiagnosaawal=?,kdpolitujuan=?,nmpolitujuan=?,user=?,catatan=?,diagawal2=?,nmdiagnosaawal2=?,lakalantas=?",
                         17,
-                        new String[]{KdPpkRujukan.getText(), NmPpkRujukan.
-                            getText(), TNoRw.getText(), TNoRM.getText(),
+                        new String[]{KdPpkRujukan.getText(), NmPpkRujukan.getText(), TNoRw.getText(), TNoRM.getText(),
                             TPasien.getText(), NoRujukan.getText(),
                             Valid.SetTgl(TanggalRujuk.getSelectedItem() + "") + " "
-                            + TanggalRujuk.getSelectedItem().toString().
-                                    substring(11, 19),
-                            KdPenyakit.getText(), NmPenyakit.getText(), KdPoli.
-                            getText(), NmPoli.getText(), user,
-                            Catatan.getText(), KdPenyakit2.getText(),
-                            NmPenyakit2.getText(),
-                            LakaLantas.getSelectedItem().toString().substring(0,
-                                    1),
-                            tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                                    toString()}) == true) {
+                            + TanggalRujuk.getSelectedItem().toString().substring(11, 19),
+                            KdPenyakit.getText(), NmPenyakit.getText(), KdPoli.getText(), NmPoli.getText(), user,
+                            Catatan.getText(), KdPenyakit2.getText(), NmPenyakit2.getText(),
+                            LakaLantas.getSelectedItem().toString().substring(0, 1),
+                            tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
                     emptTeks();
                     tampil();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").
-                        asText());
+                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").asText());
                 NoKartu.requestFocus();
             }
         } catch (HeadlessException | IOException | RestClientException ex) {
             System.out.println("Notifikasi Bridging : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server Inhealth terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server Inhealth terputus...!");
             }
         }
     }
@@ -2437,27 +2318,23 @@ public class InhealthDataSJP extends javax.swing.JDialog {
             HttpEntity requestEntity = new HttpEntity(requestJson, headers);
             RestTemplate rest = new RestTemplate();
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST,
-                    requestEntity, String.class).getBody());
+            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
             if (root.path("ERRORCODE").asText().equals("00")) {
                 Sequel.meghapus("bridging_inhealth", "no_sjp",
                         tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
                 tampil();
                 emptTeks();
             } else {
-                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").
-                        asText());
+                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").asText());
             }
         } catch (HeadlessException | IOException | RestClientException ex) {
             System.out.println("Notifikasi Bridging : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server Inhealth terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server Inhealth terputus...!");
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(InhealthDataSJP.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(InhealthDataSJP.class.getName());
 
 }

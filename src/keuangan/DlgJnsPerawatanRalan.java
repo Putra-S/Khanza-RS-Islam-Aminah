@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatanRalan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatanRalan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package keuangan;
 
@@ -41,17 +41,22 @@ import simrskhanza.DlgCariPoli;
 import simrskhanza.DlgKtgPerawatan;
 
 /**
- *
  * @author dosen
  */
 public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
 
     /**
@@ -67,31 +72,14 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"P", "Kode Tindakan",
-            "Nama Tnd/Prw/Tagihan",
-            "Kategori",
-            "J.S.Rmh Sakit",
-            "BHP/Paket Obat",
-            "J.Medis Dr",
-            "J.Medis Pr",
-            "KSO",
-            "Menejemen",
-            "Ttl Biaya Dr",
-            "Ttl Biaya Pr",
-            "Ttl Biaya Dr & Pr",
-            "Jenis Bayar",
-            "Unit/Poli"};
+        Object[] row = {"P", "Kode Tindakan", "Nama Tnd/Prw/Tagihan", "Kategori", "J.S.Rmh Sakit", "BHP/Paket Obat",
+            "J.Medis Dr", "J.Medis Pr", "KSO", "Menejemen", "Ttl Biaya Dr", "Ttl Biaya Pr", "Ttl Biaya Dr & Pr",
+            "Jenis Bayar", "Unit/Poli"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -110,9 +98,9 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 15; i++) {
@@ -145,8 +133,7 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
         kdpoli.setDocument(new batasInput(5).getKata(kdpoli));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -182,10 +169,8 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -220,10 +205,8 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ktg.getTable().getSelectedRow() != -1) {
-                    KdKtg.setText(ktg.getTable().getValueAt(ktg.getTable().
-                            getSelectedRow(), 1).toString());
-                    NmKtg.setText(ktg.getTable().getValueAt(ktg.getTable().
-                            getSelectedRow(), 2).toString());
+                    KdKtg.setText(ktg.getTable().getValueAt(ktg.getTable().getSelectedRow(), 1).toString());
+                    NmKtg.setText(ktg.getTable().getValueAt(ktg.getTable().getSelectedRow(), 2).toString());
                 }
                 KdKtg.requestFocus();
             }
@@ -276,10 +259,8 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 1).toString());
-                    nmpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 2).toString());
+                    kdpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpnj.requestFocus();
             }
@@ -326,6 +307,7 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
     }
 
     public DlgKtgPerawatan ktg = new DlgKtgPerawatan(null, false);
+
     public DlgCariPoli poli = new DlgCariPoli(null, false);
 
     /**
@@ -334,7 +316,9 @@ public class DlgJnsPerawatanRalan extends javax.swing.JDialog {
     public DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1433,8 +1417,7 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgJnsPerawatanRalan dialog = new DlgJnsPerawatanRalan(
-                    new javax.swing.JFrame(), true);
+            DlgJnsPerawatanRalan dialog = new DlgJnsPerawatanRalan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1516,9 +1499,11 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     + "from jns_perawatan inner join kategori_perawatan on jns_perawatan.kd_kategori=kategori_perawatan.kd_kategori "
                     + "inner join penjab on penjab.kd_pj=jns_perawatan.kd_pj "
                     + "inner join poliklinik on poliklinik.kd_poli=jns_perawatan.kd_poli "
-                    + "where jns_perawatan.status='1' " + (TCari.getText().
-                            trim().isEmpty() ? "" : "and (jns_perawatan.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ? "
-                            + "or kategori_perawatan.nm_kategori like ? or penjab.png_jawab like ? or poliklinik.nm_poli like ?)") + "order by jns_perawatan.kd_jenis_prw");
+                    + "where jns_perawatan.status='1' "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (jns_perawatan.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ? "
+                    + "or kategori_perawatan.nm_kategori like ? or penjab.png_jawab like ? or poliklinik.nm_poli like ?)")
+                    + "order by jns_perawatan.kd_jenis_prw");
             try {
                 if (!TCari.getText().trim().isEmpty()) {
                     ps.setString(1, "%" + TCari.getText().trim() + "%");
@@ -1529,15 +1514,10 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getDouble(4),
-                        rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.
-                        getDouble(8),
-                        rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.
-                        getDouble(12),
-                        rs.getString(13), rs.getString(14)
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8),
+                        rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.getDouble(12), rs.getString(13),
+                        rs.getString(14)});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -1573,70 +1553,55 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         TJmlDr.setText("0");
         TJmlPr.setText("0");
         TJmlDrPr.setText("0");
-        //Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(kd_jenis_prw,5),signed)),0) from jns_perawatan  ",
-                "RJ", 5, TKd);
+        // Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(kd_jenis_prw,5),signed)),0) from jns_perawatan  ", "RJ", 5,
+                TKd);
         TKd.requestFocus();
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            TKd.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            TNm.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            Sequel.cariIsi(
-                    "select kd_kategori from jns_perawatan where kd_jenis_prw=?",
-                    KdKtg, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                            getSelectedRow(), 1).toString());
-            NmKtg.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            BagianRs.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString())));
-            BhpMedis.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString())));
-            TTndDr.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString())));
-            TTndPr.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString())));
-            KSO.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString())));
-            Menejemen.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString())));
-            TJmlDr.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString())));
-            TJmlPr.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString())));
-            TJmlDrPr.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 12).toString())));
-            Sequel.cariIsi(
-                    "select kd_pj from jns_perawatan where kd_jenis_prw=?",
-                    kdpnj, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                            getSelectedRow(), 1).toString());
-            nmpnj.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 13).toString());
-            Sequel.cariIsi(
-                    "select kd_poli from jns_perawatan where kd_jenis_prw=?",
-                    kdpoli, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                            getSelectedRow(), 1).toString());
-            NmPoli.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 14).toString());
+            TKd.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            TNm.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            Sequel.cariIsi("select kd_kategori from jns_perawatan where kd_jenis_prw=?", KdKtg,
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            NmKtg.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            BagianRs.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString())));
+            BhpMedis.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString())));
+            TTndDr.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString())));
+            TTndPr.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString())));
+            KSO.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString())));
+            Menejemen.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString())));
+            TJmlDr.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString())));
+            TJmlPr.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString())));
+            TJmlDrPr.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 12).toString())));
+            Sequel.cariIsi("select kd_pj from jns_perawatan where kd_jenis_prw=?", kdpnj,
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            nmpnj.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 13).toString());
+            Sequel.cariIsi("select kd_poli from jns_perawatan where kd_jenis_prw=?", kdpoli,
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            NmPoli.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 14).toString());
         }
     }
 
     private void isktg() {
-        Sequel.cariIsi(
-                "select nm_kategori from kategori_perawatan where kd_kategori=? ",
-                NmKtg, KdKtg.getText());
+        Sequel.cariIsi("select nm_kategori from kategori_perawatan where kd_kategori=? ", NmKtg, KdKtg.getText());
     }
 
     private void isjml() {
         DecimalFormat df2 = new DecimalFormat("####");
 
-        if ((!BagianRs.getText().isEmpty()) && (!TTndDr.getText().isEmpty()) && (!BhpMedis.
-                getText().isEmpty()) && (!KSO.getText().isEmpty()) && (!Menejemen.
-                getText().isEmpty())) {
+        if ((!BagianRs.getText().isEmpty()) && (!TTndDr.getText().isEmpty()) && (!BhpMedis.getText().isEmpty())
+                && (!KSO.getText().isEmpty()) && (!Menejemen.getText().isEmpty())) {
             double x = Double.parseDouble(BagianRs.getText().trim());
             double y = Double.parseDouble(TTndDr.getText().trim());
             double z = Double.parseDouble(BhpMedis.getText().trim());
@@ -1645,9 +1610,8 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             TJmlDr.setText(df2.format(x + y + z + p + q));
         }
 
-        if ((!BagianRs.getText().isEmpty()) && (!TTndPr.getText().isEmpty()) && (!BhpMedis.
-                getText().isEmpty()) && (!KSO.getText().isEmpty()) && (!Menejemen.
-                getText().isEmpty())) {
+        if ((!BagianRs.getText().isEmpty()) && (!TTndPr.getText().isEmpty()) && (!BhpMedis.getText().isEmpty())
+                && (!KSO.getText().isEmpty()) && (!Menejemen.getText().isEmpty())) {
             double x = Double.parseDouble(BagianRs.getText().trim());
             double y = Double.parseDouble(TTndPr.getText().trim());
             double z = Double.parseDouble(BhpMedis.getText().trim());
@@ -1656,9 +1620,8 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             TJmlPr.setText(df2.format(x + y + z + p + q));
         }
 
-        if ((!BagianRs.getText().isEmpty()) && (!TTndPr.getText().isEmpty()) && (!BhpMedis.
-                getText().isEmpty()) && (!TTndDr.getText().isEmpty()) && (!KSO.
-                getText().isEmpty()) && (!Menejemen.getText().isEmpty())) {
+        if ((!BagianRs.getText().isEmpty()) && (!TTndPr.getText().isEmpty()) && (!BhpMedis.getText().isEmpty())
+                && (!TTndDr.getText().isEmpty()) && (!KSO.getText().isEmpty()) && (!Menejemen.getText().isEmpty())) {
             double x = Double.parseDouble(BagianRs.getText().trim());
             double y = Double.parseDouble(TTndPr.getText().trim());
             double z = Double.parseDouble(TTndDr.getText().trim());
@@ -1670,7 +1633,6 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -1707,14 +1669,12 @@ private void BtnPenjabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
         return tbJnsPerawatan;
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgJnsPerawatanRalan.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgJnsPerawatanRalan.class.getName());
 
 }

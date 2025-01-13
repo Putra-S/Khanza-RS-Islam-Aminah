@@ -28,26 +28,35 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private riwayatobat Trackobat = new riwayatobat();
+
     private Connection koneksi = koneksiDB.condb();
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     public IPSRSCariSuplier suplier = new IPSRSCariSuplier(null, false);
 
     /**
      *
      */
     public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     public IPSRSBarang barang = new IPSRSBarang(null, false);
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private double tagihan = 0, subtotal = 0, diskon;
 
     /**
@@ -60,26 +69,15 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Faktur", "No.Order", "Suplier", "Petugas", "Tgl.Pesan",
-            "Tgl.Faktur",
-            "Jatuh Tempo", "Barang", "Satuan", "Jml.Beli",
-            "Harga Beli(Rp)", "SubTotal(Rp)", "Disk(%)", "Bsr.Disk(Rp)",
-            "Total(Rp)",
-            "Status Bayar"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.String.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Faktur", "No.Order", "Suplier", "Petugas", "Tgl.Pesan", "Tgl.Faktur", "Jatuh Tempo",
+                    "Barang", "Satuan", "Jml.Beli", "Harga Beli(Rp)", "SubTotal(Rp)", "Disk(%)", "Bsr.Disk(Rp)",
+                    "Total(Rp)", "Status Bayar"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.String.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -143,8 +141,7 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -182,10 +179,8 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgRekapPenerimaanIPSRS")) {
                     if (suplier.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                        nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -242,10 +237,8 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgRekapPenerimaanIPSRS")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -282,10 +275,8 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgRekapPenerimaanIPSRS")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -342,12 +333,12 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgRekapPenerimaanIPSRS")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -374,7 +365,9 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -785,13 +778,12 @@ public class DlgRekapPenerimaanNonMedis extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        akses.setform("DlgRekapPenerimaanIPSRS");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgRekapPenerimaanIPSRS");//GEN-FIRST:event_btnSuplierActionPerformed
         suplier.emptTeks();
         suplier.isCek();
         suplier.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1117,8 +1109,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRekapPenerimaanNonMedis dialog = new DlgRekapPenerimaanNonMedis(
-                    new javax.swing.JFrame(), true);
+            DlgRekapPenerimaanNonMedis dialog = new DlgRekapPenerimaanNonMedis(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1173,8 +1164,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select ipsrspemesanan.tgl_pesan,ipsrspemesanan.no_faktur, "
+            ps = koneksi.prepareStatement("select ipsrspemesanan.tgl_pesan,ipsrspemesanan.no_faktur, "
                     + "ipsrspemesanan.kode_suplier,ipsrssuplier.nama_suplier, "
                     + "ipsrspemesanan.nip,petugas.nama,ipsrspemesanan.tgl_faktur, "
                     + "ipsrspemesanan.tgl_tempo,ipsrspemesanan.status,ipsrspemesanan.total2,ipsrspemesanan.ppn,"
@@ -1183,8 +1173,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     + "ipsrsdetailpesan.subtotal,ipsrsdetailpesan.dis,ipsrsdetailpesan.besardis,ipsrsdetailpesan.total "
                     + " from ipsrspemesanan inner join ipsrssuplier inner join petugas  "
                     + " inner join ipsrsdetailpesan inner join ipsrsbarang inner join kodesatuan "
-                    + " inner join ipsrsjenisbarang "
-                    + " on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
+                    + " inner join ipsrsjenisbarang " + " on ipsrsdetailpesan.kode_brng=ipsrsbarang.kode_brng "
                     + " and ipsrsdetailpesan.kode_sat=kodesatuan.kode_sat "
                     + " and ipsrspemesanan.no_faktur=ipsrsdetailpesan.no_faktur "
                     + " and ipsrspemesanan.kode_suplier=ipsrssuplier.kode_suplier "
@@ -1286,21 +1275,14 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 subtotal = 0;
                 diskon = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_faktur"), rs.getString("no_order"), rs.
-                        getString("kode_suplier") + " " + rs.getString(
-                        "nama_suplier"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getString("tgl_pesan"), rs.getString("tgl_faktur"),
-                        rs.getString("tgl_tempo"),
-                        rs.getString("kode_brng") + " " + rs.getString(
-                        "nama_brng"),
-                        rs.getString("satuan"), rs.getDouble("jumlah"), rs.
-                        getDouble("harga"), rs.getDouble("subtotal"), rs.
-                        getDouble("dis"),
-                        rs.getDouble("besardis"), rs.getDouble("total"), rs.
-                        getString("status")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_faktur"), rs.getString("no_order"),
+                        rs.getString("kode_suplier") + " " + rs.getString("nama_suplier"),
+                        rs.getString("nip") + " " + rs.getString("nama"), rs.getString("tgl_pesan"),
+                        rs.getString("tgl_faktur"), rs.getString("tgl_tempo"),
+                        rs.getString("kode_brng") + " " + rs.getString("nama_brng"), rs.getString("satuan"),
+                        rs.getDouble("jumlah"), rs.getDouble("harga"), rs.getDouble("subtotal"),
+                        rs.getDouble("dis"), rs.getDouble("besardis"), rs.getDouble("total"),
+                        rs.getString("status")});
                     tagihan += rs.getDouble("total");
                     subtotal += rs.getDouble("subtotal");
                     diskon += rs.getDouble("besardis");
@@ -1316,10 +1298,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 }
             }
             if (tagihan > 0) {
-                tabMode.addRow(new Object[]{
-                    "", "Total :", "", "", "", "", "", "", "", null, null,
-                    subtotal, null, diskon, tagihan, null
-                });
+                tabMode.addRow(new Object[]{"", "Total :", "", "", "", "", "", "", "", null, null, subtotal, null,
+                    diskon, tagihan, null});
             }
 
             LTotal.setText(Valid.SetAngka(tagihan));
@@ -1339,7 +1319,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         BtnPrint.setEnabled(akses.getrekap_pemesanan_non_medis());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgRekapPenerimaanNonMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgRekapPenerimaanNonMedis.class.getName());
 
 }

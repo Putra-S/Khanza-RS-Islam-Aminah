@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgRujuk.java
- *
- * Created on 31 Mei 10, 20:19:56
+* DlgRujuk.java
+*
+* Created on 31 Mei 10, 20:19:56
  */
 package laporan;
 
@@ -37,22 +37,31 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgDiagnosaDokter extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private String FileName;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     SimpleDateFormat tanggalNow = new SimpleDateFormat("yyyy-MM-dd");
-//    private SimpleDateFormat tanggalNow = new SimpleDateFormat("dd-MM-yyyy");
+
+    // private SimpleDateFormat tanggalNow = new SimpleDateFormat("dd-MM-yyyy");
     private SimpleDateFormat jamNow = new SimpleDateFormat("HH:mm:ss");
 
     /**
@@ -65,11 +74,8 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Status", "NIP", "Dokter",
-            "Diagnosa Utama", "Diagnosa Sekunder",
-            "Prosedur"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Status", "NIP",
+            "Dokter", "Diagnosa Utama", "Diagnosa Sekunder", "Prosedur"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -78,37 +84,40 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-//        tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
-//        tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-//
-//        for (i = 0; i < 9; i++) {
-//            TableColumn column = tbObat.getColumnModel().getColumn(i);
-//            if(i==0){
-//                column.setPreferredWidth(65);
-//            }else if(i==1){
-//                column.setPreferredWidth(40);
-//            }else if(i==2){
-//                column.setPreferredWidth(105);
-//            }else if(i==3){
-//                column.setPreferredWidth(90);
-//            }else if(i==4){
-//                column.setPreferredWidth(90);
-//            }else if(i==5){
-//                column.setPreferredWidth(90);
-//            }else if(i==6){
-//                column.setPreferredWidth(150);
-//            }else if(i==7){
-//                column.setPreferredWidth(150);
-//            }else if(i==8){
-//                column.setPreferredWidth(150);
-//            }
-//        }
-//        tbObat.setDefaultRenderer(Object.class, new WarnaTable());
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
+        // tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        //
+        // for (i = 0; i < 9; i++) {
+        // TableColumn column = tbObat.getColumnModel().getColumn(i);
+        // if(i==0){
+        // column.setPreferredWidth(65);
+        // }else if(i==1){
+        // column.setPreferredWidth(40);
+        // }else if(i==2){
+        // column.setPreferredWidth(105);
+        // }else if(i==3){
+        // column.setPreferredWidth(90);
+        // }else if(i==4){
+        // column.setPreferredWidth(90);
+        // }else if(i==5){
+        // column.setPreferredWidth(90);
+        // }else if(i==6){
+        // column.setPreferredWidth(150);
+        // }else if(i==7){
+        // column.setPreferredWidth(150);
+        // }else if(i==8){
+        // column.setPreferredWidth(150);
+        // }
+        // }
+        // tbObat.setDefaultRenderer(Object.class, new WarnaTable());
         // Mengambil ukuran layar atau jendela utama
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = screenSize.width / 2; // Mengatur lebar tabel menjadi setengah dari lebar layar
-        int height = screenSize.height / 2; // Mengatur tinggi tabel menjadi setengah dari tinggi layar
+        int width = screenSize.width / 2; // Mengatur lebar tabel menjadi setengah dari
+        // lebar layar
+        int height = screenSize.height / 2; // Mengatur tinggi tabel menjadi setengah dari
+        // tinggi layar
 
         // Atur ukuran preferensi tabel
         tbObat.setPreferredScrollableViewportSize(new Dimension(width, height));
@@ -123,7 +132,8 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
             switch (i) {
                 case 0:
-                    column.setPreferredWidth(65 * fontSize / 12); // Skala ukuran berdasarkan font
+                    column.setPreferredWidth(65 * fontSize / 12); // Skala ukuran
+                    // berdasarkan font
                     break;
                 case 1:
                     column.setPreferredWidth(40 * fontSize / 12);
@@ -159,8 +169,7 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -197,10 +206,8 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodeDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NamaDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KodeDokter.requestFocus();
                 }
             }
@@ -229,7 +236,9 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -983,8 +992,7 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDiagnosaDokter dialog = new DlgDiagnosaDokter(
-                    new javax.swing.JFrame(), true);
+            DlgDiagnosaDokter dialog = new DlgDiagnosaDokter(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1057,13 +1065,10 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
                 ps.setString(1, "%" + TCari.getText() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("status_lanjut"),
-                        rs.getString("kd_dokter"), rs.getString("nama"),
-                        rs.getString("diagnosa_utama"), rs.getString(
-                        "diagnosa_sekunder"), rs.getString("prosedur")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("status_lanjut"), rs.getString("kd_dokter"),
+                        rs.getString("nama"), rs.getString("diagnosa_utama"), rs.getString("diagnosa_sekunder"),
+                        rs.getString("prosedur")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1083,12 +1088,9 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from diagnosa_dokter where no_rawat=? and kd_dokter=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from diagnosa_dokter where no_rawat=? and kd_dokter=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
         } else {
@@ -1098,24 +1100,18 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
 
     private void ganti() {
         if (Sequel.mengedittf("diagnosa_dokter", "no_rawat=?",
-                "no_rawat=?,status=?,kd_dokter=?,diagnosa_utama=?,diagnosa_sekunder=?,prosedur=?",
-                7, new String[]{
-                    TNoRw.getText(), Status.getSelectedItem().toString(),
-                    KodeDokter.getText(), TDiagnosaUtama.getText(),
-                    TDiagnosaSekunder.getText(), TProsedur.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                "no_rawat=?,status=?,kd_dokter=?,diagnosa_utama=?,diagnosa_sekunder=?,prosedur=?", 7,
+                new String[]{TNoRw.getText(), Status.getSelectedItem().toString(), KodeDokter.getText(),
+                    TDiagnosaUtama.getText(), TDiagnosaSekunder.getText(), TProsedur.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
-            tbObat.setValueAt(Status.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 3);
+            tbObat.setValueAt(Status.getSelectedItem().toString(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(KodeDokter.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(NamaDokter.getText(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(TDiagnosaUtama.getText(), tbObat.getSelectedRow(),
-                    6);
-            tbObat.setValueAt(TDiagnosaSekunder.getText(), tbObat.
-                    getSelectedRow(), 7);
+            tbObat.setValueAt(TDiagnosaUtama.getText(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(TDiagnosaSekunder.getText(), tbObat.getSelectedRow(), 7);
             tbObat.setValueAt(TProsedur.getText(), tbObat.getSelectedRow(), 8);
             emptTeks();
         }
@@ -1130,37 +1126,25 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Status.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
-            TDiagnosaUtama.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
-            TDiagnosaSekunder.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString());
-            TProsedur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Status.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            TDiagnosaUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            TDiagnosaSekunder.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            TProsedur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select no_rkm_medis from reg_periksa where no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select no_rkm_medis from reg_periksa where no_rawat='" + TNoRw.getText() + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select nm_pasien from pasien where no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
+        Sequel.cariIsi("select nm_pasien from pasien where no_rkm_medis='" + TNoRM.getText() + "' ", TPasien);
     }
 
     /**
-     *
      * @param norwt
      * @param tgl1
      * @param tgl2
@@ -1182,8 +1166,7 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,
-                    this.getHeight() - 330));
+            PanelInput.setPreferredSize(new Dimension(WIDTH, this.getHeight() - 330));
             scrollInput.setVisible(true);
             ChkInput.setVisible(true);
         } else if (ChkInput.isSelected() == false) {
@@ -1202,17 +1185,14 @@ public class DlgDiagnosaDokter extends javax.swing.JDialog {
             KodeDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KodeDokter.setText(akses.getkode());
-            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?",
-                    NamaDokter, KodeDokter.getText());
+            Sequel.cariIsi("select nm_dokter from dokter where kd_dokter=?", NamaDokter, KodeDokter.getText());
             if (NamaDokter.getText().isEmpty()) {
                 KodeDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan dokter...!!");
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgDiagnosaDokter.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgDiagnosaDokter.class.getName());
 
 }

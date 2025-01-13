@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJadwal.java
- *
- * Created on May 22, 2010, 10:25:16 PM
+* DlgJadwal.java
+*
+* Created on May 22, 2010, 10:25:16 PM
  */
 package inventory;
 
@@ -40,25 +40,38 @@ import javax.swing.table.TableColumn;
 import simrskhanza.DlgCariBangsal;
 
 /**
- *
  * @author dosen
  */
 public class DlgObatPerTanggal extends javax.swing.JDialog {
 
     private DefaultTableModel tabMode;
+
     private final Connection koneksi = koneksiDB.condb();
+
     private final sekuel Sequel = new sekuel();
+
     private final validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+
     private ResultSet rs, rs2;
+
     private String dateString, dayOfWeek, hari, lokasi = "";
-    private double h1 = 0, h2 = 0, h3 = 0, h4 = 0, h5 = 0, h6 = 0, h7 = 0, h8 = 0, h9 = 0, h10 = 0, h11 = 0, h12 = 0, h13 = 0,
-            h14 = 0, h15 = 0, h16 = 0, h17 = 0, h18 = 0, h19 = 0, h20 = 0, h21 = 0, h22 = 0, h23 = 0, h24 = 0, h25 = 0, h26 = 0, h27 = 0, h28 = 0, h29 = 0, h30 = 0, h31 = 0;
+
+    private double h1 = 0, h2 = 0, h3 = 0, h4 = 0, h5 = 0, h6 = 0, h7 = 0, h8 = 0, h9 = 0, h10 = 0, h11 = 0, h12 = 0,
+            h13 = 0, h14 = 0, h15 = 0, h16 = 0, h17 = 0, h18 = 0, h19 = 0, h20 = 0, h21 = 0, h22 = 0, h23 = 0, h24 = 0,
+            h25 = 0, h26 = 0, h27 = 0, h28 = 0, h29 = 0, h30 = 0, h31 = 0;
+
     private Date date = null;
+
     private int i = 0;
+
     public DlgCariJenis jenis = new DlgCariJenis(null, false);
+
     public DlgCariKategori kategori = new DlgCariKategori(null, false);
+
     public DlgCariGolongan golongan = new DlgCariGolongan(null, false);
 
     /**
@@ -80,8 +93,7 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -117,8 +129,7 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 TCari.requestFocus();
             }
@@ -153,8 +164,8 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongan.getTable().getSelectedRow() != -1) {
-                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 1).toString());
+                    nmgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
                 }
 
                 TCari.requestFocus();
@@ -191,8 +202,8 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    nmkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 1).toString());
+                    nmkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
                 TCari.requestFocus();
             }
@@ -228,10 +239,8 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (bangsal.getTable().getSelectedRow() != -1) {
-                    lokasi = bangsal.getTable().getValueAt(bangsal.getTable().
-                            getSelectedRow(), 1).toString();
-                    tampil(bangsal.getTable().getValueAt(bangsal.getTable().
-                            getSelectedRow(), 0).toString());
+                    lokasi = bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString();
+                    tampil(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
                 }
             }
 
@@ -257,7 +266,9 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -850,8 +861,7 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgObatPerTanggal dialog = new DlgObatPerTanggal(
-                    new javax.swing.JFrame(), true);
+            DlgObatPerTanggal dialog = new DlgObatPerTanggal(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -895,129 +905,81 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
 
     private void tampil() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        Object[] row = {"Nama Obat/Alkes/BHP", "Satuan", "Jenis", "Kategori",
-            "Golongan",
-            "1(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            1) + ")",
-            "2(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            2) + ")",
-            "3(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            3) + ")",
-            "4(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            4) + ")",
-            "5(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            5) + ")",
-            "6(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            6) + ")",
-            "7(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            7) + ")",
-            "8(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            8) + ")",
-            "9(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            9) + ")",
-            "10(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            10) + ")",
-            "11(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            11) + ")",
-            "12(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            12) + ")",
-            "13(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            13) + ")",
-            "14(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            14) + ")",
-            "15(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            15) + ")",
-            "16(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            16) + ")",
-            "17(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            17) + ")",
-            "18(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            18) + ")",
-            "19(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            19) + ")",
-            "20(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            20) + ")",
-            "21(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            21) + ")",
-            "22(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            22) + ")",
-            "23(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            23) + ")",
-            "24(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            24) + ")",
-            "25(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            25) + ")",
-            "26(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            26) + ")",
-            "27(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            27) + ")",
-            "28(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            28) + ")",
-            "29(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            29) + ")",
-            "30(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            30) + ")",
-            "31(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            31) + ")",
-            "Total"
-        };
+        Object[] row = {"Nama Obat/Alkes/BHP", "Satuan", "Jenis", "Kategori", "Golongan",
+            "1(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 1) + ")",
+            "2(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 2) + ")",
+            "3(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 3) + ")",
+            "4(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 4) + ")",
+            "5(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 5) + ")",
+            "6(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 6) + ")",
+            "7(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 7) + ")",
+            "8(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 8) + ")",
+            "9(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 9) + ")",
+            "10(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 10) + ")",
+            "11(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 11) + ")",
+            "12(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 12) + ")",
+            "13(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 13) + ")",
+            "14(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 14) + ")",
+            "15(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 15) + ")",
+            "16(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 16) + ")",
+            "17(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 17) + ")",
+            "18(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 18) + ")",
+            "19(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 19) + ")",
+            "20(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 20) + ")",
+            "21(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 21) + ")",
+            "22(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 22) + ")",
+            "23(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 23) + ")",
+            "24(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 24) + ")",
+            "25(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 25) + ")",
+            "26(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 26) + ")",
+            "27(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 27) + ")",
+            "28(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 28) + ")",
+            "29(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 29) + ")",
+            "30(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 30) + ")",
+            "31(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 31) + ")",
+            "Total"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -1056,8 +1018,7 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
 
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select databarang.kode_brng, databarang.nama_brng, "
+            ps = koneksi.prepareStatement("select databarang.kode_brng, databarang.nama_brng, "
                     + " kodesatuan.satuan,jenis.nama as jenis,kategori_barang.nama as kategori,"
                     + " golongan_barang.nama as golongan from databarang inner join kodesatuan "
                     + " inner join jenis inner join golongan_barang inner join kategori_barang "
@@ -1083,83 +1044,80 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 i = 1;
                 while (rs.next()) {
-                    h1 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-01", rs.getString("kode_brng"));
-                    h2 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-02", rs.getString("kode_brng"));
-                    h3 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-03", rs.getString("kode_brng"));
-                    h4 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-04", rs.getString("kode_brng"));
-                    h5 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-05", rs.getString("kode_brng"));
-                    h6 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-06", rs.getString("kode_brng"));
-                    h7 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-07", rs.getString("kode_brng"));
-                    h8 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-08", rs.getString("kode_brng"));
-                    h9 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-09", rs.getString("kode_brng"));
-                    h10 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-10", rs.getString("kode_brng"));
-                    h11 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-11", rs.getString("kode_brng"));
-                    h12 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-12", rs.getString("kode_brng"));
-                    h13 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-13", rs.getString("kode_brng"));
-                    h14 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-14", rs.getString("kode_brng"));
-                    h15 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-15", rs.getString("kode_brng"));
-                    h16 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-16", rs.getString("kode_brng"));
-                    h17 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-17", rs.getString("kode_brng"));
-                    h18 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-18", rs.getString("kode_brng"));
-                    h19 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-19", rs.getString("kode_brng"));
-                    h20 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-20", rs.getString("kode_brng"));
-                    h21 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-21", rs.getString("kode_brng"));
-                    h22 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-22", rs.getString("kode_brng"));
-                    h23 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-23", rs.getString("kode_brng"));
-                    h24 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-24", rs.getString("kode_brng"));
-                    h25 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-25", rs.getString("kode_brng"));
-                    h26 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-26", rs.getString("kode_brng"));
-                    h27 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-27", rs.getString("kode_brng"));
-                    h28 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-28", rs.getString("kode_brng"));
-                    h29 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-29", rs.getString("kode_brng"));
-                    h30 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-30", rs.getString("kode_brng"));
-                    h31 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-31", rs.getString("kode_brng"));
+                    h1 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-01",
+                            rs.getString("kode_brng"));
+                    h2 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-02",
+                            rs.getString("kode_brng"));
+                    h3 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-03",
+                            rs.getString("kode_brng"));
+                    h4 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-04",
+                            rs.getString("kode_brng"));
+                    h5 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-05",
+                            rs.getString("kode_brng"));
+                    h6 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-06",
+                            rs.getString("kode_brng"));
+                    h7 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-07",
+                            rs.getString("kode_brng"));
+                    h8 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-08",
+                            rs.getString("kode_brng"));
+                    h9 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-09",
+                            rs.getString("kode_brng"));
+                    h10 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-10",
+                            rs.getString("kode_brng"));
+                    h11 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-11",
+                            rs.getString("kode_brng"));
+                    h12 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-12",
+                            rs.getString("kode_brng"));
+                    h13 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-13",
+                            rs.getString("kode_brng"));
+                    h14 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-14",
+                            rs.getString("kode_brng"));
+                    h15 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-15",
+                            rs.getString("kode_brng"));
+                    h16 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-16",
+                            rs.getString("kode_brng"));
+                    h17 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-17",
+                            rs.getString("kode_brng"));
+                    h18 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-18",
+                            rs.getString("kode_brng"));
+                    h19 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-19",
+                            rs.getString("kode_brng"));
+                    h20 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-20",
+                            rs.getString("kode_brng"));
+                    h21 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-21",
+                            rs.getString("kode_brng"));
+                    h22 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-22",
+                            rs.getString("kode_brng"));
+                    h23 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-23",
+                            rs.getString("kode_brng"));
+                    h24 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-24",
+                            rs.getString("kode_brng"));
+                    h25 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-25",
+                            rs.getString("kode_brng"));
+                    h26 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-26",
+                            rs.getString("kode_brng"));
+                    h27 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-27",
+                            rs.getString("kode_brng"));
+                    h28 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-28",
+                            rs.getString("kode_brng"));
+                    h29 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-29",
+                            rs.getString("kode_brng"));
+                    h30 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-30",
+                            rs.getString("kode_brng"));
+                    h31 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-31",
+                            rs.getString("kode_brng"));
 
-                    tabMode.addRow(new Object[]{
-                        rs.getString("nama_brng"), rs.getString("satuan"), rs.
-                        getString("jenis"), rs.getString("kategori"), rs.
-                        getString("golongan"),
-                        h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13,
-                        h14, h15, h16, h17, h18, h19, h20, h21, h22, h23, h24,
-                        h25, h26, h27, h28, h29, h30, h31,
-                        (h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12 + h13 + h14 + h15 + h16 + h17 + h18 + h19 + h20 + h21 + h22 + h23 + h24 + h25 + h26 + h27 + h28 + h29 + h30 + h31)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("nama_brng"), rs.getString("satuan"),
+                        rs.getString("jenis"), rs.getString("kategori"), rs.getString("golongan"), h1, h2, h3, h4,
+                        h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21, h22, h23,
+                        h24, h25, h26, h27, h28, h29, h30, h31,
+                        (h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12 + h13 + h14 + h15 + h16 + h17
+                        + h18 + h19 + h20 + h21 + h22 + h23 + h24 + h25 + h26 + h27 + h28 + h29 + h30
+                        + h31)});
                     i++;
                 }
             } catch (Exception e) {
-                System.out.
-                        println("inventory.DlgObatPerTanggal.tampil() : " + e);
+                System.out.println("inventory.DlgObatPerTanggal.tampil() : " + e);
             } finally {
                 if (rs != null) {
                     rs.close();
@@ -1177,129 +1135,81 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
 
     private void tampil(String lokasi) {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        Object[] row = {"Nama Obat/Alkes/BHP", "Satuan", "Jenis", "Kategori",
-            "Golongan",
-            "1(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            1) + ")",
-            "2(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            2) + ")",
-            "3(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            3) + ")",
-            "4(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            4) + ")",
-            "5(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            5) + ")",
-            "6(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            6) + ")",
-            "7(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            7) + ")",
-            "8(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            8) + ")",
-            "9(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            9) + ")",
-            "10(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            10) + ")",
-            "11(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            11) + ")",
-            "12(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            12) + ")",
-            "13(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            13) + ")",
-            "14(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            14) + ")",
-            "15(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            15) + ")",
-            "16(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            16) + ")",
-            "17(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            17) + ")",
-            "18(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            18) + ")",
-            "19(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            19) + ")",
-            "20(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            20) + ")",
-            "21(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            21) + ")",
-            "22(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            22) + ")",
-            "23(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            23) + ")",
-            "24(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            24) + ")",
-            "25(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            25) + ")",
-            "26(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            26) + ")",
-            "27(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            27) + ")",
-            "28(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            28) + ")",
-            "29(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            29) + ")",
-            "30(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            30) + ")",
-            "31(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().
-            toString()), Integer.parseInt(BlnCari.getSelectedItem().toString()),
-            31) + ")",
-            "Total"
-        };
+        Object[] row = {"Nama Obat/Alkes/BHP", "Satuan", "Jenis", "Kategori", "Golongan",
+            "1(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 1) + ")",
+            "2(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 2) + ")",
+            "3(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 3) + ")",
+            "4(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 4) + ")",
+            "5(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 5) + ")",
+            "6(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 6) + ")",
+            "7(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 7) + ")",
+            "8(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 8) + ")",
+            "9(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 9) + ")",
+            "10(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 10) + ")",
+            "11(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 11) + ")",
+            "12(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 12) + ")",
+            "13(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 13) + ")",
+            "14(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 14) + ")",
+            "15(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 15) + ")",
+            "16(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 16) + ")",
+            "17(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 17) + ")",
+            "18(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 18) + ")",
+            "19(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 19) + ")",
+            "20(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 20) + ")",
+            "21(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 21) + ")",
+            "22(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 22) + ")",
+            "23(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 23) + ")",
+            "24(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 24) + ")",
+            "25(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 25) + ")",
+            "26(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 26) + ")",
+            "27(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 27) + ")",
+            "28(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 28) + ")",
+            "29(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 29) + ")",
+            "30(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 30) + ")",
+            "31(" + konversi(Integer.parseInt(ThnCari.getSelectedItem().toString()),
+            Integer.parseInt(BlnCari.getSelectedItem().toString()), 31) + ")",
+            "Total"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -1338,8 +1248,7 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
 
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select databarang.kode_brng, databarang.nama_brng, "
+            ps = koneksi.prepareStatement("select databarang.kode_brng, databarang.nama_brng, "
                     + " kodesatuan.satuan,jenis.nama as jenis,kategori_barang.nama as kategori,"
                     + " golongan_barang.nama as golongan from databarang inner join kodesatuan "
                     + " inner join jenis inner join golongan_barang inner join kategori_barang "
@@ -1365,114 +1274,80 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 i = 1;
                 while (rs.next()) {
-                    h1 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-01", rs.getString("kode_brng"),
-                            lokasi);
-                    h2 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-02", rs.getString("kode_brng"),
-                            lokasi);
-                    h3 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-03", rs.getString("kode_brng"),
-                            lokasi);
-                    h4 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-04", rs.getString("kode_brng"),
-                            lokasi);
-                    h5 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-05", rs.getString("kode_brng"),
-                            lokasi);
-                    h6 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-06", rs.getString("kode_brng"),
-                            lokasi);
-                    h7 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-07", rs.getString("kode_brng"),
-                            lokasi);
-                    h8 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-08", rs.getString("kode_brng"),
-                            lokasi);
-                    h9 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-09", rs.getString("kode_brng"),
-                            lokasi);
-                    h10 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-10", rs.getString("kode_brng"),
-                            lokasi);
-                    h11 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-11", rs.getString("kode_brng"),
-                            lokasi);
-                    h12 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-12", rs.getString("kode_brng"),
-                            lokasi);
-                    h13 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-13", rs.getString("kode_brng"),
-                            lokasi);
-                    h14 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-14", rs.getString("kode_brng"),
-                            lokasi);
-                    h15 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-15", rs.getString("kode_brng"),
-                            lokasi);
-                    h16 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-16", rs.getString("kode_brng"),
-                            lokasi);
-                    h17 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-17", rs.getString("kode_brng"),
-                            lokasi);
-                    h18 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-18", rs.getString("kode_brng"),
-                            lokasi);
-                    h19 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-19", rs.getString("kode_brng"),
-                            lokasi);
-                    h20 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-20", rs.getString("kode_brng"),
-                            lokasi);
-                    h21 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-21", rs.getString("kode_brng"),
-                            lokasi);
-                    h22 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-22", rs.getString("kode_brng"),
-                            lokasi);
-                    h23 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-23", rs.getString("kode_brng"),
-                            lokasi);
-                    h24 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-24", rs.getString("kode_brng"),
-                            lokasi);
-                    h25 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-25", rs.getString("kode_brng"),
-                            lokasi);
-                    h26 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-26", rs.getString("kode_brng"),
-                            lokasi);
-                    h27 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-27", rs.getString("kode_brng"),
-                            lokasi);
-                    h28 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-28", rs.getString("kode_brng"),
-                            lokasi);
-                    h29 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-29", rs.getString("kode_brng"),
-                            lokasi);
-                    h30 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-30", rs.getString("kode_brng"),
-                            lokasi);
-                    h31 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.
-                            getSelectedItem() + "-31", rs.getString("kode_brng"),
-                            lokasi);
+                    h1 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-01",
+                            rs.getString("kode_brng"), lokasi);
+                    h2 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-02",
+                            rs.getString("kode_brng"), lokasi);
+                    h3 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-03",
+                            rs.getString("kode_brng"), lokasi);
+                    h4 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-04",
+                            rs.getString("kode_brng"), lokasi);
+                    h5 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-05",
+                            rs.getString("kode_brng"), lokasi);
+                    h6 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-06",
+                            rs.getString("kode_brng"), lokasi);
+                    h7 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-07",
+                            rs.getString("kode_brng"), lokasi);
+                    h8 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-08",
+                            rs.getString("kode_brng"), lokasi);
+                    h9 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-09",
+                            rs.getString("kode_brng"), lokasi);
+                    h10 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-10",
+                            rs.getString("kode_brng"), lokasi);
+                    h11 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-11",
+                            rs.getString("kode_brng"), lokasi);
+                    h12 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-12",
+                            rs.getString("kode_brng"), lokasi);
+                    h13 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-13",
+                            rs.getString("kode_brng"), lokasi);
+                    h14 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-14",
+                            rs.getString("kode_brng"), lokasi);
+                    h15 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-15",
+                            rs.getString("kode_brng"), lokasi);
+                    h16 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-16",
+                            rs.getString("kode_brng"), lokasi);
+                    h17 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-17",
+                            rs.getString("kode_brng"), lokasi);
+                    h18 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-18",
+                            rs.getString("kode_brng"), lokasi);
+                    h19 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-19",
+                            rs.getString("kode_brng"), lokasi);
+                    h20 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-20",
+                            rs.getString("kode_brng"), lokasi);
+                    h21 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-21",
+                            rs.getString("kode_brng"), lokasi);
+                    h22 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-22",
+                            rs.getString("kode_brng"), lokasi);
+                    h23 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-23",
+                            rs.getString("kode_brng"), lokasi);
+                    h24 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-24",
+                            rs.getString("kode_brng"), lokasi);
+                    h25 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-25",
+                            rs.getString("kode_brng"), lokasi);
+                    h26 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-26",
+                            rs.getString("kode_brng"), lokasi);
+                    h27 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-27",
+                            rs.getString("kode_brng"), lokasi);
+                    h28 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-28",
+                            rs.getString("kode_brng"), lokasi);
+                    h29 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-29",
+                            rs.getString("kode_brng"), lokasi);
+                    h30 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-30",
+                            rs.getString("kode_brng"), lokasi);
+                    h31 = JmlObat(ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "-31",
+                            rs.getString("kode_brng"), lokasi);
 
-                    tabMode.addRow(new Object[]{
-                        rs.getString("nama_brng"), rs.getString("satuan"), rs.
-                        getString("jenis"), rs.getString("kategori"), rs.
-                        getString("golongan"),
-                        h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13,
-                        h14, h15, h16, h17, h18, h19, h20, h21, h22, h23, h24,
-                        h25, h26, h27, h28, h29, h30, h31,
-                        (h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12 + h13 + h14 + h15 + h16 + h17 + h18 + h19 + h20 + h21 + h22 + h23 + h24 + h25 + h26 + h27 + h28 + h29 + h30 + h31)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("nama_brng"), rs.getString("satuan"),
+                        rs.getString("jenis"), rs.getString("kategori"), rs.getString("golongan"), h1, h2, h3, h4,
+                        h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21, h22, h23,
+                        h24, h25, h26, h27, h28, h29, h30, h31,
+                        (h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12 + h13 + h14 + h15 + h16 + h17
+                        + h18 + h19 + h20 + h21 + h22 + h23 + h24 + h25 + h26 + h27 + h28 + h29 + h30
+                        + h31)});
                     i++;
                 }
             } catch (Exception e) {
-                System.out.
-                        println("inventory.DlgObatPerTanggal.tampil() : " + e);
+                System.out.println("inventory.DlgObatPerTanggal.tampil() : " + e);
             } finally {
                 if (rs != null) {
                     rs.close();
@@ -1493,8 +1368,7 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
         try {
             date = new SimpleDateFormat("yyyy-M-d").parse(dateString);
         } catch (ParseException ex) {
-            Logger.getLogger(DlgObatPerTanggal.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            Logger.getLogger(DlgObatPerTanggal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Then get the day of week from the Date based on specific locale.
@@ -1533,12 +1407,10 @@ public class DlgObatPerTanggal extends javax.swing.JDialog {
     }
 
     private double JmlObat(String tanggal, String kodebarang, String lokasi) {
-        return Sequel.cariIsiAngka(
-                "select sum(jml) from detail_pemberian_obat where kode_brng='" + kodebarang + "' and kd_bangsal='" + lokasi + "' and tgl_perawatan=?",
-                tanggal);
+        return Sequel.cariIsiAngka("select sum(jml) from detail_pemberian_obat where kode_brng='" + kodebarang
+                + "' and kd_bangsal='" + lokasi + "' and tgl_perawatan=?", tanggal);
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgObatPerTanggal.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgObatPerTanggal.class.getName());
 
 }

@@ -9,14 +9,15 @@ import java.util.logging.Logger;
  */
 public class PasswordBox extends usu.widget.glass.PasswordBox {
 
-  public PasswordBox() {
-    super();
-    setSelectionColor(Color.BLUE.brighter());
-    setCaretColor(Color.red);
-    setFont(getFont().deriveFont(Font.BOLD, 12));
-    setForeground(Color.WHITE);
-    setHorizontalAlignment(LEFT);
-  }
+    public PasswordBox() {
+        super();
+        setSelectionColor(Color.BLUE.brighter());
+        setCaretColor(Color.red);
+        setFont(getFont().deriveFont(Font.BOLD, 12));
+        setForeground(Color.WHITE);
+        setHorizontalAlignment(LEFT);
+    }
 
-  private static final Logger LOG = Logger.getLogger(PasswordBox.class.getName());
+    private static final Logger LOG = Logger.getLogger(PasswordBox.class.getName());
+
 }

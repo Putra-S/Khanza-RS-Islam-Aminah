@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package keuangan;
 
@@ -37,20 +37,28 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class DlgKategoriPengeluaran extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     private DlgRekeningTahun rekening = new DlgRekeningTahun(null, false);
+
     private String asalform = "", akun = "", kontrakun = "";
+
     private int pilihan = 0;
 
     /**
@@ -74,7 +82,8 @@ public class DlgKategoriPengeluaran extends javax.swing.JDialog {
 
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -91,13 +100,11 @@ public class DlgKategoriPengeluaran extends javax.swing.JDialog {
         Kd.setDocument(new batasInput((byte) 5).getKata(Kd));
         Nm.setDocument(new batasInput((byte) 40).getKata(Nm));
         KdAkun.setDocument(new batasInput((byte) 15).getKata(KdAkun));
-        KdKontraAkun.
-                setDocument(new batasInput((byte) 15).getKata(KdKontraAkun));
+        KdKontraAkun.setDocument(new batasInput((byte) 15).getKata(KdKontraAkun));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -136,20 +143,16 @@ public class DlgKategoriPengeluaran extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgKategoriPengeluaran")) {
                     if (rekening.getTabel().getSelectedRow() != -1) {
                         if (pilihan == 1) {
-                            KdAkun.setText(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 1).
-                                    toString());
-                            NmAkun.setText(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 2).
-                                    toString());
+                            KdAkun.setText(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString());
+                            NmAkun.setText(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString());
                             KdAkun.requestFocus();
                         } else if (pilihan == 2) {
-                            KdKontraAkun.setText(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 1).
-                                    toString());
-                            NmKontraAKun.setText(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 2).
-                                    toString());
+                            KdKontraAkun.setText(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString());
+                            NmKontraAKun.setText(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString());
                             KdKontraAkun.requestFocus();
                         }
                     }
@@ -195,19 +198,18 @@ public class DlgKategoriPengeluaran extends javax.swing.JDialog {
         });
 
         try {
-            ps = koneksi.prepareStatement(
-                    "select * from kategori_pengeluaran_harian "
-                    + "where kode_kategori like ? or "
-                    + "nama_kategori like ? order by nama_kategori");
-            ps2 = koneksi.prepareStatement(
-                    "select rekening.nm_rek from rekening where rekening.kd_rek=?");
+            ps = koneksi.prepareStatement("select * from kategori_pengeluaran_harian "
+                    + "where kode_kategori like ? or " + "nama_kategori like ? order by nama_kategori");
+            ps2 = koneksi.prepareStatement("select rekening.nm_rek from rekening where rekening.kd_rek=?");
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -878,8 +880,7 @@ private void NmAkunKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Nm
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgKategoriPengeluaran dialog = new DlgKategoriPengeluaran(
-                    new javax.swing.JFrame(), true);
+            DlgKategoriPengeluaran dialog = new DlgKategoriPengeluaran(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -945,9 +946,7 @@ private void NmAkunKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Nm
                 if (rs2.next()) {
                     kontrakun = rs2.getString(1);
                 }
-                tabMode.addRow(new Object[]{
-                    rs.getString(1), rs.getString(2), akun, kontrakun
-                });
+                tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), akun, kontrakun});
             }
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
@@ -973,17 +972,14 @@ private void NmAkunKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Nm
             Nm.setText(tbKamar.getValueAt(row, 1).toString());
             NmAkun.setText(tbKamar.getValueAt(row, 2).toString());
             NmKontraAKun.setText(tbKamar.getValueAt(row, 3).toString());
-            Sequel.cariIsi(
-                    "select kd_rek from kategori_pengeluaran_harian where kode_kategori=?",
-                    KdAkun, tbKamar.getValueAt(row, 0).toString());
-            Sequel.cariIsi(
-                    "select kd_rek2 from kategori_pengeluaran_harian where kode_kategori=?",
-                    KdKontraAkun, tbKamar.getValueAt(row, 0).toString());
+            Sequel.cariIsi("select kd_rek from kategori_pengeluaran_harian where kode_kategori=?", KdAkun,
+                    tbKamar.getValueAt(row, 0).toString());
+            Sequel.cariIsi("select kd_rek2 from kategori_pengeluaran_harian where kode_kategori=?", KdKontraAkun,
+                    tbKamar.getValueAt(row, 0).toString());
         }
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -1006,6 +1002,6 @@ private void NmAkunKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Nm
         BtnPrint.setEnabled(akses.getkategori_pengeluaran_harian());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgKategoriPengeluaran.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgKategoriPengeluaran.class.getName());
+
 }

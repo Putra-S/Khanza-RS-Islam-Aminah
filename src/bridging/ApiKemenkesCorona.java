@@ -16,60 +16,64 @@ import org.springframework.web.client.RestTemplate;
 
 public class ApiKemenkesCorona {
 
-  private String Key, pass;
+    private static final Logger LOG = Logger.getLogger(ApiKemenkesCorona.class.getName());
 
-  /** */
-  public ApiKemenkesCorona() {
-    try {
-      pass = koneksiDB.PASSCORONA();
-    } catch (Exception ex) {
-      System.out.println("Notifikasi : " + ex);
-    }
-  }
+    private String Key, pass;
 
-  public String getHmac() {
-    Key = pass;
-    return Key;
-  }
-
-  /**
-   * @return
-   */
-  public long GetUTCdatetimeAsString() {
-    long millis = System.currentTimeMillis();
-    return millis / 1000;
-  }
-
-  /**
-   * @return @throws NoSuchAlgorithmException
-   * @throws KeyManagementException
-   */
-  public RestTemplate getRest() throws NoSuchAlgorithmException, KeyManagementException {
-    SSLContext sslContext = SSLContext.getInstance("SSL");
-    javax.net.ssl.TrustManager[] trustManagers = {
-      new X509TrustManager() {
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-          return null;
+    /**
+     *
+     */
+    public ApiKemenkesCorona() {
+        try {
+            pass = koneksiDB.PASSCORONA();
+        } catch (Exception ex) {
+            System.out.println("Notifikasi : " + ex);
         }
+    }
 
-        @Override
-        public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-            throws CertificateException {}
+    public String getHmac() {
+        Key = pass;
+        return Key;
+    }
 
-        @Override
-        public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-            throws CertificateException {}
-      }
-    };
-    sslContext.init(null, trustManagers, new SecureRandom());
-    SSLSocketFactory sslFactory =
-        new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-    Scheme scheme = new Scheme("https", 443, sslFactory);
-    HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-    factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
-    return new RestTemplate(factory);
-  }
+    /**
+     * @return
+     */
+    public long GetUTCdatetimeAsString() {
+        long millis = System.currentTimeMillis();
+        return millis / 1000;
+    }
 
-  private static final Logger LOG = Logger.getLogger(ApiKemenkesCorona.class.getName());
+    /**
+     * @return @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     */
+    public RestTemplate getRest() throws NoSuchAlgorithmException, KeyManagementException {
+        SSLContext sslContext = SSLContext.getInstance("SSL");
+        javax.net.ssl.TrustManager[] trustManagers = {
+            new X509TrustManager() {
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] arg0, String arg1)
+                        throws CertificateException {
+                }
+
+                @Override
+                public void checkClientTrusted(X509Certificate[] arg0, String arg1)
+                        throws CertificateException {
+                }
+            }
+        };
+        sslContext.init(null, trustManagers, new SecureRandom());
+        SSLSocketFactory sslFactory
+                = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        Scheme scheme = new Scheme("https", 443, sslFactory);
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
+        return new RestTemplate(factory);
+    }
 }

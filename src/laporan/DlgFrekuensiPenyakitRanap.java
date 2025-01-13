@@ -37,24 +37,36 @@ import simrskhanza.DlgKecamatan;
 import simrskhanza.DlgKelurahan;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps, ps2, ps3, ps4, ps5, ps6, ps7, ps8;
+
     private ResultSet rs, rs2, rs3, rs4, rs5, rs6, rs7, rs8;
+
     private String diagnosa = "";
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private DlgCariBangsal kamar = new DlgCariBangsal(null, false);
+
     private DlgKecamatan kecamatan = new DlgKecamatan(null, false);
+
     private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
 
     /**
@@ -67,15 +79,11 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{"Kode",
-            "Nama Penyakit", "Diagnosa Lain", "Lk2(Hidup)", "Pr(Hidup)",
-            "Lk2(Mati)", "Pr(Mati)", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Integer.class,
-                java.lang.Integer.class, java.lang.Integer.class,
-                java.lang.Integer.class, java.lang.Integer.class
-            };
+        tabMode = new DefaultTableModel(null, new Object[]{"Kode", "Nama Penyakit", "Diagnosa Lain", "Lk2(Hidup)",
+            "Pr(Hidup)", "Lk2(Mati)", "Pr(Mati)", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class,
+                java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -107,15 +115,11 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{"Kode",
-            "Nama Penyakit", "Diagnosa Lain", "Lk2(Hidup)", "Pr(Hidup)",
-            "Lk2(Mati)", "Pr(Mati)", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Integer.class,
-                java.lang.Integer.class, java.lang.Integer.class,
-                java.lang.Integer.class, java.lang.Integer.class
-            };
+        tabMode2 = new DefaultTableModel(null, new Object[]{"Kode", "Nama Penyakit", "Diagnosa Lain", "Lk2(Hidup)",
+            "Pr(Hidup)", "Lk2(Mati)", "Pr(Mati)", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class,
+                java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -149,8 +153,7 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput(90).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -199,10 +202,8 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -256,8 +257,8 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
-                            kabupaten.getTable().getSelectedRow(), 0).toString());
+                    nmkabupaten
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkabupaten.requestFocus();
             }
@@ -311,8 +312,8 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kecamatan.getTable().getSelectedRow() != -1) {
-                    nmkecamatan.setText(kecamatan.getTable().getValueAt(
-                            kecamatan.getTable().getSelectedRow(), 0).toString());
+                    nmkecamatan
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkecamatan.requestFocus();
             }
@@ -366,8 +367,8 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kelurahan.getTable().getSelectedRow() != -1) {
-                    nmkelurahan.setText(kelurahan.getTable().getValueAt(
-                            kelurahan.getTable().getSelectedRow(), 0).toString());
+                    nmkelurahan
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkelurahan.requestFocus();
             }
@@ -421,10 +422,8 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -478,10 +477,8 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kamar.getTable().getSelectedRow() != -1) {
-                    kdkamar.setText(kamar.getTable().getValueAt(
-                            kamar.getTable().getSelectedRow(), 0).toString());
-                    nmkamar.setText(kamar.getTable().getValueAt(
-                            kamar.getTable().getSelectedRow(), 1).toString());
+                    kdkamar.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 0).toString());
+                    nmkamar.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 1).toString());
                     kdkamar.requestFocus();
                 }
             }
@@ -511,7 +508,9 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
     private int i = 0, a = 0, b = 0, c = 0, d = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1074,14 +1073,13 @@ public class DlgFrekuensiPenyakitRanap extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         if (TabRawat.getSelectedIndex() == 0) {
             if (tbDokter.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(null,
@@ -5868,7 +5866,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        tampil();
+        if (TabRawat.getSelectedIndex() == 0) {
+            tampil();
+        } else if (TabRawat.getSelectedIndex() == 1) {
+            tampil2();
+        }
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
@@ -6019,8 +6021,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgFrekuensiPenyakitRanap dialog = new DlgFrekuensiPenyakitRanap(
-                    new javax.swing.JFrame(), true);
+            DlgFrekuensiPenyakitRanap dialog = new DlgFrekuensiPenyakitRanap(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -6094,7 +6095,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                     + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                     + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                    + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and reg_periksa.tgl_registrasi between ? and ? "
+                    + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and reg_periksa.tgl_registrasi between ? and ? "
                     + "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and "
                     + "(penyakit.kd_penyakit like ? or penyakit.nm_penyakit like ?) group by penyakit.kd_penyakit order by penyakit.kd_penyakit");
             try {
@@ -6110,97 +6111,118 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(10, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    i = 0;
-                    ps2 = koneksi.prepareStatement(
-                            "select diagnosa_pasien.no_rawat as jumlah from penyakit inner join diagnosa_pasien inner join reg_periksa "
-                            + "inner join pasien inner join kamar_inap inner join kamar inner join bangsal inner join dokter inner join penjab inner join kabupaten "
-                            + "inner join kecamatan inner join kelurahan on penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit and reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
-                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
-                            + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
-                            + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and reg_periksa.tgl_registrasi between ? and ? "
-                            + "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
-                    try {
-                        ps2.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps2.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
-                        ps2.setString(3, "%" + nmkamar.getText().trim() + "%");
-                        ps2.setString(4, "%" + nmdokter.getText().trim() + "%");
-                        ps2.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps2.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps2.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps2.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
-                        ps2.setString(9, rs.getString("kd_penyakit"));
-                        rs2 = ps2.executeQuery();
-                        Sequel.queryu(
-                                "delete from temporary_surveilens_penyakit");
-                        while (rs2.next()) {
-                            ps7 = koneksi.prepareStatement(
-                                    "select diagnosa_pasien.kd_penyakit from diagnosa_pasien where diagnosa_pasien.prioritas<>'1' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.no_rawat=?");
-                            try {
-                                ps7.setString(1, rs2.getString(1));
-                                rs7 = ps7.executeQuery();
-                                while (rs7.next()) {
-                                    Sequel.menyimpan(
-                                            "temporary_surveilens_penyakit",
-                                            "?,?", 2, new String[]{
-                                                rs.getString("kd_penyakit"),
-                                                rs7.getString("kd_penyakit")
-                                            });
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Notif : " + e);
-                            } finally {
-                                if (rs7 != null) {
-                                    rs7.close();
-                                }
-                                if (ps7 != null) {
-                                    ps7.close();
-                                }
-                            }
-                        }
-                        diagnosa = "";
-                        rs2.last();
-                        if (rs2.getRow() > 0) {
-                            ps8 = koneksi.prepareStatement(
-                                    "select temporary_surveilens_penyakit.kd_penyakit2 from temporary_surveilens_penyakit where temporary_surveilens_penyakit.kd_penyakit=? group by temporary_surveilens_penyakit.kd_penyakit2");
-                            try {
-                                ps8.setString(1, rs.getString("kd_penyakit"));
-                                rs8 = ps8.executeQuery();
-                                while (rs8.next()) {
-                                    if (diagnosa.isEmpty()) {
-                                        diagnosa = rs8.getString(1);
-                                    } else {
-                                        diagnosa = diagnosa + ", " + rs8.
-                                                getString(1);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Notif : " + e);
-                            } finally {
-                                if (rs8 != null) {
-                                    rs8.close();
-                                }
-                                if (ps8 != null) {
-                                    ps8.close();
-                                }
-                            }
-                            i = rs2.getRow();
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notif : " + e);
-                    } finally {
-                        if (rs2 != null) {
-                            rs2.close();
-                        }
-                        if (ps2 != null) {
-                            ps2.close();
-                        }
-                    }
+                    // i = 0;
+                    // ps2 = koneksi.prepareStatement(
+                    // "select diagnosa_pasien.no_rawat as jumlah from penyakit inner join
+                    // diagnosa_pasien inner join reg_periksa "
+                    // + "inner join pasien inner join kamar_inap inner join kamar inner
+                    // join bangsal inner join dokter inner join penjab inner join
+                    // kabupaten "
+                    // + "inner join kecamatan inner join kelurahan on
+                    // penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit and
+                    // reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
+                    // + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and
+                    // reg_periksa.no_rawat=kamar_inap.no_rawat and
+                    // reg_periksa.kd_pj=penjab.kd_pj "
+                    // + "and pasien.kd_kab=kabupaten.kd_kab and
+                    // kamar_inap.kd_kamar=kamar.kd_kamar and
+                    // kamar.kd_bangsal=bangsal.kd_bangsal and
+                    // reg_periksa.kd_dokter=dokter.kd_dokter "
+                    // + "and pasien.kd_kec=kecamatan.kd_kec and
+                    // pasien.kd_kel=kelurahan.kd_kel "
+                    // + "where reg_periksa.status_lanjut='Ranap' and
+                    // diagnosa_pasien.status='Ranap' and reg_periksa.tgl_registrasi
+                    // between ? and ? "
+                    // + "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and
+                    // penjab.png_jawab like ? and kabupaten.nm_kab like ? and
+                    // kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and
+                    // diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
+                    // try {
+                    // ps2.setString(1, Valid.SetTgl(
+                    // Tgl1.getSelectedItem() + ""));
+                    // ps2.setString(2, Valid.SetTgl(
+                    // Tgl2.getSelectedItem() + ""));
+                    // ps2.setString(3, "%" + nmkamar.getText().trim() + "%");
+                    // ps2.setString(4, "%" + nmdokter.getText().trim() + "%");
+                    // ps2.setString(5, "%" + nmpenjab.getText().trim() + "%");
+                    // ps2.setString(6,
+                    // "%" + nmkabupaten.getText().trim() + "%");
+                    // ps2.setString(7,
+                    // "%" + nmkecamatan.getText().trim() + "%");
+                    // ps2.setString(8,
+                    // "%" + nmkelurahan.getText().trim() + "%");
+                    // ps2.setString(9, rs.getString("kd_penyakit"));
+                    // rs2 = ps2.executeQuery();
+                    // Sequel.queryu(
+                    // "delete from temporary_surveilens_penyakit");
+                    // while (rs2.next()) {
+                    // ps7 = koneksi.prepareStatement(
+                    // "select diagnosa_pasien.kd_penyakit from diagnosa_pasien where
+                    // diagnosa_pasien.prioritas<>'1' and diagnosa_pasien.status='Ranap'
+                    // and diagnosa_pasien.no_rawat=?");
+                    // try {
+                    // ps7.setString(1, rs2.getString(1));
+                    // rs7 = ps7.executeQuery();
+                    // while (rs7.next()) {
+                    // Sequel.menyimpan(
+                    // "temporary_surveilens_penyakit",
+                    // "?,?", 2, new String[]{
+                    // rs.getString("kd_penyakit"),
+                    // rs7.getString("kd_penyakit")
+                    // });
+                    // }
+                    // } catch (Exception e) {
+                    // System.out.println("Notif : " + e);
+                    // } finally {
+                    // if (rs7 != null) {
+                    // rs7.close();
+                    // }
+                    // if (ps7 != null) {
+                    // ps7.close();
+                    // }
+                    // }
+                    // }
+                    // diagnosa = "";
+                    // rs2.last();
+                    // if (rs2.getRow() > 0) {
+                    // ps8 = koneksi.prepareStatement(
+                    // "select temporary_surveilens_penyakit.kd_penyakit2 from
+                    // temporary_surveilens_penyakit where
+                    // temporary_surveilens_penyakit.kd_penyakit=? group by
+                    // temporary_surveilens_penyakit.kd_penyakit2");
+                    // try {
+                    // ps8.setString(1, rs.getString("kd_penyakit"));
+                    // rs8 = ps8.executeQuery();
+                    // while (rs8.next()) {
+                    // if (diagnosa.isEmpty()) {
+                    // diagnosa = rs8.getString(1);
+                    // } else {
+                    // diagnosa = diagnosa + ", " + rs8.
+                    // getString(1);
+                    // }
+                    // }
+                    // } catch (Exception e) {
+                    // System.out.println("Notif : " + e);
+                    // } finally {
+                    // if (rs8 != null) {
+                    // rs8.close();
+                    // }
+                    // if (ps8 != null) {
+                    // ps8.close();
+                    // }
+                    // }
+                    // i = rs2.getRow();
+                    // }
+                    // } catch (Exception e) {
+                    // System.out.println("Notif : " + e);
+                    // } finally {
+                    // if (rs2 != null) {
+                    // rs2.close();
+                    // }
+                    // if (ps2 != null) {
+                    // ps2.close();
+                    // }
+                    // }
 
                     a = 0;
                     ps3 = koneksi.prepareStatement(
@@ -6210,23 +6232,18 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel and pasien_mati.no_rkm_medis=pasien.no_rkm_medis "
-                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='L' and reg_periksa.tgl_registrasi between ? and ? "
+                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='L' and reg_periksa.tgl_registrasi between ? and ? "
                             + "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? "
                             + "and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps3.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps3.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps3.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps3.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps3.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps3.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps3.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps3.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps3.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps3.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps3.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps3.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps3.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps3.setString(9, rs.getString("kd_penyakit"));
                         rs3 = ps3.executeQuery();
                         rs3.last();
@@ -6252,23 +6269,18 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel and pasien_mati.no_rkm_medis=pasien.no_rkm_medis "
-                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='P' and reg_periksa.tgl_registrasi between ? and ? "
+                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='P' and reg_periksa.tgl_registrasi between ? and ? "
                             + "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? "
                             + "and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps4.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps4.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps4.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps4.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps4.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps4.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps4.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps4.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps4.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps4.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps4.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps4.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps4.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps4.setString(9, rs.getString("kd_penyakit"));
                         rs4 = ps4.executeQuery();
                         rs4.last();
@@ -6294,23 +6306,18 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='L' and reg_periksa.tgl_registrasi between ? and ? "
+                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='L' and reg_periksa.tgl_registrasi between ? and ? "
                             + "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? "
                             + "and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps5.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps5.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps5.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps5.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps5.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps5.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps5.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps5.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps5.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps5.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps5.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps5.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps5.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps5.setString(9, rs.getString("kd_penyakit"));
                         rs5 = ps5.executeQuery();
                         rs5.last();
@@ -6336,23 +6343,18 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='P' and reg_periksa.tgl_registrasi between ? and ? "
+                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='P' and reg_periksa.tgl_registrasi between ? and ? "
                             + "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? "
                             + "and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps6.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps6.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps6.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps6.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps6.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps6.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps6.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps6.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps6.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps6.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps6.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps6.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps6.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps6.setString(9, rs.getString("kd_penyakit"));
                         rs6 = ps6.executeQuery();
                         rs6.last();
@@ -6370,8 +6372,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         }
                     }
 
-                    tabMode.addRow(new Object[]{rs.getString("kd_penyakit"), rs.
-                        getString("penyakit"), diagnosa, c, d, a, b, i});
+                    tabMode.addRow(new Object[]{rs.getString("kd_penyakit"), rs.getString("penyakit"), "", c, d, a, b,
+                        (c + d + a + b)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -6402,7 +6404,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                     + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                     + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                    + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and "
+                    + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and "
                     + "kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and "
                     + "(penyakit.kd_penyakit like ? or penyakit.nm_penyakit like ?) group by penyakit.kd_penyakit order by penyakit.kd_penyakit");
             try {
@@ -6418,97 +6420,119 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(10, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    i = 0;
-                    ps2 = koneksi.prepareStatement(
-                            "select diagnosa_pasien.no_rawat from penyakit inner join diagnosa_pasien inner join reg_periksa "
-                            + "inner join pasien inner join kamar_inap inner join kamar inner join bangsal inner join dokter inner join penjab inner join kabupaten "
-                            + "inner join kecamatan inner join kelurahan on penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit and reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
-                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
-                            + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
-                            + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                            + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and "
-                            + "kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
-                    try {
-                        ps2.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps2.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
-                        ps2.setString(3, "%" + nmkamar.getText().trim() + "%");
-                        ps2.setString(4, "%" + nmdokter.getText().trim() + "%");
-                        ps2.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps2.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps2.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps2.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
-                        ps2.setString(9, rs.getString("kd_penyakit"));
-                        rs2 = ps2.executeQuery();
-                        Sequel.queryu(
-                                "delete from temporary_surveilens_penyakit");
-                        while (rs2.next()) {
-                            ps7 = koneksi.prepareStatement(
-                                    "select diagnosa_pasien.kd_penyakit from diagnosa_pasien where diagnosa_pasien.prioritas<>'1' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.no_rawat=?");
-                            try {
-                                ps7.setString(1, rs2.getString(1));
-                                rs7 = ps7.executeQuery();
-                                while (rs7.next()) {
-                                    Sequel.menyimpan(
-                                            "temporary_surveilens_penyakit",
-                                            "?,?", 2, new String[]{
-                                                rs.getString("kd_penyakit"),
-                                                rs7.getString("kd_penyakit")
-                                            });
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Notif : " + e);
-                            } finally {
-                                if (rs7 != null) {
-                                    rs7.close();
-                                }
-                                if (ps7 != null) {
-                                    ps7.close();
-                                }
-                            }
-                        }
-                        diagnosa = "";
-                        rs2.last();
-                        if (rs2.getRow() > 0) {
-                            ps8 = koneksi.prepareStatement(
-                                    "select temporary_surveilens_penyakit.kd_penyakit2 from temporary_surveilens_penyakit where temporary_surveilens_penyakit.kd_penyakit=? group by temporary_surveilens_penyakit.kd_penyakit2");
-                            try {
-                                ps8.setString(1, rs.getString("kd_penyakit"));
-                                rs8 = ps8.executeQuery();
-                                while (rs8.next()) {
-                                    if (diagnosa.isEmpty()) {
-                                        diagnosa = rs8.getString(1);
-                                    } else {
-                                        diagnosa = diagnosa + ", " + rs8.
-                                                getString(1);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Notif : " + e);
-                            } finally {
-                                if (rs8 != null) {
-                                    rs8.close();
-                                }
-                                if (ps8 != null) {
-                                    ps8.close();
-                                }
-                            }
-                            i = rs2.getRow();
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notif : " + e);
-                    } finally {
-                        if (rs2 != null) {
-                            rs2.close();
-                        }
-                        if (ps2 != null) {
-                            ps2.close();
-                        }
-                    }
+                    // i = 0;
+                    // ps2 = koneksi.prepareStatement(
+                    // "select diagnosa_pasien.no_rawat from penyakit inner join
+                    // diagnosa_pasien inner join reg_periksa "
+                    // + "inner join pasien inner join kamar_inap inner join kamar inner
+                    // join bangsal inner join dokter inner join penjab inner join
+                    // kabupaten "
+                    // + "inner join kecamatan inner join kelurahan on
+                    // penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit and
+                    // reg_periksa.no_rawat=diagnosa_pasien.no_rawat "
+                    // + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and
+                    // reg_periksa.no_rawat=kamar_inap.no_rawat and
+                    // reg_periksa.kd_pj=penjab.kd_pj "
+                    // + "and pasien.kd_kab=kabupaten.kd_kab and
+                    // kamar_inap.kd_kamar=kamar.kd_kamar and
+                    // kamar.kd_bangsal=bangsal.kd_bangsal and
+                    // reg_periksa.kd_dokter=dokter.kd_dokter "
+                    // + "and pasien.kd_kec=kecamatan.kd_kec and
+                    // pasien.kd_kel=kelurahan.kd_kel "
+                    // + "where kamar_inap.stts_pulang<>'Pindah Kamar' and
+                    // reg_periksa.status_lanjut='Ranap' and
+                    // diagnosa_pasien.status='Ranap' and "
+                    // + "kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal
+                    // like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and
+                    // kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and
+                    // kelurahan.nm_kel like ? and diagnosa_pasien.kd_penyakit=? group by
+                    // diagnosa_pasien.no_rawat");
+                    // try {
+                    // ps2.setString(1, Valid.SetTgl(
+                    // Tgl1.getSelectedItem() + ""));
+                    // ps2.setString(2, Valid.SetTgl(
+                    // Tgl2.getSelectedItem() + ""));
+                    // ps2.setString(3, "%" + nmkamar.getText().trim() + "%");
+                    // ps2.setString(4, "%" + nmdokter.getText().trim() + "%");
+                    // ps2.setString(5, "%" + nmpenjab.getText().trim() + "%");
+                    // ps2.setString(6,
+                    // "%" + nmkabupaten.getText().trim() + "%");
+                    // ps2.setString(7,
+                    // "%" + nmkecamatan.getText().trim() + "%");
+                    // ps2.setString(8,
+                    // "%" + nmkelurahan.getText().trim() + "%");
+                    // ps2.setString(9, rs.getString("kd_penyakit"));
+                    // rs2 = ps2.executeQuery();
+                    // Sequel.queryu(
+                    // "delete from temporary_surveilens_penyakit");
+                    // while (rs2.next()) {
+                    // ps7 = koneksi.prepareStatement(
+                    // "select diagnosa_pasien.kd_penyakit from diagnosa_pasien where
+                    // diagnosa_pasien.prioritas<>'1' and diagnosa_pasien.status='Ranap'
+                    // and diagnosa_pasien.no_rawat=?");
+                    // try {
+                    // ps7.setString(1, rs2.getString(1));
+                    // rs7 = ps7.executeQuery();
+                    // while (rs7.next()) {
+                    // Sequel.menyimpan(
+                    // "temporary_surveilens_penyakit",
+                    // "?,?", 2, new String[]{
+                    // rs.getString("kd_penyakit"),
+                    // rs7.getString("kd_penyakit")
+                    // });
+                    // }
+                    // } catch (Exception e) {
+                    // System.out.println("Notif : " + e);
+                    // } finally {
+                    // if (rs7 != null) {
+                    // rs7.close();
+                    // }
+                    // if (ps7 != null) {
+                    // ps7.close();
+                    // }
+                    // }
+                    // }
+                    // diagnosa = "";
+                    // rs2.last();
+                    // if (rs2.getRow() > 0) {
+                    // ps8 = koneksi.prepareStatement(
+                    // "select temporary_surveilens_penyakit.kd_penyakit2 from
+                    // temporary_surveilens_penyakit where
+                    // temporary_surveilens_penyakit.kd_penyakit=? group by
+                    // temporary_surveilens_penyakit.kd_penyakit2");
+                    // try {
+                    // ps8.setString(1, rs.getString("kd_penyakit"));
+                    // rs8 = ps8.executeQuery();
+                    // while (rs8.next()) {
+                    // if (diagnosa.isEmpty()) {
+                    // diagnosa = rs8.getString(1);
+                    // } else {
+                    // diagnosa = diagnosa + ", " + rs8.
+                    // getString(1);
+                    // }
+                    // }
+                    // } catch (Exception e) {
+                    // System.out.println("Notif : " + e);
+                    // } finally {
+                    // if (rs8 != null) {
+                    // rs8.close();
+                    // }
+                    // if (ps8 != null) {
+                    // ps8.close();
+                    // }
+                    // }
+                    // i = rs2.getRow();
+                    // }
+                    // } catch (Exception e) {
+                    // System.out.println("Notif : " + e);
+                    // } finally {
+                    // if (rs2 != null) {
+                    // rs2.close();
+                    // }
+                    // if (ps2 != null) {
+                    // ps2.close();
+                    // }
+                    // }
 
                     a = 0;
                     ps3 = koneksi.prepareStatement(
@@ -6518,22 +6542,17 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel and pasien_mati.no_rkm_medis=pasien.no_rkm_medis "
-                            + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='L' and "
+                            + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='L' and "
                             + "kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps3.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps3.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps3.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps3.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps3.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps3.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps3.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps3.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps3.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps3.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps3.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps3.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps3.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps3.setString(9, rs.getString("kd_penyakit"));
                         rs3 = ps3.executeQuery();
                         rs3.last();
@@ -6559,22 +6578,17 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel and pasien_mati.no_rkm_medis=pasien.no_rkm_medis "
-                            + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='P' and "
+                            + "where kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='P' and "
                             + "kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps4.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps4.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps4.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps4.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps4.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps4.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps4.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps4.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps4.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps4.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps4.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps4.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps4.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps4.setString(9, rs.getString("kd_penyakit"));
                         rs4 = ps4.executeQuery();
                         rs4.last();
@@ -6600,22 +6614,17 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='L' and "
+                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='L' and "
                             + "kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps5.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps5.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps5.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps5.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps5.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps5.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps5.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps5.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps5.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps5.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps5.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps5.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps5.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps5.setString(9, rs.getString("kd_penyakit"));
                         rs5 = ps5.executeQuery();
                         rs5.last();
@@ -6641,22 +6650,17 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                             + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and reg_periksa.kd_pj=penjab.kd_pj "
                             + "and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_dokter=dokter.kd_dokter "
                             + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel "
-                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and diagnosa_pasien.prioritas='1' and pasien.jk='P' and "
+                            + "where reg_periksa.status_lanjut='Ranap' and diagnosa_pasien.status='Ranap' and pasien.jk='P' and "
                             + "kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and diagnosa_pasien.kd_penyakit=? group by diagnosa_pasien.no_rawat");
                     try {
-                        ps6.setString(1, Valid.SetTgl(
-                                Tgl1.getSelectedItem() + ""));
-                        ps6.setString(2, Valid.SetTgl(
-                                Tgl2.getSelectedItem() + ""));
+                        ps6.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        ps6.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         ps6.setString(3, "%" + nmkamar.getText().trim() + "%");
                         ps6.setString(4, "%" + nmdokter.getText().trim() + "%");
                         ps6.setString(5, "%" + nmpenjab.getText().trim() + "%");
-                        ps6.setString(6,
-                                "%" + nmkabupaten.getText().trim() + "%");
-                        ps6.setString(7,
-                                "%" + nmkecamatan.getText().trim() + "%");
-                        ps6.setString(8,
-                                "%" + nmkelurahan.getText().trim() + "%");
+                        ps6.setString(6, "%" + nmkabupaten.getText().trim() + "%");
+                        ps6.setString(7, "%" + nmkecamatan.getText().trim() + "%");
+                        ps6.setString(8, "%" + nmkelurahan.getText().trim() + "%");
                         ps6.setString(9, rs.getString("kd_penyakit"));
                         rs6 = ps6.executeQuery();
                         rs6.last();
@@ -6674,8 +6678,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         }
                     }
 
-                    tabMode2.addRow(new Object[]{rs.getString("kd_penyakit"),
-                        rs.getString("penyakit"), diagnosa, c, d, a, b, i});
+                    tabMode2.addRow(new Object[]{rs.getString("kd_penyakit"), rs.getString("penyakit"), diagnosa, c,
+                        d, a, b, (c + d + a + b)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -6713,7 +6717,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgFrekuensiPenyakitRanap.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgFrekuensiPenyakitRanap.class.getName());
 
 }

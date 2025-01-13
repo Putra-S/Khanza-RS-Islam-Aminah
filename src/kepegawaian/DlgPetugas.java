@@ -40,17 +40,22 @@ import restore.DlgRestorePetugas;
 import simrskhanza.DlgCariJabatan;
 
 /**
- *
  * @author dosen
  */
 public class DlgPetugas extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
 
     /**
@@ -66,8 +71,8 @@ public class DlgPetugas extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] row = {"NIP", "Nama Petugas", "J.K.", "Tmp.Lahir", "Tgl.Lahir",
-            "G.D.", "Agama", "Stts.Nikah", "Alamat", "Jabatan", "No.Telp"};
+        Object[] row = {"NIP", "Nama Petugas", "J.K.", "Tmp.Lahir", "Tgl.Lahir", "G.D.", "Agama", "Stts.Nikah",
+            "Alamat", "Jabatan", "No.Telp"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -77,7 +82,8 @@ public class DlgPetugas extends javax.swing.JDialog {
         };
         tbPetugas.setModel(tabMode);
 
-        //tbPetugas.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPetugas.getBackground()));
+        // tbPetugas.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPetugas.getBackground()));
         tbPetugas.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbPetugas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -117,8 +123,7 @@ public class DlgPetugas extends javax.swing.JDialog {
         TTlp.setDocument(new batasInput((byte) 13).getOnlyAngka(TTlp));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -155,10 +160,8 @@ public class DlgPetugas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jabatan.getTable().getSelectedRow() != -1) {
-                    KdJbtn.setText(jabatan.getTable().getValueAt(jabatan.
-                            getTable().getSelectedRow(), 0).toString());
-                    TJbtn.setText(jabatan.getTable().getValueAt(jabatan.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdJbtn.setText(jabatan.getTable().getValueAt(jabatan.getTable().getSelectedRow(), 0).toString());
+                    TJbtn.setText(jabatan.getTable().getValueAt(jabatan.getTable().getSelectedRow(), 1).toString());
                 }
                 KdJbtn.requestFocus();
             }
@@ -193,20 +196,15 @@ public class DlgPetugas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    TNip.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 0).toString());
-                    TNm.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 1).toString());
-                    CmbJk.setSelectedItem(pegawai.tbKamar.getValueAt(
-                            pegawai.tbKamar.getSelectedRow(), 2).toString().
-                            replaceAll("Wanita", "PEREMPUAN").replaceAll("Pria",
-                            "LAKI-LAKI"));
-                    TTmp.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 11).toString());
-                    TAlmt.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 13).toString());
-                    Valid.SetTgl(DTPLahir, pegawai.tbKamar.getValueAt(
-                            pegawai.tbKamar.getSelectedRow(), 12).toString());
+                    TNip.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                    TNm.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
+                    CmbJk.setSelectedItem(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 2)
+                            .toString()
+                            .replaceAll("Wanita", "PEREMPUAN")
+                            .replaceAll("Pria", "LAKI-LAKI"));
+                    TTmp.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 11).toString());
+                    TAlmt.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 13).toString());
+                    Valid.SetTgl(DTPLahir, pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 12).toString());
                 }
                 TNip.requestFocus();
             }
@@ -253,7 +251,9 @@ public class DlgPetugas extends javax.swing.JDialog {
     private DlgCariJabatan jabatan = new DlgCariJabatan(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1463,21 +1463,22 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select petugas.nip,petugas.nama,petugas.jk,petugas.tmp_lahir,petugas.tgl_lahir, "
-                    + "petugas.gol_darah,petugas.agama,petugas.stts_nikah,petugas.alamat,jabatan.nm_jbtn,petugas.no_telp "
-                    + "from petugas inner join jabatan on jabatan.kd_jbtn=petugas.kd_jbtn "
-                    + "where petugas.status='1' and petugas.jk like ? and petugas.gol_darah like ? and petugas.stts_nikah like ? and "
-                    + "(petugas.nip like ? or petugas.nama like ? or petugas.tmp_lahir like ? or petugas.tgl_lahir like ? or "
-                    + "petugas.gol_darah like ? or petugas.agama like ? or petugas.alamat like ? or jabatan.nm_jbtn like ?) order by petugas.nip");
+            ps = koneksi
+                    .prepareStatement("select petugas.nip,petugas.nama,petugas.jk,petugas.tmp_lahir,petugas.tgl_lahir, "
+                            + "petugas.gol_darah,petugas.agama,petugas.stts_nikah,petugas.alamat,jabatan.nm_jbtn,petugas.no_telp "
+                            + "from petugas inner join jabatan on jabatan.kd_jbtn=petugas.kd_jbtn "
+                            + "where petugas.status='1' and petugas.jk like ? and petugas.gol_darah like ? and petugas.stts_nikah like ? and "
+                            + "(petugas.nip like ? or petugas.nama like ? or petugas.tmp_lahir like ? or petugas.tgl_lahir like ? or "
+                            + "petugas.gol_darah like ? or petugas.agama like ? or petugas.alamat like ? or jabatan.nm_jbtn like ?) order by petugas.nip");
             try {
-                ps.setString(1, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                ps.setString(2, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                ps.setString(3, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                ps.setString(1,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                ps.setString(2, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                ps.setString(3, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 ps.setString(4, "%" + TCari.getText().trim() + "%");
                 ps.setString(5, "%" + TCari.getText().trim() + "%");
                 ps.setString(6, "%" + TCari.getText().trim() + "%");
@@ -1488,12 +1489,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 ps.setString(11, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getString(4), rs.getString(5), rs.getString(6),
-                        rs.getString(7), rs.getString(8), rs.getString(9), rs.
-                        getString(10), rs.getString(11)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11)});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -1549,9 +1547,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             cmbAgama.setSelectedItem(tbPetugas.getValueAt(row, 6).toString());
             CmbStts.setSelectedItem(tbPetugas.getValueAt(row, 7).toString());
             TAlmt.setText(tbPetugas.getValueAt(row, 8).toString());
-            Sequel.cariIsi(
-                    "select jabatan.kd_jbtn from jabatan where jabatan.nm_jbtn='" + tbPetugas.
-                            getValueAt(row, 9).toString() + "'", KdJbtn);
+            Sequel.cariIsi("select jabatan.kd_jbtn from jabatan where jabatan.nm_jbtn='"
+                    + tbPetugas.getValueAt(row, 9).toString() + "'", KdJbtn);
             TJbtn.setText(tbPetugas.getValueAt(row, 9).toString());
             TTlp.setText(tbPetugas.getValueAt(row, 10).toString());
             Valid.SetTgl(DTPLahir, tbPetugas.getValueAt(row, 4).toString());
@@ -1568,7 +1565,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -1576,7 +1572,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1612,6 +1607,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgPetugas.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgPetugas.class.getName());
+
 }

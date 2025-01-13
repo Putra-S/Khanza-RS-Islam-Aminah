@@ -26,20 +26,28 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private IPSRSBarang barang = new IPSRSBarang(null, false);
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private double total = 0, subtotal = 0;
+
     private int no = 0, i = 0;
 
     /**
@@ -52,8 +60,7 @@ public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Tanggal", "No.Pengajuan", "Status", "Keterangan",
-            "Yang Mengajukan"};
+        Object[] row = {"Tanggal", "No.Pengajuan", "Status", "Keterangan", "Yang Mengajukan"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -82,14 +89,12 @@ public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NoPermintaan.
-                setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
+        NoPermintaan.setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
         KdPeg.setDocument(new batasInput((byte) 20).getKata(KdPeg));
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -126,10 +131,8 @@ public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPeg.requestFocus();
             }
@@ -164,10 +167,8 @@ public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kdbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 0).toString());
-                    nmbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 1).toString());
+                    kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                    nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                 }
                 kdbar.requestFocus();
             }
@@ -220,12 +221,10 @@ public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 0).
-                            toString());
-                    nmjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 1).
-                            toString());
+                    kdjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 kdjenis.requestFocus();
             }
@@ -250,7 +249,9 @@ public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -703,13 +704,12 @@ public class DlgCariPengajuanBarangNonMedis extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
-        pegawai.emptTeks();
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        pegawai.emptTeks();//GEN-FIRST:event_btnPetugasActionPerformed
         pegawai.setSize(internalFrame1.getWidth() - 20, internalFrame1.
                 getHeight() - 20);
         pegawai.setLocationRelativeTo(internalFrame1);
@@ -967,8 +967,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPengajuanBarangNonMedis dialog = new DlgCariPengajuanBarangNonMedis(
-                    new javax.swing.JFrame(), true);
+            DlgCariPengajuanBarangNonMedis dialog = new DlgCariPengajuanBarangNonMedis(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1026,30 +1025,29 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select pengajuan_barang_nonmedis.tanggal,pengajuan_barang_nonmedis.no_pengajuan, "
-                    + "pengajuan_barang_nonmedis.keterangan,pengajuan_barang_nonmedis.nip,pegawai.nama,pengajuan_barang_nonmedis.status "
-                    + "from pengajuan_barang_nonmedis inner join pegawai inner join kodesatuan inner join detail_pengajuan_barang_nonmedis "
-                    + "inner join ipsrsjenisbarang inner join ipsrsbarang on detail_pengajuan_barang_nonmedis.kode_brng=ipsrsbarang.kode_brng "
-                    + " and ipsrsbarang.kode_sat=kodesatuan.kode_sat "
-                    + " and pengajuan_barang_nonmedis.no_pengajuan=detail_pengajuan_barang_nonmedis.no_pengajuan "
-                    + " and pengajuan_barang_nonmedis.nip=pegawai.nik "
-                    + " and ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis "
-                    + " where pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and pengajuan_barang_nonmedis.no_pengajuan like ? or "
-                    + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and pengajuan_barang_nonmedis.nip like ? or "
-                    + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and pegawai.nama like ? or "
-                    + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? or "
-                    + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and detail_pengajuan_barang_nonmedis.kode_brng like ? or "
-                    + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and ipsrsbarang.nama_brng like ? or "
-                    + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and detail_pengajuan_barang_nonmedis.kode_sat like ? or "
-                    + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and kodesatuan.satuan like ? "
-                    + " group by pengajuan_barang_nonmedis.no_pengajuan order by pengajuan_barang_nonmedis.tanggal,pengajuan_barang_nonmedis.no_pengajuan ");
+            ps = koneksi
+                    .prepareStatement("select pengajuan_barang_nonmedis.tanggal,pengajuan_barang_nonmedis.no_pengajuan, "
+                            + "pengajuan_barang_nonmedis.keterangan,pengajuan_barang_nonmedis.nip,pegawai.nama,pengajuan_barang_nonmedis.status "
+                            + "from pengajuan_barang_nonmedis inner join pegawai inner join kodesatuan inner join detail_pengajuan_barang_nonmedis "
+                            + "inner join ipsrsjenisbarang inner join ipsrsbarang on detail_pengajuan_barang_nonmedis.kode_brng=ipsrsbarang.kode_brng "
+                            + " and ipsrsbarang.kode_sat=kodesatuan.kode_sat "
+                            + " and pengajuan_barang_nonmedis.no_pengajuan=detail_pengajuan_barang_nonmedis.no_pengajuan "
+                            + " and pengajuan_barang_nonmedis.nip=pegawai.nik "
+                            + " and ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis "
+                            + " where pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and pengajuan_barang_nonmedis.no_pengajuan like ? or "
+                            + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and pengajuan_barang_nonmedis.nip like ? or "
+                            + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and pegawai.nama like ? or "
+                            + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? or "
+                            + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and detail_pengajuan_barang_nonmedis.kode_brng like ? or "
+                            + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and ipsrsbarang.nama_brng like ? or "
+                            + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and detail_pengajuan_barang_nonmedis.kode_sat like ? or "
+                            + " pengajuan_barang_nonmedis.tanggal between ? and ? and pengajuan_barang_nonmedis.no_pengajuan like ? and pengajuan_barang_nonmedis.status like ? and pegawai.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? and kodesatuan.satuan like ? "
+                            + " group by pengajuan_barang_nonmedis.no_pengajuan order by pengajuan_barang_nonmedis.tanggal,pengajuan_barang_nonmedis.no_pengajuan ");
             try {
                 ps.setString(1, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(3, "%" + NoPermintaan.getText() + "%");
-                ps.setString(4, "%" + Status.getSelectedItem().toString().
-                        replaceAll("Semua", "") + "%");
+                ps.setString(4, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 ps.setString(5, "%" + NmPeg.getText() + "%");
                 ps.setString(6, "%" + nmjenis.getText() + "%");
                 ps.setString(7, "%" + nmbar.getText() + "%");
@@ -1057,9 +1055,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(9, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(10, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(11, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(12,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(12, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(13, "%" + NmPeg.getText() + "%");
                 ps.setString(14, "%" + nmjenis.getText() + "%");
                 ps.setString(15, "%" + nmbar.getText() + "%");
@@ -1067,9 +1063,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(17, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(18, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(19, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(20,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(20, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(21, "%" + NmPeg.getText() + "%");
                 ps.setString(22, "%" + nmjenis.getText() + "%");
                 ps.setString(23, "%" + nmbar.getText() + "%");
@@ -1077,9 +1071,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(25, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(26, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(27, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(28,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(28, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(29, "%" + NmPeg.getText() + "%");
                 ps.setString(30, "%" + nmjenis.getText() + "%");
                 ps.setString(31, "%" + nmbar.getText() + "%");
@@ -1087,9 +1079,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(33, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(34, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(35, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(36,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(36, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(37, "%" + NmPeg.getText() + "%");
                 ps.setString(38, "%" + nmjenis.getText() + "%");
                 ps.setString(39, "%" + nmbar.getText() + "%");
@@ -1097,9 +1087,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(41, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(42, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(43, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(44,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(44, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(45, "%" + NmPeg.getText() + "%");
                 ps.setString(46, "%" + nmjenis.getText() + "%");
                 ps.setString(47, "%" + nmbar.getText() + "%");
@@ -1107,9 +1095,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(49, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(50, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(51, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(52,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(52, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(53, "%" + NmPeg.getText() + "%");
                 ps.setString(54, "%" + nmjenis.getText() + "%");
                 ps.setString(55, "%" + nmbar.getText() + "%");
@@ -1117,9 +1103,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(57, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(58, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(59, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(60,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(60, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(61, "%" + NmPeg.getText() + "%");
                 ps.setString(62, "%" + nmjenis.getText() + "%");
                 ps.setString(63, "%" + nmbar.getText() + "%");
@@ -1127,24 +1111,21 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 rs = ps.executeQuery();
                 total = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tanggal"), rs.getString("no_pengajuan"),
-                        rs.getString("status"),
-                        rs.getString("keterangan"),
-                        rs.getString("nip") + " " + rs.getString("nama")
-                    });
-                    ps2 = koneksi.prepareStatement(
-                            "select detail_pengajuan_barang_nonmedis.kode_brng,ipsrsbarang.nama_brng, "
-                            + "detail_pengajuan_barang_nonmedis.kode_sat,kodesatuan.satuan,detail_pengajuan_barang_nonmedis.jumlah,"
-                            + "detail_pengajuan_barang_nonmedis.h_pengajuan,detail_pengajuan_barang_nonmedis.total "
-                            + "from detail_pengajuan_barang_nonmedis inner join ipsrsbarang inner join kodesatuan inner join ipsrsjenisbarang "
-                            + " on detail_pengajuan_barang_nonmedis.kode_brng=ipsrsbarang.kode_brng "
-                            + " and detail_pengajuan_barang_nonmedis.kode_sat=kodesatuan.kode_sat "
-                            + " and ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis where "
-                            + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and detail_pengajuan_barang_nonmedis.kode_brng like ? or "
-                            + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? or "
-                            + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and detail_pengajuan_barang_nonmedis.kode_sat like ? or "
-                            + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and ipsrsjenisbarang.nm_jenis like ? order by detail_pengajuan_barang_nonmedis.kode_brng  ");
+                    tabMode.addRow(new Object[]{rs.getString("tanggal"), rs.getString("no_pengajuan"),
+                        rs.getString("status"), rs.getString("keterangan"),
+                        rs.getString("nip") + " " + rs.getString("nama")});
+                    ps2 = koneksi
+                            .prepareStatement("select detail_pengajuan_barang_nonmedis.kode_brng,ipsrsbarang.nama_brng, "
+                                    + "detail_pengajuan_barang_nonmedis.kode_sat,kodesatuan.satuan,detail_pengajuan_barang_nonmedis.jumlah,"
+                                    + "detail_pengajuan_barang_nonmedis.h_pengajuan,detail_pengajuan_barang_nonmedis.total "
+                                    + "from detail_pengajuan_barang_nonmedis inner join ipsrsbarang inner join kodesatuan inner join ipsrsjenisbarang "
+                                    + " on detail_pengajuan_barang_nonmedis.kode_brng=ipsrsbarang.kode_brng "
+                                    + " and detail_pengajuan_barang_nonmedis.kode_sat=kodesatuan.kode_sat "
+                                    + " and ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis where "
+                                    + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and detail_pengajuan_barang_nonmedis.kode_brng like ? or "
+                                    + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? or "
+                                    + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and detail_pengajuan_barang_nonmedis.kode_sat like ? or "
+                                    + " detail_pengajuan_barang_nonmedis.no_pengajuan=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? and ipsrsjenisbarang.nm_jenis like ? order by detail_pengajuan_barang_nonmedis.kode_brng  ");
                     try {
                         ps2.setString(1, rs.getString(2));
                         ps2.setString(2, "%" + nmbar.getText() + "%");
@@ -1166,20 +1147,15 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         no = 1;
                         subtotal = 0;
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{
-                                "",
-                                no + ". " + rs2.getString("kode_brng") + " " + rs2.
-                                getString("nama_brng") + " " + rs2.getString(
-                                "satuan"),
-                                rs2.getString("jumlah"), Valid.SetAngka(rs2.
-                                getDouble("h_pengajuan")), Valid.SetAngka(rs2.
-                                getDouble("total"))
-                            });
+                            tabMode.addRow(new Object[]{"",
+                                no + ". " + rs2.getString("kode_brng") + " " + rs2.getString("nama_brng") + " "
+                                + rs2.getString("satuan"),
+                                rs2.getString("jumlah"), Valid.SetAngka(rs2.getDouble("h_pengajuan")),
+                                Valid.SetAngka(rs2.getDouble("total"))});
                             subtotal += rs2.getDouble("total");
                             no++;
                         }
-                        tabMode.addRow(new Object[]{"", "Subtotal :", "", "",
-                            Valid.SetAngka(subtotal)});
+                        tabMode.addRow(new Object[]{"", "Subtotal :", "", "", Valid.SetAngka(subtotal)});
                     } catch (Exception e) {
                         System.out.println(e);
                     } finally {
@@ -1229,6 +1205,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         ppDitolak.setEnabled(akses.getpengajuan_barang_nonmedis());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgCariPengajuanBarangNonMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPengajuanBarangNonMedis.class.getName());
+
 }

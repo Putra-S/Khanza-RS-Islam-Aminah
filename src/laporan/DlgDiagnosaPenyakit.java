@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPemberianObat.java
- *
- * Created on 27 Mei 10, 14:52:31
+* DlgPemberianObat.java
+*
+* Created on 27 Mei 10, 14:52:31
  */
 package laporan;
 
@@ -20,6 +20,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,12 +29,12 @@ import javax.swing.event.DocumentEvent;
 import widget.PanelBiasa;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
 
     private validasi Valid = new validasi();
+
     private final sekuel Sequel = new sekuel();
 
     /**
@@ -50,16 +52,14 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
                         panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(),
                                 Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
-                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""),
-                                Status.getSelectedItem().toString(), TCari.
-                                getText().trim());
+                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                                TCari.getText().trim());
                         panelDiagnosa1.pilihTab();
                         LCount.setText(panelDiagnosa1.getRecord() + "");
                     }
@@ -70,9 +70,8 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
                     if (TCari.getText().length() > 2) {
                         panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(),
                                 Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
-                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""),
-                                Status.getSelectedItem().toString(), TCari.
-                                getText().trim());
+                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                                TCari.getText().trim());
                         panelDiagnosa1.pilihTab();
                         LCount.setText(panelDiagnosa1.getRecord() + "");
                     }
@@ -83,9 +82,8 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
                     if (TCari.getText().length() > 2) {
                         panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(),
                                 Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
-                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""),
-                                Status.getSelectedItem().toString(), TCari.
-                                getText().trim());
+                                Valid.SetTgl(DTPCari2.getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                                TCari.getText().trim());
                         panelDiagnosa1.pilihTab();
                         LCount.setText(panelDiagnosa1.getRecord() + "");
                     }
@@ -98,15 +96,15 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (panelDiagnosa1.tbDiagnosaPasien.getSelectedRow() != -1) {
-                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
-                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 2).
-                            toString());
-                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
-                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 3).
-                            toString());
-                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
-                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 4).
-                            toString());
+                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien
+                            .getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 2)
+                            .toString());
+                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien
+                            .getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 3)
+                            .toString());
+                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien
+                            .getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 4)
+                            .toString());
                 }
             }
 
@@ -140,15 +138,15 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
             @Override
             public void keyReleased(KeyEvent e) {
                 if (panelDiagnosa1.tbDiagnosaPasien.getSelectedRow() != -1) {
-                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
-                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 2).
-                            toString());
-                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
-                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 3).
-                            toString());
-                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien.getValueAt(
-                            panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 4).
-                            toString());
+                    TNoRw.setText(panelDiagnosa1.tbDiagnosaPasien
+                            .getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 2)
+                            .toString());
+                    TNoRM.setText(panelDiagnosa1.tbDiagnosaPasien
+                            .getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 3)
+                            .toString());
+                    TPasien.setText(panelDiagnosa1.tbDiagnosaPasien
+                            .getValueAt(panelDiagnosa1.tbDiagnosaPasien.getSelectedRow(), 4)
+                            .toString());
                 }
             }
 
@@ -158,15 +156,15 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (panelDiagnosa1.tbTindakanPasien.getSelectedRow() != -1) {
-                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
-                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 2).
-                            toString());
-                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
-                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 3).
-                            toString());
-                    TPasien.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
-                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 4).
-                            toString());
+                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien
+                            .getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 2)
+                            .toString());
+                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien
+                            .getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 3)
+                            .toString());
+                    TPasien.setText(panelDiagnosa1.tbTindakanPasien
+                            .getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 4)
+                            .toString());
                 }
             }
 
@@ -200,24 +198,26 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
             @Override
             public void keyReleased(KeyEvent e) {
                 if (panelDiagnosa1.tbTindakanPasien.getSelectedRow() != -1) {
-                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
-                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 2).
-                            toString());
-                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
-                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 3).
-                            toString());
-                    TPasien.setText(panelDiagnosa1.tbTindakanPasien.getValueAt(
-                            panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 4).
-                            toString());
+                    TNoRw.setText(panelDiagnosa1.tbTindakanPasien
+                            .getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 2)
+                            .toString());
+                    TNoRM.setText(panelDiagnosa1.tbTindakanPasien
+                            .getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 3)
+                            .toString());
+                    TPasien.setText(panelDiagnosa1.tbTindakanPasien
+                            .getValueAt(panelDiagnosa1.tbTindakanPasien.getSelectedRow(), 4)
+                            .toString());
                 }
             }
 
         });
     }
 
-    //private DlgCariObatPenyakit dlgobtpny=new DlgCariObatPenyakit(null,false);
+    // private DlgCariObatPenyakit dlgobtpny=new DlgCariObatPenyakit(null,false);
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -698,8 +698,7 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDiagnosaPenyakit dialog = new DlgDiagnosaPenyakit(
-                    new javax.swing.JFrame(), true);
+            DlgDiagnosaPenyakit dialog = new DlgDiagnosaPenyakit(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -743,19 +742,15 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                TNoRM, TNoRw.getText());
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRM,
+                TNoRw.getText());
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
-                TPasien, TNoRM.getText());
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ", TPasien, TNoRM.getText());
     }
 
     /**
-     *
      * @param norwt
      * @param tgl1
      * @param tgl2
@@ -769,9 +764,37 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
         isPsien();
         DTPCari1.setDate(tgl1);
         DTPCari2.setDate(tgl2);
-        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(
-                DTPCari1.getSelectedItem() + ""), Valid.SetTgl(DTPCari2.
-                getSelectedItem() + ""), Status.getSelectedItem().toString(),
+        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
+                Valid.SetTgl(DTPCari2.getSelectedItem() + ""), Status.getSelectedItem().toString(),
+                TCari.getText().trim());
+    }
+    
+    public void setNoRm2(String norwt, String status) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        TNoRw.setText(norwt);
+        TCari.setText(norwt);
+        Status.setSelectedItem(status);
+        isRawat();
+        isPsien();
+        if(status.equals("Ralan")){
+            try {
+                DTPCari1.setDate(dateFormat.parse(Sequel.cariIsi("Select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat=?", norwt)));
+                DTPCari2.setDate(dateFormat.parse(Sequel.cariIsi("Select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat=?", norwt)));
+            } catch (ParseException ex) {
+                DTPCari1.setDate(new Date());
+                DTPCari2.setDate(new Date());
+            }
+        }else{
+            try {
+                DTPCari1.setDate(dateFormat.parse(Sequel.cariIsi("Select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat=?", norwt)));
+                DTPCari2.setDate(new Date());
+            } catch (ParseException ex) {
+                DTPCari1.setDate(new Date());
+                DTPCari2.setDate(new Date());
+            }
+        }
+        panelDiagnosa1.setRM(TNoRw.getText(), TNoRM.getText(), Valid.SetTgl(DTPCari1.getSelectedItem() + ""),
+                Valid.SetTgl(DTPCari2.getSelectedItem() + ""), Status.getSelectedItem().toString(),
                 TCari.getText().trim());
     }
 
@@ -783,7 +806,6 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
         panelDiagnosa1.btnTambahProsedur.setEnabled(akses.geticd9());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgDiagnosaPenyakit.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgDiagnosaPenyakit.class.getName());
 
 }

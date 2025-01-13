@@ -24,12 +24,10 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
@@ -42,21 +40,30 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
-public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
+public final class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -71,44 +78,31 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "Umur",
-            "Kode Petugas", "Nama Petugas", "Tanggal",
-            "Faktor Risiko Awal 1", "N.R.A.1", "Faktor Risiko Awal 2", "N.R.A.2",
-            "Faktor Risiko Awal 3", "N.R.A.3",
-            "Faktor Risiko Awal 4", "N.R.A.4", "Faktor Risiko Awal 5", "N.R.A.5",
-            "Faktor Risiko Awal 6", "N.R.A.6",
-            "Faktor Risiko Awal 7", "N.R.A.7", "Faktor Risiko Awal 8", "N.R.A.8",
-            "Faktor Risiko Awal 9", "N.R.A.9",
-            "Faktor Risiko Awal 10", "N.R.A.10", "Faktor Risiko Awal 11",
-            "N.R.A.11", "Faktor Risiko Awal 12", "N.R.A.12",
-            "Faktor Risiko Awal 13", "N.R.A.13", "Faktor Risiko Awal 14",
-            "N.R.A.14", "Faktor Risiko Tinggi 1", "N.R.T.1",
-            "Faktor Risiko Tinggi 2", "N.R.T.2", "Faktor Risiko Tinggi 3",
-            "N.R.T.3", "Faktor Risiko Tinggi 4", "N.R.T.4",
-            "Faktor Risiko Tinggi 5", "N.R.T.5", "Faktor Risiko Tinggi 6",
-            "N.R.T.6", "Faktor Risiko Tinggi 7", "N.R.T.7",
-            "Faktor Risiko Tinggi 8", "N.R.T.8", "Faktor Risiko Tinggi 9",
-            "N.R.T.9", "Faktor Risiko Tinggi 10", "N.R.T.10",
-            "Faktor Risiko Tinggi 11", "N.R.T 11", "Faktor Risiko Tinggi 12",
-            "N.R.T 12", "Faktor Risiko Tinggi 13", "N.R.T 13",
-            "Kecurigaan Keganasan 1", "N.K.G.1", "Kecurigaan Keganasan 2",
-            "N.K.G.2", "Kecurigaan Keganasan 3", "N.K.G.3",
-            "Kecurigaan Keganasan 4", "N.K.G.4", "Kecurigaan Keganasan 5",
-            "N.K.G.5", "Kecurigaan Keganasan 6", "N.K.G.6",
-            "Kecurigaan Keganasan 7", "N.K.G.7", "Kecurigaan Keganasan 8",
-            "N.K.G.8", "Total Skor", "Hasil Pemeriksaan SADANIS",
-            "Tindak Lanjut SADANIS", "Hasil Skrining", "Keterangan"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "Umur",
+            "Kode Petugas", "Nama Petugas", "Tanggal", "Faktor Risiko Awal 1", "N.R.A.1", "Faktor Risiko Awal 2",
+            "N.R.A.2", "Faktor Risiko Awal 3", "N.R.A.3", "Faktor Risiko Awal 4", "N.R.A.4", "Faktor Risiko Awal 5",
+            "N.R.A.5", "Faktor Risiko Awal 6", "N.R.A.6", "Faktor Risiko Awal 7", "N.R.A.7", "Faktor Risiko Awal 8",
+            "N.R.A.8", "Faktor Risiko Awal 9", "N.R.A.9", "Faktor Risiko Awal 10", "N.R.A.10",
+            "Faktor Risiko Awal 11", "N.R.A.11", "Faktor Risiko Awal 12", "N.R.A.12", "Faktor Risiko Awal 13",
+            "N.R.A.13", "Faktor Risiko Awal 14", "N.R.A.14", "Faktor Risiko Tinggi 1", "N.R.T.1",
+            "Faktor Risiko Tinggi 2", "N.R.T.2", "Faktor Risiko Tinggi 3", "N.R.T.3", "Faktor Risiko Tinggi 4",
+            "N.R.T.4", "Faktor Risiko Tinggi 5", "N.R.T.5", "Faktor Risiko Tinggi 6", "N.R.T.6",
+            "Faktor Risiko Tinggi 7", "N.R.T.7", "Faktor Risiko Tinggi 8", "N.R.T.8", "Faktor Risiko Tinggi 9",
+            "N.R.T.9", "Faktor Risiko Tinggi 10", "N.R.T.10", "Faktor Risiko Tinggi 11", "N.R.T 11",
+            "Faktor Risiko Tinggi 12", "N.R.T 12", "Faktor Risiko Tinggi 13", "N.R.T 13", "Kecurigaan Keganasan 1",
+            "N.K.G.1", "Kecurigaan Keganasan 2", "N.K.G.2", "Kecurigaan Keganasan 3", "N.K.G.3",
+            "Kecurigaan Keganasan 4", "N.K.G.4", "Kecurigaan Keganasan 5", "N.K.G.5", "Kecurigaan Keganasan 6",
+            "N.K.G.6", "Kecurigaan Keganasan 7", "N.K.G.7", "Kecurigaan Keganasan 8", "N.K.G.8", "Total Skor",
+            "Hasil Pemeriksaan SADANIS", "Tindak Lanjut SADANIS", "Hasil Skrining", "Keterangan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
-
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -287,11 +281,10 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         KdPetugas.setDocument(new batasInput((byte) 20).getKata(KdPetugas));
         Keterangan.setDocument(new batasInput((byte) 50).getKata(Keterangan));
-        TCari.setDocument(new batasInput(100).getKata(TCari));
+        TCari.setDocument(new batasInput((int) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -312,7 +305,6 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                         tampil();
                     }
                 }
-
             });
         }
 
@@ -328,10 +320,8 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPetugas.requestFocus();
             }
@@ -351,7 +341,6 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
             @Override
             public void windowDeactivated(WindowEvent e) {
             }
-
         });
 
         ChkInput.setSelected(false);
@@ -370,8 +359,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -385,7 +373,9 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1658,7 +1648,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
         jLabel113.setText("diacar, mengandung bahan pengawet, berlemak, dan cepat saji ?");
         jLabel113.setName("jLabel113"); // NOI18N
         FormInput.add(jLabel113);
-        jLabel113.setBounds(72, 300, 530, 23);
+        jLabel113.setBounds(72, 298, 530, 23);
 
         jLabel114.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel114.setText("8.");
@@ -2339,7 +2329,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
         jLabel168.setText("hingga kulit kelihatan seperti kulit jeruk (peau dorange), mengkerut, atau timbul borok (ulkus) ?");
         jLabel168.setName("jLabel168"); // NOI18N
         FormInput.add(jLabel168);
-        jLabel168.setBounds(72, 1030, 490, 23);
+        jLabel168.setBounds(72, 1028, 490, 23);
 
         jLabel169.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel169.setText("4.");
@@ -2666,25 +2656,18 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 }//GEN-LAST:event_TPasienKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
-                isEmpty()) {
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().isEmpty()) {
             Valid.textKosong(TNoRw, "pasien");
-        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().
-                trim().isEmpty()) {
+        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().trim().isEmpty()) {
             Valid.textKosong(KdPetugas, "Petugas");
         } else {
             if (akses.getkode().equals("Admin Utama")) {
                 simpan();
             } else {
                 if (TanggalRegistrasi.getText().isEmpty()) {
-                    TanggalRegistrasi.setText(Sequel.cariIsi(
-                            "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
-                            TNoRw.getText()));
+                    TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?", TNoRw.getText()));
                 }
-                if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),
-                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                        getSelectedItem()) == true) {
+                if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem()) == true) {
                     simpan();
                 }
             }
@@ -2718,21 +2701,16 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
             if (akses.getkode().equals("Admin Utama")) {
                 hapus();
             } else {
-                if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 5).toString())) {
-                    if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 7).toString(), Sequel.
-                                    ambiltanggalsekarang()) == true) {
+                if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString())) {
+                    if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString(), Sequel.ambiltanggalsekarang()) == true) {
                         hapus();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
+                    JOptionPane.showMessageDialog(null, "Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(rootPane,
-                    "Silahkan anda pilih data terlebih dahulu..!!");
+            JOptionPane.showMessageDialog(rootPane, "Silahkan anda pilih data terlebih dahulu..!!");
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
@@ -2745,44 +2723,30 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
-                isEmpty()) {
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().isEmpty()) {
             Valid.textKosong(TNoRw, "pasien");
-        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().
-                trim().isEmpty()) {
+        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().trim().isEmpty()) {
             Valid.textKosong(KdPetugas, "Petugas");
         } else {
             if (tbObat.getSelectedRow() > -1) {
                 if (akses.getkode().equals("Admin Utama")) {
                     ganti();
                 } else {
-                    if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 5).toString())) {
-                        if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
-                                getSelectedRow(), 7).toString(), Sequel.
-                                        ambiltanggalsekarang()) == true) {
+                    if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString())) {
+                        if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString(), Sequel.ambiltanggalsekarang()) == true) {
                             if (TanggalRegistrasi.getText().isEmpty()) {
-                                TanggalRegistrasi.setText(Sequel.cariIsi(
-                                        "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
-                                        TNoRw.getText()));
+                                TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?", TNoRw.getText()));
                             }
-                            if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.
-                                    getText(), Valid.SetTgl(Tanggal.
-                                            getSelectedItem() + "") + " " + Jam.
-                                            getSelectedItem() + ":" + Menit.
-                                            getSelectedItem() + ":" + Detik.
-                                            getSelectedItem()) == true) {
+                            if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem()) == true) {
                                 ganti();
                             }
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null,
-                                "Hanya bisa diganti oleh petugas yang bersangkutan..!!");
+                        JOptionPane.showMessageDialog(null, "Hanya bisa diganti oleh petugas yang bersangkutan..!!");
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(rootPane,
-                        "Silahkan anda pilih data terlebih dahulu..!!");
+                JOptionPane.showMessageDialog(rootPane, "Silahkan anda pilih data terlebih dahulu..!!");
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
@@ -2811,8 +2775,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         if (tabMode.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
         } else if (tabMode.getRowCount() != 0) {
             try {
@@ -2907,172 +2870,89 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                 for (i = 0; i < tabMode.getRowCount(); i++) {
                     htmlContent.append(
                             "<tr class='isi'>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 0).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 1).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 2).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 3).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 4).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 5).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 6).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 7).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 8).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 9).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 10).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 11).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 12).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 13).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 14).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 15).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 16).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 17).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 18).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 19).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 20).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 21).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 22).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 23).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 24).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 25).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 26).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 27).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 28).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 29).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 30).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 31).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 32).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 33).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 34).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 35).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 36).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 37).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 38).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 39).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 40).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 41).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 42).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 43).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 44).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 45).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 46).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 47).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 48).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 49).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 50).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 51).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 52).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 53).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 54).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 55).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 56).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 57).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 58).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 59).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 60).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 61).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 62).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 63).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 64).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 65).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 66).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 67).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 68).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 69).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 70).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 71).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 72).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 73).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 74).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 75).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 76).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 77).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 78).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 79).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 80).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 81).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 82).
-                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 0).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 1).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 2).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 3).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 4).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 5).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 6).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 7).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 8).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 9).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 10).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 11).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 12).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 13).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 14).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 15).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 16).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 17).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 18).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 19).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 20).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 21).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 22).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 23).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 24).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 25).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 26).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 27).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 28).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 29).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 30).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 31).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 32).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 33).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 34).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 35).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 36).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 37).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 38).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 39).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 40).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 41).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 42).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 43).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 44).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 45).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 46).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 47).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 48).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 49).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 50).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 51).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 52).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 53).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 54).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 55).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 56).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 57).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 58).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 59).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 60).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 61).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 62).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 63).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 64).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 65).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 66).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 67).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 68).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 69).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 70).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 71).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 72).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 73).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 74).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 75).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 76).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 77).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 78).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 79).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 80).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 81).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 82).toString() + "</td>"
                             + "</tr>");
                 }
                 LoadHTML.setText(
@@ -3099,24 +2979,21 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                 }
 
                 File f = new File("DataSkriningRisikoKankerPayudara.html");
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
-                    bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
-                            + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
-                            + "<table width='6000px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                            + "<tr class='isi2'>"
-                            + "<td valign='top' align='center'>"
-                            + "<font size='4' face='Tahoma'>" + akses.
-                                    getnamars() + "</font><br>"
-                            + akses.getalamatrs() + ", " + akses.
-                            getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
-                            + akses.getkontakrs() + ", E-mail : " + akses.
-                            getemailrs() + "<br><br>"
-                            + "<font size='2' face='Tahoma'>DATA SEKRINING RISIKO KANKER PAYUDARA<br><br></font>"
-                            + "</td>"
-                            + "</tr>"
-                            + "</table>")
-                    );
-                }
+                BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+                bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
+                        + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                        + "<table width='6000px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + "<tr class='isi2'>"
+                        + "<td valign='top' align='center'>"
+                        + "<font size='4' face='Tahoma'>" + akses.getnamars() + "</font><br>"
+                        + akses.getalamatrs() + ", " + akses.getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                        + akses.getkontakrs() + ", E-mail : " + akses.getemailrs() + "<br><br>"
+                        + "<font size='2' face='Tahoma'>DATA SEKRINING RISIKO KANKER PAYUDARA<br><br></font>"
+                        + "</td>"
+                        + "</tr>"
+                        + "</table>")
+                );
+                bw.close();
                 Desktop.getDesktop().browse(f.toURI());
 
             } catch (Exception e) {
@@ -3185,8 +3062,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
         if (tabMode.getRowCount() != 0) {
-            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
-                    getKeyCode() == KeyEvent.VK_DOWN)) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -3210,8 +3086,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         petugas.emptTeks();
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
-                getHeight() - 20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setVisible(true);
     }//GEN-LAST:event_btnPetugasActionPerformed
@@ -3229,20 +3104,10 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
             param.put("propinsirs", akses.getpropinsirs());
             param.put("kontakrs", akses.getkontakrs());
             param.put("emailrs", akses.getemailrs());
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            finger = Sequel.cariIsi(
-                    "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
-            param.put("finger",
-                    "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
-                    getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 6).toString() + "\nID " + (finger.
-                    isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                                    toString() : finger) + "\n" + Tanggal.
-                            getSelectedItem());
-            Valid.MyReportqry("rptFormulirSkriningRisikoKankerPayudara.jasper",
-                    "report", "::[ Formulir Skrining Risiko Kanker Payudara ]::",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            finger = Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?", tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            param.put("finger", "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString() + "\nID " + (finger.isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString() : finger) + "\n" + Tanggal.getSelectedItem());
+            Valid.MyReportqry("rptFormulirSkriningRisikoKankerPayudara.jasper", "report", "::[ Formulir Skrining Risiko Kanker Payudara ]::",
                     "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,reg_periksa.umurdaftar,reg_periksa.sttsumur,skrining_risiko_kanker_payudara.nip,"
                     + "petugas.nama,skrining_risiko_kanker_payudara.tanggal,skrining_risiko_kanker_payudara.faktor_risiko_awal1,skrining_risiko_kanker_payudara.nilai_risiko_awal1,"
                     + "skrining_risiko_kanker_payudara.faktor_risiko_awal2,skrining_risiko_kanker_payudara.nilai_risiko_awal2,skrining_risiko_kanker_payudara.faktor_risiko_awal3,"
@@ -3271,8 +3136,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                     + "skrining_risiko_kanker_payudara.hasil_sadanis,skrining_risiko_kanker_payudara.tindak_lanjut_sadanis,skrining_risiko_kanker_payudara.hasil_skrining,"
                     + "skrining_risiko_kanker_payudara.keterangan from skrining_risiko_kanker_payudara inner join reg_periksa on skrining_risiko_kanker_payudara.no_rawat=reg_periksa.no_rawat "
                     + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join petugas on skrining_risiko_kanker_payudara.nip=petugas.nip "
-                    + "where reg_periksa.no_rawat='" + tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 0).toString() + "'", param);
+                    + "where reg_periksa.no_rawat='" + tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString() + "'", param);
         }
     }//GEN-LAST:event_MnSkriningRisikoKankerPayudaraActionPerformed
 
@@ -3760,14 +3624,12 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMSkriningRisikoKankerPayudara dialog = new RMSkriningRisikoKankerPayudara(
-                    new javax.swing.JFrame(), true);
+            RMSkriningRisikoKankerPayudara dialog = new RMSkriningRisikoKankerPayudara(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
-
             });
             dialog.setVisible(true);
         });
@@ -4099,15 +3961,11 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -4117,89 +3975,49 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
                         rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"),
-                        rs.getString("nip"), rs.getString("nama"), rs.getString(
-                        "tanggal"), rs.getString("faktor_risiko_awal1"), rs.
-                        getString("nilai_risiko_awal1"), rs.getString(
-                        "faktor_risiko_awal2"),
-                        rs.getString("nilai_risiko_awal2"), rs.getString(
-                        "faktor_risiko_awal3"), rs.getString(
-                        "nilai_risiko_awal3"), rs.getString(
-                        "faktor_risiko_awal4"), rs.getString(
-                        "nilai_risiko_awal4"),
-                        rs.getString("faktor_risiko_awal5"), rs.getString(
-                        "nilai_risiko_awal5"), rs.getString(
-                        "faktor_risiko_awal6"), rs.getString(
-                        "nilai_risiko_awal6"), rs.getString(
-                        "faktor_risiko_awal7"),
-                        rs.getString("nilai_risiko_awal7"), rs.getString(
-                        "faktor_risiko_awal8"), rs.getString(
-                        "nilai_risiko_awal8"), rs.getString(
-                        "faktor_risiko_awal9"), rs.getString(
-                        "nilai_risiko_awal9"),
-                        rs.getString("faktor_risiko_awal10"), rs.getString(
-                        "nilai_risiko_awal10"), rs.getString(
-                        "faktor_risiko_awal11"), rs.getString(
-                        "nilai_risiko_awal11"), rs.getString(
-                        "faktor_risiko_awal12"),
-                        rs.getString("nilai_risiko_awal12"), rs.getString(
-                        "faktor_risiko_awal13"), rs.getString(
-                        "nilai_risiko_awal13"), rs.getString(
-                        "faktor_risiko_awal14"), rs.getString(
-                        "nilai_risiko_awal14"),
-                        rs.getString("faktor_risiko_tinggi1"), rs.getString(
-                        "nilai_risiko_tinggi1"), rs.getString(
-                        "faktor_risiko_tinggi2"), rs.getString(
-                        "nilai_risiko_tinggi2"), rs.getString(
-                        "faktor_risiko_tinggi3"),
-                        rs.getString("nilai_risiko_tinggi3"), rs.getString(
-                        "faktor_risiko_tinggi4"), rs.getString(
-                        "nilai_risiko_tinggi4"), rs.getString(
-                        "faktor_risiko_tinggi5"), rs.getString(
-                        "nilai_risiko_tinggi5"),
-                        rs.getString("faktor_risiko_tinggi6"), rs.getString(
-                        "nilai_risiko_tinggi6"), rs.getString(
-                        "faktor_risiko_tinggi7"), rs.getString(
-                        "nilai_risiko_tinggi7"), rs.getString(
-                        "faktor_risiko_tinggi8"),
-                        rs.getString("nilai_risiko_tinggi8"), rs.getString(
-                        "faktor_risiko_tinggi9"), rs.getString(
-                        "nilai_risiko_tinggi9"), rs.getString(
-                        "faktor_risiko_tinggi10"), rs.getString(
-                        "nilai_risiko_tinggi10"),
-                        rs.getString("faktor_risiko_tinggi11"), rs.getString(
-                        "nilai_risiko_tinggi11"), rs.getString(
-                        "faktor_risiko_tinggi12"), rs.getString(
-                        "nilai_risiko_tinggi12"), rs.getString(
-                        "faktor_risiko_tinggi13"),
-                        rs.getString("nilai_risiko_tinggi13"), rs.getString(
-                        "faktor_kecurigaan_ganas1"), rs.getString(
-                        "nilai_kecurigaan_ganas1"), rs.getString(
-                        "faktor_kecurigaan_ganas2"), rs.getString(
-                        "nilai_kecurigaan_ganas2"),
-                        rs.getString("faktor_kecurigaan_ganas3"), rs.getString(
-                        "nilai_kecurigaan_ganas3"), rs.getString(
-                        "faktor_kecurigaan_ganas4"), rs.getString(
-                        "nilai_kecurigaan_ganas4"), rs.getString(
-                        "faktor_kecurigaan_ganas5"),
-                        rs.getString("nilai_kecurigaan_ganas5"), rs.getString(
-                        "faktor_kecurigaan_ganas6"), rs.getString(
-                        "nilai_kecurigaan_ganas6"), rs.getString(
-                        "faktor_kecurigaan_ganas7"), rs.getString(
-                        "nilai_kecurigaan_ganas7"),
-                        rs.getString("faktor_kecurigaan_ganas8"), rs.getString(
-                        "nilai_kecurigaan_ganas8"), rs.getString("total_skor"),
-                        rs.getString("hasil_sadanis"), rs.getString(
-                        "tindak_lanjut_sadanis"),
-                        rs.getString("hasil_skrining"), rs.getString(
-                        "keterangan")
-                    });
+                        rs.getString("umurdaftar") + " " + rs.getString("sttsumur"), rs.getString("nip"),
+                        rs.getString("nama"), rs.getString("tanggal"), rs.getString("faktor_risiko_awal1"),
+                        rs.getString("nilai_risiko_awal1"), rs.getString("faktor_risiko_awal2"),
+                        rs.getString("nilai_risiko_awal2"), rs.getString("faktor_risiko_awal3"),
+                        rs.getString("nilai_risiko_awal3"), rs.getString("faktor_risiko_awal4"),
+                        rs.getString("nilai_risiko_awal4"), rs.getString("faktor_risiko_awal5"),
+                        rs.getString("nilai_risiko_awal5"), rs.getString("faktor_risiko_awal6"),
+                        rs.getString("nilai_risiko_awal6"), rs.getString("faktor_risiko_awal7"),
+                        rs.getString("nilai_risiko_awal7"), rs.getString("faktor_risiko_awal8"),
+                        rs.getString("nilai_risiko_awal8"), rs.getString("faktor_risiko_awal9"),
+                        rs.getString("nilai_risiko_awal9"), rs.getString("faktor_risiko_awal10"),
+                        rs.getString("nilai_risiko_awal10"), rs.getString("faktor_risiko_awal11"),
+                        rs.getString("nilai_risiko_awal11"), rs.getString("faktor_risiko_awal12"),
+                        rs.getString("nilai_risiko_awal12"), rs.getString("faktor_risiko_awal13"),
+                        rs.getString("nilai_risiko_awal13"), rs.getString("faktor_risiko_awal14"),
+                        rs.getString("nilai_risiko_awal14"), rs.getString("faktor_risiko_tinggi1"),
+                        rs.getString("nilai_risiko_tinggi1"), rs.getString("faktor_risiko_tinggi2"),
+                        rs.getString("nilai_risiko_tinggi2"), rs.getString("faktor_risiko_tinggi3"),
+                        rs.getString("nilai_risiko_tinggi3"), rs.getString("faktor_risiko_tinggi4"),
+                        rs.getString("nilai_risiko_tinggi4"), rs.getString("faktor_risiko_tinggi5"),
+                        rs.getString("nilai_risiko_tinggi5"), rs.getString("faktor_risiko_tinggi6"),
+                        rs.getString("nilai_risiko_tinggi6"), rs.getString("faktor_risiko_tinggi7"),
+                        rs.getString("nilai_risiko_tinggi7"), rs.getString("faktor_risiko_tinggi8"),
+                        rs.getString("nilai_risiko_tinggi8"), rs.getString("faktor_risiko_tinggi9"),
+                        rs.getString("nilai_risiko_tinggi9"), rs.getString("faktor_risiko_tinggi10"),
+                        rs.getString("nilai_risiko_tinggi10"), rs.getString("faktor_risiko_tinggi11"),
+                        rs.getString("nilai_risiko_tinggi11"), rs.getString("faktor_risiko_tinggi12"),
+                        rs.getString("nilai_risiko_tinggi12"), rs.getString("faktor_risiko_tinggi13"),
+                        rs.getString("nilai_risiko_tinggi13"), rs.getString("faktor_kecurigaan_ganas1"),
+                        rs.getString("nilai_kecurigaan_ganas1"), rs.getString("faktor_kecurigaan_ganas2"),
+                        rs.getString("nilai_kecurigaan_ganas2"), rs.getString("faktor_kecurigaan_ganas3"),
+                        rs.getString("nilai_kecurigaan_ganas3"), rs.getString("faktor_kecurigaan_ganas4"),
+                        rs.getString("nilai_kecurigaan_ganas4"), rs.getString("faktor_kecurigaan_ganas5"),
+                        rs.getString("nilai_kecurigaan_ganas5"), rs.getString("faktor_kecurigaan_ganas6"),
+                        rs.getString("nilai_kecurigaan_ganas6"), rs.getString("faktor_kecurigaan_ganas7"),
+                        rs.getString("nilai_kecurigaan_ganas7"), rs.getString("faktor_kecurigaan_ganas8"),
+                        rs.getString("nilai_kecurigaan_ganas8"), rs.getString("total_skor"),
+                        rs.getString("hasil_sadanis"), rs.getString("tindak_lanjut_sadanis"),
+                        rs.getString("hasil_skrining"), rs.getString("keterangan")});
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 System.out.println("Notif : " + e);
             } finally {
                 if (rs != null) {
@@ -4209,7 +4027,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                     ps.close();
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
         LCount.setText("" + tabMode.getRowCount());
@@ -4287,8 +4105,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
         NilaiKecurigaanKeganasan7.setText("0");
         KecurigaanKeganasan8.setSelectedIndex(0);
         NilaiKecurigaanKeganasan8.setText("0");
-        Rekomendasi.setText(
-                "Waspada dan upayakan melakukan penanggulangan sehingga skor semakin kecil..!");
+        Rekomendasi.setText("Waspada dan upayakan melakukan penanggulangan sehingga skor semakin kecil..!");
         TotalHasil.setText("0");
         HasilPemeriksaanSadanis.setSelectedIndex(0);
         TindakLanjutSadanis.setSelectedIndex(0);
@@ -4299,181 +4116,96 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(14, 15));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(17, 19));
-            FaktorAwal1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            NilaiFaktorAwal1.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    9).toString());
-            FaktorAwal2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            NilaiFaktorAwal2.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    11).toString());
-            FaktorAwal3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            NilaiFaktorAwal3.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    13).toString());
-            FaktorAwal4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            NilaiFaktorAwal4.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    15).toString());
-            FaktorAwal5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            NilaiFaktorAwal5.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    17).toString());
-            FaktorAwal6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            NilaiFaktorAwal6.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    19).toString());
-            FaktorAwal7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            NilaiFaktorAwal7.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    21).toString());
-            FaktorAwal8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            NilaiFaktorAwal8.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    23).toString());
-            FaktorAwal9.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            NilaiFaktorAwal9.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    25).toString());
-            FaktorAwal10.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
-            NilaiFaktorAwal10.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    27).toString());
-            FaktorAwal11.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 28).toString());
-            NilaiFaktorAwal11.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    29).toString());
-            FaktorAwal12.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 30).toString());
-            NilaiFaktorAwal12.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    31).toString());
-            FaktorAwal13.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 32).toString());
-            NilaiFaktorAwal13.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    33).toString());
-            FaktorAwal14.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 34).toString());
-            NilaiFaktorAwal14.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    35).toString());
-            FaktorRisikoTinggi1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 36).toString());
-            NilaiFaktorRisikoTinggi1.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 37).toString());
-            FaktorRisikoTinggi2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 38).toString());
-            NilaiFaktorRisikoTinggi2.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 39).toString());
-            FaktorRisikoTinggi3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 40).toString());
-            NilaiFaktorRisikoTinggi3.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 41).toString());
-            FaktorRisikoTinggi4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 42).toString());
-            NilaiFaktorRisikoTinggi4.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 43).toString());
-            FaktorRisikoTinggi5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 44).toString());
-            NilaiFaktorRisikoTinggi5.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 45).toString());
-            FaktorRisikoTinggi6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 46).toString());
-            NilaiFaktorRisikoTinggi6.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 47).toString());
-            FaktorRisikoTinggi7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 48).toString());
-            NilaiFaktorRisikoTinggi7.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 49).toString());
-            FaktorRisikoTinggi8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 50).toString());
-            NilaiFaktorRisikoTinggi8.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 51).toString());
-            FaktorRisikoTinggi9.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 52).toString());
-            NilaiFaktorRisikoTinggi9.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 53).toString());
-            FaktorRisikoTinggi10.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 54).toString());
-            NilaiFaktorRisikoTinggi10.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 55).toString());
-            FaktorRisikoTinggi11.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 56).toString());
-            NilaiFaktorRisikoTinggi11.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 57).toString());
-            FaktorRisikoTinggi12.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 58).toString());
-            NilaiFaktorRisikoTinggi12.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 59).toString());
-            FaktorRisikoTinggi13.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 60).toString());
-            NilaiFaktorRisikoTinggi13.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 61).toString());
-            KecurigaanKeganasan1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 62).toString());
-            NilaiKecurigaanKeganasan1.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 63).toString());
-            KecurigaanKeganasan2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 64).toString());
-            NilaiKecurigaanKeganasan2.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 65).toString());
-            KecurigaanKeganasan3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 66).toString());
-            NilaiKecurigaanKeganasan3.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 67).toString());
-            KecurigaanKeganasan4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 68).toString());
-            NilaiKecurigaanKeganasan4.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 69).toString());
-            KecurigaanKeganasan5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 70).toString());
-            NilaiKecurigaanKeganasan5.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 71).toString());
-            KecurigaanKeganasan6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 72).toString());
-            NilaiKecurigaanKeganasan6.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 73).toString());
-            KecurigaanKeganasan7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 74).toString());
-            NilaiKecurigaanKeganasan7.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 75).toString());
-            KecurigaanKeganasan8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 76).toString());
-            NilaiKecurigaanKeganasan8.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 77).toString());
-            TotalHasil.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 78).
-                    toString());
-            HasilPemeriksaanSadanis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 79).toString());
-            TindakLanjutSadanis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 80).toString());
-            HasilSkrining.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 81).toString());
-            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 82).
-                    toString());
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(14, 15));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(17, 19));
+            FaktorAwal1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            NilaiFaktorAwal1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            FaktorAwal2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            NilaiFaktorAwal2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            FaktorAwal3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            NilaiFaktorAwal3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            FaktorAwal4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            NilaiFaktorAwal4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            FaktorAwal5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            NilaiFaktorAwal5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            FaktorAwal6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            NilaiFaktorAwal6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            FaktorAwal7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            NilaiFaktorAwal7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            FaktorAwal8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            NilaiFaktorAwal8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            FaktorAwal9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            NilaiFaktorAwal9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            FaktorAwal10.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            NilaiFaktorAwal10.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            FaktorAwal11.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            NilaiFaktorAwal11.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            FaktorAwal12.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            NilaiFaktorAwal12.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            FaktorAwal13.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            NilaiFaktorAwal13.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            FaktorAwal14.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            NilaiFaktorAwal14.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            FaktorRisikoTinggi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
+            NilaiFaktorRisikoTinggi1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            FaktorRisikoTinggi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
+            NilaiFaktorRisikoTinggi2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            FaktorRisikoTinggi3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            NilaiFaktorRisikoTinggi3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            FaktorRisikoTinggi4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            NilaiFaktorRisikoTinggi4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
+            FaktorRisikoTinggi5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
+            NilaiFaktorRisikoTinggi5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
+            FaktorRisikoTinggi6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 46).toString());
+            NilaiFaktorRisikoTinggi6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 47).toString());
+            FaktorRisikoTinggi7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 48).toString());
+            NilaiFaktorRisikoTinggi7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 49).toString());
+            FaktorRisikoTinggi8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 50).toString());
+            NilaiFaktorRisikoTinggi8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 51).toString());
+            FaktorRisikoTinggi9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 52).toString());
+            NilaiFaktorRisikoTinggi9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 53).toString());
+            FaktorRisikoTinggi10.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 54).toString());
+            NilaiFaktorRisikoTinggi10.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 55).toString());
+            FaktorRisikoTinggi11.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 56).toString());
+            NilaiFaktorRisikoTinggi11.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 57).toString());
+            FaktorRisikoTinggi12.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 58).toString());
+            NilaiFaktorRisikoTinggi12.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 59).toString());
+            FaktorRisikoTinggi13.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 60).toString());
+            NilaiFaktorRisikoTinggi13.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 61).toString());
+            KecurigaanKeganasan1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 62).toString());
+            NilaiKecurigaanKeganasan1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 63).toString());
+            KecurigaanKeganasan2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 64).toString());
+            NilaiKecurigaanKeganasan2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 65).toString());
+            KecurigaanKeganasan3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 66).toString());
+            NilaiKecurigaanKeganasan3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 67).toString());
+            KecurigaanKeganasan4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 68).toString());
+            NilaiKecurigaanKeganasan4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 69).toString());
+            KecurigaanKeganasan5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 70).toString());
+            NilaiKecurigaanKeganasan5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 71).toString());
+            KecurigaanKeganasan6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 72).toString());
+            NilaiKecurigaanKeganasan6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 73).toString());
+            KecurigaanKeganasan7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 74).toString());
+            NilaiKecurigaanKeganasan7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 75).toString());
+            KecurigaanKeganasan8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 76).toString());
+            NilaiKecurigaanKeganasan8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 77).toString());
+            TotalHasil.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 78).toString());
+            HasilPemeriksaanSadanis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 79).toString());
+            TindakLanjutSadanis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 80).toString());
+            HasilSkrining.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 81).toString());
+            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 82).toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
         }
     }
 
     private void isRawat() {
         try {
-            ps = koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,"
+            ps = koneksi.prepareStatement("select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,"
                     + "reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.umurdaftar,reg_periksa.sttsumur "
                     + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "where reg_periksa.no_rawat=?");
@@ -4485,13 +4217,10 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
-                    Umur.setText(rs.getString("umurdaftar") + " " + rs.
-                            getString("sttsumur"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
+                    Umur.setText(rs.getString("umurdaftar") + " " + rs.getString("sttsumur"));
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 System.out.println("Notif : " + e);
             } finally {
                 if (rs != null) {
@@ -4501,7 +4230,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                     ps.close();
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Notif : " + e);
         }
     }
@@ -4518,8 +4247,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                    getHeight() - 172));
+            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
             FormInput.setVisible(true);
             ChkInput.setVisible(true);
         } else if (ChkInput.isSelected() == false) {
@@ -4542,8 +4270,7 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
             if (NmPetugas.getText().isEmpty()) {
                 KdPetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
 
@@ -4562,10 +4289,11 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
-            @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
                 String nol_menit = "";
@@ -4604,12 +4332,11 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
             }
-
         };
         // Timer
         new Timer(1000, taskPerformer).start();
@@ -4626,72 +4353,50 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
                 + "faktor_risiko_tinggi11=?,nilai_risiko_tinggi11=?,faktor_risiko_tinggi12=?,nilai_risiko_tinggi12=?,faktor_risiko_tinggi13=?,nilai_risiko_tinggi13=?,faktor_kecurigaan_ganas1=?,nilai_kecurigaan_ganas1=?,"
                 + "faktor_kecurigaan_ganas2=?,nilai_kecurigaan_ganas2=?,faktor_kecurigaan_ganas3=?,nilai_kecurigaan_ganas3=?,faktor_kecurigaan_ganas4=?,nilai_kecurigaan_ganas4=?,faktor_kecurigaan_ganas5=?,nilai_kecurigaan_ganas5=?,"
                 + "faktor_kecurigaan_ganas6=?,nilai_kecurigaan_ganas6=?,faktor_kecurigaan_ganas7=?,nilai_kecurigaan_ganas7=?,faktor_kecurigaan_ganas8=?,nilai_kecurigaan_ganas8=?,total_skor=?,hasil_sadanis=?,tindak_lanjut_sadanis=?,"
-                + "hasil_skrining=?,keterangan=?,nip=?", 79, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    FaktorAwal1.getSelectedItem().toString(), NilaiFaktorAwal1.
-                    getText(), FaktorAwal2.getSelectedItem().toString(),
-                    NilaiFaktorAwal2.getText(), FaktorAwal3.getSelectedItem().
-                    toString(), NilaiFaktorAwal3.getText(),
-                    FaktorAwal4.getSelectedItem().toString(), NilaiFaktorAwal4.
-                    getText(), FaktorAwal5.getSelectedItem().toString(),
-                    NilaiFaktorAwal5.getText(), FaktorAwal6.getSelectedItem().
-                    toString(), NilaiFaktorAwal6.getText(),
-                    FaktorAwal7.getSelectedItem().toString(), NilaiFaktorAwal7.
-                    getText(), FaktorAwal8.getSelectedItem().toString(),
-                    NilaiFaktorAwal8.getText(), FaktorAwal9.getSelectedItem().
-                    toString(), NilaiFaktorAwal9.getText(),
-                    FaktorAwal10.getSelectedItem().toString(),
-                    NilaiFaktorAwal10.getText(), FaktorAwal11.getSelectedItem().
-                    toString(), NilaiFaktorAwal11.getText(), FaktorAwal12.
-                    getSelectedItem().toString(), NilaiFaktorAwal12.getText(),
-                    FaktorAwal13.getSelectedItem().toString(),
-                    NilaiFaktorAwal13.getText(), FaktorAwal14.getSelectedItem().
-                    toString(), NilaiFaktorAwal14.getText(),
-                    FaktorRisikoTinggi1.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi1.getText(),
-                    FaktorRisikoTinggi2.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi2.getText(), FaktorRisikoTinggi3.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi3.
-                            getText(), FaktorRisikoTinggi4.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi4.getText(),
-                    FaktorRisikoTinggi5.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi5.getText(), FaktorRisikoTinggi6.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi6.
-                            getText(), FaktorRisikoTinggi7.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi7.getText(),
-                    FaktorRisikoTinggi8.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi8.getText(), FaktorRisikoTinggi9.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi9.
-                            getText(), FaktorRisikoTinggi10.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi10.getText(),
-                    FaktorRisikoTinggi11.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi11.getText(), FaktorRisikoTinggi12.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi12.
-                            getText(), FaktorRisikoTinggi13.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi13.getText(),
-                    KecurigaanKeganasan1.getSelectedItem().toString(),
-                    NilaiKecurigaanKeganasan1.getText(), KecurigaanKeganasan2.
-                    getSelectedItem().toString(), NilaiKecurigaanKeganasan2.
-                            getText(), KecurigaanKeganasan3.getSelectedItem().
-                            toString(), NilaiKecurigaanKeganasan3.getText(),
-                    KecurigaanKeganasan4.getSelectedItem().toString(),
-                    NilaiKecurigaanKeganasan4.getText(), KecurigaanKeganasan5.
-                    getSelectedItem().toString(), NilaiKecurigaanKeganasan5.
-                            getText(), KecurigaanKeganasan6.getSelectedItem().
-                            toString(), NilaiKecurigaanKeganasan6.getText(),
-                    KecurigaanKeganasan7.getSelectedItem().toString(),
-                    NilaiKecurigaanKeganasan7.getText(), KecurigaanKeganasan8.
-                    getSelectedItem().toString(), NilaiKecurigaanKeganasan8.
-                            getText(), TotalHasil.getText(),
-                    HasilPemeriksaanSadanis.getSelectedItem().toString(),
-                    TindakLanjutSadanis.getSelectedItem().toString(),
-                    HasilSkrining.getSelectedItem().toString(), Keterangan.
-                    getText(), KdPetugas.getText(), tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 0).toString()
-                }) == true) {
+                + "hasil_skrining=?,keterangan=?,nip=?",
+                79,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    FaktorAwal1.getSelectedItem().toString(), NilaiFaktorAwal1.getText(),
+                    FaktorAwal2.getSelectedItem().toString(), NilaiFaktorAwal2.getText(),
+                    FaktorAwal3.getSelectedItem().toString(), NilaiFaktorAwal3.getText(),
+                    FaktorAwal4.getSelectedItem().toString(), NilaiFaktorAwal4.getText(),
+                    FaktorAwal5.getSelectedItem().toString(), NilaiFaktorAwal5.getText(),
+                    FaktorAwal6.getSelectedItem().toString(), NilaiFaktorAwal6.getText(),
+                    FaktorAwal7.getSelectedItem().toString(), NilaiFaktorAwal7.getText(),
+                    FaktorAwal8.getSelectedItem().toString(), NilaiFaktorAwal8.getText(),
+                    FaktorAwal9.getSelectedItem().toString(), NilaiFaktorAwal9.getText(),
+                    FaktorAwal10.getSelectedItem().toString(), NilaiFaktorAwal10.getText(),
+                    FaktorAwal11.getSelectedItem().toString(), NilaiFaktorAwal11.getText(),
+                    FaktorAwal12.getSelectedItem().toString(), NilaiFaktorAwal12.getText(),
+                    FaktorAwal13.getSelectedItem().toString(), NilaiFaktorAwal13.getText(),
+                    FaktorAwal14.getSelectedItem().toString(), NilaiFaktorAwal14.getText(),
+                    FaktorRisikoTinggi1.getSelectedItem().toString(), NilaiFaktorRisikoTinggi1.getText(),
+                    FaktorRisikoTinggi2.getSelectedItem().toString(), NilaiFaktorRisikoTinggi2.getText(),
+                    FaktorRisikoTinggi3.getSelectedItem().toString(), NilaiFaktorRisikoTinggi3.getText(),
+                    FaktorRisikoTinggi4.getSelectedItem().toString(), NilaiFaktorRisikoTinggi4.getText(),
+                    FaktorRisikoTinggi5.getSelectedItem().toString(), NilaiFaktorRisikoTinggi5.getText(),
+                    FaktorRisikoTinggi6.getSelectedItem().toString(), NilaiFaktorRisikoTinggi6.getText(),
+                    FaktorRisikoTinggi7.getSelectedItem().toString(), NilaiFaktorRisikoTinggi7.getText(),
+                    FaktorRisikoTinggi8.getSelectedItem().toString(), NilaiFaktorRisikoTinggi8.getText(),
+                    FaktorRisikoTinggi9.getSelectedItem().toString(), NilaiFaktorRisikoTinggi9.getText(),
+                    FaktorRisikoTinggi10.getSelectedItem().toString(), NilaiFaktorRisikoTinggi10.getText(),
+                    FaktorRisikoTinggi11.getSelectedItem().toString(), NilaiFaktorRisikoTinggi11.getText(),
+                    FaktorRisikoTinggi12.getSelectedItem().toString(), NilaiFaktorRisikoTinggi12.getText(),
+                    FaktorRisikoTinggi13.getSelectedItem().toString(), NilaiFaktorRisikoTinggi13.getText(),
+                    KecurigaanKeganasan1.getSelectedItem().toString(), NilaiKecurigaanKeganasan1.getText(),
+                    KecurigaanKeganasan2.getSelectedItem().toString(), NilaiKecurigaanKeganasan2.getText(),
+                    KecurigaanKeganasan3.getSelectedItem().toString(), NilaiKecurigaanKeganasan3.getText(),
+                    KecurigaanKeganasan4.getSelectedItem().toString(), NilaiKecurigaanKeganasan4.getText(),
+                    KecurigaanKeganasan5.getSelectedItem().toString(), NilaiKecurigaanKeganasan5.getText(),
+                    KecurigaanKeganasan6.getSelectedItem().toString(), NilaiKecurigaanKeganasan6.getText(),
+                    KecurigaanKeganasan7.getSelectedItem().toString(), NilaiKecurigaanKeganasan7.getText(),
+                    KecurigaanKeganasan8.getSelectedItem().toString(), NilaiKecurigaanKeganasan8.getText(),
+                    TotalHasil.getText(), HasilPemeriksaanSadanis.getSelectedItem().toString(),
+                    TindakLanjutSadanis.getSelectedItem().toString(), HasilSkrining.getSelectedItem().toString(),
+                    Keterangan.getText(), KdPetugas.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
@@ -4699,168 +4404,90 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
             tbObat.setValueAt(Umur.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(KdPetugas.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 7);
-            tbObat.setValueAt(FaktorAwal1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
-            tbObat.setValueAt(NilaiFaktorAwal1.getText(), tbObat.
-                    getSelectedRow(), 9);
-            tbObat.setValueAt(FaktorAwal2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 10);
-            tbObat.setValueAt(NilaiFaktorAwal2.getText(), tbObat.
-                    getSelectedRow(), 11);
-            tbObat.setValueAt(FaktorAwal3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(NilaiFaktorAwal3.getText(), tbObat.
-                    getSelectedRow(), 13);
-            tbObat.setValueAt(FaktorAwal4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(NilaiFaktorAwal4.getText(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(FaktorAwal5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(NilaiFaktorAwal5.getText(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.setValueAt(FaktorAwal6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 18);
-            tbObat.setValueAt(NilaiFaktorAwal6.getText(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.setValueAt(FaktorAwal7.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 20);
-            tbObat.setValueAt(NilaiFaktorAwal7.getText(), tbObat.
-                    getSelectedRow(), 21);
-            tbObat.setValueAt(FaktorAwal8.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 22);
-            tbObat.setValueAt(NilaiFaktorAwal8.getText(), tbObat.
-                    getSelectedRow(), 23);
-            tbObat.setValueAt(FaktorAwal9.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 24);
-            tbObat.setValueAt(NilaiFaktorAwal9.getText(), tbObat.
-                    getSelectedRow(), 25);
-            tbObat.setValueAt(FaktorAwal10.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 26);
-            tbObat.setValueAt(NilaiFaktorAwal10.getText(), tbObat.
-                    getSelectedRow(), 27);
-            tbObat.setValueAt(FaktorAwal11.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 28);
-            tbObat.setValueAt(NilaiFaktorAwal11.getText(), tbObat.
-                    getSelectedRow(), 29);
-            tbObat.setValueAt(FaktorAwal12.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 30);
-            tbObat.setValueAt(NilaiFaktorAwal12.getText(), tbObat.
-                    getSelectedRow(), 31);
-            tbObat.setValueAt(FaktorAwal13.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 32);
-            tbObat.setValueAt(NilaiFaktorAwal13.getText(), tbObat.
-                    getSelectedRow(), 33);
-            tbObat.setValueAt(FaktorAwal14.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 34);
-            tbObat.setValueAt(NilaiFaktorAwal14.getText(), tbObat.
-                    getSelectedRow(), 35);
-            tbObat.setValueAt(FaktorRisikoTinggi1.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 36);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi1.getText(), tbObat.
-                    getSelectedRow(), 37);
-            tbObat.setValueAt(FaktorRisikoTinggi2.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 38);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi2.getText(), tbObat.
-                    getSelectedRow(), 39);
-            tbObat.setValueAt(FaktorRisikoTinggi3.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 40);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi3.getText(), tbObat.
-                    getSelectedRow(), 41);
-            tbObat.setValueAt(FaktorRisikoTinggi4.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 42);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi4.getText(), tbObat.
-                    getSelectedRow(), 43);
-            tbObat.setValueAt(FaktorRisikoTinggi5.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 44);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi5.getText(), tbObat.
-                    getSelectedRow(), 45);
-            tbObat.setValueAt(FaktorRisikoTinggi6.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 46);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi6.getText(), tbObat.
-                    getSelectedRow(), 47);
-            tbObat.setValueAt(FaktorRisikoTinggi7.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 48);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi7.getText(), tbObat.
-                    getSelectedRow(), 49);
-            tbObat.setValueAt(FaktorRisikoTinggi8.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 50);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi8.getText(), tbObat.
-                    getSelectedRow(), 51);
-            tbObat.setValueAt(FaktorRisikoTinggi9.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 52);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi9.getText(), tbObat.
-                    getSelectedRow(), 53);
-            tbObat.setValueAt(FaktorRisikoTinggi10.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 54);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi10.getText(), tbObat.
-                    getSelectedRow(), 55);
-            tbObat.setValueAt(FaktorRisikoTinggi11.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 56);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi11.getText(), tbObat.
-                    getSelectedRow(), 57);
-            tbObat.setValueAt(FaktorRisikoTinggi12.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 58);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi12.getText(), tbObat.
-                    getSelectedRow(), 59);
-            tbObat.setValueAt(FaktorRisikoTinggi13.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 60);
-            tbObat.setValueAt(NilaiFaktorRisikoTinggi13.getText(), tbObat.
-                    getSelectedRow(), 61);
-            tbObat.setValueAt(KecurigaanKeganasan1.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 62);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan1.getText(), tbObat.
-                    getSelectedRow(), 63);
-            tbObat.setValueAt(KecurigaanKeganasan2.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 64);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan2.getText(), tbObat.
-                    getSelectedRow(), 65);
-            tbObat.setValueAt(KecurigaanKeganasan3.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 66);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan3.getText(), tbObat.
-                    getSelectedRow(), 67);
-            tbObat.setValueAt(KecurigaanKeganasan4.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 68);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan4.getText(), tbObat.
-                    getSelectedRow(), 69);
-            tbObat.setValueAt(KecurigaanKeganasan5.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 70);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan5.getText(), tbObat.
-                    getSelectedRow(), 71);
-            tbObat.setValueAt(KecurigaanKeganasan6.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 72);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan6.getText(), tbObat.
-                    getSelectedRow(), 73);
-            tbObat.setValueAt(KecurigaanKeganasan7.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 74);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan7.getText(), tbObat.
-                    getSelectedRow(), 75);
-            tbObat.setValueAt(KecurigaanKeganasan8.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 76);
-            tbObat.setValueAt(NilaiKecurigaanKeganasan8.getText(), tbObat.
-                    getSelectedRow(), 77);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(FaktorAwal1.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(NilaiFaktorAwal1.getText(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(FaktorAwal2.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(NilaiFaktorAwal2.getText(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(FaktorAwal3.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(NilaiFaktorAwal3.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(FaktorAwal4.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(NilaiFaktorAwal4.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(FaktorAwal5.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(NilaiFaktorAwal5.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(FaktorAwal6.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(NilaiFaktorAwal6.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(FaktorAwal7.getSelectedItem().toString(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(NilaiFaktorAwal7.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(FaktorAwal8.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(NilaiFaktorAwal8.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(FaktorAwal9.getSelectedItem().toString(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(NilaiFaktorAwal9.getText(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(FaktorAwal10.getSelectedItem().toString(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(NilaiFaktorAwal10.getText(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(FaktorAwal11.getSelectedItem().toString(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(NilaiFaktorAwal11.getText(), tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(FaktorAwal12.getSelectedItem().toString(), tbObat.getSelectedRow(), 30);
+            tbObat.setValueAt(NilaiFaktorAwal12.getText(), tbObat.getSelectedRow(), 31);
+            tbObat.setValueAt(FaktorAwal13.getSelectedItem().toString(), tbObat.getSelectedRow(), 32);
+            tbObat.setValueAt(NilaiFaktorAwal13.getText(), tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(FaktorAwal14.getSelectedItem().toString(), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(NilaiFaktorAwal14.getText(), tbObat.getSelectedRow(), 35);
+            tbObat.setValueAt(FaktorRisikoTinggi1.getSelectedItem().toString(), tbObat.getSelectedRow(), 36);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi1.getText(), tbObat.getSelectedRow(), 37);
+            tbObat.setValueAt(FaktorRisikoTinggi2.getSelectedItem().toString(), tbObat.getSelectedRow(), 38);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi2.getText(), tbObat.getSelectedRow(), 39);
+            tbObat.setValueAt(FaktorRisikoTinggi3.getSelectedItem().toString(), tbObat.getSelectedRow(), 40);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi3.getText(), tbObat.getSelectedRow(), 41);
+            tbObat.setValueAt(FaktorRisikoTinggi4.getSelectedItem().toString(), tbObat.getSelectedRow(), 42);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi4.getText(), tbObat.getSelectedRow(), 43);
+            tbObat.setValueAt(FaktorRisikoTinggi5.getSelectedItem().toString(), tbObat.getSelectedRow(), 44);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi5.getText(), tbObat.getSelectedRow(), 45);
+            tbObat.setValueAt(FaktorRisikoTinggi6.getSelectedItem().toString(), tbObat.getSelectedRow(), 46);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi6.getText(), tbObat.getSelectedRow(), 47);
+            tbObat.setValueAt(FaktorRisikoTinggi7.getSelectedItem().toString(), tbObat.getSelectedRow(), 48);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi7.getText(), tbObat.getSelectedRow(), 49);
+            tbObat.setValueAt(FaktorRisikoTinggi8.getSelectedItem().toString(), tbObat.getSelectedRow(), 50);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi8.getText(), tbObat.getSelectedRow(), 51);
+            tbObat.setValueAt(FaktorRisikoTinggi9.getSelectedItem().toString(), tbObat.getSelectedRow(), 52);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi9.getText(), tbObat.getSelectedRow(), 53);
+            tbObat.setValueAt(FaktorRisikoTinggi10.getSelectedItem().toString(), tbObat.getSelectedRow(), 54);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi10.getText(), tbObat.getSelectedRow(), 55);
+            tbObat.setValueAt(FaktorRisikoTinggi11.getSelectedItem().toString(), tbObat.getSelectedRow(), 56);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi11.getText(), tbObat.getSelectedRow(), 57);
+            tbObat.setValueAt(FaktorRisikoTinggi12.getSelectedItem().toString(), tbObat.getSelectedRow(), 58);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi12.getText(), tbObat.getSelectedRow(), 59);
+            tbObat.setValueAt(FaktorRisikoTinggi13.getSelectedItem().toString(), tbObat.getSelectedRow(), 60);
+            tbObat.setValueAt(NilaiFaktorRisikoTinggi13.getText(), tbObat.getSelectedRow(), 61);
+            tbObat.setValueAt(KecurigaanKeganasan1.getSelectedItem().toString(), tbObat.getSelectedRow(), 62);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan1.getText(), tbObat.getSelectedRow(), 63);
+            tbObat.setValueAt(KecurigaanKeganasan2.getSelectedItem().toString(), tbObat.getSelectedRow(), 64);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan2.getText(), tbObat.getSelectedRow(), 65);
+            tbObat.setValueAt(KecurigaanKeganasan3.getSelectedItem().toString(), tbObat.getSelectedRow(), 66);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan3.getText(), tbObat.getSelectedRow(), 67);
+            tbObat.setValueAt(KecurigaanKeganasan4.getSelectedItem().toString(), tbObat.getSelectedRow(), 68);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan4.getText(), tbObat.getSelectedRow(), 69);
+            tbObat.setValueAt(KecurigaanKeganasan5.getSelectedItem().toString(), tbObat.getSelectedRow(), 70);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan5.getText(), tbObat.getSelectedRow(), 71);
+            tbObat.setValueAt(KecurigaanKeganasan6.getSelectedItem().toString(), tbObat.getSelectedRow(), 72);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan6.getText(), tbObat.getSelectedRow(), 73);
+            tbObat.setValueAt(KecurigaanKeganasan7.getSelectedItem().toString(), tbObat.getSelectedRow(), 74);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan7.getText(), tbObat.getSelectedRow(), 75);
+            tbObat.setValueAt(KecurigaanKeganasan8.getSelectedItem().toString(), tbObat.getSelectedRow(), 76);
+            tbObat.setValueAt(NilaiKecurigaanKeganasan8.getText(), tbObat.getSelectedRow(), 77);
             tbObat.setValueAt(TotalHasil.getText(), tbObat.getSelectedRow(), 78);
-            tbObat.setValueAt(HasilPemeriksaanSadanis.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 79);
-            tbObat.setValueAt(TindakLanjutSadanis.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 80);
-            tbObat.setValueAt(HasilSkrining.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 81);
+            tbObat.setValueAt(HasilPemeriksaanSadanis.getSelectedItem().toString(), tbObat.getSelectedRow(), 79);
+            tbObat.setValueAt(TindakLanjutSadanis.getSelectedItem().toString(), tbObat.getSelectedRow(), 80);
+            tbObat.setValueAt(HasilSkrining.getSelectedItem().toString(), tbObat.getSelectedRow(), 81);
             tbObat.setValueAt(Keterangan.getText(), tbObat.getSelectedRow(), 82);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from skrining_risiko_kanker_payudara where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from skrining_risiko_kanker_payudara where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -4871,205 +4498,147 @@ public class RMSkriningRisikoKankerPayudara extends javax.swing.JDialog {
 
     private void isTotal() {
         try {
-            TotalHasil.setText("" + (Integer.
-                    parseInt(NilaiFaktorAwal1.getText()) + Integer.parseInt(
-                    NilaiFaktorAwal2.getText())
-                    + Integer.parseInt(NilaiFaktorAwal3.getText()) + Integer.
-                    parseInt(NilaiFaktorAwal4.getText())
-                    + Integer.parseInt(NilaiFaktorAwal5.getText()) + Integer.
-                    parseInt(NilaiFaktorAwal6.getText())
-                    + Integer.parseInt(NilaiFaktorAwal7.getText()) + Integer.
-                    parseInt(NilaiFaktorAwal8.getText())
-                    + Integer.parseInt(NilaiFaktorAwal9.getText()) + Integer.
-                    parseInt(NilaiFaktorAwal10.getText())
-                    + Integer.parseInt(NilaiFaktorAwal11.getText()) + Integer.
-                    parseInt(NilaiFaktorAwal12.getText())
-                    + Integer.parseInt(NilaiFaktorAwal13.getText()) + Integer.
-                    parseInt(NilaiFaktorAwal14.getText())
-                    + Integer.parseInt(NilaiFaktorRisikoTinggi1.getText()) + Integer.
-                    parseInt(NilaiFaktorRisikoTinggi2.getText())
-                    + Integer.parseInt(NilaiFaktorRisikoTinggi3.getText()) + Integer.
-                    parseInt(NilaiFaktorRisikoTinggi4.getText())
-                    + Integer.parseInt(NilaiFaktorRisikoTinggi5.getText()) + Integer.
-                    parseInt(NilaiFaktorRisikoTinggi6.getText())
-                    + Integer.parseInt(NilaiFaktorRisikoTinggi7.getText()) + Integer.
-                    parseInt(NilaiFaktorRisikoTinggi8.getText())
-                    + Integer.parseInt(NilaiFaktorRisikoTinggi9.getText()) + Integer.
-                    parseInt(NilaiFaktorRisikoTinggi10.getText())
-                    + Integer.parseInt(NilaiFaktorRisikoTinggi11.getText()) + Integer.
-                    parseInt(NilaiFaktorRisikoTinggi12.getText())
-                    + Integer.parseInt(NilaiFaktorRisikoTinggi13.getText()) + Integer.
-                    parseInt(NilaiKecurigaanKeganasan1.getText())
-                    + Integer.parseInt(NilaiKecurigaanKeganasan2.getText()) + Integer.
-                    parseInt(NilaiKecurigaanKeganasan3.getText())
-                    + Integer.parseInt(NilaiKecurigaanKeganasan4.getText()) + Integer.
-                    parseInt(NilaiKecurigaanKeganasan5.getText())
-                    + Integer.parseInt(NilaiKecurigaanKeganasan6.getText()) + Integer.
-                    parseInt(NilaiKecurigaanKeganasan7.getText())
+            TotalHasil.setText("" + (Integer.parseInt(NilaiFaktorAwal1.getText())
+                    + Integer.parseInt(NilaiFaktorAwal2.getText()) + Integer.parseInt(NilaiFaktorAwal3.getText())
+                    + Integer.parseInt(NilaiFaktorAwal4.getText()) + Integer.parseInt(NilaiFaktorAwal5.getText())
+                    + Integer.parseInt(NilaiFaktorAwal6.getText()) + Integer.parseInt(NilaiFaktorAwal7.getText())
+                    + Integer.parseInt(NilaiFaktorAwal8.getText()) + Integer.parseInt(NilaiFaktorAwal9.getText())
+                    + Integer.parseInt(NilaiFaktorAwal10.getText()) + Integer.parseInt(NilaiFaktorAwal11.getText())
+                    + Integer.parseInt(NilaiFaktorAwal12.getText()) + Integer.parseInt(NilaiFaktorAwal13.getText())
+                    + Integer.parseInt(NilaiFaktorAwal14.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi1.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi2.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi3.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi4.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi5.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi6.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi7.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi8.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi9.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi10.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi11.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi12.getText())
+                    + Integer.parseInt(NilaiFaktorRisikoTinggi13.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan1.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan2.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan3.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan4.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan5.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan6.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan7.getText())
                     + Integer.parseInt(NilaiKecurigaanKeganasan8.getText())));
             if (Integer.parseInt(TotalHasil.getText()) >= 16) {
-                Rekomendasi.setText(
-                        "Resiko Tinggi. Segera periksa payudara, ikuti nasehat tenaga kesehatan/dokter...!");
+                Rekomendasi
+                        .setText("Resiko Tinggi. Segera periksa payudara, ikuti nasehat tenaga kesehatan/dokter...!");
             } else {
-                Rekomendasi.setText(
-                        "Waspada dan upayakan melakukan penanggulangan sehingga skor semakin kecil...!");
+                Rekomendasi.setText("Waspada dan upayakan melakukan penanggulangan sehingga skor semakin kecil...!");
             }
             if ((Integer.parseInt(NilaiKecurigaanKeganasan1.getText())
-                    + Integer.parseInt(NilaiKecurigaanKeganasan2.getText()) + Integer.
-                    parseInt(NilaiKecurigaanKeganasan3.getText())
-                    + Integer.parseInt(NilaiKecurigaanKeganasan4.getText()) + Integer.
-                    parseInt(NilaiKecurigaanKeganasan5.getText())
-                    + Integer.parseInt(NilaiKecurigaanKeganasan6.getText()) + Integer.
-                    parseInt(NilaiKecurigaanKeganasan7.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan2.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan3.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan4.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan5.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan6.getText())
+                    + Integer.parseInt(NilaiKecurigaanKeganasan7.getText())
                     + Integer.parseInt(NilaiKecurigaanKeganasan8.getText())) > 0) {
                 Rekomendasi.setText(
                         Rekomendasi.getText() + ". Sangat curiga ada keganasan pada payudara. Segera ke dokter...!");
             }
         } catch (Exception e) {
-            Rekomendasi.setText(
-                    "Waspada dan upayakan melakukan penanggulangan sehingga skor semakin kecil...!");
+            Rekomendasi.setText("Waspada dan upayakan melakukan penanggulangan sehingga skor semakin kecil...!");
         }
     }
 
     private void simpan() {
         if (Sequel.menyimpantf("skrining_risiko_kanker_payudara",
                 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                "Data", 78, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    FaktorAwal1.getSelectedItem().toString(), NilaiFaktorAwal1.
-                    getText(), FaktorAwal2.getSelectedItem().toString(),
-                    NilaiFaktorAwal2.getText(), FaktorAwal3.getSelectedItem().
-                    toString(), NilaiFaktorAwal3.getText(),
-                    FaktorAwal4.getSelectedItem().toString(), NilaiFaktorAwal4.
-                    getText(), FaktorAwal5.getSelectedItem().toString(),
-                    NilaiFaktorAwal5.getText(), FaktorAwal6.getSelectedItem().
-                    toString(), NilaiFaktorAwal6.getText(),
-                    FaktorAwal7.getSelectedItem().toString(), NilaiFaktorAwal7.
-                    getText(), FaktorAwal8.getSelectedItem().toString(),
-                    NilaiFaktorAwal8.getText(), FaktorAwal9.getSelectedItem().
-                    toString(), NilaiFaktorAwal9.getText(),
-                    FaktorAwal10.getSelectedItem().toString(),
-                    NilaiFaktorAwal10.getText(), FaktorAwal11.getSelectedItem().
-                    toString(), NilaiFaktorAwal11.getText(), FaktorAwal12.
-                    getSelectedItem().toString(), NilaiFaktorAwal12.getText(),
-                    FaktorAwal13.getSelectedItem().toString(),
-                    NilaiFaktorAwal13.getText(), FaktorAwal14.getSelectedItem().
-                    toString(), NilaiFaktorAwal14.getText(),
-                    FaktorRisikoTinggi1.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi1.getText(),
-                    FaktorRisikoTinggi2.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi2.getText(), FaktorRisikoTinggi3.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi3.
-                            getText(), FaktorRisikoTinggi4.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi4.getText(),
-                    FaktorRisikoTinggi5.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi5.getText(), FaktorRisikoTinggi6.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi6.
-                            getText(), FaktorRisikoTinggi7.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi7.getText(),
-                    FaktorRisikoTinggi8.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi8.getText(), FaktorRisikoTinggi9.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi9.
-                            getText(), FaktorRisikoTinggi10.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi10.getText(),
-                    FaktorRisikoTinggi11.getSelectedItem().toString(),
-                    NilaiFaktorRisikoTinggi11.getText(), FaktorRisikoTinggi12.
-                    getSelectedItem().toString(), NilaiFaktorRisikoTinggi12.
-                            getText(), FaktorRisikoTinggi13.getSelectedItem().
-                            toString(), NilaiFaktorRisikoTinggi13.getText(),
-                    KecurigaanKeganasan1.getSelectedItem().toString(),
-                    NilaiKecurigaanKeganasan1.getText(), KecurigaanKeganasan2.
-                    getSelectedItem().toString(), NilaiKecurigaanKeganasan2.
-                            getText(), KecurigaanKeganasan3.getSelectedItem().
-                            toString(), NilaiKecurigaanKeganasan3.getText(),
-                    KecurigaanKeganasan4.getSelectedItem().toString(),
-                    NilaiKecurigaanKeganasan4.getText(), KecurigaanKeganasan5.
-                    getSelectedItem().toString(), NilaiKecurigaanKeganasan5.
-                            getText(), KecurigaanKeganasan6.getSelectedItem().
-                            toString(), NilaiKecurigaanKeganasan6.getText(),
-                    KecurigaanKeganasan7.getSelectedItem().toString(),
-                    NilaiKecurigaanKeganasan7.getText(), KecurigaanKeganasan8.
-                    getSelectedItem().toString(), NilaiKecurigaanKeganasan8.
-                            getText(), TotalHasil.getText(),
-                    HasilPemeriksaanSadanis.getSelectedItem().toString(),
-                    TindakLanjutSadanis.getSelectedItem().toString(),
-                    HasilSkrining.getSelectedItem().toString(), Keterangan.
-                    getText(), KdPetugas.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), Umur.getText(), KdPetugas.getText(), NmPetugas.
-                getText(),
-                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                getSelectedItem(),
-                FaktorAwal1.getSelectedItem().toString(), NilaiFaktorAwal1.
-                getText(), FaktorAwal2.getSelectedItem().toString(),
-                NilaiFaktorAwal2.getText(), FaktorAwal3.getSelectedItem().
-                toString(), NilaiFaktorAwal3.getText(),
-                FaktorAwal4.getSelectedItem().toString(), NilaiFaktorAwal4.
-                getText(), FaktorAwal5.getSelectedItem().toString(),
-                NilaiFaktorAwal5.getText(), FaktorAwal6.getSelectedItem().
-                toString(), NilaiFaktorAwal6.getText(),
-                FaktorAwal7.getSelectedItem().toString(), NilaiFaktorAwal7.
-                getText(), FaktorAwal8.getSelectedItem().toString(),
-                NilaiFaktorAwal8.getText(), FaktorAwal9.getSelectedItem().
-                toString(), NilaiFaktorAwal9.getText(),
-                FaktorAwal10.getSelectedItem().toString(), NilaiFaktorAwal10.
-                getText(), FaktorAwal11.getSelectedItem().toString(),
-                NilaiFaktorAwal11.getText(), FaktorAwal12.getSelectedItem().
-                toString(), NilaiFaktorAwal12.getText(),
-                FaktorAwal13.getSelectedItem().toString(), NilaiFaktorAwal13.
-                getText(), FaktorAwal14.getSelectedItem().toString(),
-                NilaiFaktorAwal14.getText(), FaktorRisikoTinggi1.
-                getSelectedItem().toString(), NilaiFaktorRisikoTinggi1.getText(),
-                FaktorRisikoTinggi2.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi2.getText(), FaktorRisikoTinggi3.
-                getSelectedItem().toString(), NilaiFaktorRisikoTinggi3.getText(),
-                FaktorRisikoTinggi4.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi4.getText(),
-                FaktorRisikoTinggi5.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi5.getText(), FaktorRisikoTinggi6.
-                getSelectedItem().toString(), NilaiFaktorRisikoTinggi6.getText(),
-                FaktorRisikoTinggi7.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi7.getText(),
-                FaktorRisikoTinggi8.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi8.getText(), FaktorRisikoTinggi9.
-                getSelectedItem().toString(), NilaiFaktorRisikoTinggi9.getText(),
-                FaktorRisikoTinggi10.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi10.getText(),
-                FaktorRisikoTinggi11.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi11.getText(), FaktorRisikoTinggi12.
-                getSelectedItem().toString(), NilaiFaktorRisikoTinggi12.
-                getText(), FaktorRisikoTinggi13.getSelectedItem().toString(),
-                NilaiFaktorRisikoTinggi13.getText(),
-                KecurigaanKeganasan1.getSelectedItem().toString(),
-                NilaiKecurigaanKeganasan1.getText(), KecurigaanKeganasan2.
-                getSelectedItem().toString(), NilaiKecurigaanKeganasan2.
-                getText(), KecurigaanKeganasan3.getSelectedItem().toString(),
-                NilaiKecurigaanKeganasan3.getText(),
-                KecurigaanKeganasan4.getSelectedItem().toString(),
-                NilaiKecurigaanKeganasan4.getText(), KecurigaanKeganasan5.
-                getSelectedItem().toString(), NilaiKecurigaanKeganasan5.
-                getText(), KecurigaanKeganasan6.getSelectedItem().toString(),
-                NilaiKecurigaanKeganasan6.getText(),
-                KecurigaanKeganasan7.getSelectedItem().toString(),
-                NilaiKecurigaanKeganasan7.getText(), KecurigaanKeganasan8.
-                getSelectedItem().toString(), NilaiKecurigaanKeganasan8.
-                getText(), TotalHasil.getText(), HasilPemeriksaanSadanis.
-                getSelectedItem().toString(),
-                TindakLanjutSadanis.getSelectedItem().toString(), HasilSkrining.
-                getSelectedItem().toString(), Keterangan.getText()
-            });
+                "Data", 78,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    FaktorAwal1.getSelectedItem().toString(), NilaiFaktorAwal1.getText(),
+                    FaktorAwal2.getSelectedItem().toString(), NilaiFaktorAwal2.getText(),
+                    FaktorAwal3.getSelectedItem().toString(), NilaiFaktorAwal3.getText(),
+                    FaktorAwal4.getSelectedItem().toString(), NilaiFaktorAwal4.getText(),
+                    FaktorAwal5.getSelectedItem().toString(), NilaiFaktorAwal5.getText(),
+                    FaktorAwal6.getSelectedItem().toString(), NilaiFaktorAwal6.getText(),
+                    FaktorAwal7.getSelectedItem().toString(), NilaiFaktorAwal7.getText(),
+                    FaktorAwal8.getSelectedItem().toString(), NilaiFaktorAwal8.getText(),
+                    FaktorAwal9.getSelectedItem().toString(), NilaiFaktorAwal9.getText(),
+                    FaktorAwal10.getSelectedItem().toString(), NilaiFaktorAwal10.getText(),
+                    FaktorAwal11.getSelectedItem().toString(), NilaiFaktorAwal11.getText(),
+                    FaktorAwal12.getSelectedItem().toString(), NilaiFaktorAwal12.getText(),
+                    FaktorAwal13.getSelectedItem().toString(), NilaiFaktorAwal13.getText(),
+                    FaktorAwal14.getSelectedItem().toString(), NilaiFaktorAwal14.getText(),
+                    FaktorRisikoTinggi1.getSelectedItem().toString(), NilaiFaktorRisikoTinggi1.getText(),
+                    FaktorRisikoTinggi2.getSelectedItem().toString(), NilaiFaktorRisikoTinggi2.getText(),
+                    FaktorRisikoTinggi3.getSelectedItem().toString(), NilaiFaktorRisikoTinggi3.getText(),
+                    FaktorRisikoTinggi4.getSelectedItem().toString(), NilaiFaktorRisikoTinggi4.getText(),
+                    FaktorRisikoTinggi5.getSelectedItem().toString(), NilaiFaktorRisikoTinggi5.getText(),
+                    FaktorRisikoTinggi6.getSelectedItem().toString(), NilaiFaktorRisikoTinggi6.getText(),
+                    FaktorRisikoTinggi7.getSelectedItem().toString(), NilaiFaktorRisikoTinggi7.getText(),
+                    FaktorRisikoTinggi8.getSelectedItem().toString(), NilaiFaktorRisikoTinggi8.getText(),
+                    FaktorRisikoTinggi9.getSelectedItem().toString(), NilaiFaktorRisikoTinggi9.getText(),
+                    FaktorRisikoTinggi10.getSelectedItem().toString(), NilaiFaktorRisikoTinggi10.getText(),
+                    FaktorRisikoTinggi11.getSelectedItem().toString(), NilaiFaktorRisikoTinggi11.getText(),
+                    FaktorRisikoTinggi12.getSelectedItem().toString(), NilaiFaktorRisikoTinggi12.getText(),
+                    FaktorRisikoTinggi13.getSelectedItem().toString(), NilaiFaktorRisikoTinggi13.getText(),
+                    KecurigaanKeganasan1.getSelectedItem().toString(), NilaiKecurigaanKeganasan1.getText(),
+                    KecurigaanKeganasan2.getSelectedItem().toString(), NilaiKecurigaanKeganasan2.getText(),
+                    KecurigaanKeganasan3.getSelectedItem().toString(), NilaiKecurigaanKeganasan3.getText(),
+                    KecurigaanKeganasan4.getSelectedItem().toString(), NilaiKecurigaanKeganasan4.getText(),
+                    KecurigaanKeganasan5.getSelectedItem().toString(), NilaiKecurigaanKeganasan5.getText(),
+                    KecurigaanKeganasan6.getSelectedItem().toString(), NilaiKecurigaanKeganasan6.getText(),
+                    KecurigaanKeganasan7.getSelectedItem().toString(), NilaiKecurigaanKeganasan7.getText(),
+                    KecurigaanKeganasan8.getSelectedItem().toString(), NilaiKecurigaanKeganasan8.getText(),
+                    TotalHasil.getText(), HasilPemeriksaanSadanis.getSelectedItem().toString(),
+                    TindakLanjutSadanis.getSelectedItem().toString(), HasilSkrining.getSelectedItem().toString(),
+                    Keterangan.getText(), KdPetugas.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                Umur.getText(), KdPetugas.getText(), NmPetugas.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                FaktorAwal1.getSelectedItem().toString(), NilaiFaktorAwal1.getText(),
+                FaktorAwal2.getSelectedItem().toString(), NilaiFaktorAwal2.getText(),
+                FaktorAwal3.getSelectedItem().toString(), NilaiFaktorAwal3.getText(),
+                FaktorAwal4.getSelectedItem().toString(), NilaiFaktorAwal4.getText(),
+                FaktorAwal5.getSelectedItem().toString(), NilaiFaktorAwal5.getText(),
+                FaktorAwal6.getSelectedItem().toString(), NilaiFaktorAwal6.getText(),
+                FaktorAwal7.getSelectedItem().toString(), NilaiFaktorAwal7.getText(),
+                FaktorAwal8.getSelectedItem().toString(), NilaiFaktorAwal8.getText(),
+                FaktorAwal9.getSelectedItem().toString(), NilaiFaktorAwal9.getText(),
+                FaktorAwal10.getSelectedItem().toString(), NilaiFaktorAwal10.getText(),
+                FaktorAwal11.getSelectedItem().toString(), NilaiFaktorAwal11.getText(),
+                FaktorAwal12.getSelectedItem().toString(), NilaiFaktorAwal12.getText(),
+                FaktorAwal13.getSelectedItem().toString(), NilaiFaktorAwal13.getText(),
+                FaktorAwal14.getSelectedItem().toString(), NilaiFaktorAwal14.getText(),
+                FaktorRisikoTinggi1.getSelectedItem().toString(), NilaiFaktorRisikoTinggi1.getText(),
+                FaktorRisikoTinggi2.getSelectedItem().toString(), NilaiFaktorRisikoTinggi2.getText(),
+                FaktorRisikoTinggi3.getSelectedItem().toString(), NilaiFaktorRisikoTinggi3.getText(),
+                FaktorRisikoTinggi4.getSelectedItem().toString(), NilaiFaktorRisikoTinggi4.getText(),
+                FaktorRisikoTinggi5.getSelectedItem().toString(), NilaiFaktorRisikoTinggi5.getText(),
+                FaktorRisikoTinggi6.getSelectedItem().toString(), NilaiFaktorRisikoTinggi6.getText(),
+                FaktorRisikoTinggi7.getSelectedItem().toString(), NilaiFaktorRisikoTinggi7.getText(),
+                FaktorRisikoTinggi8.getSelectedItem().toString(), NilaiFaktorRisikoTinggi8.getText(),
+                FaktorRisikoTinggi9.getSelectedItem().toString(), NilaiFaktorRisikoTinggi9.getText(),
+                FaktorRisikoTinggi10.getSelectedItem().toString(), NilaiFaktorRisikoTinggi10.getText(),
+                FaktorRisikoTinggi11.getSelectedItem().toString(), NilaiFaktorRisikoTinggi11.getText(),
+                FaktorRisikoTinggi12.getSelectedItem().toString(), NilaiFaktorRisikoTinggi12.getText(),
+                FaktorRisikoTinggi13.getSelectedItem().toString(), NilaiFaktorRisikoTinggi13.getText(),
+                KecurigaanKeganasan1.getSelectedItem().toString(), NilaiKecurigaanKeganasan1.getText(),
+                KecurigaanKeganasan2.getSelectedItem().toString(), NilaiKecurigaanKeganasan2.getText(),
+                KecurigaanKeganasan3.getSelectedItem().toString(), NilaiKecurigaanKeganasan3.getText(),
+                KecurigaanKeganasan4.getSelectedItem().toString(), NilaiKecurigaanKeganasan4.getText(),
+                KecurigaanKeganasan5.getSelectedItem().toString(), NilaiKecurigaanKeganasan5.getText(),
+                KecurigaanKeganasan6.getSelectedItem().toString(), NilaiKecurigaanKeganasan6.getText(),
+                KecurigaanKeganasan7.getSelectedItem().toString(), NilaiKecurigaanKeganasan7.getText(),
+                KecurigaanKeganasan8.getSelectedItem().toString(), NilaiKecurigaanKeganasan8.getText(),
+                TotalHasil.getText(), HasilPemeriksaanSadanis.getSelectedItem().toString(),
+                TindakLanjutSadanis.getSelectedItem().toString(), HasilSkrining.getSelectedItem().toString(),
+                Keterangan.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
-
-    private static final Logger LOG = Logger.getLogger(
-            RMSkriningRisikoKankerPayudara.class.getName());
 
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package kepegawaian;
 
@@ -47,29 +47,42 @@ import org.jfree.data.general.DefaultPieDataset;
 import widget.PanelBiasa;
 
 /**
- *
  * @author dosen
  */
 public class K3RSPeristiwa extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
-    private K3RSJenisPekerjaan jenispekerjaan = new K3RSJenisPekerjaan(null,
-            false);
-    private K3RSLokasiKejadian lokasikejadian = new K3RSLokasiKejadian(null,
-            false);
+
+    private K3RSJenisPekerjaan jenispekerjaan = new K3RSJenisPekerjaan(null, false);
+
+    private K3RSLokasiKejadian lokasikejadian = new K3RSLokasiKejadian(null, false);
+
     private K3RSPenyebab penyebab = new K3RSPenyebab(null, false);
+
     private K3RSJenisCidera jeniscidera = new K3RSJenisCidera(null, false);
+
     private K3RSJenisLuka jenisluka = new K3RSJenisLuka(null, false);
+
     private K3RSBagianTubuh bagiantubuh = new K3RSBagianTubuh(null, false);
+
     private K3RSDampakCidera dampakcidera = new K3RSDampakCidera(null, false);
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private LocalDate birthday;
+
     private Period p;
 
     /**
@@ -85,18 +98,14 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Laporan", "DTPCari Insiden", "Kd.Pekerjaan", "Jenis Pekerjaan",
-            "DTPCari Pelaporan", "Kd.Lokasi", "Lokasi Kejadian",
-            "Kronologi Kejadian", "Kd.Aspek", "Aspek Penyebab",
-            "NIK Korban", "Nama Korban", "Kategori Cidera", "LT(Hari)",
-            "Kd.Cidera", "Jenis Cidera", "Kd.Luka", "Jenis Luka", "Kd.Bagian",
-            "Bagian Tubuh", "Kondisi Tidak Aman",
-            "Tindakan Tidak Aman", "Pribadi", "Pekerjaan", "Kd.Dampak",
-            "Dampak Kejadian", "NIK Pelapor", "Nama Pelapor", "Barang Bukti",
-            "Jenis Tindakan", "Rencana Tindakan", "Target",
-            "Wewenang", "Catatan", "NIK Tim K3", "Nama Tim K3"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Laporan", "DTPCari Insiden", "Kd.Pekerjaan", "Jenis Pekerjaan", "DTPCari Pelaporan",
+                    "Kd.Lokasi", "Lokasi Kejadian", "Kronologi Kejadian", "Kd.Aspek", "Aspek Penyebab",
+                    "NIK Korban", "Nama Korban", "Kategori Cidera", "LT(Hari)", "Kd.Cidera", "Jenis Cidera",
+                    "Kd.Luka", "Jenis Luka", "Kd.Bagian", "Bagian Tubuh", "Kondisi Tidak Aman",
+                    "Tindakan Tidak Aman", "Pribadi", "Pekerjaan", "Kd.Dampak", "Dampak Kejadian", "NIK Pelapor",
+                    "Nama Pelapor", "Barang Bukti", "Jenis Tindakan", "Rencana Tindakan", "Target", "Wewenang",
+                    "Catatan", "NIK Tim K3", "Nama Tim K3"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -105,9 +114,9 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 36; i++) {
@@ -124,7 +133,7 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             } else if (i == 4) {
                 column.setPreferredWidth(110);
             } else if (i == 5) {
-                //column.setPreferredWidth(50);
+                // column.setPreferredWidth(50);
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             } else if (i == 6) {
@@ -132,7 +141,7 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             } else if (i == 7) {
                 column.setPreferredWidth(230);
             } else if (i == 8) {
-                //column.setPreferredWidth(50);
+                // column.setPreferredWidth(50);
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             } else if (i == 9) {
@@ -146,19 +155,19 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             } else if (i == 13) {
                 column.setPreferredWidth(47);
             } else if (i == 14) {
-                //column.setPreferredWidth(50);
+                // column.setPreferredWidth(50);
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             } else if (i == 15) {
                 column.setPreferredWidth(230);
             } else if (i == 16) {
-                //column.setPreferredWidth(50);
+                // column.setPreferredWidth(50);
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             } else if (i == 17) {
                 column.setPreferredWidth(230);
             } else if (i == 18) {
-                //column.setPreferredWidth(50);
+                // column.setPreferredWidth(50);
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             } else if (i == 19) {
@@ -172,7 +181,7 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             } else if (i == 23) {
                 column.setPreferredWidth(190);
             } else if (i == 24) {
-                //column.setPreferredWidth(50);
+                // column.setPreferredWidth(50);
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             } else if (i == 25) {
@@ -204,10 +213,8 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         NoLaporan.setDocument(new batasInput((byte) 20).getKata(NoLaporan));
         Kronologi.setDocument(new batasInput(300).getKata(Kronologi));
-        KondisiTidakAman.setDocument(new batasInput(100).getKata(
-                KondisiTidakAman));
-        TindakanTidakAman.setDocument(new batasInput(100).getKata(
-                TindakanTidakAman));
+        KondisiTidakAman.setDocument(new batasInput(100).getKata(KondisiTidakAman));
+        TindakanTidakAman.setDocument(new batasInput(100).getKata(TindakanTidakAman));
         Pribadi.setDocument(new batasInput(100).getKata(Pribadi));
         Pekerjaan.setDocument(new batasInput(100).getKata(Pekerjaan));
         Rencana.setDocument(new batasInput(200).getKata(Rencana));
@@ -216,8 +223,7 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
         LT.setDocument(new batasInput((byte) 10).getOnlyAngka(LT));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -254,12 +260,12 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenispekerjaan.getTable().getSelectedRow() != -1) {
-                    KdJenisPekerjaan.setText(jenispekerjaan.getTable().
-                            getValueAt(jenispekerjaan.getTable().
-                                    getSelectedRow(), 0).toString());
-                    NmJenisPekerjaan.setText(jenispekerjaan.getTable().
-                            getValueAt(jenispekerjaan.getTable().
-                                    getSelectedRow(), 1).toString());
+                    KdJenisPekerjaan.setText(jenispekerjaan.getTable()
+                            .getValueAt(jenispekerjaan.getTable().getSelectedRow(), 0)
+                            .toString());
+                    NmJenisPekerjaan.setText(jenispekerjaan.getTable()
+                            .getValueAt(jenispekerjaan.getTable().getSelectedRow(), 1)
+                            .toString());
                 }
                 BtnJenisPekerjaan.requestFocus();
             }
@@ -312,12 +318,12 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (lokasikejadian.getTable().getSelectedRow() != -1) {
-                    KdLokasiKejadian.setText(lokasikejadian.getTable().
-                            getValueAt(lokasikejadian.getTable().
-                                    getSelectedRow(), 0).toString());
-                    NmLokasiKejadian.setText(lokasikejadian.getTable().
-                            getValueAt(lokasikejadian.getTable().
-                                    getSelectedRow(), 1).toString());
+                    KdLokasiKejadian.setText(lokasikejadian.getTable()
+                            .getValueAt(lokasikejadian.getTable().getSelectedRow(), 0)
+                            .toString());
+                    NmLokasiKejadian.setText(lokasikejadian.getTable()
+                            .getValueAt(lokasikejadian.getTable().getSelectedRow(), 1)
+                            .toString());
                 }
                 btnLokasiKejadian.requestFocus();
             }
@@ -370,10 +376,10 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penyebab.getTable().getSelectedRow() != -1) {
-                    KdPenyebab.setText(penyebab.getTable().getValueAt(penyebab.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPenyebab.setText(penyebab.getTable().getValueAt(penyebab.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPenyebab
+                            .setText(penyebab.getTable().getValueAt(penyebab.getTable().getSelectedRow(), 0).toString());
+                    NmPenyebab
+                            .setText(penyebab.getTable().getValueAt(penyebab.getTable().getSelectedRow(), 1).toString());
                 }
                 BtnPenyebab.requestFocus();
             }
@@ -426,12 +432,10 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jeniscidera.getTable().getSelectedRow() != -1) {
-                    KdJenisCidera.setText(jeniscidera.getTable().getValueAt(
-                            jeniscidera.getTable().getSelectedRow(), 0).
-                            toString());
-                    NmJenisCidera.setText(jeniscidera.getTable().getValueAt(
-                            jeniscidera.getTable().getSelectedRow(), 1).
-                            toString());
+                    KdJenisCidera.setText(
+                            jeniscidera.getTable().getValueAt(jeniscidera.getTable().getSelectedRow(), 0).toString());
+                    NmJenisCidera.setText(
+                            jeniscidera.getTable().getValueAt(jeniscidera.getTable().getSelectedRow(), 1).toString());
                 }
                 btnJenisCidera.requestFocus();
             }
@@ -484,10 +488,10 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenisluka.getTable().getSelectedRow() != -1) {
-                    KdJenisLuka.setText(jenisluka.getTable().getValueAt(
-                            jenisluka.getTable().getSelectedRow(), 0).toString());
-                    NmJenisLuka.setText(jenisluka.getTable().getValueAt(
-                            jenisluka.getTable().getSelectedRow(), 1).toString());
+                    KdJenisLuka
+                            .setText(jenisluka.getTable().getValueAt(jenisluka.getTable().getSelectedRow(), 0).toString());
+                    NmJenisLuka
+                            .setText(jenisluka.getTable().getValueAt(jenisluka.getTable().getSelectedRow(), 1).toString());
                 }
                 btnJenisLuka.requestFocus();
             }
@@ -540,12 +544,10 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (bagiantubuh.getTable().getSelectedRow() != -1) {
-                    KdBagianTubuh.setText(bagiantubuh.getTable().getValueAt(
-                            bagiantubuh.getTable().getSelectedRow(), 0).
-                            toString());
-                    NmBagianTubuh.setText(bagiantubuh.getTable().getValueAt(
-                            bagiantubuh.getTable().getSelectedRow(), 1).
-                            toString());
+                    KdBagianTubuh.setText(
+                            bagiantubuh.getTable().getValueAt(bagiantubuh.getTable().getSelectedRow(), 0).toString());
+                    NmBagianTubuh.setText(
+                            bagiantubuh.getTable().getValueAt(bagiantubuh.getTable().getSelectedRow(), 1).toString());
                 }
                 btnBagianTubuh.requestFocus();
             }
@@ -598,12 +600,10 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dampakcidera.getTable().getSelectedRow() != -1) {
-                    KdDampak.setText(dampakcidera.getTable().getValueAt(
-                            dampakcidera.getTable().getSelectedRow(), 0).
-                            toString());
-                    NmDampak.setText(dampakcidera.getTable().getValueAt(
-                            dampakcidera.getTable().getSelectedRow(), 1).
-                            toString());
+                    KdDampak.setText(
+                            dampakcidera.getTable().getValueAt(dampakcidera.getTable().getSelectedRow(), 0).toString());
+                    NmDampak.setText(
+                            dampakcidera.getTable().getValueAt(dampakcidera.getTable().getSelectedRow(), 1).toString());
                 }
                 BtnDampak.requestFocus();
             }
@@ -657,38 +657,30 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
                     if (i == 1) {
-                        NIKKorban.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 0).toString());
-                        NmKorban.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
-                        JK.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                                getSelectedRow(), 2).toString().replaceAll(
-                                        "Wanita", "P").replaceAll("Pria", "L"));
-                        Jabatan.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 3).toString());
-                        Bidang.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 6).toString());
-                        Departemen.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 5).toString());
-                        Valid.SetTgl(TglLahir, pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 12).toString());
+                        NIKKorban.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                        NmKorban.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        JK.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 2)
+                                .toString()
+                                .replaceAll("Wanita", "P")
+                                .replaceAll("Pria", "L"));
+                        Jabatan.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 3).toString());
+                        Bidang.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 6).toString());
+                        Departemen.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 5).toString());
+                        Valid.SetTgl(TglLahir,
+                                pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 12).toString());
                         TglInsidenItemStateChanged(null);
                         btnKorban.requestFocus();
                     } else if (i == 2) {
-                        NIKPelapor.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 0).toString());
-                        NmPelapor.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
-                        BidangPelapor.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 6).toString());
-                        DepartemenPelapor.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 5).toString());
+                        NIKPelapor.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                        NmPelapor.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        BidangPelapor
+                                .setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 6).toString());
+                        DepartemenPelapor
+                                .setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 5).toString());
                         btnPelapor.requestFocus();
                     } else if (i == 3) {
-                        NIKK3.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 0).toString());
-                        NmPetugasK3.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        NIKK3.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                        NmPetugasK3.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                     }
                 }
             }
@@ -732,7 +724,9 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -3626,8 +3620,7 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            K3RSPeristiwa dialog = new K3RSPeristiwa(new javax.swing.JFrame(),
-                    true);
+            K3RSPeristiwa dialog = new K3RSPeristiwa(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -3865,37 +3858,24 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
                 ps.setString(39, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_k3rs"),
-                        rs.getString("tgl_insiden") + " " + rs.getString(
-                        "waktu_insiden"), rs.getString("kode_pekerjaan"), rs.
-                        getString("jenis_pekerjaan"),
-                        rs.getString("tgl_pelaporan") + " " + rs.getString(
-                        "waktu_pelaporan"), rs.getString("kode_lokasi"), rs.
-                        getString("lokasi_kejadian"), rs.getString(
-                        "kronologi_kejadian"),
-                        rs.getString("kode_penyebab"), rs.getString(
-                        "penyebab_kecelakaan"), rs.getString("nik"), rs.
-                        getString("korban"), rs.getString("kategori_cidera"),
-                        rs.getString("lt"),
-                        rs.getString("kode_cidera"), rs.
-                        getString("jenis_cidera"), rs.getString("kode_luka"),
-                        rs.getString("jenis_luka"), rs.getString("kode_bagian"),
-                        rs.getString("bagian_tubuh"),
-                        rs.getString("penyebab_langsung_kondisi"), rs.getString(
-                        "penyebab_langsung_tindakan"), rs.getString(
-                        "penyebab_tidak_langsung_pribadi"), rs.getString(
-                        "penyebab_tidak_langsung_pekerjaan"),
-                        rs.getString("kode_dampak"), rs.getString(
-                        "dampak_cidera"), rs.getString("nik_pelapor"), rs.
-                        getString("pelapor"), rs.getString("barang_bukti"), rs.
-                        getString("perbaikan_jenis_tindakan"),
-                        rs.getString("perbaikan_rencana_tindakan"), rs.
-                        getString("perbaikan_target"), rs.getString(
-                        "perbaikan_wewenang"), rs.getString("catatan"), rs.
-                        getString("nik_timk3"),
-                        rs.getString("timk3")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_k3rs"),
+                        rs.getString("tgl_insiden") + " " + rs.getString("waktu_insiden"),
+                        rs.getString("kode_pekerjaan"), rs.getString("jenis_pekerjaan"),
+                        rs.getString("tgl_pelaporan") + " " + rs.getString("waktu_pelaporan"),
+                        rs.getString("kode_lokasi"), rs.getString("lokasi_kejadian"),
+                        rs.getString("kronologi_kejadian"), rs.getString("kode_penyebab"),
+                        rs.getString("penyebab_kecelakaan"), rs.getString("nik"), rs.getString("korban"),
+                        rs.getString("kategori_cidera"), rs.getString("lt"), rs.getString("kode_cidera"),
+                        rs.getString("jenis_cidera"), rs.getString("kode_luka"), rs.getString("jenis_luka"),
+                        rs.getString("kode_bagian"), rs.getString("bagian_tubuh"),
+                        rs.getString("penyebab_langsung_kondisi"), rs.getString("penyebab_langsung_tindakan"),
+                        rs.getString("penyebab_tidak_langsung_pribadi"),
+                        rs.getString("penyebab_tidak_langsung_pekerjaan"), rs.getString("kode_dampak"),
+                        rs.getString("dampak_cidera"), rs.getString("nik_pelapor"), rs.getString("pelapor"),
+                        rs.getString("barang_bukti"), rs.getString("perbaikan_jenis_tindakan"),
+                        rs.getString("perbaikan_rencana_tindakan"), rs.getString("perbaikan_target"),
+                        rs.getString("perbaikan_wewenang"), rs.getString("catatan"), rs.getString("nik_timk3"),
+                        rs.getString("timk3")});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -3962,108 +3942,66 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
      */
     public void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_k3rs,4),signed)),0) from k3rs_peristiwa where tgl_pelaporan='" + Valid.
-                        SetTgl(TglPelaporan.getSelectedItem() + "") + "' ",
-                "K3/" + TglPelaporan.getSelectedItem().toString().substring(6,
-                        10) + "/" + TglPelaporan.getSelectedItem().toString().
-                        substring(3, 5) + "/" + TglPelaporan.getSelectedItem().
-                toString().substring(0, 2) + "/", 4, NoLaporan);
+                "select ifnull(MAX(CONVERT(RIGHT(no_k3rs,4),signed)),0) from k3rs_peristiwa where tgl_pelaporan='"
+                + Valid.SetTgl(TglPelaporan.getSelectedItem() + "") + "' ",
+                "K3/" + TglPelaporan.getSelectedItem().toString().substring(6, 10) + "/"
+                + TglPelaporan.getSelectedItem().toString().substring(3, 5) + "/"
+                + TglPelaporan.getSelectedItem().toString().substring(0, 2) + "/",
+                4, NoLaporan);
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            NoLaporan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 0).toString());
-            Valid.SetTgl(TglInsiden, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            JamInsiden.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString().substring(11, 13));
-            MenitInsiden.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 1).toString().substring(14,
-                    16));
-            DetikInsiden.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 1).toString().substring(17,
-                    19));
-            KdJenisPekerjaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            NmJenisPekerjaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            Valid.SetTgl(TglPelaporan, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            JamPelaporan.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 4).toString().substring(11,
-                    13));
-            MenitPelaporan.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 4).toString().substring(14,
-                    16));
-            DetikPelaporan.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 4).toString().substring(17,
-                    19));
-            KdLokasiKejadian.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 5).toString());
-            NmLokasiKejadian.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 6).toString());
-            Kronologi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
-            KdPenyebab.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 8).toString());
-            NmPenyebab.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 9).toString());
-            NIKKorban.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 10).toString());
-            NmKorban.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 11).toString());
-            Kategori.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 12).toString());
-            LT.setText(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 13).toString());
-            KdJenisCidera.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 14).toString());
-            NmJenisCidera.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 15).toString());
-            KdJenisLuka.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 16).toString());
-            NmJenisLuka.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 17).toString());
-            KdBagianTubuh.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 18).toString());
-            NmBagianTubuh.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 19).toString());
-            KondisiTidakAman.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 20).toString());
-            TindakanTidakAman.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 21).toString());
-            Pribadi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 22).toString());
-            Pekerjaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 23).toString());
-            KdDampak.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 24).toString());
-            NmDampak.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 25).toString());
-            NIKPelapor.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 26).toString());
-            NmPelapor.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 27).toString());
-            BarangBukti.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 28).toString());
-            JenisTindakan.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 29).toString());
-            Rencana.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 30).toString());
-            Valid.SetTgl(Target, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 31).toString());
-            Wewenang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 32).toString());
-            Catatan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 33).toString());
-            NIKK3.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 34).toString());
-            NmPetugasK3.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 35).toString());
+            NoLaporan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            Valid.SetTgl(TglInsiden, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            JamInsiden.setSelectedItem(
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString().substring(11, 13));
+            MenitInsiden.setSelectedItem(
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString().substring(14, 16));
+            DetikInsiden.setSelectedItem(
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString().substring(17, 19));
+            KdJenisPekerjaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            NmJenisPekerjaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            Valid.SetTgl(TglPelaporan, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            JamPelaporan.setSelectedItem(
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString().substring(11, 13));
+            MenitPelaporan.setSelectedItem(
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString().substring(14, 16));
+            DetikPelaporan.setSelectedItem(
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString().substring(17, 19));
+            KdLokasiKejadian.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString());
+            NmLokasiKejadian.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString());
+            Kronologi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            KdPenyebab.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            NmPenyebab.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            NIKKorban.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString());
+            NmKorban.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString());
+            Kategori.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 12).toString());
+            LT.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 13).toString());
+            KdJenisCidera.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 14).toString());
+            NmJenisCidera.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 15).toString());
+            KdJenisLuka.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 16).toString());
+            NmJenisLuka.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 17).toString());
+            KdBagianTubuh.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 18).toString());
+            NmBagianTubuh.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 19).toString());
+            KondisiTidakAman.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 20).toString());
+            TindakanTidakAman.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 21).toString());
+            Pribadi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 22).toString());
+            Pekerjaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 23).toString());
+            KdDampak.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 24).toString());
+            NmDampak.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 25).toString());
+            NIKPelapor.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 26).toString());
+            NmPelapor.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 27).toString());
+            BarangBukti.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 28).toString());
+            JenisTindakan.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 29).toString());
+            Rencana.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 30).toString());
+            Valid.SetTgl(Target, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 31).toString());
+            Wewenang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 32).toString());
+            Catatan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 33).toString());
+            NIKK3.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 34).toString());
+            NmPetugasK3.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 35).toString());
             try {
-                ps = koneksi.prepareStatement(
-                        "select jk,jbtn,departemen,bidang,tgl_lahir from pegawai where nik=?");
+                ps = koneksi.prepareStatement("select jk,jbtn,departemen,bidang,tgl_lahir from pegawai where nik=?");
                 try {
                     ps.setString(1, NIKKorban.getText());
                     rs = ps.executeQuery();
@@ -4085,8 +4023,7 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
                     }
                 }
 
-                ps = koneksi.prepareStatement(
-                        "select departemen,bidang from pegawai where nik=?");
+                ps = koneksi.prepareStatement("select departemen,bidang from pegawai where nik=?");
                 try {
                     ps.setString(1, NIKPelapor.getText());
                     rs = ps.executeQuery();
@@ -4125,7 +4062,6 @@ public class K3RSPeristiwa extends javax.swing.JDialog {
         BtnPrint.setEnabled(akses.getperistiwa_k3rs());
     }
 
-    private static final Logger LOG = Logger.getLogger(K3RSPeristiwa.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(K3RSPeristiwa.class.getName());
 
 }

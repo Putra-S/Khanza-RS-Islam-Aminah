@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -39,24 +39,31 @@ import simrskhanza.DlgPangkatTNI;
 import simrskhanza.DlgSatuanTNI;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     public DlgGolonganTNI golongantni = new DlgGolonganTNI(null, false);
 
     /**
      *
      */
     public DlgSatuanTNI satuantni = new DlgSatuanTNI(null, false);
+
     public DlgPangkatTNI pangkattni = new DlgPangkatTNI(null, false);
 
     /**
@@ -76,8 +83,8 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {"No.", "Nama Pasien", "Pangkat", "NRP/NIP",
-            "Kesatuan", "Diagnosa", "Golongan", "Jabatan"};
+        Object[] rowRwJlDr = {"No.", "Nama Pasien", "Pangkat", "NRP/NIP", "Kesatuan", "Diagnosa", "Golongan",
+            "Jabatan"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -86,7 +93,8 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -114,8 +122,7 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
 
         TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -152,9 +159,8 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongantni.getTable().getSelectedRow() != -1) {
-                    Golongan.setText(golongantni.getTable().getValueAt(
-                            golongantni.getTable().getSelectedRow(), 1).
-                            toString());
+                    Golongan.setText(
+                            golongantni.getTable().getValueAt(golongantni.getTable().getSelectedRow(), 1).toString());
                 }
                 Golongan.requestFocus();
             }
@@ -207,8 +213,8 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jabatantni.getTable().getSelectedRow() != -1) {
-                    Jabatan.setText(jabatantni.getTable().getValueAt(jabatantni.
-                            getTable().getSelectedRow(), 1).toString());
+                    Jabatan.setText(
+                            jabatantni.getTable().getValueAt(jabatantni.getTable().getSelectedRow(), 1).toString());
                 }
                 Jabatan.requestFocus();
             }
@@ -261,8 +267,8 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (satuantni.getTable().getSelectedRow() != -1) {
-                    Satuan.setText(satuantni.getTable().getValueAt(satuantni.
-                            getTable().getSelectedRow(), 1).toString());
+                    Satuan
+                            .setText(satuantni.getTable().getValueAt(satuantni.getTable().getSelectedRow(), 1).toString());
                 }
                 Satuan.requestFocus();
             }
@@ -315,8 +321,8 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pangkattni.getTable().getSelectedRow() != -1) {
-                    Pangkat.setText(pangkattni.getTable().getValueAt(pangkattni.
-                            getTable().getSelectedRow(), 1).toString());
+                    Pangkat.setText(
+                            pangkattni.getTable().getValueAt(pangkattni.getTable().getSelectedRow(), 1).toString());
                 }
                 Pangkat.requestFocus();
             }
@@ -362,7 +368,9 @@ public class DlgAnggotaMiliterDirawat extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -850,8 +858,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAnggotaMiliterDirawat dialog = new DlgAnggotaMiliterDirawat(
-                    new javax.swing.JFrame(), true);
+            DlgAnggotaMiliterDirawat dialog = new DlgAnggotaMiliterDirawat(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -901,16 +908,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Valid.tabelKosong(tabMode);
-            ps = koneksi.prepareStatement(
-                    "select pasien.nm_pasien,pangkat_tni.nama_pangkat,pasien.nip,satuan_tni.nama_satuan,"
-                    + "reg_periksa.no_rawat,golongan_tni.nama_golongan,jabatan_tni.nama_jabatan from reg_periksa "
-                    + "inner join pasien inner join pangkat_tni inner join satuan_tni inner join pasien_tni "
-                    + "inner join golongan_tni inner join jabatan_tni on pasien_tni.no_rkm_medis=pasien.no_rkm_medis and "
-                    + "pasien_tni.pangkat_tni=pangkat_tni.id and pasien_tni.satuan_tni=satuan_tni.id "
-                    + "and pasien_tni.golongan_tni=golongan_tni.id and pasien_tni.jabatan_tni=jabatan_tni.id "
-                    + "and pasien.no_rkm_medis=reg_periksa.no_rkm_medis where "
-                    + "reg_periksa.tgl_registrasi between ? and ? and pangkat_tni.nama_pangkat like ? and satuan_tni.nama_satuan like ? and golongan_tni.nama_golongan like ? and jabatan_tni.nama_jabatan like ? and pasien.nm_pasien like ? or "
-                    + "reg_periksa.tgl_registrasi between ? and ? and pangkat_tni.nama_pangkat like ? and satuan_tni.nama_satuan like ? and golongan_tni.nama_golongan like ? and jabatan_tni.nama_jabatan like ? and pasien.nip like ? order by reg_periksa.tgl_registrasi");
+            ps = koneksi
+                    .prepareStatement("select pasien.nm_pasien,pangkat_tni.nama_pangkat,pasien.nip,satuan_tni.nama_satuan,"
+                            + "reg_periksa.no_rawat,golongan_tni.nama_golongan,jabatan_tni.nama_jabatan from reg_periksa "
+                            + "inner join pasien inner join pangkat_tni inner join satuan_tni inner join pasien_tni "
+                            + "inner join golongan_tni inner join jabatan_tni on pasien_tni.no_rkm_medis=pasien.no_rkm_medis and "
+                            + "pasien_tni.pangkat_tni=pangkat_tni.id and pasien_tni.satuan_tni=satuan_tni.id "
+                            + "and pasien_tni.golongan_tni=golongan_tni.id and pasien_tni.jabatan_tni=jabatan_tni.id "
+                            + "and pasien.no_rkm_medis=reg_periksa.no_rkm_medis where "
+                            + "reg_periksa.tgl_registrasi between ? and ? and pangkat_tni.nama_pangkat like ? and satuan_tni.nama_satuan like ? and golongan_tni.nama_golongan like ? and jabatan_tni.nama_jabatan like ? and pasien.nm_pasien like ? or "
+                            + "reg_periksa.tgl_registrasi between ? and ? and pangkat_tni.nama_pangkat like ? and satuan_tni.nama_satuan like ? and golongan_tni.nama_golongan like ? and jabatan_tni.nama_jabatan like ? and pasien.nip like ? order by reg_periksa.tgl_registrasi");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -929,16 +936,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 rs = ps.executeQuery();
                 i = 1;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        i, rs.getString("nm_pasien"), rs.getString(
-                        "nama_pangkat"), rs.getString("nip"), rs.getString(
-                        "nama_satuan"),
+                    tabMode.addRow(new Object[]{i, rs.getString("nm_pasien"), rs.getString("nama_pangkat"),
+                        rs.getString("nip"), rs.getString("nama_satuan"),
                         Sequel.cariIsi(
                         "select penyakit.nm_penyakit from penyakit inner join diagnosa_pasien on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit where diagnosa_pasien.no_rawat=?",
                         rs.getString("no_rawat")),
-                        rs.getString("nama_golongan"), rs.getString(
-                        "nama_jabatan")
-                    });
+                        rs.getString("nama_golongan"), rs.getString("nama_jabatan")});
                     i++;
                 }
             } catch (Exception e) {
@@ -978,7 +981,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgAnggotaMiliterDirawat.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgAnggotaMiliterDirawat.class.getName());
 
 }

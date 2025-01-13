@@ -26,15 +26,18 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DapurRHPembelian extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     public DapurCariSuplier suplier = new DapurCariSuplier(null, false);
 
     /**
@@ -46,8 +49,11 @@ public class DapurRHPembelian extends javax.swing.JDialog {
      *
      */
     public DapurBarang barang = new DapurBarang(null, false);
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private double tagihan = 0, subtotal = 0, diskon;
 
     /**
@@ -60,22 +66,13 @@ public class DapurRHPembelian extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Faktur", "Suplier", "Petugas", "Tgl.Beli", "Kode Barang",
-            "Barang", "Satuan", "Jml.Beli",
-            "Harga Beli(Rp)", "SubTotal(Rp)", "Disk(%)", "Bsr.Disk(Rp)",
-            "Total(Rp)"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Faktur", "Suplier", "Petugas", "Tgl.Beli", "Kode Barang", "Barang", "Satuan",
+                    "Jml.Beli", "Harga Beli(Rp)", "SubTotal(Rp)", "Disk(%)", "Bsr.Disk(Rp)", "Total(Rp)"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -132,8 +129,7 @@ public class DapurRHPembelian extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -171,10 +167,8 @@ public class DapurRHPembelian extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgRekapPenerimaanIPSRS")) {
                     if (suplier.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                        nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -231,10 +225,8 @@ public class DapurRHPembelian extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgRekapPenerimaanIPSRS")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -271,10 +263,8 @@ public class DapurRHPembelian extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgRekapPenerimaanIPSRS")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -321,7 +311,9 @@ public class DapurRHPembelian extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -700,13 +692,12 @@ public class DapurRHPembelian extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        akses.setform("DlgRekapPenerimaanIPSRS");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgRekapPenerimaanIPSRS");//GEN-FIRST:event_btnSuplierActionPerformed
         suplier.emptTeks();
         suplier.isCek();
         suplier.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -920,8 +911,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DapurRHPembelian dialog = new DapurRHPembelian(
-                    new javax.swing.JFrame(), true);
+            DapurRHPembelian dialog = new DapurRHPembelian(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -974,8 +964,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select dapurpembelian.tgl_beli,dapurpembelian.no_faktur, "
+            ps = koneksi.prepareStatement("select dapurpembelian.tgl_beli,dapurpembelian.no_faktur, "
                     + "dapurpembelian.kode_suplier,dapursuplier.nama_suplier, "
                     + "dapurpembelian.nip,petugas.nama, dapurdetailbeli.kode_brng,dapurbarang.nama_brng, "
                     + " dapurdetailbeli.kode_sat,kodesatuan.satuan, dapurdetailbeli.jumlah, dapurdetailbeli.harga, "
@@ -994,8 +983,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(3, "%" + NoFaktur.getText() + "%");
                 ps.setString(4, "%" + nmsup.getText() + "%");
                 ps.setString(5, "%" + nmptg.getText() + "%");
-                ps.setString(6, "%" + Jenis.getSelectedItem().toString().
-                        replaceAll("Semua", "") + "%");
+                ps.setString(6, "%" + Jenis.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 ps.setString(7, "%" + nmbar.getText() + "%");
                 ps.setString(8, "%" + TCari.getText() + "%");
                 ps.setString(9, "%" + TCari.getText() + "%");
@@ -1011,17 +999,12 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 subtotal = 0;
                 diskon = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_faktur"),
-                        rs.getString("kode_suplier") + " " + rs.getString(
-                        "nama_suplier"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getString("tgl_beli"), rs.getString("kode_brng"),
-                        rs.getString("nama_brng"), rs.getString("satuan"), rs.
-                        getDouble("jumlah"), rs.getDouble("harga"),
-                        rs.getDouble("subtotal"), rs.getDouble("dis"), rs.
-                        getDouble("besardis"), rs.getDouble("total")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_faktur"),
+                        rs.getString("kode_suplier") + " " + rs.getString("nama_suplier"),
+                        rs.getString("nip") + " " + rs.getString("nama"), rs.getString("tgl_beli"),
+                        rs.getString("kode_brng"), rs.getString("nama_brng"), rs.getString("satuan"),
+                        rs.getDouble("jumlah"), rs.getDouble("harga"), rs.getDouble("subtotal"),
+                        rs.getDouble("dis"), rs.getDouble("besardis"), rs.getDouble("total")});
                     tagihan += rs.getDouble("total");
                     subtotal += rs.getDouble("subtotal");
                     diskon += rs.getDouble("besardis");
@@ -1037,10 +1020,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 }
             }
             if (tagihan > 0) {
-                tabMode.addRow(new Object[]{
-                    "", "", "", "", "", "", "", null, null, subtotal, null,
-                    diskon, tagihan
-                });
+                tabMode
+                        .addRow(new Object[]{"", "", "", "", "", "", "", null, null, subtotal, null, diskon, tagihan});
             }
 
             LTotal.setText(Valid.SetAngka(tagihan));
@@ -1063,7 +1044,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         BtnPrint.setEnabled(akses.getrekap_pengadaan_dapur());
     }
 
-    private static final Logger LOG = Logger.getLogger(DapurRHPembelian.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DapurRHPembelian.class.getName());
 
 }

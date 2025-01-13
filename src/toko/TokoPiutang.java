@@ -27,24 +27,38 @@ import keuangan.Jurnal;
 public class TokoPiutang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private riwayattoko Trackbarang = new riwayattoko();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private double ttl = 0, y = 0, z = 0, stokbarang = 0, uangmuka = 0, total = 0, tagihan = 0, ongkir = 0;
+
     private int jml = 0, i = 0, row, kolom = 0, reply, index;
-    private String Piutang_Toko = Sequel.cariIsi(
-            "select Piutang_Toko from set_akun"),
-            Kontra_Piutang_Toko = Sequel.cariIsi(
-                    "select Kontra_Piutang_Toko from set_akun");
+
+    private String Piutang_Toko = Sequel.cariIsi("select Piutang_Toko from set_akun"),
+            Kontra_Piutang_Toko = Sequel.cariIsi("select Kontra_Piutang_Toko from set_akun");
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private String[] kodebarang, namabarang, kategori, satuan;
+
     private double[] harga, hbeli, jumlah, subtotal, diskon, besardiskon, totaljual, stok;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private boolean sukses = true;
+
     private TokoCariPiutang caripiutang = new TokoCariPiutang(null, false);
+
     private String hpptoko = "";
 
     /**
@@ -57,21 +71,13 @@ public class TokoPiutang extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Jml", "Kode Barang", "Nama Barang", "Kategori", "Satuan",
-            "Harga(Rp)",
-            "Subtotal(Rp)", "Ptg(%)", "Ptg(Rp)", "Total(Rp)", "Stok", "H Beli"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"Jml", "Kode Barang", "Nama Barang", "Kategori", "Satuan",
+            "Harga(Rp)", "Subtotal(Rp)", "Ptg(%)", "Ptg(Rp)", "Total(Rp)", "Stok", "H Beli"}) {
 
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -133,8 +139,7 @@ public class TokoPiutang extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -159,8 +164,7 @@ public class TokoPiutang extends javax.swing.JDialog {
             });
         }
 
-        UangMuka.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        UangMuka.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isKembali();
@@ -193,12 +197,12 @@ public class TokoPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("Piutang")) {
                     if (caripiutang.member.getTable().getSelectedRow() != -1) {
-                        kdmem.setText(caripiutang.member.getTable().getValueAt(
-                                caripiutang.member.getTable().getSelectedRow(),
-                                0).toString());
-                        nmmem.setText(caripiutang.member.getTable().getValueAt(
-                                caripiutang.member.getTable().getSelectedRow(),
-                                1).toString());
+                        kdmem.setText(caripiutang.member.getTable()
+                                .getValueAt(caripiutang.member.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmmem.setText(caripiutang.member.getTable()
+                                .getValueAt(caripiutang.member.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdmem.requestFocus();
                 }
@@ -255,12 +259,12 @@ public class TokoPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("Piutang")) {
                     if (caripiutang.petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(caripiutang.petugas.getTable().getValueAt(
-                                caripiutang.petugas.getTable().getSelectedRow(),
-                                0).toString());
-                        nmptg.setText(caripiutang.petugas.getTable().getValueAt(
-                                caripiutang.petugas.getTable().getSelectedRow(),
-                                1).toString());
+                        kdptg.setText(caripiutang.petugas.getTable()
+                                .getValueAt(caripiutang.petugas.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmptg.setText(caripiutang.petugas.getTable()
+                                .getValueAt(caripiutang.petugas.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -292,7 +296,9 @@ public class TokoPiutang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -877,13 +883,12 @@ public class TokoPiutang extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if (NoNota.getText().trim().isEmpty()) {
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        if (NoNota.getText().trim().isEmpty()) {//GEN-FIRST:event_BtnSimpanActionPerformed
             Valid.textKosong(NoNota, "No.Nota");
         } else if (kdptg.getText().trim().isEmpty() || nmptg.getText().trim().
                 isEmpty()) {
@@ -1294,26 +1299,18 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         for (i = 0; i < row; i++) {
             try {
                 if (Double.parseDouble(tbObat.getValueAt(i, 0).toString()) > 0) {
-                    jumlah[index] = Double.parseDouble(tabMode.getValueAt(i, 0).
-                            toString());
+                    jumlah[index] = Double.parseDouble(tabMode.getValueAt(i, 0).toString());
                     kodebarang[index] = tabMode.getValueAt(i, 1).toString();
                     namabarang[index] = tabMode.getValueAt(i, 2).toString();
                     kategori[index] = tabMode.getValueAt(i, 3).toString();
                     satuan[index] = tabMode.getValueAt(i, 4).toString();
-                    harga[index] = Double.parseDouble(tabMode.getValueAt(i, 5).
-                            toString());
-                    subtotal[index] = Double.parseDouble(tabMode.
-                            getValueAt(i, 6).toString());
-                    diskon[index] = Double.parseDouble(tabMode.getValueAt(i, 7).
-                            toString());
-                    besardiskon[index] = Double.parseDouble(tabMode.
-                            getValueAt(i, 8).toString());
-                    totaljual[index] = Double.parseDouble(tabMode.getValueAt(i,
-                            9).toString());
-                    stok[index] = Double.parseDouble(tabMode.getValueAt(i, 10).
-                            toString());
-                    hbeli[index] = Double.parseDouble(tabMode.getValueAt(i, 11).
-                            toString());
+                    harga[index] = Double.parseDouble(tabMode.getValueAt(i, 5).toString());
+                    subtotal[index] = Double.parseDouble(tabMode.getValueAt(i, 6).toString());
+                    diskon[index] = Double.parseDouble(tabMode.getValueAt(i, 7).toString());
+                    besardiskon[index] = Double.parseDouble(tabMode.getValueAt(i, 8).toString());
+                    totaljual[index] = Double.parseDouble(tabMode.getValueAt(i, 9).toString());
+                    stok[index] = Double.parseDouble(tabMode.getValueAt(i, 10).toString());
+                    hbeli[index] = Double.parseDouble(tabMode.getValueAt(i, 11).toString());
                     index++;
                 }
             } catch (Exception e) {
@@ -1323,15 +1320,15 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         Valid.tabelKosong(tabMode);
 
         for (i = 0; i < jml; i++) {
-            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i],
-                kategori[i], satuan[i], harga[i], subtotal[i], diskon[i],
-                besardiskon[i], totaljual[i], stok[i], hbeli[i]});
+            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], kategori[i], satuan[i], harga[i],
+                subtotal[i], diskon[i], besardiskon[i], totaljual[i], stok[i], hbeli[i]});
         }
 
         try {
             ps = koneksi.prepareStatement(
                     "select tokobarang.kode_brng,tokobarang.nama_brng,tokojenisbarang.nm_jenis,tokobarang.stok, "
-                    + "tokobarang.kode_sat,tokobarang.distributor,tokobarang.grosir,tokobarang.retail,tokobarang." + hpptoko + " as dasar "
+                    + "tokobarang.kode_sat,tokobarang.distributor,tokobarang.grosir,tokobarang.retail,tokobarang."
+                    + hpptoko + " as dasar "
                     + "from tokobarang inner join tokojenisbarang on tokobarang.jenis=tokojenisbarang.kd_jenis "
                     + "where tokobarang.stok>0 and tokobarang.status='1' and "
                     + "(tokobarang.kode_brng like ? or tokobarang.nama_brng like ? or tokojenisbarang.nm_jenis like ?) order by tokobarang.nama_brng");
@@ -1342,33 +1339,21 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 rs = ps.executeQuery();
                 if (Jenisjual.getSelectedItem().equals("Distributor")) {
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            "", rs.getString("kode_brng"), rs.getString(
-                            "nama_brng"), rs.getString("nm_jenis"), rs.
-                            getString("kode_sat"),
-                            rs.getDouble("distributor"), 0, 0, 0, 0, rs.
-                            getDouble("stok"), rs.getDouble("dasar")
-                        });
+                        tabMode.addRow(new Object[]{"", rs.getString("kode_brng"), rs.getString("nama_brng"),
+                            rs.getString("nm_jenis"), rs.getString("kode_sat"), rs.getDouble("distributor"), 0, 0,
+                            0, 0, rs.getDouble("stok"), rs.getDouble("dasar")});
                     }
                 } else if (Jenisjual.getSelectedItem().equals("Grosir")) {
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            "", rs.getString("kode_brng"), rs.getString(
-                            "nama_brng"), rs.getString("nm_jenis"), rs.
-                            getString("kode_sat"),
-                            rs.getDouble("grosir"), 0, 0, 0, 0, rs.getDouble(
-                            "stok"), rs.getDouble("dasar")
-                        });
+                        tabMode.addRow(new Object[]{"", rs.getString("kode_brng"), rs.getString("nama_brng"),
+                            rs.getString("nm_jenis"), rs.getString("kode_sat"), rs.getDouble("grosir"), 0, 0, 0, 0,
+                            rs.getDouble("stok"), rs.getDouble("dasar")});
                     }
                 } else if (Jenisjual.getSelectedItem().equals("Retail")) {
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            "", rs.getString("kode_brng"), rs.getString(
-                            "nama_brng"), rs.getString("nm_jenis"), rs.
-                            getString("kode_sat"),
-                            rs.getDouble("retail"), 0, 0, 0, 0, rs.getDouble(
-                            "stok"), rs.getDouble("dasar")
-                        });
+                        tabMode.addRow(new Object[]{"", rs.getString("kode_brng"), rs.getString("nama_brng"),
+                            rs.getString("nm_jenis"), rs.getString("kode_sat"), rs.getDouble("retail"), 0, 0, 0, 0,
+                            rs.getDouble("stok"), rs.getDouble("dasar")});
                     }
                 }
             } catch (SQLException e) {
@@ -1392,55 +1377,45 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             if (!tbObat.getValueAt(row, 0).toString().isEmpty()) {
                 kolom = tbObat.getSelectedColumn();
                 if (Double.parseDouble(tabMode.getValueAt(row, 0).toString()) > 0) {
-                    stokbarang = Double.parseDouble(tabMode.getValueAt(row, 10).
-                            toString());
+                    stokbarang = Double.parseDouble(tabMode.getValueAt(row, 10).toString());
                     y = Valid.SetAngka(tbObat.getValueAt(row, 0).toString());
                     if (stokbarang < y) {
                         tabMode.setValueAt("", row, 0);
-                        JOptionPane.showMessageDialog(rootPane,
-                                "Maaf stok tidak mencukupi..!!");
+                        JOptionPane.showMessageDialog(rootPane, "Maaf stok tidak mencukupi..!!");
                         tbObat.requestFocus();
                     }
                     if ((kolom == 0) || (kolom == 1) || (kolom == 2) || (kolom == 3) || (kolom == 4) || (kolom == 5)) {
                         try {
-                            tabMode.setValueAt(Double.parseDouble(tabMode.
-                                    getValueAt(row, 0).toString()) * Double.
-                                    parseDouble(tabMode.getValueAt(row, 5).
-                                            toString()), row, 6);
+                            tabMode.setValueAt(Double.parseDouble(tabMode.getValueAt(row, 0).toString())
+                                    * Double.parseDouble(tabMode.getValueAt(row, 5).toString()), row, 6);
                         } catch (Exception e) {
                             tabMode.setValueAt(0, row, 6);
                         }
                         try {
-                            tabMode.setValueAt(Double.parseDouble(tabMode.
-                                    getValueAt(row, 6).toString()) - Double.
-                                    parseDouble(tabMode.getValueAt(row, 8).
-                                            toString()), row, 9);
+                            tabMode.setValueAt(Double.parseDouble(tabMode.getValueAt(row, 6).toString())
+                                    - Double.parseDouble(tabMode.getValueAt(row, 8).toString()), row, 9);
                         } catch (Exception e) {
                             tabMode.setValueAt(0, row, 9);
                         }
                     } else if (kolom == 7) {
                         try {
-                            tabMode.setValueAt(Double.parseDouble(tabMode.
-                                    getValueAt(row, 6).toString()) * (Double.
-                                    parseDouble(tabMode.getValueAt(row, 7).
-                                            toString()) / 100), row, 8);
+                            tabMode.setValueAt(
+                                    Double.parseDouble(tabMode.getValueAt(row, 6).toString())
+                                    * (Double.parseDouble(tabMode.getValueAt(row, 7).toString()) / 100),
+                                    row, 8);
                         } catch (Exception e) {
                             tabMode.setValueAt(0, row, 8);
                         }
                         try {
-                            tabMode.setValueAt(Double.parseDouble(tabMode.
-                                    getValueAt(row, 6).toString()) - Double.
-                                    parseDouble(tabMode.getValueAt(row, 8).
-                                            toString()), row, 9);
+                            tabMode.setValueAt(Double.parseDouble(tabMode.getValueAt(row, 6).toString())
+                                    - Double.parseDouble(tabMode.getValueAt(row, 8).toString()), row, 9);
                         } catch (Exception e) {
                             tabMode.setValueAt(0, row, 9);
                         }
                     } else if ((kolom == 8) || (kolom == 9)) {
                         try {
-                            tabMode.setValueAt(Double.parseDouble(tabMode.
-                                    getValueAt(row, 6).toString()) - Double.
-                                    parseDouble(tabMode.getValueAt(row, 8).
-                                            toString()), row, 9);
+                            tabMode.setValueAt(Double.parseDouble(tabMode.getValueAt(row, 6).toString())
+                                    - Double.parseDouble(tabMode.getValueAt(row, 8).toString()), row, 9);
                         } catch (Exception e) {
                             tabMode.setValueAt(0, row, 9);
                         }
@@ -1497,8 +1472,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             kdptg.setText(akses.getkode());
             nmptg.setText(caripiutang.petugas.tampil3(kdptg.getText()));
         }
-        if (Sequel.cariIsi("select tampilkan_tombol_nota_toko from set_nota").
-                equals("Yes")) {
+        if (Sequel.cariIsi("select tampilkan_tombol_nota_toko from set_nota").equals("Yes")) {
             BtnNota.setVisible(true);
         } else {
             if (akses.getkode().equals("Admin Utama")) {
@@ -1514,38 +1488,27 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      */
     public void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(nota_piutang,5),signed)),0) from tokopiutang where tgl_piutang='" + Valid.
-                        SetTgl(Tgl.getSelectedItem() + "") + "' ",
-                "TP" + Tgl.getSelectedItem().toString().substring(6, 10) + Tgl.
-                getSelectedItem().toString().substring(3, 5) + Tgl.
-                getSelectedItem().toString().substring(0, 2), 5, NoNota);
+                "select ifnull(MAX(CONVERT(RIGHT(nota_piutang,5),signed)),0) from tokopiutang where tgl_piutang='"
+                + Valid.SetTgl(Tgl.getSelectedItem() + "") + "' ",
+                "TP" + Tgl.getSelectedItem().toString().substring(6, 10)
+                + Tgl.getSelectedItem().toString().substring(3, 5)
+                + Tgl.getSelectedItem().toString().substring(0, 2),
+                5, NoNota);
     }
 
     private void isSimpan() {
         for (i = 0; i < tabMode.getRowCount(); i++) {
             if (Valid.SetAngka(tabMode.getValueAt(i, 0).toString()) > 0) {
-                if (Sequel.menyimpantf2("toko_detail_piutang",
-                        "?,?,?,?,?,?,?,?,?,?", "Barang", 10, new String[]{
-                            NoNota.getText(), tabMode.getValueAt(i, 1).
-                            toString(), tabMode.getValueAt(i, 4).toString(),
-                            tabMode.getValueAt(i, 5).toString(),
-                            tabMode.getValueAt(i, 11).toString(), tabMode.
-                            getValueAt(i, 0).toString(), tabMode.
-                            getValueAt(i, 6).toString(),
-                            tabMode.getValueAt(i, 7).toString(), tabMode.
-                            getValueAt(i, 8).toString(), tabMode.
-                            getValueAt(i, 9).toString()
-                        }) == true) {
-                    Trackbarang.
-                            catatRiwayat(tabMode.getValueAt(i, 1).toString(), 0,
-                                    Valid.SetAngka(tabMode.getValueAt(i, 0).
-                                            toString()), "Piutang", akses.
-                                            getkode(), "Simpan");
-                    Sequel.mengedit("tokobarang", "kode_brng=?", "stok=stok-?",
-                            2, new String[]{
-                                tbObat.getValueAt(i, 0).toString(), tbObat.
-                                getValueAt(i, 1).toString()
-                            });
+                if (Sequel.menyimpantf2("toko_detail_piutang", "?,?,?,?,?,?,?,?,?,?", "Barang", 10,
+                        new String[]{NoNota.getText(), tabMode.getValueAt(i, 1).toString(),
+                            tabMode.getValueAt(i, 4).toString(), tabMode.getValueAt(i, 5).toString(),
+                            tabMode.getValueAt(i, 11).toString(), tabMode.getValueAt(i, 0).toString(),
+                            tabMode.getValueAt(i, 6).toString(), tabMode.getValueAt(i, 7).toString(),
+                            tabMode.getValueAt(i, 8).toString(), tabMode.getValueAt(i, 9).toString()}) == true) {
+                    Trackbarang.catatRiwayat(tabMode.getValueAt(i, 1).toString(), 0,
+                            Valid.SetAngka(tabMode.getValueAt(i, 0).toString()), "Piutang", akses.getkode(), "Simpan");
+                    Sequel.mengedit("tokobarang", "kode_brng=?", "stok=stok-?", 2,
+                            new String[]{tbObat.getValueAt(i, 0).toString(), tbObat.getValueAt(i, 1).toString()});
                 } else {
                     sukses = false;
                 }
@@ -1553,19 +1516,16 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
         if (sukses == true) {
             Sequel.queryu("delete from tampjurnal");
-            Sequel.menyimpan2("tampjurnal",
-                    "'" + Piutang_Toko + "','PIUTANG TOKO','" + (tagihan - uangmuka) + "','0'",
+            Sequel.menyimpan2("tampjurnal", "'" + Piutang_Toko + "','PIUTANG TOKO','" + (tagihan - uangmuka) + "','0'",
                     "Rekening");
             Sequel.menyimpan2("tampjurnal",
                     "'" + Kontra_Piutang_Toko + "','Persediaan Barang Toko','0','" + (tagihan - uangmuka) + "'",
                     "Rekening");
             sukses = jur.simpanJurnal(NoNota.getText(), "U",
-                    "PIUTANG TOKO / MINIMARKET / KOPERASI, OLEH " + akses.
-                            getkode());
+                    "PIUTANG TOKO / MINIMARKET / KOPERASI, OLEH " + akses.getkode());
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(TokoPiutang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(TokoPiutang.class.getName());
 
 }

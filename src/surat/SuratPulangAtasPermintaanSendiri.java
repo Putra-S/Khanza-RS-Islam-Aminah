@@ -37,23 +37,34 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author windiartohugroho
  */
 public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private Date lahir;
+
     private LocalDate today = LocalDate.now();
+
     private LocalDate birthday;
+
     private Period p;
+
     private String finger = "", lokasifile = "", lokasifile2 = "";
 
     public SuratPulangAtasPermintaanSendiri(java.awt.Frame parent, boolean modal) {
@@ -62,12 +73,10 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Surat", "No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "J.K.",
-            "Tgl.Lahir", "Tgl.Pulang", "Faskes Alternatif/Pindah Rawat/Alasan",
-            "Nama Penanggung Jawab", "Lahir", "Umur", "J.K.", "Alamat",
-            "Hubungan", "Saksi I Keluarga", "NIP", "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Surat", "No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "J.K.", "Tgl.Lahir",
+                    "Tgl.Pulang", "Faskes Alternatif/Pindah Rawat/Alasan", "Nama Penanggung Jawab", "Lahir", "Umur",
+                    "J.K.", "Alamat", "Hubungan", "Saksi I Keluarga", "NIP", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -76,7 +85,8 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -128,14 +138,12 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
         Pilihan.setDocument(new batasInput((byte) 50).getKata(Pilihan));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         NamaPihak2.setDocument(new batasInput((byte) 50).getKata(NamaPihak2));
-        SaksiKeluarga.setDocument(new batasInput((byte) 50).getKata(
-                SaksiKeluarga));
+        SaksiKeluarga.setDocument(new batasInput((byte) 50).getKata(SaksiKeluarga));
         AlamatPj.setDocument(new batasInput(100).getKata(AlamatPj));
         UmurPJ.setDocument(new batasInput((byte) 3).getKata(UmurPJ));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -172,10 +180,9 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 NIP.requestFocus();
             }
@@ -219,15 +226,16 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML2.setDocument(doc);
         LoadHTML3.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1431,8 +1439,8 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SuratPulangAtasPermintaanSendiri dialog = new SuratPulangAtasPermintaanSendiri(
-                    new javax.swing.JFrame(), true);
+            SuratPulangAtasPermintaanSendiri dialog = new SuratPulangAtasPermintaanSendiri(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1554,15 +1562,11 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1574,19 +1578,13 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_surat"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"), rs.getString("jk"), rs.getString(
-                        "tgl_lahir"),
-                        rs.getString("tgl_pulang"), rs.getString("rs_pilihan"),
-                        rs.getString("nama_pj"), rs.getString("lahir"),
-                        rs.getString("umur"), rs.getString("jkpj"), rs.
-                        getString("alamat"), rs.getString("hubungan"),
-                        rs.getString("saksi_keluarga"), rs.getString("nip"), rs.
-                        getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_surat"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("umurdaftar") + " " + rs.getString("sttsumur"), rs.getString("jk"),
+                        rs.getString("tgl_lahir"), rs.getString("tgl_pulang"), rs.getString("rs_pilihan"),
+                        rs.getString("nama_pj"), rs.getString("lahir"), rs.getString("umur"), rs.getString("jkpj"),
+                        rs.getString("alamat"), rs.getString("hubungan"), rs.getString("saksi_keluarga"),
+                        rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1617,47 +1615,35 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
         SaksiKeluarga.setText("");
         Pilihan.requestFocus();
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(surat_pulang_atas_permintaan_sendiri.no_surat,3),signed)),0) from surat_pulang_atas_permintaan_sendiri where surat_pulang_atas_permintaan_sendiri.tgl_pulang='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "APS" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoSurat);
+                "select ifnull(MAX(CONVERT(RIGHT(surat_pulang_atas_permintaan_sendiri.no_surat,3),signed)),0) from surat_pulang_atas_permintaan_sendiri where surat_pulang_atas_permintaan_sendiri.tgl_pulang='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "APS" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoSurat);
     }
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            NoSurat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
+            NoSurat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
-            LahirPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Pilihan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            NamaPihak2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            UmurPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            JKPJ.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString().replaceAll("L", "Laki-laki").replaceAll("P",
-                    "Perempuan"));
-            AlamatPj.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            Hubungan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    14).toString());
-            SaksiKeluarga.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            Valid.SetTgl(TglLahir, tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 10).toString());
+            LahirPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Pilihan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            NamaPihak2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            UmurPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            JKPJ.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12)
+                    .toString()
+                    .replaceAll("L", "Laki-laki")
+                    .replaceAll("P", "Perempuan"));
+            AlamatPj.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Hubungan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            SaksiKeluarga.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Valid.SetTgl(TglLahir, tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
         }
     }
 
@@ -1676,8 +1662,7 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     LahirPasien.setText(rs.getString("tgl_lahir"));
-                    Umur.setText(rs.getString("umurdaftar") + " " + rs.
-                            getString("sttsumur"));
+                    Umur.setText(rs.getString("umurdaftar") + " " + rs.getString("sttsumur"));
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1729,26 +1714,20 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(NIP.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("surat_pulang_atas_permintaan_sendiri",
-                "no_surat=?",
+        if (Sequel.mengedittf("surat_pulang_atas_permintaan_sendiri", "no_surat=?",
                 "no_surat=?,no_rawat=?,tgl_pulang=?,rs_pilihan=?,nama_pj=?,lahir=?,umur=?,jkpj=?,alamat=?,hubungan=?,saksi_keluarga=?,nip=?",
-                13, new String[]{
-                    NoSurat.getText(), TNoRw.getText(), Valid.SetTgl(Tanggal.
-                    getSelectedItem() + ""), Pilihan.getText(), NamaPihak2.
-                    getText(),
-                    Valid.SetTgl(TglLahir.getSelectedItem() + ""), UmurPJ.
-                    getText(), JKPJ.getSelectedItem().toString().substring(0, 1),
-                    AlamatPj.getText(), Hubungan.getSelectedItem().toString(),
-                    SaksiKeluarga.getText(), NIP.getText(), tbObat.getValueAt(
-                    tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                13,
+                new String[]{NoSurat.getText(), TNoRw.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""),
+                    Pilihan.getText(), NamaPihak2.getText(), Valid.SetTgl(TglLahir.getSelectedItem() + ""),
+                    UmurPJ.getText(), JKPJ.getSelectedItem().toString().substring(0, 1), AlamatPj.getText(),
+                    Hubungan.getSelectedItem().toString(), SaksiKeluarga.getText(), NIP.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(NoSurat.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 2);
@@ -1756,34 +1735,24 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
             tbObat.setValueAt(Umur.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(LahirPasien.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + ""),
-                    tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + ""), tbObat.getSelectedRow(), 7);
             tbObat.setValueAt(Pilihan.getText(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(NamaPihak2.getText(), tbObat.getSelectedRow(), 9);
-            tbObat.setValueAt(Valid.SetTgl(TglLahir.getSelectedItem() + ""),
-                    tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(Valid.SetTgl(TglLahir.getSelectedItem() + ""), tbObat.getSelectedRow(), 10);
             tbObat.setValueAt(UmurPJ.getText(), tbObat.getSelectedRow(), 11);
-            tbObat.setValueAt(JKPJ.getSelectedItem().toString().substring(0, 1),
-                    tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(JKPJ.getSelectedItem().toString().substring(0, 1), tbObat.getSelectedRow(), 12);
             tbObat.setValueAt(AlamatPj.getText(), tbObat.getSelectedRow(), 13);
-            tbObat.setValueAt(Hubungan.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(SaksiKeluarga.getText(), tbObat.getSelectedRow(),
-                    15);
+            tbObat.setValueAt(Hubungan.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(SaksiKeluarga.getText(), tbObat.getSelectedRow(), 15);
             tbObat.setValueAt(NIP.getText(), tbObat.getSelectedRow(), 16);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            17);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 17);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from surat_pulang_atas_permintaan_sendiri where no_surat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from surat_pulang_atas_permintaan_sendiri where no_surat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -1813,12 +1782,10 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
                 ps = koneksi.prepareStatement(
                         "select surat_pulang_atas_permintaan_sendiri_pembuat_pernyataan.photo from surat_pulang_atas_permintaan_sendiri_pembuat_pernyataan where surat_pulang_atas_permintaan_sendiri_pembuat_pernyataan.no_surat=?");
                 try {
-                    ps.setString(1, tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    ps.setString(1, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             lokasifile = "";
                         } else {
                             lokasifile = rs.getString("photo");
@@ -1846,12 +1813,10 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
                 ps = koneksi.prepareStatement(
                         "select surat_pulang_atas_permintaan_sendiri_saksi_keluarga.photo from surat_pulang_atas_permintaan_sendiri_saksi_keluarga where surat_pulang_atas_permintaan_sendiri_saksi_keluarga.no_surat=?");
                 try {
-                    ps.setString(1, tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    ps.setString(1, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             lokasifile2 = "";
                         } else {
                             lokasifile2 = rs.getString("photo");
@@ -1879,25 +1844,23 @@ public class SuratPulangAtasPermintaanSendiri extends javax.swing.JDialog {
                     LoadHTML2.setText(
                             "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                 } else {
-                    LoadHTML2.setText(
-                            "<html><body><center><img src='http://" + koneksiDB.
-                                    HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
-                            HYBRIDWEB() + "/pulangaps/" + lokasifile + "' alt='photo' width='450' height='550'/></center></body></html>");
+                    LoadHTML2.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                            + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/pulangaps/" + lokasifile
+                            + "' alt='photo' width='450' height='550'/></center></body></html>");
                 }
             } else {
                 if (lokasifile2.isEmpty()) {
                     LoadHTML3.setText(
                             "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                 } else {
-                    LoadHTML3.setText(
-                            "<html><body><center><img src='http://" + koneksiDB.
-                                    HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
-                            HYBRIDWEB() + "/pulangaps/" + lokasifile2 + "' alt='photo' width='450' height='550'/></center></body></html>");
+                    LoadHTML3.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                            + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/pulangaps/" + lokasifile2
+                            + "' alt='photo' width='450' height='550'/></center></body></html>");
                 }
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            SuratPulangAtasPermintaanSendiri.class.getName());
+    private static final Logger LOG = Logger.getLogger(SuratPulangAtasPermintaanSendiri.class.getName());
+
 }

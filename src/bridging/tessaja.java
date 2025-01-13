@@ -12,14 +12,14 @@ import java.util.logging.Logger;
  */
 public class tessaja {
 
-  private static final ApiBRI apibri = new ApiBRI();
+    private static final ApiBRI apibri = new ApiBRI();
 
-  /**
-   * @param args
-   */
-  public static void main(String[] args) {
-    apibri.statusVA("2204230001");
-  }
+    private static final Logger LOG = Logger.getLogger(tessaja.class.getName());
 
-  private static final Logger LOG = Logger.getLogger(tessaja.class.getName());
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        apibri.statusVA("2204230001");
+    }
 }

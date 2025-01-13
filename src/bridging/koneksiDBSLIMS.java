@@ -18,37 +18,38 @@ import javax.swing.JOptionPane;
  */
 public class koneksiDBSLIMS {
 
-  private static Connection connection = null;
+    private static Connection connection = null;
 
-  private static final Properties prop = new Properties();
+    private static final Properties prop = new Properties();
 
-  private static final MysqlDataSource dataSource = new MysqlDataSource();
+    private static final MysqlDataSource dataSource = new MysqlDataSource();
 
-  // private static final MariaDbDataSource dataSource=new MariaDbDataSource();
-  public koneksiDBSLIMS() {}
+    private static final Logger LOG = Logger.getLogger(koneksiDBSLIMS.class.getName());
 
-  public static Connection condb() {
-    if (connection == null) {
-      try {
-        prop.loadFromXML(new FileInputStream("setting/database.xml"));
-        dataSource.setURL(
-            "jdbc:mysql://"
-                + EnkripsiAES.decrypt(prop.getProperty("HOSTSLIMS"))
-                + ":"
-                + EnkripsiAES.decrypt(prop.getProperty("PORTSLIMS"))
-                + "/"
-                + EnkripsiAES.decrypt(prop.getProperty("DATABASESLIMS"))
-                + "?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
-        dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERSLIMS")));
-        dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASSLIMS")));
-        connection = dataSource.getConnection();
-        System.out.println("  Koneksi Berhasil. Menyambungkan ke database bridging SLIMS...!!!");
-      } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Koneksi ke server bridging SLIMS terputus : " + e);
-      }
+    public static Connection condb() {
+        if (connection == null) {
+            try {
+                prop.loadFromXML(new FileInputStream("setting/database.xml"));
+                dataSource.setURL(
+                        "jdbc:mysql://"
+                        + EnkripsiAES.decrypt(prop.getProperty("HOSTSLIMS"))
+                        + ":"
+                        + EnkripsiAES.decrypt(prop.getProperty("PORTSLIMS"))
+                        + "/"
+                        + EnkripsiAES.decrypt(prop.getProperty("DATABASESLIMS"))
+                        + "?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
+                dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERSLIMS")));
+                dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASSLIMS")));
+                connection = dataSource.getConnection();
+                System.out.println("  Koneksi Berhasil. Menyambungkan ke database bridging SLIMS...!!!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Koneksi ke server bridging SLIMS terputus : " + e);
+            }
+        }
+        return connection;
     }
-    return connection;
-  }
 
-  private static final Logger LOG = Logger.getLogger(koneksiDBSLIMS.class.getName());
+    // private static final MariaDbDataSource dataSource=new MariaDbDataSource();
+    public koneksiDBSLIMS() {
+    }
 }

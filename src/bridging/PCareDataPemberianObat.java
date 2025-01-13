@@ -87,21 +87,14 @@ public class PCareDataPemberianObat extends javax.swing.JDialog {
         initComponents();
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"Tgl.Beri", "Jam Beri", "No.Kunjungan", "No.Rawat",
-                    "No.R.M.", "Nama Pasien",
-                    "Kd Obat SK", "Kode Obat", "Nama Obat/Alkes", "Emb", "Tsl",
-                    "Jml", "Biaya Obat", "Total",
+                new Object[]{"Tgl.Beri", "Jam Beri", "No.Kunjungan", "No.Rawat", "No.R.M.", "Nama Pasien",
+                    "Kd Obat SK", "Kode Obat", "Nama Obat/Alkes", "Emb", "Tsl", "Jml", "Biaya Obat", "Total",
                     "Harga Beli", "Gudang", "No.Batch", "No.Faktur", "Status"}) {
-            Class[] types = new Class[]{java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class};
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -170,8 +163,7 @@ public class PCareDataPemberianObat extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -197,18 +189,14 @@ public class PCareDataPemberianObat extends javax.swing.JDialog {
         }
 
         try {
-            psrekening = koneksi.
-                    prepareStatement("select * from set_akun_ralan");
+            psrekening = koneksi.prepareStatement("select * from set_akun_ralan");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Obat_Ralan = rsrekening.getString(
-                            "Suspen_Piutang_Obat_Ralan");
+                    Suspen_Piutang_Obat_Ralan = rsrekening.getString("Suspen_Piutang_Obat_Ralan");
                     Obat_Ralan = rsrekening.getString("Obat_Ralan");
-                    HPP_Obat_Rawat_Jalan = rsrekening.getString(
-                            "HPP_Obat_Rawat_Jalan");
-                    Persediaan_Obat_Rawat_Jalan = rsrekening.getString(
-                            "Persediaan_Obat_Rawat_Jalan");
+                    HPP_Obat_Rawat_Jalan = rsrekening.getString("HPP_Obat_Rawat_Jalan");
+                    Persediaan_Obat_Rawat_Jalan = rsrekening.getString("Persediaan_Obat_Rawat_Jalan");
                 }
             } catch (Exception e) {
                 System.out.println("Notif Rekening : " + e);
@@ -221,18 +209,14 @@ public class PCareDataPemberianObat extends javax.swing.JDialog {
                 }
             }
 
-            psrekening = koneksi.
-                    prepareStatement("select * from set_akun_ranap");
+            psrekening = koneksi.prepareStatement("select * from set_akun_ranap");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Obat_Ranap = rsrekening.getString(
-                            "Suspen_Piutang_Obat_Ranap");
+                    Suspen_Piutang_Obat_Ranap = rsrekening.getString("Suspen_Piutang_Obat_Ranap");
                     Obat_Ranap = rsrekening.getString("Obat_Ranap");
-                    HPP_Obat_Rawat_Inap = rsrekening.getString(
-                            "HPP_Obat_Rawat_Inap");
-                    Persediaan_Obat_Rawat_Inap = rsrekening.getString(
-                            "Persediaan_Obat_Rawat_Inap");
+                    HPP_Obat_Rawat_Inap = rsrekening.getString("HPP_Obat_Rawat_Inap");
+                    Persediaan_Obat_Rawat_Inap = rsrekening.getString("Persediaan_Obat_Rawat_Inap");
                 }
             } catch (Exception e) {
                 System.out.println("Notif Rekening : " + e);
@@ -259,7 +243,9 @@ public class PCareDataPemberianObat extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -892,8 +878,7 @@ private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PCareDataPemberianObat dialog = new PCareDataPemberianObat(
-                    new javax.swing.JFrame(), true);
+            PCareDataPemberianObat dialog = new PCareDataPemberianObat(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -977,18 +962,10 @@ private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 ps.setString(21, "%" + TCari.getText() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3), rs.getString(4),
-                                rs.getString(5), rs.getString(6), rs.
-                                getString(7), rs.getString(8), rs.getString(
-                                9),
-                                rs.getDouble(10), rs.getDouble(11), rs.
-                                getDouble(12), rs.getDouble(13), rs.
-                                getDouble(14),
-                                rs.getDouble(15), rs.getString(16), rs.
-                                getString(17), rs.getString(18), rs.
-                                getString(19)});
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getDouble(10), rs.getDouble(11), rs.getDouble(12), rs.getDouble(13), rs.getDouble(14),
+                        rs.getDouble(15), rs.getString(16), rs.getString(17), rs.getString(18), rs.getString(19)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif Ketersediaan : " + e);
@@ -1022,7 +999,6 @@ private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         DTPCari2.setDate(tgl2);
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PCareDataPemberianObat.class.getName());
+    private static final Logger LOG = Logger.getLogger(PCareDataPemberianObat.class.getName());
 
 }

@@ -28,19 +28,27 @@ import simrskhanza.DlgKamarInap;
 import simrskhanza.DlgRujuk;
 
 /**
- *
  * @author dosen
  */
 public class RMDeteksiDiniCorona extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
-    private int i = 0, gejala1 = 0, gejala2 = 0, gejala3 = 0, resiko1 = 0, resiko2a = 0, resiko2b = 0, resiko2c = 0, resiko2d = 0, resiko2e = 0, gejala = 0, resiko = 0;
+
+    private int i = 0, gejala1 = 0, gejala2 = 0, gejala3 = 0, resiko1 = 0, resiko2a = 0, resiko2b = 0, resiko2c = 0,
+            resiko2d = 0, resiko2e = 0, gejala = 0, resiko = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private String finger = "";
 
     /**
@@ -53,16 +61,12 @@ public class RMDeteksiDiniCorona extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Alamat", "No.KTP", "No.Telp",
-            "Pekerjaan", "Tgl.Lahir", "Skrining", "NIP", "Nama Petugas",
-            "Demam", "Batuk", "Sesak Napas", "Timbul Gejala",
-            "Riwayat Sakit Sebelumnya", "Riwayat Periksa Sebelumnya",
-            "Perjalanan LN",
-            "Asal Daerah", "Kedatangan", "Kontak Positif", "Kontak PDP",
-            "Faskes Positif", "Perjalanan LN", "Pasar Hewan", "Kesimpulan",
-            "Tindak Lanjut"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Alamat", "No.KTP", "No.Telp", "Pekerjaan",
+                    "Tgl.Lahir", "Skrining", "NIP", "Nama Petugas", "Demam", "Batuk", "Sesak Napas",
+                    "Timbul Gejala", "Riwayat Sakit Sebelumnya", "Riwayat Periksa Sebelumnya", "Perjalanan LN",
+                    "Asal Daerah", "Kedatangan", "Kontak Positif", "Kontak PDP", "Faskes Positif", "Perjalanan LN",
+                    "Pasar Hewan", "Kesimpulan", "Tindak Lanjut"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -71,7 +75,8 @@ public class RMDeteksiDiniCorona extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -136,15 +141,12 @@ public class RMDeteksiDiniCorona extends javax.swing.JDialog {
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
-        RiwayatSakitSebelumnya.setDocument(new batasInput((byte) 50).getKata(
-                RiwayatSakitSebelumnya));
-        RiwayatPeriksaSebelumnya.setDocument(new batasInput((byte) 50).getKata(
-                RiwayatPeriksaSebelumnya));
+        RiwayatSakitSebelumnya.setDocument(new batasInput((byte) 50).getKata(RiwayatSakitSebelumnya));
+        RiwayatPeriksaSebelumnya.setDocument(new batasInput((byte) 50).getKata(RiwayatPeriksaSebelumnya));
         AsalDaerah.setDocument(new batasInput((byte) 50).getKata(AsalDaerah));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -181,10 +183,8 @@ public class RMDeteksiDiniCorona extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    kdptg.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmptg.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 kdptg.requestFocus();
             }
@@ -213,7 +213,9 @@ public class RMDeteksiDiniCorona extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1654,8 +1656,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMDeteksiDiniCorona dialog = new RMDeteksiDiniCorona(
-                    new javax.swing.JFrame(), true);
+            RMDeteksiDiniCorona dialog = new RMDeteksiDiniCorona(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1789,8 +1790,10 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     + "inner join deteksi_dini_corona on deteksi_dini_corona.no_rawat=reg_periksa.no_rawat "
                     + "inner join petugas on deteksi_dini_corona.nip=petugas.nip "
                     + "where deteksi_dini_corona.tanggal between ? and ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (deteksi_dini_corona.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or pasien.no_tlp like ? or "
-                    + "deteksi_dini_corona.kesimpulan like ? or deteksi_dini_corona.tindak_lanjut like ?)") + "order by deteksi_dini_corona.tanggal");
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (deteksi_dini_corona.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or pasien.no_tlp like ? or "
+                    + "deteksi_dini_corona.kesimpulan like ? or deteksi_dini_corona.tindak_lanjut like ?)")
+                    + "order by deteksi_dini_corona.tanggal");
             try {
                 ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
@@ -1804,28 +1807,18 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("asal"), rs.
-                        getString("no_ktp"), rs.getString("no_tlp"),
-                        rs.getString("pekerjaan"), rs.getString("tgl_lahir"),
-                        rs.getString("tanggal"), rs.getString("nip"), rs.
-                        getString("nama"), rs.getString("gejala_demam"),
-                        rs.getString("gejala_batuk"), rs.getString(
-                        "gejala_sesak"), rs.getString("gejala_tanggal_pertama"),
-                        rs.getString("gejala_riwayat_sakit"), rs.getString(
-                        "gejala_riwayat_periksa"),
-                        rs.getString("faktor_riwayat_perjalanan"), rs.getString(
-                        "faktor_asal_daerah"), rs.getString(
-                        "faktor_tanggal_kedatangan"), rs.getString(
-                        "faktor_paparan_kontakpositif"),
-                        rs.getString("faktor_paparan_kontakpdp"), rs.getString(
-                        "faktor_paparan_faskespositif"), rs.getString(
-                        "faktor_paparan_perjalananln"), rs.getString(
-                        "faktor_paparan_pasarhewan"),
-                        rs.getString("kesimpulan"), rs.
-                        getString("tindak_lanjut")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("asal"), rs.getString("no_ktp"),
+                        rs.getString("no_tlp"), rs.getString("pekerjaan"), rs.getString("tgl_lahir"),
+                        rs.getString("tanggal"), rs.getString("nip"), rs.getString("nama"),
+                        rs.getString("gejala_demam"), rs.getString("gejala_batuk"), rs.getString("gejala_sesak"),
+                        rs.getString("gejala_tanggal_pertama"), rs.getString("gejala_riwayat_sakit"),
+                        rs.getString("gejala_riwayat_periksa"), rs.getString("faktor_riwayat_perjalanan"),
+                        rs.getString("faktor_asal_daerah"), rs.getString("faktor_tanggal_kedatangan"),
+                        rs.getString("faktor_paparan_kontakpositif"), rs.getString("faktor_paparan_kontakpdp"),
+                        rs.getString("faktor_paparan_faskespositif"), rs.getString("faktor_paparan_perjalananln"),
+                        rs.getString("faktor_paparan_pasarhewan"), rs.getString("kesimpulan"),
+                        rs.getString("tindak_lanjut")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1881,70 +1874,41 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            NoRawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            NoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            NamaPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Alamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            NIK.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                            toString());
-            NoHP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Pekerjaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            kdptg.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            nmptg.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            A1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            A2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            A3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            RiwayatSakitSebelumnya.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 15).toString());
-            RiwayatPeriksaSebelumnya.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            B1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            AsalDaerah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            B2a.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            B2b.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            B2c.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            B2d.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            B2e.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).
-                    toString());
-            Kesimpulan.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 25).toString());
-            TindakLanjut.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
+            NoRawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            NoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            NamaPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Alamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            NIK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            NoHP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Pekerjaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            kdptg.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            nmptg.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            A1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            A2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            A3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            RiwayatSakitSebelumnya.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            RiwayatPeriksaSebelumnya.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            B1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            AsalDaerah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            B2a.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            B2b.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            B2c.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            B2d.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            B2e.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            Kesimpulan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            TindakLanjut.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
             isLabRad(NoRawat.getText());
-            Valid.SetTgl(TglSkrining, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    8).toString());
-            Valid.SetTgl(TglGejala, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    14).toString());
-            Valid.SetTgl(TglKedatangan, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
+            Valid.SetTgl(TglSkrining, tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Valid.SetTgl(TglGejala, tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Valid.SetTgl(TglKedatangan, tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
         }
     }
 
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,
-                    this.getHeight() - 122));
+            PanelInput.setPreferredSize(new Dimension(WIDTH, this.getHeight() - 122));
             FormInput.setVisible(true);
             ChkInput.setVisible(true);
         } else if (ChkInput.isSelected() == false) {
@@ -1971,7 +1935,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @param norawat
      * @param tgl1
      */
@@ -2019,9 +1982,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void isLabRad(String norawat) {
         try {
             HasilRadiologi.setText("");
-            ps = koneksi.prepareStatement(
-                    "select hasil from hasil_radiologi where "
-                    + "no_rawat=? ");
+            ps = koneksi.prepareStatement("select hasil from hasil_radiologi where " + "no_rawat=? ");
             try {
                 ps.setString(1, norawat);
                 rs = ps.executeQuery();
@@ -2043,17 +2004,14 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
         try {
             HasilLaborat.setText("");
-            ps = koneksi.prepareStatement(
-                    "select template_laboratorium.Pemeriksaan, detail_periksa_lab.nilai "
+            ps = koneksi.prepareStatement("select template_laboratorium.Pemeriksaan, detail_periksa_lab.nilai "
                     + "from detail_periksa_lab inner join template_laboratorium on detail_periksa_lab.id_template=template_laboratorium.id_template where "
                     + "detail_periksa_lab.no_rawat=?");
             try {
                 ps.setString(1, norawat);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    HasilLaborat.append(
-                            rs.getString("Pemeriksaan") + " : " + rs.getString(
-                            "nilai") + "\n");
+                    HasilLaborat.append(rs.getString("Pemeriksaan") + " : " + rs.getString("nilai") + "\n");
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -2071,7 +2029,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -2137,7 +2094,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMDeteksiDiniCorona.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMDeteksiDiniCorona.class.getName());
 
 }

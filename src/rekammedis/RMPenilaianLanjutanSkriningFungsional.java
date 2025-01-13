@@ -41,20 +41,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
 
     /**
@@ -63,22 +71,18 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public RMPenilaianLanjutanSkriningFungsional(java.awt.Frame parent,
-            boolean modal) {
+    public RMPenilaianLanjutanSkriningFungsional(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "JK", "Tanggal",
-            "Skala Barthel 1", "N.B. 1", "Skala Barthel 2", "N.B. 2",
-            "Skala Barthel 3", "N.B. 3", "Skala Barthel 4",
-            "N.B. 4", "Skala Barthel 5", "N.B. 5", "Skala Barthel 6", "N.B. 6",
-            "Skala Barthel 7", "N.B. 7", "Skala Barthel 8", "N.B. 8",
-            "Skala Barthel 9", "N.B. 9", "Skala Barthel 10",
-            "N.B. 10", "Total", "NIP", "Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "JK", "Tanggal", "Skala Barthel 1",
+                    "N.B. 1", "Skala Barthel 2", "N.B. 2", "Skala Barthel 3", "N.B. 3", "Skala Barthel 4", "N.B. 4",
+                    "Skala Barthel 5", "N.B. 5", "Skala Barthel 6", "N.B. 6", "Skala Barthel 7", "N.B. 7",
+                    "Skala Barthel 8", "N.B. 8", "Skala Barthel 9", "N.B. 9", "Skala Barthel 10", "N.B. 10",
+                    "Total", "NIP", "Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -87,7 +91,8 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -160,8 +165,7 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -198,10 +202,9 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 NIP.requestFocus();
             }
@@ -241,14 +244,15 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1925,15 +1929,11 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1943,33 +1943,20 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("tanggal"),
-                        rs.getString("penilaian_skrining_skala1"), rs.getString(
-                        "penilaian_skrining_nilai1"), rs.getString(
-                        "penilaian_skrining_skala2"), rs.getString(
-                        "penilaian_skrining_nilai2"),
-                        rs.getString("penilaian_skrining_skala3"), rs.getString(
-                        "penilaian_skrining_nilai3"), rs.getString(
-                        "penilaian_skrining_skala4"), rs.getString(
-                        "penilaian_skrining_nilai4"),
-                        rs.getString("penilaian_skrining_skala5"), rs.getString(
-                        "penilaian_skrining_nilai5"), rs.getString(
-                        "penilaian_skrining_skala6"), rs.getString(
-                        "penilaian_skrining_nilai6"),
-                        rs.getString("penilaian_skrining_skala7"), rs.getString(
-                        "penilaian_skrining_nilai7"), rs.getString(
-                        "penilaian_skrining_skala8"), rs.getString(
-                        "penilaian_skrining_nilai8"),
-                        rs.getString("penilaian_skrining_skala9"), rs.getString(
-                        "penilaian_skrining_nilai9"), rs.getString(
-                        "penilaian_skrining_skala10"), rs.getString(
-                        "penilaian_skrining_nilai10"),
-                        rs.getString("penilaian_skrining_totalnilai"), rs.
-                        getString("nip"), rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("penilaian_skrining_skala1"),
+                        rs.getString("penilaian_skrining_nilai1"), rs.getString("penilaian_skrining_skala2"),
+                        rs.getString("penilaian_skrining_nilai2"), rs.getString("penilaian_skrining_skala3"),
+                        rs.getString("penilaian_skrining_nilai3"), rs.getString("penilaian_skrining_skala4"),
+                        rs.getString("penilaian_skrining_nilai4"), rs.getString("penilaian_skrining_skala5"),
+                        rs.getString("penilaian_skrining_nilai5"), rs.getString("penilaian_skrining_skala6"),
+                        rs.getString("penilaian_skrining_nilai6"), rs.getString("penilaian_skrining_skala7"),
+                        rs.getString("penilaian_skrining_nilai7"), rs.getString("penilaian_skrining_skala8"),
+                        rs.getString("penilaian_skrining_nilai8"), rs.getString("penilaian_skrining_skala9"),
+                        rs.getString("penilaian_skrining_nilai9"), rs.getString("penilaian_skrining_skala10"),
+                        rs.getString("penilaian_skrining_nilai10"), rs.getString("penilaian_skrining_totalnilai"),
+                        rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2018,72 +2005,42 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            SkalaResiko1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString());
-            NilaiResiko1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            SkalaResiko2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            NilaiResiko2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            SkalaResiko3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            NilaiResiko3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            SkalaResiko4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            NilaiResiko4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            SkalaResiko5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            NilaiResiko5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            SkalaResiko6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            NilaiResiko6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            SkalaResiko7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            NilaiResiko7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            SkalaResiko8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            NilaiResiko8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            SkalaResiko9.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            NilaiResiko9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            SkalaResiko10.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            NilaiResiko10.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
-            NilaiResikoTotal.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    26).toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(14, 16));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(17, 19));
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
+            SkalaResiko1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            NilaiResiko1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            SkalaResiko2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            NilaiResiko2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            SkalaResiko3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            NilaiResiko3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            SkalaResiko4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            NilaiResiko4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            SkalaResiko5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            NilaiResiko5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            SkalaResiko6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            NilaiResiko6.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            SkalaResiko7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            NilaiResiko7.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            SkalaResiko8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            NilaiResiko8.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            SkalaResiko9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            NilaiResiko9.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            SkalaResiko10.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            NilaiResiko10.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            NilaiResikoTotal.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(14, 16));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(17, 19));
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.getText()
+                + "' ", TNoRM);
     }
 
     private void isPsien() {
@@ -2114,15 +2071,13 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -2140,8 +2095,7 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 172));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2168,8 +2122,7 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(NIP.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
@@ -2177,7 +2130,9 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -2219,7 +2174,7 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -2231,105 +2186,67 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("penilaian_lanjutan_skrining_fungsional",
-                "tanggal=? and no_rawat=?",
+        if (Sequel.mengedittf("penilaian_lanjutan_skrining_fungsional", "tanggal=? and no_rawat=?",
                 "no_rawat=?,tanggal=?,penilaian_skrining_skala1=?,penilaian_skrining_nilai1=?,"
                 + "penilaian_skrining_skala2=?,penilaian_skrining_nilai2=?,penilaian_skrining_skala3=?,penilaian_skrining_nilai3=?,penilaian_skrining_skala4=?,"
                 + "penilaian_skrining_nilai4=?,penilaian_skrining_skala5=?,penilaian_skrining_nilai5=?,penilaian_skrining_skala6=?,penilaian_skrining_nilai6=?,"
                 + "penilaian_skrining_skala7=?,penilaian_skrining_nilai7=?,penilaian_skrining_skala8=?,penilaian_skrining_nilai8=?,"
                 + "penilaian_skrining_skala9=?,penilaian_skrining_nilai9=?,penilaian_skrining_skala10=?,penilaian_skrining_nilai10=?,"
-                + "penilaian_skrining_totalnilai=?,nip=?", 26, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    SkalaResiko1.getSelectedItem().toString(), NilaiResiko1.
-                    getText(), SkalaResiko2.getSelectedItem().toString(),
-                    NilaiResiko2.getText(),
-                    SkalaResiko3.getSelectedItem().toString(), NilaiResiko3.
-                    getText(), SkalaResiko4.getSelectedItem().toString(),
-                    NilaiResiko4.getText(),
-                    SkalaResiko5.getSelectedItem().toString(), NilaiResiko5.
-                    getText(), SkalaResiko6.getSelectedItem().toString(),
-                    NilaiResiko6.getText(),
-                    SkalaResiko7.getSelectedItem().toString(), NilaiResiko7.
-                    getText(), SkalaResiko8.getSelectedItem().toString(),
-                    NilaiResiko8.getText(),
-                    SkalaResiko9.getSelectedItem().toString(), NilaiResiko9.
-                    getText(), SkalaResiko10.getSelectedItem().toString(),
-                    NilaiResiko10.getText(),
-                    NilaiResikoTotal.getText(), NIP.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 5).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                + "penilaian_skrining_totalnilai=?,nip=?",
+                26,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    SkalaResiko1.getSelectedItem().toString(), NilaiResiko1.getText(),
+                    SkalaResiko2.getSelectedItem().toString(), NilaiResiko2.getText(),
+                    SkalaResiko3.getSelectedItem().toString(), NilaiResiko3.getText(),
+                    SkalaResiko4.getSelectedItem().toString(), NilaiResiko4.getText(),
+                    SkalaResiko5.getSelectedItem().toString(), NilaiResiko5.getText(),
+                    SkalaResiko6.getSelectedItem().toString(), NilaiResiko6.getText(),
+                    SkalaResiko7.getSelectedItem().toString(), NilaiResiko7.getText(),
+                    SkalaResiko8.getSelectedItem().toString(), NilaiResiko8.getText(),
+                    SkalaResiko9.getSelectedItem().toString(), NilaiResiko9.getText(),
+                    SkalaResiko10.getSelectedItem().toString(), NilaiResiko10.getText(), NilaiResikoTotal.getText(),
+                    NIP.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(SkalaResiko1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 6);
-            tbObat.
-                    setValueAt(NilaiResiko1.getText(), tbObat.getSelectedRow(),
-                            7);
-            tbObat.setValueAt(SkalaResiko2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
-            tbObat.
-                    setValueAt(NilaiResiko2.getText(), tbObat.getSelectedRow(),
-                            9);
-            tbObat.setValueAt(SkalaResiko3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 10);
-            tbObat.setValueAt(NilaiResiko3.getText(), tbObat.getSelectedRow(),
-                    11);
-            tbObat.setValueAt(SkalaResiko4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(NilaiResiko4.getText(), tbObat.getSelectedRow(),
-                    13);
-            tbObat.setValueAt(SkalaResiko5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(NilaiResiko5.getText(), tbObat.getSelectedRow(),
-                    15);
-            tbObat.setValueAt(SkalaResiko6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(NilaiResiko6.getText(), tbObat.getSelectedRow(),
-                    17);
-            tbObat.setValueAt(SkalaResiko7.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 18);
-            tbObat.setValueAt(NilaiResiko7.getText(), tbObat.getSelectedRow(),
-                    19);
-            tbObat.setValueAt(SkalaResiko8.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 20);
-            tbObat.setValueAt(NilaiResiko8.getText(), tbObat.getSelectedRow(),
-                    21);
-            tbObat.setValueAt(SkalaResiko9.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 22);
-            tbObat.setValueAt(NilaiResiko9.getText(), tbObat.getSelectedRow(),
-                    23);
-            tbObat.setValueAt(SkalaResiko10.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 24);
-            tbObat.setValueAt(NilaiResiko10.getText(), tbObat.getSelectedRow(),
-                    25);
-            tbObat.setValueAt(NilaiResikoTotal.getText(), tbObat.
-                    getSelectedRow(), 26);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(SkalaResiko1.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(NilaiResiko1.getText(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(SkalaResiko2.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(NilaiResiko2.getText(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(SkalaResiko3.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(NilaiResiko3.getText(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(SkalaResiko4.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(NilaiResiko4.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(SkalaResiko5.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(NilaiResiko5.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(SkalaResiko6.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(NilaiResiko6.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(SkalaResiko7.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(NilaiResiko7.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(SkalaResiko8.getSelectedItem().toString(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(NilaiResiko8.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(SkalaResiko9.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(NilaiResiko9.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(SkalaResiko10.getSelectedItem().toString(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(NilaiResiko10.getText(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(NilaiResikoTotal.getText(), tbObat.getSelectedRow(), 26);
             tbObat.setValueAt(NIP.getText(), tbObat.getSelectedRow(), 27);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            28);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 28);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_lanjutan_skrining_fungsional where tanggal=? and no_rawat=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_lanjutan_skrining_fungsional where tanggal=? and no_rawat=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             emptTeks();
             LCount.setText("" + tabMode.getRowCount());
@@ -2340,28 +2257,23 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
 
     private void isTotalResikoJatuh() {
         try {
-            NilaiResikoTotal.setText(
-                    (Integer.parseInt(NilaiResiko1.getText()) + Integer.
-                    parseInt(NilaiResiko2.getText()) + Integer.parseInt(
-                    NilaiResiko3.getText()) + Integer.parseInt(NilaiResiko4.
-                    getText()) + Integer.parseInt(NilaiResiko5.getText()) + Integer.
-                    parseInt(NilaiResiko6.getText()) + Integer.parseInt(
-                    NilaiResiko7.getText()) + Integer.parseInt(NilaiResiko8.
-                    getText()) + Integer.parseInt(NilaiResiko9.getText()) + Integer.
-                    parseInt(NilaiResiko10.getText())) + "");
+            NilaiResikoTotal
+                    .setText((Integer.parseInt(NilaiResiko1.getText()) + Integer.parseInt(NilaiResiko2.getText())
+                            + Integer.parseInt(NilaiResiko3.getText()) + Integer.parseInt(NilaiResiko4.getText())
+                            + Integer.parseInt(NilaiResiko5.getText()) + Integer.parseInt(NilaiResiko6.getText())
+                            + Integer.parseInt(NilaiResiko7.getText()) + Integer.parseInt(NilaiResiko8.getText())
+                            + Integer.parseInt(NilaiResiko9.getText()) + Integer.parseInt(NilaiResiko10.getText())) + "");
             if (Integer.parseInt(NilaiResikoTotal.getText()) <= 4) {
                 TingkatResiko.setText("Keterangan : Ketergantungan Total (0-4)");
-            } else if (Integer.parseInt(NilaiResikoTotal.getText()) > 4 && Integer.
-                    parseInt(NilaiResikoTotal.getText()) < 9) {
+            } else if (Integer.parseInt(NilaiResikoTotal.getText()) > 4
+                    && Integer.parseInt(NilaiResikoTotal.getText()) < 9) {
                 TingkatResiko.setText("Keterangan : Ketergantungan Berat (5-8)");
-            } else if (Integer.parseInt(NilaiResikoTotal.getText()) > 8 && Integer.
-                    parseInt(NilaiResikoTotal.getText()) < 12) {
-                TingkatResiko.setText(
-                        "Keterangan : Ketergantungan Sedang (9-11)");
-            } else if (Integer.parseInt(NilaiResikoTotal.getText()) > 11 && Integer.
-                    parseInt(NilaiResikoTotal.getText()) < 20) {
-                TingkatResiko.setText(
-                        "Keterangan : Ketergantungan Ringan (12-19)");
+            } else if (Integer.parseInt(NilaiResikoTotal.getText()) > 8
+                    && Integer.parseInt(NilaiResikoTotal.getText()) < 12) {
+                TingkatResiko.setText("Keterangan : Ketergantungan Sedang (9-11)");
+            } else if (Integer.parseInt(NilaiResikoTotal.getText()) > 11
+                    && Integer.parseInt(NilaiResikoTotal.getText()) < 20) {
+                TingkatResiko.setText("Keterangan : Ketergantungan Ringan (12-19)");
             } else if (Integer.parseInt(NilaiResikoTotal.getText()) > 19) {
                 TingkatResiko.setText("Keterangan : Mandiri (20)");
             }
@@ -2371,6 +2283,6 @@ public class RMPenilaianLanjutanSkriningFungsional extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianLanjutanSkriningFungsional.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianLanjutanSkriningFungsional.class.getName());
+
 }

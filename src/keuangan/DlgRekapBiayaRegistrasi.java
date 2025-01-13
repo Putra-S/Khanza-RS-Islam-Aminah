@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package keuangan;
 
@@ -40,24 +40,36 @@ import simrskhanza.DlgCariCaraBayar2;
 import simrskhanza.DlgCariPoli;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
 
     private final Connection koneksi = koneksiDB.condb();
+
     private final sekuel Sequel = new sekuel();
+
     private final validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private StringBuilder htmlContent;
+
     private String[] carabayar, kodecarabayar;
+
     private int[] jumlah;
+
     private double totalbiaya = 0;
+
     private int i, baris = 0, no = 0, sesuai = 0, x = 0, y = 0;
+
     private String carabayardicari = "", diagnosa = "", kddiangnosa = "", pilihan = "";
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariCaraBayar2 penjab = new DlgCariCaraBayar2(null, false);
 
     /**
@@ -74,8 +86,7 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -112,10 +123,8 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -153,8 +162,7 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
                 try {
                     no = 0;
                     for (i = 0; i < penjab.getTable().getRowCount(); i++) {
-                        if (penjab.getTable().getValueAt(i, 0).toString().
-                                equals("true")) {
+                        if (penjab.getTable().getValueAt(i, 0).toString().equals("true")) {
                             no++;
                         }
                     }
@@ -166,14 +174,10 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
                     carabayardicari = "";
                     no = 0;
                     for (i = 0; i < penjab.getTable().getRowCount(); i++) {
-                        if (penjab.getTable().getValueAt(i, 0).toString().
-                                equals("true")) {
-                            kodecarabayar[no] = penjab.getTable().getValueAt(i,
-                                    1).toString();
-                            carabayar[no] = penjab.getTable().getValueAt(i, 2).
-                                    toString();
-                            carabayardicari = penjab.getTable().getValueAt(i, 2).
-                                    toString() + ", " + carabayardicari;
+                        if (penjab.getTable().getValueAt(i, 0).toString().equals("true")) {
+                            kodecarabayar[no] = penjab.getTable().getValueAt(i, 1).toString();
+                            carabayar[no] = penjab.getTable().getValueAt(i, 2).toString();
+                            carabayardicari = penjab.getTable().getValueAt(i, 2).toString() + ", " + carabayardicari;
                             no++;
                         }
                     }
@@ -214,10 +218,8 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -268,8 +270,7 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
                 + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
                 + ".head td{border-right: 1px solid #777777;font: 8.5px tahoma;height:10px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
                 + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}"
-        );
+                + ".isi4 td{font: 11px tahoma;height:12px;background: #ffffff;color:#323232;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -278,7 +279,9 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -844,8 +847,7 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRekapBiayaRegistrasi dialog = new DlgRekapBiayaRegistrasi(
-                    new javax.swing.JFrame(), true);
+            DlgRekapBiayaRegistrasi dialog = new DlgRekapBiayaRegistrasi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -897,25 +899,21 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
             htmlContent = new StringBuilder();
-            Sequel.cariInteger(
-                    "select count(penjab.png_jawab) from penjab where penjab.status='1'");
+            Sequel.cariInteger("select count(penjab.png_jawab) from penjab where penjab.status='1'");
             htmlContent.append(
-                    "<tr class='head'><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='27px'>No.</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='80px'>Tgl.Periksa</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='170px'>Nama Pasien</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='110px'>NIK</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='250px'>Alamat</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='90px'>No.RM</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='90px'>Diagnosis</td>").
-                    append(no > 0 ? "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='" + no + "' width='" + (no * 100) + "px'>Cara Bayar</td>" : "").
-                    append("<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='90px'>Biaya</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='60px'>Status</td></tr>");
+                    "<tr class='head'><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='27px'>No.</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='80px'>Tgl.Periksa</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='170px'>Nama Pasien</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='110px'>NIK</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='250px'>Alamat</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='90px'>No.RM</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='90px'>Diagnosis</td>")
+                    .append(no > 0 ? "<td valign='middle' bgcolor='#FFFAFA' align='center' colspan='" + no + "' width='"
+                            + (no * 100) + "px'>Cara Bayar</td>" : "")
+                    .append("<td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='90px'>Biaya</td><td valign='middle' bgcolor='#FFFAFA' align='center' rowspan='2' width='60px'>Status</td></tr>");
 
             if (no > 0) {
-                htmlContent.append(
-                        "<tr class='head'>"
-                );
+                htmlContent.append("<tr class='head'>");
                 for (i = 0; i < no; i++) {
-                    htmlContent.append(
-                            "<td valign='middle' bgcolor='#FFFAFA' align='center' width='100px'>").
-                            append(carabayar[i]).append("</td>");
+                    htmlContent.append("<td valign='middle' bgcolor='#FFFAFA' align='center' width='100px'>")
+                            .append(carabayar[i])
+                            .append("</td>");
                 }
-                htmlContent.append(
-                        "</tr>"
-                );
+                htmlContent.append("</tr>");
             }
 
             baris = 1;
@@ -927,11 +925,12 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
                         "select reg_periksa.tgl_registrasi,pasien.nm_pasien,pasien.no_ktp,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab,', ',propinsi.nm_prop) as alamat,"
                         + "pasien.no_rkm_medis,reg_periksa.biaya_reg,reg_periksa.status_lanjut,reg_periksa.kd_pj,reg_periksa.no_rawat from reg_periksa inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis "
                         + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
-                        + "inner join propinsi on pasien.kd_prop=propinsi.kd_prop where reg_periksa.tgl_registrasi between ? and ? and reg_periksa.kd_pj='" + kodecarabayar[i] + "'"
-                        + (kdpoli.getText().trim().isEmpty() ? "" : " and reg_periksa.kd_poli='" + kdpoli.
-                        getText().trim() + "' ")
-                        + (kddokter.getText().trim().isEmpty() ? "" : " and reg_periksa.kd_dokter='" + kddokter.
-                        getText().trim() + "' ")
+                        + "inner join propinsi on pasien.kd_prop=propinsi.kd_prop where reg_periksa.tgl_registrasi between ? and ? and reg_periksa.kd_pj='"
+                        + kodecarabayar[i] + "'"
+                        + (kdpoli.getText().trim().isEmpty() ? ""
+                        : " and reg_periksa.kd_poli='" + kdpoli.getText().trim() + "' ")
+                        + (kddokter.getText().trim().isEmpty() ? ""
+                        : " and reg_periksa.kd_dokter='" + kddokter.getText().trim() + "' ")
                         + " order by reg_periksa.tgl_registrasi");
                 try {
                     ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
@@ -963,39 +962,38 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
                         }
 
                         totalbiaya += rs.getDouble("biaya_reg");
-                        htmlContent.append(
-                                "<tr class='isi'><td valign='middle' align='center'>").
-                                append(baris).append(
-                                "</td><td valign='middle' align='center'>").
-                                append(rs.getString("tgl_registrasi")).append(
-                                "</td><td valign='middle' align='left'>").
-                                append(rs.getString("nm_pasien")).append(
-                                "</td><td valign='middle' align='center'>").
-                                append(rs.getString("no_ktp")).append(
-                                "</td><td valign='middle' align='left'>").
-                                append(rs.getString("alamat")).append(
-                                "</td><td valign='middle' align='center'>").
-                                append(rs.getString("no_rkm_medis")).append(
-                                "</td><td valign='middle' align='left'>").
-                                append(kddiangnosa).append(" ").append(diagnosa).
-                                append("</td>");
+                        htmlContent.append("<tr class='isi'><td valign='middle' align='center'>")
+                                .append(baris)
+                                .append("</td><td valign='middle' align='center'>")
+                                .append(rs.getString("tgl_registrasi"))
+                                .append("</td><td valign='middle' align='left'>")
+                                .append(rs.getString("nm_pasien"))
+                                .append("</td><td valign='middle' align='center'>")
+                                .append(rs.getString("no_ktp"))
+                                .append("</td><td valign='middle' align='left'>")
+                                .append(rs.getString("alamat"))
+                                .append("</td><td valign='middle' align='center'>")
+                                .append(rs.getString("no_rkm_medis"))
+                                .append("</td><td valign='middle' align='left'>")
+                                .append(kddiangnosa)
+                                .append(" ")
+                                .append(diagnosa)
+                                .append("</td>");
                         for (x = 0; x < y; x++) {
                             sesuai = 0;
                             if (x == i) {
                                 sesuai = 1;
                             }
                             jumlah[i] += sesuai;
-                            htmlContent.append(
-                                    "<td valign='middle' align='center'>").
-                                    append(Integer.toString(sesuai).replaceAll(
-                                            "0", "")).append("</td>");
+                            htmlContent.append("<td valign='middle' align='center'>")
+                                    .append(Integer.toString(sesuai).replaceAll("0", ""))
+                                    .append("</td>");
                         }
-                        htmlContent.
-                                append("<td valign='middle' align='center'>").
-                                append(Valid.SetAngka(rs.getDouble("biaya_reg"))).
-                                append("</td><td valign='middle' align='center'>").
-                                append(rs.getString("status_lanjut")).append(
-                                "</td></tr>");
+                        htmlContent.append("<td valign='middle' align='center'>")
+                                .append(Valid.SetAngka(rs.getDouble("biaya_reg")))
+                                .append("</td><td valign='middle' align='center'>")
+                                .append(rs.getString("status_lanjut"))
+                                .append("</td></tr>");
                         baris++;
                     }
                 } catch (Exception e) {
@@ -1010,24 +1008,17 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
                 }
             }
 
-            htmlContent.append(
-                    "<tr class='isi'>"
-                    + "<td valign='middle' align='left' colspan='7'>Total</td>"
-            );
+            htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='left' colspan='7'>Total</td>");
             for (x = 0; x < y; x++) {
-                htmlContent.append("<td valign='middle' align='center'>").
-                        append(jumlah[x]).append("</td>");
+                htmlContent.append("<td valign='middle' align='center'>").append(jumlah[x]).append("</td>");
             }
-            htmlContent.append("<td valign='middle' align='center'>").append(
-                    Valid.SetAngka(totalbiaya)).append(
-                    "</td><td valign='middle' align='center'>&nbsp;</td></tr>");
+            htmlContent.append("<td valign='middle' align='center'>")
+                    .append(Valid.SetAngka(totalbiaya))
+                    .append("</td><td valign='middle' align='center'>&nbsp;</td></tr>");
 
-            LoadHTML.setText(
-                    "<html>"
-                    + "<table width='" + (1000 + (no * 100)) + "px' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>");
+            LoadHTML.setText("<html>" + "<table width='" + (1000 + (no * 100))
+                    + "px' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                    + htmlContent.toString() + "</table>" + "</html>");
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
@@ -1048,6 +1039,6 @@ public class DlgRekapBiayaRegistrasi extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgRekapBiayaRegistrasi.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgRekapBiayaRegistrasi.class.getName());
+
 }

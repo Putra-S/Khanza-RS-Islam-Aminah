@@ -33,39 +33,61 @@ import kepegawaian.DlgCariPetugas;
 import keuangan.Jurnal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class UTDPenyerahanDarah extends javax.swing.JDialog {
 
     private final DefaultTableModel tabModeMedis, tabModeNonMedis, tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
+
     private double ttl = 0, y = 0, stokbarang = 0, bayar = 0, total2 = 0, ppn = 0, besarppn = 0, tagihanppn = 0;
+
     ;
-    private int jml = 0, i = 0, index = 0, row = 0, pilih = 0;
-    private String verifikasi_penyerahan_darah_di_kasir = "", status = "Belum Dibayar", akunbayar = "", Penyerahan_Darah = Sequel.
-            cariIsi("select Penyerahan_Darah from set_akun");
+	private int jml = 0, i = 0, index = 0, row = 0, pilih = 0;
+
+    private String verifikasi_penyerahan_darah_di_kasir = "", status = "Belum Dibayar", akunbayar = "",
+            Penyerahan_Darah = Sequel.cariIsi("select Penyerahan_Darah from set_akun");
+
     private PreparedStatement ps, ps2, psstok, psdarah;
+
     private ResultSet rs, rs2, rsstok, rsdarah;
+
     private boolean[] pilihan;
-    private String[] kodebarang, namabarang, kategori, satuan, jumlah, stokasal, hbeli, total,
-            nokantung, komponen, gd, resus, aftap, kadaluarsa, asaldarah, satatus, js, bhp, kso, menejemen;
+
+    private String[] kodebarang, namabarang, kategori, satuan, jumlah, stokasal, hbeli, total, nokantung, komponen, gd,
+            resus, aftap, kadaluarsa, asaldarah, satatus, js, bhp, kso, menejemen;
+
     private double[] harga, biaya;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private WarnaTable2 warna = new WarnaTable2();
-    private UTDCariPenyerahanDarah carijual = new UTDCariPenyerahanDarah(null,
-            false);
+
+    private UTDCariPenyerahanDarah carijual = new UTDCariPenyerahanDarah(null, false);
+
     private boolean sukses = false;
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -80,24 +102,14 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
 
         warna.kolom = 0;
 
-        Object[] row = {
-            "P", "No.Kantung", "Komponen", "G.D.", "Rhesus", "Aftap",
-            "Kadaluarsa",
-            "Asal Darah", "Status", "Jasa Sarana", "Paket BHP",
-            "KSO", "Manajemen", "Biaya"};
+        Object[] row = {"P", "No.Kantung", "Komponen", "G.D.", "Rhesus", "Aftap", "Kadaluarsa", "Asal Darah", "Status",
+            "Jasa Sarana", "Paket BHP", "KSO", "Manajemen", "Biaya"};
         tabMode = new DefaultTableModel(null, row) {
 
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -144,8 +156,8 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
         }
         tbDarah.setDefaultRenderer(Object.class, new WarnaTablePenyerahanDarah());
 
-        tabModeMedis = new DefaultTableModel(null, new Object[]{"Jml",
-            "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
+        tabModeMedis = new DefaultTableModel(null,
+                new Object[]{"Jml", "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -181,9 +193,9 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
             }
         }
         tbMedis.setDefaultRenderer(Object.class, warna);
-        //non medis
-        tabModeNonMedis = new DefaultTableModel(null, new Object[]{"Jml",
-            "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
+        // non medis
+        tabModeNonMedis = new DefaultTableModel(null,
+                new Object[]{"Jml", "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -220,23 +232,19 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
         }
         tbNonMedis.setDefaultRenderer(Object.class, warna);
 
-        nopenyerahan.
-                setDocument(new batasInput((byte) 17).getKata(nopenyerahan));
+        nopenyerahan.setDocument(new batasInput((byte) 17).getKata(nopenyerahan));
         kdptgcross.setDocument(new batasInput((byte) 20).getKata(kdptgcross));
         kdptgpj.setDocument(new batasInput((byte) 20).getKata(kdptgpj));
         keterangan.setDocument(new batasInput((byte) 40).getKata(keterangan));
         Bayar.setDocument(new batasInput((byte) 14).getOnlyAngka(Bayar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TCariMedis.setDocument(new batasInput((byte) 100).getKata(TCariMedis));
-        TCariNonMedis.setDocument(new batasInput((byte) 100).getKata(
-                TCariNonMedis));
+        TCariNonMedis.setDocument(new batasInput((byte) 100).getKata(TCariNonMedis));
         nmpengambil.setDocument(new batasInput((byte) 70).getKata(nmpengambil));
-        alamatpengambil.setDocument(new batasInput((byte) 100).getKata(
-                alamatpengambil));
+        alamatpengambil.setDocument(new batasInput((byte) 100).getKata(alamatpengambil));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -261,8 +269,7 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
             });
         }
 
-        Bayar.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        Bayar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isKembali();
@@ -293,18 +300,16 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
-                        kdptgcross.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmptgcross.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdptgcross
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptgcross
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         kdptgcross.requestFocus();
                     } else if (pilih == 2) {
-                        kdptgpj.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptgpj.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptgpj
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptgpj
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         kdptgpj.requestFocus();
                     }
                 }
@@ -329,8 +334,8 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
         });
 
         try {
-            verifikasi_penyerahan_darah_di_kasir = Sequel.cariIsi(
-                    "select verifikasi_penyerahan_darah_di_kasir from set_nota");
+            verifikasi_penyerahan_darah_di_kasir = Sequel
+                    .cariIsi("select verifikasi_penyerahan_darah_di_kasir from set_nota");
         } catch (Exception e) {
             verifikasi_penyerahan_darah_di_kasir = "No";
         }
@@ -338,7 +343,9 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1266,13 +1273,12 @@ public class UTDPenyerahanDarah extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if (nopenyerahan.getText().trim().isEmpty()) {
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        if (nopenyerahan.getText().trim().isEmpty()) {//GEN-FIRST:event_BtnSimpanActionPerformed
             Valid.textKosong(nopenyerahan, "No.Penyerahan");
         } else if (keterangan.getText().trim().isEmpty()) {
             Valid.textKosong(keterangan, "Keterangan");
@@ -1906,8 +1912,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            UTDPenyerahanDarah dialog = new UTDPenyerahanDarah(
-                    new javax.swing.JFrame(), true);
+            UTDPenyerahanDarah dialog = new UTDPenyerahanDarah(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2053,8 +2058,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                     bhp[index] = tbDarah.getValueAt(i, 10).toString();
                     kso[index] = tbDarah.getValueAt(i, 11).toString();
                     menejemen[index] = tbDarah.getValueAt(i, 12).toString();
-                    biaya[index] = Double.parseDouble(tbDarah.getValueAt(i, 13).
-                            toString());
+                    biaya[index] = Double.parseDouble(tbDarah.getValueAt(i, 13).toString());
                     index++;
                 }
             }
@@ -2062,21 +2066,16 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             Valid.tabelKosong(tabMode);
 
             for (i = 0; i < jml; i++) {
-                tabMode.addRow(new Object[]{
-                    pilihan[i], nokantung[i], komponen[i], gd[i], resus[i],
-                    aftap[i], kadaluarsa[i], asaldarah[i], satatus[i], js[i],
-                    bhp[i], kso[i], menejemen[i], biaya[i]
-                });
+                tabMode.addRow(new Object[]{pilihan[i], nokantung[i], komponen[i], gd[i], resus[i], aftap[i],
+                    kadaluarsa[i], asaldarah[i], satatus[i], js[i], bhp[i], kso[i], menejemen[i], biaya[i]});
             }
 
-            psdarah = koneksi.prepareStatement(
-                    "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
+            psdarah = koneksi.prepareStatement("select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
                     + "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"
                     + "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"
                     + "utd_stok_darah.asal_darah,utd_stok_darah.status,"
                     + "utd_komponen_darah.jasa_sarana,utd_komponen_darah.paket_bhp,"
-                    + "utd_komponen_darah.kso,utd_komponen_darah.manajemen,"
-                    + "utd_komponen_darah.total "
+                    + "utd_komponen_darah.kso,utd_komponen_darah.manajemen," + "utd_komponen_darah.total "
                     + "from utd_komponen_darah inner join utd_stok_darah "
                     + "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode where "
                     + "utd_stok_darah.status='Ada' and utd_stok_darah.golongan_darah=? and utd_stok_darah.resus=? and utd_stok_darah.no_kantong like ? or "
@@ -2095,17 +2094,10 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 psdarah.setString(9, "%" + TCari.getText().trim() + "%");
                 rsdarah = psdarah.executeQuery();
                 while (rsdarah.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rsdarah.getString(1), rsdarah.getString(2),
-                        rsdarah.getString(3),
-                        rsdarah.getString(4), rsdarah.getString(5), rsdarah.
-                        getString(6),
-                        rsdarah.getString(7), rsdarah.getString(8), rsdarah.
-                        getDouble(9),
-                        rsdarah.getDouble(10), rsdarah.getDouble(11), rsdarah.
-                        getDouble(12),
-                        rsdarah.getDouble(13)
-                    });
+                    tabMode.addRow(new Object[]{false, rsdarah.getString(1), rsdarah.getString(2),
+                        rsdarah.getString(3), rsdarah.getString(4), rsdarah.getString(5), rsdarah.getString(6),
+                        rsdarah.getString(7), rsdarah.getString(8), rsdarah.getDouble(9), rsdarah.getDouble(10),
+                        rsdarah.getDouble(11), rsdarah.getDouble(12), rsdarah.getDouble(13)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi Darah : " + e);
@@ -2168,8 +2160,8 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
         Valid.tabelKosong(tabModeMedis);
         for (i = 0; i < jml; i++) {
-            tabModeMedis.addRow(new Object[]{jumlah[i], kodebarang[i],
-                namabarang[i], hbeli[i], total[i], satuan[i], stokasal[i]});
+            tabModeMedis.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], hbeli[i], total[i], satuan[i],
+                stokasal[i]});
         }
 
         try {
@@ -2183,9 +2175,8 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 ps.setString(2, "%" + TCariMedis.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModeMedis.addRow(new Object[]{"", rs.getString(1), rs.
-                        getString(2), rs.getString(3), 0, rs.getString(4), rs.
-                        getString(5)});
+                    tabModeMedis.addRow(new Object[]{"", rs.getString(1), rs.getString(2), rs.getString(3), 0,
+                        rs.getString(4), rs.getString(5)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -2248,8 +2239,8 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
         Valid.tabelKosong(tabModeNonMedis);
         for (i = 0; i < jml; i++) {
-            tabModeNonMedis.addRow(new Object[]{jumlah[i], kodebarang[i],
-                namabarang[i], hbeli[i], total[i], satuan[i], stokasal[i]});
+            tabModeNonMedis.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], hbeli[i], total[i],
+                satuan[i], stokasal[i]});
         }
 
         try {
@@ -2262,9 +2253,8 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 ps2.setString(2, "%" + TCariNonMedis.getText().trim() + "%");
                 rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    tabModeNonMedis.addRow(new Object[]{"", rs2.getString(1),
-                        rs2.getString(2), rs2.getString(3), 0, rs2.getString(4),
-                        rs2.getString(5)});
+                    tabModeNonMedis.addRow(new Object[]{"", rs2.getString(1), rs2.getString(2), rs2.getString(3), 0,
+                        rs2.getString(4), rs2.getString(5)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -2290,8 +2280,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 if (tbDarah.getValueAt(r, 0).toString().equals("true")) {
                     y = 0;
                     try {
-                        y = Double.parseDouble(tbDarah.getValueAt(r, 13).
-                                toString());
+                        y = Double.parseDouble(tbDarah.getValueAt(r, 13).toString());
                     } catch (Exception e) {
                         y = 0;
                     }
@@ -2340,10 +2329,9 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     private void emptTeks() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(utd_penyerahan_darah.no_penyerahan,5),signed)),0) from utd_penyerahan_darah where utd_penyerahan_darah.tanggal like '%" + Valid.
-                        SetTgl(tanggal.getSelectedItem() + "").substring(0, 7) + "%'",
-                dateformat.format(tanggal.getDate()).substring(0, 7) + "/PD", 5,
-                nopenyerahan);
+                "select ifnull(MAX(CONVERT(RIGHT(utd_penyerahan_darah.no_penyerahan,5),signed)),0) from utd_penyerahan_darah where utd_penyerahan_darah.tanggal like '%"
+                + Valid.SetTgl(tanggal.getSelectedItem() + "").substring(0, 7) + "%'",
+                dateformat.format(tanggal.getDate()).substring(0, 7) + "/PD", 5, nopenyerahan);
         keterangan.setText("");
         nmpengambil.setText("");
         alamatpengambil.setText("");
@@ -2362,16 +2350,14 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select * from akun_bayar order by nama_bayar");
+            ps = koneksi.prepareStatement("select * from akun_bayar order by nama_bayar");
             try {
                 rs = ps.executeQuery();
                 AkunBayar.removeAllItems();
                 while (rs.next()) {
                     AkunBayar.addItem(rs.getString(1).replaceAll("\"", ""));
-                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).
-                            replaceAll("\"", "") + "\",\"KodeRek\":\"" + rs.
-                            getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
+                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).replaceAll("\"", "") + "\",\"KodeRek\":\""
+                            + rs.getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -2384,8 +2370,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 }
             }
 
-            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -2401,8 +2386,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             response = root.path("akunbayar");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    if (list.path("NamaAkun").asText().equals(AkunBayar.
-                            getSelectedItem().toString())) {
+                    if (list.path("NamaAkun").asText().equals(AkunBayar.getSelectedItem().toString())) {
                         Persenppn.setText(list.path("PPN").asText());
                     }
                 }
@@ -2413,7 +2397,6 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(UTDPenyerahanDarah.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(UTDPenyerahanDarah.class.getName());
 
 }

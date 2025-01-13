@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package inventory;
 
@@ -32,18 +32,24 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgCariPPNObat extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2, tabMode3, tabMode4;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private double total, totalppn, totalsemua, obat, ppnobat, obatdibayar;
 
     /**
@@ -57,16 +63,10 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
         initComponents();
         this.setLocation(8, 1);
         setSize(885, 674);
-        tabMode = new DefaultTableModel(null, new String[]{
-            "Tgl.Beli", "No.Faktur", "Suplier", "Petugas", "Total", "PPN",
-            "Total+PPN"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new String[]{"Tgl.Beli", "No.Faktur", "Suplier", "Petugas", "Total", "PPN", "Total+PPN"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -80,7 +80,8 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
 
         };
         tbPengadaan.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbPengadaan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPengadaan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -104,16 +105,10 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
         }
         tbPengadaan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new String[]{
-            "Tgl.Terima", "No.Faktur", "Suplier", "Petugas", "Total", "PPN",
-            "Total+PPN"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+        tabMode2 = new DefaultTableModel(null,
+                new String[]{"Tgl.Terima", "No.Faktur", "Suplier", "Petugas", "Total", "PPN", "Total+PPN"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -127,7 +122,8 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
 
         };
         tbPembelian.setModel(tabMode2);
-        //tbBangsal2.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
+        // tbBangsal2.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
         tbPembelian.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPembelian.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -151,15 +147,10 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
         }
         tbPembelian.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode3 = new DefaultTableModel(null, new String[]{
-            "Tgl.Nota", "No.Nota", "Nama Pasien", "Total", "PPN", "Total+PPN"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+        tabMode3 = new DefaultTableModel(null,
+                new String[]{"Tgl.Nota", "No.Nota", "Nama Pasien", "Total", "PPN", "Total+PPN"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -173,7 +164,8 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
 
         };
         tbRawatJalan.setModel(tabMode3);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbRawatJalan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRawatJalan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -195,16 +187,10 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
         }
         tbRawatJalan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode4 = new DefaultTableModel(null, new String[]{
-            "Tgl.Jual", "No.Nota", "Pasien", "Petugas", "Total", "PPN",
-            "Total+PPN"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+        tabMode4 = new DefaultTableModel(null,
+                new String[]{"Tgl.Jual", "No.Nota", "Pasien", "Petugas", "Total", "PPN", "Total+PPN"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -218,9 +204,9 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
 
         };
         tbObatJualBebas.setModel(tabMode4);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
-        tbObatJualBebas.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        tbObatJualBebas.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObatJualBebas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
@@ -245,8 +231,7 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
 
         TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TabRawat.getSelectedIndex() == 0) {
@@ -315,7 +300,9 @@ public class DlgCariPPNObat extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -845,8 +832,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPPNObat dialog = new DlgCariPPNObat(new javax.swing.JFrame(),
-                    true);
+            DlgCariPPNObat dialog = new DlgCariPPNObat(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -887,8 +873,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     public void tampil() {
         try {
             Valid.tabelKosong(tabMode);
-            ps = koneksi.prepareStatement(
-                    "select pembelian.tgl_beli,pembelian.no_faktur, "
+            ps = koneksi.prepareStatement("select pembelian.tgl_beli,pembelian.no_faktur, "
                     + " pembelian.kode_suplier,datasuplier.nama_suplier, "
                     + " pembelian.nip,petugas.nama,pembelian.total1,"
                     + " pembelian.potongan,pembelian.total2,pembelian.ppn,pembelian.tagihan "
@@ -923,19 +908,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     total += rs.getDouble("total2");
                     totalppn += rs.getDouble("ppn");
                     totalsemua += rs.getDouble("tagihan");
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tgl_beli"), rs.getString("no_faktur"), rs.
-                        getString("kode_suplier") + " " + rs.getString(
-                        "nama_suplier"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getDouble("total2"), rs.getDouble("ppn"), rs.getDouble(
-                        "tagihan")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("tgl_beli"), rs.getString("no_faktur"),
+                        rs.getString("kode_suplier") + " " + rs.getString("nama_suplier"),
+                        rs.getString("nip") + " " + rs.getString("nama"), rs.getDouble("total2"),
+                        rs.getDouble("ppn"), rs.getDouble("tagihan")});
                 }
                 if (total > 0) {
-                    tabMode.addRow(new Object[]{
-                        "", "", "Total :", "", total, totalppn, totalsemua
-                    });
+                    tabMode.addRow(new Object[]{"", "", "Total :", "", total, totalppn, totalsemua});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -958,8 +937,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     public void tampil2() {
         try {
             Valid.tabelKosong(tabMode2);
-            ps = koneksi.prepareStatement(
-                    "select pemesanan.tgl_pesan,pemesanan.no_faktur, "
+            ps = koneksi.prepareStatement("select pemesanan.tgl_pesan,pemesanan.no_faktur, "
                     + " pemesanan.kode_suplier,datasuplier.nama_suplier, "
                     + " pemesanan.nip,petugas.nama,pemesanan.total1,"
                     + " pemesanan.potongan,pemesanan.total2,pemesanan.ppn,pemesanan.tagihan "
@@ -994,19 +972,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     total += rs.getDouble("total2");
                     totalppn += rs.getDouble("ppn");
                     totalsemua += rs.getDouble("tagihan");
-                    tabMode2.addRow(new Object[]{
-                        rs.getString("tgl_pesan"), rs.getString("no_faktur"),
-                        rs.getString("kode_suplier") + " " + rs.getString(
-                        "nama_suplier"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getDouble("total2"), rs.getDouble("ppn"), rs.getDouble(
-                        "tagihan")
-                    });
+                    tabMode2.addRow(new Object[]{rs.getString("tgl_pesan"), rs.getString("no_faktur"),
+                        rs.getString("kode_suplier") + " " + rs.getString("nama_suplier"),
+                        rs.getString("nip") + " " + rs.getString("nama"), rs.getDouble("total2"),
+                        rs.getDouble("ppn"), rs.getDouble("tagihan")});
                 }
                 if (total > 0) {
-                    tabMode2.addRow(new Object[]{
-                        "", "", "Total :", "", total, totalppn, totalsemua
-                    });
+                    tabMode2.addRow(new Object[]{"", "", "Total :", "", total, totalppn, totalsemua});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1026,8 +998,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     public void tampil3() {
         try {
             Valid.tabelKosong(tabMode3);
-            ps = koneksi.prepareStatement(
-                    "select nota_jalan.tanggal,nota_jalan.no_nota, "
+            ps = koneksi.prepareStatement("select nota_jalan.tanggal,nota_jalan.no_nota, "
                     + " pasien.no_rkm_medis,pasien.nm_pasien,nota_jalan.no_rawat from "
                     + " nota_jalan inner join reg_periksa inner join pasien on nota_jalan.no_rawat=reg_periksa.no_rawat and "
                     + " reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -1059,17 +1030,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     total += obat;
                     totalppn += ppnobat;
                     totalsemua += obatdibayar;
-                    tabMode3.addRow(new Object[]{
-                        rs.getString("tanggal"), rs.getString("no_nota"), rs.
-                        getString("no_rkm_medis") + " " + rs.getString(
-                        "nm_pasien"),
-                        obat, ppnobat, obatdibayar
-                    });
+                    tabMode3.addRow(new Object[]{rs.getString("tanggal"), rs.getString("no_nota"),
+                        rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"), obat, ppnobat,
+                        obatdibayar});
                 }
                 if (total > 0) {
-                    tabMode3.addRow(new Object[]{
-                        "", "", "Total :", total, totalppn, totalsemua
-                    });
+                    tabMode3.addRow(new Object[]{"", "", "Total :", total, totalppn, totalsemua});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1089,17 +1055,17 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     public void tampil4() {
         try {
             Valid.tabelKosong(tabMode4);
-            ps = koneksi.prepareStatement(
-                    "select penjualan.tgl_jual,penjualan.nota_jual, "
+            ps = koneksi.prepareStatement("select penjualan.tgl_jual,penjualan.nota_jual, "
                     + " penjualan.no_rkm_medis,pasien.nm_pasien, "
                     + " penjualan.nip,petugas.nama,round(penjualan.ppn) as ppn,sum(detailjual.total) as total "
                     + " from penjualan inner join pasien on penjualan.no_rkm_medis=pasien.no_rkm_medis "
                     + " inner join petugas on penjualan.nip=petugas.nip inner join detailjual on penjualan.nota_jual=detailjual.nota_jual "
                     + " where penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between ? and ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : " and (penjualan.nota_jual like ? or "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : " and (penjualan.nota_jual like ? or "
                     + " penjualan.no_rkm_medis like ? or and penjualan.nm_pasien like ? or "
-                    + " penjualan.nip like ? or petugas.nama like ?) ") + " group by penjualan.nota_jual "
-                    + " order by penjualan.tgl_jual,penjualan.nota_jual ");
+                    + " penjualan.nip like ? or petugas.nama like ?) ")
+                    + " group by penjualan.nota_jual " + " order by penjualan.tgl_jual,penjualan.nota_jual ");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -1117,21 +1083,14 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rs.next()) {
                     total += rs.getDouble("total");
                     totalppn += rs.getDouble("ppn");
-                    totalsemua = totalsemua + rs.getDouble("total") + rs.
-                            getDouble("ppn");
-                    tabMode4.addRow(new Object[]{
-                        rs.getString("tgl_jual"), rs.getString("nota_jual"), rs.
-                        getString("no_rkm_medis") + " " + rs.getString(
-                        "nm_pasien"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getDouble("total"), rs.getDouble("ppn"), (rs.getDouble(
-                        "total") + rs.getDouble("ppn"))
-                    });
+                    totalsemua = totalsemua + rs.getDouble("total") + rs.getDouble("ppn");
+                    tabMode4.addRow(new Object[]{rs.getString("tgl_jual"), rs.getString("nota_jual"),
+                        rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"),
+                        rs.getString("nip") + " " + rs.getString("nama"), rs.getDouble("total"),
+                        rs.getDouble("ppn"), (rs.getDouble("total") + rs.getDouble("ppn"))});
                 }
                 if (total > 0) {
-                    tabMode4.addRow(new Object[]{
-                        "", "", "Total :", "", total, totalppn, totalsemua
-                    });
+                    tabMode4.addRow(new Object[]{"", "", "Total :", "", total, totalppn, totalsemua});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1155,7 +1114,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgCariPPNObat.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPPNObat.class.getName());
 
 }

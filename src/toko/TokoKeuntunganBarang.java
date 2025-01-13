@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package toko;
 
@@ -33,18 +33,24 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class TokoKeuntunganBarang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private double totalpenjualan, totalpiutang;
 
     /**
@@ -58,20 +64,13 @@ public class TokoKeuntunganBarang extends javax.swing.JDialog {
         initComponents();
         this.setLocation(8, 1);
         setSize(885, 674);
-        tabMode = new DefaultTableModel(null, new String[]{
-            "Tgl.Jual", "No.Nota", "Barang", "Satuan", "Harga Jual", "Jml.Jual",
-            "Subtotal Jual", "Disc(%)", "Besar Disc", "Tambahan", "Total Jual",
-            "Harga Beli", "Total Beli", "Keuntungan"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new String[]{"Tgl.Jual", "No.Nota", "Barang", "Satuan", "Harga Jual", "Jml.Jual", "Subtotal Jual",
+                    "Disc(%)", "Besar Disc", "Tambahan", "Total Jual", "Harga Beli", "Total Beli", "Keuntungan"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -85,7 +84,8 @@ public class TokoKeuntunganBarang extends javax.swing.JDialog {
 
         };
         tbPenjualan.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbPenjualan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPenjualan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -123,20 +123,14 @@ public class TokoKeuntunganBarang extends javax.swing.JDialog {
         }
         tbPenjualan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new String[]{
-            "Tgl.Piutang", "No.Nota", "Barang", "Satuan", "Harga Piutang",
-            "Jml.Piutang", "Subtotal Piutang", "Disc(%)", "Besar Disc(Rp)",
-            "Total Piutang", "Harga Beli", "Total Beli", "Keuntungan"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+        tabMode2 = new DefaultTableModel(null,
+                new String[]{"Tgl.Piutang", "No.Nota", "Barang", "Satuan", "Harga Piutang", "Jml.Piutang",
+                    "Subtotal Piutang", "Disc(%)", "Besar Disc(Rp)", "Total Piutang", "Harga Beli", "Total Beli",
+                    "Keuntungan"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -150,7 +144,8 @@ public class TokoKeuntunganBarang extends javax.swing.JDialog {
 
         };
         tbPiutang.setModel(tabMode2);
-        //tbBangsal2.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
+        // tbBangsal2.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
         tbPiutang.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPiutang.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -188,8 +183,7 @@ public class TokoKeuntunganBarang extends javax.swing.JDialog {
 
         TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -219,7 +213,9 @@ public class TokoKeuntunganBarang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -553,8 +549,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoKeuntunganBarang dialog = new TokoKeuntunganBarang(
-                    new javax.swing.JFrame(), true);
+            TokoKeuntunganBarang dialog = new TokoKeuntunganBarang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -601,8 +596,9 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "from tokopenjualan inner join toko_detail_jual on tokopenjualan.nota_jual=toko_detail_jual.nota_jual "
                     + "inner join tokobarang on toko_detail_jual.kode_brng=tokobarang.kode_brng "
                     + "inner join kodesatuan on toko_detail_jual.kode_sat=kodesatuan.kode_sat "
-                    + "where tokopenjualan.tgl_jual between ? and ? " + (TCari.
-                            getText().trim().isEmpty() ? "" : " and (tokobarang.nama_brng like ? or tokopenjualan.nota_jual like ? or toko_detail_jual.kode_brng like ? )")
+                    + "where tokopenjualan.tgl_jual between ? and ? "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : " and (tokobarang.nama_brng like ? or tokopenjualan.nota_jual like ? or toko_detail_jual.kode_brng like ? )")
                     + "order by tokopenjualan.tgl_jual,tokopenjualan.nota_jual");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
@@ -616,15 +612,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 totalpenjualan = 0;
                 while (rs.next()) {
                     totalpenjualan += rs.getDouble(15);
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2),
-                        rs.getString(3) + ", " + rs.getString(4), rs.
-                        getString(5),
-                        rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.
-                        getDouble(9), rs.getDouble(10),
-                        rs.getDouble(11), rs.getDouble(12), rs.getDouble(13),
-                        rs.getDouble(14), rs.getDouble(15)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3) + ", " + rs.getString(4), rs.getString(5), rs.getDouble(6), rs.getDouble(7),
+                        rs.getDouble(8), rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.getDouble(12),
+                        rs.getDouble(13), rs.getDouble(14), rs.getDouble(15)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -655,8 +646,9 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "from tokopiutang inner join toko_detail_piutang on tokopiutang.nota_piutang=toko_detail_piutang.nota_piutang "
                     + "inner join tokobarang on toko_detail_piutang.kode_brng=tokobarang.kode_brng "
                     + "inner join kodesatuan on toko_detail_piutang.kode_sat=kodesatuan.kode_sat "
-                    + "where tokopiutang.tgl_piutang between ? and ? " + (TCari.
-                            getText().trim().isEmpty() ? "" : " and (tokobarang.nama_brng like ? or tokopiutang.nota_piutang like ? or toko_detail_piutang.kode_brng like ? )")
+                    + "where tokopiutang.tgl_piutang between ? and ? "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : " and (tokobarang.nama_brng like ? or tokopiutang.nota_piutang like ? or toko_detail_piutang.kode_brng like ? )")
                     + "order by tokopiutang.tgl_piutang,tokopiutang.nota_piutang");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
@@ -670,15 +662,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 totalpiutang = 0;
                 while (rs.next()) {
                     totalpiutang += rs.getDouble(14);
-                    tabMode2.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2),
-                        rs.getString(3) + ", " + rs.getString(4), rs.
-                        getString(5),
-                        rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.
-                        getDouble(9), rs.getDouble(10),
-                        rs.getDouble(11), rs.getDouble(12), rs.getDouble(13),
-                        rs.getDouble(14)
-                    });
+                    tabMode2.addRow(new Object[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3) + ", " + rs.getString(4), rs.getString(5), rs.getDouble(6), rs.getDouble(7),
+                        rs.getDouble(8), rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.getDouble(12),
+                        rs.getDouble(13), rs.getDouble(14)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -697,13 +684,11 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }
 
     private void isHitung() {
-        Total.setText(
-                "Total Keuntungan = Keuntungan Barang Penjualan + Keuntungan Barang Piutang = " + Valid.
-                        SetAngka(totalpenjualan) + " + " + Valid.SetAngka(
-                totalpiutang) + " = " + Valid.SetAngka(
-                        totalpenjualan + totalpiutang));
+        Total.setText("Total Keuntungan = Keuntungan Barang Penjualan + Keuntungan Barang Piutang = "
+                + Valid.SetAngka(totalpenjualan) + " + " + Valid.SetAngka(totalpiutang) + " = "
+                + Valid.SetAngka(totalpenjualan + totalpiutang));
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            TokoKeuntunganBarang.class.getName());
+    private static final Logger LOG = Logger.getLogger(TokoKeuntunganBarang.class.getName());
+
 }

@@ -27,14 +27,16 @@ import kepegawaian.DlgCariPetugas;
 import keuangan.Jurnal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class IPSRSCariPembelian extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -46,16 +48,24 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
      *
      */
     public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     public IPSRSBarang barang = new IPSRSBarang(null, false);
+
     private PreparedStatement ps, ps2, pscaribeli, psipsrsdetailbeli;
+
     private riwayatnonmedis Trackbarang = new riwayatnonmedis();
+
     private ResultSet rs, rs2;
+
     private double tagihan = 0;
+
     private Jurnal jur = new Jurnal();
-    private String akunpengadaan = Sequel.cariIsi(
-            "select set_akun.Pengadaan_Ipsrs from set_akun"), PPN_Masukan = Sequel.
-                    cariIsi("select set_akun.PPN_Masukan from set_akun");
+
+    private String akunpengadaan = Sequel.cariIsi("select set_akun.Pengadaan_Ipsrs from set_akun"),
+            PPN_Masukan = Sequel.cariIsi("select set_akun.PPN_Masukan from set_akun");
+
     private boolean sukses = false;
+
     private int i = 0;
 
     /**
@@ -68,9 +78,8 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Tgl.Beli", "No.Faktur", "Suplier", "Petugas", "Barang",
-            "Satuan", "Jml", "Harga(Rp)", "SubTotal(Rp)",
-            "Disk(%)", "Bsr.Disk(Rp)", "Total(Rp)"};
+        Object[] row = {"Tgl.Beli", "No.Faktur", "Suplier", "Petugas", "Barang", "Satuan", "Jml", "Harga(Rp)",
+            "SubTotal(Rp)", "Disk(%)", "Bsr.Disk(Rp)", "Total(Rp)"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -119,8 +128,7 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -157,10 +165,8 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPembelianIpsrs")) {
                     if (suplier.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                        nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -217,10 +223,8 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPembelianIpsrs")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -257,10 +261,8 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPembelianIpsrs")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -317,12 +319,12 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPembelianIpsrs")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -349,7 +351,9 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -769,13 +773,12 @@ public class IPSRSCariPembelian extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        akses.setform("DlgCariPembelianIpsrs");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgCariPembelianIpsrs");//GEN-FIRST:event_btnSuplierActionPerformed
         suplier.emptTeks();
         suplier.isCek();
         suplier.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1083,8 +1086,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            IPSRSCariPembelian dialog = new IPSRSCariPembelian(
-                    new javax.swing.JFrame(), true);
+            IPSRSCariPembelian dialog = new IPSRSCariPembelian(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1141,8 +1143,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select ipsrspembelian.tgl_beli,ipsrspembelian.no_faktur, "
+            ps = koneksi.prepareStatement("select ipsrspembelian.tgl_beli,ipsrspembelian.no_faktur, "
                     + "ipsrspembelian.kode_suplier,ipsrssuplier.nama_suplier, "
                     + "ipsrspembelian.nip,petugas.nama,ipsrspembelian.subtotal,ipsrspembelian.potongan,ipsrspembelian.total, "
                     + "ipsrspembelian.ppn,ipsrspembelian.tagihan,ipsrspembelian.meterai from ipsrspembelian inner join ipsrssuplier inner join petugas inner join kodesatuan  "
@@ -1177,14 +1178,10 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 rs = ps.executeQuery();
                 tagihan = 0;
                 while (rs.next()) {
-                    tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3) + ", " + rs.getString(4),
-                                rs.getString(5) + ", " + rs.getString(6),
-                                "Pembelian :", "", "", "", "", "", "", ""
-                            });
-                    ps2 = koneksi.prepareStatement(
-                            "select ipsrsdetailbeli.kode_brng,ipsrsbarang.nama_brng, "
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3) + ", " + rs.getString(4), rs.getString(5) + ", " + rs.getString(6),
+                        "Pembelian :", "", "", "", "", "", "", ""});
+                    ps2 = koneksi.prepareStatement("select ipsrsdetailbeli.kode_brng,ipsrsbarang.nama_brng, "
                             + "ipsrsdetailbeli.kode_sat,kodesatuan.satuan,ipsrsdetailbeli.jumlah,ipsrsdetailbeli.harga, "
                             + "ipsrsdetailbeli.subtotal,ipsrsdetailbeli.dis,ipsrsdetailbeli.besardis,ipsrsdetailbeli.total "
                             + "from ipsrsdetailbeli inner join ipsrsbarang inner join kodesatuan "
@@ -1205,29 +1202,22 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         int no = 1;
                         while (rs2.next()) {
                             tabMode.addRow(new Object[]{"", "", "", "",
-                                no + ". " + rs2.getString(1) + ", " + rs2.
-                                getString(2),
-                                rs2.getString(3) + ", " + rs2.getString(4),
-                                rs2.getString(5), Valid.SetAngka(rs2.
-                                getDouble(6)), Valid.SetAngka(rs2.getDouble(7)),
-                                Valid.SetAngka(rs2.getDouble(8)), Valid.
-                                SetAngka(rs2.getDouble(9)), Valid.SetAngka(rs2.
-                                getDouble(10))});
+                                no + ". " + rs2.getString(1) + ", " + rs2.getString(2),
+                                rs2.getString(3) + ", " + rs2.getString(4), rs2.getString(5),
+                                Valid.SetAngka(rs2.getDouble(6)), Valid.SetAngka(rs2.getDouble(7)),
+                                Valid.SetAngka(rs2.getDouble(8)), Valid.SetAngka(rs2.getDouble(9)),
+                                Valid.SetAngka(rs2.getDouble(10))});
                             no++;
                         }
-                        tabMode.addRow(new Object[]{"", "", "", "", "", "Total",
-                            ":", "", Valid.SetAngka(rs.getDouble("subtotal")),
-                            "", Valid.SetAngka(rs.getDouble("potongan")), Valid.
-                            SetAngka(rs.getDouble("total"))});
-                        tabMode.addRow(new Object[]{"", "", "", "", "", "PPN",
-                            ":", "", "", "", "", Valid.SetAngka(rs.getDouble(
-                            "ppn"))});
-                        tabMode.addRow(new Object[]{"", "", "", "", "",
-                            "Biaya Tambahan", ":", "", "", "", "", Valid.
-                            SetAngka(rs.getDouble("meterai"))});
-                        tabMode.addRow(new Object[]{"", "", "", "", "",
-                            "Tagihan", ":", "", "", "", "", Valid.SetAngka(rs.
-                            getDouble("tagihan"))});
+                        tabMode.addRow(new Object[]{"", "", "", "", "", "Total", ":", "",
+                            Valid.SetAngka(rs.getDouble("subtotal")), "", Valid.SetAngka(rs.getDouble("potongan")),
+                            Valid.SetAngka(rs.getDouble("total"))});
+                        tabMode.addRow(new Object[]{"", "", "", "", "", "PPN", ":", "", "", "", "",
+                            Valid.SetAngka(rs.getDouble("ppn"))});
+                        tabMode.addRow(new Object[]{"", "", "", "", "", "Biaya Tambahan", ":", "", "", "", "",
+                            Valid.SetAngka(rs.getDouble("meterai"))});
+                        tabMode.addRow(new Object[]{"", "", "", "", "", "Tagihan", ":", "", "", "", "",
+                            Valid.SetAngka(rs.getDouble("tagihan"))});
                         tagihan += rs.getDouble("tagihan");
                     } catch (Exception e) {
                         System.out.println("Notif : " + e);
@@ -1277,7 +1267,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(IPSRSCariPembelian.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(IPSRSCariPembelian.class.getName());
 
 }

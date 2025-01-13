@@ -27,24 +27,39 @@ import keuangan.Jurnal;
 public class TokoReturPiutang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private riwayattoko Trackbarang = new riwayattoko();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private TokoCariReturPiutang form = new TokoCariReturPiutang(null, false);
+
     private double ttl = 0, y = 0, kolom, stokbarang;
+
     private int jml = 0, i = 0, row = 0, index = 0;
+
     private String[] kodebarang, namabarang, satuan, nofaktur;
+
     private double[] h_retur, jumlah, jmltotal, dasar, stok;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     public boolean tampikan = true;
+
     private boolean sukses = true;
-    private String hpptoko = "", Retur_Piutang_Toko = Sequel.cariIsi(
-            "select Retur_Piutang_Toko from set_akun"), Kontra_Retur_Piutang_Toko = Sequel.
-                    cariIsi("select Kontra_Retur_Piutang_Toko from set_akun");
+
+    private String hpptoko = "", Retur_Piutang_Toko = Sequel.cariIsi("select Retur_Piutang_Toko from set_akun"),
+            Kontra_Retur_Piutang_Toko = Sequel.cariIsi("select Kontra_Retur_Piutang_Toko from set_akun");
 
     /**
      * Creates new form DlgProgramStudi
@@ -56,16 +71,12 @@ public class TokoReturPiutang extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Satuan",
-            "Harga(Rp)", "Total(Rp)", "No.Nota", "Stok", "Dasar"};
+        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Satuan", "Harga(Rp)", "Total(Rp)", "No.Nota", "Stok",
+            "Dasar"};
         tabMode = new DefaultTableModel(null, judul) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -119,8 +130,7 @@ public class TokoReturPiutang extends javax.swing.JDialog {
         Catatan.setDocument(new batasInput(40).getKata(Catatan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -190,12 +200,12 @@ public class TokoReturPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoReturPiutang")) {
                     if (form.member.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(form.member.getTable().getValueAt(
-                                form.member.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsup.setText(form.member.getTable().getValueAt(
-                                form.member.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsup.setText(form.member.getTable()
+                                .getValueAt(form.member.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsup.setText(form.member.getTable()
+                                .getValueAt(form.member.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -252,12 +262,12 @@ public class TokoReturPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoReturPiutang")) {
                     if (form.petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(form.petugas.getTable().getValueAt(
-                                form.petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmptg.setText(form.petugas.getTable().getValueAt(
-                                form.petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdptg.setText(form.petugas.getTable()
+                                .getValueAt(form.petugas.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmptg.setText(form.petugas.getTable()
+                                .getValueAt(form.petugas.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -289,7 +299,9 @@ public class TokoReturPiutang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -642,14 +654,13 @@ public class TokoReturPiutang extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-    for (i = 0; i < tbDokter.getRowCount(); i++) {
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+    for (i = 0; i < tbDokter.getRowCount(); i++) {//GEN-FIRST:event_ppBersihkanActionPerformed
         tbDokter.setValueAt("", i, 0);
         tbDokter.setValueAt(0, i, 5);
     }
@@ -942,8 +953,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoReturPiutang dialog = new TokoReturPiutang(
-                    new javax.swing.JFrame(), true);
+            TokoReturPiutang dialog = new TokoReturPiutang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1016,20 +1026,15 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         for (i = 0; i < row; i++) {
             try {
                 if (Double.parseDouble(tbDokter.getValueAt(i, 0).toString()) > 0) {
-                    jumlah[index] = Double.parseDouble(
-                            tbDokter.getValueAt(i, 0).toString());
+                    jumlah[index] = Double.parseDouble(tbDokter.getValueAt(i, 0).toString());
                     kodebarang[index] = tbDokter.getValueAt(i, 1).toString();
                     namabarang[index] = tbDokter.getValueAt(i, 2).toString();
                     satuan[index] = tbDokter.getValueAt(i, 3).toString();
-                    h_retur[index] = Double.parseDouble(tbDokter.
-                            getValueAt(i, 4).toString());
-                    jmltotal[index] = Double.parseDouble(tbDokter.getValueAt(i,
-                            5).toString());
+                    h_retur[index] = Double.parseDouble(tbDokter.getValueAt(i, 4).toString());
+                    jmltotal[index] = Double.parseDouble(tbDokter.getValueAt(i, 5).toString());
                     nofaktur[index] = tbDokter.getValueAt(i, 6).toString();
-                    stok[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).
-                            toString());
-                    dasar[index] = Double.parseDouble(tbDokter.getValueAt(i, 8).
-                            toString());
+                    stok[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).toString());
+                    dasar[index] = Double.parseDouble(tbDokter.getValueAt(i, 8).toString());
                     index++;
                 }
             } catch (Exception e) {
@@ -1037,16 +1042,17 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
         Valid.tabelKosong(tabMode);
         for (i = 0; i < jml; i++) {
-            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i],
-                satuan[i], h_retur[i], jmltotal[i], nofaktur[i], stok[i],
-                dasar[i]});
+            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], satuan[i], h_retur[i], jmltotal[i],
+                nofaktur[i], stok[i], dasar[i]});
         }
         try {
-            ps = koneksi.prepareStatement(
-                    "select tokobarang.kode_brng,tokobarang.nama_brng,tokobarang.kode_sat,tokobarang." + hpptoko + " as dasar,tokobarang.stok "
-                    + " from tokobarang where tokobarang.status='1' " + (TCari.
-                            getText().trim().isEmpty() ? "" : " and (tokobarang.kode_brng like ? or "
-                            + " tokobarang.nama_brng like ? or tokobarang.jenis like ?)") + " order by tokobarang.nama_brng");
+            ps = koneksi
+                    .prepareStatement("select tokobarang.kode_brng,tokobarang.nama_brng,tokobarang.kode_sat,tokobarang."
+                            + hpptoko + " as dasar,tokobarang.stok " + " from tokobarang where tokobarang.status='1' "
+                            + (TCari.getText().trim().isEmpty() ? ""
+                            : " and (tokobarang.kode_brng like ? or "
+                            + " tokobarang.nama_brng like ? or tokobarang.jenis like ?)")
+                            + " order by tokobarang.nama_brng");
             try {
                 if (!TCari.getText().isEmpty()) {
                     ps.setString(1, "%" + TCari.getText().trim() + "%");
@@ -1056,10 +1062,9 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{"", rs.getString("kode_brng"),
-                        rs.getString("nama_brng"), rs.getString("kode_sat"), rs.
-                        getDouble("dasar"), 0, "", rs.getDouble("stok"), rs.
-                        getDouble("dasar")});
+                    tabMode.addRow(new Object[]{"", rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("kode_sat"), rs.getDouble("dasar"), 0, "", rs.getDouble("stok"),
+                        rs.getDouble("dasar")});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -1084,20 +1089,15 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 kolom = tbDokter.getSelectedColumn();
                 if (Valid.SetAngka(tabMode.getValueAt(row, 0).toString()) > 0) {
                     try {
-                        stokbarang = Double.parseDouble(tabMode.getValueAt(row,
-                                7).toString());
-                        y = Valid.SetAngka(tbDokter.getValueAt(row, 0).
-                                toString());
+                        stokbarang = Double.parseDouble(tabMode.getValueAt(row, 7).toString());
+                        y = Valid.SetAngka(tbDokter.getValueAt(row, 0).toString());
                         if (stokbarang < y) {
                             tabMode.setValueAt("", row, 0);
-                            JOptionPane.showMessageDialog(rootPane,
-                                    "Maaf stok tidak mencukupi..!!");
+                            JOptionPane.showMessageDialog(rootPane, "Maaf stok tidak mencukupi..!!");
                             tbDokter.requestFocus();
                         } else {
-                            tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                    getValueAt(row, 0).toString()) * Double.
-                                    parseDouble(tbDokter.getValueAt(row, 4).
-                                            toString()), row, 5);
+                            tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                    * Double.parseDouble(tbDokter.getValueAt(row, 4).toString()), row, 5);
                         }
                     } catch (Exception e) {
                         tbDokter.setValueAt(0, row, 5);
@@ -1140,14 +1140,14 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_retur_piutang,3),signed)),0) from tokoreturpiutang where tgl_retur='" + Valid.
-                        SetTgl(TglRetur.getSelectedItem() + "") + "'",
-                "TRP" + TglRetur.getSelectedItem().toString().substring(6, 10) + TglRetur.
-                getSelectedItem().toString().substring(3, 5) + TglRetur.
-                getSelectedItem().toString().substring(0, 2), 3, NoRetur);
+                "select ifnull(MAX(CONVERT(RIGHT(no_retur_piutang,3),signed)),0) from tokoreturpiutang where tgl_retur='"
+                + Valid.SetTgl(TglRetur.getSelectedItem() + "") + "'",
+                "TRP" + TglRetur.getSelectedItem().toString().substring(6, 10)
+                + TglRetur.getSelectedItem().toString().substring(3, 5)
+                + TglRetur.getSelectedItem().toString().substring(0, 2),
+                3, NoRetur);
     }
 
-    private static final Logger LOG = Logger.getLogger(TokoReturPiutang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(TokoReturPiutang.class.getName());
 
 }

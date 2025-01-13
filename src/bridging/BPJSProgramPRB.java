@@ -80,11 +80,9 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
 
     private ResultSet rs, rs2;
 
-    private BPJSCekReferensiDokterDPJP dokter = new BPJSCekReferensiDokterDPJP(
-            null, false);
+    private BPJSCekReferensiDokterDPJP dokter = new BPJSCekReferensiDokterDPJP(null, false);
 
-    private BPJSCekReferensiDiagnosaPRB diagnosa = new BPJSCekReferensiDiagnosaPRB(
-            null, false);
+    private BPJSCekReferensiDiagnosaPRB diagnosa = new BPJSCekReferensiDiagnosaPRB(null, false);
 
     private int i = 0, z = 0;
 
@@ -122,10 +120,8 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
         tabMode = new DefaultTableModel(null,
-                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Alamat",
-                    "Email", "No.Kartu", "No.SEP", "No.SRB",
-                    "Tgl.PRB", "Kode DPJP", "Dokter DPJP", "Kode PRB",
-                    "Program PRB", "Keterangan", "Saran"}) {
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Alamat", "Email", "No.Kartu", "No.SEP", "No.SRB",
+                    "Tgl.PRB", "Kode DPJP", "Dokter DPJP", "Kode PRB", "Program PRB", "Keterangan", "Saran"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -174,8 +170,11 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
         tbProgramPRB.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabMode2 = new DefaultTableModel(null,
-                new Object[]{"Jumlah", "Kode Obat", "Nama Obat", "Signa 1",
-                    "Signa 2"}) {
+                new Object[]{"Jumlah", "Kode Obat", "Nama Obat", "Signa 1", "Signa 2"}) {
+
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -184,10 +183,6 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -226,8 +221,7 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
         ObatPRB.setDocument(new batasInput((byte) 100).getKata(ObatPRB));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -266,10 +260,8 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDPJP.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
-                    NmDPJP.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 2).toString());
+                    KdDPJP.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
+                    NmDPJP.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 2).toString());
                     KdDPJP.requestFocus();
                 }
             }
@@ -323,11 +315,9 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (diagnosa.getTable().getSelectedRow() != -1) {
                     KdProgram
-                            .setText(diagnosa.getTable().getValueAt(diagnosa.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(diagnosa.getTable().getValueAt(diagnosa.getTable().getSelectedRow(), 1).toString());
                     NmProgram
-                            .setText(diagnosa.getTable().getValueAt(diagnosa.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(diagnosa.getTable().getValueAt(diagnosa.getTable().getSelectedRow(), 2).toString());
                     KdProgram.requestFocus();
                 }
             }
@@ -376,7 +366,9 @@ public class BPJSProgramPRB extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1657,8 +1649,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            BPJSProgramPRB dialog = new BPJSProgramPRB(new javax.swing.JFrame(),
-                    true);
+            BPJSProgramPRB dialog = new BPJSProgramPRB(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1768,16 +1759,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tabMode.addRow(
-                            new Object[]{rs.getString("no_rawat"), rs.getString(
-                                "nomr"), rs.getString("nama_pasien"),
-                                rs.getString("alamat"), rs.getString("email"),
-                                rs.getString("no_kartu"),
-                                rs.getString("no_sep"), rs.getString("no_srb"),
-                                rs.getString("tgl_srb"),
-                                rs.getString("kodedpjp"), rs.getString("nmdpjp"),
-                                rs.getString("kodeprogram"),
-                                rs.getString("namaprogram"), rs.getString(
-                                "keterangan"), rs.getString("saran")});
+                            new Object[]{rs.getString("no_rawat"), rs.getString("nomr"), rs.getString("nama_pasien"),
+                                rs.getString("alamat"), rs.getString("email"), rs.getString("no_kartu"),
+                                rs.getString("no_sep"), rs.getString("no_srb"), rs.getString("tgl_srb"),
+                                rs.getString("kodedpjp"), rs.getString("nmdpjp"), rs.getString("kodeprogram"),
+                                rs.getString("namaprogram"), rs.getString("keterangan"), rs.getString("saran")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1797,47 +1783,29 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbProgramPRB.getSelectedRow() != -1) {
-            NoRawat.setText(tbProgramPRB.getValueAt(tbProgramPRB.
-                    getSelectedRow(), 0).toString());
-            NoRM.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),
-                    1).toString());
-            NmPasien.setText(tbProgramPRB.getValueAt(tbProgramPRB.
-                    getSelectedRow(), 2).toString());
-            Alamat.setText(tbProgramPRB.
-                    getValueAt(tbProgramPRB.getSelectedRow(), 3).toString());
-            Email.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),
-                    4).toString());
-            NoKartu.setText(tbProgramPRB.getValueAt(tbProgramPRB.
-                    getSelectedRow(), 5).toString());
-            NoSEP.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),
-                    6).toString());
-            KdDPJP.setText(tbProgramPRB.
-                    getValueAt(tbProgramPRB.getSelectedRow(), 9).toString());
-            NmDPJP.setText(tbProgramPRB.
-                    getValueAt(tbProgramPRB.getSelectedRow(), 10).toString());
-            KdProgram.setText(tbProgramPRB.getValueAt(tbProgramPRB.
-                    getSelectedRow(), 11).toString());
-            NmProgram.setText(tbProgramPRB.getValueAt(tbProgramPRB.
-                    getSelectedRow(), 12).toString());
-            Keterangan.setText(tbProgramPRB.getValueAt(tbProgramPRB.
-                    getSelectedRow(), 13).toString());
-            Saran.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(),
-                    14).toString());
+            NoRawat.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 0).toString());
+            NoRM.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 1).toString());
+            NmPasien.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 2).toString());
+            Alamat.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 3).toString());
+            Email.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 4).toString());
+            NoKartu.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 5).toString());
+            NoSEP.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 6).toString());
+            KdDPJP.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 9).toString());
+            NmDPJP.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 10).toString());
+            KdProgram.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 11).toString());
+            NmProgram.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 12).toString());
+            Keterangan.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 13).toString());
+            Saran.setText(tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 14).toString());
             Valid.tabelKosong(tabMode2);
             try {
-                ps = koneksi.prepareStatement(
-                        "select * from bridging_srb_bpjs_obat where no_sep=? and no_srb=?");
+                ps = koneksi.prepareStatement("select * from bridging_srb_bpjs_obat where no_sep=? and no_srb=?");
                 try {
-                    ps.setString(1, tbProgramPRB.getValueAt(tbProgramPRB.
-                            getSelectedRow(), 6).toString());
-                    ps.setString(2, tbProgramPRB.getValueAt(tbProgramPRB.
-                            getSelectedRow(), 7).toString());
+                    ps.setString(1, tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 6).toString());
+                    ps.setString(2, tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 7).toString());
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode2.addRow(new Object[]{rs.getDouble("jumlah"), rs.
-                            getString("kd_obat"),
-                            rs.getString("nm_obat"), rs.getString("signa1"), rs.
-                            getString("signa2")});
+                        tabMode2.addRow(new Object[]{rs.getDouble("jumlah"), rs.getString("kd_obat"),
+                            rs.getString("nm_obat"), rs.getString("signa1"), rs.getString("signa2")});
                     }
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
@@ -1852,8 +1820,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
             }
-            Valid.SetTgl(Tanggal, tbProgramPRB.getValueAt(tbProgramPRB.
-                    getSelectedRow(), 8).toString());
+            Valid.SetTgl(Tanggal, tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 8).toString());
         }
     }
 
@@ -1868,8 +1835,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      * @param kodedpjp
      * @param namadpjp
      */
-    public void setNoRm(String norawat, String nosep, String nokartu,
-            String norm, String namapasien, String alamat,
+    public void setNoRm(String norawat, String nosep, String nokartu, String norm, String namapasien, String alamat,
             String email, String kodedpjp, String namadpjp) {
         NoRawat.setText(norawat);
         NoSEP.setText(nosep);
@@ -1931,8 +1897,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             for (i = 0; i < tbObat.getRowCount(); i++) {
                 if (Valid.SetAngka(tbObat.getValueAt(i, 0).toString()) > 0) {
                     try {
-                        jumlah[z] = Double.parseDouble(tbObat.getValueAt(i, 0).
-                                toString());
+                        jumlah[z] = Double.parseDouble(tbObat.getValueAt(i, 0).toString());
                     } catch (Exception e) {
                         jumlah[z] = 0;
                     }
@@ -1947,9 +1912,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             Valid.tabelKosong(tabMode2);
 
             for (i = 0; i < z; i++) {
-                tabMode2.addRow(
-                        new Object[]{jumlah[i], kodeobat[i], namaobat[i],
-                            signa1[i], signa2[i]});
+                tabMode2.addRow(new Object[]{jumlah[i], kodeobat[i], namaobat[i], signa1[i], signa2[i]});
             }
 
             headers = new HttpHeaders();
@@ -1963,31 +1926,26 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             URL = link + "/referensi/obatprb/" + ObatPRB.getText();
             // System.out.println(rest.exchange(URL, HttpMethod.GET, requestEntity,
             // String.class).getBody());
-            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET,
-                    requestEntity, String.class).getBody());
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
             if (nameNode.path("code").asText().equals("200")) {
-                response = mapper.readTree(api.Decrypt(root.path("response").
-                        asText(), utc));
+                response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
                 // response = root.path("response");
                 if (response.path("list").isArray()) {
                     for (JsonNode list : response.path("list")) {
                         tabMode2.addRow(
-                                new Object[]{"", list.path("kode").asText(),
-                                    list.path("nama").asText(), "", ""});
+                                new Object[]{"", list.path("kode").asText(), list.path("nama").asText(), "", ""});
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(null, nameNode.path("message").
-                        asText());
+                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
             }
         } catch (HeadlessException | IOException | InvalidAlgorithmParameterException | InvalidKeyException
                 | KeyManagementException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException
                 | NoSuchPaddingException | RestClientException ex) {
             System.out.println("Notifikasi : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(rootPane,
-                        "Koneksi ke server BPJS terputus...!");
+                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
             }
         }
     }
@@ -2016,35 +1974,29 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             @Override
-            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
         }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         Scheme scheme = new Scheme("https", 443, sslFactory);
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() {
             @Override
-            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod,
-                    URI uri) {
+            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
                 if (HttpMethod.DELETE == httpMethod) {
-                    return new BPJSSuratKontrol.HttpEntityEnclosingDeleteRequest(
-                            uri);
+                    return new BPJSSuratKontrol.HttpEntityEnclosingDeleteRequest(uri);
                 }
                 return super.createHttpUriRequest(httpMethod, uri);
             }
 
         };
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         restTemplate.setRequestFactory(factory);
 
         try {
@@ -2058,48 +2010,33 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             requestEntity = new HttpEntity(headers);
             URL = link + "/PRB/Delete";
             requestJson = "{\"request\":{\"t_prb\":{\"noSrb\":\""
-                    + tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 7).
-                            toString() + "\",\"noSep\":\""
-                    + tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 6).
-                            toString() + "\",\"user\": \""
-                    + tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 9).
-                            toString() + "\"}}}";
+                    + tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 7).toString() + "\",\"noSep\":\""
+                    + tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 6).toString() + "\",\"user\": \""
+                    + tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 9).toString() + "\"}}}";
             requestEntity = new HttpEntity(requestJson, headers);
             root = mapper
-                    .readTree(restTemplate.exchange(URL, HttpMethod.DELETE,
-                            requestEntity, String.class).getBody());
+                    .readTree(restTemplate.exchange(URL, HttpMethod.DELETE, requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
-            JOptionPane.showMessageDialog(null, nameNode.path("message").
-                    asText());
+            JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
                 Sequel.meghapus("bridging_srb_bpjs", "no_sep", "no_srb",
-                        tbProgramPRB.
-                                getValueAt(tbProgramPRB.getSelectedRow(), 6).
-                                toString(),
-                        tbProgramPRB.
-                                getValueAt(tbProgramPRB.getSelectedRow(), 7).
-                                toString());
+                        tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 6).toString(),
+                        tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 7).toString());
                 Sequel.meghapus("bridging_srb_bpjs_obat", "no_sep", "no_srb",
-                        tbProgramPRB.
-                                getValueAt(tbProgramPRB.getSelectedRow(), 6).
-                                toString(),
-                        tbProgramPRB.
-                                getValueAt(tbProgramPRB.getSelectedRow(), 7).
-                                toString());
+                        tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 6).toString(),
+                        tbProgramPRB.getValueAt(tbProgramPRB.getSelectedRow(), 7).toString());
                 tampil();
             }
         } catch (HeadlessException | IOException | RestClientException e) {
             System.out.println("Notif : " + e);
             if (e.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server BPJS terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server BPJS terputus...!");
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(BPJSProgramPRB.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(BPJSProgramPRB.class.getName());
 
 }

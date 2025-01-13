@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package keuangan;
 
@@ -41,23 +41,30 @@ import simrskhanza.DlgCariCaraBayar;
 import widget.PanelBiasa;
 
 /**
- *
  * @author dosen
  */
 public class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private DecimalFormat df2 = new DecimalFormat("####");
-    private double operator1 = 0, operator2 = 0, operator3 = 0,
-            asistenoperator1 = 0, asistenoperator2 = 0, asistenoperator3 = 0, instrumen = 0,
-            dokteranak = 0, perawatresusitas = 0, bidan1 = 0, bidan2 = 0, bidan3 = 0,
-            alat = 0, anastesi = 0, perawatluar = 0, asistenanas = 0, asistenanas2 = 0, sewaok = 0, sewavk = 0,
-            bagianrs = 0, omloop1 = 0, omloop2 = 0, omloop3 = 0, omloop4 = 0, omloop5 = 0, sarpras = 0, dokterumum = 0, dokterpjanak = 0;
+
+    private double operator1 = 0, operator2 = 0, operator3 = 0, asistenoperator1 = 0, asistenoperator2 = 0,
+            asistenoperator3 = 0, instrumen = 0, dokteranak = 0, perawatresusitas = 0, bidan1 = 0, bidan2 = 0,
+            bidan3 = 0, alat = 0, anastesi = 0, perawatluar = 0, asistenanas = 0, asistenanas2 = 0, sewaok = 0,
+            sewavk = 0, bagianrs = 0, omloop1 = 0, omloop2 = 0, omloop3 = 0, omloop4 = 0, omloop5 = 0, sarpras = 0,
+            dokterumum = 0, dokterpjanak = 0;
+
     private PreparedStatement pstampil;
+
     private ResultSet rs;
+
     private int i = 0;
 
     /**
@@ -78,36 +85,21 @@ public class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"P", "Kode Paket", "Nama Operasi", "Kategori",
-            "Operator 1", "Operator 2", "Operator 3",
-            "Asisten Op 1", "Asisten Op 2", "Asisten Op 3", "Instrumen",
-            "dr Anestesi", "Asisten Anes 1", "Asisten Anes 2", "dr Anak",
-            "Perawat Resus", "Bidan 1", "Bidan 2", "Bidan 3", "Perawat Luar",
-            "Alat", "Sewa OK/VK",
-            "Akomodasi", "N.M.S.", "Onloop 1", "Onloop 2", "Onloop 3",
-            "Onloop 4", "Onloop 5", "Sarpras", "dr Pj Anak", "dr Umum",
-            "Total", "Jenis Bayar", "Kelas"};
+        Object[] row = {"P", "Kode Paket", "Nama Operasi", "Kategori", "Operator 1", "Operator 2", "Operator 3",
+            "Asisten Op 1", "Asisten Op 2", "Asisten Op 3", "Instrumen", "dr Anestesi", "Asisten Anes 1",
+            "Asisten Anes 2", "dr Anak", "Perawat Resus", "Bidan 1", "Bidan 2", "Bidan 3", "Perawat Luar", "Alat",
+            "Sewa OK/VK", "Akomodasi", "N.M.S.", "Onloop 1", "Onloop 2", "Onloop 3", "Onloop 4", "Onloop 5",
+            "Sarpras", "dr Pj Anak", "dr Umum", "Total", "Jenis Bayar", "Kelas"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.String.class, java.lang.String.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -126,9 +118,9 @@ public class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 35; i++) {
@@ -153,37 +145,25 @@ public class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
 
         TKd.setDocument(new batasInput((byte) 15).getKata(TKd));
         TNm.setDocument(new batasInput((byte) 80).getKata(TNm));
-        TOperator1.setDocument(new batasInput((byte) 13).
-                getOnlyAngka(TOperator1));
-        TOperator2.setDocument(new batasInput((byte) 13).
-                getOnlyAngka(TOperator2));
-        TOperator3.setDocument(new batasInput((byte) 13).
-                getOnlyAngka(TOperator3));
-        TAsisOperator1.setDocument(new batasInput((byte) 13).getOnlyAngka(
-                TAsisOperator1));
-        TAsisOperator2.setDocument(new batasInput((byte) 13).getOnlyAngka(
-                TAsisOperator2));
-        TAsisOperator3.setDocument(new batasInput((byte) 13).getOnlyAngka(
-                TAsisOperator3));
-        TInstrumen.setDocument(new batasInput((byte) 13).
-                getOnlyAngka(TInstrumen));
+        TOperator1.setDocument(new batasInput((byte) 13).getOnlyAngka(TOperator1));
+        TOperator2.setDocument(new batasInput((byte) 13).getOnlyAngka(TOperator2));
+        TOperator3.setDocument(new batasInput((byte) 13).getOnlyAngka(TOperator3));
+        TAsisOperator1.setDocument(new batasInput((byte) 13).getOnlyAngka(TAsisOperator1));
+        TAsisOperator2.setDocument(new batasInput((byte) 13).getOnlyAngka(TAsisOperator2));
+        TAsisOperator3.setDocument(new batasInput((byte) 13).getOnlyAngka(TAsisOperator3));
+        TInstrumen.setDocument(new batasInput((byte) 13).getOnlyAngka(TInstrumen));
         TAnastesi.setDocument(new batasInput((byte) 13).getOnlyAngka(TAnastesi));
-        TAsisAnastesi.setDocument(new batasInput((byte) 13).getOnlyAngka(
-                TAsisAnastesi));
-        TAsisAnastesi1.setDocument(new batasInput((byte) 13).getOnlyAngka(
-                TAsisAnastesi1));
+        TAsisAnastesi.setDocument(new batasInput((byte) 13).getOnlyAngka(TAsisAnastesi));
+        TAsisAnastesi1.setDocument(new batasInput((byte) 13).getOnlyAngka(TAsisAnastesi1));
         TAnak.setDocument(new batasInput((byte) 13).getOnlyAngka(TAnak));
-        TResusitas.setDocument(new batasInput((byte) 13).
-                getOnlyAngka(TResusitas));
+        TResusitas.setDocument(new batasInput((byte) 13).getOnlyAngka(TResusitas));
         TBidan1.setDocument(new batasInput((byte) 13).getOnlyAngka(TBidan1));
         TBidan2.setDocument(new batasInput((byte) 13).getOnlyAngka(TBidan2));
         TBidan3.setDocument(new batasInput((byte) 13).getOnlyAngka(TBidan3));
         TAlat.setDocument(new batasInput((byte) 13).getOnlyAngka(TAlat));
-        TPerawatLuar.setDocument(new batasInput((byte) 13).getOnlyAngka(
-                TPerawatLuar));
+        TPerawatLuar.setDocument(new batasInput((byte) 13).getOnlyAngka(TPerawatLuar));
         TSewaOK.setDocument(new batasInput((byte) 13).getOnlyAngka(TSewaOK));
-        TAkomodasi.setDocument(new batasInput((byte) 13).
-                getOnlyAngka(TAkomodasi));
+        TAkomodasi.setDocument(new batasInput((byte) 13).getOnlyAngka(TAkomodasi));
         TBagianRS.setDocument(new batasInput((byte) 13).getOnlyAngka(TBagianRS));
         TOmloop1.setDocument(new batasInput((byte) 13).getOnlyAngka(TOmloop1));
         TOmloop2.setDocument(new batasInput((byte) 13).getOnlyAngka(TOmloop2));
@@ -196,8 +176,7 @@ public class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -234,10 +213,8 @@ public class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 1).toString());
-                    nmpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 2).toString());
+                    kdpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpnj.requestFocus();
             }
@@ -281,7 +258,9 @@ public class DlgJnsPerawatanOperasi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2034,8 +2013,7 @@ private void TOmloop1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgJnsPerawatanOperasi dialog = new DlgJnsPerawatanOperasi(
-                    new javax.swing.JFrame(), true);
+            DlgJnsPerawatanOperasi dialog = new DlgJnsPerawatanOperasi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2148,29 +2126,29 @@ private void TOmloop1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            pstampil = koneksi.prepareStatement(
-                    "select paket_operasi.kode_paket, paket_operasi.nm_perawatan,paket_operasi.kategori,"
-                    + "paket_operasi.operator1, paket_operasi.operator2, paket_operasi.operator3, "
-                    + "paket_operasi.asisten_operator1, paket_operasi.asisten_operator2,paket_operasi.asisten_operator3,"
-                    + "paket_operasi.instrumen, paket_operasi.dokter_anestesi,paket_operasi.asisten_anestesi,paket_operasi.asisten_anestesi2,"
-                    + "paket_operasi.dokter_anak,paket_operasi.perawaat_resusitas, paket_operasi.bidan, "
-                    + "paket_operasi.bidan2, paket_operasi.bidan3, paket_operasi.perawat_luar, paket_operasi.alat,"
-                    + "paket_operasi.sewa_ok,paket_operasi.akomodasi,paket_operasi.bagian_rs,"
-                    + "paket_operasi.omloop,paket_operasi.omloop2,paket_operasi.omloop3,paket_operasi.omloop4,paket_operasi.omloop5,"
-                    + "paket_operasi.sarpras,paket_operasi.dokter_pjanak,paket_operasi.dokter_umum, "
-                    + "(paket_operasi.operator1+paket_operasi.operator2+paket_operasi.operator3+"
-                    + "paket_operasi.asisten_operator1+paket_operasi.asisten_operator2+paket_operasi.asisten_operator3+paket_operasi.instrumen+"
-                    + "paket_operasi.dokter_anak+paket_operasi.perawaat_resusitas+"
-                    + "paket_operasi.alat+paket_operasi.dokter_anestesi+paket_operasi.asisten_anestesi+paket_operasi.asisten_anestesi2+"
-                    + "paket_operasi.bidan+paket_operasi.bidan2+paket_operasi.bidan3+paket_operasi.perawat_luar+"
-                    + "paket_operasi.sewa_ok+paket_operasi.akomodasi+paket_operasi.bagian_rs+"
-                    + "paket_operasi.omloop+paket_operasi.omloop2+paket_operasi.omloop3+paket_operasi.omloop4+paket_operasi.omloop5+"
-                    + "paket_operasi.sarpras+paket_operasi.dokter_pjanak+paket_operasi.dokter_umum) as jumlah, "
-                    + "penjab.png_jawab,paket_operasi.kelas from paket_operasi inner join penjab on penjab.kd_pj=paket_operasi.kd_pj "
-                    + "where paket_operasi.status='1' and paket_operasi.kode_paket like ? or "
-                    + "paket_operasi.status='1' and paket_operasi.nm_perawatan like ? or "
-                    + "paket_operasi.status='1' and paket_operasi.kelas like ? or "
-                    + "paket_operasi.status='1' and penjab.png_jawab like ? order by paket_operasi.kode_paket ");
+            pstampil = koneksi
+                    .prepareStatement("select paket_operasi.kode_paket, paket_operasi.nm_perawatan,paket_operasi.kategori,"
+                            + "paket_operasi.operator1, paket_operasi.operator2, paket_operasi.operator3, "
+                            + "paket_operasi.asisten_operator1, paket_operasi.asisten_operator2,paket_operasi.asisten_operator3,"
+                            + "paket_operasi.instrumen, paket_operasi.dokter_anestesi,paket_operasi.asisten_anestesi,paket_operasi.asisten_anestesi2,"
+                            + "paket_operasi.dokter_anak,paket_operasi.perawaat_resusitas, paket_operasi.bidan, "
+                            + "paket_operasi.bidan2, paket_operasi.bidan3, paket_operasi.perawat_luar, paket_operasi.alat,"
+                            + "paket_operasi.sewa_ok,paket_operasi.akomodasi,paket_operasi.bagian_rs,"
+                            + "paket_operasi.omloop,paket_operasi.omloop2,paket_operasi.omloop3,paket_operasi.omloop4,paket_operasi.omloop5,"
+                            + "paket_operasi.sarpras,paket_operasi.dokter_pjanak,paket_operasi.dokter_umum, "
+                            + "(paket_operasi.operator1+paket_operasi.operator2+paket_operasi.operator3+"
+                            + "paket_operasi.asisten_operator1+paket_operasi.asisten_operator2+paket_operasi.asisten_operator3+paket_operasi.instrumen+"
+                            + "paket_operasi.dokter_anak+paket_operasi.perawaat_resusitas+"
+                            + "paket_operasi.alat+paket_operasi.dokter_anestesi+paket_operasi.asisten_anestesi+paket_operasi.asisten_anestesi2+"
+                            + "paket_operasi.bidan+paket_operasi.bidan2+paket_operasi.bidan3+paket_operasi.perawat_luar+"
+                            + "paket_operasi.sewa_ok+paket_operasi.akomodasi+paket_operasi.bagian_rs+"
+                            + "paket_operasi.omloop+paket_operasi.omloop2+paket_operasi.omloop3+paket_operasi.omloop4+paket_operasi.omloop5+"
+                            + "paket_operasi.sarpras+paket_operasi.dokter_pjanak+paket_operasi.dokter_umum) as jumlah, "
+                            + "penjab.png_jawab,paket_operasi.kelas from paket_operasi inner join penjab on penjab.kd_pj=paket_operasi.kd_pj "
+                            + "where paket_operasi.status='1' and paket_operasi.kode_paket like ? or "
+                            + "paket_operasi.status='1' and paket_operasi.nm_perawatan like ? or "
+                            + "paket_operasi.status='1' and paket_operasi.kelas like ? or "
+                            + "paket_operasi.status='1' and penjab.png_jawab like ? order by paket_operasi.kode_paket ");
             try {
                 pstampil.setString(1, "%" + TCari.getText() + "%");
                 pstampil.setString(2, "%" + TCari.getText() + "%");
@@ -2178,42 +2156,19 @@ private void TOmloop1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 pstampil.setString(4, "%" + TCari.getText() + "%");
                 rs = pstampil.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{false, rs.
-                        getString("kode_paket"),
-                        rs.getString("nm_perawatan"),
-                        rs.getString("kategori"),
-                        rs.getDouble("operator1"),
-                        rs.getDouble("operator2"),
-                        rs.getDouble("operator3"),
-                        rs.getDouble("asisten_operator1"),
-                        rs.getDouble("asisten_operator2"),
-                        rs.getDouble("asisten_operator3"),
-                        rs.getDouble("instrumen"),
-                        rs.getDouble("dokter_anestesi"),
-                        rs.getDouble("asisten_anestesi"),
-                        rs.getDouble("asisten_anestesi2"),
-                        rs.getDouble("dokter_anak"),
-                        rs.getDouble("perawaat_resusitas"),
-                        rs.getDouble("bidan"),
-                        rs.getDouble("bidan2"),
-                        rs.getDouble("bidan3"),
-                        rs.getDouble("perawat_luar"),
-                        rs.getDouble("alat"),
-                        rs.getDouble("sewa_ok"),
-                        rs.getDouble("akomodasi"),
-                        rs.getDouble("bagian_rs"),
-                        rs.getDouble("omloop"),
-                        rs.getDouble("omloop2"),
-                        rs.getDouble("omloop3"),
-                        rs.getDouble("omloop4"),
-                        rs.getDouble("omloop5"),
-                        rs.getDouble("sarpras"),
-                        rs.getDouble("dokter_pjanak"),
-                        rs.getDouble("dokter_umum"),
-                        rs.getDouble("jumlah"),
-                        rs.getString("png_jawab"),
-                        rs.getString("kelas")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("kode_paket"), rs.getString("nm_perawatan"),
+                        rs.getString("kategori"), rs.getDouble("operator1"), rs.getDouble("operator2"),
+                        rs.getDouble("operator3"), rs.getDouble("asisten_operator1"),
+                        rs.getDouble("asisten_operator2"), rs.getDouble("asisten_operator3"),
+                        rs.getDouble("instrumen"), rs.getDouble("dokter_anestesi"),
+                        rs.getDouble("asisten_anestesi"), rs.getDouble("asisten_anestesi2"),
+                        rs.getDouble("dokter_anak"), rs.getDouble("perawaat_resusitas"), rs.getDouble("bidan"),
+                        rs.getDouble("bidan2"), rs.getDouble("bidan3"), rs.getDouble("perawat_luar"),
+                        rs.getDouble("alat"), rs.getDouble("sewa_ok"), rs.getDouble("akomodasi"),
+                        rs.getDouble("bagian_rs"), rs.getDouble("omloop"), rs.getDouble("omloop2"),
+                        rs.getDouble("omloop3"), rs.getDouble("omloop4"), rs.getDouble("omloop5"),
+                        rs.getDouble("sarpras"), rs.getDouble("dokter_pjanak"), rs.getDouble("dokter_umum"),
+                        rs.getDouble("jumlah"), rs.getString("png_jawab"), rs.getString("kelas")});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2268,102 +2223,78 @@ private void TOmloop1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         TdrUmum.setText("0");
         TTotal.setText("0");
         Kelas.setSelectedIndex(0);
-        //Valid.autoNomer(" paket_operasi ","JP",6,TKd);
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(kode_paket,5),signed)),0) from paket_operasi  ",
-                "PK", 6, TKd);
+        // Valid.autoNomer(" paket_operasi ","JP",6,TKd);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(kode_paket,5),signed)),0) from paket_operasi  ", "PK", 6,
+                TKd);
         TKd.requestFocus();
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            TKd.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            TNm.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            Kategori.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            TOperator1.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 4).
-                            toString())));
-            TOperator2.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 5).
-                            toString())));
-            TOperator3.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 6).
-                            toString())));
-            TAsisOperator1.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 7).
-                            toString())));
-            TAsisOperator2.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 8).
-                            toString())));
-            TAsisOperator3.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 9).
-                            toString())));
-            TInstrumen.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),
-                            10).toString())));
-            TAnastesi.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString())));
-            TAsisAnastesi.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),
-                            12).toString())));
-            TAsisAnastesi1.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),
-                            13).toString())));
-            TAnak.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 14).toString())));
-            TResusitas.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),
-                            15).toString())));
-            TBidan1.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 16).toString())));
-            TBidan2.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 17).toString())));
-            TBidan3.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 18).toString())));
-            TPerawatLuar.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),
-                            19).toString())));
-            TAlat.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 20).toString())));
-            TSewaOK.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 21).toString())));
-            TAkomodasi.setText(Valid.SetAngka2(Double.parseDouble(
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),
-                            22).toString())));
-            TBagianRS.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 23).toString())));
-            TOmloop1.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 24).toString())));
-            TOmloop2.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 25).toString())));
-            TOmloop3.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 26).toString())));
-            TOmloop4.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 27).toString())));
-            TOmloop5.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 28).toString())));
-            TSarpras.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 29).toString())));
-            TdrPJAnak.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 30).toString())));
-            TdrUmum.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 31).toString())));
-            TTotal.setText(Valid.SetAngka2(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 32).toString())));
-            Sequel.cariIsi("select kd_pj from paket_operasi where kode_paket=?",
-                    kdpnj, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                            getSelectedRow(), 1).toString());
-            nmpnj.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 33).toString());
+            TKd.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            TNm.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            Kategori.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            TOperator1.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString())));
+            TOperator2.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString())));
+            TOperator3.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString())));
+            TAsisOperator1.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString())));
+            TAsisOperator2.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString())));
+            TAsisOperator3.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString())));
+            TInstrumen.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString())));
+            TAnastesi.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString())));
+            TAsisAnastesi.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 12).toString())));
+            TAsisAnastesi1.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 13).toString())));
+            TAnak.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 14).toString())));
+            TResusitas.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 15).toString())));
+            TBidan1.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 16).toString())));
+            TBidan2.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 17).toString())));
+            TBidan3.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 18).toString())));
+            TPerawatLuar.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 19).toString())));
+            TAlat.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 20).toString())));
+            TSewaOK.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 21).toString())));
+            TAkomodasi.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 22).toString())));
+            TBagianRS.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 23).toString())));
+            TOmloop1.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 24).toString())));
+            TOmloop2.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 25).toString())));
+            TOmloop3.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 26).toString())));
+            TOmloop4.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 27).toString())));
+            TOmloop5.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 28).toString())));
+            TSarpras.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 29).toString())));
+            TdrPJAnak.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 30).toString())));
+            TdrUmum.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 31).toString())));
+            TTotal.setText(Valid.SetAngka2(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 32).toString())));
+            Sequel.cariIsi("select kd_pj from paket_operasi where kode_paket=?", kdpnj,
+                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            nmpnj.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 33).toString());
         }
     }
 
@@ -2379,16 +2310,13 @@ private void TOmloop1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             operator3 = Double.parseDouble(TOperator3.getText().trim());
         }
         if ((!TAsisOperator1.getText().isEmpty())) {
-            asistenoperator1 = Double.parseDouble(TAsisOperator1.getText().
-                    trim());
+            asistenoperator1 = Double.parseDouble(TAsisOperator1.getText().trim());
         }
         if ((!TAsisOperator2.getText().isEmpty())) {
-            asistenoperator2 = Double.parseDouble(TAsisOperator2.getText().
-                    trim());
+            asistenoperator2 = Double.parseDouble(TAsisOperator2.getText().trim());
         }
         if ((!TAsisOperator3.getText().isEmpty())) {
-            asistenoperator3 = Double.parseDouble(TAsisOperator3.getText().
-                    trim());
+            asistenoperator3 = Double.parseDouble(TAsisOperator3.getText().trim());
         }
         if ((!TInstrumen.getText().isEmpty())) {
             instrumen = Double.parseDouble(TInstrumen.getText().trim());
@@ -2456,15 +2384,13 @@ private void TOmloop1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         if ((!TdrUmum.getText().isEmpty())) {
             dokterumum = Double.parseDouble(TdrUmum.getText().trim());
         }
-        TTotal.setText(Valid.SetAngka2(
-                operator1 + operator2 + operator3 + asistenoperator1
-                + asistenoperator2 + asistenoperator3 + instrumen + dokteranak + perawatresusitas + bidan1 + bidan2 + bidan3
-                + alat + anastesi + perawatluar + asistenanas + asistenanas2 + sewaok + sewavk + bagianrs + omloop1 + omloop2
+        TTotal.setText(Valid.SetAngka2(operator1 + operator2 + operator3 + asistenoperator1 + asistenoperator2
+                + asistenoperator3 + instrumen + dokteranak + perawatresusitas + bidan1 + bidan2 + bidan3 + alat
+                + anastesi + perawatluar + asistenanas + asistenanas2 + sewaok + sewavk + bagianrs + omloop1 + omloop2
                 + omloop3 + omloop4 + omloop5 + sarpras + dokterpjanak + dokterumum));
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -2494,7 +2420,6 @@ private void TOmloop1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         return tbJnsPerawatan;
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgJnsPerawatanOperasi.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgJnsPerawatanOperasi.class.getName());
 
 }

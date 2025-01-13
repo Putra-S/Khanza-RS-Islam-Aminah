@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgDataSkriningGiziLanjut.java
- * Kontribusi Haris Rochmatullah RS Bhayangkara Nganjuk
- * Created on 11 November 2020, 20:19:56
+* DlgDataSkriningGiziLanjut.java
+* Kontribusi Haris Rochmatullah RS Bhayangkara Nganjuk
+* Created on 11 November 2020, 20:19:56
  */
 package inventory;
 
@@ -43,19 +43,26 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class InventoryTelaahResep extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2, ps3;
+
     private ResultSet rs, rs2, rs3;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private StringBuilder htmlContent;
 
     /**
@@ -70,20 +77,14 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Resep", "Tanggal", "Jam", "No.Rawat", "No.R.M.", "Nama Pasien",
-            "Umur", "J.K.", "Tgl.Lahir", "Kode Dokter", "Nama Dokter",
-            "Status", "T.R.Tepat Iden Pasien", "Ket T.R.Tepat Iden Pasien",
-            "T.R.Tepat Obat", "Ket T.R.Tepat Obat",
-            "T.R.Tepat Dosis", "Ket T.R.Tepat Dosis", "T.R.Tepat Cara Pemberian",
-            "Ket T.R.Tepat Cara Pemberian",
-            "T.R.Tepat Waktu Pemberian", "Ket T.R.Tepat Waktu Pemberian",
-            "T.R.Ada/Tidak Duplikasi", "Ket T.R.Ada/Tidak Duplikasi",
-            "T.R.Interaksi Obat", "Ket T.R.Interaksi Obat",
-            "T.R.Kontra Indikasi", "Ket T.R.Kontra Indikasi", "T.O.Tepat Pasien",
-            "T.O.Tepat Obat", "T.O.Tepat Dosis", "T.O.Tepat Cara Pemberian",
-            "T.O.Tepat Waktu Pemberian", "NIP", "Petugas Farmasi"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Resep", "Tanggal", "Jam", "No.Rawat", "No.R.M.",
+            "Nama Pasien", "Umur", "J.K.", "Tgl.Lahir", "Kode Dokter", "Nama Dokter", "Status",
+            "T.R.Tepat Iden Pasien", "Ket T.R.Tepat Iden Pasien", "T.R.Tepat Obat", "Ket T.R.Tepat Obat",
+            "T.R.Tepat Dosis", "Ket T.R.Tepat Dosis", "T.R.Tepat Cara Pemberian", "Ket T.R.Tepat Cara Pemberian",
+            "T.R.Tepat Waktu Pemberian", "Ket T.R.Tepat Waktu Pemberian", "T.R.Ada/Tidak Duplikasi",
+            "Ket T.R.Ada/Tidak Duplikasi", "T.R.Interaksi Obat", "Ket T.R.Interaksi Obat", "T.R.Kontra Indikasi",
+            "Ket T.R.Kontra Indikasi", "T.O.Tepat Pasien", "T.O.Tepat Obat", "T.O.Tepat Dosis",
+            "T.O.Tepat Cara Pemberian", "T.O.Tepat Waktu Pemberian", "NIP", "Petugas Farmasi"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -92,7 +93,8 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -174,27 +176,18 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         Nip.setDocument(new batasInput((byte) 20).getKata(Nip));
-        KetResepTepatIdetifikasiPasien.setDocument(new batasInput((byte) 30).
-                getKata(KetResepTepatIdetifikasiPasien));
-        KetResepTepatObat.setDocument(new batasInput((byte) 30).getKata(
-                KetResepTepatObat));
-        KetResepTepatDosis.setDocument(new batasInput((byte) 30).getKata(
-                KetResepTepatDosis));
-        KetResepTepatCaraPemberian.setDocument(new batasInput((byte) 30).
-                getKata(KetResepTepatCaraPemberian));
-        KetResepTepatWaktuPemberian.setDocument(new batasInput((byte) 30).
-                getKata(KetResepTepatWaktuPemberian));
-        KetResepTidakDuplikasiObat.setDocument(new batasInput((byte) 30).
-                getKata(KetResepTidakDuplikasiObat));
-        KetResepInteraksiObat.setDocument(new batasInput((byte) 30).getKata(
-                KetResepInteraksiObat));
-        KetResepKontraIndikasiObat.setDocument(new batasInput((byte) 30).
-                getKata(KetResepKontraIndikasiObat));
+        KetResepTepatIdetifikasiPasien.setDocument(new batasInput((byte) 30).getKata(KetResepTepatIdetifikasiPasien));
+        KetResepTepatObat.setDocument(new batasInput((byte) 30).getKata(KetResepTepatObat));
+        KetResepTepatDosis.setDocument(new batasInput((byte) 30).getKata(KetResepTepatDosis));
+        KetResepTepatCaraPemberian.setDocument(new batasInput((byte) 30).getKata(KetResepTepatCaraPemberian));
+        KetResepTepatWaktuPemberian.setDocument(new batasInput((byte) 30).getKata(KetResepTepatWaktuPemberian));
+        KetResepTidakDuplikasiObat.setDocument(new batasInput((byte) 30).getKata(KetResepTidakDuplikasiObat));
+        KetResepInteraksiObat.setDocument(new batasInput((byte) 30).getKata(KetResepInteraksiObat));
+        KetResepKontraIndikasiObat.setDocument(new batasInput((byte) 30).getKata(KetResepKontraIndikasiObat));
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -231,10 +224,9 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    Nip.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    Nip.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 Nip.requestFocus();
             }
@@ -273,15 +265,16 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
 
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1566,8 +1559,7 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryTelaahResep dialog = new InventoryTelaahResep(
-                    new javax.swing.JFrame(), true);
+            InventoryTelaahResep dialog = new InventoryTelaahResep(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1692,9 +1684,11 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                     + "inner join dokter on resep_obat.kd_dokter=dokter.kd_dokter "
                     + "inner join petugas on telaah_farmasi.nip=petugas.nip "
                     + "where resep_obat.tgl_perawatan between ? and ? "
-                    + (TCari.getText().isEmpty() ? "" : "and (telaah_farmasi.no_resep like ? or resep_obat.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (telaah_farmasi.no_resep like ? or resep_obat.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
                     + "pasien.nm_pasien like ? or resep_obat.kd_dokter like ? or dokter.nm_dokter like ? or resep_obat.status like ? or telaah_farmasi.nip like ? or "
-                    + "petugas.nama like ?) ") + "order by resep_obat.tgl_perawatan");
+                    + "petugas.nama like ?) ")
+                    + "order by resep_obat.tgl_perawatan");
 
             try {
                 ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
@@ -1713,37 +1707,23 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_resep"), rs.getString("tgl_perawatan"),
-                        rs.getString("jam"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("umur"), rs.
-                        getString("jk"), rs.getString("tgl_lahir"), rs.
-                        getString("kd_dokter"),
-                        rs.getString("nm_dokter"), rs.getString("status").
-                        replace("r", "R"), rs.getString(
-                        "resep_identifikasi_pasien"), rs.getString(
-                        "resep_ket_identifikasi_pasien"),
-                        rs.getString("resep_tepat_obat"), rs.getString(
-                        "resep_ket_tepat_obat"), rs.getString(
-                        "resep_tepat_dosis"), rs.getString(
-                        "resep_ket_tepat_dosis"),
-                        rs.getString("resep_tepat_cara_pemberian"), rs.
-                        getString("resep_ket_tepat_cara_pemberian"), rs.
-                        getString("resep_tepat_waktu_pemberian"),
-                        rs.getString("resep_ket_tepat_waktu_pemberian"), rs.
-                        getString("resep_ada_tidak_duplikasi_obat"), rs.
-                        getString("resep_ket_ada_tidak_duplikasi_obat"),
-                        rs.getString("resep_interaksi_obat"), rs.getString(
-                        "resep_ket_interaksi_obat"), rs.getString(
-                        "resep_kontra_indikasi_obat"),
-                        rs.getString("resep_ket_kontra_indikasi_obat"), rs.
-                        getString("obat_tepat_pasien"), rs.getString(
-                        "obat_tepat_obat"), rs.getString("obat_tepat_dosis"),
-                        rs.getString("obat_tepat_cara_pemberian"), rs.getString(
-                        "obat_tepat_waktu_pemberian"), rs.getString("nip"), rs.
-                        getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_resep"), rs.getString("tgl_perawatan"),
+                        rs.getString("jam"), rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("umur"), rs.getString("jk"),
+                        rs.getString("tgl_lahir"), rs.getString("kd_dokter"), rs.getString("nm_dokter"),
+                        rs.getString("status").replace("r", "R"), rs.getString("resep_identifikasi_pasien"),
+                        rs.getString("resep_ket_identifikasi_pasien"), rs.getString("resep_tepat_obat"),
+                        rs.getString("resep_ket_tepat_obat"), rs.getString("resep_tepat_dosis"),
+                        rs.getString("resep_ket_tepat_dosis"), rs.getString("resep_tepat_cara_pemberian"),
+                        rs.getString("resep_ket_tepat_cara_pemberian"), rs.getString("resep_tepat_waktu_pemberian"),
+                        rs.getString("resep_ket_tepat_waktu_pemberian"),
+                        rs.getString("resep_ada_tidak_duplikasi_obat"),
+                        rs.getString("resep_ket_ada_tidak_duplikasi_obat"), rs.getString("resep_interaksi_obat"),
+                        rs.getString("resep_ket_interaksi_obat"), rs.getString("resep_kontra_indikasi_obat"),
+                        rs.getString("resep_ket_kontra_indikasi_obat"), rs.getString("obat_tepat_pasien"),
+                        rs.getString("obat_tepat_obat"), rs.getString("obat_tepat_dosis"),
+                        rs.getString("obat_tepat_cara_pemberian"), rs.getString("obat_tepat_waktu_pemberian"),
+                        rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1788,81 +1768,48 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            NoResep.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            ResepTepatIdentifikasiPasien.setSelectedItem(tbObat.getValueAt(
-                    tbObat.getSelectedRow(), 12).toString());
-            KetResepTepatIdetifikasiPasien.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            ResepTepatObat.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            KetResepTepatObat.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    15).toString());
-            ResepTepatDosis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            KetResepTepatDosis.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 17).toString());
-            ResepTepatCaraPemberian.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            KetResepTepatCaraPemberian.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            ResepTepatWaktuPemberian.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            KetResepTepatWaktuPemberian.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            ResepTidakDuplikasiObat.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            KetResepTidakDuplikasiObat.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 23).toString());
-            ResepInteraksiObat.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            KetResepInteraksiObat.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 25).toString());
-            ResepKontraIndikasiObat.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
-            KetResepKontraIndikasiObat.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 27).toString());
-            ObatTepatPasien.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 28).toString());
-            ObatTepatObat.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 29).toString());
-            ObatTepatDosis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 30).toString());
-            ObatTepatCaraPemberian.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 31).toString());
-            ObatTepatWaktuPemberian.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 32).toString());
-            Nip.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).
-                    toString());
-            NamaPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).
-                    toString());
+            NoResep.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            ResepTepatIdentifikasiPasien.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            KetResepTepatIdetifikasiPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            ResepTepatObat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            KetResepTepatObat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            ResepTepatDosis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            KetResepTepatDosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            ResepTepatCaraPemberian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            KetResepTepatCaraPemberian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            ResepTepatWaktuPemberian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            KetResepTepatWaktuPemberian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            ResepTidakDuplikasiObat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            KetResepTidakDuplikasiObat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            ResepInteraksiObat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            KetResepInteraksiObat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            ResepKontraIndikasiObat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            KetResepKontraIndikasiObat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            ObatTepatPasien.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            ObatTepatObat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            ObatTepatDosis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            ObatTepatCaraPemberian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            ObatTepatWaktuPemberian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            Nip.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            NamaPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.getText()
+                + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
-        Sequel.cariIsi(
-                "select date_format(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.getText() + "' ",
+                TPasien);
+        Sequel.cariIsi("select date_format(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
                 TglLahir, TNoRM.getText());
-        Sequel.cariIsi(
-                "select pasien.jk from pasien where pasien.no_rkm_medis=? ", JK,
-                TNoRM.getText());
+        Sequel.cariIsi("select pasien.jk from pasien where pasien.no_rkm_medis=? ", JK, TNoRM.getText());
         Sequel.cariIsi(
                 "select concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) from pasien "
                 + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
@@ -1871,7 +1818,6 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param noresep
      * @param norwt
      * @param tgl2
@@ -1880,8 +1826,7 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
         TNoRw.setText(norwt);
         NoResep.setText(noresep);
         TCari.setText(noresep);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -1896,8 +1841,7 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
             if (this.getHeight() > 600) {
                 PanelInput.setPreferredSize(new Dimension(WIDTH, 354));
             } else {
-                PanelInput.setPreferredSize(new Dimension(WIDTH, this.
-                        getHeight() - 230));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, this.getHeight() - 230));
             }
             FormInput.setVisible(true);
             ChkInput.setVisible(true);
@@ -1921,17 +1865,14 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(Nip.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 Nip.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
 
     private void hapus() {
         if (Sequel.queryu2tf("delete from telaah_farmasi where no_resep=?", 1,
-                new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tampil();
         } else {
             JOptionPane.showMessageDialog(null, "Gagal menghapus..!!");
@@ -1944,32 +1885,20 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                 + "resep_tepat_dosis=?,resep_ket_tepat_dosis=?,resep_tepat_cara_pemberian=?,resep_ket_tepat_cara_pemberian=?,resep_tepat_waktu_pemberian=?,resep_ket_tepat_waktu_pemberian=?,"
                 + "resep_ada_tidak_duplikasi_obat=?,resep_ket_ada_tidak_duplikasi_obat=?,resep_interaksi_obat=?,resep_ket_interaksi_obat=?,resep_kontra_indikasi_obat=?,"
                 + "resep_ket_kontra_indikasi_obat=?,obat_tepat_pasien=?,obat_tepat_obat=?,obat_tepat_dosis=?,obat_tepat_cara_pemberian=?,obat_tepat_waktu_pemberian=?,nip=?",
-                24, new String[]{
-                    NoResep.getText(), ResepTepatIdentifikasiPasien.
-                    getSelectedItem().toString(),
-                    KetResepTepatIdetifikasiPasien.getText(),
-                    ResepTepatObat.getSelectedItem().toString(),
-                    KetResepTepatObat.getText(), ResepTepatDosis.
-                    getSelectedItem().toString(),
-                    KetResepTepatDosis.getText(), ResepTepatCaraPemberian.
-                    getSelectedItem().toString(), KetResepTepatCaraPemberian.
-                            getText(),
-                    ResepTepatWaktuPemberian.getSelectedItem().toString(),
-                    KetResepTepatWaktuPemberian.getText(),
-                    ResepTidakDuplikasiObat.getSelectedItem().toString(),
-                    KetResepTidakDuplikasiObat.getText(), ResepInteraksiObat.
-                    getSelectedItem().toString(), KetResepInteraksiObat.
-                            getText(),
-                    ResepKontraIndikasiObat.getSelectedItem().toString(),
-                    KetResepKontraIndikasiObat.getText(), ObatTepatPasien.
-                    getSelectedItem().toString(),
-                    ObatTepatObat.getSelectedItem().toString(), ObatTepatDosis.
-                    getSelectedItem().toString(), ObatTepatCaraPemberian.
-                            getSelectedItem().toString(),
-                    ObatTepatWaktuPemberian.getSelectedItem().toString(), Nip.
-                    getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                            toString()
-                }) == true) {
+                24,
+                new String[]{NoResep.getText(), ResepTepatIdentifikasiPasien.getSelectedItem().toString(),
+                    KetResepTepatIdetifikasiPasien.getText(), ResepTepatObat.getSelectedItem().toString(),
+                    KetResepTepatObat.getText(), ResepTepatDosis.getSelectedItem().toString(),
+                    KetResepTepatDosis.getText(), ResepTepatCaraPemberian.getSelectedItem().toString(),
+                    KetResepTepatCaraPemberian.getText(), ResepTepatWaktuPemberian.getSelectedItem().toString(),
+                    KetResepTepatWaktuPemberian.getText(), ResepTidakDuplikasiObat.getSelectedItem().toString(),
+                    KetResepTidakDuplikasiObat.getText(), ResepInteraksiObat.getSelectedItem().toString(),
+                    KetResepInteraksiObat.getText(), ResepKontraIndikasiObat.getSelectedItem().toString(),
+                    KetResepKontraIndikasiObat.getText(), ObatTepatPasien.getSelectedItem().toString(),
+                    ObatTepatObat.getSelectedItem().toString(), ObatTepatDosis.getSelectedItem().toString(),
+                    ObatTepatCaraPemberian.getSelectedItem().toString(),
+                    ObatTepatWaktuPemberian.getSelectedItem().toString(), Nip.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tampil();
             emptTeks();
         }
@@ -1980,8 +1909,7 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
         try {
             htmlContent = new StringBuilder();
             htmlContent.append(
-                    "<tr class='isi'>"
-                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='9%'>No.Resep</td>"
+                    "<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='9%'>No.Resep</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='8%'>Tgl.Resep</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>Jam Resep</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='12%'>No.Rawat</td>"
@@ -1989,18 +1917,19 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='21%'>Pasien</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='10%'>Kode Dokter</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='21%'>Dokter Peresep</td>"
-                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Status</td>"
-                    + "</tr>");
-            ps = koneksi.prepareStatement(
-                    "select resep_obat.no_resep,resep_obat.tgl_peresepan,resep_obat.jam_peresepan,"
-                    + " resep_obat.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_obat.kd_dokter,dokter.nm_dokter,"
-                    + " resep_obat.status,resep_obat.tgl_perawatan,resep_obat.jam "
-                    + " from resep_obat inner join reg_periksa inner join pasien inner join dokter on resep_obat.no_rawat=reg_periksa.no_rawat  "
-                    + " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and resep_obat.kd_dokter=dokter.kd_dokter where "
-                    + " resep_obat.tgl_peresepan<>'0000-00-00' and resep_obat.tgl_perawatan<>'0000-00-00' and resep_obat.tgl_peresepan between ? and ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (resep_obat.no_resep like ? or resep_obat.no_rawat like ? or "
-                    + "pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or resep_obat.kd_dokter like ? or dokter.nm_dokter like ? or "
-                    + "resep_obat.status like ?) ") + "order by resep_obat.tgl_perawatan,resep_obat.jam desc");
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%'>Status</td>" + "</tr>");
+            ps = koneksi
+                    .prepareStatement("select resep_obat.no_resep,resep_obat.tgl_peresepan,resep_obat.jam_peresepan,"
+                            + " resep_obat.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_obat.kd_dokter,dokter.nm_dokter,"
+                            + " resep_obat.status,resep_obat.tgl_perawatan,resep_obat.jam "
+                            + " from resep_obat inner join reg_periksa inner join pasien inner join dokter on resep_obat.no_rawat=reg_periksa.no_rawat  "
+                            + " and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and resep_obat.kd_dokter=dokter.kd_dokter where "
+                            + " resep_obat.tgl_peresepan<>'0000-00-00' and resep_obat.tgl_perawatan<>'0000-00-00' and resep_obat.tgl_peresepan between ? and ? "
+                            + (TCari.getText().trim().isEmpty() ? ""
+                            : "and (resep_obat.no_resep like ? or resep_obat.no_rawat like ? or "
+                            + "pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or resep_obat.kd_dokter like ? or dokter.nm_dokter like ? or "
+                            + "resep_obat.status like ?) ")
+                            + "order by resep_obat.tgl_perawatan,resep_obat.jam desc");
             try {
                 ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
@@ -2015,59 +1944,35 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td align='center'>" + rs.getString("no_resep") + "</td>"
-                            + "<td align='center'>" + rs.getString(
-                                    "tgl_peresepan") + "</td>"
-                            + "<td align='center'>" + rs.getString(
-                                    "jam_peresepan") + "</td>"
-                            + "<td align='center'>" + rs.getString("no_rawat") + "</td>"
-                            + "<td align='left'>" + rs.getString("no_rkm_medis") + "</td>"
-                            + "<td align='left'>" + rs.getString("nm_pasien") + "</td>"
-                            + "<td align='left'>" + rs.getString("kd_dokter") + "</td>"
-                            + "<td align='left'>" + rs.getString("nm_dokter") + "</td>"
-                            + "<td align='center'>" + rs.getString("status").
-                                    replace("r", "R") + "</td>"
-                            + "</tr>"
-                    );
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td align='left' valign='top'></td>"
+                    htmlContent.append("<tr class='isi'>" + "<td align='center'>" + rs.getString("no_resep") + "</td>"
+                            + "<td align='center'>" + rs.getString("tgl_peresepan") + "</td>" + "<td align='center'>"
+                            + rs.getString("jam_peresepan") + "</td>" + "<td align='center'>" + rs.getString("no_rawat")
+                            + "</td>" + "<td align='left'>" + rs.getString("no_rkm_medis") + "</td>"
+                            + "<td align='left'>" + rs.getString("nm_pasien") + "</td>" + "<td align='left'>"
+                            + rs.getString("kd_dokter") + "</td>" + "<td align='left'>" + rs.getString("nm_dokter")
+                            + "</td>" + "<td align='center'>" + rs.getString("status").replace("r", "R") + "</td>"
+                            + "</tr>");
+                    htmlContent.append("<tr class='isi'>" + "<td align='left' valign='top'></td>"
                             + "<td align='left' valign='top' colspan='8'>"
                             + "<table width='100%' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                            + "<tr class='isi'>"
-                            + "<td colspan='5'>Obat Yang Diresepkan : </td>"
-                            + "</tr>"
-                            + "<tr class='isi'>"
-                            + "<td width='10%' bgcolor='#FFFBFC' align='center'>Jumlah</td>"
+                            + "<tr class='isi'>" + "<td colspan='5'>Obat Yang Diresepkan : </td>" + "</tr>"
+                            + "<tr class='isi'>" + "<td width='10%' bgcolor='#FFFBFC' align='center'>Jumlah</td>"
                             + "<td width='10%' bgcolor='#FFFBFC' align='center'>Satuan</td>"
                             + "<td width='25%' bgcolor='#FFFBFC' align='center'>Aturan Pakai</td>"
                             + "<td width='15%' bgcolor='#FFFBFC' align='center'>Kode/No</td>"
-                            + "<td width='40%' bgcolor='#FFFBFC' align='center'>Nama Obat/Racikan</td>"
-                            + "</tr>"
-                    );
-                    ps2 = koneksi.prepareStatement(
-                            "select databarang.kode_brng,databarang.nama_brng,resep_dokter.jml,"
+                            + "<td width='40%' bgcolor='#FFFBFC' align='center'>Nama Obat/Racikan</td>" + "</tr>");
+                    ps2 = koneksi.prepareStatement("select databarang.kode_brng,databarang.nama_brng,resep_dokter.jml,"
                             + "databarang.kode_sat,resep_dokter.aturan_pakai from resep_dokter inner join databarang on "
                             + "resep_dokter.kode_brng=databarang.kode_brng where resep_dokter.no_resep=? order by databarang.kode_brng");
                     try {
                         ps2.setString(1, rs.getString("no_resep"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            htmlContent.append(
-                                    "<tr class='isi'>"
-                                    + "<td align='left'>" + rs2.getString("jml") + "</td>"
-                                    + "<td align='center'>" + rs2.getString(
-                                            "kode_sat") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "aturan_pakai") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "kode_brng") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "nama_brng") + "</td>"
-                                    + "</tr>"
-                            );
+                            htmlContent.append("<tr class='isi'>" + "<td align='left'>" + rs2.getString("jml") + "</td>"
+                                    + "<td align='center'>" + rs2.getString("kode_sat") + "</td>" + "<td align='left'>"
+                                    + rs2.getString("aturan_pakai") + "</td>" + "<td align='left'>"
+                                    + rs2.getString("kode_brng") + "</td>" + "<td align='left'>"
+                                    + rs2.getString("nama_brng") + "</td>" + "</tr>");
                         }
                     } catch (Exception e) {
                         System.out.println("Notifikasi 2 : " + e);
@@ -2080,31 +1985,22 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                         }
                     }
 
-                    ps2 = koneksi.prepareStatement(
-                            "select resep_dokter_racikan.no_racik,resep_dokter_racikan.nama_racik,"
-                            + "resep_dokter_racikan.kd_racik,metode_racik.nm_racik as metode,"
-                            + "resep_dokter_racikan.jml_dr,resep_dokter_racikan.aturan_pakai,"
-                            + "resep_dokter_racikan.keterangan from resep_dokter_racikan inner join metode_racik "
-                            + "on resep_dokter_racikan.kd_racik=metode_racik.kd_racik where "
-                            + "resep_dokter_racikan.no_resep=? ");
+                    ps2 = koneksi
+                            .prepareStatement("select resep_dokter_racikan.no_racik,resep_dokter_racikan.nama_racik,"
+                                    + "resep_dokter_racikan.kd_racik,metode_racik.nm_racik as metode,"
+                                    + "resep_dokter_racikan.jml_dr,resep_dokter_racikan.aturan_pakai,"
+                                    + "resep_dokter_racikan.keterangan from resep_dokter_racikan inner join metode_racik "
+                                    + "on resep_dokter_racikan.kd_racik=metode_racik.kd_racik where "
+                                    + "resep_dokter_racikan.no_resep=? ");
                     try {
                         ps2.setString(1, rs.getString("no_resep"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            htmlContent.append(
-                                    "<tr class='isi'>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "jml_dr") + "</td>"
-                                    + "<td align='center'>" + rs2.getString(
-                                            "metode") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "aturan_pakai") + "</td>"
-                                    + "<td align='left'>No.Racik : " + rs2.
-                                            getString("no_racik") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "nama_racik") + "</td>"
-                                    + "</tr>"
-                            );
+                            htmlContent.append("<tr class='isi'>" + "<td align='left'>" + rs2.getString("jml_dr")
+                                    + "</td>" + "<td align='center'>" + rs2.getString("metode") + "</td>"
+                                    + "<td align='left'>" + rs2.getString("aturan_pakai") + "</td>"
+                                    + "<td align='left'>No.Racik : " + rs2.getString("no_racik") + "</td>"
+                                    + "<td align='left'>" + rs2.getString("nama_racik") + "</td>" + "</tr>");
                             ps3 = koneksi.prepareStatement(
                                     "select databarang.kode_brng,databarang.nama_brng,resep_dokter_racikan_detail.jml,"
                                     + "databarang.kode_sat from resep_dokter_racikan_detail inner join databarang on resep_dokter_racikan_detail.kode_brng=databarang.kode_brng "
@@ -2114,19 +2010,12 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                                 ps3.setString(2, rs2.getString("no_racik"));
                                 rs3 = ps3.executeQuery();
                                 while (rs3.next()) {
-                                    htmlContent.append(
-                                            "<tr class='isi'>"
-                                            + "<td align='left'>&nbsp;&nbsp;" + rs3.
-                                                    getString("jml") + "</td>"
-                                            + "<td align='center'>&nbsp;&nbsp;" + rs3.
-                                                    getString("kode_sat") + "</td>"
-                                            + "<td align='left'></td>"
-                                            + "<td align='left'>" + "&nbsp;&nbsp;" + rs3.
-                                                    getString("kode_brng") + "</td>"
-                                            + "<td align='left'>" + "&nbsp;&nbsp;" + rs3.
-                                                    getString("nama_brng") + "</td>"
-                                            + "</tr>"
-                                    );
+                                    htmlContent.append("<tr class='isi'>" + "<td align='left'>&nbsp;&nbsp;"
+                                            + rs3.getString("jml") + "</td>" + "<td align='center'>&nbsp;&nbsp;"
+                                            + rs3.getString("kode_sat") + "</td>" + "<td align='left'></td>"
+                                            + "<td align='left'>" + "&nbsp;&nbsp;" + rs3.getString("kode_brng")
+                                            + "</td>" + "<td align='left'>" + "&nbsp;&nbsp;"
+                                            + rs3.getString("nama_brng") + "</td>" + "</tr>");
                                 }
                             } catch (Exception e) {
                                 System.out.println("Notifikasi 3 : " + e);
@@ -2149,28 +2038,17 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                             ps2.close();
                         }
                     }
-                    htmlContent.append(
-                            "</table>"
-                            + "</td>"
-                            + "</tr>"
-                    );
+                    htmlContent.append("</table>" + "</td>" + "</tr>");
 
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td align='left' valign='top'></td>"
+                    htmlContent.append("<tr class='isi'>" + "<td align='left' valign='top'></td>"
                             + "<td align='left' valign='top' colspan='8'>"
                             + "<table width='100%' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                            + "<tr class='isi'>"
-                            + "<td colspan='5'>Obat Yang Diberikan : </td>"
-                            + "</tr>"
-                            + "<tr class='isi'>"
-                            + "<td width='10%' bgcolor='#FFFBFC' align='center'>Jumlah</td>"
+                            + "<tr class='isi'>" + "<td colspan='5'>Obat Yang Diberikan : </td>" + "</tr>"
+                            + "<tr class='isi'>" + "<td width='10%' bgcolor='#FFFBFC' align='center'>Jumlah</td>"
                             + "<td width='10%' bgcolor='#FFFBFC' align='center'>Satuan</td>"
                             + "<td width='25%' bgcolor='#FFFBFC' align='center'>Aturan Pakai</td>"
                             + "<td width='15%' bgcolor='#FFFBFC' align='center'>Kode/No</td>"
-                            + "<td width='40%' bgcolor='#FFFBFC' align='center'>Nama Obat/Racikan</td>"
-                            + "</tr>"
-                    );
+                            + "<td width='40%' bgcolor='#FFFBFC' align='center'>Nama Obat/Racikan</td>" + "</tr>");
                     ps2 = koneksi.prepareStatement(
                             "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml,databarang.kode_sat,"
                             + "detail_pemberian_obat.biaya_obat,detail_pemberian_obat.embalase,detail_pemberian_obat.tuslah,detail_pemberian_obat.total from "
@@ -2188,26 +2066,16 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                         ps2.setString(6, rs.getString("no_rawat"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            htmlContent.append(
-                                    "<tr class='isi'>"
-                                    + "<td align='left'>" + rs2.getString("jml") + "</td>"
-                                    + "<td align='center'>" + rs2.getString(
-                                            "kode_sat") + "</td>"
-                                    + "<td align='left'>"
+                            htmlContent.append("<tr class='isi'>" + "<td align='left'>" + rs2.getString("jml") + "</td>"
+                                    + "<td align='center'>" + rs2.getString("kode_sat") + "</td>" + "<td align='left'>"
                                     + Sequel.cariIsi(
-                                            "select aturan_pakai.aturan from aturan_pakai where aturan_pakai.tgl_perawatan='" + rs.
-                                                    getString("tgl_perawatan") + "' and "
-                                            + "aturan_pakai.jam='" + rs.
-                                                    getString("jam") + "' and aturan_pakai.no_rawat='" + rs.
-                                            getString("no_rawat") + "' and aturan_pakai.kode_brng='" + rs2.
-                                            getString("kode_brng") + "'")
-                                    + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "kode_brng") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "nama_brng") + "</td>"
-                                    + "</tr>"
-                            );
+                                            "select aturan_pakai.aturan from aturan_pakai where aturan_pakai.tgl_perawatan='"
+                                            + rs.getString("tgl_perawatan") + "' and " + "aturan_pakai.jam='"
+                                            + rs.getString("jam") + "' and aturan_pakai.no_rawat='"
+                                            + rs.getString("no_rawat") + "' and aturan_pakai.kode_brng='"
+                                            + rs2.getString("kode_brng") + "'")
+                                    + "</td>" + "<td align='left'>" + rs2.getString("kode_brng") + "</td>"
+                                    + "<td align='left'>" + rs2.getString("nama_brng") + "</td>" + "</tr>");
                         }
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
@@ -2220,34 +2088,23 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                         }
                     }
 
-                    ps2 = koneksi.prepareStatement(
-                            "select obat_racikan.no_racik,obat_racikan.nama_racik,"
+                    ps2 = koneksi.prepareStatement("select obat_racikan.no_racik,obat_racikan.nama_racik,"
                             + "obat_racikan.kd_racik,metode_racik.nm_racik as metode,"
                             + "obat_racikan.jml_dr,obat_racikan.aturan_pakai,"
                             + "obat_racikan.keterangan from obat_racikan inner join metode_racik "
                             + "on obat_racikan.kd_racik=metode_racik.kd_racik where "
-                            + "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? "
-                            + "and obat_racikan.no_rawat=? ");
+                            + "obat_racikan.tgl_perawatan=? and obat_racikan.jam=? " + "and obat_racikan.no_rawat=? ");
                     try {
                         ps2.setString(1, rs.getString("tgl_perawatan"));
                         ps2.setString(2, rs.getString("jam"));
                         ps2.setString(3, rs.getString("no_rawat"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            htmlContent.append(
-                                    "<tr class='isi'>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "jml_dr") + "</td>"
-                                    + "<td align='center'>" + rs2.getString(
-                                            "metode") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "aturan_pakai") + "</td>"
-                                    + "<td align='left'>No.Racik : " + rs2.
-                                            getString("no_racik") + "</td>"
-                                    + "<td align='left'>" + rs2.getString(
-                                            "nama_racik") + "</td>"
-                                    + "</tr>"
-                            );
+                            htmlContent.append("<tr class='isi'>" + "<td align='left'>" + rs2.getString("jml_dr")
+                                    + "</td>" + "<td align='center'>" + rs2.getString("metode") + "</td>"
+                                    + "<td align='left'>" + rs2.getString("aturan_pakai") + "</td>"
+                                    + "<td align='left'>No.Racik : " + rs2.getString("no_racik") + "</td>"
+                                    + "<td align='left'>" + rs2.getString("nama_racik") + "</td>" + "</tr>");
 
                             ps3 = koneksi.prepareStatement(
                                     "select databarang.kode_brng,databarang.nama_brng,detail_pemberian_obat.jml,databarang.kode_sat,"
@@ -2267,23 +2124,15 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                                 ps3.setString(4, rs2.getString("no_racik"));
                                 rs3 = ps3.executeQuery();
                                 while (rs3.next()) {
-                                    htmlContent.append(
-                                            "<tr class='isi'>"
-                                            + "<td align='left'>&nbsp;&nbsp;" + rs3.
-                                                    getString("jml") + "</td>"
-                                            + "<td align='center'>&nbsp;&nbsp;" + rs3.
-                                                    getString("kode_sat") + "</td>"
-                                            + "<td align='left'></td>"
-                                            + "<td align='left'>" + "&nbsp;&nbsp;" + rs3.
-                                                    getString("kode_brng") + "</td>"
-                                            + "<td align='left'>" + "&nbsp;&nbsp;" + rs3.
-                                                    getString("nama_brng") + "</td>"
-                                            + "</tr>"
-                                    );
+                                    htmlContent.append("<tr class='isi'>" + "<td align='left'>&nbsp;&nbsp;"
+                                            + rs3.getString("jml") + "</td>" + "<td align='center'>&nbsp;&nbsp;"
+                                            + rs3.getString("kode_sat") + "</td>" + "<td align='left'></td>"
+                                            + "<td align='left'>" + "&nbsp;&nbsp;" + rs3.getString("kode_brng")
+                                            + "</td>" + "<td align='left'>" + "&nbsp;&nbsp;"
+                                            + rs3.getString("nama_brng") + "</td>" + "</tr>");
                                 }
                             } catch (Exception e) {
-                                System.out.println(
-                                        "Notifikasi Detail Racikan : " + e);
+                                System.out.println("Notifikasi Detail Racikan : " + e);
                             } finally {
                                 if (rs3 != null) {
                                     rs3.close();
@@ -2304,11 +2153,7 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                         }
                     }
 
-                    htmlContent.append(
-                            "</table>"
-                            + "</td>"
-                            + "</tr>"
-                    );
+                    htmlContent.append("</table>" + "</td>" + "</tr>");
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2320,20 +2165,15 @@ public class InventoryTelaahResep extends javax.swing.JDialog {
                     ps.close();
                 }
             }
-            LoadHTML.setText(
-                    "<html>"
+            LoadHTML.setText("<html>"
                     + "<table width='100%' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>"
-            );
+                    + htmlContent.toString() + "</table>" + "</html>");
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
         this.setCursor(Cursor.getDefaultCursor());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryTelaahResep.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryTelaahResep.class.getName());
 
 }

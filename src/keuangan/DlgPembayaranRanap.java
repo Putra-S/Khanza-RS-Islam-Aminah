@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package keuangan;
 
@@ -40,25 +40,38 @@ import simrskhanza.DlgCariBangsal;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgPembayaranRanap extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
-    private double all = 0, Laborat = 0, Radiologi = 0, Operasi = 0, Obat = 0, Ranap_Dokter = 0, Ranap_Paramedis = 0, Ranap_Dokter_Paramedis = 0, Ralan_Dokter = 0,
-            Ralan_Paramedis = 0, Ralan_Dokter_Paramedis = 0, Tambahan = 0, Potongan = 0, Kamar = 0, Registrasi = 0, Harian = 0, Retur_Obat = 0, Resep_Pulang = 0,
-            Service = 0, ttlLaborat = 0, ttlRadiologi = 0, ttlOperasi = 0, ttlObat = 0, ttlRanap_Dokter = 0, ttlRanap_Paramedis = 0, ttlRalan_Dokter = 0,
-            ttlRalan_Paramedis = 0, ttlTambahan = 0, ttlPotongan = 0, ttlKamar = 0, ttlRegistrasi = 0, ttlHarian = 0, ttlRetur_Obat = 0, ttlResep_Pulang = 0, ttlService = 0;
-    private String sqlps2 = "select sum(totalbiaya) from billing where no_rawat=? and status=? ", pilihan = "", tampilkan = "Semua", Keterangan = "Belum Bayar";
+
+    private double all = 0, Laborat = 0, Radiologi = 0, Operasi = 0, Obat = 0, Ranap_Dokter = 0, Ranap_Paramedis = 0,
+            Ranap_Dokter_Paramedis = 0, Ralan_Dokter = 0, Ralan_Paramedis = 0, Ralan_Dokter_Paramedis = 0, Tambahan = 0,
+            Potongan = 0, Kamar = 0, Registrasi = 0, Harian = 0, Retur_Obat = 0, Resep_Pulang = 0, Service = 0,
+            ttlLaborat = 0, ttlRadiologi = 0, ttlOperasi = 0, ttlObat = 0, ttlRanap_Dokter = 0, ttlRanap_Paramedis = 0,
+            ttlRalan_Dokter = 0, ttlRalan_Paramedis = 0, ttlTambahan = 0, ttlPotongan = 0, ttlKamar = 0,
+            ttlRegistrasi = 0, ttlHarian = 0, ttlRetur_Obat = 0, ttlResep_Pulang = 0, ttlService = 0;
+
+    private String sqlps2 = "select sum(totalbiaya) from billing where no_rawat=? and status=? ", pilihan = "",
+            tampilkan = "Semua", Keterangan = "Belum Bayar";
+
     private StringBuilder htmlContent;
+
     private int i = 0;
 
     /**
@@ -73,11 +86,9 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {"Tgl.Pulang", "No.Nota", "No.RM", "Nama Pasien",
-            "Kamar/Bangsal", "Perujuk", "Registrasi", "Tindakan", "Obt+Emb+Tsl",
-            "Retur Obat", "Resep Pulang",
-            "Laborat", "Radiologi", "Potongan", "Tambahan", "Kamar+Service",
-            "Operasi", "Harian", "Total"};
+        Object[] rowRwJlDr = {"Tgl.Pulang", "No.Nota", "No.RM", "Nama Pasien", "Kamar/Bangsal", "DPJP Ranap",
+            "Registrasi", "Tindakan", "Obt+Emb+Tsl", "Retur Obat", "Resep Pulang", "Laborat", "Radiologi",
+            "Potongan", "Tambahan", "Kamar+Service", "Operasi", "Harian", "Total"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -86,7 +97,8 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -126,10 +138,8 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (bangsal.getTable().getSelectedRow() != -1) {
-                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                    nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                 }
                 kdbangsal.requestFocus();
             }
@@ -183,10 +193,8 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    KdCaraBayar.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    NmCaraBayar.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    KdCaraBayar.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    NmCaraBayar.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                     BtnCaraBayar.requestFocus();
                 }
             }
@@ -234,7 +242,9 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -263,6 +273,7 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         LCount = new javax.swing.JLabel();
         BtnPrint = new widget.Button();
+        BtnExcel = new widget.Button();
         BtnKeluar = new widget.Button();
         PanelInput = new javax.swing.JPanel();
         ChkInput = new widget.CekBox();
@@ -491,6 +502,24 @@ public class DlgPembayaranRanap extends javax.swing.JDialog {
             }
         });
         panelGlass5.add(BtnPrint);
+
+        BtnExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/excel.png"))); // NOI18N
+        BtnExcel.setMnemonic('T');
+        BtnExcel.setText("Excel");
+        BtnExcel.setToolTipText("Alt+T");
+        BtnExcel.setName("BtnExcel"); // NOI18N
+        BtnExcel.setPreferredSize(new java.awt.Dimension(100, 30));
+        BtnExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnExcelActionPerformed(evt);
+            }
+        });
+        BtnExcel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnExcelKeyPressed(evt);
+            }
+        });
+        panelGlass5.add(BtnExcel);
 
         BtnKeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
         BtnKeluar.setMnemonic('K');
@@ -1088,13 +1117,20 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         tampil();
     }//GEN-LAST:event_MnSemuaStatusBayarActionPerformed
 
+    private void BtnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExcelActionPerformed
+        Valid.exportToExcel(tbBangsal);
+    }//GEN-LAST:event_BtnExcelActionPerformed
+
+    private void BtnExcelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnExcelKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnExcelKeyPressed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPembayaranRanap dialog = new DlgPembayaranRanap(
-                    new javax.swing.JFrame(), true);
+            DlgPembayaranRanap dialog = new DlgPembayaranRanap(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1110,6 +1146,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private widget.Button BtnAll;
     private widget.Button BtnCaraBayar;
     private widget.Button BtnCari1;
+    private widget.Button BtnExcel;
     private widget.Button BtnKeluar;
     private widget.Button BtnPrint;
     private widget.Button BtnSeek2;
@@ -1174,17 +1211,14 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             }
 
             try {
-                if (nmbangsal.getText().isEmpty() && NmCaraBayar.getText().
-                        isEmpty()) {
+                if (nmbangsal.getText().isEmpty() && NmCaraBayar.getText().isEmpty()) {
                     ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                     ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 } else {
                     ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                     ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
-                    ps.setString(3, "%" + kdbangsal.getText() + nmbangsal.
-                            getText() + "%");
-                    ps.setString(4, "%" + KdCaraBayar.getText() + NmCaraBayar.
-                            getText() + "%");
+                    ps.setString(3, "%" + kdbangsal.getText() + nmbangsal.getText() + "%");
+                    ps.setString(4, "%" + KdCaraBayar.getText() + NmCaraBayar.getText() + "%");
                 }
 
                 rs = ps.executeQuery();
@@ -1587,89 +1621,75 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                 }
                             }
 
-                            all = all + Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service;
+                            all = all + Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis
+                                    + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis
+                                    + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang
+                                    + Service;
 
-                            if ((Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service) > 0) {
+                            if ((Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis
+                                    + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis
+                                    + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang
+                                    + Service) > 0) {
                                 Keterangan = "Sudah Bayar";
                             }
 
-                            if (tampilkan.equals("Belum Bayar") && Keterangan.
-                                    equals("Belum Bayar")) {
-                                tabMode.addRow(new Object[]{
-                                    rs.getString("tgl_keluar"), Sequel.cariIsi(
-                                    "select no_nota from nota_inap where no_rawat=?",
+                            if (tampilkan.equals("Belum Bayar") && Keterangan.equals("Belum Bayar")) {
+                                tabMode.addRow(new Object[]{rs.getString("tgl_keluar"),
+                                    Sequel.cariIsi("select no_nota from nota_inap where no_rawat=?",
                                     rs.getString("no_rawat")),
-                                    rs.getString("no_rkm_medis"), rs.getString(
-                                    "nm_pasien"),
-                                    rs.getString("kd_kamar") + " " + rs.
-                                    getString("nm_bangsal"),
-                                    Sequel.cariIsi(
-                                    "select perujuk from rujuk_masuk where no_rawat=?",
-                                    rs.getString("no_rawat")), Valid.SetAngka(
-                                    Registrasi),
-                                    Valid.SetAngka(
-                                    Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
-                                    Valid.SetAngka(Obat), Valid.SetAngka(
-                                    Retur_Obat), Valid.SetAngka(Resep_Pulang),
-                                    Valid.SetAngka(Laborat), Valid.SetAngka(
-                                    Radiologi), Valid.SetAngka(Potongan),
-                                    Valid.SetAngka(Tambahan), Valid.SetAngka(
-                                    Kamar + Service), Valid.SetAngka(Operasi),
-                                    Valid.SetAngka(Harian), Valid.SetAngka(
-                                    Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
-                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
-                                });
-                            } else if (tampilkan.equals("Sudah Bayar") && Keterangan.
-                                    equals("Sudah Bayar")) {
-                                tabMode.addRow(new Object[]{
-                                    rs.getString("tgl_keluar"), Sequel.cariIsi(
-                                    "select no_nota from nota_inap where no_rawat=?",
+                                    rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                                    rs.getString("kd_kamar") + " " + rs.getString("nm_bangsal"),
+                                    Sequel.cariIsi("select dokter.nm_dokter from dokter inner join dpjp_ranap on dokter.kd_dokter = dpjp_ranap.kd_dokter where dpjp_ranap.no_rawat=? and dpjp_ranap.pjranap_ke='1'",
                                     rs.getString("no_rawat")),
-                                    rs.getString("no_rkm_medis"), rs.getString(
-                                    "nm_pasien"),
-                                    rs.getString("kd_kamar") + " " + rs.
-                                    getString("nm_bangsal"),
-                                    Sequel.cariIsi(
-                                    "select perujuk from rujuk_masuk where no_rawat=?",
-                                    rs.getString("no_rawat")), Valid.SetAngka(
-                                    Registrasi),
-                                    Valid.SetAngka(
-                                    Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
-                                    Valid.SetAngka(Obat), Valid.SetAngka(
-                                    Retur_Obat), Valid.SetAngka(Resep_Pulang),
-                                    Valid.SetAngka(Laborat), Valid.SetAngka(
-                                    Radiologi), Valid.SetAngka(Potongan),
-                                    Valid.SetAngka(Tambahan), Valid.SetAngka(
-                                    Kamar + Service), Valid.SetAngka(Operasi),
-                                    Valid.SetAngka(Harian), Valid.SetAngka(
-                                    Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
-                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
-                                });
+                                    Valid.SetAngka(Registrasi),
+                                    Valid.SetAngka(Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis
+                                    + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
+                                    Valid.SetAngka(Obat), Valid.SetAngka(Retur_Obat), Valid.SetAngka(Resep_Pulang),
+                                    Valid.SetAngka(Laborat), Valid.SetAngka(Radiologi), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(Kamar + Service),
+                                    Valid.SetAngka(Operasi), Valid.SetAngka(Harian),
+                                    Valid.SetAngka(Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
+                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter
+                                    + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar
+                                    + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)});
+                            } else if (tampilkan.equals("Sudah Bayar") && Keterangan.equals("Sudah Bayar")) {
+                                tabMode.addRow(new Object[]{rs.getString("tgl_keluar"),
+                                    Sequel.cariIsi("select no_nota from nota_inap where no_rawat=?",
+                                    rs.getString("no_rawat")),
+                                    rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                                    rs.getString("kd_kamar") + " " + rs.getString("nm_bangsal"),
+                                    Sequel.cariIsi("select dokter.nm_dokter from dokter inner join dpjp_ranap on dokter.kd_dokter = dpjp_ranap.kd_dokter where dpjp_ranap.no_rawat=? and dpjp_ranap.pjranap_ke='1'",
+                                    rs.getString("no_rawat")),
+                                    Valid.SetAngka(Registrasi),
+                                    Valid.SetAngka(Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis
+                                    + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
+                                    Valid.SetAngka(Obat), Valid.SetAngka(Retur_Obat), Valid.SetAngka(Resep_Pulang),
+                                    Valid.SetAngka(Laborat), Valid.SetAngka(Radiologi), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(Kamar + Service),
+                                    Valid.SetAngka(Operasi), Valid.SetAngka(Harian),
+                                    Valid.SetAngka(Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
+                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter
+                                    + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar
+                                    + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)});
                             } else if (tampilkan.equals("Semua")) {
-                                tabMode.addRow(new Object[]{
-                                    rs.getString("tgl_keluar"), Sequel.cariIsi(
-                                    "select no_nota from nota_inap where no_rawat=?",
+                                tabMode.addRow(new Object[]{rs.getString("tgl_keluar"),
+                                    Sequel.cariIsi("select no_nota from nota_inap where no_rawat=?",
                                     rs.getString("no_rawat")),
-                                    rs.getString("no_rkm_medis"), rs.getString(
-                                    "nm_pasien"),
-                                    rs.getString("kd_kamar") + " " + rs.
-                                    getString("nm_bangsal"),
-                                    Sequel.cariIsi(
-                                    "select perujuk from rujuk_masuk where no_rawat=?",
-                                    rs.getString("no_rawat")), Valid.SetAngka(
-                                    Registrasi),
-                                    Valid.SetAngka(
-                                    Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
-                                    Valid.SetAngka(Obat), Valid.SetAngka(
-                                    Retur_Obat), Valid.SetAngka(Resep_Pulang),
-                                    Valid.SetAngka(Laborat), Valid.SetAngka(
-                                    Radiologi), Valid.SetAngka(Potongan),
-                                    Valid.SetAngka(Tambahan), Valid.SetAngka(
-                                    Kamar + Service), Valid.SetAngka(Operasi),
-                                    Valid.SetAngka(Harian), Valid.SetAngka(
-                                    Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
-                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
-                                });
+                                    rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                                    rs.getString("kd_kamar") + " " + rs.getString("nm_bangsal"),
+                                    Sequel.cariIsi("select dokter.nm_dokter from dokter inner join dpjp_ranap on dokter.kd_dokter = dpjp_ranap.kd_dokter where dpjp_ranap.no_rawat=? and dpjp_ranap.pjranap_ke='1'",
+                                    rs.getString("no_rawat")),
+                                    Valid.SetAngka(Registrasi),
+                                    Valid.SetAngka(Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis
+                                    + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
+                                    Valid.SetAngka(Obat), Valid.SetAngka(Retur_Obat), Valid.SetAngka(Resep_Pulang),
+                                    Valid.SetAngka(Laborat), Valid.SetAngka(Radiologi), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(Kamar + Service),
+                                    Valid.SetAngka(Operasi), Valid.SetAngka(Harian),
+                                    Valid.SetAngka(Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
+                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter
+                                    + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar
+                                    + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)});
                             }
 
                         }
@@ -1677,18 +1697,12 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 }
                 LCount2.setText("" + tabMode.getRowCount());
                 if (!tampilkan.equals("Belum Bayar")) {
-                    tabMode.addRow(new Object[]{
-                        ">> Total ", ":", "", "", "", "", Valid.SetAngka(
-                        ttlRegistrasi), Valid.SetAngka(
-                        ttlRanap_Dokter + ttlRanap_Paramedis + ttlRalan_Dokter + ttlRalan_Paramedis),
-                        Valid.SetAngka(ttlObat), Valid.SetAngka(ttlRetur_Obat),
-                        Valid.SetAngka(ttlResep_Pulang), Valid.SetAngka(
-                        ttlLaborat), Valid.SetAngka(ttlRadiologi), Valid.
-                        SetAngka(ttlPotongan),
-                        Valid.SetAngka(ttlTambahan), Valid.SetAngka(
-                        ttlKamar + ttlService), Valid.SetAngka(ttlOperasi),
-                        Valid.SetAngka(ttlHarian), Valid.SetAngka(all)
-                    });
+                    tabMode.addRow(new Object[]{">> Total ", ":", "", "", "", "", Valid.SetAngka(ttlRegistrasi),
+                        Valid.SetAngka(ttlRanap_Dokter + ttlRanap_Paramedis + ttlRalan_Dokter + ttlRalan_Paramedis),
+                        Valid.SetAngka(ttlObat), Valid.SetAngka(ttlRetur_Obat), Valid.SetAngka(ttlResep_Pulang),
+                        Valid.SetAngka(ttlLaborat), Valid.SetAngka(ttlRadiologi), Valid.SetAngka(ttlPotongan),
+                        Valid.SetAngka(ttlTambahan), Valid.SetAngka(ttlKamar + ttlService),
+                        Valid.SetAngka(ttlOperasi), Valid.SetAngka(ttlHarian), Valid.SetAngka(all)});
                     LCount.setText(Valid.SetAngka(all));
                 } else {
                     LCount.setText("" + 0);
@@ -1731,7 +1745,6 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgPembayaranRanap.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgPembayaranRanap.class.getName());
 
 }

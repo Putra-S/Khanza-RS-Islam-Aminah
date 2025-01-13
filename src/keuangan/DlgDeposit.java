@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPemberianInfus.java
- *
- * Created on Jun 6, 2010, 10:59:33 PM
+* DlgPemberianInfus.java
+*
+* Created on Jun 6, 2010, 10:59:33 PM
  */
 package keuangan;
 
@@ -47,32 +47,51 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author dosen
  */
 public class DlgDeposit extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private Date date = new Date();
-    private String now = dateFormat.format(date), Uang_Muka_Ranap = Sequel.
-            cariIsi("select Uang_Muka_Ranap from set_akun_ranap2");
+
+    private String now = dateFormat.format(date),
+            Uang_Muka_Ranap = Sequel.cariIsi("select Uang_Muka_Ranap from set_akun_ranap2");
+
     private int i = 0;
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private double ppn = 0, nilaippn = 0, totaldeposit = 0, tottaldibayar = 0, totalppn = 0;
+
     private boolean sukses = true;
+
     private Jurnal jur = new Jurnal();
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -85,10 +104,8 @@ public class DlgDeposit extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.Deposit", "No.Rawat", "No.RM", "Pasien", "Tanggal",
-            "Akun Bayar", "Besar Deposit", "PPN", "Biaya PPN/Admin",
-            "Dibayar Pasien", "Kode Petugas", "Petugas", "Kode Rek",
-            "Keterangan"};
+        Object[] row = {"No.Deposit", "No.Rawat", "No.RM", "Pasien", "Tanggal", "Akun Bayar", "Besar Deposit", "PPN",
+            "Biaya PPN/Admin", "Dibayar Pasien", "Kode Petugas", "Petugas", "Kode Rek", "Keterangan"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -98,7 +115,8 @@ public class DlgDeposit extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -142,11 +160,9 @@ public class DlgDeposit extends javax.swing.JDialog {
         KodePetugas.setDocument(new batasInput((byte) 20).getKata(KodePetugas));
         Nomor.setDocument(new batasInput((byte) 17).getKata(Nomor));
         Keterangan.setDocument(new batasInput((byte) 70).getKata(Keterangan));
-        BesarDeposit.setDocument(new batasInput((byte) 15).getOnlyAngka(
-                BesarDeposit));
+        BesarDeposit.setDocument(new batasInput((byte) 15).getOnlyAngka(BesarDeposit));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -171,8 +187,7 @@ public class DlgDeposit extends javax.swing.JDialog {
             });
         }
 
-        BesarDeposit.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        BesarDeposit.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 cekPPN();
@@ -205,10 +220,10 @@ public class DlgDeposit extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KodePetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodePetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 KodePetugas.requestFocus();
             }
@@ -235,7 +250,9 @@ public class DlgDeposit extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1340,16 +1357,15 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "inner join petugas on deposit.nip=petugas.nip "
                     + "inner join akun_bayar on deposit.nama_bayar=akun_bayar.nama_bayar "
-                    + "where deposit.tgl_deposit between ? and ? " + (TCari.
-                            getText().isEmpty() ? ""
-                            : "and (deposit.no_deposit like ? or deposit.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
-                            + "pasien.nm_pasien like ? or deposit.nip like ? or petugas.nama like ? or deposit.nama_bayar like ? or "
-                            + "deposit.keterangan like ?)") + " order by deposit.tgl_deposit desc");
+                    + "where deposit.tgl_deposit between ? and ? "
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (deposit.no_deposit like ? or deposit.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or deposit.nip like ? or petugas.nama like ? or deposit.nama_bayar like ? or "
+                    + "deposit.keterangan like ?)")
+                    + " order by deposit.tgl_deposit desc");
             try {
-                ps.setString(1,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(2,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 if (!TCari.getText().trim().isEmpty()) {
                     ps.setString(3, "%" + TCari.getText().trim() + "%");
                     ps.setString(4, "%" + TCari.getText().trim() + "%");
@@ -1369,15 +1385,10 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     totaldeposit += rs.getDouble(7);
                     totalppn += rs.getDouble(9);
                     tottaldibayar += rs.getDouble(10);
-                    tabMode.addRow(new String[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getString(4), rs.getString(5), rs.getString(6), Valid.
-                        SetAngka(rs.getDouble(7)),
-                        rs.getDouble(8) + "", Valid.SetAngka(rs.getDouble(9)),
-                        Valid.SetAngka(rs.getDouble(10)), rs.getString(11), rs.
-                        getString(12), rs.getString(13),
-                        rs.getString(14)
-                    });
+                    tabMode.addRow(new String[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), Valid.SetAngka(rs.getDouble(7)), rs.getDouble(8) + "",
+                        Valid.SetAngka(rs.getDouble(9)), Valid.SetAngka(rs.getDouble(10)), rs.getString(11),
+                        rs.getString(12), rs.getString(13), rs.getString(14)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1394,61 +1405,37 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
         LCount.setText("" + tabMode.getRowCount());
         if (tabMode.getRowCount() > 0) {
-            tabMode.addRow(new String[]{
-                "", "Total :", "", "", "", "", Valid.SetAngka(totaldeposit), "",
-                Valid.SetAngka(totalppn), Valid.SetAngka(tottaldibayar), "", "",
-                "", ""
-            });
+            tabMode.addRow(new String[]{"", "Total :", "", "", "", "", Valid.SetAngka(totaldeposit), "",
+                Valid.SetAngka(totalppn), Valid.SetAngka(tottaldibayar), "", "", "", ""});
         }
     }
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            Nomor.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            cmbJam.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().
-                            substring(11, 13));
-            cmbMnt.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().
-                            substring(14, 16));
-            cmbDtk.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().
-                            substring(17, 19));
-            AkunBayar.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    5).toString());
-            BesarDeposit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Persenppn.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            BesarPPN.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            DibayarPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            Valid.SetTgl(DTPTgl, tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString().substring(0, 10));
+            Nomor.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            cmbJam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().substring(11, 13));
+            cmbMnt.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().substring(14, 16));
+            cmbDtk.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().substring(17, 19));
+            AkunBayar.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            BesarDeposit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Persenppn.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            BesarPPN.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            DibayarPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Valid.SetTgl(DTPTgl, tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().substring(0, 10));
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                TNoRM, TNoRw.getText());
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
-                TPasien, TNoRM.getText());
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRM,
+                TNoRw.getText());
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ", TPasien, TNoRM.getText());
     }
 
     /**
-     *
      * @param norwt
      * @param tgl1
      * @param tgl2
@@ -1495,7 +1482,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1537,7 +1526,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 cmbJam.setSelectedItem(jam);
                 cmbMnt.setSelectedItem(menit);
                 cmbDtk.setSelectedItem(detik);
@@ -1550,11 +1539,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_deposit,4),signed)),0) from deposit where tgl_deposit like '%" + Valid.
-                        SetTgl(DTPTgl.getSelectedItem() + "") + "%' ",
-                "DP" + DTPTgl.getSelectedItem().toString().substring(6, 10) + DTPTgl.
-                getSelectedItem().toString().substring(3, 5) + DTPTgl.
-                getSelectedItem().toString().substring(0, 2), 4, Nomor);
+                "select ifnull(MAX(CONVERT(RIGHT(no_deposit,4),signed)),0) from deposit where tgl_deposit like '%"
+                + Valid.SetTgl(DTPTgl.getSelectedItem() + "") + "%' ",
+                "DP" + DTPTgl.getSelectedItem().toString().substring(6, 10)
+                + DTPTgl.getSelectedItem().toString().substring(3, 5)
+                + DTPTgl.getSelectedItem().toString().substring(0, 2),
+                4, Nomor);
     }
 
     private void cekPPN() {
@@ -1563,8 +1553,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 ppn = Valid.SetAngka(Persenppn.getText());
                 nilaippn = (ppn * Valid.SetAngka(BesarDeposit.getText())) / 100;
                 BesarPPN.setText(Valid.SetAngka(nilaippn));
-                DibayarPasien.setText(Valid.SetAngka(Valid.SetAngka(
-                        BesarDeposit.getText()) + nilaippn));
+                DibayarPasien.setText(Valid.SetAngka(Valid.SetAngka(BesarDeposit.getText()) + nilaippn));
             }
         } catch (Exception e) {
         }
@@ -1576,16 +1565,14 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select * from akun_bayar order by nama_bayar");
+            ps = koneksi.prepareStatement("select * from akun_bayar order by nama_bayar");
             try {
                 rs = ps.executeQuery();
                 AkunBayar.removeAllItems();
                 while (rs.next()) {
                     AkunBayar.addItem(rs.getString(1).replaceAll("\"", ""));
-                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).
-                            replaceAll("\"", "") + "\",\"KodeRek\":\"" + rs.
-                            getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
+                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).replaceAll("\"", "") + "\",\"KodeRek\":\""
+                            + rs.getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1598,8 +1585,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
             }
 
-            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1615,8 +1601,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             response = root.path("akunbayar");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll(
-                            "\"", ""));
+                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll("\"", ""));
                 }
             }
             myObj.close();
@@ -1632,8 +1617,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             response = root.path("akunbayar");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    if (list.path("NamaAkun").asText().equals(AkunBayar.
-                            getSelectedItem().toString())) {
+                    if (list.path("NamaAkun").asText().equals(AkunBayar.getSelectedItem().toString())) {
                         Persenppn.setText(list.path("PPN").asText());
                     }
                 }
@@ -1644,6 +1628,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgDeposit.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgDeposit.class.getName());
+
 }

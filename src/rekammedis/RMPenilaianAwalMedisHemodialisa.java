@@ -37,21 +37,30 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "";
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -64,36 +73,24 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
-            "Kode Dokter", "Nama Dokter", "Tanggal", "Anamnesis", "Hubungan",
-            "Asal Poli/Ruangan", "Riwayat Alergi Obat",
-            "Skala Nyeri", "Status Nutrisi", "Hipertensi",
-            "Keterangan Hipertensi", "Diabetes", "Keterangan Diabetes",
-            "Batu Saluran Kemih", "Keterangan Batu Saluran Kemih",
-            "Operasi Saluran Kemih", "Keterangan Operasi Saluran Kemih",
-            "Infeksi Saluran Kemih", "Keterangan Infeksi Saluran Kemih",
-            "Bengkak Seluruh Tubuh",
-            "Keterangan Bengkak Seluruh Tubuh", "Urin Berdarah",
-            "Keterangan Urin Berdarah", "Penyakit Ginjal Laom",
-            "Keterangan Penyakit Ginjal Laom", "Penyakit Lain",
-            "Keterangan Penyakit Lain", "Konsumsi Obat Nefro",
-            "Keterangan Konsumsi Obat Nefro", "Dialisis Pertama", "Pernah CPAD",
-            "Tgl.CPAD", "Pernah Transplantasi",
-            "Tgl.Transplantasi", "Keadaan Umum", "Kesadaran", "Nadi(x/menit)",
-            "BB(Kg)", "TD(mmHg)", "Suhu(°C)", "Napas(x/menit)", "TB(Cm)",
-            "Hepatomegali", "Splenomegali",
-            "Ascites", "Edema", "Whezzing", "Ronchi", "Ikterik", "Tekanan Vena",
-            "Anemia", "Kardiomegali", "Bising", "Thorax", "Tgl.Thorax", "EKG",
-            "Tgl.EKG", "BNO", "Tgl.BNO",
-            "USG", "Tgl.USG", "Renogram", "Tgl.Renogram", "Biopsi", "Tgl.Biopsi",
-            "CT Scan", "Tgl.CT Scan", "Arteriografi", "Tgl.Arteriografi",
-            "Kultur Urin", "Tgl.Kultur Urin",
-            "Laborat", "Tgl.Laborat", "Hematokrit", "Hemoglobin", "Leukosit",
-            "Trombosit", "Hitung Jenis", "Ureum", "Urin Lengkap", "Kreatinin",
-            "CCT", "SGOT", "SGPT", "CT/BT",
-            "Asam Urat", "HbsAg", "Anti HCV", "Edukasi"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Kode Dokter", "Nama Dokter",
+                    "Tanggal", "Anamnesis", "Hubungan", "Asal Poli/Ruangan", "Riwayat Alergi Obat", "Skala Nyeri",
+                    "Status Nutrisi", "Hipertensi", "Keterangan Hipertensi", "Diabetes", "Keterangan Diabetes",
+                    "Batu Saluran Kemih", "Keterangan Batu Saluran Kemih", "Operasi Saluran Kemih",
+                    "Keterangan Operasi Saluran Kemih", "Infeksi Saluran Kemih", "Keterangan Infeksi Saluran Kemih",
+                    "Bengkak Seluruh Tubuh", "Keterangan Bengkak Seluruh Tubuh", "Urin Berdarah",
+                    "Keterangan Urin Berdarah", "Penyakit Ginjal Laom", "Keterangan Penyakit Ginjal Laom",
+                    "Penyakit Lain", "Keterangan Penyakit Lain", "Konsumsi Obat Nefro",
+                    "Keterangan Konsumsi Obat Nefro", "Dialisis Pertama", "Pernah CPAD", "Tgl.CPAD",
+                    "Pernah Transplantasi", "Tgl.Transplantasi", "Keadaan Umum", "Kesadaran", "Nadi(x/menit)",
+                    "BB(Kg)", "TD(mmHg)", "Suhu(°C)", "Napas(x/menit)", "TB(Cm)", "Hepatomegali", "Splenomegali",
+                    "Ascites", "Edema", "Whezzing", "Ronchi", "Ikterik", "Tekanan Vena", "Anemia", "Kardiomegali",
+                    "Bising", "Thorax", "Tgl.Thorax", "EKG", "Tgl.EKG", "BNO", "Tgl.BNO", "USG", "Tgl.USG",
+                    "Renogram", "Tgl.Renogram", "Biopsi", "Tgl.Biopsi", "CT Scan", "Tgl.CT Scan", "Arteriografi",
+                    "Tgl.Arteriografi", "Kultur Urin", "Tgl.Kultur Urin", "Laborat", "Tgl.Laborat", "Hematokrit",
+                    "Hemoglobin", "Leukosit", "Trombosit", "Hitung Jenis", "Ureum", "Urin Lengkap", "Kreatinin",
+                    "CCT", "SGOT", "SGPT", "CT/BT", "Asam Urat", "HbsAg", "Anti HCV", "Edukasi"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -304,26 +301,17 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
         AsalRuangan.setDocument(new batasInput((byte) 50).getKata(AsalRuangan));
         Alergi.setDocument(new batasInput(100).getKata(Alergi));
         StatusNutrisi.setDocument(new batasInput(100).getKata(StatusNutrisi));
-        KeteranganHipertensi.setDocument(new batasInput((byte) 30).getKata(
-                KeteranganHipertensi));
-        KeteranganDiabetesMelitus.setDocument(new batasInput((byte) 30).getKata(
-                KeteranganDiabetesMelitus));
-        KeteranganBatuSaluranKemih.setDocument(new batasInput((byte) 30).
-                getKata(KeteranganBatuSaluranKemih));
-        KeteranganOperasiSaluranKemih.setDocument(new batasInput((byte) 30).
-                getKata(KeteranganOperasiSaluranKemih));
-        KeteranganInfeksiSaluranKemih.setDocument(new batasInput((byte) 30).
-                getKata(KeteranganInfeksiSaluranKemih));
-        KeteranganBengkakSeluruhTubuh.setDocument(new batasInput((byte) 30).
-                getKata(KeteranganBengkakSeluruhTubuh));
-        KeteranganUrinBerdarah.setDocument(new batasInput((byte) 30).getKata(
-                KeteranganUrinBerdarah));
-        KeteranganPenyakitGinjalLaom.setDocument(new batasInput((byte) 30).
-                getKata(KeteranganPenyakitGinjalLaom));
-        KeteranganPenyakitLain.setDocument(new batasInput((byte) 30).getKata(
-                KeteranganPenyakitLain));
-        KeteranganKonsumsiObatNefrotoksis.setDocument(new batasInput((byte) 30).
-                getKata(KeteranganKonsumsiObatNefrotoksis));
+        KeteranganHipertensi.setDocument(new batasInput((byte) 30).getKata(KeteranganHipertensi));
+        KeteranganDiabetesMelitus.setDocument(new batasInput((byte) 30).getKata(KeteranganDiabetesMelitus));
+        KeteranganBatuSaluranKemih.setDocument(new batasInput((byte) 30).getKata(KeteranganBatuSaluranKemih));
+        KeteranganOperasiSaluranKemih.setDocument(new batasInput((byte) 30).getKata(KeteranganOperasiSaluranKemih));
+        KeteranganInfeksiSaluranKemih.setDocument(new batasInput((byte) 30).getKata(KeteranganInfeksiSaluranKemih));
+        KeteranganBengkakSeluruhTubuh.setDocument(new batasInput((byte) 30).getKata(KeteranganBengkakSeluruhTubuh));
+        KeteranganUrinBerdarah.setDocument(new batasInput((byte) 30).getKata(KeteranganUrinBerdarah));
+        KeteranganPenyakitGinjalLaom.setDocument(new batasInput((byte) 30).getKata(KeteranganPenyakitGinjalLaom));
+        KeteranganPenyakitLain.setDocument(new batasInput((byte) 30).getKata(KeteranganPenyakitLain));
+        KeteranganKonsumsiObatNefrotoksis
+                .setDocument(new batasInput((byte) 30).getKata(KeteranganKonsumsiObatNefrotoksis));
         Nadi.setDocument(new batasInput((byte) 5).getKata(Nadi));
         BB.setDocument(new batasInput((byte) 5).getKata(BB));
         TD.setDocument(new batasInput((byte) 8).getKata(TD));
@@ -346,8 +334,7 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
         Edukasi.setDocument(new batasInput(1000).getKata(Edukasi));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -384,10 +371,8 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
@@ -429,14 +414,15 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -3625,8 +3611,8 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPenilaianAwalMedisHemodialisa dialog = new RMPenilaianAwalMedisHemodialisa(
-                    new javax.swing.JFrame(), true);
+            RMPenilaianAwalMedisHemodialisa dialog = new RMPenilaianAwalMedisHemodialisa(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -3936,15 +3922,11 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -3953,70 +3935,42 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("kd_dokter"), rs.
-                        getString("nm_dokter"), rs.getString("tanggal"),
-                        rs.getString("anamnesis"), rs.getString("hubungan"), rs.
-                        getString("ruangan"), rs.getString("alergi"), rs.
-                        getString("nyeri"), rs.getString("status_nutrisi"), rs.
-                        getString("hipertensi"), rs.getString(
-                        "keterangan_hipertensi"),
-                        rs.getString("diabetes"), rs.getString(
-                        "keterangan_diabetes"), rs.getString(
-                        "batu_saluran_kemih"), rs.getString(
-                        "keterangan_batu_saluran_kemih"), rs.getString(
-                        "operasi_saluran_kemih"), rs.getString(
-                        "keterangan_operasi_saluran_kemih"),
-                        rs.getString("infeksi_saluran_kemih"), rs.getString(
-                        "keterangan_infeksi_saluran_kemih"), rs.getString(
-                        "bengkak_seluruh_tubuh"), rs.getString(
-                        "keterangan_bengkak_seluruh_tubuh"), rs.getString(
-                        "urin_berdarah"),
-                        rs.getString("keterangan_urin_berdarah"), rs.getString(
-                        "penyakit_ginjal_laom"), rs.getString(
-                        "keterangan_penyakit_ginjal_laom"), rs.getString(
-                        "penyakit_lain"), rs.getString(
-                        "keterangan_penyakit_lain"),
-                        rs.getString("konsumsi_obat_nefro"), rs.getString(
-                        "keterangan_konsumsi_obat_nefro"), rs.getString(
-                        "dialisis_pertama"), rs.getString("pernah_cpad"), rs.
-                        getString("tanggal_cpad"), rs.getString(
-                        "pernah_transplantasi"),
-                        rs.getString("tanggal_transplantasi"), rs.getString(
-                        "keadaan_umum"), rs.getString("kesadaran"), rs.
-                        getString("nadi"), rs.getString("bb"), rs.
-                        getString("td"), rs.getString("suhu"), rs.getString(
-                        "napas"), rs.getString("tb"),
-                        rs.getString("hepatomegali"), rs.getString(
-                        "splenomegali"), rs.getString("ascites"), rs.getString(
-                        "edema"), rs.getString("whezzing"), rs.getString(
-                        "ronchi"), rs.getString("ikterik"), rs.getString(
-                        "tekanan_vena"),
-                        rs.getString("anemia"), rs.getString("kardiomegali"),
-                        rs.getString("bising"), rs.getString("thorax"), rs.
-                        getString("tanggal_thorax"), rs.getString("ekg"), rs.
-                        getString("tanggal_ekg"), rs.getString("bno"), rs.
-                        getString("tanggal_bno"),
-                        rs.getString("usg"), rs.getString("tanggal_usg"), rs.
-                        getString("renogram"), rs.getString("tanggal_renogram"),
-                        rs.getString("biopsi"), rs.getString("tanggal_biopsi"),
-                        rs.getString("ctscan"), rs.getString("tanggal_ctscan"),
-                        rs.getString("arteriografi"), rs.getString(
-                        "tanggal_arteriografi"), rs.getString("kultur_urin"),
-                        rs.getString("tanggal_kultur_urin"), rs.getString(
-                        "laborat"), rs.getString("tanggal_laborat"), rs.
-                        getString("hematokrit"),
-                        rs.getString("hemoglobin"), rs.getString("leukosit"),
-                        rs.getString("trombosit"), rs.getString("hitung_jenis"),
-                        rs.getString("ureum"), rs.getString("urin_lengkap"), rs.
-                        getString("kreatinin"), rs.getString("cct"), rs.
-                        getString("sgot"),
-                        rs.getString("sgpt"), rs.getString("ct"), rs.getString(
-                        "asam_urat"), rs.getString("hbsag"), rs.getString(
-                        "anti_hcv"), rs.getString("edukasi")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"), rs.getString("tanggal"),
+                        rs.getString("anamnesis"), rs.getString("hubungan"), rs.getString("ruangan"),
+                        rs.getString("alergi"), rs.getString("nyeri"), rs.getString("status_nutrisi"),
+                        rs.getString("hipertensi"), rs.getString("keterangan_hipertensi"), rs.getString("diabetes"),
+                        rs.getString("keterangan_diabetes"), rs.getString("batu_saluran_kemih"),
+                        rs.getString("keterangan_batu_saluran_kemih"), rs.getString("operasi_saluran_kemih"),
+                        rs.getString("keterangan_operasi_saluran_kemih"), rs.getString("infeksi_saluran_kemih"),
+                        rs.getString("keterangan_infeksi_saluran_kemih"), rs.getString("bengkak_seluruh_tubuh"),
+                        rs.getString("keterangan_bengkak_seluruh_tubuh"), rs.getString("urin_berdarah"),
+                        rs.getString("keterangan_urin_berdarah"), rs.getString("penyakit_ginjal_laom"),
+                        rs.getString("keterangan_penyakit_ginjal_laom"), rs.getString("penyakit_lain"),
+                        rs.getString("keterangan_penyakit_lain"), rs.getString("konsumsi_obat_nefro"),
+                        rs.getString("keterangan_konsumsi_obat_nefro"), rs.getString("dialisis_pertama"),
+                        rs.getString("pernah_cpad"), rs.getString("tanggal_cpad"),
+                        rs.getString("pernah_transplantasi"), rs.getString("tanggal_transplantasi"),
+                        rs.getString("keadaan_umum"), rs.getString("kesadaran"), rs.getString("nadi"),
+                        rs.getString("bb"), rs.getString("td"), rs.getString("suhu"), rs.getString("napas"),
+                        rs.getString("tb"), rs.getString("hepatomegali"), rs.getString("splenomegali"),
+                        rs.getString("ascites"), rs.getString("edema"), rs.getString("whezzing"),
+                        rs.getString("ronchi"), rs.getString("ikterik"), rs.getString("tekanan_vena"),
+                        rs.getString("anemia"), rs.getString("kardiomegali"), rs.getString("bising"),
+                        rs.getString("thorax"), rs.getString("tanggal_thorax"), rs.getString("ekg"),
+                        rs.getString("tanggal_ekg"), rs.getString("bno"), rs.getString("tanggal_bno"),
+                        rs.getString("usg"), rs.getString("tanggal_usg"), rs.getString("renogram"),
+                        rs.getString("tanggal_renogram"), rs.getString("biopsi"), rs.getString("tanggal_biopsi"),
+                        rs.getString("ctscan"), rs.getString("tanggal_ctscan"), rs.getString("arteriografi"),
+                        rs.getString("tanggal_arteriografi"), rs.getString("kultur_urin"),
+                        rs.getString("tanggal_kultur_urin"), rs.getString("laborat"),
+                        rs.getString("tanggal_laborat"), rs.getString("hematokrit"), rs.getString("hemoglobin"),
+                        rs.getString("leukosit"), rs.getString("trombosit"), rs.getString("hitung_jenis"),
+                        rs.getString("ureum"), rs.getString("urin_lengkap"), rs.getString("kreatinin"),
+                        rs.getString("cct"), rs.getString("sgot"), rs.getString("sgpt"), rs.getString("ct"),
+                        rs.getString("asam_urat"), rs.getString("hbsag"), rs.getString("anti_hcv"),
+                        rs.getString("edukasi")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -4132,236 +4086,124 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString());
-            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    8).toString());
-            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            AsalRuangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            Nyeri.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
-            StatusNutrisi.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
-            Hipertensi.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 14).toString());
-            KeteranganHipertensi.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 15).toString());
-            DiabetesMelitus.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            KeteranganDiabetesMelitus.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 17).toString());
-            BatuSaluranKemih.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            KeteranganBatuSaluranKemih.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            OperasiSaluranKemih.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            KeteranganOperasiSaluranKemih.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            InfeksiSaluranKemih.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            KeteranganInfeksiSaluranKemih.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 23).toString());
-            BengkakSeluruhTubuh.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            KeteranganBengkakSeluruhTubuh.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 25).toString());
-            UrinBerdarah.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
-            KeteranganUrinBerdarah.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 27).toString());
-            PenyakitGinjalLaom.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 28).toString());
-            KeteranganPenyakitGinjalLaom.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 29).toString());
-            PenyakitLain.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 30).toString());
-            KeteranganPenyakitLain.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 31).toString());
-            KonsumsiObatNefrotoksis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 32).toString());
-            KeteranganKonsumsiObatNefrotoksis.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 33).toString());
-            Valid.SetTgl(TglDialisis, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    34).toString());
-            CAPD.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 35).
-                    toString());
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglCAPD, tbObat.getValueAt(tbObat.getSelectedRow(),
-                        36).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            AsalRuangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Nyeri.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            StatusNutrisi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Hipertensi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            KeteranganHipertensi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            DiabetesMelitus.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            KeteranganDiabetesMelitus.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            BatuSaluranKemih.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            KeteranganBatuSaluranKemih.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            OperasiSaluranKemih.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            KeteranganOperasiSaluranKemih.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            InfeksiSaluranKemih.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            KeteranganInfeksiSaluranKemih.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            BengkakSeluruhTubuh.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            KeteranganBengkakSeluruhTubuh.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            UrinBerdarah.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            KeteranganUrinBerdarah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            PenyakitGinjalLaom.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            KeteranganPenyakitGinjalLaom.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            PenyakitLain.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            KeteranganPenyakitLain.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            KonsumsiObatNefrotoksis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            KeteranganKonsumsiObatNefrotoksis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            Valid.SetTgl(TglDialisis, tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            CAPD.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString().equals("Ya")) {
+                Valid.SetTgl(TglCAPD, tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
             }
-            Transplantasi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 37).toString());
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglTransplantasi, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 38).toString());
+            Transplantasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString().equals("Ya")) {
+                Valid.SetTgl(TglTransplantasi, tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
             }
-            KeadaanUmum.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 39).toString());
-            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    40).toString());
-            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).
-                    toString());
-            BB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).
-                            toString());
-            TD.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).
-                            toString());
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).
-                    toString());
-            Napas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).
-                    toString());
-            TB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 46).
-                            toString());
-            Hepatomegali.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 47).toString());
-            Splenomegali.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 48).toString());
-            Ascites.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    49).toString());
-            Edema.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 50).toString());
-            Whezzing.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    51).toString());
-            Ronchi.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 52).toString());
-            Ikterik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    53).toString());
-            TekananVenaJugularis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 54).toString());
-            Konjungtiva.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 55).toString());
-            Kardiomegali.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 56).toString());
-            Bising.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 57).toString());
-            ChkThorax.setSelected((tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 58).toString().equals(
-                    "Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 58).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglThorax, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 59).toString());
+            KeadaanUmum.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            BB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
+            Napas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
+            TB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 46).toString());
+            Hepatomegali.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 47).toString());
+            Splenomegali.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 48).toString());
+            Ascites.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 49).toString());
+            Edema.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 50).toString());
+            Whezzing.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 51).toString());
+            Ronchi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 52).toString());
+            Ikterik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 53).toString());
+            TekananVenaJugularis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 54).toString());
+            Konjungtiva.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 55).toString());
+            Kardiomegali.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 56).toString());
+            Bising.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 57).toString());
+            ChkThorax.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 58).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 58).toString().equals("Ya")) {
+                Valid.SetTgl(TglThorax, tbObat.getValueAt(tbObat.getSelectedRow(), 59).toString());
             }
-            ChkEKG.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 60).
-                    toString().equals("Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 60).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglEKG, tbObat.getValueAt(tbObat.getSelectedRow(),
-                        61).toString());
+            ChkEKG.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 60).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 60).toString().equals("Ya")) {
+                Valid.SetTgl(TglEKG, tbObat.getValueAt(tbObat.getSelectedRow(), 61).toString());
             }
-            ChkBNO.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 62).
-                    toString().equals("Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 62).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglBNO, tbObat.getValueAt(tbObat.getSelectedRow(),
-                        63).toString());
+            ChkBNO.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 62).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 62).toString().equals("Ya")) {
+                Valid.SetTgl(TglBNO, tbObat.getValueAt(tbObat.getSelectedRow(), 63).toString());
             }
-            ChkUSG.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 64).
-                    toString().equals("Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 64).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglUSG, tbObat.getValueAt(tbObat.getSelectedRow(),
-                        65).toString());
+            ChkUSG.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 64).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 64).toString().equals("Ya")) {
+                Valid.SetTgl(TglUSG, tbObat.getValueAt(tbObat.getSelectedRow(), 65).toString());
             }
-            ChkRenogram.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(),
-                    66).toString().equals("Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 66).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglRenogram, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 67).toString());
+            ChkRenogram.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 66).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 66).toString().equals("Ya")) {
+                Valid.SetTgl(TglRenogram, tbObat.getValueAt(tbObat.getSelectedRow(), 67).toString());
             }
-            ChkBiopsiGinjal.setSelected((tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 68).toString().equals("Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 68).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglBiopsi, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 69).toString());
+            ChkBiopsiGinjal.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 68).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 68).toString().equals("Ya")) {
+                Valid.SetTgl(TglBiopsi, tbObat.getValueAt(tbObat.getSelectedRow(), 69).toString());
             }
-            ChkCTScan.setSelected((tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 70).toString().equals(
-                    "Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 70).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglCTscan, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 71).toString());
+            ChkCTScan.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 70).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 70).toString().equals("Ya")) {
+                Valid.SetTgl(TglCTscan, tbObat.getValueAt(tbObat.getSelectedRow(), 71).toString());
             }
-            ChkArteriografi.setSelected((tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 72).toString().equals("Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 72).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglArteriografi, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 73).toString());
+            ChkArteriografi.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 72).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 72).toString().equals("Ya")) {
+                Valid.SetTgl(TglArteriografi, tbObat.getValueAt(tbObat.getSelectedRow(), 73).toString());
             }
-            ChkKulturUrin.setSelected((tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 74).toString().equals(
-                    "Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 74).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglKultururin, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 75).toString());
+            ChkKulturUrin.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 74).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 74).toString().equals("Ya")) {
+                Valid.SetTgl(TglKultururin, tbObat.getValueAt(tbObat.getSelectedRow(), 75).toString());
             }
-            ChkLaborat.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(),
-                    76).toString().equals("Ya")));
-            if (tbObat.getValueAt(tbObat.getSelectedRow(), 76).toString().
-                    equals("Ya")) {
-                Valid.SetTgl(TglLaboratorium, tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 77).toString());
+            ChkLaborat.setSelected((tbObat.getValueAt(tbObat.getSelectedRow(), 76).toString().equals("Ya")));
+            if (tbObat.getValueAt(tbObat.getSelectedRow(), 76).toString().equals("Ya")) {
+                Valid.SetTgl(TglLaboratorium, tbObat.getValueAt(tbObat.getSelectedRow(), 77).toString());
             }
-            Hematokrit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 78).
-                    toString());
-            Hemoglobin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 79).
-                    toString());
-            Leukosit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 80).
-                    toString());
-            Trombosit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 81).
-                    toString());
-            HitungJenis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 82).
-                    toString());
-            Ureum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 83).
-                    toString());
-            UrinLengkap.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 84).
-                    toString());
-            Kreatinin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 85).
-                    toString());
-            CCT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 86).
-                    toString());
-            SGOT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 87).
-                    toString());
-            SGPT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 88).
-                    toString());
-            CT.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 89).
-                            toString());
-            AsamUrat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 90).
-                    toString());
-            HbsAg.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 91).toString());
-            AntiHCV.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    92).toString());
-            Edukasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 93).
-                    toString());
+            Hematokrit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 78).toString());
+            Hemoglobin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 79).toString());
+            Leukosit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 80).toString());
+            Trombosit.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 81).toString());
+            HitungJenis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 82).toString());
+            Ureum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 83).toString());
+            UrinLengkap.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 84).toString());
+            Kreatinin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 85).toString());
+            CCT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 86).toString());
+            SGOT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 87).toString());
+            SGPT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 88).toString());
+            CT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 89).toString());
+            AsamUrat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 90).toString());
+            HbsAg.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 91).toString());
+            AntiHCV.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 92).toString());
+            Edukasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 93).toString());
         }
     }
 
@@ -4379,9 +4221,7 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -4399,7 +4239,6 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      * @param asalruangan
@@ -4424,8 +4263,7 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
             NmDokter.setText(dokter.tampil3(KdDokter.getText()));
             if (NmDokter.getText().isEmpty()) {
                 KdDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan Dokter...!!");
             }
         }
 
@@ -4446,11 +4284,8 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_medis_hemodialisa where no_rawat=?", 1,
-                new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_medis_hemodialisa where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -4468,87 +4303,65 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
                 + "splenomegali=?,ascites=?,edema=?,whezzing=?,ronchi=?,ikterik=?,tekanan_vena=?,anemia=?,kardiomegali=?,bising=?,thorax=?,tanggal_thorax=?,ekg=?,tanggal_ekg=?,bno=?,tanggal_bno=?,usg=?,tanggal_usg=?,renogram=?,"
                 + "tanggal_renogram=?,biopsi=?,tanggal_biopsi=?,ctscan=?,tanggal_ctscan=?,arteriografi=?,tanggal_arteriografi=?,kultur_urin=?,tanggal_kultur_urin=?,laborat=?,tanggal_laborat=?,hematokrit=?,hemoglobin=?,leukosit=?,"
                 + "trombosit=?,hitung_jenis=?,ureum=?,urin_lengkap=?,kreatinin=?,cct=?,sgot=?,sgpt=?,ct=?,asam_urat=?,hbsag=?,anti_hcv=?,edukasi=?",
-                90, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), KdDokter.
-                    getText(), Anamnesis.getSelectedItem().toString(), Hubungan.
-                    getText(), AsalRuangan.getText(), Alergi.getText(), Nyeri.
-                    getSelectedItem().toString(),
-                    StatusNutrisi.getText(), Hipertensi.getSelectedItem().
-                    toString(), KeteranganHipertensi.getText(), DiabetesMelitus.
-                    getSelectedItem().toString(), KeteranganDiabetesMelitus.
-                            getText(), BatuSaluranKemih.getSelectedItem().
-                            toString(), KeteranganBatuSaluranKemih.getText(),
-                    OperasiSaluranKemih.getSelectedItem().toString(),
-                    KeteranganOperasiSaluranKemih.getText(),
-                    InfeksiSaluranKemih.getSelectedItem().toString(),
-                    KeteranganInfeksiSaluranKemih.getText(),
-                    BengkakSeluruhTubuh.getSelectedItem().toString(),
-                    KeteranganBengkakSeluruhTubuh.getText(),
-                    UrinBerdarah.getSelectedItem().toString(),
-                    KeteranganUrinBerdarah.getText(), PenyakitGinjalLaom.
-                    getSelectedItem().toString(), KeteranganPenyakitGinjalLaom.
-                            getText(), PenyakitLain.getSelectedItem().toString(),
-                    KeteranganPenyakitLain.getText(), KonsumsiObatNefrotoksis.
-                    getSelectedItem().toString(),
-                    KeteranganKonsumsiObatNefrotoksis.getText(), Valid.SetTgl(
-                    TglDialisis.getSelectedItem() + ""), CAPD.getSelectedItem().
-                    toString(), Valid.SetTgl(TglCAPD.getSelectedItem() + ""),
-                    Transplantasi.getSelectedItem().toString(), Valid.SetTgl(
-                    TglTransplantasi.getSelectedItem() + ""),
-                    KeadaanUmum.getSelectedItem().toString(), Kesadaran.
-                    getSelectedItem().toString(), Nadi.getText(), BB.getText(),
-                    TD.getText(), Suhu.getText(), Napas.getText(), TB.getText(),
-                    Hepatomegali.getSelectedItem().toString(), Splenomegali.
-                    getSelectedItem().toString(), Ascites.getSelectedItem().
-                            toString(),
-                    Edema.getSelectedItem().toString(), Whezzing.
-                    getSelectedItem().toString(), Ronchi.getSelectedItem().
-                            toString(), Ikterik.getSelectedItem().toString(),
-                    TekananVenaJugularis.getSelectedItem().toString(),
-                    Konjungtiva.getSelectedItem().toString(), Kardiomegali.
-                    getSelectedItem().toString(),
-                    Bising.getSelectedItem().toString(),
+                90,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), Anamnesis.getSelectedItem().toString(), Hubungan.getText(),
+                    AsalRuangan.getText(), Alergi.getText(), Nyeri.getSelectedItem().toString(),
+                    StatusNutrisi.getText(), Hipertensi.getSelectedItem().toString(),
+                    KeteranganHipertensi.getText(), DiabetesMelitus.getSelectedItem().toString(),
+                    KeteranganDiabetesMelitus.getText(), BatuSaluranKemih.getSelectedItem().toString(),
+                    KeteranganBatuSaluranKemih.getText(), OperasiSaluranKemih.getSelectedItem().toString(),
+                    KeteranganOperasiSaluranKemih.getText(), InfeksiSaluranKemih.getSelectedItem().toString(),
+                    KeteranganInfeksiSaluranKemih.getText(), BengkakSeluruhTubuh.getSelectedItem().toString(),
+                    KeteranganBengkakSeluruhTubuh.getText(), UrinBerdarah.getSelectedItem().toString(),
+                    KeteranganUrinBerdarah.getText(), PenyakitGinjalLaom.getSelectedItem().toString(),
+                    KeteranganPenyakitGinjalLaom.getText(), PenyakitLain.getSelectedItem().toString(),
+                    KeteranganPenyakitLain.getText(), KonsumsiObatNefrotoksis.getSelectedItem().toString(),
+                    KeteranganKonsumsiObatNefrotoksis.getText(), Valid.SetTgl(TglDialisis.getSelectedItem() + ""),
+                    CAPD.getSelectedItem().toString(), Valid.SetTgl(TglCAPD.getSelectedItem() + ""),
+                    Transplantasi.getSelectedItem().toString(),
+                    Valid.SetTgl(TglTransplantasi.getSelectedItem() + ""), KeadaanUmum.getSelectedItem().toString(),
+                    Kesadaran.getSelectedItem().toString(), Nadi.getText(), BB.getText(), TD.getText(),
+                    Suhu.getText(), Napas.getText(), TB.getText(), Hepatomegali.getSelectedItem().toString(),
+                    Splenomegali.getSelectedItem().toString(), Ascites.getSelectedItem().toString(),
+                    Edema.getSelectedItem().toString(), Whezzing.getSelectedItem().toString(),
+                    Ronchi.getSelectedItem().toString(), Ikterik.getSelectedItem().toString(),
+                    TekananVenaJugularis.getSelectedItem().toString(), Konjungtiva.getSelectedItem().toString(),
+                    Kardiomegali.getSelectedItem().toString(), Bising.getSelectedItem().toString(),
                     (ChkThorax.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkThorax.isSelected() == true ? Valid.SetTgl(TglThorax.
-                    getSelectedItem() + "") : "0000-00-00"), (ChkEKG.
-                            isSelected() == true ? "Ya" : "Tidak"), (ChkEKG.
-                            isSelected() == true ? Valid.SetTgl(TglEKG.
-                                    getSelectedItem() + "") : "0000-00-00"),
-                    (ChkBNO.isSelected() == true ? "Ya" : "Tidak"), (ChkBNO.
-                    isSelected() == true ? Valid.SetTgl(
-                                    TglBNO.getSelectedItem() + "") : "0000-00-00"),
-                    (ChkUSG.isSelected() == true ? "Ya" : "Tidak"), (ChkUSG.
-                    isSelected() == true ? Valid.SetTgl(
-                                    TglUSG.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkThorax.isSelected() == true ? Valid.SetTgl(TglThorax.getSelectedItem() + "")
+                    : "0000-00-00"),
+                    (ChkEKG.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkEKG.isSelected() == true ? Valid.SetTgl(TglEKG.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkBNO.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkBNO.isSelected() == true ? Valid.SetTgl(TglBNO.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkUSG.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkUSG.isSelected() == true ? Valid.SetTgl(TglUSG.getSelectedItem() + "") : "0000-00-00"),
                     (ChkRenogram.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkRenogram.isSelected() == true ? Valid.SetTgl(
-                    TglRenogram.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkRenogram.isSelected() == true
+                    ? Valid.SetTgl(TglRenogram.getSelectedItem() + "") : "0000-00-00"),
                     (ChkBiopsiGinjal.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkBiopsiGinjal.isSelected() == true ? Valid.SetTgl(
-                    TglBiopsi.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkBiopsiGinjal.isSelected() == true
+                    ? Valid.SetTgl(TglBiopsi.getSelectedItem() + "") : "0000-00-00"),
                     (ChkCTScan.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkCTScan.isSelected() == true ? Valid.SetTgl(TglCTscan.
-                    getSelectedItem() + "") : "0000-00-00"), (ChkArteriografi.
-                            isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkArteriografi.isSelected() == true ? Valid.SetTgl(
-                    TglArteriografi.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkCTScan.isSelected() == true
+                    ? Valid.SetTgl(TglCTscan.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkArteriografi.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkArteriografi.isSelected() == true
+                    ? Valid.SetTgl(TglArteriografi.getSelectedItem() + "") : "0000-00-00"),
                     (ChkKulturUrin.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkKulturUrin.isSelected() == true ? Valid.SetTgl(
-                    TglKultururin.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkKulturUrin.isSelected() == true
+                    ? Valid.SetTgl(TglKultururin.getSelectedItem() + "") : "0000-00-00"),
                     (ChkLaborat.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkLaborat.isSelected() == true ? Valid.SetTgl(
-                    TglLaboratorium.getSelectedItem() + "") : "0000-00-00"),
-                    Hematokrit.getText(), Hemoglobin.getText(),
-                    Leukosit.getText(), Trombosit.getText(), HitungJenis.
-                    getText(), Ureum.getText(), UrinLengkap.getText(),
-                    Kreatinin.getText(), CCT.getText(), SGOT.getText(), SGPT.
-                    getText(), CT.getText(), AsamUrat.getText(), HbsAg.
-                    getSelectedItem().toString(), AntiHCV.getSelectedItem().
-                            toString(), Edukasi.getText(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                    (ChkLaborat.isSelected() == true ? Valid.SetTgl(TglLaboratorium.getSelectedItem() + "")
+                    : "0000-00-00"),
+                    Hematokrit.getText(), Hemoglobin.getText(), Leukosit.getText(), Trombosit.getText(),
+                    HitungJenis.getText(), Ureum.getText(), UrinLengkap.getText(), Kreatinin.getText(),
+                    CCT.getText(), SGOT.getText(), SGPT.getText(), CT.getText(), AsamUrat.getText(),
+                    HbsAg.getSelectedItem().toString(), AntiHCV.getSelectedItem().toString(), Edukasi.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
@@ -4556,181 +4369,108 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
             tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(KdDokter.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(NmDokter.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(
-                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(Anamnesis.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
+            tbObat.setValueAt(Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Anamnesis.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(Hubungan.getText(), tbObat.getSelectedRow(), 9);
-            tbObat.
-                    setValueAt(AsalRuangan.getText(), tbObat.getSelectedRow(),
-                            10);
+            tbObat.setValueAt(AsalRuangan.getText(), tbObat.getSelectedRow(), 10);
             tbObat.setValueAt(Alergi.getText(), tbObat.getSelectedRow(), 11);
-            tbObat.setValueAt(Nyeri.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(StatusNutrisi.getText(), tbObat.getSelectedRow(),
-                    13);
-            tbObat.setValueAt(Hipertensi.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(KeteranganHipertensi.getText(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(DiabetesMelitus.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 16);
-            tbObat.setValueAt(KeteranganDiabetesMelitus.getText(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.setValueAt(BatuSaluranKemih.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 18);
-            tbObat.setValueAt(KeteranganBatuSaluranKemih.getText(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.setValueAt(OperasiSaluranKemih.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 20);
-            tbObat.setValueAt(KeteranganOperasiSaluranKemih.getText(), tbObat.
-                    getSelectedRow(), 21);
-            tbObat.setValueAt(InfeksiSaluranKemih.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 22);
-            tbObat.setValueAt(KeteranganInfeksiSaluranKemih.getText(), tbObat.
-                    getSelectedRow(), 23);
-            tbObat.setValueAt(BengkakSeluruhTubuh.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 24);
-            tbObat.setValueAt(KeteranganBengkakSeluruhTubuh.getText(), tbObat.
-                    getSelectedRow(), 25);
-            tbObat.setValueAt(UrinBerdarah.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 26);
-            tbObat.setValueAt(KeteranganUrinBerdarah.getText(), tbObat.
-                    getSelectedRow(), 27);
-            tbObat.setValueAt(PenyakitGinjalLaom.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 28);
-            tbObat.setValueAt(KeteranganPenyakitGinjalLaom.getText(), tbObat.
-                    getSelectedRow(), 29);
-            tbObat.setValueAt(PenyakitLain.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 30);
-            tbObat.setValueAt(KeteranganPenyakitLain.getText(), tbObat.
-                    getSelectedRow(), 31);
-            tbObat.setValueAt(KonsumsiObatNefrotoksis.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 32);
-            tbObat.setValueAt(KeteranganKonsumsiObatNefrotoksis.getText(),
-                    tbObat.getSelectedRow(), 33);
-            tbObat.setValueAt(Valid.SetTgl(TglDialisis.getSelectedItem() + ""),
-                    tbObat.getSelectedRow(), 34);
-            tbObat.setValueAt(CAPD.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 35);
-            tbObat.setValueAt(Valid.SetTgl(TglCAPD.getSelectedItem() + ""),
-                    tbObat.getSelectedRow(), 36);
-            tbObat.setValueAt(Transplantasi.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 37);
-            tbObat.setValueAt(Valid.SetTgl(
-                    TglTransplantasi.getSelectedItem() + ""), tbObat.
-                    getSelectedRow(), 38);
-            tbObat.setValueAt(KeadaanUmum.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 39);
-            tbObat.setValueAt(Kesadaran.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 40);
+            tbObat.setValueAt(Nyeri.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(StatusNutrisi.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(Hipertensi.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(KeteranganHipertensi.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(DiabetesMelitus.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(KeteranganDiabetesMelitus.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(BatuSaluranKemih.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(KeteranganBatuSaluranKemih.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(OperasiSaluranKemih.getSelectedItem().toString(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(KeteranganOperasiSaluranKemih.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(InfeksiSaluranKemih.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(KeteranganInfeksiSaluranKemih.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(BengkakSeluruhTubuh.getSelectedItem().toString(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(KeteranganBengkakSeluruhTubuh.getText(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(UrinBerdarah.getSelectedItem().toString(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(KeteranganUrinBerdarah.getText(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(PenyakitGinjalLaom.getSelectedItem().toString(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(KeteranganPenyakitGinjalLaom.getText(), tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(PenyakitLain.getSelectedItem().toString(), tbObat.getSelectedRow(), 30);
+            tbObat.setValueAt(KeteranganPenyakitLain.getText(), tbObat.getSelectedRow(), 31);
+            tbObat.setValueAt(KonsumsiObatNefrotoksis.getSelectedItem().toString(), tbObat.getSelectedRow(), 32);
+            tbObat.setValueAt(KeteranganKonsumsiObatNefrotoksis.getText(), tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(Valid.SetTgl(TglDialisis.getSelectedItem() + ""), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(CAPD.getSelectedItem().toString(), tbObat.getSelectedRow(), 35);
+            tbObat.setValueAt(Valid.SetTgl(TglCAPD.getSelectedItem() + ""), tbObat.getSelectedRow(), 36);
+            tbObat.setValueAt(Transplantasi.getSelectedItem().toString(), tbObat.getSelectedRow(), 37);
+            tbObat.setValueAt(Valid.SetTgl(TglTransplantasi.getSelectedItem() + ""), tbObat.getSelectedRow(), 38);
+            tbObat.setValueAt(KeadaanUmum.getSelectedItem().toString(), tbObat.getSelectedRow(), 39);
+            tbObat.setValueAt(Kesadaran.getSelectedItem().toString(), tbObat.getSelectedRow(), 40);
             tbObat.setValueAt(Nadi.getText(), tbObat.getSelectedRow(), 41);
             tbObat.setValueAt(BB.getText(), tbObat.getSelectedRow(), 42);
             tbObat.setValueAt(TD.getText(), tbObat.getSelectedRow(), 43);
             tbObat.setValueAt(Suhu.getText(), tbObat.getSelectedRow(), 44);
             tbObat.setValueAt(Napas.getText(), tbObat.getSelectedRow(), 45);
             tbObat.setValueAt(TB.getText(), tbObat.getSelectedRow(), 46);
-            tbObat.setValueAt(Hepatomegali.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 47);
-            tbObat.setValueAt(Splenomegali.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 48);
-            tbObat.setValueAt(Ascites.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 49);
-            tbObat.setValueAt(Edema.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 50);
-            tbObat.setValueAt(Whezzing.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 51);
-            tbObat.setValueAt(Ronchi.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 52);
-            tbObat.setValueAt(Ikterik.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 53);
-            tbObat.setValueAt(TekananVenaJugularis.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 54);
-            tbObat.setValueAt(Konjungtiva.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 55);
-            tbObat.setValueAt(Kardiomegali.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 56);
-            tbObat.setValueAt(Bising.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 57);
-            tbObat.setValueAt((ChkThorax.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 58);
-            tbObat.setValueAt((ChkThorax.isSelected() == true ? Valid.SetTgl(
-                    TglThorax.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 59);
-            tbObat.setValueAt((ChkEKG.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 60);
-            tbObat.setValueAt((ChkEKG.isSelected() == true ? Valid.SetTgl(
-                    TglEKG.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 61);
-            tbObat.setValueAt((ChkBNO.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 62);
-            tbObat.setValueAt((ChkBNO.isSelected() == true ? Valid.SetTgl(
-                    TglBNO.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 63);
-            tbObat.setValueAt((ChkUSG.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 64);
-            tbObat.setValueAt((ChkUSG.isSelected() == true ? Valid.SetTgl(
-                    TglUSG.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 65);
+            tbObat.setValueAt(Hepatomegali.getSelectedItem().toString(), tbObat.getSelectedRow(), 47);
+            tbObat.setValueAt(Splenomegali.getSelectedItem().toString(), tbObat.getSelectedRow(), 48);
+            tbObat.setValueAt(Ascites.getSelectedItem().toString(), tbObat.getSelectedRow(), 49);
+            tbObat.setValueAt(Edema.getSelectedItem().toString(), tbObat.getSelectedRow(), 50);
+            tbObat.setValueAt(Whezzing.getSelectedItem().toString(), tbObat.getSelectedRow(), 51);
+            tbObat.setValueAt(Ronchi.getSelectedItem().toString(), tbObat.getSelectedRow(), 52);
+            tbObat.setValueAt(Ikterik.getSelectedItem().toString(), tbObat.getSelectedRow(), 53);
+            tbObat.setValueAt(TekananVenaJugularis.getSelectedItem().toString(), tbObat.getSelectedRow(), 54);
+            tbObat.setValueAt(Konjungtiva.getSelectedItem().toString(), tbObat.getSelectedRow(), 55);
+            tbObat.setValueAt(Kardiomegali.getSelectedItem().toString(), tbObat.getSelectedRow(), 56);
+            tbObat.setValueAt(Bising.getSelectedItem().toString(), tbObat.getSelectedRow(), 57);
+            tbObat.setValueAt((ChkThorax.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 58);
+            tbObat.setValueAt((ChkThorax.isSelected() == true ? Valid.SetTgl(TglThorax.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 59);
+            tbObat.setValueAt((ChkEKG.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 60);
+            tbObat.setValueAt((ChkEKG.isSelected() == true ? Valid.SetTgl(TglEKG.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 61);
+            tbObat.setValueAt((ChkBNO.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 62);
+            tbObat.setValueAt((ChkBNO.isSelected() == true ? Valid.SetTgl(TglBNO.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 63);
+            tbObat.setValueAt((ChkUSG.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 64);
+            tbObat.setValueAt((ChkUSG.isSelected() == true ? Valid.SetTgl(TglUSG.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 65);
+            tbObat.setValueAt((ChkRenogram.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 66);
             tbObat.setValueAt(
-                    (ChkRenogram.isSelected() == true ? "Ya" : "Tidak"), tbObat.
-                    getSelectedRow(), 66);
-            tbObat.setValueAt((ChkRenogram.isSelected() == true ? Valid.SetTgl(
-                    TglRenogram.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 67);
+                    (ChkRenogram.isSelected() == true ? Valid.SetTgl(TglRenogram.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 67);
+            tbObat.setValueAt((ChkBiopsiGinjal.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 68);
             tbObat.setValueAt(
-                    (ChkBiopsiGinjal.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 68);
-            tbObat.setValueAt((ChkBiopsiGinjal.isSelected() == true ? Valid.
-                    SetTgl(TglBiopsi.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 69);
-            tbObat.setValueAt((ChkCTScan.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 70);
-            tbObat.setValueAt((ChkCTScan.isSelected() == true ? Valid.SetTgl(
-                    TglCTscan.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 71);
+                    (ChkBiopsiGinjal.isSelected() == true ? Valid.SetTgl(TglBiopsi.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 69);
+            tbObat.setValueAt((ChkCTScan.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 70);
+            tbObat.setValueAt((ChkCTScan.isSelected() == true ? Valid.SetTgl(TglCTscan.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 71);
+            tbObat.setValueAt((ChkArteriografi.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 72);
             tbObat.setValueAt(
-                    (ChkArteriografi.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 72);
-            tbObat.setValueAt((ChkArteriografi.isSelected() == true ? Valid.
-                    SetTgl(TglArteriografi.getSelectedItem() + "") : ""),
+                    (ChkArteriografi.isSelected() == true ? Valid.SetTgl(TglArteriografi.getSelectedItem() + "") : ""),
                     tbObat.getSelectedRow(), 73);
+            tbObat.setValueAt((ChkKulturUrin.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 74);
             tbObat.setValueAt(
-                    (ChkKulturUrin.isSelected() == true ? "Ya" : "Tidak"),
-                    tbObat.getSelectedRow(), 74);
-            tbObat.setValueAt((ChkKulturUrin.isSelected() == true ? Valid.
-                    SetTgl(TglKultururin.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 75);
-            tbObat.
-                    setValueAt(
-                            (ChkLaborat.isSelected() == true ? "Ya" : "Tidak"),
-                            tbObat.getSelectedRow(), 76);
-            tbObat.setValueAt((ChkLaborat.isSelected() == true ? Valid.SetTgl(
-                    TglLaboratorium.getSelectedItem() + "") : ""), tbObat.
-                    getSelectedRow(), 77);
+                    (ChkKulturUrin.isSelected() == true ? Valid.SetTgl(TglKultururin.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 75);
+            tbObat.setValueAt((ChkLaborat.isSelected() == true ? "Ya" : "Tidak"), tbObat.getSelectedRow(), 76);
+            tbObat.setValueAt(
+                    (ChkLaborat.isSelected() == true ? Valid.SetTgl(TglLaboratorium.getSelectedItem() + "") : ""),
+                    tbObat.getSelectedRow(), 77);
             tbObat.setValueAt(Hematokrit.getText(), tbObat.getSelectedRow(), 78);
             tbObat.setValueAt(Hemoglobin.getText(), tbObat.getSelectedRow(), 79);
             tbObat.setValueAt(Leukosit.getText(), tbObat.getSelectedRow(), 80);
             tbObat.setValueAt(Trombosit.getText(), tbObat.getSelectedRow(), 81);
-            tbObat.
-                    setValueAt(HitungJenis.getText(), tbObat.getSelectedRow(),
-                            82);
+            tbObat.setValueAt(HitungJenis.getText(), tbObat.getSelectedRow(), 82);
             tbObat.setValueAt(Ureum.getText(), tbObat.getSelectedRow(), 83);
-            tbObat.
-                    setValueAt(UrinLengkap.getText(), tbObat.getSelectedRow(),
-                            84);
+            tbObat.setValueAt(UrinLengkap.getText(), tbObat.getSelectedRow(), 84);
             tbObat.setValueAt(Kreatinin.getText(), tbObat.getSelectedRow(), 85);
             tbObat.setValueAt(CCT.getText(), tbObat.getSelectedRow(), 86);
             tbObat.setValueAt(SGOT.getText(), tbObat.getSelectedRow(), 87);
             tbObat.setValueAt(SGPT.getText(), tbObat.getSelectedRow(), 88);
             tbObat.setValueAt(CT.getText(), tbObat.getSelectedRow(), 89);
             tbObat.setValueAt(AsamUrat.getText(), tbObat.getSelectedRow(), 90);
-            tbObat.setValueAt(HbsAg.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 91);
-            tbObat.setValueAt(AntiHCV.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 92);
+            tbObat.setValueAt(HbsAg.getSelectedItem().toString(), tbObat.getSelectedRow(), 91);
+            tbObat.setValueAt(AntiHCV.getSelectedItem().toString(), tbObat.getSelectedRow(), 92);
             tbObat.setValueAt(Edukasi.getText(), tbObat.getSelectedRow(), 93);
             emptTeks();
             TabRawat.setSelectedIndex(1);
@@ -4740,168 +4480,120 @@ public class RMPenilaianAwalMedisHemodialisa extends javax.swing.JDialog {
     private void simpan() {
         if (Sequel.menyimpantf("penilaian_medis_hemodialisa",
                 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                "Data", 89, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), KdDokter.
-                    getText(), Anamnesis.getSelectedItem().toString(), Hubungan.
-                    getText(), AsalRuangan.getText(), Alergi.getText(), Nyeri.
-                    getSelectedItem().toString(),
-                    StatusNutrisi.getText(), Hipertensi.getSelectedItem().
-                    toString(), KeteranganHipertensi.getText(), DiabetesMelitus.
-                    getSelectedItem().toString(), KeteranganDiabetesMelitus.
-                            getText(), BatuSaluranKemih.getSelectedItem().
-                            toString(), KeteranganBatuSaluranKemih.getText(),
-                    OperasiSaluranKemih.getSelectedItem().toString(),
-                    KeteranganOperasiSaluranKemih.getText(),
-                    InfeksiSaluranKemih.getSelectedItem().toString(),
-                    KeteranganInfeksiSaluranKemih.getText(),
-                    BengkakSeluruhTubuh.getSelectedItem().toString(),
-                    KeteranganBengkakSeluruhTubuh.getText(),
-                    UrinBerdarah.getSelectedItem().toString(),
-                    KeteranganUrinBerdarah.getText(), PenyakitGinjalLaom.
-                    getSelectedItem().toString(), KeteranganPenyakitGinjalLaom.
-                            getText(), PenyakitLain.getSelectedItem().toString(),
-                    KeteranganPenyakitLain.getText(), KonsumsiObatNefrotoksis.
-                    getSelectedItem().toString(),
-                    KeteranganKonsumsiObatNefrotoksis.getText(), Valid.SetTgl(
-                    TglDialisis.getSelectedItem() + ""), CAPD.getSelectedItem().
-                    toString(), Valid.SetTgl(TglCAPD.getSelectedItem() + ""),
-                    Transplantasi.getSelectedItem().toString(), Valid.SetTgl(
-                    TglTransplantasi.getSelectedItem() + ""),
-                    KeadaanUmum.getSelectedItem().toString(), Kesadaran.
-                    getSelectedItem().toString(), Nadi.getText(), BB.getText(),
-                    TD.getText(), Suhu.getText(), Napas.getText(), TB.getText(),
-                    Hepatomegali.getSelectedItem().toString(), Splenomegali.
-                    getSelectedItem().toString(), Ascites.getSelectedItem().
-                            toString(),
-                    Edema.getSelectedItem().toString(), Whezzing.
-                    getSelectedItem().toString(), Ronchi.getSelectedItem().
-                            toString(), Ikterik.getSelectedItem().toString(),
-                    TekananVenaJugularis.getSelectedItem().toString(),
-                    Konjungtiva.getSelectedItem().toString(), Kardiomegali.
-                    getSelectedItem().toString(),
-                    Bising.getSelectedItem().toString(),
+                "Data", 89,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), Anamnesis.getSelectedItem().toString(), Hubungan.getText(),
+                    AsalRuangan.getText(), Alergi.getText(), Nyeri.getSelectedItem().toString(),
+                    StatusNutrisi.getText(), Hipertensi.getSelectedItem().toString(),
+                    KeteranganHipertensi.getText(), DiabetesMelitus.getSelectedItem().toString(),
+                    KeteranganDiabetesMelitus.getText(), BatuSaluranKemih.getSelectedItem().toString(),
+                    KeteranganBatuSaluranKemih.getText(), OperasiSaluranKemih.getSelectedItem().toString(),
+                    KeteranganOperasiSaluranKemih.getText(), InfeksiSaluranKemih.getSelectedItem().toString(),
+                    KeteranganInfeksiSaluranKemih.getText(), BengkakSeluruhTubuh.getSelectedItem().toString(),
+                    KeteranganBengkakSeluruhTubuh.getText(), UrinBerdarah.getSelectedItem().toString(),
+                    KeteranganUrinBerdarah.getText(), PenyakitGinjalLaom.getSelectedItem().toString(),
+                    KeteranganPenyakitGinjalLaom.getText(), PenyakitLain.getSelectedItem().toString(),
+                    KeteranganPenyakitLain.getText(), KonsumsiObatNefrotoksis.getSelectedItem().toString(),
+                    KeteranganKonsumsiObatNefrotoksis.getText(), Valid.SetTgl(TglDialisis.getSelectedItem() + ""),
+                    CAPD.getSelectedItem().toString(), Valid.SetTgl(TglCAPD.getSelectedItem() + ""),
+                    Transplantasi.getSelectedItem().toString(),
+                    Valid.SetTgl(TglTransplantasi.getSelectedItem() + ""), KeadaanUmum.getSelectedItem().toString(),
+                    Kesadaran.getSelectedItem().toString(), Nadi.getText(), BB.getText(), TD.getText(),
+                    Suhu.getText(), Napas.getText(), TB.getText(), Hepatomegali.getSelectedItem().toString(),
+                    Splenomegali.getSelectedItem().toString(), Ascites.getSelectedItem().toString(),
+                    Edema.getSelectedItem().toString(), Whezzing.getSelectedItem().toString(),
+                    Ronchi.getSelectedItem().toString(), Ikterik.getSelectedItem().toString(),
+                    TekananVenaJugularis.getSelectedItem().toString(), Konjungtiva.getSelectedItem().toString(),
+                    Kardiomegali.getSelectedItem().toString(), Bising.getSelectedItem().toString(),
                     (ChkThorax.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkThorax.isSelected() == true ? Valid.SetTgl(TglThorax.
-                    getSelectedItem() + "") : "0000-00-00"), (ChkEKG.
-                            isSelected() == true ? "Ya" : "Tidak"), (ChkEKG.
-                            isSelected() == true ? Valid.SetTgl(TglEKG.
-                                    getSelectedItem() + "") : "0000-00-00"),
-                    (ChkBNO.isSelected() == true ? "Ya" : "Tidak"), (ChkBNO.
-                    isSelected() == true ? Valid.SetTgl(
-                                    TglBNO.getSelectedItem() + "") : "0000-00-00"),
-                    (ChkUSG.isSelected() == true ? "Ya" : "Tidak"), (ChkUSG.
-                    isSelected() == true ? Valid.SetTgl(
-                                    TglUSG.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkThorax.isSelected() == true ? Valid.SetTgl(TglThorax.getSelectedItem() + "")
+                    : "0000-00-00"),
+                    (ChkEKG.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkEKG.isSelected() == true ? Valid.SetTgl(TglEKG.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkBNO.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkBNO.isSelected() == true ? Valid.SetTgl(TglBNO.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkUSG.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkUSG.isSelected() == true ? Valid.SetTgl(TglUSG.getSelectedItem() + "") : "0000-00-00"),
                     (ChkRenogram.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkRenogram.isSelected() == true ? Valid.SetTgl(
-                    TglRenogram.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkRenogram.isSelected() == true
+                    ? Valid.SetTgl(TglRenogram.getSelectedItem() + "") : "0000-00-00"),
                     (ChkBiopsiGinjal.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkBiopsiGinjal.isSelected() == true ? Valid.SetTgl(
-                    TglBiopsi.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkBiopsiGinjal.isSelected() == true
+                    ? Valid.SetTgl(TglBiopsi.getSelectedItem() + "") : "0000-00-00"),
                     (ChkCTScan.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkCTScan.isSelected() == true ? Valid.SetTgl(TglCTscan.
-                    getSelectedItem() + "") : "0000-00-00"), (ChkArteriografi.
-                            isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkArteriografi.isSelected() == true ? Valid.SetTgl(
-                    TglArteriografi.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkCTScan.isSelected() == true
+                    ? Valid.SetTgl(TglCTscan.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkArteriografi.isSelected() == true ? "Ya" : "Tidak"),
+                    (ChkArteriografi.isSelected() == true
+                    ? Valid.SetTgl(TglArteriografi.getSelectedItem() + "") : "0000-00-00"),
                     (ChkKulturUrin.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkKulturUrin.isSelected() == true ? Valid.SetTgl(
-                    TglKultururin.getSelectedItem() + "") : "0000-00-00"),
+                    (ChkKulturUrin.isSelected() == true
+                    ? Valid.SetTgl(TglKultururin.getSelectedItem() + "") : "0000-00-00"),
                     (ChkLaborat.isSelected() == true ? "Ya" : "Tidak"),
-                    (ChkLaborat.isSelected() == true ? Valid.SetTgl(
-                    TglLaboratorium.getSelectedItem() + "") : "0000-00-00"),
-                    Hematokrit.getText(), Hemoglobin.getText(),
-                    Leukosit.getText(), Trombosit.getText(), HitungJenis.
-                    getText(), Ureum.getText(), UrinLengkap.getText(),
-                    Kreatinin.getText(), CCT.getText(), SGOT.getText(), SGPT.
-                    getText(), CT.getText(), AsamUrat.getText(), HbsAg.
-                    getSelectedItem().toString(), AntiHCV.getSelectedItem().
-                            toString(), Edukasi.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), Jk.getText(), KdDokter.getText(), NmDokter.getText(),
-                Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                getSelectedItem().toString().substring(11, 19), Anamnesis.
-                getSelectedItem().toString(), Hubungan.getText(),
-                AsalRuangan.getText(), Alergi.getText(),
+                    (ChkLaborat.isSelected() == true ? Valid.SetTgl(TglLaboratorium.getSelectedItem() + "")
+                    : "0000-00-00"),
+                    Hematokrit.getText(), Hemoglobin.getText(), Leukosit.getText(), Trombosit.getText(),
+                    HitungJenis.getText(), Ureum.getText(), UrinLengkap.getText(), Kreatinin.getText(),
+                    CCT.getText(), SGOT.getText(), SGPT.getText(), CT.getText(), AsamUrat.getText(),
+                    HbsAg.getSelectedItem().toString(), AntiHCV.getSelectedItem().toString(),
+                    Edukasi.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                Jk.getText(), KdDokter.getText(), NmDokter.getText(),
+                Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                Anamnesis.getSelectedItem().toString(), Hubungan.getText(), AsalRuangan.getText(), Alergi.getText(),
                 Nyeri.getSelectedItem().toString(), StatusNutrisi.getText(),
-                Hipertensi.getSelectedItem().toString(), KeteranganHipertensi.
-                getText(), DiabetesMelitus.getSelectedItem().toString(),
-                KeteranganDiabetesMelitus.getText(), BatuSaluranKemih.
-                getSelectedItem().toString(),
-                KeteranganBatuSaluranKemih.getText(), OperasiSaluranKemih.
-                getSelectedItem().toString(), KeteranganOperasiSaluranKemih.
-                getText(), InfeksiSaluranKemih.getSelectedItem().toString(),
-                KeteranganInfeksiSaluranKemih.getText(), BengkakSeluruhTubuh.
-                getSelectedItem().toString(), KeteranganBengkakSeluruhTubuh.
-                getText(),
-                UrinBerdarah.getSelectedItem().toString(),
-                KeteranganUrinBerdarah.getText(), PenyakitGinjalLaom.
-                getSelectedItem().toString(), KeteranganPenyakitGinjalLaom.
-                getText(), PenyakitLain.getSelectedItem().toString(),
-                KeteranganPenyakitLain.getText(), KonsumsiObatNefrotoksis.
-                getSelectedItem().toString(),
-                KeteranganKonsumsiObatNefrotoksis.getText(), Valid.SetTgl(
-                TglDialisis.getSelectedItem() + ""), CAPD.getSelectedItem().
-                toString(), Valid.SetTgl(TglCAPD.getSelectedItem() + ""),
-                Transplantasi.getSelectedItem().toString(), Valid.SetTgl(
-                TglTransplantasi.getSelectedItem() + ""), KeadaanUmum.
-                getSelectedItem().toString(),
-                Kesadaran.getSelectedItem().toString(), Nadi.getText(), BB.
-                getText(), TD.getText(), Suhu.getText(), Napas.getText(), TB.
-                getText(), Hepatomegali.getSelectedItem().toString(),
-                Splenomegali.getSelectedItem().toString(), Ascites.
-                getSelectedItem().toString(), Edema.getSelectedItem().toString(),
-                Whezzing.getSelectedItem().toString(), Ronchi.getSelectedItem().
-                toString(), Ikterik.getSelectedItem().toString(),
-                TekananVenaJugularis.getSelectedItem().toString(), Konjungtiva.
-                getSelectedItem().toString(), Kardiomegali.getSelectedItem().
-                toString(), Bising.getSelectedItem().toString(),
-                (ChkThorax.isSelected() == true ? "Ya" : "Tidak"), (ChkThorax.
-                isSelected() == true ? Valid.SetTgl(
-                TglThorax.getSelectedItem() + "") : ""),
-                (ChkEKG.isSelected() == true ? "Ya" : "Tidak"), (ChkEKG.
-                isSelected() == true ? Valid.SetTgl(
-                TglEKG.getSelectedItem() + "") : ""),
+                Hipertensi.getSelectedItem().toString(), KeteranganHipertensi.getText(),
+                DiabetesMelitus.getSelectedItem().toString(), KeteranganDiabetesMelitus.getText(),
+                BatuSaluranKemih.getSelectedItem().toString(), KeteranganBatuSaluranKemih.getText(),
+                OperasiSaluranKemih.getSelectedItem().toString(), KeteranganOperasiSaluranKemih.getText(),
+                InfeksiSaluranKemih.getSelectedItem().toString(), KeteranganInfeksiSaluranKemih.getText(),
+                BengkakSeluruhTubuh.getSelectedItem().toString(), KeteranganBengkakSeluruhTubuh.getText(),
+                UrinBerdarah.getSelectedItem().toString(), KeteranganUrinBerdarah.getText(),
+                PenyakitGinjalLaom.getSelectedItem().toString(), KeteranganPenyakitGinjalLaom.getText(),
+                PenyakitLain.getSelectedItem().toString(), KeteranganPenyakitLain.getText(),
+                KonsumsiObatNefrotoksis.getSelectedItem().toString(), KeteranganKonsumsiObatNefrotoksis.getText(),
+                Valid.SetTgl(TglDialisis.getSelectedItem() + ""), CAPD.getSelectedItem().toString(),
+                Valid.SetTgl(TglCAPD.getSelectedItem() + ""), Transplantasi.getSelectedItem().toString(),
+                Valid.SetTgl(TglTransplantasi.getSelectedItem() + ""), KeadaanUmum.getSelectedItem().toString(),
+                Kesadaran.getSelectedItem().toString(), Nadi.getText(), BB.getText(), TD.getText(), Suhu.getText(),
+                Napas.getText(), TB.getText(), Hepatomegali.getSelectedItem().toString(),
+                Splenomegali.getSelectedItem().toString(), Ascites.getSelectedItem().toString(),
+                Edema.getSelectedItem().toString(), Whezzing.getSelectedItem().toString(),
+                Ronchi.getSelectedItem().toString(), Ikterik.getSelectedItem().toString(),
+                TekananVenaJugularis.getSelectedItem().toString(), Konjungtiva.getSelectedItem().toString(),
+                Kardiomegali.getSelectedItem().toString(), Bising.getSelectedItem().toString(),
+                (ChkThorax.isSelected() == true ? "Ya" : "Tidak"),
+                (ChkThorax.isSelected() == true ? Valid.SetTgl(TglThorax.getSelectedItem() + "") : ""),
+                (ChkEKG.isSelected() == true ? "Ya" : "Tidak"),
+                (ChkEKG.isSelected() == true ? Valid.SetTgl(TglEKG.getSelectedItem() + "") : ""),
                 (ChkBNO.isSelected() == true ? "Ya" : "Tidak"),
-                (ChkBNO.isSelected() == true ? Valid.SetTgl(TglBNO.
-                getSelectedItem() + "") : ""),
-                (ChkUSG.isSelected() == true ? "Ya" : "Tidak"), (ChkUSG.
-                isSelected() == true ? Valid.SetTgl(
-                TglUSG.getSelectedItem() + "") : ""),
+                (ChkBNO.isSelected() == true ? Valid.SetTgl(TglBNO.getSelectedItem() + "") : ""),
+                (ChkUSG.isSelected() == true ? "Ya" : "Tidak"),
+                (ChkUSG.isSelected() == true ? Valid.SetTgl(TglUSG.getSelectedItem() + "") : ""),
                 (ChkRenogram.isSelected() == true ? "Ya" : "Tidak"),
-                (ChkRenogram.isSelected() == true ? Valid.SetTgl(TglRenogram.
-                getSelectedItem() + "") : ""),
+                (ChkRenogram.isSelected() == true ? Valid.SetTgl(TglRenogram.getSelectedItem() + "") : ""),
                 (ChkBiopsiGinjal.isSelected() == true ? "Ya" : "Tidak"),
-                (ChkBiopsiGinjal.isSelected() == true ? Valid.SetTgl(TglBiopsi.
-                getSelectedItem() + "") : ""),
+                (ChkBiopsiGinjal.isSelected() == true ? Valid.SetTgl(TglBiopsi.getSelectedItem() + "") : ""),
                 (ChkCTScan.isSelected() == true ? "Ya" : "Tidak"),
-                (ChkCTScan.isSelected() == true ? Valid.SetTgl(TglCTscan.
-                getSelectedItem() + "") : ""),
+                (ChkCTScan.isSelected() == true ? Valid.SetTgl(TglCTscan.getSelectedItem() + "") : ""),
                 (ChkArteriografi.isSelected() == true ? "Ya" : "Tidak"),
-                (ChkArteriografi.isSelected() == true ? Valid.SetTgl(
-                TglArteriografi.getSelectedItem() + "") : ""), (ChkKulturUrin.
-                isSelected() == true ? "Ya" : "Tidak"),
-                (ChkKulturUrin.isSelected() == true ? Valid.SetTgl(
-                TglKultururin.getSelectedItem() + "") : ""), (ChkLaborat.
-                isSelected() == true ? "Ya" : "Tidak"),
-                (ChkLaborat.isSelected() == true ? Valid.SetTgl(TglLaboratorium.
-                getSelectedItem() + "") : ""), Hematokrit.getText(), Hemoglobin.
-                getText(), Leukosit.getText(),
-                Trombosit.getText(), HitungJenis.getText(), Ureum.getText(),
-                UrinLengkap.getText(), Kreatinin.getText(), CCT.getText(), SGOT.
-                getText(), SGPT.getText(), CT.getText(), AsamUrat.getText(),
-                HbsAg.getSelectedItem().toString(), AntiHCV.getSelectedItem().
-                toString(), Edukasi.getText()
-            });
+                (ChkArteriografi.isSelected() == true ? Valid.SetTgl(TglArteriografi.getSelectedItem() + "") : ""),
+                (ChkKulturUrin.isSelected() == true ? "Ya" : "Tidak"),
+                (ChkKulturUrin.isSelected() == true ? Valid.SetTgl(TglKultururin.getSelectedItem() + "") : ""),
+                (ChkLaborat.isSelected() == true ? "Ya" : "Tidak"),
+                (ChkLaborat.isSelected() == true ? Valid.SetTgl(TglLaboratorium.getSelectedItem() + "") : ""),
+                Hematokrit.getText(), Hemoglobin.getText(), Leukosit.getText(), Trombosit.getText(),
+                HitungJenis.getText(), Ureum.getText(), UrinLengkap.getText(), Kreatinin.getText(), CCT.getText(),
+                SGOT.getText(), SGPT.getText(), CT.getText(), AsamUrat.getText(),
+                HbsAg.getSelectedItem().toString(), AntiHCV.getSelectedItem().toString(), Edukasi.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianAwalMedisHemodialisa.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianAwalMedisHemodialisa.class.getName());
+
 }

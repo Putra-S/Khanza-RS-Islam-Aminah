@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package inventaris;
 
@@ -41,18 +41,24 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 /**
- *
  * @author dosen
  */
 public class InventarisKoleksi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private final Properties prop = new Properties();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private String namaruang = "";
 
     /**
@@ -68,12 +74,9 @@ public class InventarisKoleksi extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"No.Inventaris", "Kode Barang", "Nama Barang",
-            "Produsen",
-            "Merk", "Thn.Produksi", "Barcode SN", "Kategori", "Jenis",
-            "Asal Barang", "Tgl.Pengadaan", "Harga", "Stts.Barang", "Ruang",
-            "No.Rak", "No.Box"
-        };
+        Object[] row = {"No.Inventaris", "Kode Barang", "Nama Barang", "Produsen", "Merk", "Thn.Produksi",
+            "Barcode SN", "Kategori", "Jenis", "Asal Barang", "Tgl.Pengadaan", "Harga", "Stts.Barang", "Ruang",
+            "No.Rak", "No.Box"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -83,9 +86,9 @@ public class InventarisKoleksi extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 16; i++) {
@@ -126,8 +129,7 @@ public class InventarisKoleksi extends javax.swing.JDialog {
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        no_inventaris.setDocument(new batasInput((byte) 30).getKata(
-                no_inventaris));
+        no_inventaris.setDocument(new batasInput((byte) 30).getKata(no_inventaris));
         kode_barang.setDocument(new batasInput((byte) 10).getKata(kode_barang));
         harga.setDocument(new batasInput((byte) 15).getOnlyAngka(harga));
         id_ruang.setDocument(new batasInput((byte) 5).getKata(id_ruang));
@@ -149,18 +151,12 @@ public class InventarisKoleksi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kode_barang.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 0).toString());
-                    nama_barang.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 1).toString());
-                    nm_produsen.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 3).toString());
-                    nm_merk.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 4).toString());
-                    nm_kategori.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 7).toString());
-                    nm_jenis.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 8).toString());
+                    kode_barang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                    nama_barang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                    nm_produsen.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 3).toString());
+                    nm_merk.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 4).toString());
+                    nm_kategori.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 7).toString());
+                    nm_jenis.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 8).toString());
                 }
                 kode_barang.requestFocus();
             }
@@ -214,14 +210,12 @@ public class InventarisKoleksi extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        id_ruang.setText(ruang.getTable().getValueAt(ruang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nm_ruang.setText(ruang.getTable().getValueAt(ruang.
-                                getTable().getSelectedRow(), 1).toString());
+                        id_ruang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 0).toString());
+                        nm_ruang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                         id_ruang.requestFocus();
                     } else if (pilihan == 2) {
-                        nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.
-                                getTable().getSelectedRow(), 1).toString());
+                        nm_ruangcari
+                                .setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                         TCari.requestFocus();
                     }
                 }
@@ -264,8 +258,7 @@ public class InventarisKoleksi extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -297,29 +290,33 @@ public class InventarisKoleksi extends javax.swing.JDialog {
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-                + ".head td{border-right: 1px solid #777777;font: 8.5px tahoma;height:10px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-        );
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                + ".head td{border-right: 1px solid #777777;font: 8.5px Tahoma;height:10px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}");
 
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     private InventarisBarang barang = new InventarisBarang(null, false);
+
     private InventarisRuang ruang = new InventarisRuang(null, false);
+
     private double nilai_inven = 0;
+
     private int pilihan = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1446,8 +1443,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventarisKoleksi dialog = new InventarisKoleksi(
-                    new javax.swing.JFrame(), true);
+            InventarisKoleksi dialog = new InventarisKoleksi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1545,50 +1541,33 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
                     + "inner join inventaris_jenis on inventaris_barang.id_jenis=inventaris_jenis.id_jenis "
                     + "inner join inventaris_kategori on inventaris_barang.id_kategori=inventaris_kategori.id_kategori "
                     + "inner join inventaris_merk on inventaris_barang.id_merk=inventaris_merk.id_merk "
-                    + "where inventaris_ruang.nama_ruang like '%" + nm_ruangcari.
-                            getText().trim() + "%' and "
-                    + "(inventaris_barang.kode_barang like '%" + TCari.getText().
-                            trim() + "%' or inventaris_barang.nama_barang like '%" + TCari.
-                            getText().trim() + "%' "
-                    + "or inventaris.no_inventaris like '%" + TCari.getText().
-                            trim() + "%' or inventaris.asal_barang like '%" + TCari.
-                            getText().trim() + "%' "
-                    + "or inventaris.tgl_pengadaan like '%" + TCari.getText().
-                            trim() + "%' or inventaris.status_barang like '%" + TCari.
-                            getText().trim() + "%' "
-                    + "or inventaris_ruang.nama_ruang like '%" + TCari.getText().
-                            trim() + "%' or inventaris_barang.jml_barang like '%" + TCari.
-                            getText().trim() + "%' "
-                    + "or inventaris_barang.nama_barang like '%" + TCari.
-                            getText().trim() + "%' or inventaris_merk.nama_merk like '%" + TCari.
-                            getText().trim() + "%' "
-                    + "or inventaris_barang.thn_produksi like '%" + TCari.
-                            getText().trim() + "%' or inventaris_barang.isbn like '%" + TCari.
-                            getText().trim() + "%' "
-                    + "or inventaris_kategori.nama_kategori like '%" + TCari.
-                            getText().trim() + "%' or inventaris_jenis.nama_jenis like '%" + TCari.
-                            getText().trim() + "%') "
+                    + "where inventaris_ruang.nama_ruang like '%" + nm_ruangcari.getText().trim() + "%' and "
+                    + "(inventaris_barang.kode_barang like '%" + TCari.getText().trim()
+                    + "%' or inventaris_barang.nama_barang like '%" + TCari.getText().trim() + "%' "
+                    + "or inventaris.no_inventaris like '%" + TCari.getText().trim()
+                    + "%' or inventaris.asal_barang like '%" + TCari.getText().trim() + "%' "
+                    + "or inventaris.tgl_pengadaan like '%" + TCari.getText().trim()
+                    + "%' or inventaris.status_barang like '%" + TCari.getText().trim() + "%' "
+                    + "or inventaris_ruang.nama_ruang like '%" + TCari.getText().trim()
+                    + "%' or inventaris_barang.jml_barang like '%" + TCari.getText().trim() + "%' "
+                    + "or inventaris_barang.nama_barang like '%" + TCari.getText().trim()
+                    + "%' or inventaris_merk.nama_merk like '%" + TCari.getText().trim() + "%' "
+                    + "or inventaris_barang.thn_produksi like '%" + TCari.getText().trim()
+                    + "%' or inventaris_barang.isbn like '%" + TCari.getText().trim() + "%' "
+                    + "or inventaris_kategori.nama_kategori like '%" + TCari.getText().trim()
+                    + "%' or inventaris_jenis.nama_jenis like '%" + TCari.getText().trim() + "%') "
                     + "order by inventaris_barang.kode_barang,inventaris.no_inventaris");
             Valid.tabelKosong(tabMode);
             try {
                 rs = ps.executeQuery();
                 nilai_inven = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{rs.getString("no_inventaris"),
-                        rs.getString("kode_barang"),
-                        rs.getString("nama_barang"),
-                        rs.getString("nama_produsen"),
-                        rs.getString("nama_merk"),
-                        rs.getString("thn_produksi").substring(0, 4),
-                        rs.getString("isbn"),
-                        rs.getString("nama_kategori"),
-                        rs.getString("nama_jenis"),
-                        rs.getString("asal_barang"),
-                        rs.getString("tgl_pengadaan"),
-                        Valid.SetAngka(rs.getDouble("harga")),
-                        rs.getString("status_barang"),
-                        rs.getString("nama_ruang"),
-                        rs.getString("no_rak"),
+                    tabMode.addRow(new Object[]{rs.getString("no_inventaris"), rs.getString("kode_barang"),
+                        rs.getString("nama_barang"), rs.getString("nama_produsen"), rs.getString("nama_merk"),
+                        rs.getString("thn_produksi").substring(0, 4), rs.getString("isbn"),
+                        rs.getString("nama_kategori"), rs.getString("nama_jenis"), rs.getString("asal_barang"),
+                        rs.getString("tgl_pengadaan"), Valid.SetAngka(rs.getDouble("harga")),
+                        rs.getString("status_barang"), rs.getString("nama_ruang"), rs.getString("no_rak"),
                         rs.getString("no_box")});
                     nilai_inven += rs.getDouble("harga");
                 }
@@ -1602,8 +1581,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
                     ps.close();
                 }
             }
-            LCount.setText(tabMode.getRowCount() + " | " + Valid.SetAngka(
-                    nilai_inven));
+            LCount.setText(tabMode.getRowCount() + " | " + Valid.SetAngka(nilai_inven));
         } catch (Exception e) {
             System.out.println("Notif : " + e);
         }
@@ -1627,47 +1605,30 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
         no_box.setSelectedIndex(0);
         TCari.setText("");
         no_inventaris.requestFocus();
-        //Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_inventaris,5),signed)),0) from inventaris  ",
-                "I", 9, no_inventaris);
+        // Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(no_inventaris,5),signed)),0) from inventaris  ", "I", 9,
+                no_inventaris);
         no_inventaris.requestFocus();
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 0).toString());
-            kode_barang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            nama_barang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            nm_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
-            nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 8).toString());
-            asal_barang.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 9).toString());
-            Valid.SetTgl(tgl_pengadaan, tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 10).toString());
-            harga.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 11).toString());
-            status_barang.setSelectedItem(tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 12).toString());
-            Sequel.cariIsi(
-                    "select inventaris.id_ruang from inventaris where inventaris.no_inventaris='" + tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 0).
-                            toString() + "'", id_ruang);
-            nm_ruang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 13).toString());
-            no_rak.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 14).toString());
-            no_box.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 15).toString());
+            no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            kode_barang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            nama_barang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            nm_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            asal_barang.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            Valid.SetTgl(tgl_pengadaan, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString());
+            harga.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString());
+            status_barang.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 12).toString());
+            Sequel.cariIsi("select inventaris.id_ruang from inventaris where inventaris.no_inventaris='"
+                    + tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString() + "'", id_ruang);
+            nm_ruang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 13).toString());
+            no_rak.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 14).toString());
+            no_box.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 15).toString());
         }
     }
 
@@ -1720,8 +1681,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
 
     private void isBarang() {
         try {
-            ps = koneksi.prepareStatement(
-                    "select inventaris_barang.kode_barang, inventaris_barang.nama_barang, "
+            ps = koneksi.prepareStatement("select inventaris_barang.kode_barang, inventaris_barang.nama_barang, "
                     + "inventaris_produsen.nama_produsen, inventaris_merk.nama_merk,"
                     + "inventaris_kategori.nama_kategori, inventaris_jenis.nama_jenis "
                     + "from inventaris_barang inner join inventaris_produsen "
@@ -1765,8 +1725,7 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
     private void isPhoto() {
         if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(
-                    internalFrame1.getWidth() - 300, HEIGHT));
+            PanelAccor.setPreferredSize(new Dimension(internalFrame1.getWidth() - 300, HEIGHT));
             FormPhoto.setVisible(true);
             ChkAccor.setVisible(true);
         } else if (ChkAccor.isSelected() == false) {
@@ -1783,27 +1742,22 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
                 ps = koneksi.prepareStatement(
                         "select inventaris_gambar.photo from inventaris_gambar where inventaris_gambar.no_inventaris=?");
                 try {
-                    ps.setString(1, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                            getSelectedRow(), 0).toString());
+                    ps.setString(1, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             LoadHTML.setText(
-                                    "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                                    "<html><body><center><br><br><font face='Tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                         } else {
-                            LoadHTML.setText(
-                                    "<html><body><center><img src='http://" + koneksiDB.
-                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                            PORTWEB() + "/" + koneksiDB.
-                                            HYBRIDWEB() + "/inventaris/" + rs.
-                                            getString("photo") + "' alt='photo' width='" + (internalFrame1.
-                                    getWidth() - 330) + "' height='" + (internalFrame1.
-                                            getHeight() - 260) + "'/></center></body></html>");
+                            LoadHTML.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/inventaris/"
+                                    + rs.getString("photo") + "' alt='photo' width='"
+                                    + (internalFrame1.getWidth() - 330) + "' height='"
+                                    + (internalFrame1.getHeight() - 260) + "'/></center></body></html>");
                         }
                     } else {
                         LoadHTML.setText(
-                                "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
+                                "<html><body><center><br><br><font face='Tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                     }
                 } catch (Exception e) {
                     System.out.println("Notif : " + e);
@@ -1821,7 +1775,6 @@ private void ppBarcodeBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {/
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(InventarisKoleksi.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(InventarisKoleksi.class.getName());
 
 }

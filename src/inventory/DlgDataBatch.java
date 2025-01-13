@@ -38,18 +38,25 @@ import javax.swing.table.TableColumn;
 public class DlgDataBatch extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0, row = 0;
+
     private DlgBarang barang = new DlgBarang(null, false);
-    private String pengaturanharga = Sequel.cariIsi(
-            "select set_harga_obat.setharga from set_harga_obat"), kodejenis = "";
+
+    private String pengaturanharga = Sequel.cariIsi("select set_harga_obat.setharga from set_harga_obat"),
+            kodejenis = "";
 
     /**
-     *
      * @param parent
      * @param modal
      */
@@ -57,32 +64,17 @@ public class DlgDataBatch extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "P", "Kode Barang", "Nama Barang", "No.Batch", "No.Faktur",
-            "Tgl.Datang", "Kadaluwarsa",
-            "Hrg.Dasar(Rp)", "Hrg.Beli(Rp)", "Ralan(Rp)", "Ranap K1(Rp)",
-            "Ranap K2(Rp)", "Ranap K3(Rp)",
-            "Kelas Utama/BPJS(Rp)", "Ranap VIP(Rp)", "Ranap VVIP(Rp)",
-            "Beli Luar(Rp)", "Jual Bebas(Rp)",
-            "Karyawan(Rp)", "Asal Barang", "Jml.Beli", "Sisa"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"P", "Kode Barang", "Nama Barang", "No.Batch", "No.Faktur", "Tgl.Datang", "Kadaluwarsa",
+                    "Hrg.Dasar(Rp)", "Hrg.Beli(Rp)", "Ralan(Rp)", "Ranap K1(Rp)", "Ranap K2(Rp)", "Ranap K3(Rp)",
+                    "Kelas Utama/BPJS(Rp)", "Ranap VIP(Rp)", "Ranap VVIP(Rp)", "Beli Luar(Rp)", "Jual Bebas(Rp)",
+                    "Karyawan(Rp)", "Asal Barang", "Jml.Beli", "Sisa"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -177,8 +169,7 @@ public class DlgDataBatch extends javax.swing.JDialog {
         isForm();
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -215,10 +206,8 @@ public class DlgDataBatch extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    Kd.setText(barang.getTable().getValueAt(barang.getTable().
-                            getSelectedRow(), 1).toString());
-                    Nm.setText(barang.getTable().getValueAt(barang.getTable().
-                            getSelectedRow(), 2).toString());
+                    Kd.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                    Nm.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                 }
                 Kd.requestFocus();
             }
@@ -261,7 +250,9 @@ public class DlgDataBatch extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1725,8 +1716,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDataBatch dialog = new DlgDataBatch(new javax.swing.JFrame(),
-                    true);
+            DlgDataBatch dialog = new DlgDataBatch(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1813,8 +1803,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Valid.tabelKosong(tabMode);
         try {
             if (TCari.getText().trim().isEmpty()) {
-                ps = koneksi.prepareStatement(
-                        "select data_batch.kode_brng, databarang.nama_brng, "
+                ps = koneksi.prepareStatement("select data_batch.kode_brng, databarang.nama_brng, "
                         + " data_batch.no_faktur,data_batch.no_batch,data_batch.tgl_beli, data_batch.dasar,data_batch.h_beli,"
                         + " data_batch.ralan,data_batch.kelas1,data_batch.kelas2,data_batch.kelas3,"
                         + " data_batch.utama,data_batch.vip,data_batch.vvip,data_batch.beliluar,data_batch.jualbebas,"
@@ -1822,8 +1811,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         + " from data_batch inner join databarang on data_batch.kode_brng=databarang.kode_brng "
                         + " where data_batch.tgl_beli between ? and ? order by databarang.nama_brng");
             } else {
-                ps = koneksi.prepareStatement(
-                        "select data_batch.kode_brng, databarang.nama_brng, "
+                ps = koneksi.prepareStatement("select data_batch.kode_brng, databarang.nama_brng, "
                         + " data_batch.no_faktur,data_batch.no_batch,data_batch.tgl_beli, data_batch.dasar,data_batch.h_beli,"
                         + " data_batch.ralan,data_batch.kelas1,data_batch.kelas2,data_batch.kelas3,"
                         + " data_batch.utama,data_batch.vip,data_batch.vvip,data_batch.beliluar,data_batch.jualbebas,"
@@ -1860,22 +1848,13 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("kode_brng"), rs.getString(
-                        "nama_brng"),
-                        rs.getString("no_batch"), rs.getString("no_faktur"),
-                        rs.getString("tgl_beli"), rs.getString("tgl_kadaluarsa"),
-                        rs.getDouble("dasar"),
-                        rs.getDouble("h_beli"), rs.getDouble("ralan"), rs.
-                        getDouble("kelas1"),
-                        rs.getDouble("kelas2"), rs.getDouble("kelas3"), rs.
-                        getDouble("utama"),
-                        rs.getDouble("vip"), rs.getDouble("vvip"), rs.getDouble(
-                        "beliluar"),
-                        rs.getDouble("jualbebas"), rs.getDouble("karyawan"), rs.
-                        getString("asal"),
-                        rs.getDouble("jumlahbeli"), rs.getDouble("sisa")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("no_batch"), rs.getString("no_faktur"), rs.getString("tgl_beli"),
+                        rs.getString("tgl_kadaluarsa"), rs.getDouble("dasar"), rs.getDouble("h_beli"),
+                        rs.getDouble("ralan"), rs.getDouble("kelas1"), rs.getDouble("kelas2"),
+                        rs.getDouble("kelas3"), rs.getDouble("utama"), rs.getDouble("vip"), rs.getDouble("vvip"),
+                        rs.getDouble("beliluar"), rs.getDouble("jualbebas"), rs.getDouble("karyawan"),
+                        rs.getString("asal"), rs.getDouble("jumlahbeli"), rs.getDouble("sisa")});
                 }
                 LCount.setText("" + tabMode.getRowCount());
             } catch (Exception e) {
@@ -1925,40 +1904,25 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             NoFaktur.setText(tbDokter.getValueAt(row, 4).toString());
             Valid.SetTgl(TanggalDatang, tbDokter.getValueAt(row, 5).toString());
             Valid.SetTgl(DTPExpired, tbDokter.getValueAt(row, 6).toString());
-            dasar.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 7).toString())));
-            beli.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(
-                    row, 8).toString())));
-            ralan.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 9).toString())));
-            kelas1.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 10).toString())));
-            kelas2.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 11).toString())));
-            kelas3.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 12).toString())));
-            utama.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 13).toString())));
-            kelasvip.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 14).toString())));
-            kelasvvip.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 15).toString())));
-            beliluar.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 16).toString())));
-            jualbebas.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 17).toString())));
-            karyawan.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 18).toString())));
+            dasar.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 7).toString())));
+            beli.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 8).toString())));
+            ralan.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 9).toString())));
+            kelas1.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 10).toString())));
+            kelas2.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 11).toString())));
+            kelas3.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 12).toString())));
+            utama.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 13).toString())));
+            kelasvip.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 14).toString())));
+            kelasvvip.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 15).toString())));
+            beliluar.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 16).toString())));
+            jualbebas.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 17).toString())));
+            karyawan.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 18).toString())));
             AsalBarang.setSelectedItem(tbDokter.getValueAt(row, 19).toString());
-            JmlBeli.setText(Double.toString(Double.parseDouble(tbDokter.
-                    getValueAt(row, 20).toString())));
-            Sisa.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(
-                    row, 21).toString())));
+            JmlBeli.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 20).toString())));
+            Sisa.setText(Double.toString(Double.parseDouble(tbDokter.getValueAt(row, 21).toString())));
         }
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1992,98 +1956,62 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                                 Valid.textKosong(Kd, "Kode Jenis");
                             } else {
                                 try {
-                                    rs = koneksi.prepareStatement(
-                                            "select * from setpenjualan where kdjns='" + kodejenis + "'").
-                                            executeQuery();
+                                    rs = koneksi
+                                            .prepareStatement("select * from setpenjualan where kdjns='" + kodejenis + "'")
+                                            .executeQuery();
                                     if (rs.next()) {
-                                        ralan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "ralan") / 100)),
-                                                        100)));
-                                        kelas1.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas1") / 100)),
-                                                        100)));
-                                        kelas2.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas2") / 100)),
-                                                        100)));
-                                        kelas3.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas3") / 100)),
-                                                        100)));
-                                        utama.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "utama") / 100)),
-                                                        100)));
-                                        kelasvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vip") / 100)),
-                                                        100)));
-                                        kelasvvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vvip") / 100)),
-                                                        100)));
-                                        beliluar.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "beliluar") / 100)),
-                                                        100)));
-                                        jualbebas.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "jualbebas") / 100)),
-                                                        100)));
-                                        karyawan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "karyawan") / 100)),
-                                                        100)));
+                                        ralan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("ralan") / 100)),
+                                                100)));
+                                        kelas1.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas1") / 100)),
+                                                100)));
+                                        kelas2.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas2") / 100)),
+                                                100)));
+                                        kelas3.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas3") / 100)),
+                                                100)));
+                                        utama.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("utama") / 100)),
+                                                100)));
+                                        kelasvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vip") / 100)),
+                                                                        100)));
+                                        kelasvvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vvip") / 100)),
+                                                                        100)));
+                                        beliluar.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("beliluar") / 100)),
+                                                                100)));
+                                        jualbebas
+                                                .setText(
+                                                        Double.toString(Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("jualbebas") / 100)),
+                                                                100)));
+                                        karyawan.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("karyawan") / 100)),
+                                                                100)));
                                     } else {
                                         JOptionPane.showMessageDialog(null,
                                                 "Pengaturan untuk jenis obat/alkes/bhp ini tidak ditemukan..!!");
@@ -2100,78 +2028,40 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             break;
                         case "Umum":
                             try {
-                                rs = koneksi.prepareStatement(
-                                        "select * from setpenjualanumum").
-                                        executeQuery();
+                                rs = koneksi.prepareStatement("select * from setpenjualanumum").executeQuery();
                                 if (rs.next()) {
-                                    ralan.setText(Double.toString(Valid.roundUp(
-                                            Double.parseDouble(beli.getText()) + (Double.
-                                            parseDouble(beli.getText()) * (rs.
-                                            getDouble("ralan") / 100)), 100)));
-                                    kelas1.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("kelas1") / 100)),
-                                                    100)));
-                                    kelas2.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("kelas2") / 100)),
-                                                    100)));
-                                    kelas3.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("kelas3") / 100)),
-                                                    100)));
-                                    utama.setText(Double.toString(Valid.roundUp(
-                                            Double.parseDouble(beli.getText()) + (Double.
-                                            parseDouble(beli.getText()) * (rs.
-                                            getDouble("utama") / 100)), 100)));
-                                    kelasvip.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("vip") / 100)),
-                                                    100)));
-                                    kelasvvip.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("vvip") / 100)),
-                                                    100)));
-                                    beliluar.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("beliluar") / 100)),
-                                                    100)));
-                                    jualbebas.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble(
-                                                                    "jualbebas") / 100)),
-                                                    100)));
-                                    karyawan.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("karyawan") / 100)),
-                                                    100)));
+                                    ralan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("ralan") / 100)),
+                                            100)));
+                                    kelas1.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas1") / 100)),
+                                            100)));
+                                    kelas2.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas2") / 100)),
+                                            100)));
+                                    kelas3.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas3") / 100)),
+                                            100)));
+                                    utama.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("utama") / 100)),
+                                            100)));
+                                    kelasvip.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("vip") / 100)),
+                                            100)));
+                                    kelasvvip.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("vvip") / 100)),
+                                            100)));
+                                    beliluar.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("beliluar") / 100)),
+                                            100)));
+                                    jualbebas.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("jualbebas") / 100)),
+                                            100)));
+                                    karyawan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("karyawan") / 100)),
+                                            100)));
                                 } else {
-                                    JOptionPane.showMessageDialog(null,
-                                            "Pengaturan harga umum masih kosong..!!");
+                                    JOptionPane.showMessageDialog(null, "Pengaturan harga umum masih kosong..!!");
                                     TCari.requestFocus();
                                 }
                             } catch (Exception e) {
@@ -2187,99 +2077,63 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                                 Valid.textKosong(Kd, "Kode Barang");
                             } else {
                                 try {
-                                    rs = koneksi.prepareStatement(
-                                            "select * from setpenjualanperbarang where kode_brng='" + Kd.
-                                                    getText() + "'").
-                                            executeQuery();
+                                    rs = koneksi
+                                            .prepareStatement("select * from setpenjualanperbarang where kode_brng='"
+                                                    + Kd.getText() + "'")
+                                            .executeQuery();
                                     if (rs.next()) {
-                                        ralan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "ralan") / 100)),
-                                                        100)));
-                                        kelas1.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas1") / 100)),
-                                                        100)));
-                                        kelas2.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas2") / 100)),
-                                                        100)));
-                                        kelas3.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas3") / 100)),
-                                                        100)));
-                                        utama.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "utama") / 100)),
-                                                        100)));
-                                        kelasvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vip") / 100)),
-                                                        100)));
-                                        kelasvvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vvip") / 100)),
-                                                        100)));
-                                        beliluar.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "beliluar") / 100)),
-                                                        100)));
-                                        jualbebas.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "jualbebas") / 100)),
-                                                        100)));
-                                        karyawan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "karyawan") / 100)),
-                                                        100)));
+                                        ralan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("ralan") / 100)),
+                                                100)));
+                                        kelas1.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas1") / 100)),
+                                                100)));
+                                        kelas2.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas2") / 100)),
+                                                100)));
+                                        kelas3.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas3") / 100)),
+                                                100)));
+                                        utama.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("utama") / 100)),
+                                                100)));
+                                        kelasvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vip") / 100)),
+                                                                        100)));
+                                        kelasvvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vvip") / 100)),
+                                                                        100)));
+                                        beliluar.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("beliluar") / 100)),
+                                                                100)));
+                                        jualbebas
+                                                .setText(
+                                                        Double.toString(Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("jualbebas") / 100)),
+                                                                100)));
+                                        karyawan.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("karyawan") / 100)),
+                                                                100)));
                                     } else {
                                         JOptionPane.showMessageDialog(null,
                                                 "Pengaturan untuk obat/alkes/bhp ini tidak ditemukan..!!");
@@ -2295,8 +2149,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             }
                             break;
                         default:
-                            JOptionPane.showMessageDialog(null,
-                                    "Pengaturan untuk obat/alkes/bhp belum disetting..!!");
+                            JOptionPane.showMessageDialog(null, "Pengaturan untuk obat/alkes/bhp belum disetting..!!");
                             break;
                     }
                 }
@@ -2317,7 +2170,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         BtnPrint.setEnabled(akses.getdata_batch());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgDataBatch.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgDataBatch.class.getName());
 
 }

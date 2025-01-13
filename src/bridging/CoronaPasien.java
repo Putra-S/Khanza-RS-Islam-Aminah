@@ -59,32 +59,23 @@ public class CoronaPasien extends javax.swing.JDialog {
 
     private CoronaReferensiJK jk = new CoronaReferensiJK(null, false);
 
-    private CoronaReferensiKewarganegaraan kewarganegaraan = new CoronaReferensiKewarganegaraan(
-            null, false);
+    private CoronaReferensiKewarganegaraan kewarganegaraan = new CoronaReferensiKewarganegaraan(null, false);
 
-    private CoronaReferensiSumberPenularan penularan = new CoronaReferensiSumberPenularan(
-            null, false);
+    private CoronaReferensiSumberPenularan penularan = new CoronaReferensiSumberPenularan(null, false);
 
-    private CoronaReferensiKecamatan kecamatan = new CoronaReferensiKecamatan(
-            null, false);
+    private CoronaReferensiKecamatan kecamatan = new CoronaReferensiKecamatan(null, false);
 
-    private CoronaReferensiStatusKeluar statuskeluar = new CoronaReferensiStatusKeluar(
-            null, false);
+    private CoronaReferensiStatusKeluar statuskeluar = new CoronaReferensiStatusKeluar(null, false);
 
-    private CoronaReferensiStatusRawat statusrawat = new CoronaReferensiStatusRawat(
-            null, false);
+    private CoronaReferensiStatusRawat statusrawat = new CoronaReferensiStatusRawat(null, false);
 
-    private CoronaReferensiStatusIsolasi statusisolasi = new CoronaReferensiStatusIsolasi(
-            null, false);
+    private CoronaReferensiStatusIsolasi statusisolasi = new CoronaReferensiStatusIsolasi(null, false);
 
-    private CoronaReferensiPropinsi propinsi = new CoronaReferensiPropinsi(null,
-            false);
+    private CoronaReferensiPropinsi propinsi = new CoronaReferensiPropinsi(null, false);
 
-    private CoronaReferensiKabupaten kabupaten = new CoronaReferensiKabupaten(
-            null, false);
+    private CoronaReferensiKabupaten kabupaten = new CoronaReferensiKabupaten(null, false);
 
-    private CoronaReferensiJenisPasien jenispasien = new CoronaReferensiJenisPasien(
-            null, false);
+    private CoronaReferensiJenisPasien jenispasien = new CoronaReferensiJenisPasien(null, false);
 
     private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
 
@@ -113,16 +104,11 @@ public class CoronaPasien extends javax.swing.JDialog {
         initComponents();
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"No.KTP/Paspor", "No.RM", "Nama Pasien", "Inisial",
-                    "Kode JK", "Jenis Kelamin",
-                    "Tgl.Lahir", "E-mail", "No.Telp", "Tgl.Lapor", "Tgl.Masuk",
-                    "Tgl.Keluar", "Kode Kw",
-                    "Kewarganegaraan", "Kode Sumber", "Sumber Penularan",
-                    "Kode Kel", "Kelurahan", "Kode Kec",
-                    "Kecamatan", "Kode Kab", "Kabupaten", "Kode Prop",
-                    "Propinsi", "Kode Stts Keluar",
-                    "Status Keluar", "Kode Status Rawat", "Status Rawat",
-                    "Kode isolasi", "Status Isolasi",
+                new Object[]{"No.KTP/Paspor", "No.RM", "Nama Pasien", "Inisial", "Kode JK", "Jenis Kelamin",
+                    "Tgl.Lahir", "E-mail", "No.Telp", "Tgl.Lapor", "Tgl.Masuk", "Tgl.Keluar", "Kode Kw",
+                    "Kewarganegaraan", "Kode Sumber", "Sumber Penularan", "Kode Kel", "Kelurahan", "Kode Kec",
+                    "Kecamatan", "Kode Kab", "Kabupaten", "Kode Prop", "Propinsi", "Kode Stts Keluar",
+                    "Status Keluar", "Kode Status Rawat", "Status Rawat", "Kode isolasi", "Status Isolasi",
                     "Sebab Kematian", "Kode Jenis Pasien", "Jenis Pasien"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -221,13 +207,11 @@ public class CoronaPasien extends javax.swing.JDialog {
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
         Inisial.setDocument(new batasInput((byte) 15).getKata(Inisial));
-        SebabKematian.setDocument(new batasInput((byte) 60).getKata(
-                SebabKematian));
+        SebabKematian.setDocument(new batasInput((byte) 60).getKata(SebabKematian));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -267,10 +251,8 @@ public class CoronaPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KodeJK.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaJK.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodeJK.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaJK.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 KodeJK.requestFocus();
             }
@@ -305,10 +287,8 @@ public class CoronaPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jk.getTable().getSelectedRow() != -1) {
-                    KodeJK.setText(jk.getTable().getValueAt(jk.getTable().
-                            getSelectedRow(), 0).toString());
-                    NamaJK.setText(jk.getTable().getValueAt(jk.getTable().
-                            getSelectedRow(), 1).toString());
+                    KodeJK.setText(jk.getTable().getValueAt(jk.getTable().getSelectedRow(), 0).toString());
+                    NamaJK.setText(jk.getTable().getValueAt(jk.getTable().getSelectedRow(), 1).toString());
                     BtnJK.requestFocus();
                 }
             }
@@ -344,12 +324,10 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kewarganegaraan.getTable().getSelectedRow() != -1) {
                     KodeKewarganegaraan.setText(kewarganegaraan.getTable()
-                            .getValueAt(kewarganegaraan.getTable().
-                                    getSelectedRow(), 0)
+                            .getValueAt(kewarganegaraan.getTable().getSelectedRow(), 0)
                             .toString());
                     NamaKewarganegaraan.setText(kewarganegaraan.getTable()
-                            .getValueAt(kewarganegaraan.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(kewarganegaraan.getTable().getSelectedRow(), 1)
                             .toString());
                     BtnKewarganegaraan.requestFocus();
                 }
@@ -386,11 +364,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (penularan.getTable().getSelectedRow() != -1) {
                     KodePenularan
-                            .setText(penularan.getTable().getValueAt(penularan.
-                                    getTable().getSelectedRow(), 0).toString());
+                            .setText(penularan.getTable().getValueAt(penularan.getTable().getSelectedRow(), 0).toString());
                     NamaPenularan
-                            .setText(penularan.getTable().getValueAt(penularan.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(penularan.getTable().getValueAt(penularan.getTable().getSelectedRow(), 1).toString());
                     BtnSumberPenularan.requestFocus();
                 }
             }
@@ -426,11 +402,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (statuskeluar.getTable().getSelectedRow() != -1) {
                     KodeStatusKeluar.setText(
-                            statuskeluar.getTable().getValueAt(statuskeluar.
-                                    getTable().getSelectedRow(), 0).toString());
+                            statuskeluar.getTable().getValueAt(statuskeluar.getTable().getSelectedRow(), 0).toString());
                     NamaStatusKeluar.setText(
-                            statuskeluar.getTable().getValueAt(statuskeluar.
-                                    getTable().getSelectedRow(), 1).toString());
+                            statuskeluar.getTable().getValueAt(statuskeluar.getTable().getSelectedRow(), 1).toString());
                     BtnStatusKeluar.requestFocus();
                 }
             }
@@ -466,11 +440,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (statusrawat.getTable().getSelectedRow() != -1) {
                     KodeStatusRawat.setText(
-                            statusrawat.getTable().getValueAt(statusrawat.
-                                    getTable().getSelectedRow(), 0).toString());
+                            statusrawat.getTable().getValueAt(statusrawat.getTable().getSelectedRow(), 0).toString());
                     NamaStatusRawat.setText(
-                            statusrawat.getTable().getValueAt(statusrawat.
-                                    getTable().getSelectedRow(), 1).toString());
+                            statusrawat.getTable().getValueAt(statusrawat.getTable().getSelectedRow(), 1).toString());
                     BtnStatusRawat.requestFocus();
                 }
             }
@@ -506,12 +478,10 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (statusisolasi.getTable().getSelectedRow() != -1) {
                     KodeStatusIsolasi.setText(statusisolasi.getTable()
-                            .getValueAt(statusisolasi.getTable().
-                                    getSelectedRow(), 0)
+                            .getValueAt(statusisolasi.getTable().getSelectedRow(), 0)
                             .toString());
                     NamaStatusIsolasi.setText(statusisolasi.getTable()
-                            .getValueAt(statusisolasi.getTable().
-                                    getSelectedRow(), 1)
+                            .getValueAt(statusisolasi.getTable().getSelectedRow(), 1)
                             .toString());
                     BtnStatusIsolasi.requestFocus();
                 }
@@ -548,11 +518,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (propinsi.getTable().getSelectedRow() != -1) {
                     KodePropinsi
-                            .setText(propinsi.getTable().getValueAt(propinsi.
-                                    getTable().getSelectedRow(), 0).toString());
+                            .setText(propinsi.getTable().getValueAt(propinsi.getTable().getSelectedRow(), 0).toString());
                     NamaPropinsi
-                            .setText(propinsi.getTable().getValueAt(propinsi.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(propinsi.getTable().getValueAt(propinsi.getTable().getSelectedRow(), 1).toString());
                     BtnPropinsi.requestFocus();
                 }
             }
@@ -588,11 +556,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
                     KodeKabupaten
-                            .setText(kabupaten.getTable().getValueAt(kabupaten.
-                                    getTable().getSelectedRow(), 0).toString());
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
                     NamaKabupaten
-                            .setText(kabupaten.getTable().getValueAt(kabupaten.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 1).toString());
                     BtnKabupaten.requestFocus();
                 }
             }
@@ -628,11 +594,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kecamatan.getTable().getSelectedRow() != -1) {
                     KodeKecamatan
-                            .setText(kecamatan.getTable().getValueAt(kecamatan.
-                                    getTable().getSelectedRow(), 0).toString());
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 0).toString());
                     NamaKecamatan
-                            .setText(kecamatan.getTable().getValueAt(kecamatan.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 1).toString());
                     BtnKecamatan.requestFocus();
                 }
             }
@@ -668,11 +632,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kelurahan.getTable().getSelectedRow() != -1) {
                     KodeKelurahan
-                            .setText(kelurahan.getTable().getValueAt(kelurahan.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 1).toString());
                     NamaKelurahan
-                            .setText(kelurahan.getTable().getValueAt(kelurahan.
-                                    getTable().getSelectedRow(), 0).toString());
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 0).toString());
                     BtnKelurahan.requestFocus();
                 }
             }
@@ -708,11 +670,9 @@ public class CoronaPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (jenispasien.getTable().getSelectedRow() != -1) {
                     KodeJenisPasien.setText(
-                            jenispasien.getTable().getValueAt(jenispasien.
-                                    getTable().getSelectedRow(), 0).toString());
+                            jenispasien.getTable().getValueAt(jenispasien.getTable().getSelectedRow(), 0).toString());
                     NamaJenisPasien.setText(
-                            jenispasien.getTable().getValueAt(jenispasien.
-                                    getTable().getSelectedRow(), 1).toString());
+                            jenispasien.getTable().getValueAt(jenispasien.getTable().getSelectedRow(), 1).toString());
                     BtnJenisPasien.requestFocus();
                 }
             }
@@ -744,7 +704,9 @@ public class CoronaPasien extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2355,8 +2317,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            CoronaPasien dialog = new CoronaPasien(new javax.swing.JFrame(),
-                    true);
+            CoronaPasien dialog = new CoronaPasien(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2497,34 +2458,20 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{rs.getString("no_pengenal"), rs.
-                        getString("no_rkm_medis"),
-                        rs.getString("nama_lengkap"), rs.getString("inisial"),
-                        rs.getString("kode_jk"),
-                        rs.getString("nama_jk"), rs.getString("tgl_lahir"), rs.
-                        getString("email"),
-                        rs.getString("notelp"), rs.getString("tgl_lapor"), rs.
-                        getString("tgl_masuk"),
-                        rs.getString("tgl_keluar"), rs.getString(
-                        "kode_kewarganegaraan"),
-                        rs.getString("nama_kewarganegaraan"), rs.getString(
-                        "kode_penularan"),
-                        rs.getString("sumber_penularan"), rs.getString(
-                        "kd_kelurahan"),
-                        rs.getString("nm_kelurahan"), rs.getString(
-                        "kd_kecamatan"), rs.getString("nm_kecamatan"),
-                        rs.getString("kd_kabupaten"), rs.getString(
-                        "nm_kabupaten"), rs.getString("kd_propinsi"),
-                        rs.getString("nm_propinsi"), rs.getString(
-                        "kode_statuskeluar"),
-                        rs.getString("nama_statuskeluar"), rs.getString(
-                        "kode_statusrawat"),
-                        rs.getString("nama_statusrawat"), rs.getString(
-                        "kode_statusisolasi"),
-                        rs.getString("nama_statusisolasi"), rs.getString(
-                        "sebab_kematian"),
-                        rs.getString("kode_jenis_pasien"), rs.getString(
-                        "nama_jenis_pasien")});
+                    tabMode.addRow(new String[]{rs.getString("no_pengenal"), rs.getString("no_rkm_medis"),
+                        rs.getString("nama_lengkap"), rs.getString("inisial"), rs.getString("kode_jk"),
+                        rs.getString("nama_jk"), rs.getString("tgl_lahir"), rs.getString("email"),
+                        rs.getString("notelp"), rs.getString("tgl_lapor"), rs.getString("tgl_masuk"),
+                        rs.getString("tgl_keluar"), rs.getString("kode_kewarganegaraan"),
+                        rs.getString("nama_kewarganegaraan"), rs.getString("kode_penularan"),
+                        rs.getString("sumber_penularan"), rs.getString("kd_kelurahan"),
+                        rs.getString("nm_kelurahan"), rs.getString("kd_kecamatan"), rs.getString("nm_kecamatan"),
+                        rs.getString("kd_kabupaten"), rs.getString("nm_kabupaten"), rs.getString("kd_propinsi"),
+                        rs.getString("nm_propinsi"), rs.getString("kode_statuskeluar"),
+                        rs.getString("nama_statuskeluar"), rs.getString("kode_statusrawat"),
+                        rs.getString("nama_statusrawat"), rs.getString("kode_statusisolasi"),
+                        rs.getString("nama_statusisolasi"), rs.getString("sebab_kematian"),
+                        rs.getString("kode_jenis_pasien"), rs.getString("nama_jenis_pasien")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2584,72 +2531,39 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            NoKTP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            NoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            NamaPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Inisial.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            KodeJK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            NamaJK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Email.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            NoTelp.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            KodeKewarganegaraan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            NamaKewarganegaraan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            KodePenularan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
-            NamaPenularan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
-            KodeKelurahan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
-            NamaKelurahan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
-            KodeKecamatan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
-            NamaKecamatan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
-            KodeKabupaten.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
-            NamaKabupaten.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
-            KodePropinsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            NamaPropinsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            KodeStatusKeluar.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    24).toString());
-            NamaStatusKeluar.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    25).toString());
-            KodeStatusRawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    26).toString());
-            NamaStatusRawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    27).toString());
-            KodeStatusIsolasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    28).toString());
-            NamaStatusIsolasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    29).toString());
-            SebabKematian.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
-            KodeJenisPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    31).toString());
-            NamaJenisPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    32).toString());
-            TglLahir.setText(Valid.SetTgl3(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString()));
-            Valid.SetTgl2(TglLapor, tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 9).toString());
-            Valid.SetTgl(TglMasuk, tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 10).toString());
-            Valid.SetTgl(TglKeluar, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    11).toString());
+            NoKTP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            NoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            NamaPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Inisial.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            KodeJK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            NamaJK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Email.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            NoTelp.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            KodeKewarganegaraan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            NamaKewarganegaraan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            KodePenularan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            NamaPenularan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            KodeKelurahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            NamaKelurahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            KodeKecamatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            NamaKecamatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            KodeKabupaten.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            NamaKabupaten.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            KodePropinsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            NamaPropinsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            KodeStatusKeluar.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            NamaStatusKeluar.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            KodeStatusRawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            NamaStatusRawat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            KodeStatusIsolasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            NamaStatusIsolasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            SebabKematian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            KodeJenisPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            NamaJenisPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            TglLahir.setText(Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString()));
+            Valid.SetTgl2(TglLapor, tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Valid.SetTgl(TglMasuk, tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Valid.SetTgl(TglKeluar, tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
         }
     }
 
@@ -2698,10 +2612,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     NoKTP.setText(rs.getString("no_ktp"));
                     NoRM.setText(rs.getString("no_rkm_medis"));
                     NamaPasien.setText(rs.getString("nm_pasien"));
-                    KodeJK.setText(rs.getString("jk").replaceAll("L", "1").
-                            replaceAll("P", "2"));
-                    NamaJK.setText(rs.getString("jk").replaceAll("L",
-                            "Laki-Laki").replaceAll("P", "Perempuan"));
+                    KodeJK.setText(rs.getString("jk").replaceAll("L", "1").replaceAll("P", "2"));
+                    NamaJK.setText(rs.getString("jk").replaceAll("L", "Laki-Laki").replaceAll("P", "Perempuan"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
                     Email.setText(rs.getString("email"));
                     NoTelp.setText(rs.getString("no_tlp"));
@@ -2733,7 +2645,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         return tbObat;
     }
 
-    private static final Logger LOG = Logger.getLogger(CoronaPasien.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(CoronaPasien.class.getName());
 
 }

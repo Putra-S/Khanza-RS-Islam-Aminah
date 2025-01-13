@@ -31,37 +31,47 @@ import simrskhanza.DlgCariCaraBayar;
 import simrskhanza.DlgCariPoli;
 
 /**
- *
  * @author perpustakaan
  */
 public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private final Connection koneksi = koneksiDB.condb();
+
     private final sekuel Sequel = new sekuel();
+
     private final DefaultTableModel tabModeRalanDokter;
-    private DefaultTableModel tabModeRalanParamedis,
-            tabModeRalanDokterParamedis, tabModeRanapDokter, tabModeRanapParamedis,
-            tabModeRanapDokterParamedis, tabModeRadiologi, tabModeLaborat,
-            tabModeDetailLaborat, tabModeOperasi;
+
+    private DefaultTableModel tabModeRalanParamedis, tabModeRalanDokterParamedis, tabModeRanapDokter,
+            tabModeRanapParamedis, tabModeRanapDokterParamedis, tabModeRadiologi, tabModeLaborat, tabModeDetailLaborat,
+            tabModeOperasi;
+
     private validasi Valid = new validasi();
+
     private ResultSet rs;
+
     private PreparedStatement ps;
+
     private int i = 0;
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
-    private double material = 0, bhp = 0, jmdokter = 0, jmpetugas = 0, jmperujuk = 0, kso = 0,
-            menejemen = 0, total = 0, biayaoperator1 = 0, biayaoperator2 = 0,
-            biayaoperator3 = 0, biayaasisten_operator1 = 0, biayaasisten_operator2 = 0,
-            biayaasisten_operator3 = 0, biayainstrumen = 0, biayadokter_anak = 0,
+
+    private double material = 0, bhp = 0, jmdokter = 0, jmpetugas = 0, jmperujuk = 0, kso = 0, menejemen = 0, total = 0,
+            biayaoperator1 = 0, biayaoperator2 = 0, biayaoperator3 = 0, biayaasisten_operator1 = 0,
+            biayaasisten_operator2 = 0, biayaasisten_operator3 = 0, biayainstrumen = 0, biayadokter_anak = 0,
             biayaperawaat_resusitas = 0, biayadokter_anestesi = 0, biayaasisten_anestesi = 0,
-            biayaasisten_anestesi2 = 0, biayabidan = 0, biayabidan2 = 0, biayabidan3 = 0,
-            biayaperawat_luar = 0, biayaalat = 0, biayasewaok = 0, akomodasi = 0,
-            bagian_rs = 0, biaya_omloop = 0, biaya_omloop2 = 0, biaya_omloop3 = 0,
-            biaya_omloop4 = 0, biaya_omloop5 = 0, biayasarpras = 0, biaya_dokter_pjanak = 0,
+            biayaasisten_anestesi2 = 0, biayabidan = 0, biayabidan2 = 0, biayabidan3 = 0, biayaperawat_luar = 0,
+            biayaalat = 0, biayasewaok = 0, akomodasi = 0, bagian_rs = 0, biaya_omloop = 0, biaya_omloop2 = 0,
+            biaya_omloop3 = 0, biaya_omloop4 = 0, biaya_omloop5 = 0, biayasarpras = 0, biaya_dokter_pjanak = 0,
             biaya_dokter_umum = 0;
+
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
     private int item = 0;
 
     /**
@@ -76,16 +86,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabModeRalanDokter = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana",
-            "Paket BHP", "JM Dokter", "KSO", "Menejemen", "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Integer.class
-            };
+        tabModeRalanDokter = new DefaultTableModel(null, new Object[]{"No.", "Kode Tindakan", "Perawatan/Tindakan",
+            "Jasa Sarana", "Paket BHP", "JM Dokter", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -99,8 +104,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
         };
         tbRalanDokter.setModel(tabModeRalanDokter);
-        tbRalanDokter.
-                setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbRalanDokter.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRalanDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 10; i++) {
@@ -129,16 +133,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
         tbRalanDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRalanParamedis = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana",
-            "Paket BHP", "JM Paramedis", "KSO", "Menejemen", "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Integer.class
-            };
+        tabModeRalanParamedis = new DefaultTableModel(null, new Object[]{"No.", "Kode Tindakan", "Perawatan/Tindakan",
+            "Jasa Sarana", "Paket BHP", "JM Paramedis", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -152,8 +151,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
         };
         tbRalanParamedis.setModel(tabModeRalanParamedis);
-        tbRalanParamedis.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbRalanParamedis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRalanParamedis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 10; i++) {
@@ -182,18 +180,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
         tbRalanParamedis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRalanDokterParamedis = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana",
-            "Paket BHP", "JM Dokter", "JM Paramedis", "KSO", "Menejemen",
-            "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeRalanDokterParamedis = new DefaultTableModel(null,
+                new Object[]{"No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana", "Paket BHP", "JM Dokter",
+                    "JM Paramedis", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -207,13 +199,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
         };
         tbRalanDokterParamedis.setModel(tabModeRalanDokterParamedis);
-        tbRalanDokterParamedis.setPreferredScrollableViewportSize(new Dimension(
-                500, 500));
+        tbRalanDokterParamedis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRalanDokterParamedis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 11; i++) {
-            TableColumn column = tbRalanDokterParamedis.getColumnModel().
-                    getColumn(i);
+            TableColumn column = tbRalanDokterParamedis.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(30);
             } else if (i == 1) {
@@ -238,21 +228,13 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                 column.setPreferredWidth(45);
             }
         }
-        tbRalanDokterParamedis.
-                setDefaultRenderer(Object.class, new WarnaTable());
+        tbRalanDokterParamedis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRanapDokter = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana",
-            "Paket BHP", "JM Dokter", "KSO", "Menejemen", "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeRanapDokter = new DefaultTableModel(null, new Object[]{"No.", "Kode Tindakan", "Perawatan/Tindakan",
+            "Jasa Sarana", "Paket BHP", "JM Dokter", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -266,8 +248,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
         };
         tbRanapDokter.setModel(tabModeRanapDokter);
-        tbRanapDokter.
-                setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbRanapDokter.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRanapDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 10; i++) {
@@ -296,18 +277,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
         tbRanapDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRanapParamedis = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana",
-            "Paket BHP", "JM Paramedis", "KSO", "Menejemen", "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeRanapParamedis = new DefaultTableModel(null, new Object[]{"No.", "Kode Tindakan", "Perawatan/Tindakan",
+            "Jasa Sarana", "Paket BHP", "JM Paramedis", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -321,8 +295,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
         };
         tbRanapParamedis.setModel(tabModeRanapParamedis);
-        tbRanapParamedis.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbRanapParamedis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRanapParamedis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 10; i++) {
@@ -351,18 +324,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
         tbRanapParamedis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRanapDokterParamedis = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana",
-            "Paket BHP", "JM Dokter", "JM Paramedis", "KSO", "Menejemen",
-            "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeRanapDokterParamedis = new DefaultTableModel(null,
+                new Object[]{"No.", "Kode Tindakan", "Perawatan/Tindakan", "Jasa Sarana", "Paket BHP", "JM Dokter",
+                    "JM Paramedis", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -376,13 +343,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
         };
         tbRanapDokterParamedis.setModel(tabModeRanapDokterParamedis);
-        tbRanapDokterParamedis.setPreferredScrollableViewportSize(new Dimension(
-                500, 500));
+        tbRanapDokterParamedis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbRanapDokterParamedis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 11; i++) {
-            TableColumn column = tbRanapDokterParamedis.getColumnModel().
-                    getColumn(i);
+            TableColumn column = tbRanapDokterParamedis.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(30);
             } else if (i == 1) {
@@ -407,23 +372,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                 column.setPreferredWidth(45);
             }
         }
-        tbRanapDokterParamedis.
-                setDefaultRenderer(Object.class, new WarnaTable());
+        tbRanapDokterParamedis.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRadiologi = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode", "Pemeriksaan", "Jasa Sarana", "Paket BHP",
-            "JM P.J.Rad", "JM Petugas", "JM Perujuk", "KSO", "Menejemen",
-            "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeRadiologi = new DefaultTableModel(null, new Object[]{"No.", "Kode", "Pemeriksaan", "Jasa Sarana",
+            "Paket BHP", "JM P.J.Rad", "JM Petugas", "JM Perujuk", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -470,20 +426,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
         tbRadiologi.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeLaborat = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode", "Pemeriksaan", "Jasa Sarana", "Paket BHP",
-            "JM P.J.Lab", "JM Petugas", "JM Perujuk", "KSO", "Menejemen",
-            "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeLaborat = new DefaultTableModel(null, new Object[]{"No.", "Kode", "Pemeriksaan", "Jasa Sarana",
+            "Paket BHP", "JM P.J.Lab", "JM Petugas", "JM Perujuk", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -530,19 +478,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
         tbLaborat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeDetailLaborat = new DefaultTableModel(null, new Object[]{
-            "No.", "Id", "Pemeriksaan", "Jasa Sarana", "Paket BHP", "JM P.J.Lab",
-            "JM Petugas", "JM Perujuk", "KSO", "Menejemen", "Total", "Jumlah"}) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeDetailLaborat = new DefaultTableModel(null, new Object[]{"No.", "Id", "Pemeriksaan", "Jasa Sarana",
+            "Paket BHP", "JM P.J.Lab", "JM Petugas", "JM Perujuk", "KSO", "Menejemen", "Total", "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -556,8 +497,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
         };
         tbDetailLaborat.setModel(tabModeDetailLaborat);
-        tbDetailLaborat.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbDetailLaborat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbDetailLaborat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
@@ -590,40 +530,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
         tbDetailLaborat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeOperasi = new DefaultTableModel(null, new Object[]{
-            "No.", "Kode Paket", "Paket Operasi/VK", "JM Operator 1",
-            "JM Operator 2", "JM Operator 3", "JM AO 1",
-            "JM AO 2", "JM AO 3", "JM Instrumen", "JM dr Anak", "JM P.R.",
-            "JM dr Anastesi", "JM A.A. 1", "JM A.A. 2",
-            "JM Bidan 1", "JM Bidan 2", "JM Bidan 3", "JM P.L.", "JM Onloop 1",
-            "JM Onloop 2", "JM Onloop 3", "JM Onloop 4",
-            "JM Onloop 5", "JM dr P.J. Anak", "JM dr Umum", "Sewa Alat",
-            "Sewa OK/VK", "Akomodasi", "N.M.S.", "Sarpras", "Total", "Jumlah"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Integer.class
-            };
+        tabModeOperasi = new DefaultTableModel(null,
+                new Object[]{"No.", "Kode Paket", "Paket Operasi/VK", "JM Operator 1", "JM Operator 2",
+                    "JM Operator 3", "JM AO 1", "JM AO 2", "JM AO 3", "JM Instrumen", "JM dr Anak", "JM P.R.",
+                    "JM dr Anastesi", "JM A.A. 1", "JM A.A. 2", "JM Bidan 1", "JM Bidan 2", "JM Bidan 3", "JM P.L.",
+                    "JM Onloop 1", "JM Onloop 2", "JM Onloop 3", "JM Onloop 4", "JM Onloop 5", "JM dr P.J. Anak",
+                    "JM dr Umum", "Sewa Alat", "Sewa OK/VK", "Akomodasi", "N.M.S.", "Sarpras", "Total",
+                    "Jumlah"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Integer.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -674,75 +596,59 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                 if (dokter.getTable().getSelectedRow() != -1) {
                     switch (TabRawat.getSelectedIndex()) {
                         case 0:
-                            KdDokterRalanDokter.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmDokterRalanDokter.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdDokterRalanDokter.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmDokterRalanDokter.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnDokterRalanDokter.requestFocus();
                             break;
                         case 2:
-                            KdDokterRalanDokterParamedis.setText(dokter.
-                                    getTable().getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmDokterRalanDokterParamedis.setText(dokter.
-                                    getTable().getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdDokterRalanDokterParamedis.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmDokterRalanDokterParamedis.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnDokterRalanDokterParamedis.requestFocus();
                             break;
                         case 3:
-                            KdOperatorOperasi.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmOperatorOperasi.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdOperatorOperasi.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmOperatorOperasi.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnOperatorOperasi.requestFocus();
                             break;
                         case 4:
-                            KdDokterRanapDokter.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmDokterRanapDokter.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdDokterRanapDokter.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmDokterRanapDokter.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnDokterRanapDokter.requestFocus();
                             break;
                         case 6:
-                            KdDokterRanapDokterParamedis.setText(dokter.
-                                    getTable().getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmDokterRanapDokterParamedis.setText(dokter.
-                                    getTable().getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdDokterRanapDokterParamedis.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmDokterRanapDokterParamedis.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnDokterRanapDokterParamedis.requestFocus();
                             break;
                         case 7:
-                            KdDokterPerujukRad.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmDokterPerujukRad.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdDokterPerujukRad.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmDokterPerujukRad.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnDokterPerujukRad.requestFocus();
                             break;
                         case 8:
-                            KdDokterPerujukLab.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmDokterPerujukLab.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdDokterPerujukLab.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmDokterPerujukLab.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnDokterPerujukLab.requestFocus();
                             break;
                         case 9:
-                            KdDokterPerujukDetailLab.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmDokterPerujukDetailLab.setText(dokter.getTable().
-                                    getValueAt(dokter.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdDokterPerujukDetailLab.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                            NmDokterPerujukDetailLab.setText(
+                                    dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                             BtnDokterPerujukDetailLab.requestFocus();
                             break;
                         default:
@@ -802,75 +708,59 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     switch (TabRawat.getSelectedIndex()) {
                         case 1:
-                            KdPetugasRalanParamedis.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmPetugasRalanParamedis.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdPetugasRalanParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPetugasRalanParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnPetugasRalanParamedis.requestFocus();
                             break;
                         case 2:
-                            KdPetugasRalanDokterParamedis.setText(petugas.
-                                    getTable().getValueAt(petugas.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmPetugasRalanDokterParamedis.setText(petugas.
-                                    getTable().getValueAt(petugas.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdPetugasRalanDokterParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPetugasRalanDokterParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnPetugasRalanDokterParamedis.requestFocus();
                             break;
                         case 3:
-                            KdAsistenOperasi.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmAsistenOperasi.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdAsistenOperasi.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmAsistenOperasi.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnAsistenOperasi.requestFocus();
                             break;
                         case 5:
-                            KdPetugasRanapParamedis.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmPetugasRanapParamedis.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdPetugasRanapParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPetugasRanapParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnPetugasRanapParamedis.requestFocus();
                             break;
                         case 6:
-                            KdPetugasRanapDokterParamedis.setText(petugas.
-                                    getTable().getValueAt(petugas.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmPetugasRanapDokterParamedis.setText(petugas.
-                                    getTable().getValueAt(petugas.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdPetugasRanapDokterParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPetugasRanapDokterParamedis.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnPetugasRanapDokterParamedis.requestFocus();
                             break;
                         case 7:
-                            KdPetugasRad.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 0).
-                                    toString());
-                            NmPetugasRad.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 1).
-                                    toString());
+                            KdPetugasRad.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPetugasRad.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnPetugasRad.requestFocus();
                             break;
                         case 8:
-                            KdPetugasLab.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 0).
-                                    toString());
-                            NmPetugasLab.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 1).
-                                    toString());
+                            KdPetugasLab.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPetugasLab.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnPetugasLab.requestFocus();
                             break;
                         case 9:
-                            KdPetugasDetailLab.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 0).toString());
-                            NmPetugasDetailLab.setText(petugas.getTable().
-                                    getValueAt(petugas.getTable().
-                                            getSelectedRow(), 1).toString());
+                            KdPetugasDetailLab.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPetugasDetailLab.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             BtnPetugasDetailLab.requestFocus();
                             break;
                         default:
@@ -930,30 +820,24 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                 if (poli.getTable().getSelectedRow() != -1) {
                     switch (TabRawat.getSelectedIndex()) {
                         case 0:
-                            KdPoliRalanDokter.setText(poli.getTable().
-                                    getValueAt(poli.getTable().getSelectedRow(),
-                                            0).toString());
-                            NmPoliRalanDokter.setText(poli.getTable().
-                                    getValueAt(poli.getTable().getSelectedRow(),
-                                            1).toString());
+                            KdPoliRalanDokter
+                                    .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                            NmPoliRalanDokter
+                                    .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                             BtnPoliRalanDokter.requestFocus();
                             break;
                         case 1:
-                            KdPoliRalanParamedis.setText(poli.getTable().
-                                    getValueAt(poli.getTable().getSelectedRow(),
-                                            0).toString());
-                            NmPoliRalanParamedis.setText(poli.getTable().
-                                    getValueAt(poli.getTable().getSelectedRow(),
-                                            1).toString());
+                            KdPoliRalanParamedis
+                                    .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                            NmPoliRalanParamedis
+                                    .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                             BtnPoliRalanParamedis.requestFocus();
                             break;
                         case 2:
-                            KdPoliRalanDokterParamedis.setText(poli.getTable().
-                                    getValueAt(poli.getTable().getSelectedRow(),
-                                            0).toString());
-                            NmPoliRalanDokterParamedis.setText(poli.getTable().
-                                    getValueAt(poli.getTable().getSelectedRow(),
-                                            1).toString());
+                            KdPoliRalanDokterParamedis
+                                    .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                            NmPoliRalanDokterParamedis
+                                    .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                             BtnPoliRalanDokterParamedis.requestFocus();
                             break;
                         default:
@@ -995,93 +879,73 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                 if (penjab.getTable().getSelectedRow() != -1) {
                     switch (TabRawat.getSelectedIndex()) {
                         case 0:
-                            KdCaraBayarRalanDokter.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarRalanDokter.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarRalanDokter.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarRalanDokter.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarRalanDokter.requestFocus();
                             break;
                         case 1:
-                            KdCaraBayarRalanParamedis.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarRalanParamedis.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarRalanParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarRalanParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarRalanParamedis.requestFocus();
                             break;
                         case 2:
-                            KdCaraBayarRalanDokterParamedis.setText(penjab.
-                                    getTable().getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarRalanDokterParamedis.setText(penjab.
-                                    getTable().getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarRalanDokterParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarRalanDokterParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarRalanDokterParamedis.requestFocus();
                             break;
                         case 3:
-                            KdCaraBayarOperasi.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarOperasi.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarOperasi.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarOperasi.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarOperasi.requestFocus();
                             break;
                         case 4:
-                            KdCaraBayarRanapDokter.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarRanapDokter.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarRanapDokter.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarRanapDokter.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarRanapDokter.requestFocus();
                             break;
                         case 5:
-                            KdCaraBayarRanapParamedis.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarRanapParamedis.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarRanapParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarRanapParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarRanapParamedis.requestFocus();
                             break;
                         case 6:
-                            KdCaraBayarRanapDokterParamedis.setText(penjab.
-                                    getTable().getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarRanapDokterParamedis.setText(penjab.
-                                    getTable().getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarRanapDokterParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarRanapDokterParamedis.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarRanapDokterParamedis.requestFocus();
                             break;
                         case 7:
-                            KdCaraBayarRad.setText(penjab.getTable().getValueAt(
-                                    penjab.getTable().getSelectedRow(), 1).
-                                    toString());
-                            NmCaraBayarRad.setText(penjab.getTable().getValueAt(
-                                    penjab.getTable().getSelectedRow(), 2).
-                                    toString());
+                            KdCaraBayarRad.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarRad.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarRad.requestFocus();
                             break;
                         case 8:
-                            KdCaraBayarLab.setText(penjab.getTable().getValueAt(
-                                    penjab.getTable().getSelectedRow(), 1).
-                                    toString());
-                            NmCaraBayarLab.setText(penjab.getTable().getValueAt(
-                                    penjab.getTable().getSelectedRow(), 2).
-                                    toString());
+                            KdCaraBayarLab.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarLab.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarLab.requestFocus();
                             break;
                         case 9:
-                            KdCaraBayarDetailLab.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 1).toString());
-                            NmCaraBayarDetailLab.setText(penjab.getTable().
-                                    getValueAt(penjab.getTable().
-                                            getSelectedRow(), 2).toString());
+                            KdCaraBayarDetailLab.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                            NmCaraBayarDetailLab.setText(
+                                    penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                             BtnCaraBayarDetailLab.requestFocus();
                             break;
                         default:
@@ -1153,7 +1017,9 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -3285,8 +3151,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganRingkasanTindakan dialog = new KeuanganRingkasanTindakan(
-                    new javax.swing.JFrame(), true);
+            KeuanganRingkasanTindakan dialog = new KeuanganRingkasanTindakan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -3495,14 +3360,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil() {
         Valid.tabelKosong(tabModeRalanDokter);
         try {
-            if (KdDokterRalanDokter.getText().isEmpty() && NmDokterRalanDokter.
-                    getText().isEmpty() && KdPoliRalanDokter.getText().isEmpty() && NmPoliRalanDokter.
-                    getText().isEmpty() && KdCaraBayarRalanDokter.getText().
-                            isEmpty() && NmCaraBayarRalanDokter.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+            if (KdDokterRalanDokter.getText().isEmpty() && NmDokterRalanDokter.getText().isEmpty()
+                    && KdPoliRalanDokter.getText().isEmpty() && NmPoliRalanDokter.getText().isEmpty()
+                    && KdCaraBayarRalanDokter.getText().isEmpty() && NmCaraBayarRalanDokter.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                         + "sum(rawat_jl_dr.material),sum(rawat_jl_dr.bhp),sum(rawat_jl_dr.tarif_tindakandr),"
                         + "sum(rawat_jl_dr.kso),sum(rawat_jl_dr.menejemen),sum(rawat_jl_dr.biaya_rawat),count(rawat_jl_dr.kd_jenis_prw) "
                         + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3514,8 +3376,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between ? and ? group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                    ps = koneksi.prepareStatement("select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material),sum(rawat_jl_dr.bhp),sum(rawat_jl_dr.tarif_tindakandr),"
                             + "sum(rawat_jl_dr.kso),sum(rawat_jl_dr.menejemen),sum(rawat_jl_dr.biaya_rawat),count(rawat_jl_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3526,10 +3387,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_dr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material),sum(rawat_jl_dr.bhp),sum(rawat_jl_dr.tarif_tindakandr),"
                             + "sum(rawat_jl_dr.kso),sum(rawat_jl_dr.menejemen),sum(rawat_jl_dr.biaya_rawat),count(rawat_jl_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3541,10 +3400,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_dr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material),sum(rawat_jl_dr.bhp),sum(rawat_jl_dr.tarif_tindakandr),"
                             + "sum(rawat_jl_dr.kso),sum(rawat_jl_dr.menejemen),sum(rawat_jl_dr.biaya_rawat),count(rawat_jl_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3556,10 +3413,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_dr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material),sum(rawat_jl_dr.bhp),sum(rawat_jl_dr.tarif_tindakandr),"
                             + "sum(rawat_jl_dr.kso),sum(rawat_jl_dr.menejemen),sum(rawat_jl_dr.biaya_rawat),count(rawat_jl_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3570,10 +3425,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_dr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material),sum(rawat_jl_dr.bhp),sum(rawat_jl_dr.tarif_tindakandr),"
                             + "sum(rawat_jl_dr.kso),sum(rawat_jl_dr.menejemen),sum(rawat_jl_dr.biaya_rawat),count(rawat_jl_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3588,35 +3441,18 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdDokterRalanDokter.getText().isEmpty() && NmDokterRalanDokter.
-                        getText().isEmpty() && KdPoliRalanDokter.getText().
-                                isEmpty() && NmPoliRalanDokter.getText().
-                                isEmpty() && KdCaraBayarRalanDokter.getText().
-                                isEmpty() && NmCaraBayarRalanDokter.getText().
-                                isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdDokterRalanDokter.getText().isEmpty() && NmDokterRalanDokter.getText().isEmpty()
+                        && KdPoliRalanDokter.getText().isEmpty() && NmPoliRalanDokter.getText().isEmpty()
+                        && KdCaraBayarRalanDokter.getText().isEmpty() && NmCaraBayarRalanDokter.getText().isEmpty()
+                        && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdPoliRalanDokter.getText() + NmPoliRalanDokter.
-                            getText() + "%");
-                    ps.setString(4,
-                            "%" + KdDokterRalanDokter.getText() + NmDokterRalanDokter.
-                            getText() + "%");
-                    ps.setString(5,
-                            "%" + KdCaraBayarRalanDokter.getText() + NmCaraBayarRalanDokter.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdPoliRalanDokter.getText() + NmPoliRalanDokter.getText() + "%");
+                    ps.setString(4, "%" + KdDokterRalanDokter.getText() + NmDokterRalanDokter.getText() + "%");
+                    ps.setString(5, "%" + KdCaraBayarRalanDokter.getText() + NmCaraBayarRalanDokter.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                 }
@@ -3638,18 +3474,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble(7);
                     total += rs.getDouble(8);
                     item += rs.getInt(9);
-                    tabModeRalanDokter.addRow(new Object[]{
-                        i, rs.getString(1), rs.getString(2), rs.getDouble(3),
-                        rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.
-                        getDouble(7), rs.getDouble(8), rs.getInt(9)
-                    });
+                    tabModeRalanDokter
+                            .addRow(new Object[]{i, rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4),
+                        rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.getInt(9)});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeRalanDokter.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmdokter, kso,
-                        menejemen, total, item
-                    });
+                    tabModeRalanDokter.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmdokter, kso,
+                        menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -3672,15 +3504,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil2() {
         Valid.tabelKosong(tabModeRalanParamedis);
         try {
-            if (KdPetugasRalanParamedis.getText().isEmpty() && NmPetugasRalanParamedis.
-                    getText().isEmpty() && KdPoliRalanParamedis.getText().
-                            isEmpty() && NmPoliRalanParamedis.getText().
-                            isEmpty() && KdCaraBayarRalanParamedis.getText().
-                            isEmpty() && NmCaraBayarRalanParamedis.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+            if (KdPetugasRalanParamedis.getText().isEmpty() && NmPetugasRalanParamedis.getText().isEmpty()
+                    && KdPoliRalanParamedis.getText().isEmpty() && NmPoliRalanParamedis.getText().isEmpty()
+                    && KdCaraBayarRalanParamedis.getText().isEmpty() && NmCaraBayarRalanParamedis.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                         + "sum(rawat_jl_pr.material),sum(rawat_jl_pr.bhp),sum(rawat_jl_pr.tarif_tindakanpr),"
                         + "sum(rawat_jl_pr.kso),sum(rawat_jl_pr.menejemen),sum(rawat_jl_pr.biaya_rawat),count(rawat_jl_pr.kd_jenis_prw) "
                         + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3692,8 +3520,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between ? and ? group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                    ps = koneksi.prepareStatement("select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material),sum(rawat_jl_pr.bhp),sum(rawat_jl_pr.tarif_tindakanpr),"
                             + "sum(rawat_jl_pr.kso),sum(rawat_jl_pr.menejemen),sum(rawat_jl_pr.biaya_rawat),count(rawat_jl_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3704,10 +3531,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_pr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material),sum(rawat_jl_pr.bhp),sum(rawat_jl_pr.tarif_tindakanpr),"
                             + "sum(rawat_jl_pr.kso),sum(rawat_jl_pr.menejemen),sum(rawat_jl_pr.biaya_rawat),count(rawat_jl_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3719,10 +3544,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_pr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material),sum(rawat_jl_pr.bhp),sum(rawat_jl_pr.tarif_tindakanpr),"
                             + "sum(rawat_jl_pr.kso),sum(rawat_jl_pr.menejemen),sum(rawat_jl_pr.biaya_rawat),count(rawat_jl_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3734,10 +3557,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_pr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material),sum(rawat_jl_pr.bhp),sum(rawat_jl_pr.tarif_tindakanpr),"
                             + "sum(rawat_jl_pr.kso),sum(rawat_jl_pr.menejemen),sum(rawat_jl_pr.biaya_rawat),count(rawat_jl_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3748,10 +3569,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between ? and ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_pr.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ?) "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material),sum(rawat_jl_pr.bhp),sum(rawat_jl_pr.tarif_tindakanpr),"
                             + "sum(rawat_jl_pr.kso),sum(rawat_jl_pr.menejemen),sum(rawat_jl_pr.biaya_rawat),count(rawat_jl_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3766,35 +3585,20 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdPetugasRalanParamedis.getText().isEmpty() && NmPetugasRalanParamedis.
-                        getText().isEmpty() && KdPoliRalanParamedis.getText().
-                                isEmpty() && NmPoliRalanParamedis.getText().
-                                isEmpty() && KdCaraBayarRalanParamedis.getText().
-                                isEmpty() && NmCaraBayarRalanParamedis.getText().
-                                isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdPetugasRalanParamedis.getText().isEmpty() && NmPetugasRalanParamedis.getText().isEmpty()
+                        && KdPoliRalanParamedis.getText().isEmpty() && NmPoliRalanParamedis.getText().isEmpty()
+                        && KdCaraBayarRalanParamedis.getText().isEmpty()
+                        && NmCaraBayarRalanParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                        && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdPoliRalanParamedis.getText() + NmPoliRalanParamedis.
-                            getText() + "%");
-                    ps.setString(4,
-                            "%" + KdPetugasRalanParamedis.getText() + NmPetugasRalanParamedis.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdPoliRalanParamedis.getText() + NmPoliRalanParamedis.getText() + "%");
+                    ps.setString(4, "%" + KdPetugasRalanParamedis.getText() + NmPetugasRalanParamedis.getText() + "%");
                     ps.setString(5,
-                            "%" + KdCaraBayarRalanParamedis.getText() + NmCaraBayarRalanParamedis.
-                            getText() + "%");
+                            "%" + KdCaraBayarRalanParamedis.getText() + NmCaraBayarRalanParamedis.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                 }
@@ -3816,18 +3620,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble(7);
                     total += rs.getDouble(8);
                     item += rs.getInt(9);
-                    tabModeRalanParamedis.addRow(new Object[]{
-                        i, rs.getString(1), rs.getString(2), rs.getDouble(3),
-                        rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.
-                        getDouble(7), rs.getDouble(8), rs.getInt(9)
-                    });
+                    tabModeRalanParamedis
+                            .addRow(new Object[]{i, rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4),
+                        rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.getInt(9)});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeRalanParamedis.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmpetugas, kso,
-                        menejemen, total, item
-                    });
+                    tabModeRalanParamedis.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmpetugas, kso,
+                        menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -3847,17 +3647,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil3() {
         Valid.tabelKosong(tabModeRalanDokterParamedis);
         try {
-            if (KdDokterRalanDokterParamedis.getText().isEmpty() && NmDokterRalanDokterParamedis.
-                    getText().isEmpty() && KdPetugasRalanDokterParamedis.
-                            getText().isEmpty() && NmPetugasRalanDokterParamedis.
-                            getText().isEmpty() && KdPoliRalanDokterParamedis.
-                            getText().isEmpty() && NmPoliRalanDokterParamedis.
-                            getText().isEmpty() && KdCaraBayarRalanDokterParamedis.
-                            getText().isEmpty() && NmCaraBayarRalanDokterParamedis.
-                            getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+            if (KdDokterRalanDokterParamedis.getText().isEmpty() && NmDokterRalanDokterParamedis.getText().isEmpty()
+                    && KdPetugasRalanDokterParamedis.getText().isEmpty()
+                    && NmPetugasRalanDokterParamedis.getText().isEmpty()
+                    && KdPoliRalanDokterParamedis.getText().isEmpty() && NmPoliRalanDokterParamedis.getText().isEmpty()
+                    && KdCaraBayarRalanDokterParamedis.getText().isEmpty()
+                    && NmCaraBayarRalanDokterParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                    && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                         + "sum(rawat_jl_drpr.material),sum(rawat_jl_drpr.bhp),sum(rawat_jl_drpr.tarif_tindakandr),sum(rawat_jl_drpr.tarif_tindakanpr),"
                         + "sum(rawat_jl_drpr.kso),sum(rawat_jl_drpr.menejemen),sum(rawat_jl_drpr.biaya_rawat),count(rawat_jl_drpr.kd_jenis_prw) "
                         + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3870,8 +3667,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between ? and ? group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                    ps = koneksi.prepareStatement("select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material),sum(rawat_jl_drpr.bhp),sum(rawat_jl_drpr.tarif_tindakandr),sum(rawat_jl_drpr.tarif_tindakanpr),"
                             + "sum(rawat_jl_drpr.kso),sum(rawat_jl_drpr.menejemen),sum(rawat_jl_drpr.biaya_rawat),count(rawat_jl_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3883,10 +3679,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
                             + "where concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between ? and ? and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_drpr.no_rawat like ? or poliklinik.nm_poli like ?) "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material),sum(rawat_jl_drpr.bhp),sum(rawat_jl_drpr.tarif_tindakandr),sum(rawat_jl_drpr.tarif_tindakanpr),"
                             + "sum(rawat_jl_drpr.kso),sum(rawat_jl_drpr.menejemen),sum(rawat_jl_drpr.biaya_rawat),count(rawat_jl_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3899,10 +3693,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between ? and ? and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_drpr.no_rawat like ? or poliklinik.nm_poli like ?) "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material),sum(rawat_jl_drpr.bhp),sum(rawat_jl_drpr.tarif_tindakandr),sum(rawat_jl_drpr.tarif_tindakanpr),"
                             + "sum(rawat_jl_drpr.kso),sum(rawat_jl_drpr.menejemen),sum(rawat_jl_drpr.biaya_rawat),count(rawat_jl_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3915,10 +3707,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between ? and ? and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_drpr.no_rawat like ? or poliklinik.nm_poli like ?) "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material),sum(rawat_jl_drpr.bhp),sum(rawat_jl_drpr.tarif_tindakandr),sum(rawat_jl_drpr.tarif_tindakanpr),"
                             + "sum(rawat_jl_drpr.kso),sum(rawat_jl_drpr.menejemen),sum(rawat_jl_drpr.biaya_rawat),count(rawat_jl_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3930,10 +3720,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between ? and ? and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? and concat(rawat_jl_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_jl_drpr.no_rawat like ? or poliklinik.nm_poli like ?) "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material),sum(rawat_jl_drpr.bhp),sum(rawat_jl_drpr.tarif_tindakandr),sum(rawat_jl_drpr.tarif_tindakanpr),"
                             + "sum(rawat_jl_drpr.kso),sum(rawat_jl_drpr.menejemen),sum(rawat_jl_drpr.biaya_rawat),count(rawat_jl_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -3949,39 +3737,27 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdDokterRalanDokterParamedis.getText().isEmpty() && NmDokterRalanDokterParamedis.
-                        getText().isEmpty() && KdPetugasRalanDokterParamedis.
-                                getText().isEmpty() && NmPetugasRalanDokterParamedis.
-                                getText().isEmpty() && KdPoliRalanDokterParamedis.
-                                getText().isEmpty() && NmPoliRalanDokterParamedis.
-                                getText().isEmpty() && KdCaraBayarRalanDokterParamedis.
-                                getText().isEmpty() && NmCaraBayarRalanDokterParamedis.
-                                getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdDokterRalanDokterParamedis.getText().isEmpty() && NmDokterRalanDokterParamedis.getText().isEmpty()
+                        && KdPetugasRalanDokterParamedis.getText().isEmpty()
+                        && NmPetugasRalanDokterParamedis.getText().isEmpty()
+                        && KdPoliRalanDokterParamedis.getText().isEmpty()
+                        && NmPoliRalanDokterParamedis.getText().isEmpty()
+                        && KdCaraBayarRalanDokterParamedis.getText().isEmpty()
+                        && NmCaraBayarRalanDokterParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                        && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdDokterRalanDokterParamedis.getText() + NmDokterRalanDokterParamedis.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdDokterRalanDokterParamedis.getText()
+                            + NmDokterRalanDokterParamedis.getText() + "%");
                     ps.setString(4,
-                            "%" + KdPoliRalanDokterParamedis.getText() + NmPoliRalanDokterParamedis.
-                            getText() + "%");
-                    ps.setString(5, "%" + KdPetugasRalanDokterParamedis.
-                            getText() + NmPetugasRalanDokterParamedis.getText() + "%");
-                    ps.setString(6, "%" + KdCaraBayarRalanDokterParamedis.
-                            getText() + NmCaraBayarRalanDokterParamedis.
-                                    getText() + "%");
+                            "%" + KdPoliRalanDokterParamedis.getText() + NmPoliRalanDokterParamedis.getText() + "%");
+                    ps.setString(5, "%" + KdPetugasRalanDokterParamedis.getText()
+                            + NmPetugasRalanDokterParamedis.getText() + "%");
+                    ps.setString(6, "%" + KdCaraBayarRalanDokterParamedis.getText()
+                            + NmCaraBayarRalanDokterParamedis.getText() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                     ps.setString(8, "%" + TCari.getText().trim() + "%");
                 }
@@ -4005,19 +3781,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble(8);
                     total += rs.getDouble(9);
                     item += rs.getInt(10);
-                    tabModeRalanDokterParamedis.addRow(new Object[]{
-                        i, rs.getString(1), rs.getString(2), rs.getDouble(3),
-                        rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.
-                        getDouble(7), rs.getDouble(8), rs.getDouble(9), rs.
-                        getInt(10)
-                    });
+                    tabModeRalanDokterParamedis.addRow(new Object[]{i, rs.getString(1), rs.getString(2),
+                        rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.getDouble(7),
+                        rs.getDouble(8), rs.getDouble(9), rs.getInt(10)});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeRalanDokterParamedis.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmdokter,
-                        jmpetugas, kso, menejemen, total, item
-                    });
+                    tabModeRalanDokterParamedis.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmdokter,
+                        jmpetugas, kso, menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -4040,14 +3811,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil4() {
         Valid.tabelKosong(tabModeOperasi);
         try {
-            if (KdOperatorOperasi.getText().isEmpty() && NmOperatorOperasi.
-                    getText().isEmpty() && KdAsistenOperasi.getText().isEmpty() && NmAsistenOperasi.
-                    getText().isEmpty() && KdCaraBayarOperasi.getText().
-                            isEmpty() && NmCaraBayarOperasi.getText().isEmpty() && TCari.
-                    getText().isEmpty() && cmbStatus.getSelectedItem().equals(
-                            "Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select operasi.kode_paket,paket_operasi.nm_perawatan,"
+            if (KdOperatorOperasi.getText().isEmpty() && NmOperatorOperasi.getText().isEmpty()
+                    && KdAsistenOperasi.getText().isEmpty() && NmAsistenOperasi.getText().isEmpty()
+                    && KdCaraBayarOperasi.getText().isEmpty() && NmCaraBayarOperasi.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select operasi.kode_paket,paket_operasi.nm_perawatan,"
                         + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                         + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
                         + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
@@ -4071,8 +3839,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where operasi.tgl_operasi between ? and ? group by operasi.kode_paket order by operasi.kode_paket desc");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select operasi.kode_paket,paket_operasi.nm_perawatan,"
+                    ps = koneksi.prepareStatement("select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
                             + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
@@ -4095,10 +3862,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
                             + "where operasi.tgl_operasi between ? and ? and concat(operasi.operator1,operator1.nm_dokter) like ? and concat(operasi.asisten_operator1,asisten_operator1.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (operasi.kode_paket like ? or paket_operasi.nm_perawatan like ?) "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select operasi.kode_paket,paket_operasi.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
                             + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
@@ -4122,10 +3887,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and operasi.tgl_operasi between ? and ? and concat(operasi.operator1,operator1.nm_dokter) like ? and concat(operasi.asisten_operator1,asisten_operator1.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (operasi.kode_paket like ? or paket_operasi.nm_perawatan like ?)  "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select operasi.kode_paket,paket_operasi.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
                             + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
@@ -4149,10 +3912,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and operasi.tgl_operasi between ? and ? and concat(operasi.operator1,operator1.nm_dokter) like ? and concat(operasi.asisten_operator1,asisten_operator1.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (operasi.kode_paket like ? or paket_operasi.nm_perawatan like ?)  "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select operasi.kode_paket,paket_operasi.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
                             + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
@@ -4175,10 +3936,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and operasi.tgl_operasi between ? and ? and concat(operasi.operator1,operator1.nm_dokter) like ? and concat(operasi.asisten_operator1,asisten_operator1.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (operasi.kode_paket like ? or paket_operasi.nm_perawatan like ?) "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select operasi.kode_paket,paket_operasi.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
                             + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
@@ -4205,35 +3964,18 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdOperatorOperasi.getText().isEmpty() && NmOperatorOperasi.
-                        getText().isEmpty() && KdAsistenOperasi.getText().
-                                isEmpty() && NmAsistenOperasi.getText().
-                                isEmpty() && KdCaraBayarOperasi.getText().
-                                isEmpty() && NmCaraBayarOperasi.getText().
-                                isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdOperatorOperasi.getText().isEmpty() && NmOperatorOperasi.getText().isEmpty()
+                        && KdAsistenOperasi.getText().isEmpty() && NmAsistenOperasi.getText().isEmpty()
+                        && KdCaraBayarOperasi.getText().isEmpty() && NmCaraBayarOperasi.getText().isEmpty()
+                        && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdOperatorOperasi.getText() + NmOperatorOperasi.
-                            getText() + "%");
-                    ps.setString(4,
-                            "%" + KdAsistenOperasi.getText() + NmAsistenOperasi.
-                            getText() + "%");
-                    ps.setString(5,
-                            "%" + KdCaraBayarOperasi.getText() + NmCaraBayarOperasi.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdOperatorOperasi.getText() + NmOperatorOperasi.getText() + "%");
+                    ps.setString(4, "%" + KdAsistenOperasi.getText() + NmAsistenOperasi.getText() + "%");
+                    ps.setString(5, "%" + KdCaraBayarOperasi.getText() + NmCaraBayarOperasi.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                 }
@@ -4274,21 +4016,15 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     biayaoperator1 += rs.getDouble("biayaoperator1");
                     biayaoperator2 += rs.getDouble("biayaoperator2");
                     biayaoperator3 += rs.getDouble("biayaoperator3");
-                    biayaasisten_operator1 += rs.getDouble(
-                            "biayaasisten_operator1");
-                    biayaasisten_operator2 += rs.getDouble(
-                            "biayaasisten_operator2");
-                    biayaasisten_operator3 += rs.getDouble(
-                            "biayaasisten_operator3");
+                    biayaasisten_operator1 += rs.getDouble("biayaasisten_operator1");
+                    biayaasisten_operator2 += rs.getDouble("biayaasisten_operator2");
+                    biayaasisten_operator3 += rs.getDouble("biayaasisten_operator3");
                     biayainstrumen += rs.getDouble("biayainstrumen");
                     biayadokter_anak += rs.getDouble("biayadokter_anak");
-                    biayaperawaat_resusitas += rs.getDouble(
-                            "biayaperawaat_resusitas");
+                    biayaperawaat_resusitas += rs.getDouble("biayaperawaat_resusitas");
                     biayadokter_anestesi += rs.getDouble("biayadokter_anestesi");
-                    biayaasisten_anestesi += rs.getDouble(
-                            "biayaasisten_anestesi");
-                    biayaasisten_anestesi2 += rs.getDouble(
-                            "biayaasisten_anestesi2");
+                    biayaasisten_anestesi += rs.getDouble("biayaasisten_anestesi");
+                    biayaasisten_anestesi2 += rs.getDouble("biayaasisten_anestesi2");
                     biayabidan += rs.getDouble("biayabidan");
                     biayabidan2 += rs.getDouble("biayabidan2");
                     biayabidan3 += rs.getDouble("biayabidan3");
@@ -4306,96 +4042,57 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     bagian_rs += rs.getDouble("bagian_rs");
                     biayasarpras += rs.getDouble("biayasarpras");
                     item += rs.getInt("jumlah");
-                    total = total + rs.getDouble("biayaoperator1") + rs.
-                            getDouble("biayaoperator2") + rs.getDouble(
-                            "biayaoperator3")
-                            + rs.getDouble("biayaasisten_operator1") + rs.
-                            getDouble("biayaasisten_operator2") + rs.getDouble(
-                            "biayaasisten_operator3")
-                            + rs.getDouble("biayainstrumen") + rs.getDouble(
-                            "biayadokter_anak") + rs.getDouble(
-                                    "biayaperawaat_resusitas")
-                            + rs.getDouble("biayadokter_anestesi") + rs.
-                            getDouble("biayaasisten_anestesi") + rs.getDouble(
-                            "biayaasisten_anestesi2")
-                            + rs.getDouble("biayabidan") + rs.getDouble(
-                            "biayabidan2") + rs.getDouble("biayabidan3")
-                            + rs.getDouble("biayaperawat_luar") + rs.getDouble(
-                            "biaya_omloop") + rs.getDouble("biaya_omloop2")
-                            + rs.getDouble("biaya_omloop3") + rs.getDouble(
-                            "biaya_omloop4") + rs.getDouble("biaya_omloop5")
-                            + rs.getDouble("biaya_dokter_pjanak") + rs.
-                            getDouble("biaya_dokter_umum") + rs.getDouble(
-                            "biayaalat")
-                            + rs.getDouble("biayasewaok") + rs.getDouble(
-                            "akomodasi") + rs.getDouble("bagian_rs") + rs.
-                            getDouble("biayasarpras");
-                    tabModeOperasi.addRow(new Object[]{
-                        i, rs.getString("kode_paket"), rs.getString(
-                        "nm_perawatan"), rs.getDouble("biayaoperator1"), rs.
-                        getDouble("biayaoperator2"), rs.getDouble(
-                        "biayaoperator3"),
-                        rs.getDouble("biayaasisten_operator1"), rs.getDouble(
-                        "biayaasisten_operator2"), rs.getDouble(
-                        "biayaasisten_operator3"), rs.
-                        getDouble("biayainstrumen"),
-                        rs.getDouble("biayadokter_anak"), rs.getDouble(
-                        "biayaperawaat_resusitas"), rs.getDouble(
-                        "biayadokter_anestesi"), rs.getDouble(
-                        "biayaasisten_anestesi"),
-                        rs.getDouble("biayaasisten_anestesi2"), rs.getDouble(
-                        "biayabidan"), rs.getDouble("biayabidan2"), rs.
-                        getDouble("biayabidan3"), rs.getDouble(
-                        "biayaperawat_luar"),
-                        rs.getDouble("biaya_omloop"), rs.getDouble(
-                        "biaya_omloop2"), rs.getDouble("biaya_omloop3"), rs.
-                        getDouble("biaya_omloop4"), rs.
-                        getDouble("biaya_omloop5"),
-                        rs.getDouble("biaya_dokter_pjanak"), rs.getDouble(
-                        "biaya_dokter_umum"), rs.getDouble("biayaalat"), rs.
-                        getDouble("biayasewaok"), rs.getDouble("akomodasi"),
-                        rs.getDouble("bagian_rs"), rs.getDouble("biayasarpras"),
-                        (rs.getDouble("biayaoperator1") + rs.getDouble(
-                        "biayaoperator2") + rs.getDouble("biayaoperator3")
-                        + rs.getDouble("biayaasisten_operator1") + rs.getDouble(
-                        "biayaasisten_operator2") + rs.getDouble(
-                        "biayaasisten_operator3") + rs.getDouble(
-                        "biayainstrumen")
-                        + rs.getDouble("biayadokter_anak") + rs.getDouble(
-                        "biayaperawaat_resusitas") + rs.getDouble(
-                        "biayadokter_anestesi") + rs.getDouble(
-                        "biayaasisten_anestesi")
-                        + rs.getDouble("biayaasisten_anestesi2") + rs.getDouble(
-                        "biayabidan") + rs.getDouble("biayabidan2") + rs.
-                        getDouble("biayabidan3") + rs.getDouble(
-                        "biayaperawat_luar")
-                        + rs.getDouble("biaya_omloop") + rs.getDouble(
-                        "biaya_omloop2") + rs.getDouble("biaya_omloop3") + rs.
-                        getDouble("biaya_omloop4") + rs.getDouble(
-                        "biaya_omloop5")
-                        + rs.getDouble("biaya_dokter_pjanak") + rs.getDouble(
-                        "biaya_dokter_umum") + rs.getDouble("biayaalat") + rs.
-                        getDouble("biayasewaok") + rs.getDouble("akomodasi")
-                        + rs.getDouble("bagian_rs") + rs.getDouble(
-                        "biayasarpras")), rs.getInt("jumlah")
-                    });
+                    total = total + rs.getDouble("biayaoperator1") + rs.getDouble("biayaoperator2")
+                            + rs.getDouble("biayaoperator3") + rs.getDouble("biayaasisten_operator1")
+                            + rs.getDouble("biayaasisten_operator2") + rs.getDouble("biayaasisten_operator3")
+                            + rs.getDouble("biayainstrumen") + rs.getDouble("biayadokter_anak")
+                            + rs.getDouble("biayaperawaat_resusitas") + rs.getDouble("biayadokter_anestesi")
+                            + rs.getDouble("biayaasisten_anestesi") + rs.getDouble("biayaasisten_anestesi2")
+                            + rs.getDouble("biayabidan") + rs.getDouble("biayabidan2") + rs.getDouble("biayabidan3")
+                            + rs.getDouble("biayaperawat_luar") + rs.getDouble("biaya_omloop")
+                            + rs.getDouble("biaya_omloop2") + rs.getDouble("biaya_omloop3")
+                            + rs.getDouble("biaya_omloop4") + rs.getDouble("biaya_omloop5")
+                            + rs.getDouble("biaya_dokter_pjanak") + rs.getDouble("biaya_dokter_umum")
+                            + rs.getDouble("biayaalat") + rs.getDouble("biayasewaok") + rs.getDouble("akomodasi")
+                            + rs.getDouble("bagian_rs") + rs.getDouble("biayasarpras");
+                    tabModeOperasi.addRow(new Object[]{i, rs.getString("kode_paket"), rs.getString("nm_perawatan"),
+                        rs.getDouble("biayaoperator1"), rs.getDouble("biayaoperator2"),
+                        rs.getDouble("biayaoperator3"), rs.getDouble("biayaasisten_operator1"),
+                        rs.getDouble("biayaasisten_operator2"), rs.getDouble("biayaasisten_operator3"),
+                        rs.getDouble("biayainstrumen"), rs.getDouble("biayadokter_anak"),
+                        rs.getDouble("biayaperawaat_resusitas"), rs.getDouble("biayadokter_anestesi"),
+                        rs.getDouble("biayaasisten_anestesi"), rs.getDouble("biayaasisten_anestesi2"),
+                        rs.getDouble("biayabidan"), rs.getDouble("biayabidan2"), rs.getDouble("biayabidan3"),
+                        rs.getDouble("biayaperawat_luar"), rs.getDouble("biaya_omloop"),
+                        rs.getDouble("biaya_omloop2"), rs.getDouble("biaya_omloop3"), rs.getDouble("biaya_omloop4"),
+                        rs.getDouble("biaya_omloop5"), rs.getDouble("biaya_dokter_pjanak"),
+                        rs.getDouble("biaya_dokter_umum"), rs.getDouble("biayaalat"), rs.getDouble("biayasewaok"),
+                        rs.getDouble("akomodasi"), rs.getDouble("bagian_rs"), rs.getDouble("biayasarpras"),
+                        (rs.getDouble("biayaoperator1") + rs.getDouble("biayaoperator2")
+                        + rs.getDouble("biayaoperator3") + rs.getDouble("biayaasisten_operator1")
+                        + rs.getDouble("biayaasisten_operator2") + rs.getDouble("biayaasisten_operator3")
+                        + rs.getDouble("biayainstrumen") + rs.getDouble("biayadokter_anak")
+                        + rs.getDouble("biayaperawaat_resusitas") + rs.getDouble("biayadokter_anestesi")
+                        + rs.getDouble("biayaasisten_anestesi") + rs.getDouble("biayaasisten_anestesi2")
+                        + rs.getDouble("biayabidan") + rs.getDouble("biayabidan2")
+                        + rs.getDouble("biayabidan3") + rs.getDouble("biayaperawat_luar")
+                        + rs.getDouble("biaya_omloop") + rs.getDouble("biaya_omloop2")
+                        + rs.getDouble("biaya_omloop3") + rs.getDouble("biaya_omloop4")
+                        + rs.getDouble("biaya_omloop5") + rs.getDouble("biaya_dokter_pjanak")
+                        + rs.getDouble("biaya_dokter_umum") + rs.getDouble("biayaalat")
+                        + rs.getDouble("biayasewaok") + rs.getDouble("akomodasi")
+                        + rs.getDouble("bagian_rs") + rs.getDouble("biayasarpras")),
+                        rs.getInt("jumlah")});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeOperasi.addRow(new Object[]{
-                        "", "", "Jumlah Total :", biayaoperator1, biayaoperator2,
-                        biayaoperator3, biayaasisten_operator1,
-                        biayaasisten_operator2, biayaasisten_operator3,
-                        biayainstrumen, biayadokter_anak,
-                        biayaperawaat_resusitas, biayadokter_anestesi,
-                        biayaasisten_anestesi, biayaasisten_anestesi2,
-                        biayabidan, biayabidan2,
-                        biayabidan3, biayaperawat_luar, biaya_omloop,
-                        biaya_omloop2, biaya_omloop3, biaya_omloop4,
-                        biaya_omloop5, biaya_dokter_pjanak, biaya_dokter_umum,
-                        biayaalat, biayasewaok, akomodasi, bagian_rs,
-                        biayasarpras, total, item
-                    });
+                    tabModeOperasi.addRow(new Object[]{"", "", "Jumlah Total :", biayaoperator1, biayaoperator2,
+                        biayaoperator3, biayaasisten_operator1, biayaasisten_operator2, biayaasisten_operator3,
+                        biayainstrumen, biayadokter_anak, biayaperawaat_resusitas, biayadokter_anestesi,
+                        biayaasisten_anestesi, biayaasisten_anestesi2, biayabidan, biayabidan2, biayabidan3,
+                        biayaperawat_luar, biaya_omloop, biaya_omloop2, biaya_omloop3, biaya_omloop4, biaya_omloop5,
+                        biaya_dokter_pjanak, biaya_dokter_umum, biayaalat, biayasewaok, akomodasi, bagian_rs,
+                        biayasarpras, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -4418,13 +4115,10 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil5() {
         Valid.tabelKosong(tabModeRanapDokter);
         try {
-            if (KdDokterRanapDokter.getText().isEmpty() && NmDokterRanapDokter.
-                    getText().isEmpty() && KdCaraBayarRanapDokter.getText().
-                            isEmpty() && NmCaraBayarRanapDokter.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+            if (KdDokterRanapDokter.getText().isEmpty() && NmDokterRanapDokter.getText().isEmpty()
+                    && KdCaraBayarRanapDokter.getText().isEmpty() && NmCaraBayarRanapDokter.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                         + "sum(rawat_inap_dr.material),sum(rawat_inap_dr.bhp),sum(rawat_inap_dr.tarif_tindakandr),"
                         + "sum(rawat_inap_dr.kso),sum(rawat_inap_dr.menejemen),sum(rawat_inap_dr.biaya_rawat),count(rawat_inap_dr.kd_jenis_prw) "
                         + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4435,8 +4129,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between ? and ? group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                    ps = koneksi.prepareStatement("select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material),sum(rawat_inap_dr.bhp),sum(rawat_inap_dr.tarif_tindakandr),"
                             + "sum(rawat_inap_dr.kso),sum(rawat_inap_dr.menejemen),sum(rawat_inap_dr.biaya_rawat),count(rawat_inap_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4446,10 +4139,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between ? and ? and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_dr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material),sum(rawat_inap_dr.bhp),sum(rawat_inap_dr.tarif_tindakandr),"
                             + "sum(rawat_inap_dr.kso),sum(rawat_inap_dr.menejemen),sum(rawat_inap_dr.biaya_rawat),count(rawat_inap_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4460,10 +4151,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between ? and ? and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_dr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material),sum(rawat_inap_dr.bhp),sum(rawat_inap_dr.tarif_tindakandr),"
                             + "sum(rawat_inap_dr.kso),sum(rawat_inap_dr.menejemen),sum(rawat_inap_dr.biaya_rawat),count(rawat_inap_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4474,10 +4163,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between ? and ? and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_dr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material),sum(rawat_inap_dr.bhp),sum(rawat_inap_dr.tarif_tindakandr),"
                             + "sum(rawat_inap_dr.kso),sum(rawat_inap_dr.menejemen),sum(rawat_inap_dr.biaya_rawat),count(rawat_inap_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4487,10 +4174,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between ? and ? and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_dr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material),sum(rawat_inap_dr.bhp),sum(rawat_inap_dr.tarif_tindakandr),"
                             + "sum(rawat_inap_dr.kso),sum(rawat_inap_dr.menejemen),sum(rawat_inap_dr.biaya_rawat),count(rawat_inap_dr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4504,30 +4189,16 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdDokterRanapDokter.getText().isEmpty() && NmDokterRanapDokter.
-                        getText().isEmpty() && KdCaraBayarRanapDokter.getText().
-                                isEmpty() && NmCaraBayarRanapDokter.getText().
-                                isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdDokterRanapDokter.getText().isEmpty() && NmDokterRanapDokter.getText().isEmpty()
+                        && KdCaraBayarRanapDokter.getText().isEmpty() && NmCaraBayarRanapDokter.getText().isEmpty()
+                        && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdDokterRanapDokter.getText() + NmDokterRanapDokter.
-                            getText() + "%");
-                    ps.setString(4,
-                            "%" + KdCaraBayarRanapDokter.getText() + NmCaraBayarRanapDokter.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdDokterRanapDokter.getText() + NmDokterRanapDokter.getText() + "%");
+                    ps.setString(4, "%" + KdCaraBayarRanapDokter.getText() + NmCaraBayarRanapDokter.getText() + "%");
                     ps.setString(5, "%" + TCari.getText().trim() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                 }
@@ -4549,18 +4220,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble(7);
                     total += rs.getDouble(8);
                     item += rs.getInt(9);
-                    tabModeRanapDokter.addRow(new Object[]{
-                        i, rs.getString(1), rs.getString(2), rs.getDouble(3),
-                        rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.
-                        getDouble(7), rs.getDouble(8), rs.getInt(9)
-                    });
+                    tabModeRanapDokter
+                            .addRow(new Object[]{i, rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4),
+                        rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.getInt(9)});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeRanapDokter.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmdokter, kso,
-                        menejemen, total, item
-                    });
+                    tabModeRanapDokter.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmdokter, kso,
+                        menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -4580,13 +4247,10 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil6() {
         Valid.tabelKosong(tabModeRanapParamedis);
         try {
-            if (KdPetugasRanapParamedis.getText().isEmpty() && NmPetugasRanapParamedis.
-                    getText().isEmpty() && KdCaraBayarRanapParamedis.getText().
-                            isEmpty() && NmCaraBayarRanapParamedis.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+            if (KdPetugasRanapParamedis.getText().isEmpty() && NmPetugasRanapParamedis.getText().isEmpty()
+                    && KdCaraBayarRanapParamedis.getText().isEmpty() && NmCaraBayarRanapParamedis.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                         + "sum(rawat_inap_pr.material),sum(rawat_inap_pr.bhp),sum(rawat_inap_pr.tarif_tindakanpr),"
                         + "sum(rawat_inap_pr.kso),sum(rawat_inap_pr.menejemen),sum(rawat_inap_pr.biaya_rawat),count(rawat_inap_pr.kd_jenis_prw) "
                         + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4597,8 +4261,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between ? and ? group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                    ps = koneksi.prepareStatement("select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material),sum(rawat_inap_pr.bhp),sum(rawat_inap_pr.tarif_tindakanpr),"
                             + "sum(rawat_inap_pr.kso),sum(rawat_inap_pr.menejemen),sum(rawat_inap_pr.biaya_rawat),count(rawat_inap_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4608,10 +4271,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between ? and ? and concat(rawat_inap_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_pr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material),sum(rawat_inap_pr.bhp),sum(rawat_inap_pr.tarif_tindakanpr),"
                             + "sum(rawat_inap_pr.kso),sum(rawat_inap_pr.menejemen),sum(rawat_inap_pr.biaya_rawat),count(rawat_inap_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4622,10 +4283,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between ? and ? and concat(rawat_inap_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_pr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material),sum(rawat_inap_pr.bhp),sum(rawat_inap_pr.tarif_tindakanpr),"
                             + "sum(rawat_inap_pr.kso),sum(rawat_inap_pr.menejemen),sum(rawat_inap_pr.biaya_rawat),count(rawat_inap_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4636,10 +4295,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between ? and ? and concat(rawat_inap_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_pr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material),sum(rawat_inap_pr.bhp),sum(rawat_inap_pr.tarif_tindakanpr),"
                             + "sum(rawat_inap_pr.kso),sum(rawat_inap_pr.menejemen),sum(rawat_inap_pr.biaya_rawat),count(rawat_inap_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4649,10 +4306,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between ? and ? and concat(rawat_inap_pr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_pr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material),sum(rawat_inap_pr.bhp),sum(rawat_inap_pr.tarif_tindakanpr),"
                             + "sum(rawat_inap_pr.kso),sum(rawat_inap_pr.menejemen),sum(rawat_inap_pr.biaya_rawat),count(rawat_inap_pr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4666,30 +4321,18 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdPetugasRanapParamedis.getText().isEmpty() && NmPetugasRanapParamedis.
-                        getText().isEmpty() && KdCaraBayarRanapParamedis.
-                                getText().isEmpty() && NmCaraBayarRanapParamedis.
-                                getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdPetugasRanapParamedis.getText().isEmpty() && NmPetugasRanapParamedis.getText().isEmpty()
+                        && KdCaraBayarRanapParamedis.getText().isEmpty()
+                        && NmCaraBayarRanapParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                        && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdPetugasRanapParamedis.getText() + NmPetugasRanapParamedis.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdPetugasRanapParamedis.getText() + NmPetugasRanapParamedis.getText() + "%");
                     ps.setString(4,
-                            "%" + KdCaraBayarRanapParamedis.getText() + NmCaraBayarRanapParamedis.
-                            getText() + "%");
+                            "%" + KdCaraBayarRanapParamedis.getText() + NmCaraBayarRanapParamedis.getText() + "%");
                     ps.setString(5, "%" + TCari.getText().trim() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                 }
@@ -4711,18 +4354,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble(7);
                     total += rs.getDouble(8);
                     item += rs.getInt(9);
-                    tabModeRanapParamedis.addRow(new Object[]{
-                        i, rs.getString(1), rs.getString(2), rs.getDouble(3),
-                        rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.
-                        getDouble(7), rs.getDouble(8), rs.getInt(9)
-                    });
+                    tabModeRanapParamedis
+                            .addRow(new Object[]{i, rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4),
+                        rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.getInt(9)});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeRanapParamedis.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmpetugas, kso,
-                        menejemen, total, item
-                    });
+                    tabModeRanapParamedis.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmpetugas, kso,
+                        menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -4742,15 +4381,13 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil7() {
         Valid.tabelKosong(tabModeRanapDokterParamedis);
         try {
-            if (KdDokterRanapDokterParamedis.getText().isEmpty() && NmDokterRanapDokterParamedis.
-                    getText().isEmpty() && KdPetugasRanapDokterParamedis.
-                            getText().isEmpty() && NmPetugasRanapDokterParamedis.
-                            getText().isEmpty() && KdCaraBayarRanapDokterParamedis.
-                            getText().isEmpty() && NmCaraBayarRanapDokterParamedis.
-                            getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+            if (KdDokterRanapDokterParamedis.getText().isEmpty() && NmDokterRanapDokterParamedis.getText().isEmpty()
+                    && KdPetugasRanapDokterParamedis.getText().isEmpty()
+                    && NmPetugasRanapDokterParamedis.getText().isEmpty()
+                    && KdCaraBayarRanapDokterParamedis.getText().isEmpty()
+                    && NmCaraBayarRanapDokterParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                    && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                         + "sum(rawat_inap_drpr.material),sum(rawat_inap_drpr.bhp),sum(rawat_inap_drpr.tarif_tindakandr),sum(rawat_inap_drpr.tarif_tindakanpr),"
                         + "sum(rawat_inap_drpr.kso),sum(rawat_inap_drpr.menejemen),sum(rawat_inap_drpr.biaya_rawat),count(rawat_inap_drpr.kd_jenis_prw) "
                         + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4763,8 +4400,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between ? and ? group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                    ps = koneksi.prepareStatement("select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material),sum(rawat_inap_drpr.bhp),sum(rawat_inap_drpr.tarif_tindakandr),sum(rawat_inap_drpr.tarif_tindakanpr),"
                             + "sum(rawat_inap_drpr.kso),sum(rawat_inap_drpr.menejemen),sum(rawat_inap_drpr.biaya_rawat),count(rawat_inap_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4776,10 +4412,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
                             + "where concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between ? and ? and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(rawat_inap_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_drpr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material),sum(rawat_inap_drpr.bhp),sum(rawat_inap_drpr.tarif_tindakandr),sum(rawat_inap_drpr.tarif_tindakanpr),"
                             + "sum(rawat_inap_drpr.kso),sum(rawat_inap_drpr.menejemen),sum(rawat_inap_drpr.biaya_rawat),count(rawat_inap_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4792,10 +4426,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between ? and ? and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(rawat_inap_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_drpr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material),sum(rawat_inap_drpr.bhp),sum(rawat_inap_drpr.tarif_tindakandr),sum(rawat_inap_drpr.tarif_tindakanpr),"
                             + "sum(rawat_inap_drpr.kso),sum(rawat_inap_drpr.menejemen),sum(rawat_inap_drpr.biaya_rawat),count(rawat_inap_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4808,10 +4440,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between ? and ? and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(rawat_inap_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_drpr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material),sum(rawat_inap_drpr.bhp),sum(rawat_inap_drpr.tarif_tindakandr),sum(rawat_inap_drpr.tarif_tindakanpr),"
                             + "sum(rawat_inap_drpr.kso),sum(rawat_inap_drpr.menejemen),sum(rawat_inap_drpr.biaya_rawat),count(rawat_inap_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4823,10 +4453,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between ? and ? and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like ? and concat(rawat_inap_drpr.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (rawat_inap_drpr.kd_jenis_prw like ? or jns_perawatan_inap.nm_perawatan like ? )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material),sum(rawat_inap_drpr.bhp),sum(rawat_inap_drpr.tarif_tindakandr),sum(rawat_inap_drpr.tarif_tindakanpr),"
                             + "sum(rawat_inap_drpr.kso),sum(rawat_inap_drpr.menejemen),sum(rawat_inap_drpr.biaya_rawat),count(rawat_inap_drpr.kd_jenis_prw) "
                             + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -4842,34 +4470,23 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdDokterRanapDokterParamedis.getText().isEmpty() && NmDokterRanapDokterParamedis.
-                        getText().isEmpty() && KdPetugasRanapDokterParamedis.
-                                getText().isEmpty() && NmPetugasRanapDokterParamedis.
-                                getText().isEmpty() && KdCaraBayarRanapDokterParamedis.
-                                getText().isEmpty() && NmCaraBayarRanapDokterParamedis.
-                                getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdDokterRanapDokterParamedis.getText().isEmpty() && NmDokterRanapDokterParamedis.getText().isEmpty()
+                        && KdPetugasRanapDokterParamedis.getText().isEmpty()
+                        && NmPetugasRanapDokterParamedis.getText().isEmpty()
+                        && KdCaraBayarRanapDokterParamedis.getText().isEmpty()
+                        && NmCaraBayarRanapDokterParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                        && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdDokterRanapDokterParamedis.getText() + NmDokterRanapDokterParamedis.
-                            getText() + "%");
-                    ps.setString(4, "%" + KdPetugasRanapDokterParamedis.
-                            getText() + NmPetugasRanapDokterParamedis.getText() + "%");
-                    ps.setString(5, "%" + KdCaraBayarRanapDokterParamedis.
-                            getText() + NmCaraBayarRanapDokterParamedis.
-                                    getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdDokterRanapDokterParamedis.getText()
+                            + NmDokterRanapDokterParamedis.getText() + "%");
+                    ps.setString(4, "%" + KdPetugasRanapDokterParamedis.getText()
+                            + NmPetugasRanapDokterParamedis.getText() + "%");
+                    ps.setString(5, "%" + KdCaraBayarRanapDokterParamedis.getText()
+                            + NmCaraBayarRanapDokterParamedis.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                 }
@@ -4893,19 +4510,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble(8);
                     total += rs.getDouble(9);
                     item += rs.getInt(10);
-                    tabModeRanapDokterParamedis.addRow(new Object[]{
-                        i, rs.getString(1), rs.getString(2), rs.getDouble(3),
-                        rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.
-                        getDouble(7), rs.getDouble(8), rs.getDouble(9), rs.
-                        getInt(10)
-                    });
+                    tabModeRanapDokterParamedis.addRow(new Object[]{i, rs.getString(1), rs.getString(2),
+                        rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), rs.getDouble(7),
+                        rs.getDouble(8), rs.getDouble(9), rs.getInt(10)});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeRanapDokterParamedis.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmdokter,
-                        jmpetugas, kso, menejemen, total, item
-                    });
+                    tabModeRanapDokterParamedis.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmdokter,
+                        jmpetugas, kso, menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -4928,138 +4540,118 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil8() {
         Valid.tabelKosong(tabModeRadiologi);
         try {
-            if (KdDokterPerujukRad.getText().isEmpty() && NmDokterPerujukRad.
-                    getText().isEmpty() && KdPetugasRad.getText().isEmpty() && NmPetugasRad.
-                    getText().isEmpty() && KdCaraBayarRad.getText().isEmpty() && NmCaraBayarRad.
-                    getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
-                        + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
-                        + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
-                        + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
-                        + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
-                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                        + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
-                        + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
-                        + "inner join petugas on periksa_radiologi.nip=petugas.nip "
-                        + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                        + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                        + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
+            if (KdDokterPerujukRad.getText().isEmpty() && NmDokterPerujukRad.getText().isEmpty()
+                    && KdPetugasRad.getText().isEmpty() && NmPetugasRad.getText().isEmpty()
+                    && KdCaraBayarRad.getText().isEmpty() && NmCaraBayarRad.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi
+                        .prepareStatement("select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
+                                + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
+                                + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
+                                + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
+                                + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
+                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
+                                + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
+                                + "inner join petugas on periksa_radiologi.nip=petugas.nip "
+                                + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                                + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
+                                + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
-                            + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
-                            + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
-                            + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
-                            + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
-                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                            + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
-                            + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
-                            + "inner join petugas on periksa_radiologi.nip=petugas.nip "
-                            + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
-                            + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
-                            + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
-                            + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
-                            + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
-                            + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
-                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                            + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
-                            + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
-                            + "inner join petugas on periksa_radiologi.nip=petugas.nip "
-                            + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
-                            + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
-                            + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
-                            + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
-                            + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
-                            + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
-                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                            + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
-                            + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
-                            + "inner join petugas on periksa_radiologi.nip=petugas.nip "
-                            + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
-                            + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
-                            + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
-                            + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
-                            + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
-                            + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
-                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                            + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
-                            + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
-                            + "inner join petugas on periksa_radiologi.nip=petugas.nip "
-                            + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
-                            + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
-                            + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
-                            + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
-                            + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
-                            + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
-                            + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                            + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
-                            + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
-                            + "inner join petugas on periksa_radiologi.nip=petugas.nip "
-                            + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
-                            + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
+                    ps = koneksi
+                            .prepareStatement("select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
+                                    + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
+                                    + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
+                                    + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
+                                    + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
+                                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                    + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
+                                    + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
+                                    + "inner join petugas on periksa_radiologi.nip=petugas.nip "
+                                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                                    + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
+                                    + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
+                                    + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi
+                            .prepareStatement("select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
+                                    + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
+                                    + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
+                                    + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
+                                    + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
+                                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                    + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
+                                    + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
+                                    + "inner join petugas on periksa_radiologi.nip=petugas.nip "
+                                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                                    + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
+                                    + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
+                                    + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
+                                    + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi
+                            .prepareStatement("select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
+                                    + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
+                                    + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
+                                    + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
+                                    + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
+                                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                    + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
+                                    + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
+                                    + "inner join petugas on periksa_radiologi.nip=petugas.nip "
+                                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                                    + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
+                                    + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
+                                    + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
+                                    + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi
+                            .prepareStatement("select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
+                                    + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
+                                    + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
+                                    + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
+                                    + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
+                                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                    + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
+                                    + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
+                                    + "inner join petugas on periksa_radiologi.nip=petugas.nip "
+                                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                                    + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
+                                    + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
+                                    + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi
+                            .prepareStatement("select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
+                                    + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
+                                    + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
+                                    + "sum(periksa_radiologi.kso) as kso,sum(periksa_radiologi.menejemen) as menejemen,sum(periksa_radiologi.biaya) as biaya,count(periksa_radiologi.kd_jenis_prw) as jumlah "
+                                    + "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "
+                                    + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                                    + "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter "
+                                    + "inner join dokter as perujuk on periksa_radiologi.dokter_perujuk=perujuk.kd_dokter "
+                                    + "inner join petugas on periksa_radiologi.nip=petugas.nip "
+                                    + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                                    + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
+                                    + "where reg_periksa.status_bayar='Belum Bayar' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between ? and ? and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_radiologi.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_radiologi.kd_jenis_prw like ? or jns_perawatan_radiologi.nm_perawatan like ? ) "
+                                    + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw");
                 }
 
             }
 
             try {
-                if (KdDokterPerujukRad.getText().isEmpty() && NmDokterPerujukRad.
-                        getText().isEmpty() && KdPetugasRad.getText().isEmpty() && NmPetugasRad.
-                        getText().isEmpty() && KdCaraBayarRad.getText().
-                                isEmpty() && NmCaraBayarRad.getText().isEmpty() && TCari.
-                        getText().isEmpty() && cmbStatus.getSelectedItem().
-                                equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdDokterPerujukRad.getText().isEmpty() && NmDokterPerujukRad.getText().isEmpty()
+                        && KdPetugasRad.getText().isEmpty() && NmPetugasRad.getText().isEmpty()
+                        && KdCaraBayarRad.getText().isEmpty() && NmCaraBayarRad.getText().isEmpty()
+                        && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdDokterPerujukRad.getText() + NmDokterPerujukRad.
-                            getText() + "%");
-                    ps.setString(4, "%" + KdPetugasRad.getText() + NmPetugasRad.
-                            getText() + "%");
-                    ps.setString(5,
-                            "%" + KdCaraBayarRad.getText() + NmCaraBayarRad.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdDokterPerujukRad.getText() + NmDokterPerujukRad.getText() + "%");
+                    ps.setString(4, "%" + KdPetugasRad.getText() + NmPetugasRad.getText() + "%");
+                    ps.setString(5, "%" + KdCaraBayarRad.getText() + NmCaraBayarRad.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                 }
@@ -5085,23 +4677,16 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble("menejemen");
                     total += rs.getDouble("biaya");
                     item += rs.getInt("jumlah");
-                    tabModeRadiologi.addRow(new Object[]{
-                        i, rs.getString("kd_jenis_prw"), rs.getString(
-                        "nm_perawatan"), rs.getDouble("bagian_rs"),
-                        rs.getDouble("bhp"), rs.getDouble(
-                        "tarif_tindakan_dokter"),
-                        rs.getDouble("tarif_tindakan_petugas"), rs.getDouble(
-                        "tarif_perujuk"),
-                        rs.getDouble("kso"), rs.getDouble("menejemen"), rs.
-                        getDouble("biaya"), rs.getInt("jumlah")
-                    });
+                    tabModeRadiologi.addRow(new Object[]{i, rs.getString("kd_jenis_prw"),
+                        rs.getString("nm_perawatan"), rs.getDouble("bagian_rs"), rs.getDouble("bhp"),
+                        rs.getDouble("tarif_tindakan_dokter"), rs.getDouble("tarif_tindakan_petugas"),
+                        rs.getDouble("tarif_perujuk"), rs.getDouble("kso"), rs.getDouble("menejemen"),
+                        rs.getDouble("biaya"), rs.getInt("jumlah")});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeRadiologi.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmdokter,
-                        jmpetugas, jmperujuk, kso, menejemen, total, item
-                    });
+                    tabModeRadiologi.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmdokter, jmpetugas,
+                        jmperujuk, kso, menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -5124,13 +4709,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil9() {
         Valid.tabelKosong(tabModeLaborat);
         try {
-            if (KdDokterPerujukLab.getText().isEmpty() && NmDokterPerujukLab.
-                    getText().isEmpty() && KdPetugasLab.getText().isEmpty() && NmPetugasLab.
-                    getText().isEmpty() && KdCaraBayarLab.getText().isEmpty() && NmCaraBayarLab.
-                    getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
+            if (KdDokterPerujukLab.getText().isEmpty() && NmDokterPerujukLab.getText().isEmpty()
+                    && KdPetugasLab.getText().isEmpty() && NmPetugasLab.getText().isEmpty()
+                    && KdCaraBayarLab.getText().isEmpty() && NmCaraBayarLab.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                         + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                         + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
                         + "sum(periksa_lab.kso) as kso,sum(periksa_lab.menejemen) as menejemen,sum(periksa_lab.biaya) as biaya,count(periksa_lab.kd_jenis_prw) as jumlah  "
@@ -5144,8 +4727,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between ? and ? group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
+                    ps = koneksi.prepareStatement("select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
                             + "sum(periksa_lab.kso) as kso,sum(periksa_lab.menejemen) as menejemen,sum(periksa_lab.biaya) as biaya,count(periksa_lab.kd_jenis_prw) as jumlah "
@@ -5158,10 +4740,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
                             + "where concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_lab.kd_jenis_prw like ? or jns_perawatan_lab.nm_perawatan like ?) "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi.prepareStatement("select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
                             + "sum(periksa_lab.kso) as kso,sum(periksa_lab.menejemen) as menejemen,sum(periksa_lab.biaya) as biaya,count(periksa_lab.kd_jenis_prw) as jumlah "
@@ -5175,10 +4755,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_lab.kd_jenis_prw like ? or jns_perawatan_lab.nm_perawatan like ?) "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi.prepareStatement("select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
                             + "sum(periksa_lab.kso) as kso,sum(periksa_lab.menejemen) as menejemen,sum(periksa_lab.biaya) as biaya,count(periksa_lab.kd_jenis_prw) as jumlah "
@@ -5192,10 +4770,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_lab.kd_jenis_prw like ? or jns_perawatan_lab.nm_perawatan like ?) "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi.prepareStatement("select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
                             + "sum(periksa_lab.kso) as kso,sum(periksa_lab.menejemen) as menejemen,sum(periksa_lab.biaya) as biaya,count(periksa_lab.kd_jenis_prw) as jumlah "
@@ -5208,10 +4784,8 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
                             + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (periksa_lab.kd_jenis_prw like ? or jns_perawatan_lab.nm_perawatan like ?) "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi.prepareStatement("select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
                             + "sum(periksa_lab.kso) as kso,sum(periksa_lab.menejemen) as menejemen,sum(periksa_lab.biaya) as biaya,count(periksa_lab.kd_jenis_prw) as jumlah "
@@ -5228,33 +4802,18 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             }
 
             try {
-                if (KdDokterPerujukLab.getText().isEmpty() && NmDokterPerujukLab.
-                        getText().isEmpty() && KdPetugasLab.getText().isEmpty() && NmPetugasLab.
-                        getText().isEmpty() && KdCaraBayarLab.getText().
-                                isEmpty() && NmCaraBayarLab.getText().isEmpty() && TCari.
-                        getText().isEmpty() && cmbStatus.getSelectedItem().
-                                equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdDokterPerujukLab.getText().isEmpty() && NmDokterPerujukLab.getText().isEmpty()
+                        && KdPetugasLab.getText().isEmpty() && NmPetugasLab.getText().isEmpty()
+                        && KdCaraBayarLab.getText().isEmpty() && NmCaraBayarLab.getText().isEmpty()
+                        && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
-                    ps.setString(3,
-                            "%" + KdDokterPerujukLab.getText() + NmDokterPerujukLab.
-                            getText() + "%");
-                    ps.setString(4, "%" + KdPetugasLab.getText() + NmPetugasLab.
-                            getText() + "%");
-                    ps.setString(5,
-                            "%" + KdCaraBayarLab.getText() + NmCaraBayarLab.
-                            getText() + "%");
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
+                    ps.setString(3, "%" + KdDokterPerujukLab.getText() + NmDokterPerujukLab.getText() + "%");
+                    ps.setString(4, "%" + KdPetugasLab.getText() + NmPetugasLab.getText() + "%");
+                    ps.setString(5, "%" + KdCaraBayarLab.getText() + NmCaraBayarLab.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                 }
@@ -5280,23 +4839,15 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble("menejemen");
                     total += rs.getDouble("biaya");
                     item += rs.getInt("jumlah");
-                    tabModeLaborat.addRow(new Object[]{
-                        i, rs.getString("kd_jenis_prw"), rs.getString(
-                        "nm_perawatan"), rs.getDouble("bagian_rs"),
-                        rs.getDouble("bhp"), rs.getDouble(
-                        "tarif_tindakan_dokter"), rs.getDouble(
-                        "tarif_tindakan_petugas"),
-                        rs.getDouble("tarif_perujuk"), rs.getDouble("kso"), rs.
-                        getDouble("menejemen"), rs.getDouble("biaya"),
-                        rs.getInt("jumlah")
-                    });
+                    tabModeLaborat.addRow(new Object[]{i, rs.getString("kd_jenis_prw"), rs.getString("nm_perawatan"),
+                        rs.getDouble("bagian_rs"), rs.getDouble("bhp"), rs.getDouble("tarif_tindakan_dokter"),
+                        rs.getDouble("tarif_tindakan_petugas"), rs.getDouble("tarif_perujuk"), rs.getDouble("kso"),
+                        rs.getDouble("menejemen"), rs.getDouble("biaya"), rs.getInt("jumlah")});
                     i++;
                 }
                 if (total > 0) {
-                    tabModeLaborat.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmdokter,
-                        jmpetugas, jmperujuk, kso, menejemen, total, item
-                    });
+                    tabModeLaborat.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmdokter, jmpetugas,
+                        jmperujuk, kso, menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -5316,14 +4867,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
     public void tampil10() {
         Valid.tabelKosong(tabModeDetailLaborat);
         try {
-            if (KdDokterPerujukDetailLab.getText().isEmpty() && NmDokterPerujukDetailLab.
-                    getText().isEmpty() && KdPetugasDetailLab.getText().
-                            isEmpty() && NmPetugasDetailLab.getText().isEmpty() && KdCaraBayarDetailLab.
-                    getText().isEmpty() && NmCaraBayarDetailLab.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                ps = koneksi.prepareStatement(
-                        "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
+            if (KdDokterPerujukDetailLab.getText().isEmpty() && NmDokterPerujukDetailLab.getText().isEmpty()
+                    && KdPetugasDetailLab.getText().isEmpty() && NmPetugasDetailLab.getText().isEmpty()
+                    && KdCaraBayarDetailLab.getText().isEmpty() && NmCaraBayarDetailLab.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                ps = koneksi.prepareStatement("select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
                         + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
                         + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
                         + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
@@ -5341,137 +4889,117 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "where concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    ps = koneksi.prepareStatement(
-                            "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
-                            + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
-                            + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
-                            + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
-                            + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
-                            + "inner join reg_periksa inner join pasien inner join template_laboratorium "
-                            + "inner join jns_perawatan_lab inner join periksa_lab "
-                            + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
-                            + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
-                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
-                            + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
-                            + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
-                            + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
-                            + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
-                            + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
-                            + "where concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
-                            + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
-                            + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
-                            + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
-                            + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
-                            + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
-                            + "inner join reg_periksa inner join pasien inner join template_laboratorium "
-                            + "inner join jns_perawatan_lab inner join periksa_lab inner join piutang_pasien "
-                            + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
-                            + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
-                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
-                            + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
-                            + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
-                            + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
-                            + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
-                            + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
-                            + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    ps = koneksi.prepareStatement(
-                            "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
-                            + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
-                            + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
-                            + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
-                            + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
-                            + "inner join reg_periksa inner join pasien inner join template_laboratorium "
-                            + "inner join jns_perawatan_lab inner join periksa_lab inner join piutang_pasien "
-                            + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
-                            + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
-                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
-                            + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
-                            + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
-                            + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
-                            + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
-                            + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
-                            + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    ps = koneksi.prepareStatement(
-                            "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
-                            + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
-                            + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
-                            + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
-                            + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
-                            + "inner join reg_periksa inner join pasien inner join template_laboratorium "
-                            + "inner join jns_perawatan_lab inner join periksa_lab "
-                            + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
-                            + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
-                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
-                            + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
-                            + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
-                            + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
-                            + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
-                            + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
-                            + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    ps = koneksi.prepareStatement(
-                            "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
-                            + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
-                            + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
-                            + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
-                            + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
-                            + "inner join reg_periksa inner join pasien inner join template_laboratorium "
-                            + "inner join jns_perawatan_lab inner join periksa_lab "
-                            + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
-                            + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
-                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
-                            + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
-                            + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
-                            + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
-                            + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
-                            + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
-                            + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
+                    ps = koneksi
+                            .prepareStatement("select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
+                                    + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
+                                    + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
+                                    + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
+                                    + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
+                                    + "inner join reg_periksa inner join pasien inner join template_laboratorium "
+                                    + "inner join jns_perawatan_lab inner join periksa_lab "
+                                    + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
+                                    + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
+                                    + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
+                                    + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
+                                    + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
+                                    + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
+                                    + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
+                                    + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
+                                    + "where concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
+                                    + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    ps = koneksi
+                            .prepareStatement("select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
+                                    + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
+                                    + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
+                                    + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
+                                    + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
+                                    + "inner join reg_periksa inner join pasien inner join template_laboratorium "
+                                    + "inner join jns_perawatan_lab inner join periksa_lab inner join piutang_pasien "
+                                    + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
+                                    + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
+                                    + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
+                                    + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
+                                    + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
+                                    + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
+                                    + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
+                                    + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and reg_periksa.no_rawat=piutang_pasien.no_rawat "
+                                    + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
+                                    + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    ps = koneksi
+                            .prepareStatement("select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
+                                    + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
+                                    + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
+                                    + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
+                                    + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
+                                    + "inner join reg_periksa inner join pasien inner join template_laboratorium "
+                                    + "inner join jns_perawatan_lab inner join periksa_lab inner join piutang_pasien "
+                                    + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
+                                    + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
+                                    + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
+                                    + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
+                                    + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
+                                    + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
+                                    + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
+                                    + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and reg_periksa.no_rawat=piutang_pasien.no_rawat "
+                                    + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
+                                    + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    ps = koneksi
+                            .prepareStatement("select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
+                                    + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
+                                    + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
+                                    + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
+                                    + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
+                                    + "inner join reg_periksa inner join pasien inner join template_laboratorium "
+                                    + "inner join jns_perawatan_lab inner join periksa_lab "
+                                    + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
+                                    + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
+                                    + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
+                                    + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
+                                    + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
+                                    + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
+                                    + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
+                                    + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
+                                    + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
+                                    + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    ps = koneksi
+                            .prepareStatement("select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
+                                    + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
+                                    + "sum(detail_periksa_lab.bagian_dokter) as bagian_dokter,sum(detail_periksa_lab.bagian_laborat) as bagian_laborat,"
+                                    + "sum(detail_periksa_lab.kso) as kso,sum(detail_periksa_lab.menejemen) as menejemen,"
+                                    + "sum(detail_periksa_lab.biaya_item) as biaya_item,count(detail_periksa_lab.id_template) as jumlah from detail_periksa_lab "
+                                    + "inner join reg_periksa inner join pasien inner join template_laboratorium "
+                                    + "inner join jns_perawatan_lab inner join periksa_lab "
+                                    + "inner join dokter inner join petugas inner join penjab inner join dokter as perujuk "
+                                    + "on detail_periksa_lab.no_rawat=reg_periksa.no_rawat "
+                                    + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.no_rawat=detail_periksa_lab.no_rawat "
+                                    + "and periksa_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and perujuk.kd_dokter=periksa_lab.dokter_perujuk "
+                                    + "and reg_periksa.kd_pj=penjab.kd_pj and periksa_lab.kd_dokter=dokter.kd_dokter "
+                                    + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
+                                    + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
+                                    + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
+                                    + "where reg_periksa.status_bayar='Belum Bayar' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between ? and ? and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like ? and concat(periksa_lab.nip,petugas.nama) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and (detail_periksa_lab.id_template like ? or template_laboratorium.Pemeriksaan like ? ) "
+                                    + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template");
                 }
             }
 
             try {
-                if (KdDokterPerujukDetailLab.getText().isEmpty() && NmDokterPerujukDetailLab.
-                        getText().isEmpty() && KdPetugasDetailLab.getText().
-                                isEmpty() && NmPetugasDetailLab.getText().
-                                isEmpty() && KdCaraBayarDetailLab.getText().
-                                isEmpty() && NmCaraBayarDetailLab.getText().
-                                isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                        getSelectedItem().equals("Semua")) {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                if (KdDokterPerujukDetailLab.getText().isEmpty() && NmDokterPerujukDetailLab.getText().isEmpty()
+                        && KdPetugasDetailLab.getText().isEmpty() && NmPetugasDetailLab.getText().isEmpty()
+                        && KdCaraBayarDetailLab.getText().isEmpty() && NmCaraBayarDetailLab.getText().isEmpty()
+                        && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                 } else {
-                    ps.
-                            setString(1, Valid.SetTglJam(
-                                    Tgl1.getSelectedItem() + ""));
-                    ps.
-                            setString(2, Valid.SetTglJam(
-                                    Tgl2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
                     ps.setString(3,
-                            "%" + KdDokterPerujukDetailLab.getText() + NmDokterPerujukDetailLab.
-                            getText() + "%");
-                    ps.setString(4,
-                            "%" + KdPetugasDetailLab.getText() + NmPetugasDetailLab.
-                            getText() + "%");
-                    ps.setString(5,
-                            "%" + KdCaraBayarDetailLab.getText() + NmCaraBayarDetailLab.
-                            getText() + "%");
+                            "%" + KdDokterPerujukDetailLab.getText() + NmDokterPerujukDetailLab.getText() + "%");
+                    ps.setString(4, "%" + KdPetugasDetailLab.getText() + NmPetugasDetailLab.getText() + "%");
+                    ps.setString(5, "%" + KdCaraBayarDetailLab.getText() + NmCaraBayarDetailLab.getText() + "%");
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
                 }
@@ -5497,22 +5025,16 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                     menejemen += rs.getDouble("menejemen");
                     total += rs.getDouble("biaya_item");
                     item += rs.getInt("jumlah");
-                    tabModeDetailLaborat.addRow(new Object[]{
-                        i, rs.getString("id_template"), rs.getString(
-                        "Pemeriksaan"), rs.getDouble("bagian_rs"),
-                        rs.getDouble("bhp"), rs.getDouble("bagian_dokter"), rs.
-                        getDouble("bagian_laborat"),
-                        rs.getDouble("bagian_perujuk"), rs.getDouble("kso"), rs.
-                        getDouble("menejemen"),
-                        rs.getDouble("biaya_item"), rs.getInt("jumlah")
-                    });
+                    tabModeDetailLaborat
+                            .addRow(new Object[]{i, rs.getString("id_template"), rs.getString("Pemeriksaan"),
+                        rs.getDouble("bagian_rs"), rs.getDouble("bhp"), rs.getDouble("bagian_dokter"),
+                        rs.getDouble("bagian_laborat"), rs.getDouble("bagian_perujuk"), rs.getDouble("kso"),
+                        rs.getDouble("menejemen"), rs.getDouble("biaya_item"), rs.getInt("jumlah")});
                     i++;
                 }
                 if (tabModeDetailLaborat.getRowCount() > 0) {
-                    tabModeDetailLaborat.addRow(new Object[]{
-                        "", "", "Jumlah Total :", material, bhp, jmdokter,
-                        jmpetugas, jmperujuk, kso, menejemen, total, item
-                    });
+                    tabModeDetailLaborat.addRow(new Object[]{"", "", "Jumlah Total :", material, bhp, jmdokter,
+                        jmpetugas, jmperujuk, kso, menejemen, total, item});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -5671,8 +5193,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakRalanDokter() {
         if (tabModeRalanDokter.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeRalanDokter.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -5682,16 +5203,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("propinsirs", akses.getpropinsirs());
             param.put("kontakrs", akses.getkontakrs());
             param.put("emailrs", akses.getemailrs());
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdDokterRalanDokter.getText().isEmpty() && NmDokterRalanDokter.
-                    getText().isEmpty() && KdPoliRalanDokter.getText().isEmpty() && NmPoliRalanDokter.
-                    getText().isEmpty() && KdCaraBayarRalanDokter.getText().
-                            isEmpty() && NmCaraBayarRalanDokter.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper",
-                        "report",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdDokterRalanDokter.getText().isEmpty() && NmDokterRalanDokter.getText().isEmpty()
+                    && KdPoliRalanDokter.getText().isEmpty() && NmPoliRalanDokter.getText().isEmpty()
+                    && KdCaraBayarRalanDokter.getText().isEmpty() && NmCaraBayarRalanDokter.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper", "report",
                         "::[ Ringkasan Tindakan Ralan Yang Ditangani Dokter ]::",
                         "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                         + "sum(rawat_jl_dr.material) as material,sum(rawat_jl_dr.bhp) as bhp,sum(rawat_jl_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -5702,14 +5219,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join jns_perawatan on rawat_jl_dr.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
                         + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                        + "where concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc",
+                        + "where concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper",
-                            "report",
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Dokter ]::",
                             "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material) as material,sum(rawat_jl_dr.bhp) as bhp,sum(rawat_jl_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -5720,20 +5237,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan on rawat_jl_dr.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokter.
-                            getText() + NmPoliRalanDokter.getText() + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokter.
-                            getText() + NmDokterRalanDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokter.
-                            getText() + NmCaraBayarRalanDokter.getText() + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokter.getText() + NmPoliRalanDokter.getText()
+                            + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokter.getText() + NmDokterRalanDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokter.getText() + NmCaraBayarRalanDokter.getText()
+                            + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Dokter ]::",
                             "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material) as material,sum(rawat_jl_dr.bhp) as bhp,sum(rawat_jl_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -5745,20 +5263,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokter.
-                            getText() + NmPoliRalanDokter.getText() + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokter.
-                            getText() + NmDokterRalanDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokter.
-                            getText() + NmCaraBayarRalanDokter.getText() + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokter.getText() + NmPoliRalanDokter.getText()
+                            + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokter.getText() + NmDokterRalanDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokter.getText() + NmCaraBayarRalanDokter.getText()
+                            + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Dokter ]::",
                             "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material) as material,sum(rawat_jl_dr.bhp) as bhp,sum(rawat_jl_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -5770,20 +5289,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokter.
-                            getText() + NmPoliRalanDokter.getText() + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokter.
-                            getText() + NmDokterRalanDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokter.
-                            getText() + NmCaraBayarRalanDokter.getText() + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokter.getText() + NmPoliRalanDokter.getText()
+                            + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokter.getText() + NmDokterRalanDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokter.getText() + NmCaraBayarRalanDokter.getText()
+                            + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Dokter ]::",
                             "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material) as material,sum(rawat_jl_dr.bhp) as bhp,sum(rawat_jl_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -5794,20 +5314,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan on rawat_jl_dr.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokter.
-                            getText() + NmPoliRalanDokter.getText() + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokter.
-                            getText() + NmDokterRalanDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokter.
-                            getText() + NmCaraBayarRalanDokter.getText() + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokter.getText() + NmPoliRalanDokter.getText()
+                            + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokter.getText() + NmDokterRalanDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokter.getText() + NmCaraBayarRalanDokter.getText()
+                            + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Dokter ]::",
                             "select rawat_jl_dr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_dr.material) as material,sum(rawat_jl_dr.bhp) as bhp,sum(rawat_jl_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -5818,14 +5339,17 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan on rawat_jl_dr.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokter.
-                            getText() + NmPoliRalanDokter.getText() + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokter.
-                            getText() + NmDokterRalanDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokter.
-                            getText() + NmCaraBayarRalanDokter.getText() + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_jl_dr.tgl_perawatan,' ',rawat_jl_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokter.getText() + NmPoliRalanDokter.getText()
+                            + "%' and concat(rawat_jl_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokter.getText() + NmDokterRalanDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokter.getText() + NmCaraBayarRalanDokter.getText()
+                            + "%' and (rawat_jl_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_dr.kd_jenis_prw order by rawat_jl_dr.kd_jenis_prw asc",
                             param);
                 }
@@ -5835,8 +5359,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakRalanParamedis() {
         if (tabModeRalanParamedis.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeRalanParamedis.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -5849,17 +5372,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdPetugasRalanParamedis.getText().isEmpty() && NmPetugasRalanParamedis.
-                    getText().isEmpty() && KdPoliRalanParamedis.getText().
-                            isEmpty() && NmPoliRalanParamedis.getText().
-                            isEmpty() && KdCaraBayarRalanParamedis.getText().
-                            isEmpty() && NmCaraBayarRalanParamedis.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry("rptRingkasanTindakanRalanParamedis.jasper",
-                        "report",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdPetugasRalanParamedis.getText().isEmpty() && NmPetugasRalanParamedis.getText().isEmpty()
+                    && KdPoliRalanParamedis.getText().isEmpty() && NmPoliRalanParamedis.getText().isEmpty()
+                    && KdCaraBayarRalanParamedis.getText().isEmpty() && NmCaraBayarRalanParamedis.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanTindakanRalanParamedis.jasper", "report",
                         "::[ Ringkasan Tindakan Ralan Yang Ditangani Paramedis ]::",
                         "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                         + "sum(rawat_jl_pr.material) as material,sum(rawat_jl_pr.bhp) as bhp,sum(rawat_jl_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -5870,15 +5388,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join petugas on rawat_jl_pr.nip=petugas.nip "
                         + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                        + "where concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc",
+                        + "where concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanParamedis.jasper",
-                            "report",
+                    Valid.MyReportqry("rptRingkasanTindakanRalanParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Paramedis ]::",
                             "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material) as material,sum(rawat_jl_pr.bhp) as bhp,sum(rawat_jl_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -5889,21 +5406,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_jl_pr.nip=petugas.nip "
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanParamedis.
-                            getText() + NmPoliRalanParamedis.getText() + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%" + KdPetugasRalanParamedis.
-                            getText() + NmPetugasRalanParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanParamedis.
-                            getText() + NmCaraBayarRalanParamedis.getText() + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanParamedis.getText() + NmPoliRalanParamedis.getText()
+                            + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanParamedis.getText() + NmPetugasRalanParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanParamedis.getText() + NmCaraBayarRalanParamedis.getText()
+                            + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Paramedis ]::",
                             "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material) as material,sum(rawat_jl_pr.bhp) as bhp,sum(rawat_jl_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -5915,21 +5432,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanParamedis.
-                            getText() + NmPoliRalanParamedis.getText() + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%" + KdPetugasRalanParamedis.
-                            getText() + NmPetugasRalanParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanParamedis.
-                            getText() + NmCaraBayarRalanParamedis.getText() + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanParamedis.getText() + NmPoliRalanParamedis.getText()
+                            + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanParamedis.getText() + NmPetugasRalanParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanParamedis.getText() + NmCaraBayarRalanParamedis.getText()
+                            + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Paramedis ]::",
                             "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material) as material,sum(rawat_jl_pr.bhp) as bhp,sum(rawat_jl_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -5941,21 +5458,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanParamedis.
-                            getText() + NmPoliRalanParamedis.getText() + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%" + KdPetugasRalanParamedis.
-                            getText() + NmPetugasRalanParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanParamedis.
-                            getText() + NmCaraBayarRalanParamedis.getText() + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanParamedis.getText() + NmPoliRalanParamedis.getText()
+                            + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanParamedis.getText() + NmPetugasRalanParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanParamedis.getText() + NmCaraBayarRalanParamedis.getText()
+                            + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Paramedis ]::",
                             "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material) as material,sum(rawat_jl_pr.bhp) as bhp,sum(rawat_jl_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -5966,21 +5483,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_jl_pr.nip=petugas.nip "
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanParamedis.
-                            getText() + NmPoliRalanParamedis.getText() + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%" + KdPetugasRalanParamedis.
-                            getText() + NmPetugasRalanParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanParamedis.
-                            getText() + NmCaraBayarRalanParamedis.getText() + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanParamedis.getText() + NmPoliRalanParamedis.getText()
+                            + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanParamedis.getText() + NmPetugasRalanParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanParamedis.getText() + NmCaraBayarRalanParamedis.getText()
+                            + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ralan Yang Ditangani Paramedis ]::",
                             "select rawat_jl_pr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_pr.material) as material,sum(rawat_jl_pr.bhp) as bhp,sum(rawat_jl_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -5991,14 +5508,17 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_jl_pr.nip=petugas.nip "
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanParamedis.
-                            getText() + NmPoliRalanParamedis.getText() + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%" + KdPetugasRalanParamedis.
-                            getText() + NmPetugasRalanParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanParamedis.
-                            getText() + NmCaraBayarRalanParamedis.getText() + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_jl_pr.tgl_perawatan,' ',rawat_jl_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanParamedis.getText() + NmPoliRalanParamedis.getText()
+                            + "%' and concat(rawat_jl_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanParamedis.getText() + NmPetugasRalanParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanParamedis.getText() + NmCaraBayarRalanParamedis.getText()
+                            + "%' and (rawat_jl_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_pr.kd_jenis_prw order by rawat_jl_pr.kd_jenis_prw asc",
                             param);
                 }
@@ -6008,8 +5528,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakRalanDokterParamedis() {
         if (tabModeRalanDokterParamedis.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeRalanDokterParamedis.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -6022,20 +5541,15 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdDokterRalanDokterParamedis.getText().isEmpty() && NmDokterRalanDokterParamedis.
-                    getText().isEmpty() && KdPetugasRalanDokterParamedis.
-                            getText().isEmpty() && NmPetugasRalanDokterParamedis.
-                            getText().isEmpty() && KdPoliRalanDokterParamedis.
-                            getText().isEmpty() && NmPoliRalanDokterParamedis.
-                            getText().isEmpty() && KdCaraBayarRalanDokterParamedis.
-                            getText().isEmpty() && NmCaraBayarRalanDokterParamedis.
-                            getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry(
-                        "rptRingkasanTindakanRalanDokterParamedis.jasper",
-                        "report",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdDokterRalanDokterParamedis.getText().isEmpty() && NmDokterRalanDokterParamedis.getText().isEmpty()
+                    && KdPetugasRalanDokterParamedis.getText().isEmpty()
+                    && NmPetugasRalanDokterParamedis.getText().isEmpty()
+                    && KdPoliRalanDokterParamedis.getText().isEmpty() && NmPoliRalanDokterParamedis.getText().isEmpty()
+                    && KdCaraBayarRalanDokterParamedis.getText().isEmpty()
+                    && NmCaraBayarRalanDokterParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                    && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanTindakanRalanDokterParamedis.jasper", "report",
                         "::[ Detail Tindakan Ralan Yang Ditangani Dokter & Petugas ]::",
                         "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                         + "sum(rawat_jl_drpr.material) as material,sum(rawat_jl_drpr.bhp) as bhp,sum(rawat_jl_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_jl_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6047,15 +5561,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                         + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
-                        + "where concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc",
+                        + "where concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanDokterParamedis.jasper",
-                            "report",
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokterParamedis.jasper", "report",
                             "::[ Detail Tindakan Ralan Yang Ditangani Dokter & Petugas ]::",
                             "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material) as material,sum(rawat_jl_drpr.bhp) as bhp,sum(rawat_jl_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_jl_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6067,23 +5580,24 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
-                            + "where concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokterParamedis.
-                            getText() + NmDokterRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokterParamedis.
-                            getText() + NmPoliRalanDokterParamedis.getText() + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%" + KdPetugasRalanDokterParamedis.
-                            getText() + NmPetugasRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokterParamedis.
-                            getText() + NmCaraBayarRalanDokterParamedis.
-                                    getText() + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.
-                                    getText().trim() + "%' or poliklinik.nm_poli like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokterParamedis.getText() + NmDokterRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokterParamedis.getText() + NmPoliRalanDokterParamedis.getText()
+                            + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanDokterParamedis.getText() + NmPetugasRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokterParamedis.getText()
+                            + NmCaraBayarRalanDokterParamedis.getText()
+                            + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.getText().trim()
+                            + "%' or poliklinik.nm_poli like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokterParamedis.jasper", "report",
                             "::[ Detail Tindakan Ralan Yang Ditangani Dokter & Petugas ]::",
                             "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material) as material,sum(rawat_jl_drpr.bhp) as bhp,sum(rawat_jl_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_jl_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6096,23 +5610,24 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokterParamedis.
-                            getText() + NmDokterRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokterParamedis.
-                            getText() + NmPoliRalanDokterParamedis.getText() + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%" + KdPetugasRalanDokterParamedis.
-                            getText() + NmPetugasRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokterParamedis.
-                            getText() + NmCaraBayarRalanDokterParamedis.
-                                    getText() + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.
-                                    getText().trim() + "%' or poliklinik.nm_poli like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokterParamedis.getText() + NmDokterRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokterParamedis.getText() + NmPoliRalanDokterParamedis.getText()
+                            + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanDokterParamedis.getText() + NmPetugasRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokterParamedis.getText()
+                            + NmCaraBayarRalanDokterParamedis.getText()
+                            + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.getText().trim()
+                            + "%' or poliklinik.nm_poli like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokterParamedis.jasper", "report",
                             "::[ Detail Tindakan Ralan Yang Ditangani Dokter & Petugas ]::",
                             "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material) as material,sum(rawat_jl_drpr.bhp) as bhp,sum(rawat_jl_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_jl_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6125,23 +5640,24 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokterParamedis.
-                            getText() + NmDokterRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokterParamedis.
-                            getText() + NmPoliRalanDokterParamedis.getText() + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%" + KdPetugasRalanDokterParamedis.
-                            getText() + NmPetugasRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokterParamedis.
-                            getText() + NmCaraBayarRalanDokterParamedis.
-                                    getText() + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.
-                                    getText().trim() + "%' or poliklinik.nm_poli like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokterParamedis.getText() + NmDokterRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokterParamedis.getText() + NmPoliRalanDokterParamedis.getText()
+                            + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanDokterParamedis.getText() + NmPetugasRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokterParamedis.getText()
+                            + NmCaraBayarRalanDokterParamedis.getText()
+                            + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.getText().trim()
+                            + "%' or poliklinik.nm_poli like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokterParamedis.jasper", "report",
                             "::[ Detail Tindakan Ralan Yang Ditangani Dokter & Petugas ]::",
                             "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material) as material,sum(rawat_jl_drpr.bhp) as bhp,sum(rawat_jl_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_jl_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6153,23 +5669,24 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokterParamedis.
-                            getText() + NmDokterRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokterParamedis.
-                            getText() + NmPoliRalanDokterParamedis.getText() + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%" + KdPetugasRalanDokterParamedis.
-                            getText() + NmPetugasRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokterParamedis.
-                            getText() + NmCaraBayarRalanDokterParamedis.
-                                    getText() + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.
-                                    getText().trim() + "%' or poliklinik.nm_poli like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokterParamedis.getText() + NmDokterRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokterParamedis.getText() + NmPoliRalanDokterParamedis.getText()
+                            + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanDokterParamedis.getText() + NmPetugasRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokterParamedis.getText()
+                            + NmCaraBayarRalanDokterParamedis.getText()
+                            + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.getText().trim()
+                            + "%' or poliklinik.nm_poli like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRalanDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRalanDokterParamedis.jasper", "report",
                             "::[ Detail Tindakan Ralan Yang Ditangani Dokter & Petugas ]::",
                             "select rawat_jl_drpr.kd_jenis_prw,jns_perawatan.nm_perawatan,"
                             + "sum(rawat_jl_drpr.material) as material,sum(rawat_jl_drpr.bhp) as bhp,sum(rawat_jl_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_jl_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6181,16 +5698,20 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_jl_drpr.nip=petugas.nip "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRalanDokterParamedis.
-                            getText() + NmDokterRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%" + KdPoliRalanDokterParamedis.
-                            getText() + NmPoliRalanDokterParamedis.getText() + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%" + KdPetugasRalanDokterParamedis.
-                            getText() + NmPetugasRalanDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRalanDokterParamedis.
-                            getText() + NmCaraBayarRalanDokterParamedis.
-                                    getText() + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.
-                                    getText().trim() + "%' or poliklinik.nm_poli like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_jl_drpr.tgl_perawatan,' ',rawat_jl_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_jl_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRalanDokterParamedis.getText() + NmDokterRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like '%"
+                            + KdPoliRalanDokterParamedis.getText() + NmPoliRalanDokterParamedis.getText()
+                            + "%' and concat(rawat_jl_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRalanDokterParamedis.getText() + NmPetugasRalanDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRalanDokterParamedis.getText()
+                            + NmCaraBayarRalanDokterParamedis.getText()
+                            + "%' and (rawat_jl_drpr.no_rawat like '%" + TCari.getText().trim()
+                            + "%' or poliklinik.nm_poli like '%" + TCari.getText().trim() + "%') "
                             + " group by rawat_jl_drpr.kd_jenis_prw order by rawat_jl_drpr.kd_jenis_prw asc",
                             param);
                 }
@@ -6200,8 +5721,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakOperasi() {
         if (tabModeOperasi.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeOperasi.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -6211,51 +5731,44 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("propinsirs", akses.getpropinsirs());
             param.put("kontakrs", akses.getkontakrs());
             param.put("emailrs", akses.getemailrs());
-            param.put("tanggal1",
-                    Valid.SetTglJam(Tgl1.getSelectedItem() + "") + " 00:00:00");
-            param.put("tanggal2",
-                    Valid.SetTglJam(Tgl2.getSelectedItem() + "") + " 23:59:59");
+            param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + "") + " 00:00:00");
+            param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + "") + " 23:59:59");
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdOperatorOperasi.getText().isEmpty() && NmOperatorOperasi.
-                    getText().isEmpty() && KdAsistenOperasi.getText().isEmpty() && NmAsistenOperasi.
-                    getText().isEmpty() && KdCaraBayarOperasi.getText().
-                            isEmpty() && NmCaraBayarOperasi.getText().isEmpty() && TCari.
-                    getText().isEmpty() && cmbStatus.getSelectedItem().equals(
-                            "Semua")) {
-                Valid.
-                        MyReportqry("rptRingkasanTindakanOperasi.jasper",
-                                "report", "::[ Ringkasan Tindakan Operasi ]::",
-                                "select operasi.kode_paket,paket_operasi.nm_perawatan,"
-                                + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
-                                + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
-                                + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
-                                + "sum(operasi.biayainstrumen) as biayainstrumen,sum(operasi.biayadokter_anak) as biayadokter_anak,"
-                                + "sum(operasi.biayaperawaat_resusitas) as biayaperawaat_resusitas,sum(operasi.biayadokter_anestesi) as biayadokter_anestesi,"
-                                + "sum(operasi.biayaasisten_anestesi) as biayaasisten_anestesi,sum(operasi.biayaasisten_anestesi2) as biayaasisten_anestesi2,"
-                                + "sum(operasi.biayabidan) as biayabidan,sum(operasi.biayabidan2) as biayabidan2,"
-                                + "sum(operasi.biayabidan3) as biayabidan3,sum(operasi.biayaperawat_luar) as biayaperawat_luar,"
-                                + "sum(operasi.biaya_omloop) as biaya_omloop,sum(operasi.biaya_omloop2) as biaya_omloop2,"
-                                + "sum(operasi.biaya_omloop3) as biaya_omloop3,sum(operasi.biaya_omloop4) as biaya_omloop4,"
-                                + "sum(operasi.biaya_omloop5) as biaya_omloop5,sum(operasi.biaya_dokter_pjanak) as biaya_dokter_pjanak,"
-                                + "sum(operasi.biaya_dokter_umum) as biaya_dokter_umum,sum(operasi.biayaalat) as biayaalat,"
-                                + "sum(operasi.biayasewaok) as biayasewaok,sum(operasi.akomodasi) as akomodasi,"
-                                + "sum(operasi.bagian_rs) as bagian_rs,sum(operasi.biayasarpras) as biayasarpras,count(operasi.kode_paket) as jumlah "
-                                + "from operasi inner join reg_periksa on operasi.no_rawat=reg_periksa.no_rawat "
-                                + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                + "inner join paket_operasi on operasi.kode_paket=paket_operasi.kode_paket "
-                                + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                                + "inner join dokter as operator1 on operator1.kd_dokter=operasi.operator1 "
-                                + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
-                                + "where operasi.tgl_operasi between '" + Valid.
-                                        SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                                SetTglJam(Tgl2.getSelectedItem() + "") + "' group by operasi.kode_paket order by operasi.kode_paket desc",
-                                param);
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdOperatorOperasi.getText().isEmpty() && NmOperatorOperasi.getText().isEmpty()
+                    && KdAsistenOperasi.getText().isEmpty() && NmAsistenOperasi.getText().isEmpty()
+                    && KdCaraBayarOperasi.getText().isEmpty() && NmCaraBayarOperasi.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper", "report", "::[ Ringkasan Tindakan Operasi ]::",
+                        "select operasi.kode_paket,paket_operasi.nm_perawatan,"
+                        + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
+                        + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
+                        + "sum(operasi.biayaasisten_operator2) as biayaasisten_operator2,sum(operasi.biayaasisten_operator3) as biayaasisten_operator3,"
+                        + "sum(operasi.biayainstrumen) as biayainstrumen,sum(operasi.biayadokter_anak) as biayadokter_anak,"
+                        + "sum(operasi.biayaperawaat_resusitas) as biayaperawaat_resusitas,sum(operasi.biayadokter_anestesi) as biayadokter_anestesi,"
+                        + "sum(operasi.biayaasisten_anestesi) as biayaasisten_anestesi,sum(operasi.biayaasisten_anestesi2) as biayaasisten_anestesi2,"
+                        + "sum(operasi.biayabidan) as biayabidan,sum(operasi.biayabidan2) as biayabidan2,"
+                        + "sum(operasi.biayabidan3) as biayabidan3,sum(operasi.biayaperawat_luar) as biayaperawat_luar,"
+                        + "sum(operasi.biaya_omloop) as biaya_omloop,sum(operasi.biaya_omloop2) as biaya_omloop2,"
+                        + "sum(operasi.biaya_omloop3) as biaya_omloop3,sum(operasi.biaya_omloop4) as biaya_omloop4,"
+                        + "sum(operasi.biaya_omloop5) as biaya_omloop5,sum(operasi.biaya_dokter_pjanak) as biaya_dokter_pjanak,"
+                        + "sum(operasi.biaya_dokter_umum) as biaya_dokter_umum,sum(operasi.biayaalat) as biayaalat,"
+                        + "sum(operasi.biayasewaok) as biayasewaok,sum(operasi.akomodasi) as akomodasi,"
+                        + "sum(operasi.bagian_rs) as bagian_rs,sum(operasi.biayasarpras) as biayasarpras,count(operasi.kode_paket) as jumlah "
+                        + "from operasi inner join reg_periksa on operasi.no_rawat=reg_periksa.no_rawat "
+                        + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                        + "inner join paket_operasi on operasi.kode_paket=paket_operasi.kode_paket "
+                        + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
+                        + "inner join dokter as operator1 on operator1.kd_dokter=operasi.operator1 "
+                        + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
+                        + "where operasi.tgl_operasi between '" + Valid.SetTglJam(Tgl1.getSelectedItem() + "")
+                        + "' and '" + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by operasi.kode_paket order by operasi.kode_paket desc",
+                        param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper",
-                            "report", "::[ Ringkasan Tindakan Operasi ]::",
+                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper", "report",
+                            "::[ Ringkasan Tindakan Operasi ]::",
                             "select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
@@ -6277,20 +5790,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join dokter as operator1 on operator1.kd_dokter=operasi.operator1 "
                             + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
-                            + "where operasi.tgl_operasi between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(operasi.operator1,operator1.nm_dokter) like '%" + KdOperatorOperasi.
-                            getText() + NmOperatorOperasi.getText() + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%" + KdAsistenOperasi.
-                            getText() + NmAsistenOperasi.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarOperasi.
-                            getText() + NmCaraBayarOperasi.getText() + "%' and (operasi.kode_paket like '%" + TCari.
-                            getText().trim() + "%' or paket_operasi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where operasi.tgl_operasi between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(operasi.operator1,operator1.nm_dokter) like '%"
+                            + KdOperatorOperasi.getText() + NmOperatorOperasi.getText()
+                            + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%"
+                            + KdAsistenOperasi.getText() + NmAsistenOperasi.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarOperasi.getText() + NmCaraBayarOperasi.getText()
+                            + "%' and (operasi.kode_paket like '%" + TCari.getText().trim()
+                            + "%' or paket_operasi.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper",
-                            "report", "::[ Ringkasan Tindakan Operasi ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper", "report",
+                            "::[ Ringkasan Tindakan Operasi ]::",
                             "select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
@@ -6313,20 +5828,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join dokter as operator1 on operator1.kd_dokter=operasi.operator1 "
                             + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and operasi.tgl_operasi between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(operasi.operator1,operator1.nm_dokter) like '%" + KdOperatorOperasi.
-                            getText() + NmOperatorOperasi.getText() + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%" + KdAsistenOperasi.
-                            getText() + NmAsistenOperasi.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarOperasi.
-                            getText() + NmCaraBayarOperasi.getText() + "%' and (operasi.kode_paket like '%" + TCari.
-                            getText().trim() + "%' or paket_operasi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%')  "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and operasi.tgl_operasi between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(operasi.operator1,operator1.nm_dokter) like '%"
+                            + KdOperatorOperasi.getText() + NmOperatorOperasi.getText()
+                            + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%"
+                            + KdAsistenOperasi.getText() + NmAsistenOperasi.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarOperasi.getText() + NmCaraBayarOperasi.getText()
+                            + "%' and (operasi.kode_paket like '%" + TCari.getText().trim()
+                            + "%' or paket_operasi.nm_perawatan like '%" + TCari.getText().trim() + "%')  "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper",
-                            "report", "::[ Ringkasan Tindakan Operasi ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper", "report",
+                            "::[ Ringkasan Tindakan Operasi ]::",
                             "select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
@@ -6349,20 +5866,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join dokter as operator1 on operator1.kd_dokter=operasi.operator1 "
                             + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and operasi.tgl_operasi between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(operasi.operator1,operator1.nm_dokter) like '%" + KdOperatorOperasi.
-                            getText() + NmOperatorOperasi.getText() + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%" + KdAsistenOperasi.
-                            getText() + NmAsistenOperasi.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarOperasi.
-                            getText() + NmCaraBayarOperasi.getText() + "%' and (operasi.kode_paket like '%" + TCari.
-                            getText().trim() + "%' or paket_operasi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%')  "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and operasi.tgl_operasi between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(operasi.operator1,operator1.nm_dokter) like '%"
+                            + KdOperatorOperasi.getText() + NmOperatorOperasi.getText()
+                            + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%"
+                            + KdAsistenOperasi.getText() + NmAsistenOperasi.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarOperasi.getText() + NmCaraBayarOperasi.getText()
+                            + "%' and (operasi.kode_paket like '%" + TCari.getText().trim()
+                            + "%' or paket_operasi.nm_perawatan like '%" + TCari.getText().trim() + "%')  "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper",
-                            "report", "::[ Ringkasan Tindakan Operasi ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper", "report",
+                            "::[ Ringkasan Tindakan Operasi ]::",
                             "select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
@@ -6384,20 +5903,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join dokter as operator1 on operator1.kd_dokter=operasi.operator1 "
                             + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and operasi.tgl_operasi between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(operasi.operator1,operator1.nm_dokter) like '%" + KdOperatorOperasi.
-                            getText() + NmOperatorOperasi.getText() + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%" + KdAsistenOperasi.
-                            getText() + NmAsistenOperasi.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarOperasi.
-                            getText() + NmCaraBayarOperasi.getText() + "%' and (operasi.kode_paket like '%" + TCari.
-                            getText().trim() + "%' or paket_operasi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and operasi.tgl_operasi between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(operasi.operator1,operator1.nm_dokter) like '%"
+                            + KdOperatorOperasi.getText() + NmOperatorOperasi.getText()
+                            + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%"
+                            + KdAsistenOperasi.getText() + NmAsistenOperasi.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarOperasi.getText() + NmCaraBayarOperasi.getText()
+                            + "%' and (operasi.kode_paket like '%" + TCari.getText().trim()
+                            + "%' or paket_operasi.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper",
-                            "report", "::[ Ringkasan Tindakan Operasi ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanTindakanOperasi.jasper", "report",
+                            "::[ Ringkasan Tindakan Operasi ]::",
                             "select operasi.kode_paket,paket_operasi.nm_perawatan,"
                             + "sum(operasi.biayaoperator1) as biayaoperator1,sum(operasi.biayaoperator2) as biayaoperator2,"
                             + "sum(operasi.biayaoperator3) as biayaoperator3,sum(operasi.biayaasisten_operator1) as biayaasisten_operator1,"
@@ -6419,14 +5940,17 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join dokter as operator1 on operator1.kd_dokter=operasi.operator1 "
                             + "inner join petugas as asisten_operator1 on asisten_operator1.nip=operasi.asisten_operator1 "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and operasi.tgl_operasi between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(operasi.operator1,operator1.nm_dokter) like '%" + KdOperatorOperasi.
-                            getText() + NmOperatorOperasi.getText() + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%" + KdAsistenOperasi.
-                            getText() + NmAsistenOperasi.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarOperasi.
-                            getText() + NmCaraBayarOperasi.getText() + "%' and (operasi.kode_paket like '%" + TCari.
-                            getText().trim() + "%' or paket_operasi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%')  "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and operasi.tgl_operasi between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(operasi.operator1,operator1.nm_dokter) like '%"
+                            + KdOperatorOperasi.getText() + NmOperatorOperasi.getText()
+                            + "%' and concat(operasi.asisten_operator1,asisten_operator1.nama) like '%"
+                            + KdAsistenOperasi.getText() + NmAsistenOperasi.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarOperasi.getText() + NmCaraBayarOperasi.getText()
+                            + "%' and (operasi.kode_paket like '%" + TCari.getText().trim()
+                            + "%' or paket_operasi.nm_perawatan like '%" + TCari.getText().trim() + "%')  "
                             + "group by operasi.kode_paket order by operasi.kode_paket desc",
                             param);
                 }
@@ -6436,8 +5960,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakRanapDokter() {
         if (tabModeRanapDokter.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeRanapDokter.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -6450,15 +5973,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdDokterRanapDokter.getText().isEmpty() && NmDokterRanapDokter.
-                    getText().isEmpty() && KdCaraBayarRanapDokter.getText().
-                            isEmpty() && NmCaraBayarRanapDokter.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper",
-                        "report",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdDokterRanapDokter.getText().isEmpty() && NmDokterRanapDokter.getText().isEmpty()
+                    && KdCaraBayarRanapDokter.getText().isEmpty() && NmCaraBayarRanapDokter.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper", "report",
                         "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter ]::",
                         "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                         + "sum(rawat_inap_dr.material) as material,sum(rawat_inap_dr.bhp) as bhp,sum(rawat_inap_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -6468,14 +5987,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join jns_perawatan_inap on rawat_inap_dr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                         + "inner join dokter on rawat_inap_dr.kd_dokter=dokter.kd_dokter "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                        + "where concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc",
+                        + "where concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper",
-                            "report",
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter ]::",
                             "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material) as material,sum(rawat_inap_dr.bhp) as bhp,sum(rawat_inap_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -6485,19 +6004,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_inap on rawat_inap_dr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                             + "inner join dokter on rawat_inap_dr.kd_dokter=dokter.kd_dokter "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokter.
-                            getText() + NmDokterRanapDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokter.
-                            getText() + NmCaraBayarRanapDokter.getText() + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokter.getText() + NmDokterRanapDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokter.getText() + NmCaraBayarRanapDokter.getText()
+                            + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter ]::",
                             "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material) as material,sum(rawat_inap_dr.bhp) as bhp,sum(rawat_inap_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -6508,19 +6027,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join dokter on rawat_inap_dr.kd_dokter=dokter.kd_dokter "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokter.
-                            getText() + NmDokterRanapDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokter.
-                            getText() + NmCaraBayarRanapDokter.getText() + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokter.getText() + NmDokterRanapDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokter.getText() + NmCaraBayarRanapDokter.getText()
+                            + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter ]::",
                             "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material) as material,sum(rawat_inap_dr.bhp) as bhp,sum(rawat_inap_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -6531,19 +6050,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join dokter on rawat_inap_dr.kd_dokter=dokter.kd_dokter "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokter.
-                            getText() + NmDokterRanapDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokter.
-                            getText() + NmCaraBayarRanapDokter.getText() + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokter.getText() + NmDokterRanapDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokter.getText() + NmCaraBayarRanapDokter.getText()
+                            + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter ]::",
                             "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material) as material,sum(rawat_inap_dr.bhp) as bhp,sum(rawat_inap_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -6553,19 +6072,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_inap on rawat_inap_dr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                             + "inner join dokter on rawat_inap_dr.kd_dokter=dokter.kd_dokter "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokter.
-                            getText() + NmDokterRanapDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokter.
-                            getText() + NmCaraBayarRanapDokter.getText() + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokter.getText() + NmDokterRanapDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokter.getText() + NmCaraBayarRanapDokter.getText()
+                            + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokter.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter ]::",
                             "select rawat_inap_dr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_dr.material) as material,sum(rawat_inap_dr.bhp) as bhp,sum(rawat_inap_dr.tarif_tindakandr) as tarif_tindakandr,"
@@ -6575,13 +6094,15 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_inap on rawat_inap_dr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                             + "inner join dokter on rawat_inap_dr.kd_dokter=dokter.kd_dokter "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokter.
-                            getText() + NmDokterRanapDokter.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokter.
-                            getText() + NmCaraBayarRanapDokter.getText() + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_inap_dr.tgl_perawatan,' ',rawat_inap_dr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_dr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokter.getText() + NmDokterRanapDokter.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokter.getText() + NmCaraBayarRanapDokter.getText()
+                            + "%' and (rawat_inap_dr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_dr.kd_jenis_prw order by rawat_inap_dr.kd_jenis_prw asc",
                             param);
                 }
@@ -6591,8 +6112,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakRanapParamedis() {
         if (tabModeRanapParamedis.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeRanapParamedis.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -6605,15 +6125,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdPetugasRanapParamedis.getText().isEmpty() && NmPetugasRanapParamedis.
-                    getText().isEmpty() && KdCaraBayarRanapParamedis.getText().
-                            isEmpty() && NmCaraBayarRanapParamedis.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry("rptRingkasanTindakanRanapParamedis.jasper",
-                        "report",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdPetugasRanapParamedis.getText().isEmpty() && NmPetugasRanapParamedis.getText().isEmpty()
+                    && KdCaraBayarRanapParamedis.getText().isEmpty() && NmCaraBayarRanapParamedis.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanTindakanRanapParamedis.jasper", "report",
                         "::[ Ringkasan Tindakan Ranap Yang Ditangani Paramedis ]::",
                         "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                         + "sum(rawat_inap_pr.material) as material,sum(rawat_inap_pr.bhp) as bhp,sum(rawat_inap_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6623,15 +6139,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join jns_perawatan_inap on rawat_inap_pr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                         + "inner join petugas on rawat_inap_pr.nip=petugas.nip "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                        + "where concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc",
+                        + "where concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapParamedis.jasper",
-                            "report",
+                    Valid.MyReportqry("rptRingkasanTindakanRanapParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Paramedis ]::",
                             "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material) as material,sum(rawat_inap_pr.bhp) as bhp,sum(rawat_inap_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6641,20 +6156,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_inap on rawat_inap_pr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                             + "inner join petugas on rawat_inap_pr.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%" + KdPetugasRanapParamedis.
-                            getText() + NmPetugasRanapParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapParamedis.
-                            getText() + NmCaraBayarRanapParamedis.getText() + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapParamedis.getText() + NmPetugasRanapParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapParamedis.getText() + NmCaraBayarRanapParamedis.getText()
+                            + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Paramedis ]::",
                             "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material) as material,sum(rawat_inap_pr.bhp) as bhp,sum(rawat_inap_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6665,20 +6179,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_inap_pr.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%" + KdPetugasRanapParamedis.
-                            getText() + NmPetugasRanapParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapParamedis.
-                            getText() + NmCaraBayarRanapParamedis.getText() + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapParamedis.getText() + NmPetugasRanapParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapParamedis.getText() + NmCaraBayarRanapParamedis.getText()
+                            + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Paramedis ]::",
                             "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material) as material,sum(rawat_inap_pr.bhp) as bhp,sum(rawat_inap_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6689,20 +6202,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on rawat_inap_pr.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%" + KdPetugasRanapParamedis.
-                            getText() + NmPetugasRanapParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapParamedis.
-                            getText() + NmCaraBayarRanapParamedis.getText() + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapParamedis.getText() + NmPetugasRanapParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapParamedis.getText() + NmCaraBayarRanapParamedis.getText()
+                            + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Paramedis ]::",
                             "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material) as material,sum(rawat_inap_pr.bhp) as bhp,sum(rawat_inap_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6712,20 +6224,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_inap on rawat_inap_pr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                             + "inner join petugas on rawat_inap_pr.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%" + KdPetugasRanapParamedis.
-                            getText() + NmPetugasRanapParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapParamedis.
-                            getText() + NmCaraBayarRanapParamedis.getText() + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapParamedis.getText() + NmPetugasRanapParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapParamedis.getText() + NmCaraBayarRanapParamedis.getText()
+                            + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Paramedis ]::",
                             "select rawat_inap_pr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_pr.material) as material,sum(rawat_inap_pr.bhp) as bhp,sum(rawat_inap_pr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6735,13 +6246,15 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join jns_perawatan_inap on rawat_inap_pr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "
                             + "inner join petugas on rawat_inap_pr.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%" + KdPetugasRanapParamedis.
-                            getText() + NmPetugasRanapParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapParamedis.
-                            getText() + NmCaraBayarRanapParamedis.getText() + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_inap_pr.tgl_perawatan,' ',rawat_inap_pr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_pr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapParamedis.getText() + NmPetugasRanapParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapParamedis.getText() + NmCaraBayarRanapParamedis.getText()
+                            + "%' and (rawat_inap_pr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim() + "%' ) "
                             + " group by rawat_inap_pr.kd_jenis_prw order by rawat_inap_pr.kd_jenis_prw asc",
                             param);
                 }
@@ -6751,8 +6264,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakRanapDokterParamedis() {
         if (tabModeRanapDokterParamedis.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeRanapDokterParamedis.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -6765,18 +6277,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdDokterRanapDokterParamedis.getText().isEmpty() && NmDokterRanapDokterParamedis.
-                    getText().isEmpty() && KdPetugasRanapDokterParamedis.
-                            getText().isEmpty() && NmPetugasRanapDokterParamedis.
-                            getText().isEmpty() && KdCaraBayarRanapDokterParamedis.
-                            getText().isEmpty() && NmCaraBayarRanapDokterParamedis.
-                            getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry(
-                        "rptRingkasanTindakanRanapDokterParamedis.jasper",
-                        "report",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdDokterRanapDokterParamedis.getText().isEmpty() && NmDokterRanapDokterParamedis.getText().isEmpty()
+                    && KdPetugasRanapDokterParamedis.getText().isEmpty()
+                    && NmPetugasRanapDokterParamedis.getText().isEmpty()
+                    && KdCaraBayarRanapDokterParamedis.getText().isEmpty()
+                    && NmCaraBayarRanapDokterParamedis.getText().isEmpty() && TCari.getText().isEmpty()
+                    && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanTindakanRanapDokterParamedis.jasper", "report",
                         "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter & Paramedis ]::",
                         "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                         + "sum(rawat_inap_drpr.material) as material,sum(rawat_inap_drpr.bhp) as bhp,sum(rawat_inap_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_inap_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6788,15 +6296,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                         + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
-                        + "where concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc",
+                        + "where concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapDokterParamedis.jasper",
-                            "report",
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokterParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter & Paramedis ]::",
                             "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material) as material,sum(rawat_inap_drpr.bhp) as bhp,sum(rawat_inap_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_inap_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6808,22 +6315,23 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
-                            + "where concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokterParamedis.
-                            getText() + NmDokterRanapDokterParamedis.getText() + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%" + KdPetugasRanapDokterParamedis.
-                            getText() + NmPetugasRanapDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokterParamedis.
-                            getText() + NmCaraBayarRanapDokterParamedis.
-                                    getText() + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.
-                                    getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' )  "
+                            + "where concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokterParamedis.getText() + NmDokterRanapDokterParamedis.getText()
+                            + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapDokterParamedis.getText() + NmPetugasRanapDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokterParamedis.getText()
+                            + NmCaraBayarRanapDokterParamedis.getText()
+                            + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokterParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter & Paramedis ]::",
                             "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material) as material,sum(rawat_inap_drpr.bhp) as bhp,sum(rawat_inap_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_inap_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6836,22 +6344,23 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokterParamedis.
-                            getText() + NmDokterRanapDokterParamedis.getText() + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%" + KdPetugasRanapDokterParamedis.
-                            getText() + NmPetugasRanapDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokterParamedis.
-                            getText() + NmCaraBayarRanapDokterParamedis.
-                                    getText() + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.
-                                    getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' )  "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokterParamedis.getText() + NmDokterRanapDokterParamedis.getText()
+                            + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapDokterParamedis.getText() + NmPetugasRanapDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokterParamedis.getText()
+                            + NmCaraBayarRanapDokterParamedis.getText()
+                            + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokterParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter & Paramedis ]::",
                             "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material) as material,sum(rawat_inap_drpr.bhp) as bhp,sum(rawat_inap_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_inap_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6864,22 +6373,23 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokterParamedis.
-                            getText() + NmDokterRanapDokterParamedis.getText() + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%" + KdPetugasRanapDokterParamedis.
-                            getText() + NmPetugasRanapDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokterParamedis.
-                            getText() + NmCaraBayarRanapDokterParamedis.
-                                    getText() + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.
-                                    getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' )  "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokterParamedis.getText() + NmDokterRanapDokterParamedis.getText()
+                            + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapDokterParamedis.getText() + NmPetugasRanapDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokterParamedis.getText()
+                            + NmCaraBayarRanapDokterParamedis.getText()
+                            + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokterParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter & Paramedis ]::",
                             "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material) as material,sum(rawat_inap_drpr.bhp) as bhp,sum(rawat_inap_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_inap_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6891,22 +6401,23 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokterParamedis.
-                            getText() + NmDokterRanapDokterParamedis.getText() + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%" + KdPetugasRanapDokterParamedis.
-                            getText() + NmPetugasRanapDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokterParamedis.
-                            getText() + NmCaraBayarRanapDokterParamedis.
-                                    getText() + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.
-                                    getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' )  "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokterParamedis.getText() + NmDokterRanapDokterParamedis.getText()
+                            + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapDokterParamedis.getText() + NmPetugasRanapDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokterParamedis.getText()
+                            + NmCaraBayarRanapDokterParamedis.getText()
+                            + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry(
-                            "rptRingkasanTindakanRanapDokterParamedis.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanTindakanRanapDokterParamedis.jasper", "report",
                             "::[ Ringkasan Tindakan Ranap Yang Ditangani Dokter & Paramedis ]::",
                             "select rawat_inap_drpr.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,"
                             + "sum(rawat_inap_drpr.material) as material,sum(rawat_inap_drpr.bhp) as bhp,sum(rawat_inap_drpr.tarif_tindakandr) as tarif_tindakandr,sum(rawat_inap_drpr.tarif_tindakanpr) as tarif_tindakanpr,"
@@ -6918,15 +6429,19 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join petugas on rawat_inap_drpr.nip=petugas.nip  "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%" + KdDokterRanapDokterParamedis.
-                            getText() + NmDokterRanapDokterParamedis.getText() + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%" + KdPetugasRanapDokterParamedis.
-                            getText() + NmPetugasRanapDokterParamedis.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRanapDokterParamedis.
-                            getText() + NmCaraBayarRanapDokterParamedis.
-                                    getText() + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.
-                                    getText().trim() + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' )  "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(rawat_inap_drpr.tgl_perawatan,' ',rawat_inap_drpr.jam_rawat) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(rawat_inap_drpr.kd_dokter,dokter.nm_dokter) like '%"
+                            + KdDokterRanapDokterParamedis.getText() + NmDokterRanapDokterParamedis.getText()
+                            + "%' and concat(rawat_inap_drpr.nip,petugas.nama) like '%"
+                            + KdPetugasRanapDokterParamedis.getText() + NmPetugasRanapDokterParamedis.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRanapDokterParamedis.getText()
+                            + NmCaraBayarRanapDokterParamedis.getText()
+                            + "%' and (rawat_inap_drpr.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_inap.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' )  "
                             + " group by rawat_inap_drpr.kd_jenis_prw order by rawat_inap_drpr.kd_jenis_prw asc",
                             param);
                 }
@@ -6936,8 +6451,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakRadiologi() {
         if (tabModeRadiologi.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeRadiologi.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -6950,15 +6464,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdDokterPerujukRad.getText().isEmpty() && NmDokterPerujukRad.
-                    getText().isEmpty() && KdPetugasRad.getText().isEmpty() && NmPetugasRad.
-                    getText().isEmpty() && KdCaraBayarRad.getText().isEmpty() && NmCaraBayarRad.
-                    getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry("rptRingkasanRadiologi.jasper", "report",
-                        "::[ Ringkasan Pemeriksaan Radiologi ]::",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdDokterPerujukRad.getText().isEmpty() && NmDokterPerujukRad.getText().isEmpty()
+                    && KdPetugasRad.getText().isEmpty() && NmPetugasRad.getText().isEmpty()
+                    && KdCaraBayarRad.getText().isEmpty() && NmCaraBayarRad.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanRadiologi.jasper", "report", "::[ Ringkasan Pemeriksaan Radiologi ]::",
                         "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
                         + "sum(periksa_radiologi.bagian_rs) as bagian_rs,sum(periksa_radiologi.bhp) as bhp,sum(periksa_radiologi.tarif_perujuk) as tarif_perujuk,"
                         + "sum(periksa_radiologi.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_radiologi.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
@@ -6970,9 +6481,10 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join petugas on periksa_radiologi.nip=petugas.nip "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                         + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                        + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw",
+                        + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
@@ -6989,18 +6501,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on periksa_radiologi.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukRad.
-                            getText() + NmDokterPerujukRad.getText() + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%" + KdPetugasRad.
-                            getText() + NmPetugasRad.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRad.
-                            getText() + NmCaraBayarRad.getText() + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukRad.getText() + NmDokterPerujukRad.getText()
+                            + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%"
+                            + KdPetugasRad.getText() + NmPetugasRad.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRad.getText() + NmCaraBayarRad.getText()
+                            + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
                     Valid.MyReportqry("rptRingkasanRadiologi.jasper", "report",
                             "::[ Ringkasan Pemeriksaan Radiologi ]::",
                             "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
@@ -7015,18 +6530,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukRad.
-                            getText() + NmDokterPerujukRad.getText() + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%" + KdPetugasRad.
-                            getText() + NmPetugasRad.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRad.
-                            getText() + NmCaraBayarRad.getText() + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukRad.getText() + NmDokterPerujukRad.getText()
+                            + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%"
+                            + KdPetugasRad.getText() + NmPetugasRad.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRad.getText() + NmCaraBayarRad.getText()
+                            + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
                     Valid.MyReportqry("rptRingkasanRadiologi.jasper", "report",
                             "::[ Ringkasan Pemeriksaan Radiologi ]::",
                             "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
@@ -7041,18 +6559,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukRad.
-                            getText() + NmDokterPerujukRad.getText() + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%" + KdPetugasRad.
-                            getText() + NmPetugasRad.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRad.
-                            getText() + NmCaraBayarRad.getText() + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukRad.getText() + NmDokterPerujukRad.getText()
+                            + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%"
+                            + KdPetugasRad.getText() + NmPetugasRad.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRad.getText() + NmCaraBayarRad.getText()
+                            + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
                     Valid.MyReportqry("rptRingkasanRadiologi.jasper", "report",
                             "::[ Ringkasan Pemeriksaan Radiologi ]::",
                             "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
@@ -7066,18 +6587,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on periksa_radiologi.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukRad.
-                            getText() + NmDokterPerujukRad.getText() + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%" + KdPetugasRad.
-                            getText() + NmPetugasRad.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRad.
-                            getText() + NmCaraBayarRad.getText() + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukRad.getText() + NmDokterPerujukRad.getText()
+                            + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%"
+                            + KdPetugasRad.getText() + NmPetugasRad.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRad.getText() + NmCaraBayarRad.getText()
+                            + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
                     Valid.MyReportqry("rptRingkasanRadiologi.jasper", "report",
                             "::[ Ringkasan Pemeriksaan Radiologi ]::",
                             "select periksa_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan, "
@@ -7091,14 +6615,18 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on periksa_radiologi.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_radiologi on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukRad.
-                            getText() + NmDokterPerujukRad.getText() + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%" + KdPetugasRad.
-                            getText() + NmPetugasRad.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarRad.
-                            getText() + NmCaraBayarRad.getText() + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(periksa_radiologi.tgl_periksa,' ',periksa_radiologi.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_radiologi.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukRad.getText() + NmDokterPerujukRad.getText()
+                            + "%' and concat(periksa_radiologi.nip,petugas.nama) like '%"
+                            + KdPetugasRad.getText() + NmPetugasRad.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarRad.getText() + NmCaraBayarRad.getText()
+                            + "%' and (periksa_radiologi.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_radiologi.nm_perawatan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by periksa_radiologi.kd_jenis_prw order by periksa_radiologi.kd_jenis_prw",
                             param);
                 }
@@ -7109,8 +6637,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakLaborat() {
         if (tabModeLaborat.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeLaborat.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -7123,15 +6650,12 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdDokterPerujukLab.getText().isEmpty() && NmDokterPerujukLab.
-                    getText().isEmpty() && KdPetugasLab.getText().isEmpty() && NmPetugasLab.
-                    getText().isEmpty() && KdCaraBayarLab.getText().isEmpty() && NmCaraBayarLab.
-                    getText().isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
-                Valid.MyReportqry("rptRingkasanLaborat.jasper", "report",
-                        "::[ Ringkasan Pemeriksaan Laborat ]::",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdDokterPerujukLab.getText().isEmpty() && NmDokterPerujukLab.getText().isEmpty()
+                    && KdPetugasLab.getText().isEmpty() && NmPetugasLab.getText().isEmpty()
+                    && KdCaraBayarLab.getText().isEmpty() && NmCaraBayarLab.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
+                Valid.MyReportqry("rptRingkasanLaborat.jasper", "report", "::[ Ringkasan Pemeriksaan Laborat ]::",
                         "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                         + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                         + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
@@ -7143,14 +6667,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "inner join petugas on periksa_lab.nip=petugas.nip "
                         + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                         + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
-                        + "where concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw",
+                        + "where concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report",
-                            "::[ Ringkasan Pemeriksaan Laborat ]::",
+                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report", "::[ Ringkasan Pemeriksaan Laborat ]::",
                             "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
@@ -7162,20 +6686,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on periksa_lab.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
-                            + "where concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukLab.
-                            getText() + NmDokterPerujukLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.
-                            getText() + NmPetugasLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarLab.
-                            getText() + NmCaraBayarLab.getText() + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukLab.getText() + NmDokterPerujukLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.getText()
+                            + NmPetugasLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarLab.getText() + NmCaraBayarLab.getText()
+                            + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report",
-                            "::[ Ringkasan Pemeriksaan Laborat ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report", "::[ Ringkasan Pemeriksaan Laborat ]::",
                             "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
@@ -7188,20 +6713,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukLab.
-                            getText() + NmDokterPerujukLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.
-                            getText() + NmPetugasLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarLab.
-                            getText() + NmCaraBayarLab.getText() + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukLab.getText() + NmDokterPerujukLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.getText()
+                            + NmPetugasLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarLab.getText() + NmCaraBayarLab.getText()
+                            + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report",
-                            "::[ Ringkasan Pemeriksaan Laborat ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report", "::[ Ringkasan Pemeriksaan Laborat ]::",
                             "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
@@ -7214,20 +6740,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
                             + "inner join piutang_pasien on reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukLab.
-                            getText() + NmDokterPerujukLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.
-                            getText() + NmPetugasLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarLab.
-                            getText() + NmCaraBayarLab.getText() + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukLab.getText() + NmDokterPerujukLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.getText()
+                            + NmPetugasLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarLab.getText() + NmCaraBayarLab.getText()
+                            + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report",
-                            "::[ Ringkasan Pemeriksaan Laborat ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report", "::[ Ringkasan Pemeriksaan Laborat ]::",
                             "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
@@ -7239,20 +6766,21 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on periksa_lab.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukLab.
-                            getText() + NmDokterPerujukLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.
-                            getText() + NmPetugasLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarLab.
-                            getText() + NmCaraBayarLab.getText() + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukLab.getText() + NmDokterPerujukLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.getText()
+                            + NmPetugasLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarLab.getText() + NmCaraBayarLab.getText()
+                            + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report",
-                            "::[ Ringkasan Pemeriksaan Laborat ]::",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanLaborat.jasper", "report", "::[ Ringkasan Pemeriksaan Laborat ]::",
                             "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan, "
                             + "sum(periksa_lab.bagian_rs) as bagian_rs,sum(periksa_lab.bhp) as bhp,sum(periksa_lab.tarif_perujuk) as tarif_perujuk,"
                             + "sum(periksa_lab.tarif_tindakan_dokter) as tarif_tindakan_dokter,sum(periksa_lab.tarif_tindakan_petugas) as tarif_tindakan_petugas,"
@@ -7264,14 +6792,17 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "inner join petugas on periksa_lab.nip=petugas.nip "
                             + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "
                             + "inner join jns_perawatan_lab on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukLab.
-                            getText() + NmDokterPerujukLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.
-                            getText() + NmPetugasLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarLab.
-                            getText() + NmCaraBayarLab.getText() + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.
-                            getText().trim() + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(periksa_lab.tgl_periksa,' ',periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukLab.getText() + NmDokterPerujukLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasLab.getText()
+                            + NmPetugasLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarLab.getText() + NmCaraBayarLab.getText()
+                            + "%' and (periksa_lab.kd_jenis_prw like '%" + TCari.getText().trim()
+                            + "%' or jns_perawatan_lab.nm_perawatan like '%" + TCari.getText().trim() + "%') "
                             + " group by periksa_lab.kd_jenis_prw order by periksa_lab.kd_jenis_prw",
                             param);
                 }
@@ -7281,8 +6812,7 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
 
     private void CetakDetailLaborat() {
         if (tabModeDetailLaborat.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             TCari.requestFocus();
         } else if (tabModeDetailLaborat.getRowCount() != 0) {
             Map<String, Object> param = new HashMap<>();
@@ -7295,14 +6825,11 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
             param.put("tanggal1", Valid.SetTglJam(Tgl1.getSelectedItem() + ""));
             param.put("tanggal2", Valid.SetTglJam(Tgl2.getSelectedItem() + ""));
             param.put("cari", "%" + TCari.getText().trim() + "%");
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            if (KdDokterPerujukDetailLab.getText().isEmpty() && NmDokterPerujukDetailLab.
-                    getText().isEmpty() && KdPetugasDetailLab.getText().
-                            isEmpty() && NmPetugasDetailLab.getText().isEmpty() && KdCaraBayarDetailLab.
-                    getText().isEmpty() && NmCaraBayarDetailLab.getText().
-                            isEmpty() && TCari.getText().isEmpty() && cmbStatus.
-                    getSelectedItem().equals("Semua")) {
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            if (KdDokterPerujukDetailLab.getText().isEmpty() && NmDokterPerujukDetailLab.getText().isEmpty()
+                    && KdPetugasDetailLab.getText().isEmpty() && NmPetugasDetailLab.getText().isEmpty()
+                    && KdCaraBayarDetailLab.getText().isEmpty() && NmCaraBayarDetailLab.getText().isEmpty()
+                    && TCari.getText().isEmpty() && cmbStatus.getSelectedItem().equals("Semua")) {
                 Valid.MyReportqry("rptRingkasanDetailLaborat.jasper", "report",
                         "::[ Ringkasan Detail Pemeriksaan Laborat ]::",
                         "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
@@ -7320,14 +6847,14 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                         + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
                         + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
                         + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
-                        + "where concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '" + Valid.
-                                SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTglJam(Tgl2.getSelectedItem() + "") + "' group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template",
+                        + "where concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '"
+                        + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                        + "' group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template",
                         param);
             } else {
                 if (cmbStatus.getSelectedItem().equals("Semua")) {
-                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper",
-                            "report",
+                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper", "report",
                             "::[ Ringkasan Detail Pemeriksaan Laborat ]::",
                             "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
                             + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
@@ -7344,20 +6871,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
                             + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
                             + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
-                            + "where concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukDetailLab.
-                            getText() + NmDokterPerujukDetailLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasDetailLab.
-                            getText() + NmPetugasDetailLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarDetailLab.
-                            getText() + NmCaraBayarDetailLab.getText() + "%' and (detail_periksa_lab.id_template like '%" + TCari.
-                            getText().trim() + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukDetailLab.getText() + NmDokterPerujukDetailLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%"
+                            + KdPetugasDetailLab.getText() + NmPetugasDetailLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarDetailLab.getText() + NmCaraBayarDetailLab.getText()
+                            + "%' and (detail_periksa_lab.id_template like '%" + TCari.getText().trim()
+                            + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Belum Lunas")) {
-                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Belum Lunas")) {
+                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper", "report",
                             "::[ Ringkasan Detail Pemeriksaan Laborat ]::",
                             "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
                             + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
@@ -7374,20 +6903,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
                             + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
                             + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukDetailLab.
-                            getText() + NmDokterPerujukDetailLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasDetailLab.
-                            getText() + NmPetugasDetailLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarDetailLab.
-                            getText() + NmCaraBayarDetailLab.getText() + "%' and (detail_periksa_lab.id_template like '%" + TCari.
-                            getText().trim() + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Belum Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukDetailLab.getText() + NmDokterPerujukDetailLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%"
+                            + KdPetugasDetailLab.getText() + NmPetugasDetailLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarDetailLab.getText() + NmCaraBayarDetailLab.getText()
+                            + "%' and (detail_periksa_lab.id_template like '%" + TCari.getText().trim()
+                            + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Piutang Sudah Lunas")) {
-                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Piutang Sudah Lunas")) {
+                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper", "report",
                             "::[ Ringkasan Detail Pemeriksaan Laborat ]::",
                             "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
                             + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
@@ -7404,20 +6935,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
                             + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
                             + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw and reg_periksa.no_rawat=piutang_pasien.no_rawat "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukDetailLab.
-                            getText() + NmDokterPerujukDetailLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasDetailLab.
-                            getText() + NmPetugasDetailLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarDetailLab.
-                            getText() + NmCaraBayarDetailLab.getText() + "%' and (detail_periksa_lab.id_template like '%" + TCari.
-                            getText().trim() + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and piutang_pasien.status='Lunas' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukDetailLab.getText() + NmDokterPerujukDetailLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%"
+                            + KdPetugasDetailLab.getText() + NmPetugasDetailLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarDetailLab.getText() + NmCaraBayarDetailLab.getText()
+                            + "%' and (detail_periksa_lab.id_template like '%" + TCari.getText().trim()
+                            + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Sudah Bayar Non Piutang")) {
-                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Sudah Bayar Non Piutang")) {
+                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper", "report",
                             "::[ Ringkasan Detail Pemeriksaan Laborat ]::",
                             "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
                             + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
@@ -7434,20 +6967,22 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
                             + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
                             + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukDetailLab.
-                            getText() + NmDokterPerujukDetailLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasDetailLab.
-                            getText() + NmPetugasDetailLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarDetailLab.
-                            getText() + NmCaraBayarDetailLab.getText() + "%' and (detail_periksa_lab.id_template like '%" + TCari.
-                            getText().trim() + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.no_rawat not in (select no_rawat from piutang_pasien) and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukDetailLab.getText() + NmDokterPerujukDetailLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%"
+                            + KdPetugasDetailLab.getText() + NmPetugasDetailLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarDetailLab.getText() + NmCaraBayarDetailLab.getText()
+                            + "%' and (detail_periksa_lab.id_template like '%" + TCari.getText().trim()
+                            + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template",
                             param);
-                } else if (cmbStatus.getSelectedItem().equals(
-                        "Belum Terclosing Kasir")) {
-                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper",
-                            "report",
+                } else if (cmbStatus.getSelectedItem().equals("Belum Terclosing Kasir")) {
+                    Valid.MyReportqry("rptRingkasanDetailLaborat.jasper", "report",
                             "::[ Ringkasan Detail Pemeriksaan Laborat ]::",
                             "select detail_periksa_lab.id_template,template_laboratorium.Pemeriksaan,"
                             + "sum(detail_periksa_lab.bagian_rs) as bagian_rs,sum(detail_periksa_lab.bhp) as bhp,sum(detail_periksa_lab.bagian_perujuk) as bagian_perujuk,"
@@ -7464,14 +6999,18 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
                             + "and periksa_lab.nip=petugas.nip and periksa_lab.tgl_periksa=detail_periksa_lab.tgl_periksa "
                             + "and periksa_lab.jam=detail_periksa_lab.jam and detail_periksa_lab.id_template=template_laboratorium.id_template "
                             + "and jns_perawatan_lab.kd_jenis_prw=detail_periksa_lab.kd_jenis_prw "
-                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '" + Valid.
-                                    SetTglJam(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                            SetTglJam(Tgl2.getSelectedItem() + "") + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%" + KdDokterPerujukDetailLab.
-                            getText() + NmDokterPerujukDetailLab.getText() + "%' and concat(periksa_lab.nip,petugas.nama) like '%" + KdPetugasDetailLab.
-                            getText() + NmPetugasDetailLab.getText() + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%" + KdCaraBayarDetailLab.
-                            getText() + NmCaraBayarDetailLab.getText() + "%' and (detail_periksa_lab.id_template like '%" + TCari.
-                            getText().trim() + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.
-                                    getText().trim() + "%' ) "
+                            + "where reg_periksa.status_bayar='Belum Bayar' and concat(detail_periksa_lab.tgl_periksa,' ',detail_periksa_lab.jam) between '"
+                            + Valid.SetTglJam(Tgl1.getSelectedItem() + "") + "' and '"
+                            + Valid.SetTglJam(Tgl2.getSelectedItem() + "")
+                            + "' and concat(periksa_lab.dokter_perujuk,perujuk.nm_dokter) like '%"
+                            + KdDokterPerujukDetailLab.getText() + NmDokterPerujukDetailLab.getText()
+                            + "%' and concat(periksa_lab.nip,petugas.nama) like '%"
+                            + KdPetugasDetailLab.getText() + NmPetugasDetailLab.getText()
+                            + "%' and concat(reg_periksa.kd_pj,penjab.png_jawab) like '%"
+                            + KdCaraBayarDetailLab.getText() + NmCaraBayarDetailLab.getText()
+                            + "%' and (detail_periksa_lab.id_template like '%" + TCari.getText().trim()
+                            + "%' or template_laboratorium.Pemeriksaan like '%" + TCari.getText().trim()
+                            + "%' ) "
                             + " group by detail_periksa_lab.id_template order by detail_periksa_lab.id_template",
                             param);
                 }
@@ -7479,7 +7018,6 @@ public class KeuanganRingkasanTindakan extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganRingkasanTindakan.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganRingkasanTindakan.class.getName());
 
 }

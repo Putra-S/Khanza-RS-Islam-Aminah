@@ -27,16 +27,27 @@ import kepegawaian.DlgCariDokter;
 public class DlgFeeRujukanRontgen extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private int i = 0, a = 0;
+
     private double ttlfeeradiologi = 0, ttlfeeusg = 0;
+
     private PreparedStatement pstanggal, psradiologi, psusg;
+
     private ResultSet rstanggal, rsradiologi, rsusg;
+
     private String sfeeradiologi = "", sfeeusg = "";
 
     /**
@@ -49,16 +60,13 @@ public class DlgFeeRujukanRontgen extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.", "Tgl.Expose", "Nama Pasien", "Jenis Bayar",
-            "Kode", "Rontgen(Rp)", "USG(Rp)", "Keterangan"};
+        Object[] row = {"No.", "Tgl.Expose", "Nama Pasien", "Jenis Bayar", "Kode", "Rontgen(Rp)", "USG(Rp)",
+            "Keterangan"};
 
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.String.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.String.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -112,10 +120,8 @@ public class DlgFeeRujukanRontgen extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     prosesCari();
                 }
                 kddokter.requestFocus();
@@ -141,21 +147,19 @@ public class DlgFeeRujukanRontgen extends javax.swing.JDialog {
         });
 
         try {
-            pstanggal = koneksi.prepareStatement(
-                    "select periksa_radiologi.tgl_periksa from periksa_radiologi "
+            pstanggal = koneksi.prepareStatement("select periksa_radiologi.tgl_periksa from periksa_radiologi "
                     + "where periksa_radiologi.dokter_perujuk=? and "
                     + "periksa_radiologi.tgl_periksa between ? and ? group by periksa_radiologi.tgl_periksa ");
-            psradiologi = koneksi.prepareStatement(
-                    "select pasien.nm_pasien,penjab.png_jawab,periksa_radiologi.tarif_perujuk "
-                    + "from periksa_radiologi inner join jns_perawatan_radiologi "
-                    + "inner join reg_periksa inner join pasien inner join penjab "
-                    + "on periksa_radiologi.no_rawat=reg_periksa.no_rawat and "
-                    + "periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw and "
-                    + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.kd_pj=penjab.kd_pj "
-                    + "where periksa_radiologi.dokter_perujuk=? and "
-                    + "periksa_radiologi.tgl_periksa=? and jns_perawatan_radiologi.nm_perawatan like '%rontgen%'");
-            psusg = koneksi.prepareStatement(
-                    "select pasien.nm_pasien,penjab.png_jawab,periksa_radiologi.tarif_perujuk "
+            psradiologi = koneksi
+                    .prepareStatement("select pasien.nm_pasien,penjab.png_jawab,periksa_radiologi.tarif_perujuk "
+                            + "from periksa_radiologi inner join jns_perawatan_radiologi "
+                            + "inner join reg_periksa inner join pasien inner join penjab "
+                            + "on periksa_radiologi.no_rawat=reg_periksa.no_rawat and "
+                            + "periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw and "
+                            + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.kd_pj=penjab.kd_pj "
+                            + "where periksa_radiologi.dokter_perujuk=? and "
+                            + "periksa_radiologi.tgl_periksa=? and jns_perawatan_radiologi.nm_perawatan like '%rontgen%'");
+            psusg = koneksi.prepareStatement("select pasien.nm_pasien,penjab.png_jawab,periksa_radiologi.tarif_perujuk "
                     + "from periksa_radiologi inner join jns_perawatan_radiologi "
                     + "inner join reg_periksa inner join pasien inner join penjab "
                     + "on periksa_radiologi.no_rawat=reg_periksa.no_rawat and "
@@ -170,7 +174,9 @@ public class DlgFeeRujukanRontgen extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -361,14 +367,13 @@ public class DlgFeeRujukanRontgen extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         if (tabMode.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null,
                     "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
@@ -509,8 +514,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgFeeRujukanRontgen dialog = new DlgFeeRujukanRontgen(
-                    new javax.swing.JFrame(), true);
+            DlgFeeRujukanRontgen dialog = new DlgFeeRujukanRontgen(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -559,18 +563,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rsradiologi.next()) {
                     ttlfeeradiologi += rsradiologi.getDouble("tarif_perujuk");
                     if (a == 1) {
-                        tabMode.addRow(new Object[]{
-                            i, rstanggal.getString("tgl_periksa"),
-                            rsradiologi.getString("nm_pasien"),
-                            rsradiologi.getString("png_jawab"), "r",
-                            rsradiologi.getDouble("tarif_perujuk"), 0, ""
-                        });
+                        tabMode.addRow(new Object[]{i, rstanggal.getString("tgl_periksa"),
+                            rsradiologi.getString("nm_pasien"), rsradiologi.getString("png_jawab"), "r",
+                            rsradiologi.getDouble("tarif_perujuk"), 0, ""});
                     } else {
-                        tabMode.addRow(new Object[]{
-                            i, "", rsradiologi.getString("nm_pasien"),
-                            rsradiologi.getString("png_jawab"), "r",
-                            rsradiologi.getDouble("tarif_perujuk"), 0, ""
-                        });
+                        tabMode.addRow(new Object[]{i, "", rsradiologi.getString("nm_pasien"),
+                            rsradiologi.getString("png_jawab"), "r", rsradiologi.getDouble("tarif_perujuk"), 0,
+                            ""});
                     }
                     a++;
                     i++;
@@ -584,27 +583,19 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rsusg.next()) {
                     ttlfeeusg += rsusg.getDouble("tarif_perujuk");
                     if (a == 1) {
-                        tabMode.addRow(new Object[]{
-                            i, rstanggal.getString("tgl_periksa"),
-                            rsusg.getString("nm_pasien"),
-                            rsusg.getString("png_jawab"), "u", 0,
-                            rsusg.getDouble("tarif_perujuk"), ""
-                        });
+                        tabMode
+                                .addRow(new Object[]{i, rstanggal.getString("tgl_periksa"), rsusg.getString("nm_pasien"),
+                            rsusg.getString("png_jawab"), "u", 0, rsusg.getDouble("tarif_perujuk"), ""});
                     } else {
-                        tabMode.addRow(new Object[]{
-                            i, "", rsusg.getString("nm_pasien"),
-                            rsusg.getString("png_jawab"), "u", 0,
-                            rsusg.getDouble("tarif_perujuk"), ""
-                        });
+                        tabMode.addRow(new Object[]{i, "", rsusg.getString("nm_pasien"), rsusg.getString("png_jawab"),
+                            "u", 0, rsusg.getDouble("tarif_perujuk"), ""});
                     }
                     a++;
                     i++;
                 }
             }
             if ((ttlfeeradiologi > 0) || (ttlfeeusg > 0)) {
-                tabMode.addRow(new Object[]{
-                    "", "", "Total :", "", "", ttlfeeradiologi, ttlfeeusg, ""
-                });
+                tabMode.addRow(new Object[]{"", "", "Total :", "", "", ttlfeeradiologi, ttlfeeusg, ""});
             }
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -613,10 +604,9 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }
 
     public void isCek() {
-        //BtnPrint.setEnabled(var.getfee_rujukan_rontgen());
+        // BtnPrint.setEnabled(var.getfee_rujukan_rontgen());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgFeeRujukanRontgen.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgFeeRujukanRontgen.class.getName());
 
 }

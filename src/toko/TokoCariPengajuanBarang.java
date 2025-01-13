@@ -27,20 +27,28 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class TokoCariPengajuanBarang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private TokoBarang barang = new TokoBarang(null, false);
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private double total = 0, subtotal = 0;
+
     private int no = 0, i = 0;
 
     /**
@@ -53,8 +61,7 @@ public class TokoCariPengajuanBarang extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Tanggal", "No.Pengajuan", "Status", "Keterangan",
-            "Yang Mengajukan"};
+        Object[] row = {"Tanggal", "No.Pengajuan", "Status", "Keterangan", "Yang Mengajukan"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -83,14 +90,12 @@ public class TokoCariPengajuanBarang extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NoPermintaan.
-                setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
+        NoPermintaan.setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
         KdPeg.setDocument(new batasInput((byte) 20).getKata(KdPeg));
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -127,10 +132,8 @@ public class TokoCariPengajuanBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPeg.requestFocus();
             }
@@ -165,10 +168,8 @@ public class TokoCariPengajuanBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kdbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 0).toString());
-                    nmbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 1).toString());
+                    kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                    nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                 }
                 kdbar.requestFocus();
             }
@@ -221,12 +222,10 @@ public class TokoCariPengajuanBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 0).
-                            toString());
-                    nmjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 1).
-                            toString());
+                    kdjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 kdjenis.requestFocus();
             }
@@ -251,7 +250,9 @@ public class TokoCariPengajuanBarang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -704,13 +705,12 @@ public class TokoCariPengajuanBarang extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
-        pegawai.emptTeks();
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        pegawai.emptTeks();//GEN-FIRST:event_btnPetugasActionPerformed
         pegawai.setSize(internalFrame1.getWidth() - 20, internalFrame1.
                 getHeight() - 20);
         pegawai.setLocationRelativeTo(internalFrame1);
@@ -977,8 +977,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoCariPengajuanBarang dialog = new TokoCariPengajuanBarang(
-                    new javax.swing.JFrame(), true);
+            TokoCariPengajuanBarang dialog = new TokoCariPengajuanBarang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1036,15 +1035,13 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select toko_pengajuan_barang.tanggal,toko_pengajuan_barang.no_pengajuan, "
+            ps = koneksi.prepareStatement("select toko_pengajuan_barang.tanggal,toko_pengajuan_barang.no_pengajuan, "
                     + "toko_pengajuan_barang.keterangan,toko_pengajuan_barang.nip,pegawai.nama,toko_pengajuan_barang.status "
                     + "from toko_pengajuan_barang inner join pegawai inner join kodesatuan inner join toko_detail_pengajuan_barang "
                     + "inner join tokojenisbarang inner join tokobarang on toko_detail_pengajuan_barang.kode_brng=tokobarang.kode_brng "
                     + " and tokobarang.kode_sat=kodesatuan.kode_sat "
                     + " and toko_pengajuan_barang.no_pengajuan=toko_detail_pengajuan_barang.no_pengajuan "
-                    + " and toko_pengajuan_barang.nip=pegawai.nik "
-                    + " and tokobarang.jenis=tokojenisbarang.kd_jenis "
+                    + " and toko_pengajuan_barang.nip=pegawai.nik " + " and tokobarang.jenis=tokojenisbarang.kd_jenis "
                     + " where toko_pengajuan_barang.tanggal between ? and ? and toko_pengajuan_barang.no_pengajuan like ? and toko_pengajuan_barang.status like ? and pegawai.nama like ?  and tokojenisbarang.nm_jenis like ? and tokobarang.nama_brng like ? and toko_pengajuan_barang.no_pengajuan like ? or "
                     + " toko_pengajuan_barang.tanggal between ? and ? and toko_pengajuan_barang.no_pengajuan like ? and toko_pengajuan_barang.status like ? and pegawai.nama like ?  and tokojenisbarang.nm_jenis like ? and tokobarang.nama_brng like ? and toko_pengajuan_barang.nip like ? or "
                     + " toko_pengajuan_barang.tanggal between ? and ? and toko_pengajuan_barang.no_pengajuan like ? and toko_pengajuan_barang.status like ? and pegawai.nama like ?  and tokojenisbarang.nm_jenis like ? and tokobarang.nama_brng like ? and pegawai.nama like ? or "
@@ -1058,8 +1055,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(1, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(3, "%" + NoPermintaan.getText() + "%");
-                ps.setString(4, "%" + Status.getSelectedItem().toString().
-                        replaceAll("Semua", "") + "%");
+                ps.setString(4, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 ps.setString(5, "%" + NmPeg.getText() + "%");
                 ps.setString(6, "%" + nmjenis.getText() + "%");
                 ps.setString(7, "%" + nmbar.getText() + "%");
@@ -1067,9 +1063,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(9, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(10, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(11, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(12,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(12, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(13, "%" + NmPeg.getText() + "%");
                 ps.setString(14, "%" + nmjenis.getText() + "%");
                 ps.setString(15, "%" + nmbar.getText() + "%");
@@ -1077,9 +1071,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(17, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(18, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(19, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(20,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(20, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(21, "%" + NmPeg.getText() + "%");
                 ps.setString(22, "%" + nmjenis.getText() + "%");
                 ps.setString(23, "%" + nmbar.getText() + "%");
@@ -1087,9 +1079,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(25, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(26, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(27, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(28,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(28, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(29, "%" + NmPeg.getText() + "%");
                 ps.setString(30, "%" + nmjenis.getText() + "%");
                 ps.setString(31, "%" + nmbar.getText() + "%");
@@ -1097,9 +1087,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(33, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(34, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(35, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(36,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(36, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(37, "%" + NmPeg.getText() + "%");
                 ps.setString(38, "%" + nmjenis.getText() + "%");
                 ps.setString(39, "%" + nmbar.getText() + "%");
@@ -1107,9 +1095,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(41, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(42, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(43, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(44,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(44, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(45, "%" + NmPeg.getText() + "%");
                 ps.setString(46, "%" + nmjenis.getText() + "%");
                 ps.setString(47, "%" + nmbar.getText() + "%");
@@ -1117,9 +1103,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(49, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(50, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(51, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(52,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(52, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(53, "%" + NmPeg.getText() + "%");
                 ps.setString(54, "%" + nmjenis.getText() + "%");
                 ps.setString(55, "%" + nmbar.getText() + "%");
@@ -1127,9 +1111,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(57, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(58, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(59, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(60,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(60, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(61, "%" + NmPeg.getText() + "%");
                 ps.setString(62, "%" + nmjenis.getText() + "%");
                 ps.setString(63, "%" + nmbar.getText() + "%");
@@ -1137,24 +1119,21 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 rs = ps.executeQuery();
                 total = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tanggal"), rs.getString("no_pengajuan"),
-                        rs.getString("status"),
-                        rs.getString("keterangan"),
-                        rs.getString("nip") + " " + rs.getString("nama")
-                    });
-                    ps2 = koneksi.prepareStatement(
-                            "select toko_detail_pengajuan_barang.kode_brng,tokobarang.nama_brng, "
-                            + "toko_detail_pengajuan_barang.kode_sat,kodesatuan.satuan,toko_detail_pengajuan_barang.jumlah,"
-                            + "toko_detail_pengajuan_barang.h_pengajuan,toko_detail_pengajuan_barang.total "
-                            + "from toko_detail_pengajuan_barang inner join tokobarang inner join kodesatuan inner join tokojenisbarang "
-                            + " on toko_detail_pengajuan_barang.kode_brng=tokobarang.kode_brng "
-                            + " and toko_detail_pengajuan_barang.kode_sat=kodesatuan.kode_sat "
-                            + " and tokobarang.jenis=tokojenisbarang.kd_jenis where "
-                            + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and toko_detail_pengajuan_barang.kode_brng like ? or "
-                            + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and tokobarang.nama_brng like ? or "
-                            + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and toko_detail_pengajuan_barang.kode_sat like ? or "
-                            + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and tokojenisbarang.nm_jenis like ? order by toko_detail_pengajuan_barang.kode_brng  ");
+                    tabMode.addRow(new Object[]{rs.getString("tanggal"), rs.getString("no_pengajuan"),
+                        rs.getString("status"), rs.getString("keterangan"),
+                        rs.getString("nip") + " " + rs.getString("nama")});
+                    ps2 = koneksi
+                            .prepareStatement("select toko_detail_pengajuan_barang.kode_brng,tokobarang.nama_brng, "
+                                    + "toko_detail_pengajuan_barang.kode_sat,kodesatuan.satuan,toko_detail_pengajuan_barang.jumlah,"
+                                    + "toko_detail_pengajuan_barang.h_pengajuan,toko_detail_pengajuan_barang.total "
+                                    + "from toko_detail_pengajuan_barang inner join tokobarang inner join kodesatuan inner join tokojenisbarang "
+                                    + " on toko_detail_pengajuan_barang.kode_brng=tokobarang.kode_brng "
+                                    + " and toko_detail_pengajuan_barang.kode_sat=kodesatuan.kode_sat "
+                                    + " and tokobarang.jenis=tokojenisbarang.kd_jenis where "
+                                    + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and toko_detail_pengajuan_barang.kode_brng like ? or "
+                                    + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and tokobarang.nama_brng like ? or "
+                                    + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and toko_detail_pengajuan_barang.kode_sat like ? or "
+                                    + " toko_detail_pengajuan_barang.no_pengajuan=? and tokobarang.nama_brng like ? and tokojenisbarang.nm_jenis like ? and tokojenisbarang.nm_jenis like ? order by toko_detail_pengajuan_barang.kode_brng  ");
                     try {
                         ps2.setString(1, rs.getString(2));
                         ps2.setString(2, "%" + nmbar.getText() + "%");
@@ -1176,20 +1155,15 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         no = 1;
                         subtotal = 0;
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{
-                                "",
-                                no + ". " + rs2.getString("kode_brng") + " " + rs2.
-                                getString("nama_brng") + " " + rs2.getString(
-                                "satuan"),
-                                rs2.getString("jumlah"), Valid.SetAngka(rs2.
-                                getDouble("h_pengajuan")), Valid.SetAngka(rs2.
-                                getDouble("total"))
-                            });
+                            tabMode.addRow(new Object[]{"",
+                                no + ". " + rs2.getString("kode_brng") + " " + rs2.getString("nama_brng") + " "
+                                + rs2.getString("satuan"),
+                                rs2.getString("jumlah"), Valid.SetAngka(rs2.getDouble("h_pengajuan")),
+                                Valid.SetAngka(rs2.getDouble("total"))});
                             subtotal += rs2.getDouble("total");
                             no++;
                         }
-                        tabMode.addRow(new Object[]{"", "Subtotal :", "", "",
-                            Valid.SetAngka(subtotal)});
+                        tabMode.addRow(new Object[]{"", "Subtotal :", "", "", Valid.SetAngka(subtotal)});
                     } catch (SQLException e) {
                         System.out.println(e);
                     } finally {
@@ -1239,6 +1213,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         ppDitolak.setEnabled(akses.gettoko_pengajuan_barang());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            TokoCariPengajuanBarang.class.getName());
+    private static final Logger LOG = Logger.getLogger(TokoCariPengajuanBarang.class.getName());
+
 }

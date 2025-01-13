@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -38,23 +38,35 @@ import simrskhanza.DlgCariPoli;
 import simrskhanza.DlgKabupaten;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgSensusHarianRalan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabmode;
+
     private DefaultTableModel tabmode2;
+
     private final Connection koneksi = koneksiDB.condb();
+
     private final sekuel Sequel = new sekuel();
+
     private final validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private ResultSet rs;
-    private int i = 0, jkl = 0, jkp = 0, rujukan = 0, pengunjungbaru = 0, pengunjunglama = 0, statuspolibaru = 0, statuspolilama = 0;
+
+    private int i = 0, jkl = 0, jkp = 0, rujukan = 0, pengunjungbaru = 0, pengunjunglama = 0, statuspolibaru = 0,
+            statuspolilama = 0;
+
     private String diagnosautama = "", diagnosasekunder = "", perujuk = "", status = "";
 
     /**
@@ -69,15 +81,11 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabmode = new DefaultTableModel(null, new String[]{
-            "No.", "Nomor RM", "Nama Pasien", "Tgl.Lahir", "Tgl.Daftar",
-            "Poliklinik", "Dokter",
-            "J.K.", "Rujukan Faskes Lain", "Umur", "Cara Bayar", "Kecamatan",
-            "Diagnosa Utama",
-            "Diagnosa Tambahan", "ICD X Utama", "ICD X Tambahan", "Tindakan",
-            "Hasil Akhir",
-            "Pengunjung", "Jenis Kunjungan", "Jenis Kasus"
-        }) {
+        tabmode = new DefaultTableModel(null,
+                new String[]{"No.", "Nomor RM", "Nama Pasien", "Tgl.Lahir", "Tgl.Daftar", "Poliklinik", "Dokter",
+                    "J.K.", "Rujukan Faskes Lain", "Umur", "Cara Bayar", "Kecamatan", "Diagnosa Utama",
+                    "Diagnosa Tambahan", "ICD X Utama", "ICD X Tambahan", "Tindakan", "Hasil Akhir", "Pengunjung",
+                    "Jenis Kunjungan", "Jenis Kasus"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -137,15 +145,11 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
         }
         table.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabmode2 = new DefaultTableModel(null, new String[]{
-            "No.", "Nomor RM", "Nama Pasien", "Tgl.Lahir", "Tgl.Daftar",
-            "Poliklinik", "Dokter",
-            "J.K.", "Rujukan Faskes Lain", "Umur", "Cara Bayar", "Kecamatan",
-            "Diagnosa Utama",
-            "Diagnosa Tambahan", "ICD X Utama", "ICD X Tambahan", "Tindakan",
-            "Hasil Akhir",
-            "Pengunjung", "Jenis Kunjungan", "Jenis Kasus"
-        }) {
+        tabmode2 = new DefaultTableModel(null,
+                new String[]{"No.", "Nomor RM", "Nama Pasien", "Tgl.Lahir", "Tgl.Daftar", "Poliklinik", "Dokter",
+                    "J.K.", "Rujukan Faskes Lain", "Umur", "Cara Bayar", "Kecamatan", "Diagnosa Utama",
+                    "Diagnosa Tambahan", "ICD X Utama", "ICD X Tambahan", "Tindakan", "Hasil Akhir", "Pengunjung",
+                    "Jenis Kunjungan", "Jenis Kasus"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -206,8 +210,7 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
         table2.setDefaultRenderer(Object.class, new WarnaTable());
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -256,10 +259,8 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -295,10 +296,8 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -352,8 +351,8 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
-                            kabupaten.getTable().getSelectedRow(), 0).toString());
+                    nmkabupaten
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkabupaten.requestFocus();
             }
@@ -407,10 +406,8 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -455,7 +452,9 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1151,8 +1150,7 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSensusHarianRalan dialog = new DlgSensusHarianRalan(
-                    new javax.swing.JFrame(), true);
+            DlgSensusHarianRalan dialog = new DlgSensusHarianRalan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1225,9 +1223,12 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
                     + "on reg_periksa.kd_dokter=dokter.kd_dokter and reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "and reg_periksa.kd_pj=penjab.kd_pj and reg_periksa.kd_poli=poliklinik.kd_poli "
                     + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and reg_periksa.no_rkm_medis like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and pasien.nm_pasien like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? order by reg_periksa.tgl_registrasi");
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and reg_periksa.no_rkm_medis like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and pasien.nm_pasien like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? order by reg_periksa.tgl_registrasi");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -1284,36 +1285,26 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
                         statuspolibaru++;
                     }
 
-                    perujuk = Sequel.cariIsi(
-                            "select perujuk from rujuk_masuk where no_rawat=?",
+                    perujuk = Sequel.cariIsi("select perujuk from rujuk_masuk where no_rawat=?",
                             rs.getString("no_rawat"));
                     if (perujuk.isEmpty()) {
                         rujukan++;
                     }
-                    tabmode.addRow(new String[]{
-                        i + "", rs.getString("no_rkm_medis"), rs.getString(
-                        "nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("tgl_registrasi"), rs.getString("nm_poli"),
-                        rs.getString("nm_dokter"),
-                        rs.getString("jk"), perujuk, rs.getString("umur"), rs.
-                        getString("png_jawab"),
-                        rs.getString("nm_kec") + ", " + rs.getString("nm_kab"),
-                        Sequel.cariIsi(
-                        "select nm_penyakit from penyakit where kd_penyakit=?",
-                        diagnosautama),
-                        Sequel.cariIsi(
-                        "select nm_penyakit from penyakit where kd_penyakit=?",
-                        diagnosasekunder),
-                        diagnosautama, diagnosasekunder, Sequel.cariIsi(
-                        "select icd9.kode,icd9.deskripsi_panjang from icd9 inner join prosedur_pasien "
+                    tabmode.addRow(new String[]{i + "", rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("tgl_lahir"), rs.getString("tgl_registrasi"), rs.getString("nm_poli"),
+                        rs.getString("nm_dokter"), rs.getString("jk"), perujuk, rs.getString("umur"),
+                        rs.getString("png_jawab"), rs.getString("nm_kec") + ", " + rs.getString("nm_kab"),
+                        Sequel.cariIsi("select nm_penyakit from penyakit where kd_penyakit=?", diagnosautama),
+                        Sequel.cariIsi("select nm_penyakit from penyakit where kd_penyakit=?", diagnosasekunder),
+                        diagnosautama, diagnosasekunder,
+                        Sequel
+                        .cariIsi("select icd9.kode,icd9.deskripsi_panjang from icd9 inner join prosedur_pasien "
                         + "on icd9.kode=prosedur_pasien.kode where prosedur_pasien.no_rawat=? limit 1",
                         rs.getString("no_rawat")),
-                        rs.getString("stts"), rs.getString("stts_daftar"), rs.
-                        getString("status_poli"),
+                        rs.getString("stts"), rs.getString("stts_daftar"), rs.getString("status_poli"),
                         Sequel.cariIsi(
                         "select status_penyakit from diagnosa_pasien where prioritas='1' and status='Ralan' and no_rawat=?",
-                        rs.getString("no_rawat"))
-                    });
+                        rs.getString("no_rawat"))});
                     i++;
                 }
             } catch (Exception e) {
@@ -1326,23 +1317,16 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
                     ps.close();
                 }
             }
-            if ((jkl > 0) || (jkp > 0) || (pengunjungbaru > 0) || (pengunjunglama > 0) || (statuspolibaru > 0) || (statuspolilama > 0) || (rujukan > 0)) {
-                tabmode.addRow(new String[]{
-                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-                    "", "", "", "", "", ""
-                });
-                tabmode.addRow(new String[]{
-                    "", "", "Laki-Laki", ": " + jkl, "", "Pengunjung Baru",
-                    ": " + pengunjungbaru, "", "Jenis Kunjungan Baru",
-                    ": " + statuspolibaru, "", "Rujukan", ": " + rujukan, "", "",
-                    "", "", "", "", "", ""
-                });
-                tabmode.addRow(new String[]{
-                    "", "", "Perempuan", ": " + jkp, "", "Pengunjung Lama",
-                    ": " + pengunjunglama, "", "Jenis Kunjungan Lama",
-                    ": " + statuspolilama, "", "", "", "", "", "", "", "", "",
-                    "", ""
-                });
+            if ((jkl > 0) || (jkp > 0) || (pengunjungbaru > 0) || (pengunjunglama > 0) || (statuspolibaru > 0)
+                    || (statuspolilama > 0) || (rujukan > 0)) {
+                tabmode.addRow(new String[]{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                    "", "", ""});
+                tabmode.addRow(new String[]{"", "", "Laki-Laki", ": " + jkl, "", "Pengunjung Baru",
+                    ": " + pengunjungbaru, "", "Jenis Kunjungan Baru", ": " + statuspolibaru, "", "Rujukan",
+                    ": " + rujukan, "", "", "", "", "", "", "", ""});
+                tabmode.addRow(new String[]{"", "", "Perempuan", ": " + jkp, "", "Pengunjung Lama",
+                    ": " + pengunjunglama, "", "Jenis Kunjungan Lama", ": " + statuspolilama, "", "", "", "", "",
+                    "", "", "", "", "", ""});
             }
         } catch (Exception e) {
             System.out.println("laporan.DlgRL4A.prosesCari() 5 : " + e);
@@ -1368,9 +1352,12 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
                     + "on reg_periksa.kd_dokter=dokter.kd_dokter and reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "and reg_periksa.kd_pj=penjab.kd_pj and reg_periksa.kd_poli=poliklinik.kd_poli "
                     + "and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and stts<>'Batal' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and reg_periksa.no_rkm_medis like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and stts<>'Batal' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and pasien.nm_pasien like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and stts<>'Batal' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? order by reg_periksa.tgl_registrasi");
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and stts<>'Batal' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and reg_periksa.no_rkm_medis like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and stts<>'Batal' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and pasien.nm_pasien like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and stts<>'Batal' and reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? order by reg_periksa.tgl_registrasi");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -1427,36 +1414,26 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
                         statuspolibaru++;
                     }
 
-                    perujuk = Sequel.cariIsi(
-                            "select perujuk from rujuk_masuk where no_rawat=?",
+                    perujuk = Sequel.cariIsi("select perujuk from rujuk_masuk where no_rawat=?",
                             rs.getString("no_rawat"));
                     if (perujuk.isEmpty()) {
                         rujukan++;
                     }
-                    tabmode2.addRow(new String[]{
-                        i + "", rs.getString("no_rkm_medis"), rs.getString(
-                        "nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("tgl_registrasi"), rs.getString("nm_poli"),
-                        rs.getString("nm_dokter"),
-                        rs.getString("jk"), perujuk, rs.getString("umur"), rs.
-                        getString("png_jawab"),
-                        rs.getString("nm_kec") + ", " + rs.getString("nm_kab"),
-                        Sequel.cariIsi(
-                        "select nm_penyakit from penyakit where kd_penyakit=?",
-                        diagnosautama),
-                        Sequel.cariIsi(
-                        "select nm_penyakit from penyakit where kd_penyakit=?",
-                        diagnosasekunder),
-                        diagnosautama, diagnosasekunder, Sequel.cariIsi(
-                        "select icd9.kode,icd9.deskripsi_panjang from icd9 inner join prosedur_pasien "
+                    tabmode2.addRow(new String[]{i + "", rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("tgl_lahir"), rs.getString("tgl_registrasi"), rs.getString("nm_poli"),
+                        rs.getString("nm_dokter"), rs.getString("jk"), perujuk, rs.getString("umur"),
+                        rs.getString("png_jawab"), rs.getString("nm_kec") + ", " + rs.getString("nm_kab"),
+                        Sequel.cariIsi("select nm_penyakit from penyakit where kd_penyakit=?", diagnosautama),
+                        Sequel.cariIsi("select nm_penyakit from penyakit where kd_penyakit=?", diagnosasekunder),
+                        diagnosautama, diagnosasekunder,
+                        Sequel
+                        .cariIsi("select icd9.kode,icd9.deskripsi_panjang from icd9 inner join prosedur_pasien "
                         + "on icd9.kode=prosedur_pasien.kode where prosedur_pasien.no_rawat=? limit 1",
                         rs.getString("no_rawat")),
-                        rs.getString("stts"), rs.getString("stts_daftar"), rs.
-                        getString("status_poli"),
+                        rs.getString("stts"), rs.getString("stts_daftar"), rs.getString("status_poli"),
                         Sequel.cariIsi(
                         "select status_penyakit from diagnosa_pasien where prioritas='1' and status='Ralan' and no_rawat=?",
-                        rs.getString("no_rawat"))
-                    });
+                        rs.getString("no_rawat"))});
                     i++;
                 }
             } catch (Exception e) {
@@ -1469,23 +1446,16 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
                     ps.close();
                 }
             }
-            if ((jkl > 0) || (jkp > 0) || (pengunjungbaru > 0) || (pengunjunglama > 0) || (statuspolibaru > 0) || (statuspolilama > 0) || (rujukan > 0)) {
-                tabmode2.addRow(new String[]{
-                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-                    "", "", "", "", "", ""
-                });
-                tabmode2.addRow(new String[]{
-                    "", "", "Laki-Laki", ": " + jkl, "", "Pengunjung Baru",
-                    ": " + pengunjungbaru, "", "Jenis Kunjungan Baru",
-                    ": " + statuspolibaru, "", "Rujukan", ": " + rujukan, "", "",
-                    "", "", "", "", "", ""
-                });
-                tabmode2.addRow(new String[]{
-                    "", "", "Perempuan", ": " + jkp, "", "Pengunjung Lama",
-                    ": " + pengunjunglama, "", "Jenis Kunjungan Lama",
-                    ": " + statuspolilama, "", "", "", "", "", "", "", "", "",
-                    "", ""
-                });
+            if ((jkl > 0) || (jkp > 0) || (pengunjungbaru > 0) || (pengunjunglama > 0) || (statuspolibaru > 0)
+                    || (statuspolilama > 0) || (rujukan > 0)) {
+                tabmode2.addRow(new String[]{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+                    "", "", ""});
+                tabmode2.addRow(new String[]{"", "", "Laki-Laki", ": " + jkl, "", "Pengunjung Baru",
+                    ": " + pengunjungbaru, "", "Jenis Kunjungan Baru", ": " + statuspolibaru, "", "Rujukan",
+                    ": " + rujukan, "", "", "", "", "", "", "", ""});
+                tabmode2.addRow(new String[]{"", "", "Perempuan", ": " + jkp, "", "Pengunjung Lama",
+                    ": " + pengunjunglama, "", "Jenis Kunjungan Lama", ": " + statuspolilama, "", "", "", "", "",
+                    "", "", "", "", "", ""});
             }
         } catch (Exception e) {
             System.out.println("laporan.DlgRL4A.prosesCari() 5 : " + e);
@@ -1493,7 +1463,6 @@ public class DlgSensusHarianRalan extends javax.swing.JDialog {
         this.setCursor(Cursor.getDefaultCursor());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgSensusHarianRalan.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgSensusHarianRalan.class.getName());
 
 }

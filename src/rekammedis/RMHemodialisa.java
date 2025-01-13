@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgRujuk.java
- *
- * Created on 31 Mei 10, 20:19:56
+* DlgRujuk.java
+*
+* Created on 31 Mei 10, 20:19:56
  */
 package rekammedis;
 
@@ -41,20 +41,28 @@ import kepegawaian.DlgCariDokter;
 import laporan.DlgCariPenyakit;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMHemodialisa extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariPenyakit penyakit = new DlgCariPenyakit(null, false);
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -69,12 +77,10 @@ public class RMHemodialisa extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "JK", "Tanggal",
-            "Lama", "Akses", "Dialist", "Transfusi", "Penarikan Cairan",
-            "QB", "QD", "Ureum", "Hb", "HbsAg", "Creatinin", "HIV", "HCV",
-            "Lain-Lain", "Kode Dokter", "Dokter", "ICD 10", "Diagnosa"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "JK", "Tanggal", "Lama", "Akses",
+                    "Dialist", "Transfusi", "Penarikan Cairan", "QB", "QD", "Ureum", "Hb", "HbsAg", "Creatinin",
+                    "HIV", "HCV", "Lain-Lain", "Kode Dokter", "Dokter", "ICD 10", "Diagnosa"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -83,7 +89,8 @@ public class RMHemodialisa extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -163,8 +170,7 @@ public class RMHemodialisa extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -201,10 +207,8 @@ public class RMHemodialisa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddok.setText(dokter.getTable().getValueAt(
-                            dokter.getTable().getSelectedRow(), 0).toString());
-                    namadokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddok.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    namadokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddok.requestFocus();
             }
@@ -239,10 +243,10 @@ public class RMHemodialisa extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penyakit.getTable().getSelectedRow() != -1) {
-                    kdDiagnosa.setText(penyakit.getTable().getValueAt(penyakit.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDiagnosa.setText(penyakit.getTable().getValueAt(penyakit.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdDiagnosa
+                            .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString());
+                    NmDiagnosa
+                            .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                 }
                 kdDiagnosa.requestFocus();
             }
@@ -268,8 +272,7 @@ public class RMHemodialisa extends javax.swing.JDialog {
         ChkInput.setSelected(false);
         isForm();
 
-        kddok.setText(Sequel.cariIsi(
-                "select set_pjlab.kd_dokterhemodialisa from set_pjlab"));
+        kddok.setText(Sequel.cariIsi("select set_pjlab.kd_dokterhemodialisa from set_pjlab"));
         namadokter.setText(dokter.tampil3(kddok.getText()));
 
         jam();
@@ -282,7 +285,9 @@ public class RMHemodialisa extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1566,8 +1571,7 @@ public class RMHemodialisa extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMHemodialisa dialog = new RMHemodialisa(new javax.swing.JFrame(),
-                    true);
+            RMHemodialisa dialog = new RMHemodialisa(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1691,15 +1695,11 @@ public class RMHemodialisa extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1711,23 +1711,14 @@ public class RMHemodialisa extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"), rs.getString("jk"),
-                        rs.getString("tanggal"), rs.getString("lama"), rs.
-                        getString("akses"),
-                        rs.getString("dialist"), rs.getString("transfusi"), rs.
-                        getString("penarikan"), rs.getString("qb"), rs.
-                        getString("qd"),
-                        rs.getString("ureum"), rs.getString("hb"), rs.getString(
-                        "hbsag"), rs.getString("creatinin"),
-                        rs.getString("hiv"), rs.getString("hcv"), rs.getString(
-                        "lain"), rs.getString("kd_dokter"),
-                        rs.getString("nm_dokter"), rs.getString("kd_penyakit"),
-                        rs.getString("nm_penyakit")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("umurdaftar") + " " + rs.getString("sttsumur"),
+                        rs.getString("jk"), rs.getString("tanggal"), rs.getString("lama"), rs.getString("akses"),
+                        rs.getString("dialist"), rs.getString("transfusi"), rs.getString("penarikan"),
+                        rs.getString("qb"), rs.getString("qd"), rs.getString("ureum"), rs.getString("hb"),
+                        rs.getString("hbsag"), rs.getString("creatinin"), rs.getString("hiv"), rs.getString("hcv"),
+                        rs.getString("lain"), rs.getString("kd_dokter"), rs.getString("nm_dokter"),
+                        rs.getString("kd_penyakit"), rs.getString("nm_penyakit")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1772,55 +1763,31 @@ public class RMHemodialisa extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(14, 15));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(17, 19));
-            TLama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            TAkses.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            TDialist.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            TTransfusi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            TPenarikan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            TQB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            TQD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            TUreum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            THb.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            THbsag.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            TCreatinin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            THIV.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            THCV.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            TLain.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            kdDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            NmDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(14, 15));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(17, 19));
+            TLama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            TAkses.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            TDialist.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            TTransfusi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            TPenarikan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            TQB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            TQD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            TUreum.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            THb.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            THbsag.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            TCreatinin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            THIV.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            THCV.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            TLain.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            kdDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            NmDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
         }
     }
 
@@ -1836,11 +1803,8 @@ public class RMHemodialisa extends javax.swing.JDialog {
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
-                    Umur.setText(rs.getString("umurdaftar") + " " + rs.
-                            getString("sttsumur"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    Umur.setText(rs.getString("umurdaftar") + " " + rs.getString("sttsumur"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1895,8 +1859,7 @@ public class RMHemodialisa extends javax.swing.JDialog {
             namadokter.setText(dokter.tampil3(kddok.getText()));
             if (namadokter.getText().isEmpty()) {
                 kddok.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan Dokter...!!");
             }
         }
 
@@ -1911,7 +1874,9 @@ public class RMHemodialisa extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1953,7 +1918,7 @@ public class RMHemodialisa extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -1965,31 +1930,22 @@ public class RMHemodialisa extends javax.swing.JDialog {
     }
 
     private void simpan() {
-        if (Sequel.menyimpantf("hemodialisa",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 18, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    kddok.getText(), TLama.getText(), TAkses.getText(),
-                    TDialist.getText(), TTransfusi.getText(), TPenarikan.
-                    getText(), TQB.getText(), TQD.getText(), TUreum.getText(),
-                    THb.getText(),
-                    THbsag.getText(), TCreatinin.getText(), THIV.getText(),
-                    THCV.getText(), TLain.getText(), kdDiagnosa.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), Umur.
-                getText(), JK.getText(), Valid.SetTgl(
-                Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":" + Menit.
-                getSelectedItem() + ":" + Detik.getSelectedItem(),
-                TLama.getText(), TAkses.getText(), TDialist.getText(),
-                TTransfusi.getText(), TPenarikan.getText(), TQB.getText(), TQD.
-                getText(), TUreum.getText(), THb.getText(), THbsag.getText(),
-                TCreatinin.getText(), THIV.getText(),
-                THCV.getText(), TLain.getText(), kddok.getText(), namadokter.
-                getText(), kdDiagnosa.getText(), NmDiagnosa.getText()
-            });
+        if (Sequel.menyimpantf("hemodialisa", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 18,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    kddok.getText(), TLama.getText(), TAkses.getText(), TDialist.getText(), TTransfusi.getText(),
+                    TPenarikan.getText(), TQB.getText(), TQD.getText(), TUreum.getText(), THb.getText(),
+                    THbsag.getText(), TCreatinin.getText(), THIV.getText(), THCV.getText(), TLain.getText(),
+                    kdDiagnosa.getText()}) == true) {
+            tabMode.addRow(
+                    new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), Umur.getText(), JK.getText(),
+                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                        + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                        TLama.getText(), TAkses.getText(), TDialist.getText(), TTransfusi.getText(),
+                        TPenarikan.getText(), TQB.getText(), TQD.getText(), TUreum.getText(), THb.getText(),
+                        THbsag.getText(), TCreatinin.getText(), THIV.getText(), THCV.getText(), TLain.getText(),
+                        kddok.getText(), namadokter.getText(), kdDiagnosa.getText(), NmDiagnosa.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
@@ -1998,29 +1954,22 @@ public class RMHemodialisa extends javax.swing.JDialog {
     private void ganti() {
         if (Sequel.mengedittf("hemodialisa", "tanggal=? and no_rawat=?",
                 "no_rawat=?,tanggal=?,kd_dokter=?,lama=?,akses=?,dialist=?,transfusi=?,penarikan=?,qb=?,qd=?,ureum=?,hb=?,hbsag=?,creatinin=?,hiv=?,hcv=?,lain=?,kd_penyakit=?",
-                20, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), kddok.getText(), TLama.getText(), TAkses.
-                    getText(),
-                    TDialist.getText(), TTransfusi.getText(), TPenarikan.
-                    getText(), TQB.getText(), TQD.getText(), TUreum.getText(),
-                    THb.getText(),
-                    THbsag.getText(), TCreatinin.getText(), THIV.getText(),
-                    THCV.getText(), TLain.getText(), kdDiagnosa.getText(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                20,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    kddok.getText(), TLama.getText(), TAkses.getText(), TDialist.getText(), TTransfusi.getText(),
+                    TPenarikan.getText(), TQB.getText(), TQD.getText(), TUreum.getText(), THb.getText(),
+                    THbsag.getText(), TCreatinin.getText(), THIV.getText(), THCV.getText(), TLain.getText(),
+                    kdDiagnosa.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(Umur.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(TLama.getText(), tbObat.getSelectedRow(), 6);
             tbObat.setValueAt(TAkses.getText(), tbObat.getSelectedRow(), 7);
             tbObat.setValueAt(TDialist.getText(), tbObat.getSelectedRow(), 8);
@@ -2044,12 +1993,9 @@ public class RMHemodialisa extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from hemodialisa where tanggal=? and no_rawat=?", 2,
-                new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from hemodialisa where tanggal=? and no_rawat=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2058,7 +2004,6 @@ public class RMHemodialisa extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(RMHemodialisa.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(RMHemodialisa.class.getName());
 
 }

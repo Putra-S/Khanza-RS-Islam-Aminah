@@ -94,19 +94,24 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
         setSize(628, 674);
 
         tabMode = new DefaultTableModel(null,
-                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM",
-                    "Nama Pasien", "No.KTP Pasien",
-                    "Dokter Penanggung Jawab", "No.KTP Praktisi", "ID Encounter",
-                    "KFA Code", "KFA System",
-                    "Kode Barang", "KFA Display", "Form Code", "Form System",
-                    "Form Display", "Route Code",
-                    "Route System", "Route Display", "Denominator Code",
-                    "Denominator System",
-                    "Tanggal & Jam Resep", "Jumlah", "ID Medication",
-                    "Aturan Pakai", "No.Resep",
-                    "ID Medication Dispense", "No.Batch", "No.Faktur",
-                    "Tgl.Validasi", "Status", "ID Location",
+                new String[]{"P", "Tanggal Registrasi", "No.Rawat", "No.RM", "Nama Pasien", "No.KTP Pasien",
+                    "Dokter Penanggung Jawab", "No.KTP Praktisi", "ID Encounter", "KFA Code", "KFA System",
+                    "Kode Barang", "KFA Display", "Form Code", "Form System", "Form Display", "Route Code",
+                    "Route System", "Route Display", "Denominator Code", "Denominator System",
+                    "Tanggal & Jam Resep", "Jumlah", "ID Medication", "Aturan Pakai", "No.Resep",
+                    "ID Medication Dispense", "No.Batch", "No.Faktur", "Tgl.Validasi", "Status", "ID Location",
                     "Asal Depo", "ID Medication Request"}) {
+
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -115,25 +120,6 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
                 }
                 return a;
             }
-
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -225,8 +211,7 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -262,21 +247,23 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
         LoadHTML.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -684,15 +671,15 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
                 File g = new File("file2.css");
                 try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
                     bg.write(
-                            ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                            + ".isi2 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
-                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                            + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                            + ".isi5 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
-                            + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
-                            + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
-                            + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                            + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
+                            ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi2 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#323232;}"
+                            + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                            + ".isi5 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#AA0000;}"
+                            + ".isi6 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
+                            + ".isi7 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
+                            + ".isi8 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
+                            + ".isi9 td{font: 8.5px Tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
                     );
                 }
 
@@ -937,20 +924,21 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
                             }
                         }
                     } catch (HttpClientErrorException | HttpServerErrorException ea) {
-                        // Handle client and server errors
-                        System.err.println("Error Response Status Code: " + ea.
-                                getStatusCode());
+                        System.err.println("HTTP Error Status Code: " + ea.getStatusCode());
 
-                        // You can further parse the error response body if needed
-                        ObjectMapper mapper = new ObjectMapper();
-                        JsonNode errorResponse = mapper.readTree(ea.
-                                getResponseBodyAsString());
-                        ObjectWriter writer = mapper.
-                                writerWithDefaultPrettyPrinter();
-                        String prettyErrorResponse = writer.writeValueAsString(
-                                errorResponse);
-                        System.err.println(
-                                "Error Response JSON: \n" + prettyErrorResponse);
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode errorResponse = mapper.readTree(ea.getResponseBodyAsString());
+
+                            // Pretty-print JSON error response
+                            ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+                            String prettyErrorResponse = writer.writeValueAsString(errorResponse);
+                            System.err.println("Error Response JSON:\n" + prettyErrorResponse);
+
+                        } catch (Exception parseException) {
+                            System.err.println("Failed to parse error response: " + parseException.getMessage());
+                            System.err.println("Original Response Body: " + ea.getResponseBodyAsString());
+                        }
                     }
                 } catch (Exception e) {
                     System.out.println("Notifikasi : " + e);
@@ -1178,8 +1166,7 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SatuSehatKirimMedicationDispense dialog = new SatuSehatKirimMedicationDispense(
-                    new javax.swing.JFrame(),
+            SatuSehatKirimMedicationDispense dialog = new SatuSehatKirimMedicationDispense(new javax.swing.JFrame(),
                     true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
@@ -1276,32 +1263,19 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("nama"), rs.
-                        getString("ktppraktisi"),
-                        rs.getString("id_encounter"), rs.getString("obat_code"),
-                        rs.getString("obat_system"),
-                        rs.getString("kode_brng"), rs.getString("obat_display"),
-                        rs.getString("form_code"),
-                        rs.getString("form_system"), rs.
-                        getString("form_display"), rs.getString("route_code"),
-                        rs.getString("route_system"), rs.getString(
-                        "route_display"),
-                        rs.getString("denominator_code"), rs.getString(
-                        "denominator_system"),
-                        rs.getString("tgl_peresepan") + " " + rs.getString(
-                        "jam_peresepan"), rs.getString("jml"),
-                        rs.getString("id_medication"), rs.getString("aturan"),
-                        rs.getString("no_resep"),
-                        rs.getString("id_medicationdispanse"), rs.getString(
-                        "no_batch"), rs.getString("no_faktur"),
-                        rs.getString("tgl_perawatan") + " " + rs.
-                        getString("jam"), "Ralan",
-                        rs.getString("id_lokasi_satusehat"), rs.getString(
-                        "nm_bangsal"),
+                    tabMode.addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("nama"), rs.getString("ktppraktisi"),
+                        rs.getString("id_encounter"), rs.getString("obat_code"), rs.getString("obat_system"),
+                        rs.getString("kode_brng"), rs.getString("obat_display"), rs.getString("form_code"),
+                        rs.getString("form_system"), rs.getString("form_display"), rs.getString("route_code"),
+                        rs.getString("route_system"), rs.getString("route_display"),
+                        rs.getString("denominator_code"), rs.getString("denominator_system"),
+                        rs.getString("tgl_peresepan") + " " + rs.getString("jam_peresepan"), rs.getString("jml"),
+                        rs.getString("id_medication"), rs.getString("aturan"), rs.getString("no_resep"),
+                        rs.getString("id_medicationdispanse"), rs.getString("no_batch"), rs.getString("no_faktur"),
+                        rs.getString("tgl_perawatan") + " " + rs.getString("jam"), "Ralan",
+                        rs.getString("id_lokasi_satusehat"), rs.getString("nm_bangsal"),
                         rs.getString("id_medicationrequest")});
                 }
             } catch (Exception e) {
@@ -1361,32 +1335,19 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{false, rs.getString(
-                        "tgl_registrasi") + " " + rs.getString("jam_reg"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"), rs.getString("nama"), rs.
-                        getString("ktppraktisi"),
-                        rs.getString("id_encounter"), rs.getString("obat_code"),
-                        rs.getString("obat_system"),
-                        rs.getString("kode_brng"), rs.getString("obat_display"),
-                        rs.getString("form_code"),
-                        rs.getString("form_system"), rs.
-                        getString("form_display"), rs.getString("route_code"),
-                        rs.getString("route_system"), rs.getString(
-                        "route_display"),
-                        rs.getString("denominator_code"), rs.getString(
-                        "denominator_system"),
-                        rs.getString("tgl_peresepan") + " " + rs.getString(
-                        "jam_peresepan"), rs.getString("jml"),
-                        rs.getString("id_medication"), rs.getString("aturan"),
-                        rs.getString("no_resep"),
-                        rs.getString("id_medicationdispanse"), rs.getString(
-                        "no_batch"), rs.getString("no_faktur"),
-                        rs.getString("tgl_perawatan") + " " + rs.
-                        getString("jam"), "Ranap",
-                        rs.getString("id_lokasi_satusehat"), rs.getString(
-                        "nm_bangsal"),
+                    tabMode.addRow(new Object[]{false, rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"), rs.getString("nama"), rs.getString("ktppraktisi"),
+                        rs.getString("id_encounter"), rs.getString("obat_code"), rs.getString("obat_system"),
+                        rs.getString("kode_brng"), rs.getString("obat_display"), rs.getString("form_code"),
+                        rs.getString("form_system"), rs.getString("form_display"), rs.getString("route_code"),
+                        rs.getString("route_system"), rs.getString("route_display"),
+                        rs.getString("denominator_code"), rs.getString("denominator_system"),
+                        rs.getString("tgl_peresepan") + " " + rs.getString("jam_peresepan"), rs.getString("jml"),
+                        rs.getString("id_medication"), rs.getString("aturan"), rs.getString("no_resep"),
+                        rs.getString("id_medicationdispanse"), rs.getString("no_batch"), rs.getString("no_faktur"),
+                        rs.getString("tgl_perawatan") + " " + rs.getString("jam"), "Ranap",
+                        rs.getString("id_lokasi_satusehat"), rs.getString("nm_bangsal"),
                         rs.getString("id_medicationrequest")});
                 }
             } catch (Exception e) {
@@ -1420,7 +1381,6 @@ public class SatuSehatKirimMedicationDispense extends javax.swing.JDialog {
         return tbObat;
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            SatuSehatKirimMedicationDispense.class.getName());
+    private static final Logger LOG = Logger.getLogger(SatuSehatKirimMedicationDispense.class.getName());
 
 }

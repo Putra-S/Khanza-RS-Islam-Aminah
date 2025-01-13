@@ -37,20 +37,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianPsikologi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "";
 
     /**
@@ -63,15 +71,12 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "NIP",
-            "Psikolog", "Tanggal", "Dikirim Dari", "Tujuan", "Informasi",
-            "Keterangan Informasi",
-            "Rupa/Wajah", "Bentuk Tubuh", "Tindakan", "Pakaian/Aksesoris",
-            "Penyampaian/Ekspresi", "Berbicara", "Penggunaan Kata",
-            "Ciri Yang Menyolok", "Hasil Psikotes",
-            "Kepribadian", "Psikodinamika", "Kesimpulan Psikolog"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "NIP", "Psikolog", "Tanggal",
+                    "Dikirim Dari", "Tujuan", "Informasi", "Keterangan Informasi", "Rupa/Wajah", "Bentuk Tubuh",
+                    "Tindakan", "Pakaian/Aksesoris", "Penyampaian/Ekspresi", "Berbicara", "Penggunaan Kata",
+                    "Ciri Yang Menyolok", "Hasil Psikotes", "Kepribadian", "Psikodinamika",
+                    "Kesimpulan Psikolog"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -139,24 +144,20 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         KetAlloAuto.setDocument(new batasInput(2000).getKata(KetAlloAuto));
-        Ciriyangmenyolok.setDocument(new batasInput(1000).getKata(
-                Ciriyangmenyolok));
+        Ciriyangmenyolok.setDocument(new batasInput(1000).getKata(Ciriyangmenyolok));
         Hasilpsikotes.setDocument(new batasInput(2000).getKata(Hasilpsikotes));
         Kepribadian.setDocument(new batasInput(3000).getKata(Kepribadian));
         Psikodinamika.setDocument(new batasInput(3000).getKata(Psikodinamika));
-        Kesimpulanpsikolog.setDocument(new batasInput(50).getKata(
-                Kesimpulanpsikolog));
+        Kesimpulanpsikolog.setDocument(new batasInput(50).getKata(Kesimpulanpsikolog));
         KetLokalis.setDocument(new batasInput(3000).getKata(KetLokalis));
         Hasilpsikotes.setDocument(new batasInput(3000).getKata(Hasilpsikotes));
         Kepribadian.setDocument(new batasInput(500).getKata(Kepribadian));
         Psikodinamika.setDocument(new batasInput(5000).getKata(Psikodinamika));
-        Kesimpulanpsikolog.setDocument(new batasInput(1000).getKata(
-                Kesimpulanpsikolog));
+        Kesimpulanpsikolog.setDocument(new batasInput(1000).getKata(Kesimpulanpsikolog));
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -193,10 +194,8 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     KdPetugas.requestFocus();
                 }
             }
@@ -232,14 +231,15 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1618,8 +1618,7 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPenilaianPsikologi dialog = new RMPenilaianPsikologi(
-                    new javax.swing.JFrame(), true);
+            RMPenilaianPsikologi dialog = new RMPenilaianPsikologi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1752,15 +1751,11 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1769,22 +1764,15 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("nip"), rs.getString(
-                        "nama"), rs.getString("tanggal"),
-                        rs.getString("dikirim_dari"), rs.getString(
-                        "tujuan_pemeriksaan"), rs.getString("anamnesis"), rs.
-                        getString("ket_anamnesis"), rs.getString("rupa"), rs.
-                        getString("bentuk_tubuh"), rs.getString("tindakan"),
-                        rs.getString("pakaian"), rs.getString("ekspresi"), rs.
-                        getString("berbicara"), rs.getString("penggunaan_kata"),
-                        rs.getString("ciri_menyolok"), rs.getString(
-                        "hasil_psikotes"), rs.getString("kepribadian"), rs.
-                        getString("psikodinamika"), rs.getString(
-                        "kesimpulan_psikolog")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("nip"), rs.getString("nama"), rs.getString("tanggal"),
+                        rs.getString("dikirim_dari"), rs.getString("tujuan_pemeriksaan"), rs.getString("anamnesis"),
+                        rs.getString("ket_anamnesis"), rs.getString("rupa"), rs.getString("bentuk_tubuh"),
+                        rs.getString("tindakan"), rs.getString("pakaian"), rs.getString("ekspresi"),
+                        rs.getString("berbicara"), rs.getString("penggunaan_kata"), rs.getString("ciri_menyolok"),
+                        rs.getString("hasil_psikotes"), rs.getString("kepribadian"), rs.getString("psikodinamika"),
+                        rs.getString("kesimpulan_psikolog")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1830,49 +1818,28 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Dikirimdari.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            TujuanPemeriksaan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 9).toString());
-            Informasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    10).toString());
-            KetAlloAuto.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            Rupa.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            Bentuktubuh.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            Tindakan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    14).toString());
-            Pakaian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    15).toString());
-            Ekspresi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    16).toString());
-            Berbicara.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    17).toString());
-            Penggunaankata.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            Ciriyangmenyolok.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    19).toString());
-            Hasilpsikotes.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
-            Kepribadian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            Psikodinamika.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
-            Kesimpulanpsikolog.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 23).toString());
-            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString());
+            Dikirimdari.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            TujuanPemeriksaan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Informasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            KetAlloAuto.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Rupa.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Bentuktubuh.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Tindakan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Pakaian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Ekspresi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Berbicara.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Penggunaankata.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Ciriyangmenyolok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            Hasilpsikotes.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Kepribadian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Psikodinamika.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Kesimpulanpsikolog.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
         }
     }
 
@@ -1908,7 +1875,6 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
@@ -1931,8 +1897,7 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
             if (NmPetugas.getText().isEmpty()) {
                 KdPetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
@@ -1945,10 +1910,8 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf("delete from penilaian_psikologi where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_psikologi where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -1960,24 +1923,19 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
     private void ganti() {
         if (Sequel.mengedittf("penilaian_psikologi", "no_rawat=?",
                 "no_rawat=?,tanggal=?,nip=?,anamnesis=?,dikirim_dari=?,tujuan_pemeriksaan=?,ket_anamnesis=?,rupa=?,bentuk_tubuh=?,tindakan=?,pakaian=?,ekspresi=?,berbicara=?,penggunaan_kata=?,ciri_menyolok=?,hasil_psikotes=?,kepribadian=?,psikodinamika=?,kesimpulan_psikolog=?",
-                20, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), KdPetugas.
-                    getText(), Informasi.getSelectedItem().toString(),
-                    Dikirimdari.getSelectedItem().toString(), TujuanPemeriksaan.
-                    getSelectedItem().toString(), KetAlloAuto.getText(), Rupa.
-                    getSelectedItem().toString(),
-                    Bentuktubuh.getSelectedItem().toString(), Tindakan.
-                    getSelectedItem().toString(), Pakaian.getSelectedItem().
-                            toString(), Ekspresi.getSelectedItem().toString(),
-                    Berbicara.getSelectedItem().toString(), Penggunaankata.
-                    getSelectedItem().toString(), Ciriyangmenyolok.getText(),
-                    Hasilpsikotes.getText(), Kepribadian.getText(),
-                    Psikodinamika.getText(),
-                    Kesimpulanpsikolog.getText(), tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 0).toString()
-                }) == true) {
+                20,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    KdPetugas.getText(), Informasi.getSelectedItem().toString(),
+                    Dikirimdari.getSelectedItem().toString(), TujuanPemeriksaan.getSelectedItem().toString(),
+                    KetAlloAuto.getText(), Rupa.getSelectedItem().toString(),
+                    Bentuktubuh.getSelectedItem().toString(), Tindakan.getSelectedItem().toString(),
+                    Pakaian.getSelectedItem().toString(), Ekspresi.getSelectedItem().toString(),
+                    Berbicara.getSelectedItem().toString(), Penggunaankata.getSelectedItem().toString(),
+                    Ciriyangmenyolok.getText(), Hasilpsikotes.getText(), Kepribadian.getText(),
+                    Psikodinamika.getText(), Kesimpulanpsikolog.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
@@ -1985,49 +1943,29 @@ public class RMPenilaianPsikologi extends javax.swing.JDialog {
             tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(KdPetugas.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(
-                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(Dikirimdari.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
-            tbObat.setValueAt(TujuanPemeriksaan.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 9);
-            tbObat.setValueAt(Informasi.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 10);
-            tbObat.
-                    setValueAt(KetAlloAuto.getText(), tbObat.getSelectedRow(),
-                            11);
-            tbObat.setValueAt(Rupa.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(Bentuktubuh.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 13);
-            tbObat.setValueAt(Tindakan.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(Pakaian.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(Ekspresi.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(Berbicara.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.setValueAt(Penggunaankata.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 18);
-            tbObat.setValueAt(Ciriyangmenyolok.getText(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.setValueAt(Hasilpsikotes.getText(), tbObat.getSelectedRow(),
-                    20);
-            tbObat.
-                    setValueAt(Kepribadian.getText(), tbObat.getSelectedRow(),
-                            21);
-            tbObat.setValueAt(Psikodinamika.getText(), tbObat.getSelectedRow(),
-                    22);
-            tbObat.setValueAt(Kesimpulanpsikolog.getText(), tbObat.
-                    getSelectedRow(), 23);
+            tbObat.setValueAt(Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Dikirimdari.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(TujuanPemeriksaan.getSelectedItem().toString(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(Informasi.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(KetAlloAuto.getText(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(Rupa.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(Bentuktubuh.getSelectedItem().toString(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(Tindakan.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(Pakaian.getSelectedItem().toString(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(Ekspresi.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(Berbicara.getSelectedItem().toString(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(Penggunaankata.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(Ciriyangmenyolok.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(Hasilpsikotes.getText(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(Kepribadian.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(Psikodinamika.getText(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(Kesimpulanpsikolog.getText(), tbObat.getSelectedRow(), 23);
             emptTeks();
             TabRawat.setSelectedIndex(1);
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianPsikologi.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianPsikologi.class.getName());
+
 }

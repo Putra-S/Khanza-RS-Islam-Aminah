@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgObatPenyakit.java
- *
- * Created on May 23, 2010, 12:40:35 AM
+* DlgObatPenyakit.java
+*
+* Created on May 23, 2010, 12:40:35 AM
  */
 package keuangan;
 
@@ -31,17 +31,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class KeuanganSetTarifOnline extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private Connection koneksi = koneksiDB.condb();
+
     private int i;
 
     /**
@@ -57,31 +62,14 @@ public class KeuanganSetTarifOnline extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] row = {"Kode Tindakan",
-            "Nama Tnd/Prw/Tagihan",
-            "Kategori",
-            "J.S.Rmh Sakit",
-            "BHP/Paket Obat",
-            "J.Medis Dr",
-            "J.Medis Pr",
-            "KSO",
-            "Menejemen",
-            "Ttl Biaya Dr",
-            "Ttl Biaya Pr",
-            "Ttl Biaya Dr & Pr",
-            "Cara Bayar",
-            "Unit/Poli"};
+        Object[] row = {"Kode Tindakan", "Nama Tnd/Prw/Tagihan", "Kategori", "J.S.Rmh Sakit", "BHP/Paket Obat",
+            "J.Medis Dr", "J.Medis Pr", "KSO", "Menejemen", "Ttl Biaya Dr", "Ttl Biaya Pr", "Ttl Biaya Dr & Pr",
+            "Cara Bayar", "Unit/Poli"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -96,9 +84,9 @@ public class KeuanganSetTarifOnline extends javax.swing.JDialog {
         };
         tbObatPenyakit.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbObatPenyakit.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbObatPenyakit.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObatPenyakit.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 14; i++) {
@@ -115,8 +103,7 @@ public class KeuanganSetTarifOnline extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -153,10 +140,8 @@ public class KeuanganSetTarifOnline extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpj.setText(penjab.getTable().getValueAt(penjab.getTable().
-                            getSelectedRow(), 1).toString());
-                    nmpj.setText(penjab.getTable().getValueAt(penjab.getTable().
-                            getSelectedRow(), 2).toString());
+                    kdpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpj.requestFocus();
             }
@@ -202,7 +187,9 @@ public class KeuanganSetTarifOnline extends javax.swing.JDialog {
     private DlgJnsPerawatanRalan penjab = new DlgJnsPerawatanRalan(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -690,8 +677,7 @@ private void kdpjKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpj
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganSetTarifOnline dialog = new KeuanganSetTarifOnline(
-                    new javax.swing.JFrame(), true);
+            KeuanganSetTarifOnline dialog = new KeuanganSetTarifOnline(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -738,9 +724,11 @@ private void kdpjKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpj
                     + "inner join penjab on penjab.kd_pj=jns_perawatan.kd_pj "
                     + "inner join poliklinik on poliklinik.kd_poli=jns_perawatan.kd_poli "
                     + "inner join set_tarif_online on set_tarif_online.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
-                    + "where jns_perawatan.status='1' " + (TCari.getText().
-                            trim().isEmpty() ? "" : "and (jns_perawatan.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ? "
-                            + "or kategori_perawatan.nm_kategori like ? or penjab.png_jawab like ? or poliklinik.nm_poli like ?)") + "order by jns_perawatan.kd_jenis_prw");
+                    + "where jns_perawatan.status='1' "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (jns_perawatan.kd_jenis_prw like ? or jns_perawatan.nm_perawatan like ? "
+                    + "or kategori_perawatan.nm_kategori like ? or penjab.png_jawab like ? or poliklinik.nm_poli like ?)")
+                    + "order by jns_perawatan.kd_jenis_prw");
             try {
                 if (!TCari.getText().trim().isEmpty()) {
                     ps.setString(1, "%" + TCari.getText().trim() + "%");
@@ -752,15 +740,9 @@ private void kdpjKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpj
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getDouble(4),
-                        rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.
-                        getDouble(8),
-                        rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.
-                        getDouble(12),
-                        rs.getString(13), rs.getString(14)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
+                        rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.getDouble(9),
+                        rs.getDouble(10), rs.getDouble(11), rs.getDouble(12), rs.getString(13), rs.getString(14)});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -791,7 +773,6 @@ private void kdpjKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpj
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganSetTarifOnline.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganSetTarifOnline.class.getName());
 
 }

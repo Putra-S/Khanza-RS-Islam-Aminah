@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJadwal.java
- *
- * Created on May 22, 2010, 10:25:16 PM
+* DlgJadwal.java
+*
+* Created on May 22, 2010, 10:25:16 PM
  */
 package keuangan;
 
@@ -36,18 +36,24 @@ import javax.swing.table.TableColumn;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author dosen
  */
 public class DlgAkunPiutang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgRekeningTahun rekening = new DlgRekeningTahun(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
 
     /**
@@ -60,14 +66,10 @@ public class DlgAkunPiutang extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"P", "Nama Akun", "Kode Rekening", "Nama Rekening",
-            "Cara Bayar", "Kode Bayar"};
+        Object[] row = {"P", "Nama Akun", "Kode Rekening", "Nama Rekening", "Cara Bayar", "Kode Bayar"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -114,8 +116,7 @@ public class DlgAkunPiutang extends javax.swing.JDialog {
         kdpnj.setDocument(new batasInput(3).getKata(kdpnj));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -153,20 +154,20 @@ public class DlgAkunPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgAkunPiutang")) {
                     if (rekening.getTabel().getSelectedRow() != -1) {
-                        if (rekening.getTabel().getValueAt(rekening.getTabel().
-                                getSelectedRow(), 3).toString().equals("N")
-                                && rekening.getTabel().getValueAt(rekening.
-                                        getTabel().getSelectedRow(), 4).
-                                        toString().equals("D")) {
-                            kdrek.setText(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 1).
-                                    toString());
-                            nmrek.setText(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 2).
-                                    toString());
+                        if (rekening.getTabel()
+                                .getValueAt(rekening.getTabel().getSelectedRow(), 3)
+                                .toString()
+                                .equals("N")
+                                && rekening.getTabel()
+                                        .getValueAt(rekening.getTabel().getSelectedRow(), 4)
+                                        .toString()
+                                        .equals("D")) {
+                            kdrek.setText(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString());
+                            nmrek.setText(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString());
                         } else {
-                            JOptionPane.showMessageDialog(rootPane,
-                                    "Rekening harus Tipe N dan Balance D..!!");
+                            JOptionPane.showMessageDialog(rootPane, "Rekening harus Tipe N dan Balance D..!!");
                         }
 
                         kdrek.requestFocus();
@@ -224,10 +225,8 @@ public class DlgAkunPiutang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 1).toString());
-                    nmpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 2).toString());
+                    kdpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpnj.requestFocus();
             }
@@ -273,7 +272,9 @@ public class DlgAkunPiutang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -887,8 +888,7 @@ private void BtnPoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAkunPiutang dialog = new DlgAkunPiutang(new javax.swing.JFrame(),
-                    true);
+            DlgAkunPiutang dialog = new DlgAkunPiutang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -945,10 +945,8 @@ private void BtnPoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), rs.getString(5)
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5)});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -988,7 +986,6 @@ private void BtnPoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1002,7 +999,6 @@ private void BtnPoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         BtnPrint.setEnabled(akses.getakun_piutang());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgAkunPiutang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgAkunPiutang.class.getName());
 
 }

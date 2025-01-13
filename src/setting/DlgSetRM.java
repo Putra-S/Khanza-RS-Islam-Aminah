@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgAdmin.java
- *
- * Created on 21 Jun 10, 20:53:44
+* DlgAdmin.java
+*
+* Created on 21 Jun 10, 20:53:44
  */
 package setting;
 
@@ -28,16 +28,20 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgSetRM extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2, tabMode3, tabMode4, tabMode5, tabMode6, tabMode7;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2, ps3, ps4, ps5, ps6;
+
     private ResultSet rs;
 
     /**
@@ -50,8 +54,7 @@ public class DlgSetRM extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rekam Medis Terakhir Digunakan"}) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rekam Medis Terakhir Digunakan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -72,9 +75,8 @@ public class DlgSetRM extends javax.swing.JDialog {
 
         tbNoRM.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "Model Pengurutan No.R.M", "Gunakan Tahun", "Gunakan Bulan",
-            "Tahun & Bulan"}) {
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"Model Pengurutan No.R.M", "Gunakan Tahun", "Gunakan Bulan", "Tahun & Bulan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -101,8 +103,7 @@ public class DlgSetRM extends javax.swing.JDialog {
 
         tbNoUrut.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode3 = new DefaultTableModel(null, new Object[]{"Kelurahan",
-            "Kecamatan", "Kabupaten", "Propinsi"}) {
+        tabMode3 = new DefaultTableModel(null, new Object[]{"Kelurahan", "Kecamatan", "Kabupaten", "Propinsi"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -129,8 +130,7 @@ public class DlgSetRM extends javax.swing.JDialog {
 
         tbAlamat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode4 = new DefaultTableModel(null,
-                new Object[]{"Parameter", "Nilai"}) {
+        tabMode4 = new DefaultTableModel(null, new Object[]{"Parameter", "Nilai"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -139,8 +139,7 @@ public class DlgSetRM extends javax.swing.JDialog {
         };
 
         tbKelengkapan.setModel(tabMode4);
-        tbKelengkapan.
-                setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbKelengkapan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKelengkapan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 2; i++) {
@@ -154,8 +153,8 @@ public class DlgSetRM extends javax.swing.JDialog {
 
         tbKelengkapan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode5 = new DefaultTableModel(null, new Object[]{
-            "Wajib closing kasir terlebih dahulu untuk perawatan sebelumnya"}) {
+        tabMode5 = new DefaultTableModel(null,
+                new Object[]{"Wajib closing kasir terlebih dahulu untuk perawatan sebelumnya"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -164,13 +163,11 @@ public class DlgSetRM extends javax.swing.JDialog {
         };
 
         tbValidasiRegistrasi.setModel(tabMode5);
-        tbValidasiRegistrasi.setPreferredScrollableViewportSize(new Dimension(
-                500, 500));
+        tbValidasiRegistrasi.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbValidasiRegistrasi.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 1; i++) {
-            TableColumn column = tbValidasiRegistrasi.getColumnModel().
-                    getColumn(i);
+            TableColumn column = tbValidasiRegistrasi.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(350);
             }
@@ -178,8 +175,8 @@ public class DlgSetRM extends javax.swing.JDialog {
 
         tbValidasiRegistrasi.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode6 = new DefaultTableModel(null, new Object[]{
-            "Tampilkan catatan pasien saat Registrasi Poli/Unit/IGD"}) {
+        tabMode6 = new DefaultTableModel(null,
+                new Object[]{"Tampilkan catatan pasien saat Registrasi Poli/Unit/IGD"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -188,8 +185,7 @@ public class DlgSetRM extends javax.swing.JDialog {
         };
 
         tbValidasiCatatan.setModel(tabMode6);
-        tbValidasiCatatan.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbValidasiCatatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbValidasiCatatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 1; i++) {
@@ -201,8 +197,8 @@ public class DlgSetRM extends javax.swing.JDialog {
 
         tbValidasiCatatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode7 = new DefaultTableModel(null, new Object[]{
-            "Tampilkan pilihan data pasien untuk RS TNI dan POLRI"}) {
+        tabMode7 = new DefaultTableModel(null,
+                new Object[]{"Tampilkan pilihan data pasien untuk RS TNI dan POLRI"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -224,50 +220,33 @@ public class DlgSetRM extends javax.swing.JDialog {
         tbTniPolri.setDefaultRenderer(Object.class, new WarnaTable());
 
         norm.setDocument(new batasInput((byte) 10).getKata(norm));
-        PanjangKTP.
-                setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKTP));
-        PanjangTmpLahir.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangTmpLahir));
-        PanjangNamaIbu.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangNamaIbu));
-        PanjangAlamat.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangAlamat));
-        PanjangPekerjaan.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangPekerjaan));
-        PanjangTelp.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangTelp));
-        PanjangUmur.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangUmur));
-        PanjangNamaKeluarga.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangNamaKeluarga));
-        PanjangNoPeserta.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangNoPeserta));
-        PanjangKelurahan.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangKelurahan));
-        PanjangKecamatan.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangKecamatan));
-        PanjangKabupaten.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangKabupaten));
-        PanjangPekerjaanPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangPekerjaanPJ));
-        PanjangAlamatPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangAlamatPJ));
-        PanjangKelurahanPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangKelurahanPJ));
-        PanjangKecamatanPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangKecamatanPJ));
-        PanjangKabupatenPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangKabupatenPJ));
-        PanjangPropinsi.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangPropinsi));
-        PanjangPropinsiPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                PanjangPropinsiPJ));
+        PanjangKTP.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKTP));
+        PanjangTmpLahir.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangTmpLahir));
+        PanjangNamaIbu.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangNamaIbu));
+        PanjangAlamat.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangAlamat));
+        PanjangPekerjaan.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangPekerjaan));
+        PanjangTelp.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangTelp));
+        PanjangUmur.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangUmur));
+        PanjangNamaKeluarga.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangNamaKeluarga));
+        PanjangNoPeserta.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangNoPeserta));
+        PanjangKelurahan.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKelurahan));
+        PanjangKecamatan.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKecamatan));
+        PanjangKabupaten.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKabupaten));
+        PanjangPekerjaanPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangPekerjaanPJ));
+        PanjangAlamatPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangAlamatPJ));
+        PanjangKelurahanPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKelurahanPJ));
+        PanjangKecamatanPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKecamatanPJ));
+        PanjangKabupatenPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangKabupatenPJ));
+        PanjangPropinsi.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangPropinsi));
+        PanjangPropinsiPJ.setDocument(new batasInput((byte) 3).getOnlyAngka(PanjangPropinsiPJ));
         ChkInput.setSelected(false);
         isForm();
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2459,13 +2438,12 @@ private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_norm
     private void tampilurut() {
         Valid.tabelKosong(tabMode2);
         try {
-            ps2 = koneksi.prepareStatement(
-                    "select * from set_urut_no_rkm_medis ");
+            ps2 = koneksi.prepareStatement("select * from set_urut_no_rkm_medis ");
             try {
                 rs = ps2.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new Object[]{rs.getString(1), rs.
-                        getString(2), rs.getString(3), rs.getString(4)});
+                    tabMode2
+                            .addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -2499,16 +2477,10 @@ private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_norm
             try {
                 rs = ps3.executeQuery();
                 while (rs.next()) {
-                    tabMode3.addRow(new Object[]{
-                        rs.getString(1).replaceAll("true", "Yes").replaceAll(
-                        "false", "No"),
-                        rs.getString(2).replaceAll("true", "Yes").replaceAll(
-                        "false", "No"),
-                        rs.getString(3).replaceAll("true", "Yes").replaceAll(
-                        "false", "No"),
-                        rs.getString(4).replaceAll("true", "Yes").replaceAll(
-                        "false", "No")
-                    });
+                    tabMode3.addRow(new Object[]{rs.getString(1).replaceAll("true", "Yes").replaceAll("false", "No"),
+                        rs.getString(2).replaceAll("true", "Yes").replaceAll("false", "No"),
+                        rs.getString(3).replaceAll("true", "Yes").replaceAll("false", "No"),
+                        rs.getString(4).replaceAll("true", "Yes").replaceAll("false", "No")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -2552,103 +2524,61 @@ private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_norm
     public void tampilkelengkapan() {
         Valid.tabelKosong(tabMode4);
         try {
-            ps4 = koneksi.prepareStatement(
-                    "select * from set_kelengkapan_data_pasien ");
+            ps4 = koneksi.prepareStatement("select * from set_kelengkapan_data_pasien ");
             try {
                 rs = ps4.executeQuery();
                 while (rs.next()) {
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data No.KTP/SIM Pasien", rs.getString(1)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Karakter KTP/SIM", rs.getString(2)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Tempat Lahir", rs.getString(3)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data No.KTP/SIM Pasien", rs.getString(1)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Karakter KTP/SIM", rs.getString(2)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Tempat Lahir", rs.getString(3)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Tempat Lahir", rs.getString(4)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Nama Ibu", rs.getString(5)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Nama Ibu", rs.getString(6)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Alamat Pasien", rs.getString(7)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Alamat Pasien", rs.getString(8)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Pekerjaan Pasien", rs.getString(9)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Pekerjaan Pasien", rs.getString(10)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data No.Telp", rs.getString(11)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang No.Telp", rs.getString(12)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Umur Pasien", rs.getString(13)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Umur Pasien", rs.getString(14)});
+                    tabMode4
+                            .addRow(new Object[]{" Kelengkapan Data Nama Penanggung Jawab Pasien", rs.getString(15)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Nama Penanggung Jawab Pasien", rs.getString(16)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data No.Peserta", rs.getString(17)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang No.Peserta", rs.getString(18)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Kelurahan", rs.getString(19)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Kelurahan", rs.getString(20)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Kecamatan", rs.getString(21)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Kecamatan", rs.getString(22)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Kabupaten", rs.getString(23)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Kabupaten", rs.getString(24)});
                     tabMode4.addRow(
-                            new Object[]{" Minimal Panjang Tempat Lahir",
-                                rs.getString(4)});
-                    tabMode4.addRow(new Object[]{" Kelengkapan Data Nama Ibu",
-                        rs.getString(5)});
-                    tabMode4.addRow(new Object[]{" Minimal Panjang Nama Ibu",
-                        rs.getString(6)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Alamat Pasien", rs.getString(7)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Alamat Pasien", rs.getString(8)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Pekerjaan Pasien", rs.getString(9)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Pekerjaan Pasien", rs.getString(10)});
-                    tabMode4.addRow(new Object[]{" Kelengkapan Data No.Telp",
-                        rs.getString(11)});
-                    tabMode4.addRow(new Object[]{" Minimal Panjang No.Telp", rs.
-                        getString(12)});
+                            new Object[]{" Kelengkapan Data Pekerjaan Penanggung Jawab Pasien", rs.getString(25)});
                     tabMode4.addRow(
-                            new Object[]{" Kelengkapan Data Umur Pasien",
-                                rs.getString(13)});
-                    tabMode4.addRow(new Object[]{" Minimal Panjang Umur Pasien",
-                        rs.getString(14)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Nama Penanggung Jawab Pasien", rs.
-                        getString(15)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Nama Penanggung Jawab Pasien", rs.
-                        getString(16)});
-                    tabMode4.addRow(new Object[]{" Kelengkapan Data No.Peserta",
-                        rs.getString(17)});
-                    tabMode4.addRow(new Object[]{" Minimal Panjang No.Peserta",
-                        rs.getString(18)});
-                    tabMode4.addRow(new Object[]{" Kelengkapan Data Kelurahan",
-                        rs.getString(19)});
-                    tabMode4.addRow(new Object[]{" Minimal Panjang Kelurahan",
-                        rs.getString(20)});
-                    tabMode4.addRow(new Object[]{" Kelengkapan Data Kecamatan",
-                        rs.getString(21)});
-                    tabMode4.addRow(new Object[]{" Minimal Panjang Kecamatan",
-                        rs.getString(22)});
-                    tabMode4.addRow(new Object[]{" Kelengkapan Data Kabupaten",
-                        rs.getString(23)});
-                    tabMode4.addRow(new Object[]{" Minimal Panjang Kabupaten",
-                        rs.getString(24)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Pekerjaan Penanggung Jawab Pasien",
-                        rs.getString(25)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Pekerjaan Penanggung Jawab Pasien",
-                        rs.getString(26)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Alamat Penanggung Jawab Pasien", rs.
-                        getString(27)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Alamat Penanggung Jawab Pasien", rs.
-                        getString(28)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Kelurahan Penanggung Jawab Pasien",
-                        rs.getString(29)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Kelurahan Penanggung Jawab Pasien",
-                        rs.getString(30)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Kecamatan Penanggung Jawab Pasien",
-                        rs.getString(31)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Kecamatan Penanggung Jawab Pasien",
-                        rs.getString(32)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Kabupaten Penanggung Jawab Pasien",
-                        rs.getString(33)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Kabupaten Penanggung Jawab Pasien",
-                        rs.getString(34)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Propinsi Pasien", rs.getString(35)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Propinsi Pasien", rs.getString(36)});
-                    tabMode4.addRow(new Object[]{
-                        " Kelengkapan Data Propinsi Penanggung Jawab Pasien",
-                        rs.getString(37)});
-                    tabMode4.addRow(new Object[]{
-                        " Minimal Panjang Propinsi Penanggung Jawab Pasien", rs.
-                        getString(38)});
+                            new Object[]{" Minimal Panjang Pekerjaan Penanggung Jawab Pasien", rs.getString(26)});
+                    tabMode4
+                            .addRow(new Object[]{" Kelengkapan Data Alamat Penanggung Jawab Pasien", rs.getString(27)});
+                    tabMode4
+                            .addRow(new Object[]{" Minimal Panjang Alamat Penanggung Jawab Pasien", rs.getString(28)});
+                    tabMode4.addRow(
+                            new Object[]{" Kelengkapan Data Kelurahan Penanggung Jawab Pasien", rs.getString(29)});
+                    tabMode4.addRow(
+                            new Object[]{" Minimal Panjang Kelurahan Penanggung Jawab Pasien", rs.getString(30)});
+                    tabMode4.addRow(
+                            new Object[]{" Kelengkapan Data Kecamatan Penanggung Jawab Pasien", rs.getString(31)});
+                    tabMode4.addRow(
+                            new Object[]{" Minimal Panjang Kecamatan Penanggung Jawab Pasien", rs.getString(32)});
+                    tabMode4.addRow(
+                            new Object[]{" Kelengkapan Data Kabupaten Penanggung Jawab Pasien", rs.getString(33)});
+                    tabMode4.addRow(
+                            new Object[]{" Minimal Panjang Kabupaten Penanggung Jawab Pasien", rs.getString(34)});
+                    tabMode4.addRow(new Object[]{" Kelengkapan Data Propinsi Pasien", rs.getString(35)});
+                    tabMode4.addRow(new Object[]{" Minimal Panjang Propinsi Pasien", rs.getString(36)});
+                    tabMode4.addRow(
+                            new Object[]{" Kelengkapan Data Propinsi Penanggung Jawab Pasien", rs.getString(37)});
+                    tabMode4
+                            .addRow(new Object[]{" Minimal Panjang Propinsi Penanggung Jawab Pasien", rs.getString(38)});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -2670,74 +2600,49 @@ private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_norm
         if (row != -1) {
             YesNoKTP.setSelectedItem(tbKelengkapan.getValueAt(0, 1).toString());
             PanjangKTP.setText(tbKelengkapan.getValueAt(1, 1).toString());
-            YesNoTmpLahir.setSelectedItem(tbKelengkapan.getValueAt(2, 1).
-                    toString());
+            YesNoTmpLahir.setSelectedItem(tbKelengkapan.getValueAt(2, 1).toString());
             PanjangTmpLahir.setText(tbKelengkapan.getValueAt(3, 1).toString());
-            YesNoNamaIbu.setSelectedItem(tbKelengkapan.getValueAt(4, 1).
-                    toString());
+            YesNoNamaIbu.setSelectedItem(tbKelengkapan.getValueAt(4, 1).toString());
             PanjangNamaIbu.setText(tbKelengkapan.getValueAt(5, 1).toString());
-            YesNoAlamat.setSelectedItem(tbKelengkapan.getValueAt(6, 1).
-                    toString());
+            YesNoAlamat.setSelectedItem(tbKelengkapan.getValueAt(6, 1).toString());
             PanjangAlamat.setText(tbKelengkapan.getValueAt(7, 1).toString());
-            YesNoPekerjaan.setSelectedItem(tbKelengkapan.getValueAt(8, 1).
-                    toString());
+            YesNoPekerjaan.setSelectedItem(tbKelengkapan.getValueAt(8, 1).toString());
             PanjangPekerjaan.setText(tbKelengkapan.getValueAt(9, 1).toString());
-            YesNoTelp.
-                    setSelectedItem(tbKelengkapan.getValueAt(10, 1).toString());
+            YesNoTelp.setSelectedItem(tbKelengkapan.getValueAt(10, 1).toString());
             PanjangTelp.setText(tbKelengkapan.getValueAt(11, 1).toString());
-            YesNoUmur.
-                    setSelectedItem(tbKelengkapan.getValueAt(12, 1).toString());
+            YesNoUmur.setSelectedItem(tbKelengkapan.getValueAt(12, 1).toString());
             PanjangUmur.setText(tbKelengkapan.getValueAt(13, 1).toString());
-            YesNoNamaKeluarga.setSelectedItem(tbKelengkapan.getValueAt(14, 1).
-                    toString());
-            PanjangNamaKeluarga.setText(tbKelengkapan.getValueAt(15, 1).
-                    toString());
-            YesNoNoPeserta.setSelectedItem(tbKelengkapan.getValueAt(16, 1).
-                    toString());
+            YesNoNamaKeluarga.setSelectedItem(tbKelengkapan.getValueAt(14, 1).toString());
+            PanjangNamaKeluarga.setText(tbKelengkapan.getValueAt(15, 1).toString());
+            YesNoNoPeserta.setSelectedItem(tbKelengkapan.getValueAt(16, 1).toString());
             PanjangNoPeserta.setText(tbKelengkapan.getValueAt(17, 1).toString());
-            YesNoKelurahan.setSelectedItem(tbKelengkapan.getValueAt(18, 1).
-                    toString());
+            YesNoKelurahan.setSelectedItem(tbKelengkapan.getValueAt(18, 1).toString());
             PanjangKelurahan.setText(tbKelengkapan.getValueAt(19, 1).toString());
-            YesNoKecamatan.setSelectedItem(tbKelengkapan.getValueAt(20, 1).
-                    toString());
+            YesNoKecamatan.setSelectedItem(tbKelengkapan.getValueAt(20, 1).toString());
             PanjangKecamatan.setText(tbKelengkapan.getValueAt(21, 1).toString());
-            YesNoKabupaten.setSelectedItem(tbKelengkapan.getValueAt(22, 1).
-                    toString());
+            YesNoKabupaten.setSelectedItem(tbKelengkapan.getValueAt(22, 1).toString());
             PanjangKabupaten.setText(tbKelengkapan.getValueAt(23, 1).toString());
-            YesNoPekerjaanPJ.setSelectedItem(tbKelengkapan.getValueAt(24, 1).
-                    toString());
-            PanjangPekerjaanPJ.setText(tbKelengkapan.getValueAt(25, 1).
-                    toString());
-            YesNoAlamatPJ.setSelectedItem(tbKelengkapan.getValueAt(26, 1).
-                    toString());
+            YesNoPekerjaanPJ.setSelectedItem(tbKelengkapan.getValueAt(24, 1).toString());
+            PanjangPekerjaanPJ.setText(tbKelengkapan.getValueAt(25, 1).toString());
+            YesNoAlamatPJ.setSelectedItem(tbKelengkapan.getValueAt(26, 1).toString());
             PanjangAlamatPJ.setText(tbKelengkapan.getValueAt(27, 1).toString());
-            YesNoKelurahanPJ.setSelectedItem(tbKelengkapan.getValueAt(28, 1).
-                    toString());
-            PanjangKelurahanPJ.setText(tbKelengkapan.getValueAt(29, 1).
-                    toString());
-            YesNoKecamatanPJ.setSelectedItem(tbKelengkapan.getValueAt(30, 1).
-                    toString());
-            PanjangKecamatanPJ.setText(tbKelengkapan.getValueAt(31, 1).
-                    toString());
-            YesNoKabupatenPJ.setSelectedItem(tbKelengkapan.getValueAt(32, 1).
-                    toString());
-            PanjangKabupatenPJ.setText(tbKelengkapan.getValueAt(33, 1).
-                    toString());
-            YesNoPropinsi.setSelectedItem(tbKelengkapan.getValueAt(34, 1).
-                    toString());
+            YesNoKelurahanPJ.setSelectedItem(tbKelengkapan.getValueAt(28, 1).toString());
+            PanjangKelurahanPJ.setText(tbKelengkapan.getValueAt(29, 1).toString());
+            YesNoKecamatanPJ.setSelectedItem(tbKelengkapan.getValueAt(30, 1).toString());
+            PanjangKecamatanPJ.setText(tbKelengkapan.getValueAt(31, 1).toString());
+            YesNoKabupatenPJ.setSelectedItem(tbKelengkapan.getValueAt(32, 1).toString());
+            PanjangKabupatenPJ.setText(tbKelengkapan.getValueAt(33, 1).toString());
+            YesNoPropinsi.setSelectedItem(tbKelengkapan.getValueAt(34, 1).toString());
             PanjangPropinsi.setText(tbKelengkapan.getValueAt(35, 1).toString());
-            YesNoPropinsiPJ.setSelectedItem(tbKelengkapan.getValueAt(36, 1).
-                    toString());
-            PanjangPropinsiPJ.
-                    setText(tbKelengkapan.getValueAt(37, 1).toString());
+            YesNoPropinsiPJ.setSelectedItem(tbKelengkapan.getValueAt(36, 1).toString());
+            PanjangPropinsiPJ.setText(tbKelengkapan.getValueAt(37, 1).toString());
         }
     }
 
     private void tampilvalidasiregistrasi() {
         Valid.tabelKosong(tabMode5);
         try {
-            ps5 = koneksi.prepareStatement(
-                    "select * from set_validasi_registrasi ");
+            ps5 = koneksi.prepareStatement("select * from set_validasi_registrasi ");
             try {
                 rs = ps5.executeQuery();
                 while (rs.next()) {
@@ -2761,16 +2666,14 @@ private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_norm
     private void getDataValidasiRegistrasi() {
         int row = tbValidasiRegistrasi.getSelectedRow();
         if (row != -1) {
-            ValidasiRegistrasi.setSelectedItem(tbValidasiRegistrasi.getValueAt(
-                    row, 0).toString());
+            ValidasiRegistrasi.setSelectedItem(tbValidasiRegistrasi.getValueAt(row, 0).toString());
         }
     }
 
     private void tampilvalidasicatatan() {
         Valid.tabelKosong(tabMode6);
         try {
-            ps5 = koneksi.
-                    prepareStatement("select * from set_validasi_catatan ");
+            ps5 = koneksi.prepareStatement("select * from set_validasi_catatan ");
             try {
                 rs = ps5.executeQuery();
                 while (rs.next()) {
@@ -2794,8 +2697,7 @@ private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_norm
     private void getDataValidasiCatatan() {
         int row = tbValidasiCatatan.getSelectedRow();
         if (row != -1) {
-            ValidasiCatatan.setSelectedItem(
-                    tbValidasiCatatan.getValueAt(row, 0).toString());
+            ValidasiCatatan.setSelectedItem(tbValidasiCatatan.getValueAt(row, 0).toString());
         }
     }
 
@@ -2826,8 +2728,7 @@ private void normKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_norm
     private void getDataTampilkanTNI() {
         int row = tbTniPolri.getSelectedRow();
         if (row != -1) {
-            TampilkanTNI.setSelectedItem(tbTniPolri.getValueAt(row, 0).
-                    toString());
+            TampilkanTNI.setSelectedItem(tbTniPolri.getValueAt(row, 0).toString());
         }
     }
 

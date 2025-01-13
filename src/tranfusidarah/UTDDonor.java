@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package tranfusidarah;
 
@@ -42,23 +42,34 @@ import kepegawaian.DlgCariPetugas;
 import widget.panelisi;
 
 /**
- *
  * @author dosen
  */
 public class UTDDonor extends javax.swing.JDialog {
 
     private final DefaultTableModel tabModeMedis, tabModeNonMedis, tabModeTranfusi;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2, pstranfusi, pscekmedis, psceknonmedis;
+
     private ResultSet rs, rs2, rstranfusi;
+
     private Connection koneksi = koneksiDB.condb();
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private UTDPendonor pendonor = new UTDPendonor(null, false);
+
     private int jml = 0, i = 0, row = 0, index = 0, pilih = 0;
+
     private String[] kodebarang, namabarang, jumlah, satuan, stokasal, hbeli, total;
+
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private String aktifkan = "",
             sqlpscekmedis = "select utd_penggunaan_medis_donor.kode_brng,databarang.nama_brng,utd_penggunaan_medis_donor.jml,utd_penggunaan_medis_donor.harga,"
             + "utd_penggunaan_medis_donor.total,databarang.kode_sat from utd_penggunaan_medis_donor inner join databarang "
@@ -79,8 +90,8 @@ public class UTDDonor extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(628, 674);
 
-        tabModeMedis = new DefaultTableModel(null, new Object[]{"Jml",
-            "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
+        tabModeMedis = new DefaultTableModel(null,
+                new Object[]{"Jml", "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -117,9 +128,9 @@ public class UTDDonor extends javax.swing.JDialog {
         }
         warna.kolom = 0;
         tbMedis.setDefaultRenderer(Object.class, warna);
-        //non medis
-        tabModeNonMedis = new DefaultTableModel(null, new Object[]{"Jml",
-            "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
+        // non medis
+        tabModeNonMedis = new DefaultTableModel(null,
+                new Object[]{"Jml", "Kode Barang", "Nama Barang", "Harga", "Subtotal", "Satuan", "Stok"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -157,13 +168,10 @@ public class UTDDonor extends javax.swing.JDialog {
         warna.kolom = 0;
         tbNonMedis.setDefaultRenderer(Object.class, warna);
 
-        tabModeTranfusi = new DefaultTableModel(null, new Object[]{
-            "Nomor", "No.ID", "Nama Pendonor", "Tanggal", "Dinas", "J.K.",
-            "Tempat & Tgl.Lahir", "Alamat", "G.D.", "Resus", "Tensi",
-            "No.Bag", "No.Telp", "J.B.", "J.D.", "Tempat Aftap", "Petugas Aftap",
-            "HBSAg", "HCV", "HIV",
-            "Spilis", "Malaria", "Petugas U.Saring"
-        }) {
+        tabModeTranfusi = new DefaultTableModel(null,
+                new Object[]{"Nomor", "No.ID", "Nama Pendonor", "Tanggal", "Dinas", "J.K.", "Tempat & Tgl.Lahir",
+                    "Alamat", "G.D.", "Resus", "Tensi", "No.Bag", "No.Telp", "J.B.", "J.D.", "Tempat Aftap",
+                    "Petugas Aftap", "HBSAg", "HCV", "HIV", "Spilis", "Malaria", "Petugas U.Saring"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -171,9 +179,9 @@ public class UTDDonor extends javax.swing.JDialog {
 
         };
         tbTranfusiDarah.setModel(tabModeTranfusi);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
-        tbTranfusiDarah.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        tbTranfusiDarah.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTranfusiDarah.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 23; i++) {
@@ -241,20 +249,16 @@ public class UTDDonor extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
-                        KodePetugasAftap.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        NamaPetugasAftap.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodePetugasAftap
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        NamaPetugasAftap
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         KodePetugasAftap.requestFocus();
                     } else if (pilih == 2) {
-                        KodePetugasUSaring.setText(petugas.getTable().
-                                getValueAt(petugas.getTable().getSelectedRow(),
-                                        0).toString());
-                        NamaPetugasUSaring.setText(petugas.getTable().
-                                getValueAt(petugas.getTable().getSelectedRow(),
-                                        1).toString());
+                        KodePetugasUSaring
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        NamaPetugasUSaring
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         KodePetugasUSaring.requestFocus();
                     }
                 }
@@ -290,34 +294,28 @@ public class UTDDonor extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pendonor.getTable().getSelectedRow() != -1) {
-                    NoPendonor.setText(pendonor.getTable().getValueAt(pendonor.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaPendonor.setText(pendonor.getTable().getValueAt(
-                            pendonor.getTable().getSelectedRow(), 1).toString());
-                    NomorTelp.setText(pendonor.getTable().getValueAt(pendonor.
-                            getTable().getSelectedRow(), 17).toString());
-                    Lahir.setText(pendonor.getTable().getValueAt(pendonor.
-                            getTable().getSelectedRow(), 4).toString() + ", " + pendonor.
-                                    getTable().getValueAt(pendonor.getTable().
-                                            getSelectedRow(), 5).toString());
-                    JK.setText(pendonor.getTable().getValueAt(pendonor.
-                            getTable().getSelectedRow(), 3).toString().
-                            replaceAll("L", "Laki-Laki").replaceAll("P",
-                            "Perempuan"));
-                    Alamat.setText(pendonor.getTable().getValueAt(pendonor.
-                            getTable().getSelectedRow(), 6).toString() + ", " + pendonor.
-                                    getTable().getValueAt(pendonor.getTable().
-                                            getSelectedRow(), 8).toString() + ", " + pendonor.
-                                    getTable().getValueAt(pendonor.getTable().
-                                            getSelectedRow(), 10).toString() + ", " + pendonor.
-                                    getTable().getValueAt(pendonor.getTable().
-                                            getSelectedRow(), 12).toString() + ", " + pendonor.
-                                    getTable().getValueAt(pendonor.getTable().
-                                            getSelectedRow(), 14).toString());
-                    GD.setText(pendonor.getTable().getValueAt(pendonor.
-                            getTable().getSelectedRow(), 15).toString());
-                    Resus.setText(pendonor.getTable().getValueAt(pendonor.
-                            getTable().getSelectedRow(), 16).toString());
+                    NoPendonor
+                            .setText(pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 0).toString());
+                    NamaPendonor
+                            .setText(pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 1).toString());
+                    NomorTelp
+                            .setText(pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 17).toString());
+                    Lahir.setText(pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 4).toString()
+                            + ", "
+                            + pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 5).toString());
+                    JK.setText(pendonor.getTable()
+                            .getValueAt(pendonor.getTable().getSelectedRow(), 3)
+                            .toString()
+                            .replaceAll("L", "Laki-Laki")
+                            .replaceAll("P", "Perempuan"));
+                    Alamat.setText(pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 6).toString()
+                            + ", " + pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 8).toString()
+                            + ", " + pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 10).toString()
+                            + ", " + pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 12).toString()
+                            + ", "
+                            + pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 14).toString());
+                    GD.setText(pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 15).toString());
+                    Resus.setText(pendonor.getTable().getValueAt(pendonor.getTable().getSelectedRow(), 16).toString());
                 }
                 btnPendonor.requestFocus();
             }
@@ -360,19 +358,15 @@ public class UTDDonor extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TCariMedis.setDocument(new batasInput((byte) 100).getKata(TCariMedis));
-        TCariNonMedis.setDocument(new batasInput((byte) 100).getKata(
-                TCariNonMedis));
+        TCariNonMedis.setDocument(new batasInput((byte) 100).getKata(TCariNonMedis));
         NomorDonor.setDocument(new batasInput((byte) 15).getKata(NomorDonor));
         Tensi.setDocument(new batasInput((byte) 7).getKata(Tensi));
         NomorBag.setDocument(new batasInput((byte) 3).getOnlyAngka(NomorBag));
         NomorTelp.setDocument(new batasInput((byte) 10).getKata(NomorTelp));
-        KodePetugasAftap.setDocument(new batasInput((byte) 20).getKata(
-                KodePetugasAftap));
-        KodePetugasUSaring.setDocument(new batasInput((byte) 20).getKata(
-                KodePetugasUSaring));
+        KodePetugasAftap.setDocument(new batasInput((byte) 20).getKata(KodePetugasAftap));
+        KodePetugasUSaring.setDocument(new batasInput((byte) 20).getKata(KodePetugasUSaring));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -395,8 +389,7 @@ public class UTDDonor extends javax.swing.JDialog {
                 }
 
             });
-            TCariMedis.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCariMedis.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCariMedis.getText().length() > 2) {
@@ -419,8 +412,7 @@ public class UTDDonor extends javax.swing.JDialog {
                 }
 
             });
-            TCariNonMedis.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCariNonMedis.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCariNonMedis.getText().length() > 2) {
@@ -448,7 +440,9 @@ public class UTDDonor extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2957,8 +2951,7 @@ public class UTDDonor extends javax.swing.JDialog {
                         + "inner join propinsi on utd_pendonor.kd_prop=propinsi.kd_prop "
                         + "inner join petugas as petugasaftap on petugasaftap.nip=utd_donor.petugas_aftap "
                         + "inner join petugas as petugasusaring on petugasusaring.nip=utd_donor.petugas_u_saring "
-                        + "where tanggal between ? and ? order by tanggal,no_donor "
-                );
+                        + "where tanggal between ? and ? order by tanggal,no_donor ");
             } else {
                 pstranfusi = koneksi.prepareStatement(
                         "select utd_donor.no_donor,utd_donor.no_pendonor,utd_donor.tanggal,utd_donor.dinas,utd_donor.tensi,utd_donor.no_bag,utd_donor.jenis_bag,"
@@ -2980,106 +2973,72 @@ public class UTDDonor extends javax.swing.JDialog {
                         + "tanggal between ? and ? and utd_donor.tempat_aftap like ? or "
                         + "tanggal between ? and ? and utd_donor.jenis_bag like ? or "
                         + "tanggal between ? and ? and utd_donor.jenis_donor like ? or "
-                        + "tanggal between ? and ? and utd_donor.dinas like ? order by tanggal,no_donor "
-                );
+                        + "tanggal between ? and ? and utd_donor.dinas like ? order by tanggal,no_donor ");
             }
 
             try {
                 if (TCari.getText().isEmpty()) {
-                    pstranfusi.setString(1, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(2, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(1, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(2, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                 } else {
-                    pstranfusi.setString(1, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(2, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(1, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(2, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(3, "%" + TCari.getText().trim() + "%");
-                    pstranfusi.setString(4, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(5, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(4, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(5, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(6, "%" + TCari.getText().trim() + "%");
-                    pstranfusi.setString(7, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(8, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(7, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(8, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(9, "%" + TCari.getText().trim() + "%");
-                    pstranfusi.setString(10, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(11, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(10, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(11, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(12, "%" + TCari.getText().trim() + "%");
-                    pstranfusi.setString(13, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(14, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(13, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(14, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(15, "%" + TCari.getText().trim() + "%");
-                    pstranfusi.setString(16, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(17, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(16, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(17, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(18, "%" + TCari.getText().trim() + "%");
-                    pstranfusi.setString(19, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(20, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(19, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(20, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(21, "%" + TCari.getText().trim() + "%");
-                    pstranfusi.setString(22, Valid.SetTgl(TanggalCari1.
-                            getSelectedItem() + ""));
-                    pstranfusi.setString(23, Valid.SetTgl(TanggalCari2.
-                            getSelectedItem() + ""));
+                    pstranfusi.setString(22, Valid.SetTgl(TanggalCari1.getSelectedItem() + ""));
+                    pstranfusi.setString(23, Valid.SetTgl(TanggalCari2.getSelectedItem() + ""));
                     pstranfusi.setString(24, "%" + TCari.getText().trim() + "%");
                 }
 
                 rstranfusi = pstranfusi.executeQuery();
                 while (rstranfusi.next()) {
-                    tabModeTranfusi.addRow(new Object[]{
-                        rstranfusi.getString("no_donor"), rstranfusi.getString(
-                        "no_pendonor"), rstranfusi.getString("nama"),
-                        rstranfusi.getString("tanggal"),
-                        rstranfusi.getString("dinas"), rstranfusi.
-                        getString("jk"),
-                        rstranfusi.getString("tmp_lahir") + ", " + rstranfusi.
-                        getString("tgl_lahir"),
-                        rstranfusi.getString("alamat"), rstranfusi.getString(
-                        "golongan_darah"), rstranfusi.getString("resus"),
-                        rstranfusi.getString("tensi"), rstranfusi.getString(
-                        "no_bag"), rstranfusi.getString("no_telp"),
-                        rstranfusi.getString("jenis_bag"), rstranfusi.getString(
-                        "jenis_donor"), rstranfusi.getString("tempat_aftap"),
-                        rstranfusi.getString("petugasaftap"), rstranfusi.
-                        getString("hbsag"), rstranfusi.getString("hcv"),
-                        rstranfusi.getString("hiv"), rstranfusi.getString(
-                        "spilis"), rstranfusi.getString("malaria"),
-                        rstranfusi.getString("petugasusaring")
-                    });
+                    tabModeTranfusi.addRow(new Object[]{rstranfusi.getString("no_donor"),
+                        rstranfusi.getString("no_pendonor"), rstranfusi.getString("nama"),
+                        rstranfusi.getString("tanggal"), rstranfusi.getString("dinas"), rstranfusi.getString("jk"),
+                        rstranfusi.getString("tmp_lahir") + ", " + rstranfusi.getString("tgl_lahir"),
+                        rstranfusi.getString("alamat"), rstranfusi.getString("golongan_darah"),
+                        rstranfusi.getString("resus"), rstranfusi.getString("tensi"),
+                        rstranfusi.getString("no_bag"), rstranfusi.getString("no_telp"),
+                        rstranfusi.getString("jenis_bag"), rstranfusi.getString("jenis_donor"),
+                        rstranfusi.getString("tempat_aftap"), rstranfusi.getString("petugasaftap"),
+                        rstranfusi.getString("hbsag"), rstranfusi.getString("hcv"), rstranfusi.getString("hiv"),
+                        rstranfusi.getString("spilis"), rstranfusi.getString("malaria"),
+                        rstranfusi.getString("petugasusaring")});
                     if (aktifkan.equals("medis")) {
                         pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
-                            pscekmedis.setString(1, rstranfusi.getString(
-                                    "no_donor"));
+                            pscekmedis.setString(1, rstranfusi.getString("no_donor"));
                             rs = pscekmedis.executeQuery();
                             if (rs.next()) {
                                 i = 1;
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "",
-                                    "Penggunaan BHP Medis :", "", "", "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", ""
-                                });
+                                tabModeTranfusi.addRow(new String[]{"", "", "", "", "", "", "Penggunaan BHP Medis :",
+                                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                             }
                             rs.beforeFirst();
                             while (rs.next()) {
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "", i + ". " + rs.
-                                    getString("nama_brng"), "(" + rs.getString(
-                                    "jml") + " " + rs.getString("kode_sat") + " X " + Valid.
-                                    SetAngka(rs.getDouble("harga")) + ") = " + Valid.
-                                    SetAngka(rs.getDouble("total")), "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", "",
-                                    ""
-                                });
+                                tabModeTranfusi
+                                        .addRow(new String[]{"", "", "", "", "", "", i + ". " + rs.getString("nama_brng"),
+                                    "(" + rs.getString("jml") + " " + rs.getString("kode_sat") + " X "
+                                    + Valid.SetAngka(rs.getDouble("harga")) + ") = "
+                                    + Valid.SetAngka(rs.getDouble("total")),
+                                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                                 i++;
                             }
                         } catch (SQLException e) {
@@ -3093,32 +3052,24 @@ public class UTDDonor extends javax.swing.JDialog {
                             }
                         }
                     } else if (aktifkan.equals("nonmedis")) {
-                        psceknonmedis = koneksi.prepareStatement(
-                                sqlpsceknonmedis);
+                        psceknonmedis = koneksi.prepareStatement(sqlpsceknonmedis);
                         try {
-                            psceknonmedis.setString(1, rstranfusi.getString(
-                                    "no_donor"));
+                            psceknonmedis.setString(1, rstranfusi.getString("no_donor"));
                             rs2 = psceknonmedis.executeQuery();
                             if (rs2.next()) {
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "",
-                                    "Penggunaan BHP Non Medis :", "", "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", "",
-                                    ""
-                                });
+                                tabModeTranfusi
+                                        .addRow(new String[]{"", "", "", "", "", "", "Penggunaan BHP Non Medis :", "", "",
+                                    "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                                 i = 1;
                             }
                             rs2.beforeFirst();
                             while (rs2.next()) {
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "", i + ". " + rs2.
-                                    getString("nama_brng"), "(" + rs2.getString(
-                                    "jml") + " " + rs2.getString("kode_sat") + " X " + Valid.
-                                    SetAngka(rs2.getDouble("harga")) + ") = " + Valid.
-                                    SetAngka(rs2.getDouble("total")), "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", "",
-                                    ""
-                                });
+                                tabModeTranfusi.addRow(
+                                        new String[]{"", "", "", "", "", "", i + ". " + rs2.getString("nama_brng"),
+                                            "(" + rs2.getString("jml") + " " + rs2.getString("kode_sat") + " X "
+                                            + Valid.SetAngka(rs2.getDouble("harga")) + ") = "
+                                            + Valid.SetAngka(rs2.getDouble("total")),
+                                            "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                                 i++;
                             }
                         } catch (SQLException e) {
@@ -3134,28 +3085,21 @@ public class UTDDonor extends javax.swing.JDialog {
                     } else if (aktifkan.equals("medis&nonmedis")) {
                         pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
-                            pscekmedis.setString(1, rstranfusi.getString(
-                                    "no_donor"));
+                            pscekmedis.setString(1, rstranfusi.getString("no_donor"));
                             rs = pscekmedis.executeQuery();
                             if (rs.next()) {
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "",
-                                    "Penggunaan BHP Medis :", "", "", "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", ""
-                                });
+                                tabModeTranfusi.addRow(new String[]{"", "", "", "", "", "", "Penggunaan BHP Medis :",
+                                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                                 i = 1;
                             }
                             rs.beforeFirst();
                             while (rs.next()) {
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "", i + ". " + rs.
-                                    getString("nama_brng"), "(" + rs.getString(
-                                    "jml") + " " + rs.getString("kode_sat") + " X " + Valid.
-                                    SetAngka(rs.getDouble("harga")) + ") = " + Valid.
-                                    SetAngka(rs.getDouble("total")), "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", "",
-                                    ""
-                                });
+                                tabModeTranfusi
+                                        .addRow(new String[]{"", "", "", "", "", "", i + ". " + rs.getString("nama_brng"),
+                                    "(" + rs.getString("jml") + " " + rs.getString("kode_sat") + " X "
+                                    + Valid.SetAngka(rs.getDouble("harga")) + ") = "
+                                    + Valid.SetAngka(rs.getDouble("total")),
+                                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                                 i++;
                             }
                         } catch (SQLException e) {
@@ -3169,32 +3113,24 @@ public class UTDDonor extends javax.swing.JDialog {
                             }
                         }
 
-                        psceknonmedis = koneksi.prepareStatement(
-                                sqlpsceknonmedis);
+                        psceknonmedis = koneksi.prepareStatement(sqlpsceknonmedis);
                         try {
-                            psceknonmedis.setString(1, rstranfusi.getString(
-                                    "no_donor"));
+                            psceknonmedis.setString(1, rstranfusi.getString("no_donor"));
                             rs2 = psceknonmedis.executeQuery();
                             if (rs2.next()) {
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "",
-                                    "Penggunaan BHP Non Medis :", "", "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", "",
-                                    ""
-                                });
+                                tabModeTranfusi
+                                        .addRow(new String[]{"", "", "", "", "", "", "Penggunaan BHP Non Medis :", "", "",
+                                    "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                                 i = 1;
                             }
                             rs2.beforeFirst();
                             while (rs2.next()) {
-                                tabModeTranfusi.addRow(new String[]{
-                                    "", "", "", "", "", "", i + ". " + rs2.
-                                    getString("nama_brng"), "(" + rs2.getString(
-                                    "jml") + " " + rs2.getString("kode_sat") + " X " + Valid.
-                                    SetAngka(rs2.getDouble("harga")) + ") = " + Valid.
-                                    SetAngka(rs2.getDouble("total")), "", "", "",
-                                    "", "", "", "", "", "", "", "", "", "", "",
-                                    ""
-                                });
+                                tabModeTranfusi.addRow(
+                                        new String[]{"", "", "", "", "", "", i + ". " + rs2.getString("nama_brng"),
+                                            "(" + rs2.getString("jml") + " " + rs2.getString("kode_sat") + " X "
+                                            + Valid.SetAngka(rs2.getDouble("harga")) + ") = "
+                                            + Valid.SetAngka(rs2.getDouble("total")),
+                                            "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""});
                                 i++;
                             }
                         } catch (SQLException e) {
@@ -3271,8 +3207,8 @@ public class UTDDonor extends javax.swing.JDialog {
         }
         Valid.tabelKosong(tabModeMedis);
         for (i = 0; i < jml; i++) {
-            tabModeMedis.addRow(new Object[]{jumlah[i], kodebarang[i],
-                namabarang[i], hbeli[i], total[i], satuan[i], stokasal[i]});
+            tabModeMedis.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], hbeli[i], total[i], satuan[i],
+                stokasal[i]});
         }
 
         try {
@@ -3286,9 +3222,8 @@ public class UTDDonor extends javax.swing.JDialog {
                 ps.setString(2, "%" + TCariMedis.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModeMedis.addRow(new Object[]{"", rs.getString(1), rs.
-                        getString(2), rs.getString(3), 0, rs.getString(4), rs.
-                        getString(5)});
+                    tabModeMedis.addRow(new Object[]{"", rs.getString(1), rs.getString(2), rs.getString(3), 0,
+                        rs.getString(4), rs.getString(5)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -3351,8 +3286,8 @@ public class UTDDonor extends javax.swing.JDialog {
         }
         Valid.tabelKosong(tabModeNonMedis);
         for (i = 0; i < jml; i++) {
-            tabModeNonMedis.addRow(new Object[]{jumlah[i], kodebarang[i],
-                namabarang[i], hbeli[i], total[i], satuan[i], stokasal[i]});
+            tabModeNonMedis.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], hbeli[i], total[i],
+                satuan[i], stokasal[i]});
         }
 
         try {
@@ -3365,9 +3300,8 @@ public class UTDDonor extends javax.swing.JDialog {
                 ps2.setString(2, "%" + TCariNonMedis.getText().trim() + "%");
                 rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    tabModeNonMedis.addRow(new Object[]{"", rs2.getString(1),
-                        rs2.getString(2), rs2.getString(3), 0, rs2.getString(4),
-                        rs2.getString(5)});
+                    tabModeNonMedis.addRow(new Object[]{"", rs2.getString(1), rs2.getString(2), rs2.getString(3), 0,
+                        rs2.getString(4), rs2.getString(5)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -3405,10 +3339,9 @@ public class UTDDonor extends javax.swing.JDialog {
         NamaPetugasUSaring.setText("");
         NomorDonor.requestFocus();
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_donor,4),signed)),0) from utd_donor where tanggal like '%" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "").substring(0, 7) + "%'",
-                dateformat.format(Tanggal.getDate()).substring(0, 7) + "/UTD", 4,
-                NomorDonor);
+                "select ifnull(MAX(CONVERT(RIGHT(no_donor,4),signed)),0) from utd_donor where tanggal like '%"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "").substring(0, 7) + "%'",
+                dateformat.format(Tanggal.getDate()).substring(0, 7) + "/UTD", 4, NomorDonor);
     }
 
     private void getData() {
@@ -3416,7 +3349,6 @@ public class UTDDonor extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -3443,4 +3375,5 @@ public class UTDDonor extends javax.swing.JDialog {
     }
 
     private static final Logger LOG = Logger.getLogger(UTDDonor.class.getName());
+
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgRujuk.java
- *
- * Created on 31 Mei 10, 20:19:56
+* DlgRujuk.java
+*
+* Created on 31 Mei 10, 20:19:56
  */
 package laporan;
 
@@ -48,21 +48,27 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
-    private DlgInsidenKeselamatan insiden = new DlgInsidenKeselamatan(null,
-            false);
+
+    private DlgInsidenKeselamatan insiden = new DlgInsidenKeselamatan(null, false);
 
     /**
      * Creates new form DlgRujuk
@@ -76,16 +82,10 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "Tgl.Kejadian",
-            "Jam Kejadian",
-            "Tgl.Lapor", "Jam Lapor", "NIP", "Petugas", "Lokasi Insiden",
-            "Kode Insiden",
-            "Nama Insiden", "Jenis Insiden", "Dampak/Severity", "Unit Terkait",
-            "Kronologis", "Akibat",
-            "Tindakan Saat Insiden", "Identifikasi Masalah",
-            "Rekomendasi & Tindak Lanjut"
-        };
+        Object[] row = {"No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "Tgl.Kejadian", "Jam Kejadian", "Tgl.Lapor",
+            "Jam Lapor", "NIP", "Petugas", "Lokasi Insiden", "Kode Insiden", "Nama Insiden", "Jenis Insiden",
+            "Dampak/Severity", "Unit Terkait", "Kronologis", "Akibat", "Tindakan Saat Insiden",
+            "Identifikasi Masalah", "Rekomendasi & Tindak Lanjut"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -95,7 +95,8 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -160,8 +161,7 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -198,10 +198,9 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    nip.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    namapetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    nip.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    namapetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 nip.requestFocus();
             }
@@ -236,14 +235,11 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (insiden.getTabel().getSelectedRow() != -1) {
-                    KodeInsiden.setText(insiden.getTabel().getValueAt(insiden.
-                            getTabel().getSelectedRow(), 1).toString());
-                    NmInsiden.setText(insiden.getTabel().getValueAt(insiden.
-                            getTabel().getSelectedRow(), 2).toString());
-                    Jenis.setText(insiden.getTabel().getValueAt(insiden.
-                            getTabel().getSelectedRow(), 3).toString());
-                    Dampak.setText(insiden.getTabel().getValueAt(insiden.
-                            getTabel().getSelectedRow(), 4).toString());
+                    KodeInsiden
+                            .setText(insiden.getTabel().getValueAt(insiden.getTabel().getSelectedRow(), 1).toString());
+                    NmInsiden.setText(insiden.getTabel().getValueAt(insiden.getTabel().getSelectedRow(), 2).toString());
+                    Jenis.setText(insiden.getTabel().getValueAt(insiden.getTabel().getSelectedRow(), 3).toString());
+                    Dampak.setText(insiden.getTabel().getValueAt(insiden.getTabel().getSelectedRow(), 4).toString());
                 }
                 KodeInsiden.requestFocus();
             }
@@ -292,7 +288,9 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1750,8 +1748,7 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDataInsidenKeselamatan dialog = new DlgDataInsidenKeselamatan(
-                    new javax.swing.JFrame(), true);
+            DlgDataInsidenKeselamatan dialog = new DlgDataInsidenKeselamatan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1922,17 +1919,11 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
                 ps.setString(48, "%" + TCari.getText() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString(2), rs.getString(
-                        3),
-                        rs.getString(4) + " " + rs.getString(5), rs.getString(6),
-                        rs.getString(7), rs.getString(8), rs.getString(9),
-                        rs.getString(10), rs.getString(11), rs.getString(12),
-                        rs.getString(13), rs.getString(14), rs.getString(15),
-                        rs.getString(16), rs.getString(17), rs.getString(18),
-                        rs.getString(19), rs.getString(20), rs.getString(21),
-                        rs.getString(22)
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString(2), rs.getString(3),
+                        rs.getString(4) + " " + rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
+                        rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13),
+                        rs.getString(14), rs.getString(15), rs.getString(16), rs.getString(17), rs.getString(18),
+                        rs.getString(19), rs.getString(20), rs.getString(21), rs.getString(22)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1972,74 +1963,44 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            JamKejadian.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 5).toString().substring(0, 2));
-            MenitKejadian.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 5).toString().substring(3, 5));
-            DetikKejadian.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 5).toString().substring(6, 8));
-            JamLapor.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString().substring(0, 2));
-            MenitLapor.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 7).toString().substring(
-                    3, 5));
-            DetikLapor.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 7).toString().substring(
-                    6, 8));
-            nip.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                            toString());
-            namapetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            Lokasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            KodeInsiden.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            NmInsiden.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            Jenis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            Dampak.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            UnitTerkait.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            Kronologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            Akibat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            Identifikasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            TindakLanjut.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            Valid.SetTgl(Kejadian,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Valid.SetTgl(Lapor, tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            JamKejadian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(0, 2));
+            MenitKejadian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(3, 5));
+            DetikKejadian.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(6, 8));
+            JamLapor.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(0, 2));
+            MenitLapor.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(3, 5));
+            DetikLapor.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(6, 8));
+            nip.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            namapetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Lokasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            KodeInsiden.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            NmInsiden.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Jenis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Dampak.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            UnitTerkait.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Kronologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Akibat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Identifikasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            TindakLanjut.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Valid.SetTgl(Kejadian, tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Valid.SetTgl(Lapor, tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.getText()
+                + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.getText() + "' ",
+                TPasien);
     }
 
     /**
-     *
      * @param norwt
      * @param tgl1
      * @param tgl2
@@ -2084,7 +2045,9 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -2126,7 +2089,7 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 JamKejadian.setSelectedItem(jam);
                 MenitKejadian.setSelectedItem(menit);
                 DetikKejadian.setSelectedItem(detik);
@@ -2140,7 +2103,9 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
     private void jam2() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -2182,7 +2147,7 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 JamLapor.setSelectedItem(jam);
                 MenitLapor.setSelectedItem(menit);
                 DetikLapor.setSelectedItem(detik);
@@ -2193,6 +2158,6 @@ public class DlgDataInsidenKeselamatan extends javax.swing.JDialog {
         new Timer(1000, taskPerformer).start();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgDataInsidenKeselamatan.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgDataInsidenKeselamatan.class.getName());
+
 }

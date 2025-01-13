@@ -42,22 +42,32 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private MasterCariSekolah sekolah = new MasterCariSekolah(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -66,32 +76,23 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public RMSkriningMerokokUsiaSekolahRemaja(java.awt.Frame parent,
-            boolean modal) {
+    public RMSkriningMerokokUsiaSekolahRemaja(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Umur",
-            "Kelas", "Kode Sekolah", "Asal Sekolah",
-            "Kode Petugas", "Nama Petugas", "Tanggal", "Apakah Anda Merokok",
-            "Jml.Rokok", "Satuan Rokok",
-            "Jenis Rokok Yang Digunakan", "Keterangan Jenis Rokok",
-            "Usia Merokok", "Alasan Mulai Merokok",
-            "Keterangan Alasan Mulai Merokok", "Lama Merokok",
-            "Biasanya Mendapatkan Rokok",
-            "Keterangan Biasanya Mendapatkan Rokok",
-            "Ingin Berhenti", "Alasan Ingin Berhenti",
-            "Keterangan Alasan Ingin Berhenti", "Tahu Dampak Kesehatan Merokok",
-            "Dampak Merokok Yang Diketahui", "Pintu Masuk Narkoba",
-            "Melihat Orang Merokok Di Sekolah",
-            "Paling Sering Merokok Di Sekolah",
-            "Keterangan Paling Sering Merokok Di Sekolah",
-            "Anggota Keluarga Di Rumah Merokok", "Teman Dekat Merokok",
-            "Pemeriksaan Kadar CO", "Hasil Pemeriksaan CO Pernapasan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Umur", "Kelas", "Kode Sekolah",
+                    "Asal Sekolah", "Kode Petugas", "Nama Petugas", "Tanggal", "Apakah Anda Merokok", "Jml.Rokok",
+                    "Satuan Rokok", "Jenis Rokok Yang Digunakan", "Keterangan Jenis Rokok", "Usia Merokok",
+                    "Alasan Mulai Merokok", "Keterangan Alasan Mulai Merokok", "Lama Merokok",
+                    "Biasanya Mendapatkan Rokok", "Keterangan Biasanya Mendapatkan Rokok", "Ingin Berhenti",
+                    "Alasan Ingin Berhenti", "Keterangan Alasan Ingin Berhenti", "Tahu Dampak Kesehatan Merokok",
+                    "Dampak Merokok Yang Diketahui", "Pintu Masuk Narkoba", "Melihat Orang Merokok Di Sekolah",
+                    "Paling Sering Merokok Di Sekolah", "Keterangan Paling Sering Merokok Di Sekolah",
+                    "Anggota Keluarga Di Rumah Merokok", "Teman Dekat Merokok", "Pemeriksaan Kadar CO",
+                    "Hasil Pemeriksaan CO Pernapasan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -100,7 +101,8 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -185,24 +187,19 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         KdPetugas.setDocument(new batasInput((byte) 20).getKata(KdPetugas));
         JumlahRokok.setDocument(new batasInput((byte) 4).getKata(JumlahRokok));
-        UsiaMulaiMerokok.setDocument(new batasInput((byte) 3).getKata(
-                UsiaMulaiMerokok));
-        KeteranganAlasanUtamaMerokok.setDocument(new batasInput((byte) 40).
-                getKata(KeteranganAlasanUtamaMerokok));
+        UsiaMulaiMerokok.setDocument(new batasInput((byte) 3).getKata(UsiaMulaiMerokok));
+        KeteranganAlasanUtamaMerokok.setDocument(new batasInput((byte) 40).getKata(KeteranganAlasanUtamaMerokok));
         LamaMerokok.setDocument(new batasInput((byte) 5).getKata(LamaMerokok));
-        KeteranganCaraMendapatkanRokok.setDocument(new batasInput((byte) 40).
-                getKata(KeteranganCaraMendapatkanRokok));
-        KeteranganAlasanUtamaBerhentiMerokok.setDocument(new batasInput(
-                (byte) 40).getKata(KeteranganAlasanUtamaBerhentiMerokok));
-        KeteranganYangPalingSeringMerokokDiSekolah.setDocument(new batasInput(
-                (byte) 40).getKata(KeteranganYangPalingSeringMerokokDiSekolah));
-        HasilPemeriksaanCO.setDocument(new batasInput((byte) 5).getKata(
-                HasilPemeriksaanCO));
+        KeteranganCaraMendapatkanRokok.setDocument(new batasInput((byte) 40).getKata(KeteranganCaraMendapatkanRokok));
+        KeteranganAlasanUtamaBerhentiMerokok
+                .setDocument(new batasInput((byte) 40).getKata(KeteranganAlasanUtamaBerhentiMerokok));
+        KeteranganYangPalingSeringMerokokDiSekolah
+                .setDocument(new batasInput((byte) 40).getKata(KeteranganYangPalingSeringMerokokDiSekolah));
+        HasilPemeriksaanCO.setDocument(new batasInput((byte) 5).getKata(HasilPemeriksaanCO));
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -239,10 +236,8 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPetugas.requestFocus();
             }
@@ -277,10 +272,10 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (sekolah.getTable().getSelectedRow() != -1) {
-                    KdAsalSekolah.setText(sekolah.getTable().getValueAt(sekolah.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmAsalSekolah.setText(sekolah.getTable().getValueAt(sekolah.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdAsalSekolah
+                            .setText(sekolah.getTable().getValueAt(sekolah.getTable().getSelectedRow(), 0).toString());
+                    NmAsalSekolah
+                            .setText(sekolah.getTable().getValueAt(sekolah.getTable().getSelectedRow(), 1).toString());
                 }
                 btnAsalSekolah.requestFocus();
             }
@@ -319,8 +314,7 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -334,7 +328,9 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2213,8 +2209,8 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMSkriningMerokokUsiaSekolahRemaja dialog = new RMSkriningMerokokUsiaSekolahRemaja(
-                    new javax.swing.JFrame(), true);
+            RMSkriningMerokokUsiaSekolahRemaja dialog = new RMSkriningMerokokUsiaSekolahRemaja(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2408,15 +2404,11 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2427,44 +2419,30 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"), rs.getString("kelas"), rs.getString(
-                        "kd_sekolah"), rs.getString("nm_sekolah"),
-                        rs.getString("nip"), rs.getString("nama"), rs.getString(
-                        "tanggal"), rs.getString("apakah_anda_merokok"), rs.
-                        getString("jumlah_batang_rokok"),
-                        rs.getString("jumlah_batang_rokok_hariminggu"), rs.
-                        getString("jenis_rokok_yang_digunakan"), rs.getString(
-                        "jenis_rokok_yang_digunakan_keterangan"),
-                        rs.getString("usia_mulai_merokok"), rs.getString(
-                        "alasan_mulai_merokok"), rs.getString(
-                        "alasan_mulai_merokok_keterangan"), rs.getString(
-                        "sudah_berapa_lama_merokok"),
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("umurdaftar") + " " + rs.getString("sttsumur"), rs.getString("kelas"),
+                        rs.getString("kd_sekolah"), rs.getString("nm_sekolah"), rs.getString("nip"),
+                        rs.getString("nama"), rs.getString("tanggal"), rs.getString("apakah_anda_merokok"),
+                        rs.getString("jumlah_batang_rokok"), rs.getString("jumlah_batang_rokok_hariminggu"),
+                        rs.getString("jenis_rokok_yang_digunakan"),
+                        rs.getString("jenis_rokok_yang_digunakan_keterangan"), rs.getString("usia_mulai_merokok"),
+                        rs.getString("alasan_mulai_merokok"), rs.getString("alasan_mulai_merokok_keterangan"),
+                        rs.getString("sudah_berapa_lama_merokok"),
                         rs.getString("bagaimana_biasanya_mendapatkan_rokok"),
-                        rs.getString(
-                        "bagaimana_biasanya_mendapatkan_rokok_keterangan"), rs.
-                        getString("keinginan_berhenti_merokok"),
-                        rs.getString("alasan_utama_berhenti_merokok"), rs.
-                        getString("alasan_utama_berhenti_merokok_keterangan"),
+                        rs.getString("bagaimana_biasanya_mendapatkan_rokok_keterangan"),
+                        rs.getString("keinginan_berhenti_merokok"), rs.getString("alasan_utama_berhenti_merokok"),
+                        rs.getString("alasan_utama_berhenti_merokok_keterangan"),
                         rs.getString("tahu_dampak_kesehatan_merokok"),
-                        rs.getString(
-                        "dampak_kesehatan_dari_merokok_yang_diketahui"), rs.
-                        getString("tahu_merokok_pintu_masuk_narkoba"), rs.
-                        getString("melihat_orang_merokok_di_sekolah"),
-                        rs.getString(
-                        "orang_yang_paling_sering_merokok_disekolah"), rs.
-                        getString(
-                        "orang_yang_paling_sering_merokok_disekolah_keterangan"),
-                        rs.getString(
-                        "ada_anggota_keluarga_di_rumah_yang_merokok"), rs.
-                        getString("teman_dekat_banyakyang_merokok"), rs.
-                        getString("dilakukan_pemeriksaan_kadar_co_pernapasan"),
-                        rs.getString("hasil_pemeriksaan_co_pernapasan")
-                    });
+                        rs.getString("dampak_kesehatan_dari_merokok_yang_diketahui"),
+                        rs.getString("tahu_merokok_pintu_masuk_narkoba"),
+                        rs.getString("melihat_orang_merokok_di_sekolah"),
+                        rs.getString("orang_yang_paling_sering_merokok_disekolah"),
+                        rs.getString("orang_yang_paling_sering_merokok_disekolah_keterangan"),
+                        rs.getString("ada_anggota_keluarga_di_rumah_yang_merokok"),
+                        rs.getString("teman_dekat_banyakyang_merokok"),
+                        rs.getString("dilakukan_pemeriksaan_kadar_co_pernapasan"),
+                        rs.getString("hasil_pemeriksaan_co_pernapasan")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2516,91 +2494,54 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Kelas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            KdAsalSekolah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            NmAsalSekolah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().
-                            substring(14, 15));
-            Detik.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().
-                            substring(17, 19));
-            ApakahAndaMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            JumlahRokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            SatuanRokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            JenisRokokDigunakan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 15).toString());
-            KeteranganJenisRokokDigunakan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            UsiaMulaiMerokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    17).toString());
-            AlasanUtamaMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            KeteranganAlasanUtamaMerokok.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            LamaMerokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            CaraMendapatkanRokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            KeteranganCaraMendapatkanRokok.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            KeinginanBerhentiMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 23).toString());
-            AlasanUtamaBerhentiMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            KeteranganAlasanUtamaBerhentiMerokok.setText(tbObat.getValueAt(
-                    tbObat.getSelectedRow(), 25).toString());
-            TahuDampakKesehatanMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
-            DampakKesehatanMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 27).toString());
-            PintuMasukNarkoba.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 28).toString());
-            MerokokDiPendidikan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 29).toString());
-            YangPalingSeringMerokokDiSekolah.setSelectedItem(tbObat.getValueAt(
-                    tbObat.getSelectedRow(), 30).toString());
-            KeteranganYangPalingSeringMerokokDiSekolah.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 31).toString());
-            AnggotaKeluargaMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 32).toString());
-            TemanDekatMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 33).toString());
-            DilakukanPemeriksaanCO.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 34).toString());
-            HasilPemeriksaanCO.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 35).toString());
-            Valid.SetTgl(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Kelas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            KdAsalSekolah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            NmAsalSekolah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(14, 15));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString().substring(17, 19));
+            ApakahAndaMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            JumlahRokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            SatuanRokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            JenisRokokDigunakan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            KeteranganJenisRokokDigunakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            UsiaMulaiMerokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            AlasanUtamaMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            KeteranganAlasanUtamaMerokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            LamaMerokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            CaraMendapatkanRokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            KeteranganCaraMendapatkanRokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            KeinginanBerhentiMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            AlasanUtamaBerhentiMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            KeteranganAlasanUtamaBerhentiMerokok.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            TahuDampakKesehatanMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            DampakKesehatanMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            PintuMasukNarkoba.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            MerokokDiPendidikan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            YangPalingSeringMerokokDiSekolah.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            KeteranganYangPalingSeringMerokokDiSekolah
+                    .setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            AnggotaKeluargaMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            TemanDekatMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            DilakukanPemeriksaanCO.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            HasilPemeriksaanCO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
         }
     }
 
     private void isRawat() {
         try {
-            ps = koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, pasien.jk,pasien.tgl_lahir,"
-                    + "reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.umurdaftar,reg_periksa.sttsumur "
-                    + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                    + "where reg_periksa.no_rawat=?");
+            ps = koneksi
+                    .prepareStatement("select reg_periksa.no_rkm_medis,pasien.nm_pasien, pasien.jk,pasien.tgl_lahir,"
+                            + "reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.umurdaftar,reg_periksa.sttsumur "
+                            + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
+                            + "where reg_periksa.no_rawat=?");
             try {
                 ps.setString(1, TNoRw.getText());
                 rs = ps.executeQuery();
@@ -2610,11 +2551,8 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
-                    Umur.setText(rs.getString("umurdaftar") + " " + rs.
-                            getString("sttsumur"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
+                    Umur.setText(rs.getString("umurdaftar") + " " + rs.getString("sttsumur"));
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2643,8 +2581,7 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                    getHeight() - 172));
+            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
             FormInput.setVisible(true);
             ChkInput.setVisible(true);
         } else if (ChkInput.isSelected() == false) {
@@ -2656,8 +2593,7 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
     }
 
     public void isCek() {
-        BtnSimpan.
-                setEnabled(akses.getskrining_perilaku_merokok_sekolah_remaja());
+        BtnSimpan.setEnabled(akses.getskrining_perilaku_merokok_sekolah_remaja());
         BtnHapus.setEnabled(akses.getskrining_perilaku_merokok_sekolah_remaja());
         BtnEdit.setEnabled(akses.getskrining_perilaku_merokok_sekolah_remaja());
         BtnPrint.setEnabled(akses.getskrining_perilaku_merokok_sekolah_remaja());
@@ -2668,8 +2604,7 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
             if (NmPetugas.getText().isEmpty()) {
                 KdPetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
 
@@ -2688,7 +2623,9 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -2730,7 +2667,7 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -2742,123 +2679,80 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("skrining_perilaku_merokok_sekolah_remaja",
-                "no_rawat=?",
+        if (Sequel.mengedittf("skrining_perilaku_merokok_sekolah_remaja", "no_rawat=?",
                 "no_rawat=?,tanggal=?,kd_sekolah=?,kelas=?,apakah_anda_merokok=?,jumlah_batang_rokok=?,jumlah_batang_rokok_hariminggu=?,jenis_rokok_yang_digunakan=?,"
                 + "jenis_rokok_yang_digunakan_keterangan=?,usia_mulai_merokok=?,alasan_mulai_merokok=?,alasan_mulai_merokok_keterangan=?,sudah_berapa_lama_merokok=?,bagaimana_biasanya_mendapatkan_rokok=?,bagaimana_biasanya_mendapatkan_rokok_keterangan=?,"
                 + "keinginan_berhenti_merokok=?,alasan_utama_berhenti_merokok=?,alasan_utama_berhenti_merokok_keterangan=?,tahu_dampak_kesehatan_merokok=?,dampak_kesehatan_dari_merokok_yang_diketahui=?,tahu_merokok_pintu_masuk_narkoba=?,"
                 + "melihat_orang_merokok_di_sekolah=?,orang_yang_paling_sering_merokok_disekolah=?,orang_yang_paling_sering_merokok_disekolah_keterangan=?,ada_anggota_keluarga_di_rumah_yang_merokok=?,teman_dekat_banyakyang_merokok=?,"
                 + "dilakukan_pemeriksaan_kadar_co_pernapasan=?,hasil_pemeriksaan_co_pernapasan=?,nip=?",
-                30, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), KdAsalSekolah.getText(),
-                    Kelas.getSelectedItem().toString(), ApakahAndaMerokok.
-                    getSelectedItem().toString(), JumlahRokok.getText(),
-                    SatuanRokok.getSelectedItem().toString(),
-                    JenisRokokDigunakan.getSelectedItem().toString(),
-                    KeteranganJenisRokokDigunakan.getText(), UsiaMulaiMerokok.
-                    getText(), AlasanUtamaMerokok.getSelectedItem().toString(),
-                    KeteranganAlasanUtamaMerokok.getText(),
-                    LamaMerokok.getText(), CaraMendapatkanRokok.
-                    getSelectedItem().toString(),
-                    KeteranganCaraMendapatkanRokok.getText(),
-                    KeinginanBerhentiMerokok.getSelectedItem().toString(),
+                30,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    KdAsalSekolah.getText(), Kelas.getSelectedItem().toString(),
+                    ApakahAndaMerokok.getSelectedItem().toString(), JumlahRokok.getText(),
+                    SatuanRokok.getSelectedItem().toString(), JenisRokokDigunakan.getSelectedItem().toString(),
+                    KeteranganJenisRokokDigunakan.getText(), UsiaMulaiMerokok.getText(),
+                    AlasanUtamaMerokok.getSelectedItem().toString(), KeteranganAlasanUtamaMerokok.getText(),
+                    LamaMerokok.getText(), CaraMendapatkanRokok.getSelectedItem().toString(),
+                    KeteranganCaraMendapatkanRokok.getText(), KeinginanBerhentiMerokok.getSelectedItem().toString(),
                     AlasanUtamaBerhentiMerokok.getSelectedItem().toString(),
                     KeteranganAlasanUtamaBerhentiMerokok.getText(),
                     TahuDampakKesehatanMerokok.getSelectedItem().toString(),
                     DampakKesehatanMerokok.getSelectedItem().toString(),
                     PintuMasukNarkoba.getSelectedItem().toString(),
                     MerokokDiPendidikan.getSelectedItem().toString(),
-                    YangPalingSeringMerokokDiSekolah.getSelectedItem().
-                            toString(),
+                    YangPalingSeringMerokokDiSekolah.getSelectedItem().toString(),
                     KeteranganYangPalingSeringMerokokDiSekolah.getText(),
                     AnggotaKeluargaMerokok.getSelectedItem().toString(),
                     TemanDekatMerokok.getSelectedItem().toString(),
-                    DilakukanPemeriksaanCO.getSelectedItem().toString(),
-                    HasilPemeriksaanCO.getText(), KdPetugas.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                    DilakukanPemeriksaanCO.getSelectedItem().toString(), HasilPemeriksaanCO.getText(),
+                    KdPetugas.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(Umur.getText(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(Kelas.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 6);
-            tbObat.setValueAt(KdAsalSekolah.getText(), tbObat.getSelectedRow(),
-                    7);
-            tbObat.setValueAt(NmAsalSekolah.getText(), tbObat.getSelectedRow(),
-                    8);
+            tbObat.setValueAt(Kelas.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(KdAsalSekolah.getText(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(NmAsalSekolah.getText(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(KdPetugas.getText(), tbObat.getSelectedRow(), 9);
             tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 10);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 11);
-            tbObat.setValueAt(ApakahAndaMerokok.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 12);
-            tbObat.
-                    setValueAt(JumlahRokok.getText(), tbObat.getSelectedRow(),
-                            13);
-            tbObat.setValueAt(SatuanRokok.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(JenisRokokDigunakan.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 15);
-            tbObat.setValueAt(KeteranganJenisRokokDigunakan.getText(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(UsiaMulaiMerokok.getText(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.setValueAt(AlasanUtamaMerokok.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 18);
-            tbObat.setValueAt(KeteranganAlasanUtamaMerokok.getText(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.
-                    setValueAt(LamaMerokok.getText(), tbObat.getSelectedRow(),
-                            20);
-            tbObat.setValueAt(CaraMendapatkanRokok.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 21);
-            tbObat.setValueAt(KeteranganCaraMendapatkanRokok.getText(), tbObat.
-                    getSelectedRow(), 22);
-            tbObat.setValueAt(KeinginanBerhentiMerokok.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 23);
-            tbObat.setValueAt(AlasanUtamaBerhentiMerokok.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 24);
-            tbObat.setValueAt(KeteranganAlasanUtamaBerhentiMerokok.getText(),
-                    tbObat.getSelectedRow(), 25);
-            tbObat.setValueAt(TahuDampakKesehatanMerokok.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 26);
-            tbObat.setValueAt(DampakKesehatanMerokok.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 27);
-            tbObat.setValueAt(PintuMasukNarkoba.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 28);
-            tbObat.setValueAt(MerokokDiPendidikan.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 29);
-            tbObat.setValueAt(
-                    YangPalingSeringMerokokDiSekolah.getSelectedItem().
-                            toString(), tbObat.getSelectedRow(), 30);
-            tbObat.setValueAt(KeteranganYangPalingSeringMerokokDiSekolah.
-                    getText(), tbObat.getSelectedRow(), 31);
-            tbObat.setValueAt(AnggotaKeluargaMerokok.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 32);
-            tbObat.setValueAt(TemanDekatMerokok.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 33);
-            tbObat.setValueAt(DilakukanPemeriksaanCO.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 34);
-            tbObat.setValueAt(HasilPemeriksaanCO.getText(), tbObat.
-                    getSelectedRow(), 35);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(ApakahAndaMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(JumlahRokok.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(SatuanRokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(JenisRokokDigunakan.getSelectedItem().toString(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(KeteranganJenisRokokDigunakan.getText(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(UsiaMulaiMerokok.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(AlasanUtamaMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(KeteranganAlasanUtamaMerokok.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(LamaMerokok.getText(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(CaraMendapatkanRokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(KeteranganCaraMendapatkanRokok.getText(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(KeinginanBerhentiMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(AlasanUtamaBerhentiMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(KeteranganAlasanUtamaBerhentiMerokok.getText(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(TahuDampakKesehatanMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(DampakKesehatanMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(PintuMasukNarkoba.getSelectedItem().toString(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(MerokokDiPendidikan.getSelectedItem().toString(), tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(YangPalingSeringMerokokDiSekolah.getSelectedItem().toString(), tbObat.getSelectedRow(),
+                    30);
+            tbObat.setValueAt(KeteranganYangPalingSeringMerokokDiSekolah.getText(), tbObat.getSelectedRow(), 31);
+            tbObat.setValueAt(AnggotaKeluargaMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 32);
+            tbObat.setValueAt(TemanDekatMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(DilakukanPemeriksaanCO.getSelectedItem().toString(), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(HasilPemeriksaanCO.getText(), tbObat.getSelectedRow(), 35);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from skrining_perilaku_merokok_sekolah_remaja where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from skrining_perilaku_merokok_sekolah_remaja where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2869,75 +2763,54 @@ public class RMSkriningMerokokUsiaSekolahRemaja extends javax.swing.JDialog {
 
     private void simpan() {
         if (Sequel.menyimpantf("skrining_perilaku_merokok_sekolah_remaja",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                "Data", 29, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), KdAsalSekolah.getText(),
-                    Kelas.getSelectedItem().toString(), ApakahAndaMerokok.
-                    getSelectedItem().toString(), JumlahRokok.getText(),
-                    SatuanRokok.getSelectedItem().toString(),
-                    JenisRokokDigunakan.getSelectedItem().toString(),
-                    KeteranganJenisRokokDigunakan.getText(), UsiaMulaiMerokok.
-                    getText(), AlasanUtamaMerokok.getSelectedItem().toString(),
-                    KeteranganAlasanUtamaMerokok.getText(),
-                    LamaMerokok.getText(), CaraMendapatkanRokok.
-                    getSelectedItem().toString(),
-                    KeteranganCaraMendapatkanRokok.getText(),
-                    KeinginanBerhentiMerokok.getSelectedItem().toString(),
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 29,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    KdAsalSekolah.getText(), Kelas.getSelectedItem().toString(),
+                    ApakahAndaMerokok.getSelectedItem().toString(), JumlahRokok.getText(),
+                    SatuanRokok.getSelectedItem().toString(), JenisRokokDigunakan.getSelectedItem().toString(),
+                    KeteranganJenisRokokDigunakan.getText(), UsiaMulaiMerokok.getText(),
+                    AlasanUtamaMerokok.getSelectedItem().toString(), KeteranganAlasanUtamaMerokok.getText(),
+                    LamaMerokok.getText(), CaraMendapatkanRokok.getSelectedItem().toString(),
+                    KeteranganCaraMendapatkanRokok.getText(), KeinginanBerhentiMerokok.getSelectedItem().toString(),
                     AlasanUtamaBerhentiMerokok.getSelectedItem().toString(),
                     KeteranganAlasanUtamaBerhentiMerokok.getText(),
                     TahuDampakKesehatanMerokok.getSelectedItem().toString(),
                     DampakKesehatanMerokok.getSelectedItem().toString(),
                     PintuMasukNarkoba.getSelectedItem().toString(),
                     MerokokDiPendidikan.getSelectedItem().toString(),
-                    YangPalingSeringMerokokDiSekolah.getSelectedItem().
-                            toString(),
+                    YangPalingSeringMerokokDiSekolah.getSelectedItem().toString(),
                     KeteranganYangPalingSeringMerokokDiSekolah.getText(),
                     AnggotaKeluargaMerokok.getSelectedItem().toString(),
                     TemanDekatMerokok.getSelectedItem().toString(),
-                    DilakukanPemeriksaanCO.getSelectedItem().toString(),
-                    HasilPemeriksaanCO.getText(), KdPetugas.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), Jk.getText(), Umur.getText(),
-                Kelas.getSelectedItem().toString(), KdAsalSekolah.getText(),
-                NmAsalSekolah.getText(), KdPetugas.getText(),
-                NmPetugas.getText(), Valid.
-                SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                getSelectedItem(), ApakahAndaMerokok.getSelectedItem().
-                toString(),
-                JumlahRokok.getText(), SatuanRokok.getSelectedItem().toString(),
-                JenisRokokDigunakan.getSelectedItem().toString(),
-                KeteranganJenisRokokDigunakan.getText(), UsiaMulaiMerokok.
-                getText(),
-                AlasanUtamaMerokok.getSelectedItem().toString(),
-                KeteranganAlasanUtamaMerokok.getText(), LamaMerokok.getText(),
-                CaraMendapatkanRokok.getSelectedItem().toString(),
-                KeteranganCaraMendapatkanRokok.getText(),
-                KeinginanBerhentiMerokok.getSelectedItem().toString(),
+                    DilakukanPemeriksaanCO.getSelectedItem().toString(), HasilPemeriksaanCO.getText(),
+                    KdPetugas.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                Jk.getText(), Umur.getText(), Kelas.getSelectedItem().toString(), KdAsalSekolah.getText(),
+                NmAsalSekolah.getText(), KdPetugas.getText(), NmPetugas.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                ApakahAndaMerokok.getSelectedItem().toString(), JumlahRokok.getText(),
+                SatuanRokok.getSelectedItem().toString(), JenisRokokDigunakan.getSelectedItem().toString(),
+                KeteranganJenisRokokDigunakan.getText(), UsiaMulaiMerokok.getText(),
+                AlasanUtamaMerokok.getSelectedItem().toString(), KeteranganAlasanUtamaMerokok.getText(),
+                LamaMerokok.getText(), CaraMendapatkanRokok.getSelectedItem().toString(),
+                KeteranganCaraMendapatkanRokok.getText(), KeinginanBerhentiMerokok.getSelectedItem().toString(),
                 AlasanUtamaBerhentiMerokok.getSelectedItem().toString(),
                 KeteranganAlasanUtamaBerhentiMerokok.getText(),
                 TahuDampakKesehatanMerokok.getSelectedItem().toString(),
-                DampakKesehatanMerokok.getSelectedItem().toString(),
-                PintuMasukNarkoba.getSelectedItem().toString(),
+                DampakKesehatanMerokok.getSelectedItem().toString(), PintuMasukNarkoba.getSelectedItem().toString(),
                 MerokokDiPendidikan.getSelectedItem().toString(),
                 YangPalingSeringMerokokDiSekolah.getSelectedItem().toString(),
                 KeteranganYangPalingSeringMerokokDiSekolah.getText(),
-                AnggotaKeluargaMerokok.getSelectedItem().toString(),
-                TemanDekatMerokok.getSelectedItem().toString(),
-                DilakukanPemeriksaanCO.getSelectedItem().toString(),
-                HasilPemeriksaanCO.getText()
-            });
+                AnggotaKeluargaMerokok.getSelectedItem().toString(), TemanDekatMerokok.getSelectedItem().toString(),
+                DilakukanPemeriksaanCO.getSelectedItem().toString(), HasilPemeriksaanCO.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMSkriningMerokokUsiaSekolahRemaja.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMSkriningMerokokUsiaSekolahRemaja.class.getName());
 
 }

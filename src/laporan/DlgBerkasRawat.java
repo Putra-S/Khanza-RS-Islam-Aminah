@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgAbout.java
- *
- * Created on 23 Jun 10, 19:03:08
+* DlgAbout.java
+*
+* Created on 23 Jun 10, 19:03:08
  */
 package laporan;
 
@@ -56,28 +56,35 @@ import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgBerkasRawat extends javax.swing.JDialog {
 
     private final JFXPanel jfxPanel = new JFXPanel();
+
     private WebEngine engine;
 
     private final JPanel panel = new JPanel(new BorderLayout());
+
     private final JLabel lblStatus = new JLabel();
 
     private final JTextField txtURL = new JTextField();
+
     private final JProgressBar progressBar = new JProgressBar();
+
     private final validasi Valid = new validasi();
+
     private final sekuel Sequel = new sekuel();
+
     private String halaman = "", norawat = "";
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private final Connection koneksi = koneksiDB.condb();
 
     /**
-     *
      * @param parent
      * @param modal
      */
@@ -111,8 +118,7 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -121,12 +127,13 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
 
                 });
 
-                engine.titleProperty().addListener(
-                        (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
-                            SwingUtilities.invokeLater(() -> {
-                                DlgBerkasRawat.this.setTitle(newValue);
-                            });
-                        });
+                engine.titleProperty()
+                        .addListener(
+                                (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
+                                    SwingUtilities.invokeLater(() -> {
+                                        DlgBerkasRawat.this.setTitle(newValue);
+                                    });
+                                });
 
                 engine.setOnStatusChanged((final WebEvent<String> event) -> {
                     SwingUtilities.invokeLater(() -> {
@@ -134,74 +141,66 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
                     });
                 });
 
-                engine.getLoadWorker().workDoneProperty().addListener(
-                        (ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
+                engine.getLoadWorker()
+                        .workDoneProperty()
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 progressBar.setValue(newValue.intValue());
                             });
                         });
 
-                engine.getLoadWorker().exceptionProperty().addListener(
-                        (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                engine.getLoadWorker()
+                        .exceptionProperty()
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
                             if (engine.getLoadWorker().getState() == FAILED) {
                                 SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(
-                                            panel,
-                                            (value != null)
-                                                    ? engine.getLocation() + "\n" + value.
-                                                    getMessage()
+                                    JOptionPane.showMessageDialog(panel,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
                                                     : engine.getLocation() + "\nUnexpected Catatan.",
-                                            "Loading Catatan...",
-                                            JOptionPane.ERROR_MESSAGE);
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
                             }
                         });
 
-                engine.locationProperty().addListener(
-                        (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                engine.locationProperty()
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 txtURL.setText(newValue);
                             });
                         });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState,
-                            State newState) {
+                    public void changed(ObservableValue ov, State oldState, State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
-                                if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                        PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/",
-                                        "").contains("berkasrawat/pages")) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
-                                    Valid.panggilUrl(engine.getLocation().
-                                            replaceAll("http://" + koneksiDB.
-                                                    HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                            PORTWEB() + "/" + koneksiDB.
-                                                            HYBRIDWEB() + "/berkasrawat/pages/upload/",
-                                                    "berkasrawat/").replaceAll(
-                                                    "http://" + koneksiDB.
-                                                            HOSTHYBRIDWEB() + "/" + koneksiDB.
-                                                            HYBRIDWEB() + "/berkasrawat/pages/upload/",
-                                                    "berkasrawat/"));
+                                if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                + koneksiDB.HYBRIDWEB() + "/", "")
+                                        .contains("berkasrawat/pages")) {
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    Valid.panggilUrl(engine.getLocation()
+                                            .replaceAll(
+                                                    "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                    + koneksiDB.HYBRIDWEB() + "/berkasrawat/pages/upload/",
+                                                    "berkasrawat/")
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + "/" + koneksiDB.HYBRIDWEB()
+                                                    + "/berkasrawat/pages/upload/", "berkasrawat/"));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
-                                } else if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                        PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/",
-                                        "").contains("action=Keluar")) {
+                                } else if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                + koneksiDB.HYBRIDWEB() + "/", "")
+                                        .contains("action=Keluar")) {
                                     dispose();
-                                } else if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                        PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/",
-                                        "").contains("action=GABUNG")) {
-                                    norawat = Sequel.cariIsi(
-                                            "select temppanggilnorawat.no_rawat from temppanggilnorawat");
-                                    ps = koneksi.prepareStatement(
-                                            "SELECT berkas_digital_perawatan.lokasi_file "
+                                } else if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                + koneksiDB.HYBRIDWEB() + "/", "")
+                                        .contains("action=GABUNG")) {
+                                    norawat = Sequel
+                                            .cariIsi("select temppanggilnorawat.no_rawat from temppanggilnorawat");
+                                    ps = koneksi.prepareStatement("SELECT berkas_digital_perawatan.lokasi_file "
                                             + "from berkas_digital_perawatan inner join master_berkas_digital "
                                             + "on berkas_digital_perawatan.kode=master_berkas_digital.kode "
                                             + "where berkas_digital_perawatan.no_rawat=? ORDER BY master_berkas_digital.nama ASC ");
@@ -211,27 +210,19 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
                                         ps.setString(1, norawat);
                                         rs = ps.executeQuery();
                                         while (rs.next()) {
-                                            url = new URL("http://" + koneksiDB.
-                                                    HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                            PORTWEB() + "/" + koneksiDB.
-                                                            HYBRIDWEB() + "/berkasrawat/" + rs.
-                                                            getString(
-                                                                    "lokasi_file"));
+                                            url = new URL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB()
+                                                    + "/berkasrawat/" + rs.getString("lokasi_file"));
                                             InputStream is = url.openStream();
                                             ut.addSource(is);
                                         }
                                         ut.setDestinationFileName("merge.pdf");
-                                        ut.mergeDocuments(MemoryUsageSetting.
-                                                setupMainMemoryOnly());
-                                        JOptionPane.showMessageDialog(null,
-                                                "Proses gabung file selesai..!");
-                                        Properties systemProp = System.
-                                                getProperties();
-                                        String currentDir = systemProp.
-                                                getProperty("user.dir");
+                                        ut.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+                                        JOptionPane.showMessageDialog(null, "Proses gabung file selesai..!");
+                                        Properties systemProp = System.getProperties();
+                                        String currentDir = systemProp.getProperty("user.dir");
                                         File dir = new File(currentDir);
-                                        setCursor(Cursor.getPredefinedCursor(
-                                                Cursor.WAIT_CURSOR));
+                                        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                                         Valid.panggilUrl2(dir + "/merge.pdf");
                                         setCursor(Cursor.getDefaultCursor());
                                     } catch (Exception e) {
@@ -262,7 +253,6 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param url
      */
     public void loadURL(String url) {
@@ -288,17 +278,14 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param node
      */
     public void print(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
-                PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.
-                getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.
-                getBoundsInParent().getHeight();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT,
+                Printer.MarginType.DEFAULT);
+        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -311,7 +298,9 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -357,8 +346,7 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgBerkasRawat dialog = new DlgBerkasRawat(new javax.swing.JFrame(),
-                    true);
+            DlgBerkasRawat dialog = new DlgBerkasRawat(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -376,15 +364,12 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
 
     public void setJudul(String Judul, String Pages) {
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
-                        240, 245, 235)), Judul,
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50,
-                        50)));
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), Judul,
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50)));
         this.halaman = Pages;
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgBerkasRawat.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgBerkasRawat.class.getName());
+
 }

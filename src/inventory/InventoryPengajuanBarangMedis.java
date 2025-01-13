@@ -31,27 +31,47 @@ import kepegawaian.DlgCariPegawai;
 public class InventoryPengajuanBarangMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int jml = 0, i = 0, row = 0, index = 0;
+
     private String[] jumlah, satuanbesar, kodebarang, namabarang, satuan, jenis, kategori, golongan;
+
     private Double[] harga, subtotal, jumlah2, isi, isibesar;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
-    private DlgCariDataKonversi datakonversi = new DlgCariDataKonversi(null,
-            false);
+
+    private DlgCariDataKonversi datakonversi = new DlgCariDataKonversi(null, false);
+
     private DlgBarang barang = new DlgBarang(null, false);
+
     private double total = 0, y = 0;
+
     private boolean sukses = true;
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -64,21 +84,14 @@ public class InventoryPengajuanBarangMedis extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] judul = {"Jml", "Sat.Pengajuan", "Kode Barang", "Nama Barang",
-            "Satuan", "Jenis Obat", "Kategori", "Golongan", "H.Pengajuan",
-            "Sub Total", "Jml2", "Isi", "Isi Besar"};
+        Object[] judul = {"Jml", "Sat.Pengajuan", "Kode Barang", "Nama Barang", "Satuan", "Jenis Obat", "Kategori",
+            "Golongan", "H.Pengajuan", "Sub Total", "Jml2", "Isi", "Isi Besar"};
         tabMode = new DefaultTableModel(null, judul) {
 
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -136,8 +149,7 @@ public class InventoryPengajuanBarangMedis extends javax.swing.JDialog {
         Keterangan.setDocument(new batasInput(150).getKata(Keterangan));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -173,12 +185,9 @@ public class InventoryPengajuanBarangMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    kdptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 0).toString());
-                    nmptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 1).toString());
-                    Departemen.setText(pegawai.tbKamar.getValueAt(
-                            pegawai.tbKamar.getSelectedRow(), 5).toString());
+                    kdptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                    nmptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
+                    Departemen.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 5).toString());
                 }
                 kdptg.requestFocus();
             }
@@ -231,24 +240,22 @@ public class InventoryPengajuanBarangMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (datakonversi.getTable().getSelectedRow() != -1) {
-                    tbDokter.setValueAt(datakonversi.getTable().getValueAt(
-                            datakonversi.getTable().getSelectedRow(), 1).
-                            toString(), tbDokter.getSelectedRow(), 1);
+                    tbDokter.setValueAt(
+                            datakonversi.getTable().getValueAt(datakonversi.getTable().getSelectedRow(), 1).toString(),
+                            tbDokter.getSelectedRow(), 1);
                     try {
-                        tbDokter.setValueAt(Double.valueOf(datakonversi.
-                                getTable().getValueAt(datakonversi.getTable().
-                                        getSelectedRow(), 3).toString()),
-                                tbDokter.getSelectedRow(), 11);
+                        tbDokter.setValueAt(Double.valueOf(datakonversi.getTable()
+                                .getValueAt(datakonversi.getTable().getSelectedRow(), 3)
+                                .toString()), tbDokter.getSelectedRow(), 11);
                     } catch (Exception er) {
                         JOptionPane.showMessageDialog(null,
                                 "Gagal mengambil nilai konversi, nilai barang satuan kecil dianggap bernilai 1..!!");
                         tbDokter.setValueAt(1, tbDokter.getSelectedRow(), 11);
                     }
                     try {
-                        tbDokter.setValueAt(Double.valueOf(datakonversi.
-                                getTable().getValueAt(datakonversi.getTable().
-                                        getSelectedRow(), 0).toString()),
-                                tbDokter.getSelectedRow(), 12);
+                        tbDokter.setValueAt(Double.valueOf(datakonversi.getTable()
+                                .getValueAt(datakonversi.getTable().getSelectedRow(), 0)
+                                .toString()), tbDokter.getSelectedRow(), 12);
                     } catch (Exception er) {
                         JOptionPane.showMessageDialog(null,
                                 "Gagal mengambil nilai konversi, nilai barang satuan besar dianggap bernilai 1..!!");
@@ -296,7 +303,9 @@ public class InventoryPengajuanBarangMedis extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -686,13 +695,12 @@ public class InventoryPengajuanBarangMedis extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        jml = 0;
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        jml = 0;//GEN-FIRST:event_BtnSimpanActionPerformed
         for (i = 0; i < tbDokter.getRowCount(); i++) {
             if (!tbDokter.getValueAt(i, 0).toString().isEmpty()) {
                 jml++;
@@ -972,8 +980,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryPengajuanBarangMedis dialog = new InventoryPengajuanBarangMedis(
-                    new javax.swing.JFrame(), true);
+            InventoryPengajuanBarangMedis dialog = new InventoryPengajuanBarangMedis(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1035,16 +1042,13 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    iyem = iyem + "{\"SatPengajuan\":\"" + rs.getString(
-                            "kode_satbesar") + "\",\"KodeBarang\":\"" + rs.
-                                    getString("kode_brng") + "\",\"NamaBarang\":\"" + rs.
-                            getString("nama_brng").replaceAll("\"", "") + "\",\"Satuan\":\"" + rs.
-                            getString("kode_sat") + "\",\"JenisObat\":\"" + rs.
-                            getString("nama") + "\",\"Kategori\":\"" + rs.
-                            getString("kategori") + "\",\"Golongan\":\"" + rs.
-                            getString("golongan") + "\",\"HPengajuan\":\"" + rs.
-                            getString("h_beli") + "\",\"Isi\":\"" + rs.
-                            getString("isi") + "\"},";
+                    iyem = iyem + "{\"SatPengajuan\":\"" + rs.getString("kode_satbesar") + "\",\"KodeBarang\":\""
+                            + rs.getString("kode_brng") + "\",\"NamaBarang\":\""
+                            + rs.getString("nama_brng").replaceAll("\"", "") + "\",\"Satuan\":\""
+                            + rs.getString("kode_sat") + "\",\"JenisObat\":\"" + rs.getString("nama")
+                            + "\",\"Kategori\":\"" + rs.getString("kategori") + "\",\"Golongan\":\""
+                            + rs.getString("golongan") + "\",\"HPengajuan\":\"" + rs.getString("h_beli")
+                            + "\",\"Isi\":\"" + rs.getString("isi") + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1056,8 +1060,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     ps.close();
                 }
             }
-            fileWriter.write("{\"pengajuanobat\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"pengajuanobat\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1112,25 +1115,18 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     jenis[index] = tbDokter.getValueAt(i, 5).toString();
                     kategori[index] = tbDokter.getValueAt(i, 6).toString();
                     golongan[index] = tbDokter.getValueAt(i, 7).toString();
-                    harga[index] = Double.valueOf(tbDokter.getValueAt(i, 8).
-                            toString());
-                    subtotal[index] = Double.valueOf(tbDokter.getValueAt(i, 9).
-                            toString());
-                    jumlah2[index] = Double.valueOf(tbDokter.getValueAt(i, 10).
-                            toString());
-                    isi[index] = Double.valueOf(tbDokter.getValueAt(i, 11).
-                            toString());
-                    isibesar[index] = Double.valueOf(tbDokter.getValueAt(i, 12).
-                            toString());
+                    harga[index] = Double.valueOf(tbDokter.getValueAt(i, 8).toString());
+                    subtotal[index] = Double.valueOf(tbDokter.getValueAt(i, 9).toString());
+                    jumlah2[index] = Double.valueOf(tbDokter.getValueAt(i, 10).toString());
+                    isi[index] = Double.valueOf(tbDokter.getValueAt(i, 11).toString());
+                    isibesar[index] = Double.valueOf(tbDokter.getValueAt(i, 12).toString());
                     index++;
                 }
             }
             Valid.tabelKosong(tabMode);
             for (i = 0; i < jml; i++) {
-                tabMode.addRow(new Object[]{jumlah[i], satuanbesar[i],
-                    kodebarang[i], namabarang[i], satuan[i], jenis[i],
-                    kategori[i], golongan[i], harga[i], subtotal[i], jumlah2[i],
-                    isi[i], isibesar[i]});
+                tabMode.addRow(new Object[]{jumlah[i], satuanbesar[i], kodebarang[i], namabarang[i], satuan[i],
+                    jenis[i], kategori[i], golongan[i], harga[i], subtotal[i], jumlah2[i], isi[i], isibesar[i]});
             }
 
             myObj = new FileReader("./cache/pengajuanobat.iyem");
@@ -1139,38 +1135,30 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             if (response.isArray()) {
                 if (TCari.getText().trim().isEmpty()) {
                     for (JsonNode list : response) {
-                        tabMode.addRow(new Object[]{
-                            "", list.path("SatPengajuan").asText(), list.path(
-                            "KodeBarang").asText(), list.path("NamaBarang").
-                            asText(), list.path("Satuan").asText(), list.path(
-                            "JenisObat").asText(), list.path("Kategori").
-                            asText(), list.path("Golongan").asText(), list.path(
-                            "HPengajuan").asDouble(), 0, 0, list.path("Isi").
-                            asDouble(), 1
-                        });
+                        tabMode.addRow(new Object[]{"", list.path("SatPengajuan").asText(),
+                            list.path("KodeBarang").asText(), list.path("NamaBarang").asText(),
+                            list.path("Satuan").asText(), list.path("JenisObat").asText(),
+                            list.path("Kategori").asText(), list.path("Golongan").asText(),
+                            list.path("HPengajuan").asDouble(), 0, 0, list.path("Isi").asDouble(), 1});
                     }
                 } else {
                     for (JsonNode list : response) {
-                        if (list.path("KodeBarang").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase()) || list.
-                                path("NamaBarang").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase())
-                                || list.path("JenisObat").asText().toLowerCase().
-                                        contains(TCari.getText().toLowerCase()) || list.
-                                path("Kategori").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase())
-                                || list.path("Golongan").asText().toLowerCase().
-                                        contains(TCari.getText().toLowerCase())) {
-                            tabMode.addRow(new Object[]{
-                                "", list.path("SatPengajuan").asText(), list.
-                                path("KodeBarang").asText(), list.path(
-                                "NamaBarang").asText(), list.path("Satuan").
-                                asText(), list.path("JenisObat").asText(), list.
-                                path("Kategori").asText(),
-                                list.path("Golongan").asText(), list.path(
-                                "HPengajuan").asDouble(), 0, 0,
-                                list.path("Isi").asDouble(), 1
-                            });
+                        if (list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())
+                                || list.path("NamaBarang")
+                                        .asText()
+                                        .toLowerCase()
+                                        .contains(TCari.getText().toLowerCase())
+                                || list.path("JenisObat").asText().toLowerCase().contains(TCari.getText().toLowerCase())
+                                || list.path("Kategori").asText().toLowerCase().contains(TCari.getText().toLowerCase())
+                                || list.path("Golongan")
+                                        .asText()
+                                        .toLowerCase()
+                                        .contains(TCari.getText().toLowerCase())) {
+                            tabMode.addRow(new Object[]{"", list.path("SatPengajuan").asText(),
+                                list.path("KodeBarang").asText(), list.path("NamaBarang").asText(),
+                                list.path("Satuan").asText(), list.path("JenisObat").asText(),
+                                list.path("Kategori").asText(), list.path("Golongan").asText(),
+                                list.path("HPengajuan").asDouble(), 0, 0, list.path("Isi").asDouble(), 1});
                         }
                     }
                 }
@@ -1200,11 +1188,12 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(pengajuan_barang_medis.no_pengajuan,3),signed)),0) from pengajuan_barang_medis where pengajuan_barang_medis.tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "PBM" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPengajuan);
+                "select ifnull(MAX(CONVERT(RIGHT(pengajuan_barang_medis.no_pengajuan,3),signed)),0) from pengajuan_barang_medis where pengajuan_barang_medis.tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "PBM" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPengajuan);
     }
 
     private void getData() {
@@ -1212,17 +1201,13 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         if (row != -1) {
             if (!tbDokter.getValueAt(row, 0).toString().isEmpty()) {
                 try {
-                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).
-                            toString()) > 0) {
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 0).toString()) * Double.
-                                parseDouble(tbDokter.getValueAt(row, 8).
-                                        toString()), row, 9);
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 0).toString()) * (Double.
-                                parseDouble(tbDokter.getValueAt(row, 11).
-                                        toString()) / Double.parseDouble(
-                                        tbDokter.getValueAt(row, 12).toString())),
+                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).toString()) > 0) {
+                        tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                * Double.parseDouble(tbDokter.getValueAt(row, 8).toString()), row, 9);
+                        tbDokter.setValueAt(
+                                Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                * (Double.parseDouble(tbDokter.getValueAt(row, 11).toString())
+                                / Double.parseDouble(tbDokter.getValueAt(row, 12).toString())),
                                 row, 10);
                     }
                 } catch (Exception e) {
@@ -1251,7 +1236,6 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryPengajuanBarangMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryPengajuanBarangMedis.class.getName());
 
 }

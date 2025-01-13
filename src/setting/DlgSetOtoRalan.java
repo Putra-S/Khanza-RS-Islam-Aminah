@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgObatPenyakit.java
- *
- * Created on May 23, 2010, 12:40:35 AM
+* DlgObatPenyakit.java
+*
+* Created on May 23, 2010, 12:40:35 AM
  */
 package setting;
 
@@ -38,20 +38,26 @@ import keuangan.DlgJnsPerawatanRalan;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author dosen
  */
 public class DlgSetOtoRalan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2, tabMode3;
+
     private sekuel Sequel = new sekuel();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
-    private DlgJnsPerawatanRalan datatindakan = new DlgJnsPerawatanRalan(null,
-            false);
+
+    private DlgJnsPerawatanRalan datatindakan = new DlgJnsPerawatanRalan(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
 
     /**
@@ -67,10 +73,8 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabMode = new DefaultTableModel(null, new String[]{
-            "Kode Dokter", "Nama Dokter", "Kode Tindakan", "Nama Tindakan",
-            "Kode Bayar", "Nama Bayar"
-        }) {
+        tabMode = new DefaultTableModel(null, new String[]{"Kode Dokter", "Nama Dokter", "Kode Tindakan",
+            "Nama Tindakan", "Kode Bayar", "Nama Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -79,7 +83,8 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
         };
         Table1.setModel(tabMode);
 
-        //tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
+        // tbObatPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
         Table1.setPreferredScrollableViewportSize(new Dimension(800, 800));
         Table1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -101,9 +106,8 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
         }
         Table1.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new String[]{
-            "Kode Tindakan", "Nama Tindakan", "Kode Bayar", "Nama Bayar"
-        }) {
+        tabMode2 = new DefaultTableModel(null,
+                new String[]{"Kode Tindakan", "Nama Tindakan", "Kode Bayar", "Nama Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -112,7 +116,8 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
         };
         Table2.setModel(tabMode2);
 
-        //tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
+        // tbObatPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
         Table2.setPreferredScrollableViewportSize(new Dimension(800, 800));
         Table2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -130,10 +135,8 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
         }
         Table2.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode3 = new DefaultTableModel(null, new String[]{
-            "Kode Dokter", "Nama Dokter", "Kode Tindakan", "Nama Tindakan",
-            "Kode Bayar", "Nama Bayar"
-        }) {
+        tabMode3 = new DefaultTableModel(null, new String[]{"Kode Dokter", "Nama Dokter", "Kode Tindakan",
+            "Nama Tindakan", "Kode Bayar", "Nama Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -142,7 +145,8 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
         };
         Table3.setModel(tabMode3);
 
-        //tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
+        // tbObatPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
         Table3.setPreferredScrollableViewportSize(new Dimension(800, 800));
         Table3.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -182,22 +186,16 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
                     if (TabRawat.getSelectedIndex() == 0) {
-                        kdpj.setText(penjab.getTable().getValueAt(penjab.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmpj.setText(penjab.getTable().getValueAt(penjab.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                        nmpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                         kdpj.requestFocus();
                     } else if (TabRawat.getSelectedIndex() == 1) {
-                        kdpj2.setText(penjab.getTable().getValueAt(penjab.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmpj2.setText(penjab.getTable().getValueAt(penjab.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdpj2.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                        nmpj2.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                         kdpj2.requestFocus();
                     } else if (TabRawat.getSelectedIndex() == 2) {
-                        kdpj3.setText(penjab.getTable().getValueAt(penjab.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmpj3.setText(penjab.getTable().getValueAt(penjab.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdpj3.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                        nmpj3.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                         kdpj3.requestFocus();
                     }
 
@@ -253,28 +251,28 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (datatindakan.getTable().getSelectedRow() != -1) {
                     if (TabRawat.getSelectedIndex() == 0) {
-                        kdtindakan.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 1).
-                                toString());
-                        nmtindakan.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 2).
-                                toString());
+                        kdtindakan.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 1)
+                                .toString());
+                        nmtindakan.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 2)
+                                .toString());
                         kdtindakan.requestFocus();
                     } else if (TabRawat.getSelectedIndex() == 1) {
-                        kdtindakan2.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 1).
-                                toString());
-                        nmtindakan2.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 2).
-                                toString());
+                        kdtindakan2.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 1)
+                                .toString());
+                        nmtindakan2.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 2)
+                                .toString());
                         kdtindakan2.requestFocus();
                     } else if (TabRawat.getSelectedIndex() == 2) {
-                        kdtindakan3.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 1).
-                                toString());
-                        nmtindakan3.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 2).
-                                toString());
+                        kdtindakan3.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 1)
+                                .toString());
+                        nmtindakan3.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 2)
+                                .toString());
                         kdtindakan3.requestFocus();
                     }
                 }
@@ -329,16 +327,16 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
                     if (TabRawat.getSelectedIndex() == 0) {
-                        kddokter.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 1).toString());
+                        kddokter
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                        nmdokter
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         kddokter.requestFocus();
                     } else if (TabRawat.getSelectedIndex() == 2) {
-                        kddokter3.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmdokter3.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 1).toString());
+                        kddokter3
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                        nmdokter3
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         kddokter3.requestFocus();
                     }
                 }
@@ -365,7 +363,9 @@ public class DlgSetOtoRalan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1578,8 +1578,7 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetOtoRalan dialog = new DlgSetOtoRalan(new javax.swing.JFrame(),
-                    true);
+            DlgSetOtoRalan dialog = new DlgSetOtoRalan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1657,8 +1656,7 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_otomatis_tindakan_ralan.kd_dokter,dokter.nm_dokter, "
+            ps = koneksi.prepareStatement("select set_otomatis_tindakan_ralan.kd_dokter,dokter.nm_dokter, "
                     + "set_otomatis_tindakan_ralan.kd_jenis_prw,jns_perawatan.nm_perawatan, "
                     + "set_otomatis_tindakan_ralan.kd_pj,penjab.png_jawab "
                     + "from set_otomatis_tindakan_ralan inner join dokter "
@@ -1666,12 +1664,9 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                     + "set_otomatis_tindakan_ralan.kd_dokter=dokter.kd_dokter and "
                     + "set_otomatis_tindakan_ralan.kd_jenis_prw=jns_perawatan.kd_jenis_prw and "
                     + "set_otomatis_tindakan_ralan.kd_pj=penjab.kd_pj "
-                    + "where set_otomatis_tindakan_ralan.kd_dokter like ? or "
-                    + "dokter.nm_dokter like ? or "
-                    + "set_otomatis_tindakan_ralan.kd_jenis_prw like ? or "
-                    + "jns_perawatan.nm_perawatan like ? or "
-                    + "set_otomatis_tindakan_ralan.kd_pj like ? or "
-                    + "penjab.png_jawab like ? "
+                    + "where set_otomatis_tindakan_ralan.kd_dokter like ? or " + "dokter.nm_dokter like ? or "
+                    + "set_otomatis_tindakan_ralan.kd_jenis_prw like ? or " + "jns_perawatan.nm_perawatan like ? or "
+                    + "set_otomatis_tindakan_ralan.kd_pj like ? or " + "penjab.png_jawab like ? "
                     + " order by dokter.nm_dokter");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
@@ -1682,10 +1677,8 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                 ps.setString(6, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getString(6)
-                    });
+                    tabMode.addRow(new String[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1707,17 +1700,16 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil2() {
         Valid.tabelKosong(tabMode2);
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_otomatis_tindakan_ralan_petugas.kd_jenis_prw,jns_perawatan.nm_perawatan, "
-                    + "set_otomatis_tindakan_ralan_petugas.kd_pj,penjab.png_jawab "
-                    + "from set_otomatis_tindakan_ralan_petugas inner join jns_perawatan inner join penjab on  "
-                    + "set_otomatis_tindakan_ralan_petugas.kd_jenis_prw=jns_perawatan.kd_jenis_prw and "
-                    + "set_otomatis_tindakan_ralan_petugas.kd_pj=penjab.kd_pj "
-                    + "where set_otomatis_tindakan_ralan_petugas.kd_jenis_prw like ? or "
-                    + "jns_perawatan.nm_perawatan like ? or "
-                    + "set_otomatis_tindakan_ralan_petugas.kd_pj like ? or "
-                    + "penjab.png_jawab like ? "
-                    + " order by set_otomatis_tindakan_ralan_petugas.kd_jenis_prw ");
+            ps = koneksi
+                    .prepareStatement("select set_otomatis_tindakan_ralan_petugas.kd_jenis_prw,jns_perawatan.nm_perawatan, "
+                            + "set_otomatis_tindakan_ralan_petugas.kd_pj,penjab.png_jawab "
+                            + "from set_otomatis_tindakan_ralan_petugas inner join jns_perawatan inner join penjab on  "
+                            + "set_otomatis_tindakan_ralan_petugas.kd_jenis_prw=jns_perawatan.kd_jenis_prw and "
+                            + "set_otomatis_tindakan_ralan_petugas.kd_pj=penjab.kd_pj "
+                            + "where set_otomatis_tindakan_ralan_petugas.kd_jenis_prw like ? or "
+                            + "jns_perawatan.nm_perawatan like ? or "
+                            + "set_otomatis_tindakan_ralan_petugas.kd_pj like ? or " + "penjab.png_jawab like ? "
+                            + " order by set_otomatis_tindakan_ralan_petugas.kd_jenis_prw ");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -1725,10 +1717,8 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                 ps.setString(4, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new String[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4)
-                    });
+                    tabMode2
+                            .addRow(new String[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1750,22 +1740,21 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil3() {
         Valid.tabelKosong(tabMode3);
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_otomatis_tindakan_ralan_dokterpetugas.kd_dokter,dokter.nm_dokter, "
-                    + "set_otomatis_tindakan_ralan_dokterpetugas.kd_jenis_prw,jns_perawatan.nm_perawatan, "
-                    + "set_otomatis_tindakan_ralan_dokterpetugas.kd_pj,penjab.png_jawab "
-                    + "from set_otomatis_tindakan_ralan_dokterpetugas inner join dokter "
-                    + "inner join jns_perawatan inner join penjab on  "
-                    + "set_otomatis_tindakan_ralan_dokterpetugas.kd_dokter=dokter.kd_dokter and "
-                    + "set_otomatis_tindakan_ralan_dokterpetugas.kd_jenis_prw=jns_perawatan.kd_jenis_prw and "
-                    + "set_otomatis_tindakan_ralan_dokterpetugas.kd_pj=penjab.kd_pj "
-                    + "where set_otomatis_tindakan_ralan_dokterpetugas.kd_dokter like ? or "
-                    + "dokter.nm_dokter like ? or "
-                    + "set_otomatis_tindakan_ralan_dokterpetugas.kd_jenis_prw like ? or "
-                    + "jns_perawatan.nm_perawatan like ? or "
-                    + "set_otomatis_tindakan_ralan_dokterpetugas.kd_pj like ? or "
-                    + "penjab.png_jawab like ? "
-                    + " order by dokter.nm_dokter");
+            ps = koneksi
+                    .prepareStatement("select set_otomatis_tindakan_ralan_dokterpetugas.kd_dokter,dokter.nm_dokter, "
+                            + "set_otomatis_tindakan_ralan_dokterpetugas.kd_jenis_prw,jns_perawatan.nm_perawatan, "
+                            + "set_otomatis_tindakan_ralan_dokterpetugas.kd_pj,penjab.png_jawab "
+                            + "from set_otomatis_tindakan_ralan_dokterpetugas inner join dokter "
+                            + "inner join jns_perawatan inner join penjab on  "
+                            + "set_otomatis_tindakan_ralan_dokterpetugas.kd_dokter=dokter.kd_dokter and "
+                            + "set_otomatis_tindakan_ralan_dokterpetugas.kd_jenis_prw=jns_perawatan.kd_jenis_prw and "
+                            + "set_otomatis_tindakan_ralan_dokterpetugas.kd_pj=penjab.kd_pj "
+                            + "where set_otomatis_tindakan_ralan_dokterpetugas.kd_dokter like ? or "
+                            + "dokter.nm_dokter like ? or "
+                            + "set_otomatis_tindakan_ralan_dokterpetugas.kd_jenis_prw like ? or "
+                            + "jns_perawatan.nm_perawatan like ? or "
+                            + "set_otomatis_tindakan_ralan_dokterpetugas.kd_pj like ? or " + "penjab.png_jawab like ? "
+                            + " order by dokter.nm_dokter");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -1775,10 +1764,8 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                 ps.setString(6, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode3.addRow(new String[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getString(6)
-                    });
+                    tabMode3.addRow(new String[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1852,7 +1839,6 @@ private void kdtindakanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgSetOtoRalan.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgSetOtoRalan.class.getName());
 
 }

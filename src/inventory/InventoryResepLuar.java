@@ -43,28 +43,45 @@ import kepegawaian.DlgCariDokter;
 import widget.Button;
 
 /**
- *
  * @author dosen
  */
 public class InventoryResepLuar extends javax.swing.JDialog {
 
     private final DefaultTableModel tabModeResep, tabModeDetailResepRacikan, tabModeResepRacikan;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement psresep;
+
     private ResultSet rsobat;
+
     private double jumlahracik = 0, persenracik = 0, kapasitasracik = 0;
+
     private int i = 0, z = 0, jmlobat = 0, r = 0;
+
     private double[] jumlah, kapasitas, p1, p2;
+
     private boolean sukses = true;
-    private String[] no, kodebarang, namabarang, kodesatuan, kandungan, letakbarang, namajenis, aturan, industri, komposisi;
+
+    private String[] no, kodebarang, namabarang, kodesatuan, kandungan, letakbarang, namajenis, aturan, industri,
+            komposisi;
+
     public DlgCariAturanPakai aturanpakai = new DlgCariAturanPakai(null, false);
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private WarnaTable2 warna2 = new WarnaTable2();
+
     private WarnaTable2 warna3 = new WarnaTable2();
+
     private DlgCariMetodeRacik metoderacik = new DlgCariMetodeRacik(null, false);
+
     public DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private String noracik = "";
 
     /**
@@ -78,17 +95,11 @@ public class InventoryResepLuar extends javax.swing.JDialog {
         initComponents();
         this.setLocation(10, 2);
         setSize(656, 250);
-        tabModeResep = new DefaultTableModel(null, new Object[]{
-            "Jumlah", "Kode Barang", "Nama Barang", "Satuan", "Komposisi",
-            "Jenis Obat", "Aturan Pakai", "I.F."
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class
-            };
+        tabModeResep = new DefaultTableModel(null, new Object[]{"Jumlah", "Kode Barang", "Nama Barang", "Satuan",
+            "Komposisi", "Jenis Obat", "Aturan Pakai", "I.F."}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -99,9 +110,10 @@ public class InventoryResepLuar extends javax.swing.JDialog {
                 return a;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -109,7 +121,8 @@ public class InventoryResepLuar extends javax.swing.JDialog {
 
         };
         tbResep.setModel(tabModeResep);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbResep.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbResep.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (i = 0; i < 8; i++) {
@@ -135,16 +148,10 @@ public class InventoryResepLuar extends javax.swing.JDialog {
         warna.kolom = 0;
         tbResep.setDefaultRenderer(Object.class, warna);
 
-        tabModeResepRacikan = new DefaultTableModel(null, new Object[]{
-            "No", "Nama Racikan", "Kode Racik", "Metode Racik", "Jml.Racik",
-            "Aturan Pakai", "Keterangan"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class
-            };
+        tabModeResepRacikan = new DefaultTableModel(null, new Object[]{"No", "Nama Racikan", "Kode Racik",
+            "Metode Racik", "Jml.Racik", "Aturan Pakai", "Keterangan"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -163,13 +170,11 @@ public class InventoryResepLuar extends javax.swing.JDialog {
         };
 
         tbObatResepRacikan.setModel(tabModeResepRacikan);
-        tbObatResepRacikan.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbObatResepRacikan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObatResepRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 7; i++) {
-            TableColumn column = tbObatResepRacikan.getColumnModel().
-                    getColumn(i);
+            TableColumn column = tbObatResepRacikan.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(25);
             } else if (i == 1) {
@@ -191,21 +196,12 @@ public class InventoryResepLuar extends javax.swing.JDialog {
         warna2.kolom = 4;
         tbObatResepRacikan.setDefaultRenderer(Object.class, warna2);
 
-        tabModeDetailResepRacikan = new DefaultTableModel(null, new Object[]{
-            "No", "Kode Barang", "Nama Barang", "Satuan", "Jenis Obat", "Kps",
-            "P1", "/", "P2", "Kandungan", "Jml", "I.F.", "Komposisi"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class,
-                java.lang.Object.class
-            };
+        tabModeDetailResepRacikan = new DefaultTableModel(null, new Object[]{"No", "Kode Barang", "Nama Barang",
+            "Satuan", "Jenis Obat", "Kps", "P1", "/", "P2", "Kandungan", "Jml", "I.F.", "Komposisi"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -224,13 +220,11 @@ public class InventoryResepLuar extends javax.swing.JDialog {
         };
 
         tbDetailResepObatRacikan.setModel(tabModeDetailResepRacikan);
-        tbDetailResepObatRacikan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        tbDetailResepObatRacikan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbDetailResepObatRacikan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 13; i++) {
-            TableColumn column = tbDetailResepObatRacikan.getColumnModel().
-                    getColumn(i);
+            TableColumn column = tbDetailResepObatRacikan.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(25);
             } else if (i == 1) {
@@ -265,8 +259,7 @@ public class InventoryResepLuar extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -304,14 +297,13 @@ public class InventoryResepLuar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (aturanpakai.getTable().getSelectedRow() != -1) {
                     if (TabRawat.getSelectedIndex() == 0) {
-                        tbResep.setValueAt(aturanpakai.getTable().getValueAt(
-                                aturanpakai.getTable().getSelectedRow(), 0).
-                                toString(), tbResep.getSelectedRow(), 6);
+                        tbResep.setValueAt(aturanpakai.getTable()
+                                .getValueAt(aturanpakai.getTable().getSelectedRow(), 0)
+                                .toString(), tbResep.getSelectedRow(), 6);
                     } else if (TabRawat.getSelectedIndex() == 1) {
-                        tbObatResepRacikan.setValueAt(aturanpakai.getTable().
-                                getValueAt(aturanpakai.getTable().
-                                        getSelectedRow(), 0).toString(),
-                                tbObatResepRacikan.getSelectedRow(), 5);
+                        tbObatResepRacikan.setValueAt(aturanpakai.getTable()
+                                .getValueAt(aturanpakai.getTable().getSelectedRow(), 0)
+                                .toString(), tbObatResepRacikan.getSelectedRow(), 5);
                         tbObatResepRacikan.requestFocus();
                     }
                 }
@@ -348,10 +340,8 @@ public class InventoryResepLuar extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 KdDokter.requestFocus();
             }
@@ -386,14 +376,12 @@ public class InventoryResepLuar extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (metoderacik.getTable().getSelectedRow() != -1) {
-                    tbObatResepRacikan.setValueAt(metoderacik.getTable().
-                            getValueAt(metoderacik.getTable().getSelectedRow(),
-                                    1).toString(), tbObatResepRacikan.
-                                    getSelectedRow(), 2);
-                    tbObatResepRacikan.setValueAt(metoderacik.getTable().
-                            getValueAt(metoderacik.getTable().getSelectedRow(),
-                                    2).toString(), tbObatResepRacikan.
-                                    getSelectedRow(), 3);
+                    tbObatResepRacikan.setValueAt(
+                            metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(), 1).toString(),
+                            tbObatResepRacikan.getSelectedRow(), 2);
+                    tbObatResepRacikan.setValueAt(
+                            metoderacik.getTable().getValueAt(metoderacik.getTable().getSelectedRow(), 2).toString(),
+                            tbObatResepRacikan.getSelectedRow(), 3);
                     tbObatResepRacikan.requestFocus();
                 }
             }
@@ -437,7 +425,9 @@ public class InventoryResepLuar extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1418,8 +1408,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryResepLuar dialog = new InventoryResepLuar(
-                    new javax.swing.JFrame(), true);
+            InventoryResepLuar dialog = new InventoryResepLuar(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1505,8 +1494,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         for (i = 0; i < tbResep.getRowCount(); i++) {
             if (!tbResep.getValueAt(i, 0).toString().isEmpty()) {
                 try {
-                    jumlah[z] = Double.parseDouble(tbResep.getValueAt(i, 0).
-                            toString());
+                    jumlah[z] = Double.parseDouble(tbResep.getValueAt(i, 0).toString());
                 } catch (Exception e) {
                     jumlah[z] = 0;
                 }
@@ -1524,19 +1512,17 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         Valid.tabelKosong(tabModeResep);
 
         for (i = 0; i < z; i++) {
-            tabModeResep.addRow(new Object[]{
-                jumlah[i], kodebarang[i], namabarang[i], kodesatuan[i],
-                letakbarang[i], namajenis[i], aturan[i], industri[i]
-            });
+            tabModeResep.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], kodesatuan[i], letakbarang[i],
+                namajenis[i], aturan[i], industri[i]});
         }
 
         try {
-            psresep = koneksi.prepareStatement(
-                    "select databarang.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,"
-                    + " databarang.letak_barang,industrifarmasi.nama_industri "
-                    + " from databarang inner join jenis on databarang.kdjns=jenis.kdjns "
-                    + " inner join industrifarmasi on industrifarmasi.kode_industri=databarang.kode_industri "
-                    + " where databarang.status='1' and (databarang.kode_brng like ? or databarang.nama_brng like ? or jenis.nama like ? or databarang.letak_barang like ?) order by databarang.nama_brng");
+            psresep = koneksi
+                    .prepareStatement("select databarang.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,"
+                            + " databarang.letak_barang,industrifarmasi.nama_industri "
+                            + " from databarang inner join jenis on databarang.kdjns=jenis.kdjns "
+                            + " inner join industrifarmasi on industrifarmasi.kode_industri=databarang.kode_industri "
+                            + " where databarang.status='1' and (databarang.kode_brng like ? or databarang.nama_brng like ? or jenis.nama like ? or databarang.letak_barang like ?) order by databarang.nama_brng");
             try {
                 psresep.setString(1, "%" + TCari.getText().trim() + "%");
                 psresep.setString(2, "%" + TCari.getText().trim() + "%");
@@ -1544,12 +1530,9 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 psresep.setString(4, "%" + TCari.getText().trim() + "%");
                 rsobat = psresep.executeQuery();
                 while (rsobat.next()) {
-                    tabModeResep.addRow(new Object[]{
-                        "", rsobat.getString("kode_brng"), rsobat.getString(
-                        "nama_brng"), rsobat.getString("kode_sat"), rsobat.
-                        getString("letak_barang"), rsobat.getString("nama"), "",
-                        rsobat.getString("nama_industri")
-                    });
+                    tabModeResep.addRow(new Object[]{"", rsobat.getString("kode_brng"), rsobat.getString("nama_brng"),
+                        rsobat.getString("kode_sat"), rsobat.getString("letak_barang"), rsobat.getString("nama"),
+                        "", rsobat.getString("nama_industri")});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1573,16 +1556,16 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     public void emptTeksobat() {
         if (ChkRM.isSelected() == true) {
             Valid.autoNomer3(
-                    "select ifnull(MAX(CONVERT(RIGHT(resep_luar.no_resep,3),signed)),0) from resep_luar where resep_luar.tgl_perawatan='" + Valid.
-                            SetTgl(DTPBeri.getSelectedItem() + "") + "' ",
-                    "RL" + DTPBeri.getSelectedItem().toString().substring(6, 10) + DTPBeri.
-                    getSelectedItem().toString().substring(3, 5) + DTPBeri.
-                    getSelectedItem().toString().substring(0, 2), 3, NoResep);
+                    "select ifnull(MAX(CONVERT(RIGHT(resep_luar.no_resep,3),signed)),0) from resep_luar where resep_luar.tgl_perawatan='"
+                    + Valid.SetTgl(DTPBeri.getSelectedItem() + "") + "' ",
+                    "RL" + DTPBeri.getSelectedItem().toString().substring(6, 10)
+                    + DTPBeri.getSelectedItem().toString().substring(3, 5)
+                    + DTPBeri.getSelectedItem().toString().substring(0, 2),
+                    3, NoResep);
         }
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1601,8 +1584,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         TCari.requestFocus();
     }
 
-    public void setNoRm(String norwt, String KodeDokter, String NamaDokter,
-            String Pasien) {
+    public void setNoRm(String norwt, String KodeDokter, String NamaDokter, String Pasien) {
         TNoRw.setText(norwt);
         TPasien.setText(Pasien);
         KdDokter.setText(KodeDokter);
@@ -1613,7 +1595,9 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1622,7 +1606,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 String nol_menit = "";
                 String nol_detik = "";
                 // Membuat Date
-                //Date dt = new Date();
+                // Date dt = new Date();
                 Date now = Calendar.getInstance().getTime();
 
                 // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
@@ -1656,7 +1640,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 cmbJam.setSelectedItem(jam);
                 cmbMnt.setSelectedItem(menit);
                 cmbDtk.setSelectedItem(detik);
@@ -1670,8 +1654,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     public void tampildetailracikanresep() {
         z = 0;
         for (i = 0; i < tbDetailResepObatRacikan.getRowCount(); i++) {
-            if (Valid.SetAngka(tbDetailResepObatRacikan.getValueAt(i, 10).
-                    toString()) > 0) {
+            if (Valid.SetAngka(tbDetailResepObatRacikan.getValueAt(i, 10).toString()) > 0) {
                 z++;
             }
         }
@@ -1704,47 +1687,35 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         kandungan = new String[z];
         z = 0;
         for (i = 0; i < tbDetailResepObatRacikan.getRowCount(); i++) {
-            if (Valid.SetAngka(tbDetailResepObatRacikan.getValueAt(i, 10).
-                    toString()) > 0) {
+            if (Valid.SetAngka(tbDetailResepObatRacikan.getValueAt(i, 10).toString()) > 0) {
                 no[z] = tbDetailResepObatRacikan.getValueAt(i, 0).toString();
-                kodebarang[z] = tbDetailResepObatRacikan.getValueAt(i, 1).
-                        toString();
-                namabarang[z] = tbDetailResepObatRacikan.getValueAt(i, 2).
-                        toString();
-                kodesatuan[z] = tbDetailResepObatRacikan.getValueAt(i, 3).
-                        toString();
-                namajenis[z] = tbDetailResepObatRacikan.getValueAt(i, 4).
-                        toString();
+                kodebarang[z] = tbDetailResepObatRacikan.getValueAt(i, 1).toString();
+                namabarang[z] = tbDetailResepObatRacikan.getValueAt(i, 2).toString();
+                kodesatuan[z] = tbDetailResepObatRacikan.getValueAt(i, 3).toString();
+                namajenis[z] = tbDetailResepObatRacikan.getValueAt(i, 4).toString();
                 try {
-                    kapasitas[z] = Double.parseDouble(tbDetailResepObatRacikan.
-                            getValueAt(i, 5).toString());
+                    kapasitas[z] = Double.parseDouble(tbDetailResepObatRacikan.getValueAt(i, 5).toString());
                 } catch (Exception e) {
                     kapasitas[z] = 0;
                 }
                 try {
-                    p1[z] = Double.parseDouble(tbDetailResepObatRacikan.
-                            getValueAt(i, 6).toString());
+                    p1[z] = Double.parseDouble(tbDetailResepObatRacikan.getValueAt(i, 6).toString());
                 } catch (Exception e) {
                     p1[z] = 0;
                 }
                 try {
-                    p2[z] = Double.parseDouble(tbDetailResepObatRacikan.
-                            getValueAt(i, 8).toString());
+                    p2[z] = Double.parseDouble(tbDetailResepObatRacikan.getValueAt(i, 8).toString());
                 } catch (Exception e) {
                     p2[z] = 0;
                 }
-                kandungan[z] = tbDetailResepObatRacikan.getValueAt(i, 9).
-                        toString();
+                kandungan[z] = tbDetailResepObatRacikan.getValueAt(i, 9).toString();
                 try {
-                    jumlah[z] = Double.parseDouble(tbDetailResepObatRacikan.
-                            getValueAt(i, 10).toString());
+                    jumlah[z] = Double.parseDouble(tbDetailResepObatRacikan.getValueAt(i, 10).toString());
                 } catch (Exception e) {
                     jumlah[z] = 0;
                 }
-                industri[z] = tbDetailResepObatRacikan.getValueAt(i, 11).
-                        toString();
-                komposisi[z] = tbDetailResepObatRacikan.getValueAt(i, 12).
-                        toString();
+                industri[z] = tbDetailResepObatRacikan.getValueAt(i, 11).toString();
+                komposisi[z] = tbDetailResepObatRacikan.getValueAt(i, 12).toString();
                 z++;
             }
         }
@@ -1752,20 +1723,18 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         Valid.tabelKosong(tabModeDetailResepRacikan);
 
         for (i = 0; i < z; i++) {
-            tabModeDetailResepRacikan.addRow(new Object[]{
-                no[i], kodebarang[i], namabarang[i], kodesatuan[i], namajenis[i],
-                kapasitas[i], p1[i], "/", p2[i], kandungan[i], jumlah[i],
-                industri[i], komposisi[i]
-            });
+            tabModeDetailResepRacikan
+                    .addRow(new Object[]{no[i], kodebarang[i], namabarang[i], kodesatuan[i], namajenis[i], kapasitas[i],
+                p1[i], "/", p2[i], kandungan[i], jumlah[i], industri[i], komposisi[i]});
         }
 
         try {
-            psresep = koneksi.prepareStatement(
-                    "select databarang.kode_brng,databarang.nama_brng,jenis.nama,databarang.kode_sat,"
-                    + " databarang.letak_barang,industrifarmasi.nama_industri,databarang.kapasitas "
-                    + " from databarang inner join jenis inner join industrifarmasi "
-                    + " on databarang.kdjns=jenis.kdjns and industrifarmasi.kode_industri=databarang.kode_industri "
-                    + " where databarang.status='1' and (databarang.kode_brng like ? or databarang.nama_brng like ? or jenis.nama like ? or databarang.letak_barang like ?) order by databarang.nama_brng");
+            psresep = koneksi
+                    .prepareStatement("select databarang.kode_brng,databarang.nama_brng,jenis.nama,databarang.kode_sat,"
+                            + " databarang.letak_barang,industrifarmasi.nama_industri,databarang.kapasitas "
+                            + " from databarang inner join jenis inner join industrifarmasi "
+                            + " on databarang.kdjns=jenis.kdjns and industrifarmasi.kode_industri=databarang.kode_industri "
+                            + " where databarang.status='1' and (databarang.kode_brng like ? or databarang.nama_brng like ? or jenis.nama like ? or databarang.letak_barang like ?) order by databarang.nama_brng");
             try {
                 psresep.setString(1, "%" + TCari.getText().trim() + "%");
                 psresep.setString(2, "%" + TCari.getText().trim() + "%");
@@ -1774,15 +1743,10 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 rsobat = psresep.executeQuery();
                 while (rsobat.next()) {
                     tabModeDetailResepRacikan.addRow(new Object[]{
-                        tbObatResepRacikan.getValueAt(tbObatResepRacikan.
-                        getSelectedRow(), 0).toString(),
-                        rsobat.getString("kode_brng"), rsobat.getString(
-                        "nama_brng"), rsobat.getString("kode_sat"), rsobat.
-                        getString("nama"),
-                        rsobat.getDouble("kapasitas"), 1, "/", 1, "", 0, rsobat.
-                        getString("nama_industri"), rsobat.getString(
-                        "letak_barang")
-                    });
+                        tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(), 0).toString(),
+                        rsobat.getString("kode_brng"), rsobat.getString("nama_brng"), rsobat.getString("kode_sat"),
+                        rsobat.getString("nama"), rsobat.getDouble("kapasitas"), 1, "/", 1, "", 0,
+                        rsobat.getString("nama_industri"), rsobat.getString("letak_barang")});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1802,20 +1766,17 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private void getDatadetailresepracikan() {
         if (tbDetailResepObatRacikan.getSelectedRow() != -1) {
             try {
-                tbDetailResepObatRacikan.setValueAt(Valid.SetAngka8((Double.
-                        parseDouble(tbObatResepRacikan.getValueAt(
-                                tbObatResepRacikan.getSelectedRow(), 4).
-                                toString())
-                        * Double.parseDouble(tbDetailResepObatRacikan.
-                                getValueAt(tbDetailResepObatRacikan.
-                                        getSelectedRow(), 9).toString()))
-                        / Double.parseDouble(tbDetailResepObatRacikan.
-                                getValueAt(tbDetailResepObatRacikan.
-                                        getSelectedRow(), 5).toString()), 1),
-                        tbDetailResepObatRacikan.getSelectedRow(), 10);
+                tbDetailResepObatRacikan.setValueAt(Valid.SetAngka8((Double
+                        .parseDouble(tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(), 4).toString())
+                        * Double.parseDouble(
+                                tbDetailResepObatRacikan.getValueAt(tbDetailResepObatRacikan.getSelectedRow(), 9)
+                                        .toString()))
+                        / Double.parseDouble(
+                                tbDetailResepObatRacikan.getValueAt(tbDetailResepObatRacikan.getSelectedRow(), 5)
+                                        .toString()),
+                        1), tbDetailResepObatRacikan.getSelectedRow(), 10);
             } catch (Exception e) {
-                tbDetailResepObatRacikan.setValueAt(0, tbDetailResepObatRacikan.
-                        getSelectedRow(), 10);
+                tbDetailResepObatRacikan.setValueAt(0, tbDetailResepObatRacikan.getSelectedRow(), 10);
             }
         }
     }
@@ -1826,29 +1787,20 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 r = tbDetailResepObatRacikan.getSelectedRow();
                 noracik = tbDetailResepObatRacikan.getValueAt(r, 0).toString();
                 jumlahracik = 0;
-                persenracik = Double.parseDouble(tbDetailResepObatRacikan.
-                        getValueAt(r, 9).toString().replaceAll("%", ""));
-                kapasitasracik = Double.parseDouble(tbDetailResepObatRacikan.
-                        getValueAt(r, 5).toString());
+                persenracik = Double
+                        .parseDouble(tbDetailResepObatRacikan.getValueAt(r, 9).toString().replaceAll("%", ""));
+                kapasitasracik = Double.parseDouble(tbDetailResepObatRacikan.getValueAt(r, 5).toString());
                 for (i = 0; i < tbDetailResepObatRacikan.getRowCount(); i++) {
-                    if (noracik == null ? tbDetailResepObatRacikan.getValueAt(i,
-                            0).toString() == null : noracik.equals(
-                                    tbDetailResepObatRacikan.getValueAt(i, 0).
-                                            toString())) {
-                        if (!tbDetailResepObatRacikan.getValueAt(i, 9).
-                                toString().contains("%")) {
-                            jumlahracik += (Double.parseDouble(
-                                    tbDetailResepObatRacikan.getValueAt(i, 5).
-                                            toString())
-                                    * Double.parseDouble(
-                                            tbDetailResepObatRacikan.getValueAt(
-                                                    i, 10).toString()));
+                    if (noracik == null ? tbDetailResepObatRacikan.getValueAt(i, 0).toString() == null
+                            : noracik.equals(tbDetailResepObatRacikan.getValueAt(i, 0).toString())) {
+                        if (!tbDetailResepObatRacikan.getValueAt(i, 9).toString().contains("%")) {
+                            jumlahracik += (Double.parseDouble(tbDetailResepObatRacikan.getValueAt(i, 5).toString())
+                                    * Double.parseDouble(tbDetailResepObatRacikan.getValueAt(i, 10).toString()));
                         }
                     }
                 }
-                tbDetailResepObatRacikan.setValueAt(Valid.SetAngka8(
-                        (jumlahracik * (persenracik / 100)) / kapasitasracik, 1),
-                        r, 10);
+                tbDetailResepObatRacikan
+                        .setValueAt(Valid.SetAngka8((jumlahracik * (persenracik / 100)) / kapasitasracik, 1), r, 10);
             } catch (Exception e) {
                 tbDetailResepObatRacikan.setValueAt(0, r, 10);
             }
@@ -1859,56 +1811,39 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         try {
             for (i = 0; i < tbResep.getRowCount(); i++) {
                 if (Valid.SetAngka(tbResep.getValueAt(i, 0).toString()) > 0) {
-                    if (Sequel.
-                            menyimpantf2("resep_luar_obat", "?,?,?,?", "data", 4,
-                                    new String[]{
-                                        NoResep.getText(), tbResep.getValueAt(i,
-                                        1).toString(),
-                                        "" + (Double.valueOf(tbResep.getValueAt(
-                                                i, 0).toString())),
-                                        tbResep.getValueAt(i, 6).toString()
-                                    }) == false) {
+                    if (Sequel.menyimpantf2("resep_luar_obat", "?,?,?,?", "data", 4,
+                            new String[]{NoResep.getText(), tbResep.getValueAt(i, 1).toString(),
+                                "" + (Double.valueOf(tbResep.getValueAt(i, 0).toString())),
+                                tbResep.getValueAt(i, 6).toString()}) == false) {
                         sukses = false;
                     }
                 }
             }
 
             for (i = 0; i < tbObatResepRacikan.getRowCount(); i++) {
-                if (Valid.SetAngka(tbObatResepRacikan.getValueAt(i, 4).
-                        toString()) > 0) {
-                    if (Sequel.menyimpantf2("resep_luar_racikan",
-                            "?,?,?,?,?,?,?", "resep luar racikan", 7,
-                            new String[]{
-                                NoResep.getText(), tbObatResepRacikan.
-                                getValueAt(i, 0).toString(), tbObatResepRacikan.
-                                getValueAt(i, 1).toString(),
+                if (Valid.SetAngka(tbObatResepRacikan.getValueAt(i, 4).toString()) > 0) {
+                    if (Sequel.menyimpantf2("resep_luar_racikan", "?,?,?,?,?,?,?", "resep luar racikan", 7,
+                            new String[]{NoResep.getText(), tbObatResepRacikan.getValueAt(i, 0).toString(),
+                                tbObatResepRacikan.getValueAt(i, 1).toString(),
                                 tbObatResepRacikan.getValueAt(i, 2).toString(),
                                 tbObatResepRacikan.getValueAt(i, 4).toString(),
                                 tbObatResepRacikan.getValueAt(i, 5).toString(),
-                                tbObatResepRacikan.getValueAt(i, 6).toString()
-                            }) == false) {
+                                tbObatResepRacikan.getValueAt(i, 6).toString()}) == false) {
                         sukses = false;
                     }
                 }
             }
 
             for (i = 0; i < tbDetailResepObatRacikan.getRowCount(); i++) {
-                if (Valid.SetAngka(tbDetailResepObatRacikan.getValueAt(i, 10).
-                        toString()) > 0) {
-                    if (Sequel.menyimpantf2("resep_luar_racikan_detail",
-                            "?,?,?,?,?,?,?", "resep luar racikan detail", 7,
-                            new String[]{
-                                NoResep.getText(), tbDetailResepObatRacikan.
-                                getValueAt(i, 0).toString(),
-                                tbDetailResepObatRacikan.getValueAt(i, 1).
-                                        toString(),
-                                tbDetailResepObatRacikan.getValueAt(i, 6).
-                                        toString(), tbDetailResepObatRacikan.
-                                        getValueAt(i, 8).toString(),
-                                tbDetailResepObatRacikan.getValueAt(i, 9).
-                                        toString(), tbDetailResepObatRacikan.
-                                        getValueAt(i, 10).toString()
-                            }) == false) {
+                if (Valid.SetAngka(tbDetailResepObatRacikan.getValueAt(i, 10).toString()) > 0) {
+                    if (Sequel.menyimpantf2("resep_luar_racikan_detail", "?,?,?,?,?,?,?", "resep luar racikan detail",
+                            7,
+                            new String[]{NoResep.getText(), tbDetailResepObatRacikan.getValueAt(i, 0).toString(),
+                                tbDetailResepObatRacikan.getValueAt(i, 1).toString(),
+                                tbDetailResepObatRacikan.getValueAt(i, 6).toString(),
+                                tbDetailResepObatRacikan.getValueAt(i, 8).toString(),
+                                tbDetailResepObatRacikan.getValueAt(i, 9).toString(),
+                                tbDetailResepObatRacikan.getValueAt(i, 10).toString()}) == false) {
                         sukses = false;
                     }
                 }
@@ -1925,7 +1860,6 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         ChkJln.setSelected(false);
     }
 
-    private static final Logger LOG = Logger.getLogger(InventoryResepLuar.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(InventoryResepLuar.class.getName());
 
 }

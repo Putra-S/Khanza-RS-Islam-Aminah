@@ -27,22 +27,30 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class PerpustakaanSirkulasi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private String inventariscari = "", tglcari = "";
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
-    private PerpustakaanInventaris perpustakaan_inventaris = new PerpustakaanInventaris(
-            null, false);
+
+    private PerpustakaanInventaris perpustakaan_inventaris = new PerpustakaanInventaris(null, false);
+
     private PerpustakaanAnggota anggota = new PerpustakaanAnggota(null, false);
+
     private int pilihan = 0;
 
     /**
@@ -55,12 +63,10 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Inventaris", "Kode Koleksi", "Judul Koleksi", "Penerbit",
-            "Pengarang", "Terbit", "ISBN",
-            "Kategori Koleksi", "Jenis Koleksi", "No.Anggota", "Nama Anggota",
-            "Tgl.Pinjam", "Tgl.Kembali", "Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Inventaris", "Kode Koleksi", "Judul Koleksi", "Penerbit", "Pengarang", "Terbit",
+                    "ISBN", "Kategori Koleksi", "Jenis Koleksi", "No.Anggota", "Nama Anggota", "Tgl.Pinjam",
+                    "Tgl.Kembali", "Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -69,7 +75,8 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
         };
         tbKamIn.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbKamIn.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamIn.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -111,8 +118,7 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
         TNIP.setDocument(new batasInput((byte) 20).getKata(TNIP));
         TNoI.setDocument(new batasInput((byte) 20).getKata(TNoI));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
-        InventarisCari.setDocument(new batasInput((byte) 100).getKata(
-                InventarisCari));
+        InventarisCari.setDocument(new batasInput((byte) 100).getKata(InventarisCari));
 
         WindowInput.setSize(735, 245);
         WindowInput.setLocationRelativeTo(null);
@@ -130,32 +136,30 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (perpustakaan_inventaris.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        TNoI.setText(perpustakaan_inventaris.getTable().
-                                getValueAt(perpustakaan_inventaris.getTable().
-                                        getSelectedRow(), 0).toString());
-                        TJudul.setText(perpustakaan_inventaris.getTable().
-                                getValueAt(perpustakaan_inventaris.getTable().
-                                        getSelectedRow(), 1).toString() + ", " + perpustakaan_inventaris.
-                                        getTable().getValueAt(
-                                                perpustakaan_inventaris.
-                                                        getTable().
-                                                        getSelectedRow(), 2).
-                                        toString());
-                        Penerbit.setText(perpustakaan_inventaris.getTable().
-                                getValueAt(perpustakaan_inventaris.getTable().
-                                        getSelectedRow(), 4).toString());
-                        Pengarang.setText(perpustakaan_inventaris.getTable().
-                                getValueAt(perpustakaan_inventaris.getTable().
-                                        getSelectedRow(), 8).toString());
-                        StatusBuku.setText(perpustakaan_inventaris.getTable().
-                                getValueAt(perpustakaan_inventaris.getTable().
-                                        getSelectedRow(), 12).toString());
+                        TNoI.setText(perpustakaan_inventaris.getTable()
+                                .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 0)
+                                .toString());
+                        TJudul.setText(perpustakaan_inventaris.getTable()
+                                .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 1)
+                                .toString()
+                                + ", "
+                                + perpustakaan_inventaris.getTable()
+                                        .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 2)
+                                        .toString());
+                        Penerbit.setText(perpustakaan_inventaris.getTable()
+                                .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 4)
+                                .toString());
+                        Pengarang.setText(perpustakaan_inventaris.getTable()
+                                .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 8)
+                                .toString());
+                        StatusBuku.setText(perpustakaan_inventaris.getTable()
+                                .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 12)
+                                .toString());
                         TNoI.requestFocus();
                     } else if (pilihan == 2) {
-                        InventarisCari.setText(perpustakaan_inventaris.
-                                getTable().getValueAt(perpustakaan_inventaris.
-                                        getTable().getSelectedRow(), 2).
-                                toString());
+                        InventarisCari.setText(perpustakaan_inventaris.getTable()
+                                .getValueAt(perpustakaan_inventaris.getTable().getSelectedRow(), 2)
+                                .toString());
                         InventarisCari.requestFocus();
                     }
                 }
@@ -209,10 +213,9 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    TNIP.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    TNmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    TNIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    TNmPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 TNIP.requestFocus();
             }
@@ -247,12 +250,9 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (anggota.getTable().getSelectedRow() != -1) {
-                    TNoA.setText(anggota.getTable().getValueAt(anggota.
-                            getTable().getSelectedRow(), 0).toString());
-                    TNmA.setText(anggota.getTable().getValueAt(anggota.
-                            getTable().getSelectedRow(), 1).toString());
-                    lblTglKdl.setText(anggota.getTable().getValueAt(anggota.
-                            getTable().getSelectedRow(), 9).toString());
+                    TNoA.setText(anggota.getTable().getValueAt(anggota.getTable().getSelectedRow(), 0).toString());
+                    TNmA.setText(anggota.getTable().getValueAt(anggota.getTable().getSelectedRow(), 1).toString());
+                    lblTglKdl.setText(anggota.getTable().getValueAt(anggota.getTable().getSelectedRow(), 9).toString());
                 }
                 TNoA.requestFocus();
             }
@@ -294,8 +294,7 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -323,7 +322,9 @@ public class PerpustakaanSirkulasi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1540,8 +1541,7 @@ private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKe
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanSirkulasi dialog = new PerpustakaanSirkulasi(
-                    new javax.swing.JFrame(), true);
+            PerpustakaanSirkulasi dialog = new PerpustakaanSirkulasi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1628,14 +1628,13 @@ private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKe
             inventariscari = "";
             tglcari = "";
             if (ChkTanggal.isSelected() == true) {
-                tglcari = " perpustakaan_peminjaman.tgl_pinjam between '" + Valid.
-                        SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(TglPinjam2.getSelectedItem() + "") + "' and ";
+                tglcari = " perpustakaan_peminjaman.tgl_pinjam between '"
+                        + Valid.SetTgl(TglPinjam1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTgl(TglPinjam2.getSelectedItem() + "") + "' and ";
             }
 
             if (!InventarisCari.getText().isEmpty()) {
-                inventariscari = "perpustakaan_buku.judul_buku='" + InventarisCari.
-                        getText() + "' and ";
+                inventariscari = "perpustakaan_buku.judul_buku='" + InventarisCari.getText() + "' and ";
             }
             ps = koneksi.prepareStatement(
                     "select perpustakaan_peminjaman.no_inventaris,perpustakaan_inventaris.kode_buku,perpustakaan_buku.judul_buku,perpustakaan_penerbit.nama_penerbit,"
@@ -1647,58 +1646,53 @@ private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKe
                     + "and perpustakaan_buku.kode_buku=perpustakaan_inventaris.kode_buku and perpustakaan_peminjaman.no_anggota=perpustakaan_anggota.no_anggota "
                     + "and perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
                     + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
-                    + "and petugas.nip=perpustakaan_peminjaman.nip where "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_peminjaman.no_inventaris like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_buku.kode_buku like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_buku.judul_buku like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_penerbit.nama_penerbit like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_pengarang.nama_pengarang like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_buku.thn_terbit like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_buku.isbn like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_kategori.nama_kategori like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_jenis_buku.nama_jenis like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_anggota.nama_anggota like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " petugas.nama like '%" + TCari.
-                    getText().trim() + "%' or "
-                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%" + StatusCari.
-                            getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari + " perpustakaan_peminjaman.no_anggota like '%" + TCari.
-                    getText().trim() + "%' "
+                    + "and petugas.nip=perpustakaan_peminjaman.nip where " + inventariscari
+                    + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_peminjaman.no_inventaris like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_buku.kode_buku like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_buku.judul_buku like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_penerbit.nama_penerbit like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_pengarang.nama_pengarang like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_buku.thn_terbit like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_buku.isbn like '%" + TCari.getText().trim() + "%' or " + inventariscari
+                    + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_kategori.nama_kategori like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_jenis_buku.nama_jenis like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_anggota.nama_anggota like '%" + TCari.getText().trim() + "%' or "
+                    + inventariscari + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " petugas.nama like '%" + TCari.getText().trim() + "%' or " + inventariscari
+                    + " perpustakaan_peminjaman.status_pinjam like '%"
+                    + StatusCari.getSelectedItem().toString().replaceAll("Semua", "") + "%' and " + tglcari
+                    + " perpustakaan_peminjaman.no_anggota like '%" + TCari.getText().trim() + "%' "
                     + " order by perpustakaan_peminjaman.tgl_pinjam");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_inventaris"), rs.getString("kode_buku"),
-                        rs.getString("judul_buku"), rs.
-                        getString("nama_penerbit"),
-                        rs.getString("nama_pengarang"), rs.getString(
-                        "thn_terbit").substring(0, 4), rs.getString("isbn"), rs.
-                        getString("nama_kategori"),
-                        rs.getString("nama_jenis"), rs.getString("no_anggota"),
-                        rs.getString("nama_anggota"), rs.getString("tgl_pinjam"),
-                        rs.getString("tgl_kembali"), rs.getString("nama")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_inventaris"), rs.getString("kode_buku"),
+                        rs.getString("judul_buku"), rs.getString("nama_penerbit"), rs.getString("nama_pengarang"),
+                        rs.getString("thn_terbit").substring(0, 4), rs.getString("isbn"),
+                        rs.getString("nama_kategori"), rs.getString("nama_jenis"), rs.getString("no_anggota"),
+                        rs.getString("nama_anggota"), rs.getString("tgl_pinjam"), rs.getString("tgl_kembali"),
+                        rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1737,24 +1731,16 @@ private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKe
         TOut.setText("");
         TIn.setText("");
         if (tbKamIn.getSelectedRow() != -1) {
-            TNoI.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).
-                    toString());
-            TJudul.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 1).
-                    toString() + ", " + tbKamIn.getValueAt(tbKamIn.
-                            getSelectedRow(), 2).toString());
-            Penerbit.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 3).
-                    toString());
-            Pengarang.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 4).
-                    toString());
+            TNoI.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 0).toString());
+            TJudul.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 1).toString() + ", "
+                    + tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 2).toString());
+            Penerbit.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 3).toString());
+            Pengarang.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 4).toString());
             StatusBuku.setText("Dipinjam");
-            TNoA.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 9).
-                    toString());
-            TNmA.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).
-                    toString());
-            TIn.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 11).
-                    toString());
-            TOut.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).
-                    toString());
+            TNoA.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 9).toString());
+            TNmA.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 10).toString());
+            TIn.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 11).toString());
+            TOut.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 12).toString());
         }
     }
 
@@ -1774,36 +1760,29 @@ private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKe
     }
 
     private void isDay() {
-        Sequel.cariIsi("select date_add('" + Valid.SetTgl(
-                tgl.getSelectedItem() + "") + "',interval (select lama_pinjam from perpustakaan_set_peminjaman) day) as hari",
-                LHrIni);
+        Sequel.cariIsi("select date_add('" + Valid.SetTgl(tgl.getSelectedItem() + "")
+                + "',interval (select lama_pinjam from perpustakaan_set_peminjaman) day) as hari", LHrIni);
         LblTerlambat.setText("Harus Kembali : " + LHrIni.getText());
     }
 
     private void isDaySub() {
-        Sequel.cariIsi("select TO_DAYS('" + Valid.SetTgl(
-                tgl.getSelectedItem() + "") + "')-TO_DAYS(date_add('" + TIn.
-                getText() + "',interval (select lama_pinjam from perpustakaan_set_peminjaman) day)) as day",
+        Sequel.cariIsi("select TO_DAYS('" + Valid.SetTgl(tgl.getSelectedItem() + "") + "')-TO_DAYS(date_add('"
+                + TIn.getText() + "',interval (select lama_pinjam from perpustakaan_set_peminjaman) day)) as day",
                 LHrIni);
-        Sequel.cariIsi("select if(" + LHrIni.getText() + " >0," + LHrIni.
-                getText() + ",0)", LblJmlT);
+        Sequel.cariIsi("select if(" + LHrIni.getText() + " >0," + LHrIni.getText() + ",0)", LblJmlT);
         Sequel.cariIsi(
                 "select ifnull(" + LblJmlT.getText() + "*(select denda_perhari from perpustakaan_set_peminjaman),0)",
                 LblJmlDenda);
     }
 
     public void isSetPinjam() {
-        Sequel.cariIsi("select max_pinjam from perpustakaan_set_peminjaman",
-                LblSetPnjm);
-        Sequel.cariIsi(
-                "select if(count(no_anggota)<'" + LblSetPnjm.getText() + "','boleh','tidak') as jml "
-                + "from perpustakaan_peminjaman where no_anggota='" + TNoA.
-                        getText() + "' and status_pinjam ='Masih Dipinjam'",
-                LblPnjm);
-        Sequel.cariIsi("select if('" + lblTglKdl.getText() + "'>'" + Valid.
-                SetTgl(tgl.getSelectedItem() + "") + "','boleh','tidak') as jml "
-                + "from perpustakaan_anggota where no_anggota='" + TNoA.
-                        getText() + "' ", lblIjnKdl);
+        Sequel.cariIsi("select max_pinjam from perpustakaan_set_peminjaman", LblSetPnjm);
+        Sequel.cariIsi("select if(count(no_anggota)<'" + LblSetPnjm.getText() + "','boleh','tidak') as jml "
+                + "from perpustakaan_peminjaman where no_anggota='" + TNoA.getText()
+                + "' and status_pinjam ='Masih Dipinjam'", LblPnjm);
+        Sequel.cariIsi("select if('" + lblTglKdl.getText() + "'>'" + Valid.SetTgl(tgl.getSelectedItem() + "")
+                + "','boleh','tidak') as jml " + "from perpustakaan_anggota where no_anggota='" + TNoA.getText() + "' ",
+                lblIjnKdl);
     }
 
     public void isInventaris() {
@@ -1818,8 +1797,7 @@ private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKe
                 ps.setString(1, TNoI.getText());
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    TJudul.setText(rs.getString("kode_buku") + ", " + rs.
-                            getString("judul_buku"));
+                    TJudul.setText(rs.getString("kode_buku") + ", " + rs.getString("judul_buku"));
                     Penerbit.setText(rs.getString("nama_penerbit"));
                     Pengarang.setText(rs.getString("nama_pengarang"));
                     StatusBuku.setText(rs.getString("status_buku"));
@@ -1844,6 +1822,6 @@ private void tglKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tglKe
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PerpustakaanSirkulasi.class.getName());
+    private static final Logger LOG = Logger.getLogger(PerpustakaanSirkulasi.class.getName());
+
 }

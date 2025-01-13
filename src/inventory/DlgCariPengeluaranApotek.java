@@ -30,21 +30,30 @@ import keuangan.Jurnal;
 import simrskhanza.DlgCariBangsal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private riwayatobat Trackobat = new riwayatobat();
+
     private int i = 0, no = 1;
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     public DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
 
     /**
@@ -56,10 +65,15 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
      *
      */
     public DlgBarang barang = new DlgBarang(null, false);
+
     private DecimalFormat df2 = new DecimalFormat("###,###,###,###,###,###,###");
+
     private double ttl = 0, subttl = 0;
+
     private String nokeluar = "", bang = "", ptg = "", jen = "", bar = "", tanggal = "";
+
     private String aktifkanbatch = "no", DEPOAKTIFOBAT = "";
+
     private boolean sukses = true;
 
     /**
@@ -72,10 +86,8 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Keluar", "Tanggal", "Keterangan", "Lokasi", "Petugas", "", "",
-            ""
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Keluar", "Tanggal", "Keterangan", "Lokasi", "Petugas", "", "", ""}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -109,11 +121,9 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "No.Keluar", "Tanggal", "Keterangan", "Asal Stok", "Petugas",
-            "Kode Barang", "Nama Barang", "Jenis", "Satuan", "No.Batch",
-            "No.Faktur", "Harga", "Jml", "Total"
-        }) {
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"No.Keluar", "Tanggal", "Keterangan", "Asal Stok", "Petugas", "Kode Barang",
+                    "Nama Barang", "Jenis", "Satuan", "No.Batch", "No.Faktur", "Harga", "Jml", "Total"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -168,8 +178,7 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -207,10 +216,10 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPengeluaranApotek")) {
                     if (bangsal.getTable().getSelectedRow() != -1) {
-                        kdgudang.setText(bangsal.getTable().getValueAt(bangsal.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmgudang.setText(bangsal.getTable().getValueAt(bangsal.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdgudang
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                        nmgudang
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                     }
                     kdgudang.requestFocus();
                 }
@@ -247,10 +256,8 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPengeluaranApotek")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -287,10 +294,8 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPengeluaranApotek")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -347,12 +352,12 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPengeluaranApotek")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -387,7 +392,9 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -841,14 +848,13 @@ public class DlgCariPengeluaranApotek extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasienActionPerformed
-        akses.setform("DlgCariPengeluaranApotek");
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgCariPengeluaranApotek");//GEN-FIRST:event_btnPasienActionPerformed
         bangsal.emptTeks();
         bangsal.isCek();
         bangsal.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1229,8 +1235,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPengeluaranApotek dialog = new DlgCariPengeluaranApotek(
-                    new javax.swing.JFrame(), true);
+            DlgCariPengeluaranApotek dialog = new DlgCariPengeluaranApotek(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1288,17 +1293,15 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        tanggal = "  pengeluaran_obat_bhp.tanggal between '" + Valid.SetTgl(
-                Tgl1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(Tgl2.
-                getSelectedItem() + "") + "' ";
+        tanggal = "  pengeluaran_obat_bhp.tanggal between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' ";
         nokeluar = "";
         bang = "";
         ptg = "";
         jen = "";
         bar = "";
         if (!NoNota.getText().isEmpty()) {
-            nokeluar = " and pengeluaran_obat_bhp.no_keluar='" + NoNota.
-                    getText() + "' ";
+            nokeluar = " and pengeluaran_obat_bhp.no_keluar='" + NoNota.getText() + "' ";
         }
         if (!nmgudang.getText().isEmpty()) {
             bang = " and bangsal.nm_bangsal='" + nmgudang.getText() + "' ";
@@ -1315,54 +1318,39 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select pengeluaran_obat_bhp.no_keluar, pengeluaran_obat_bhp.tanggal, "
-                    + "pengeluaran_obat_bhp.nip,petugas.nama, "
-                    + "pengeluaran_obat_bhp.kd_bangsal,bangsal.nm_bangsal, "
+            ps = koneksi.prepareStatement("select pengeluaran_obat_bhp.no_keluar, pengeluaran_obat_bhp.tanggal, "
+                    + "pengeluaran_obat_bhp.nip,petugas.nama, " + "pengeluaran_obat_bhp.kd_bangsal,bangsal.nm_bangsal, "
                     + "pengeluaran_obat_bhp.keterangan "
                     + " from pengeluaran_obat_bhp inner join petugas inner join bangsal inner join jenis  "
                     + " inner join detail_pengeluaran_obat_bhp inner join databarang "
                     + " on detail_pengeluaran_obat_bhp.kode_brng=databarang.kode_brng "
                     + " and pengeluaran_obat_bhp.kd_bangsal=bangsal.kd_bangsal "
                     + " and pengeluaran_obat_bhp.no_keluar=detail_pengeluaran_obat_bhp.no_keluar "
-                    + " and pengeluaran_obat_bhp.nip=petugas.nip and databarang.kdjns=jenis.kdjns "
-                    + " where " + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.no_keluar like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.kd_bangsal like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.nip like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and petugas.nama like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.keterangan like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and detail_pengeluaran_obat_bhp.no_batch like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and detail_pengeluaran_obat_bhp.kode_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and bangsal.nm_bangsal like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and databarang.nama_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and jenis.nama like '%" + TCari.
-                            getText() + "%' "
+                    + " and pengeluaran_obat_bhp.nip=petugas.nip and databarang.kdjns=jenis.kdjns " + " where "
+                    + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.no_keluar like '%"
+                    + TCari.getText() + "%' or " + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and pengeluaran_obat_bhp.kd_bangsal like '%" + TCari.getText() + "%' or " + tanggal + nokeluar
+                    + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.nip like '%" + TCari.getText() + "%' or "
+                    + tanggal + nokeluar + bang + ptg + jen + bar + " and petugas.nama like '%" + TCari.getText()
+                    + "%' or " + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and pengeluaran_obat_bhp.keterangan like '%" + TCari.getText() + "%' or " + tanggal + nokeluar
+                    + bang + ptg + jen + bar + " and detail_pengeluaran_obat_bhp.no_batch like '%" + TCari.getText()
+                    + "%' or " + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and detail_pengeluaran_obat_bhp.kode_brng like '%" + TCari.getText() + "%' or " + tanggal
+                    + nokeluar + bang + ptg + jen + bar + " and bangsal.nm_bangsal like '%" + TCari.getText() + "%' or "
+                    + tanggal + nokeluar + bang + ptg + jen + bar + " and databarang.nama_brng like '%"
+                    + TCari.getText() + "%' or " + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and jenis.nama like '%" + TCari.getText() + "%' "
                     + " group by pengeluaran_obat_bhp.no_keluar order by pengeluaran_obat_bhp.tanggal,pengeluaran_obat_bhp.no_keluar ");
             try {
                 rs = ps.executeQuery();
                 ttl = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_keluar"), rs.getString("tanggal"),
-                        rs.getString("keterangan"),
-                        rs.getString("kd_bangsal") + ", " + rs.getString(
-                        "nm_bangsal"),
-                        rs.getString("nip") + ", " + rs.getString("nama"), "",
-                        "", ""
-                    });
-                    tabMode.addRow(new String[]{
-                        "", "No.Batch & Faktur", "Barang", "Jenis", "Satuan",
-                        "Harga", "Jml", "Total"
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_keluar"), rs.getString("tanggal"),
+                        rs.getString("keterangan"), rs.getString("kd_bangsal") + ", " + rs.getString("nm_bangsal"),
+                        rs.getString("nip") + ", " + rs.getString("nama"), "", "", ""});
+                    tabMode.addRow(new String[]{"", "No.Batch & Faktur", "Barang", "Jenis", "Satuan", "Harga", "Jml",
+                        "Total"});
                     ps2 = koneksi.prepareStatement(
                             " select detail_pengeluaran_obat_bhp.kode_brng,databarang.nama_brng,detail_pengeluaran_obat_bhp.no_faktur,"
                             + " jenis.nama,detail_pengeluaran_obat_bhp.harga_beli,detail_pengeluaran_obat_bhp.jumlah, "
@@ -1370,18 +1358,15 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             + " detail_pengeluaran_obat_bhp inner join databarang inner join jenis "
                             + " on detail_pengeluaran_obat_bhp.kode_brng=databarang.kode_brng "
                             + " and databarang.kdjns=jenis.kdjns where "
-                            + " detail_pengeluaran_obat_bhp.no_keluar='" + rs.
-                                    getString("no_keluar") + "' " + jen + bar + " and detail_pengeluaran_obat_bhp.kode_brng like '%" + TCari.
-                            getText() + "%' or "
-                            + " detail_pengeluaran_obat_bhp.no_keluar='" + rs.
-                                    getString("no_keluar") + "' " + jen + bar + " and databarang.nama_brng like '%" + TCari.
-                            getText() + "%' or "
-                            + " detail_pengeluaran_obat_bhp.no_keluar='" + rs.
-                                    getString("no_keluar") + "' " + jen + bar + " and detail_pengeluaran_obat_bhp.no_batch like '%" + TCari.
-                            getText() + "%' or "
-                            + " detail_pengeluaran_obat_bhp.no_keluar='" + rs.
-                                    getString("no_keluar") + "' " + jen + bar + " and jenis.nama like '%" + TCari.
-                            getText() + "%' order by detail_pengeluaran_obat_bhp.kode_brng");
+                            + " detail_pengeluaran_obat_bhp.no_keluar='" + rs.getString("no_keluar") + "' "
+                            + jen + bar + " and detail_pengeluaran_obat_bhp.kode_brng like '%" + TCari.getText()
+                            + "%' or " + " detail_pengeluaran_obat_bhp.no_keluar='" + rs.getString("no_keluar")
+                            + "' " + jen + bar + " and databarang.nama_brng like '%" + TCari.getText()
+                            + "%' or " + " detail_pengeluaran_obat_bhp.no_keluar='" + rs.getString("no_keluar")
+                            + "' " + jen + bar + " and detail_pengeluaran_obat_bhp.no_batch like '%"
+                            + TCari.getText() + "%' or " + " detail_pengeluaran_obat_bhp.no_keluar='"
+                            + rs.getString("no_keluar") + "' " + jen + bar + " and jenis.nama like '%"
+                            + TCari.getText() + "%' order by detail_pengeluaran_obat_bhp.kode_brng");
                     try {
                         rs2 = ps2.executeQuery();
                         no = 1;
@@ -1389,25 +1374,16 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         while (rs2.next()) {
                             subttl += rs2.getDouble("total");
                             ttl += rs2.getDouble("total");
-                            tabMode.addRow(new String[]{
-                                "",
-                                no + ". B " + rs2.getString("no_batch") + ", F " + rs2.
-                                getString("no_faktur"), rs2.getString(
-                                "kode_brng") + ", " + rs2.getString("nama_brng"),
+                            tabMode.addRow(new String[]{"",
+                                no + ". B " + rs2.getString("no_batch") + ", F " + rs2.getString("no_faktur"),
+                                rs2.getString("kode_brng") + ", " + rs2.getString("nama_brng"),
                                 rs2.getString("nama"), rs2.getString("kode_sat"),
-                                df2.format(rs2.getDouble("harga_beli")),
-                                df2.format(rs2.getDouble("jumlah")), df2.format(
-                                rs2.getDouble("total"))
-                            });
+                                df2.format(rs2.getDouble("harga_beli")), df2.format(rs2.getDouble("jumlah")),
+                                df2.format(rs2.getDouble("total"))});
                             no++;
                         }
-                        tabMode.addRow(new String[]{
-                            "", "Sub Total :", "", "", "", "", "", df2.format(
-                            subttl)
-                        });
-                        tabMode.addRow(new String[]{
-                            "", "", "", "", "", "", "", ""
-                        });
+                        tabMode.addRow(new String[]{"", "Sub Total :", "", "", "", "", "", df2.format(subttl)});
+                        tabMode.addRow(new String[]{"", "", "", "", "", "", "", ""});
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     } finally {
@@ -1436,17 +1412,15 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     private void tampil2() {
-        tanggal = " pengeluaran_obat_bhp.tanggal between '" + Valid.SetTgl(Tgl1.
-                getSelectedItem() + "") + "' and '" + Valid.SetTgl(Tgl2.
-                        getSelectedItem() + "") + "' ";
+        tanggal = " pengeluaran_obat_bhp.tanggal between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' ";
         nokeluar = "";
         bang = "";
         ptg = "";
         jen = "";
         bar = "";
         if (!NoNota.getText().isEmpty()) {
-            nokeluar = " and pengeluaran_obat_bhp.no_keluar='" + NoNota.
-                    getText() + "' ";
+            nokeluar = " and pengeluaran_obat_bhp.no_keluar='" + NoNota.getText() + "' ";
         }
         if (!nmgudang.getText().isEmpty()) {
             bang = " and bangsal.nm_bangsal='" + nmgudang.getText() + "' ";
@@ -1474,45 +1448,33 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     + " on detail_pengeluaran_obat_bhp.kode_brng=databarang.kode_brng "
                     + " and pengeluaran_obat_bhp.kd_bangsal=bangsal.kd_bangsal "
                     + " and pengeluaran_obat_bhp.no_keluar=detail_pengeluaran_obat_bhp.no_keluar "
-                    + " and pengeluaran_obat_bhp.nip=petugas.nip and databarang.kdjns=jenis.kdjns "
-                    + " where " + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.no_keluar like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.kd_bangsal like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.nip like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and petugas.nama like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.keterangan like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and detail_pengeluaran_obat_bhp.no_batch like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and detail_pengeluaran_obat_bhp.kode_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and bangsal.nm_bangsal like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and databarang.nama_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + nokeluar + bang + ptg + jen + bar + " and jenis.nama like '%" + TCari.
-                            getText() + "%' "
+                    + " and pengeluaran_obat_bhp.nip=petugas.nip and databarang.kdjns=jenis.kdjns " + " where "
+                    + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and pengeluaran_obat_bhp.no_keluar like '%" + TCari.getText() + "%' or " + tanggal
+                    + nokeluar + bang + ptg + jen + bar + " and pengeluaran_obat_bhp.kd_bangsal like '%"
+                    + TCari.getText() + "%' or " + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and pengeluaran_obat_bhp.nip like '%" + TCari.getText() + "%' or " + tanggal + nokeluar
+                    + bang + ptg + jen + bar + " and petugas.nama like '%" + TCari.getText() + "%' or "
+                    + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and pengeluaran_obat_bhp.keterangan like '%" + TCari.getText() + "%' or " + tanggal
+                    + nokeluar + bang + ptg + jen + bar + " and detail_pengeluaran_obat_bhp.no_batch like '%"
+                    + TCari.getText() + "%' or " + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and detail_pengeluaran_obat_bhp.kode_brng like '%" + TCari.getText() + "%' or "
+                    + tanggal + nokeluar + bang + ptg + jen + bar + " and bangsal.nm_bangsal like '%"
+                    + TCari.getText() + "%' or " + tanggal + nokeluar + bang + ptg + jen + bar
+                    + " and databarang.nama_brng like '%" + TCari.getText() + "%' or " + tanggal + nokeluar
+                    + bang + ptg + jen + bar + " and jenis.nama like '%" + TCari.getText() + "%' "
                     + " order by pengeluaran_obat_bhp.tanggal,pengeluaran_obat_bhp.no_keluar ");
             try {
                 rs = ps.executeQuery();
                 ttl = 0;
                 while (rs.next()) {
-                    tabMode2.addRow(new String[]{
-                        rs.getString("no_keluar"), rs.getString("tanggal"), rs.
-                        getString("keterangan"),
-                        rs.getString("kd_bangsal") + ", " + rs.getString(
-                        "nm_bangsal"), rs.getString("nip") + ", " + rs.
-                        getString("nama"),
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("namajenis"), rs.getString("kode_sat"),
-                        rs.getString("no_batch"), rs.getString("no_faktur"),
-                        df2.format(rs.getDouble("harga_beli")),
-                        df2.format(rs.getDouble("jumlah")), df2.format(rs.
-                        getDouble("total"))
-                    });
+                    tabMode2.addRow(new String[]{rs.getString("no_keluar"), rs.getString("tanggal"),
+                        rs.getString("keterangan"), rs.getString("kd_bangsal") + ", " + rs.getString("nm_bangsal"),
+                        rs.getString("nip") + ", " + rs.getString("nama"), rs.getString("kode_brng"),
+                        rs.getString("nama_brng"), rs.getString("namajenis"), rs.getString("kode_sat"),
+                        rs.getString("no_batch"), rs.getString("no_faktur"), df2.format(rs.getDouble("harga_beli")),
+                        df2.format(rs.getDouble("jumlah")), df2.format(rs.getDouble("total"))});
                     ttl += rs.getDouble("total");
                 }
             } catch (Exception e) {
@@ -1558,12 +1520,9 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         Sequel.AutoComitFalse();
         sukses = true;
         try {
-            ps = koneksi.prepareStatement(
-                    "select no_keluar, kd_bangsal from pengeluaran_obat_bhp where no_keluar=?");
+            ps = koneksi.prepareStatement("select no_keluar, kd_bangsal from pengeluaran_obat_bhp where no_keluar=?");
             try {
-                ps.setString(1, tbDokter.
-                        getValueAt(tbDokter.getSelectedRow(), 0).toString().
-                        trim());
+                ps.setString(1, tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString().trim());
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     ps2 = koneksi.prepareStatement(
@@ -1573,49 +1532,33 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
                             if (aktifkanbatch.equals("yes")) {
-                                Sequel.mengedit3("data_batch",
-                                        "no_batch=? and kode_brng=? and no_faktur=?",
-                                        "sisa=sisa+?", 4, new String[]{
-                                            "" + rs2.getDouble("jumlah"), rs2.
-                                            getString("no_batch"), rs2.
-                                            getString("kode_brng"), rs2.
-                                            getString("no_faktur")
-                                        });
-                                Trackobat.catatRiwayat(rs2.
-                                        getString("kode_brng"), rs2.getDouble(
-                                        "jumlah"), 0, "Stok Keluar", akses.
-                                                getkode(), rs.getString(
-                                                "kd_bangsal"), "Hapus", rs2.
-                                                getString("no_batch"), rs2.
-                                        getString("no_faktur"), rs.getString(
-                                        "no_keluar"));
-                                Sequel.menyimpan("gudangbarang", "'" + rs2.
-                                        getString("kode_brng") + "','" + rs.
-                                        getString("kd_bangsal") + "','" + rs2.
-                                        getString("jumlah") + "','" + rs2.
-                                        getString("no_batch") + "','" + rs2.
-                                        getString("no_faktur") + "'",
-                                        "stok=stok+'" + rs2.getString("jumlah") + "'",
-                                        "kode_brng='" + rs2.getString(
-                                                "kode_brng") + "' and kd_bangsal='" + rs.
-                                                getString("kd_bangsal") + "' and no_batch='" + rs2.
-                                        getString("no_batch") + "' and no_faktur='" + rs2.
-                                        getString("no_faktur") + "'");
-                            } else {
-                                Trackobat.catatRiwayat(rs2.
-                                        getString("kode_brng"), rs2.getDouble(
-                                        "jumlah"), 0, "Stok Keluar", akses.
-                                                getkode(), rs.getString(
-                                                "kd_bangsal"), "Hapus", "", "",
+                                Sequel.mengedit3("data_batch", "no_batch=? and kode_brng=? and no_faktur=?",
+                                        "sisa=sisa+?", 4,
+                                        new String[]{"" + rs2.getDouble("jumlah"), rs2.getString("no_batch"),
+                                            rs2.getString("kode_brng"), rs2.getString("no_faktur")});
+                                Trackobat.catatRiwayat(rs2.getString("kode_brng"), rs2.getDouble("jumlah"), 0,
+                                        "Stok Keluar", akses.getkode(), rs.getString("kd_bangsal"), "Hapus",
+                                        rs2.getString("no_batch"), rs2.getString("no_faktur"),
                                         rs.getString("no_keluar"));
-                                Sequel.menyimpan("gudangbarang", "'" + rs2.
-                                        getString("kode_brng") + "','" + rs.
-                                        getString("kd_bangsal") + "','" + rs2.
-                                        getString("jumlah") + "','',''",
+                                Sequel.menyimpan("gudangbarang",
+                                        "'" + rs2.getString("kode_brng") + "','" + rs.getString("kd_bangsal") + "','"
+                                        + rs2.getString("jumlah") + "','" + rs2.getString("no_batch") + "','"
+                                        + rs2.getString("no_faktur") + "'",
                                         "stok=stok+'" + rs2.getString("jumlah") + "'",
-                                        "kode_brng='" + rs2.getString(
-                                                "kode_brng") + "' and kd_bangsal='" + rs.
-                                                getString("kd_bangsal") + "' and no_batch='' and no_faktur=''");
+                                        "kode_brng='" + rs2.getString("kode_brng") + "' and kd_bangsal='"
+                                        + rs.getString("kd_bangsal") + "' and no_batch='"
+                                        + rs2.getString("no_batch") + "' and no_faktur='"
+                                        + rs2.getString("no_faktur") + "'");
+                            } else {
+                                Trackobat.catatRiwayat(rs2.getString("kode_brng"), rs2.getDouble("jumlah"), 0,
+                                        "Stok Keluar", akses.getkode(), rs.getString("kd_bangsal"), "Hapus", "", "",
+                                        rs.getString("no_keluar"));
+                                Sequel.menyimpan("gudangbarang",
+                                        "'" + rs2.getString("kode_brng") + "','" + rs.getString("kd_bangsal") + "','"
+                                        + rs2.getString("jumlah") + "','',''",
+                                        "stok=stok+'" + rs2.getString("jumlah") + "'",
+                                        "kode_brng='" + rs2.getString("kode_brng") + "' and kd_bangsal='"
+                                        + rs.getString("kd_bangsal") + "' and no_batch='' and no_faktur=''");
                             }
                         }
                     } catch (Exception e) {
@@ -1632,29 +1575,25 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     if (sukses == true) {
                         Sequel.queryu("delete from tampjurnal");
                         Sequel.menyimpan("tampjurnal", "?,?,?,?", 4,
-                                new String[]{Sequel.cariIsi(
-                                            "select Stok_Keluar_Medis from set_akun"),
-                                    "PERSEDIAAN BARANG", Sequel.cariIsi(
-                                            "select sum(total) from detail_pengeluaran_obat_bhp where no_keluar='" + rs.
-                                                    getString("no_keluar") + "'"),
+                                new String[]{Sequel.cariIsi("select Stok_Keluar_Medis from set_akun"),
+                                    "PERSEDIAAN BARANG",
+                                    Sequel.cariIsi(
+                                            "select sum(total) from detail_pengeluaran_obat_bhp where no_keluar='"
+                                            + rs.getString("no_keluar") + "'"),
                                     "0"});
                         Sequel.menyimpan("tampjurnal", "?,?,?,?", 4,
-                                new String[]{Sequel.cariIsi(
-                                            "select Kontra_Stok_Keluar_Medis from set_akun"),
-                                    "KONTRA PERSEDIAAN BARANG", "0", Sequel.
-                                            cariIsi("select sum(total) from detail_pengeluaran_obat_bhp where no_keluar='" + rs.
-                                                    getString("no_keluar") + "'")});
-                        sukses = jur.
-                                simpanJurnal(rs.getString("no_keluar"), "U",
-                                        "PEMBATALAN STOK KELUAR BARANG MEDIS/OBAT/ALKES/BHP" + ", OLEH " + akses.
-                                                getkode());
+                                new String[]{Sequel.cariIsi("select Kontra_Stok_Keluar_Medis from set_akun"),
+                                    "KONTRA PERSEDIAAN BARANG", "0",
+                                    Sequel.cariIsi(
+                                            "select sum(total) from detail_pengeluaran_obat_bhp where no_keluar='"
+                                            + rs.getString("no_keluar") + "'")});
+                        sukses = jur.simpanJurnal(rs.getString("no_keluar"), "U",
+                                "PEMBATALAN STOK KELUAR BARANG MEDIS/OBAT/ALKES/BHP" + ", OLEH " + akses.getkode());
                     }
                 }
                 if (sukses == true) {
-                    Sequel.queryu(
-                            "delete from pengeluaran_obat_bhp where no_keluar='" + tbDokter.
-                                    getValueAt(tbDokter.getSelectedRow(), 0).
-                                    toString().trim() + "'");
+                    Sequel.queryu("delete from pengeluaran_obat_bhp where no_keluar='"
+                            + tbDokter.getValueAt(tbDokter.getSelectedRow(), 0).toString().trim() + "'");
                     Sequel.Commit();
                 } else {
                     sukses = false;
@@ -1681,6 +1620,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         Sequel.AutoComitTrue();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgCariPengeluaranApotek.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPengeluaranApotek.class.getName());
+
 }

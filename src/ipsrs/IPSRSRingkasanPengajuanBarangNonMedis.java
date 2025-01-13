@@ -26,21 +26,30 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private IPSRSBarang barang = new IPSRSBarang(null, false);
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private double total = 0;
+
     private int i = 0;
+
     private String order = "order by ipsrsbarang.nama_brng";
 
     /**
@@ -49,29 +58,24 @@ public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public IPSRSRingkasanPengajuanBarangNonMedis(java.awt.Frame parent,
-            boolean modal) {
+    public IPSRSRingkasanPengajuanBarangNonMedis(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis",
-            "Jumlah", "Total", "Kode Sat"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Jumlah", "Total", "Kode Sat"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -104,14 +108,12 @@ public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        NoPermintaan.
-                setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
+        NoPermintaan.setDocument(new batasInput((byte) 20).getKata(NoPermintaan));
         KdPeg.setDocument(new batasInput((byte) 20).getKata(KdPeg));
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -148,10 +150,8 @@ public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPeg.requestFocus();
             }
@@ -186,10 +186,8 @@ public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kdbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 0).toString());
-                    nmbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 1).toString());
+                    kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                    nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                 }
                 kdbar.requestFocus();
             }
@@ -242,12 +240,10 @@ public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 0).
-                            toString());
-                    nmjenis.setText(barang.jenis.getTable().getValueAt(
-                            barang.jenis.getTable().getSelectedRow(), 1).
-                            toString());
+                    kdjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjenis.setText(
+                            barang.jenis.getTable().getValueAt(barang.jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 kdjenis.requestFocus();
             }
@@ -272,7 +268,9 @@ public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -861,13 +859,12 @@ public class IPSRSRingkasanPengajuanBarangNonMedis extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
-        pegawai.emptTeks();
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        pegawai.emptTeks();//GEN-FIRST:event_btnPetugasActionPerformed
         pegawai.setSize(internalFrame1.getWidth() - 20, internalFrame1.
                 getHeight() - 20);
         pegawai.setLocationRelativeTo(internalFrame1);
@@ -1264,8 +1261,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(1, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(3, "%" + NoPermintaan.getText() + "%");
-                ps.setString(4, "%" + Status.getSelectedItem().toString().
-                        replaceAll("Semua", "") + "%");
+                ps.setString(4, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 ps.setString(5, "%" + NmPeg.getText() + "%");
                 ps.setString(6, "%" + nmjenis.getText() + "%");
                 ps.setString(7, "%" + nmbar.getText() + "%");
@@ -1273,9 +1269,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(9, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(10, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(11, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(12,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(12, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(13, "%" + NmPeg.getText() + "%");
                 ps.setString(14, "%" + nmjenis.getText() + "%");
                 ps.setString(15, "%" + nmbar.getText() + "%");
@@ -1283,9 +1277,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(17, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(18, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(19, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(20,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(20, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(21, "%" + NmPeg.getText() + "%");
                 ps.setString(22, "%" + nmjenis.getText() + "%");
                 ps.setString(23, "%" + nmbar.getText() + "%");
@@ -1293,9 +1285,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(25, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(26, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(27, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(28,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(28, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(29, "%" + NmPeg.getText() + "%");
                 ps.setString(30, "%" + nmjenis.getText() + "%");
                 ps.setString(31, "%" + nmbar.getText() + "%");
@@ -1303,9 +1293,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(33, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(34, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(35, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(36,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(36, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(37, "%" + NmPeg.getText() + "%");
                 ps.setString(38, "%" + nmjenis.getText() + "%");
                 ps.setString(39, "%" + nmbar.getText() + "%");
@@ -1313,9 +1301,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(41, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(42, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(43, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(44,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(44, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(45, "%" + NmPeg.getText() + "%");
                 ps.setString(46, "%" + nmjenis.getText() + "%");
                 ps.setString(47, "%" + nmbar.getText() + "%");
@@ -1323,9 +1309,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(49, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(50, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(51, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(52,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(52, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(53, "%" + NmPeg.getText() + "%");
                 ps.setString(54, "%" + nmjenis.getText() + "%");
                 ps.setString(55, "%" + nmbar.getText() + "%");
@@ -1333,9 +1317,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(57, Valid.SetTgl(Tanggal1.getSelectedItem() + ""));
                 ps.setString(58, Valid.SetTgl(Tanggal2.getSelectedItem() + ""));
                 ps.setString(59, "%" + NoPermintaan.getText() + "%");
-                ps.
-                        setString(60,
-                                "%" + Status.getSelectedItem().toString() + "%");
+                ps.setString(60, "%" + Status.getSelectedItem().toString() + "%");
                 ps.setString(61, "%" + NmPeg.getText() + "%");
                 ps.setString(62, "%" + nmjenis.getText() + "%");
                 ps.setString(63, "%" + nmbar.getText() + "%");
@@ -1344,12 +1326,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 total = 0;
                 while (rs.next()) {
                     total += rs.getDouble("total");
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("satuan"), rs.getString("namajenis"), rs.
-                        getDouble("jumlah"), rs.getDouble("total"), rs.
-                        getString("kode_sat")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("satuan"), rs.getString("namajenis"), rs.getDouble("jumlah"),
+                        rs.getDouble("total"), rs.getString("kode_sat")});
                 }
                 LTotal.setText(Valid.SetAngka(total));
             } catch (Exception e) {
@@ -1381,6 +1360,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         BtnPrint.setEnabled(akses.getringkasan_pengajuan_nonmedis());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            IPSRSRingkasanPengajuanBarangNonMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(IPSRSRingkasanPengajuanBarangNonMedis.class.getName());
+
 }

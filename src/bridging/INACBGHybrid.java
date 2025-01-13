@@ -70,11 +70,9 @@ public class INACBGHybrid extends javax.swing.JDialog {
 
     private final validasi Valid = new validasi();
 
-    private final DlgDiagnosaPenyakit diagnosa = new DlgDiagnosaPenyakit(null,
-            false);
+    private final DlgDiagnosaPenyakit diagnosa = new DlgDiagnosaPenyakit(null, false);
 
-    private final INACBGPerawatanCorona corona = new INACBGPerawatanCorona(null,
-            false);
+    private final INACBGPerawatanCorona corona = new INACBGPerawatanCorona(null, false);
 
     private final Connection koneksi = koneksiDB.condb();
 
@@ -182,8 +180,7 @@ public class INACBGHybrid extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -208,105 +205,73 @@ public class INACBGHybrid extends javax.swing.JDialog {
 
                 engine.getLoadWorker()
                         .workDoneProperty()
-                        .addListener(
-                                (ObservableValue<? extends Number> observableValue, Number oldValue,
-                                        final Number newValue) -> {
-                                    SwingUtilities.invokeLater(() -> {
-                                        progressBar.
-                                                setValue(newValue.intValue());
-                                    });
-                                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
+                            SwingUtilities.invokeLater(() -> {
+                                progressBar.setValue(newValue.intValue());
+                            });
+                        });
 
                 engine.getLoadWorker()
                         .exceptionProperty()
-                        .addListener(
-                                (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
-                                    if (engine.getLoadWorker().getState() == FAILED) {
-                                        SwingUtilities.invokeLater(() -> {
-                                            JOptionPane.showMessageDialog(panel,
-                                                    (value != null) ? engine.
-                                                                    getLocation() + "\n" + value.
-                                                                    getMessage()
-                                                            : engine.
-                                                                    getLocation() + "\nUnexpected Catatan.",
-                                                    "Loading Catatan...",
-                                                    JOptionPane.ERROR_MESSAGE);
-                                        });
-                                    }
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                            if (engine.getLoadWorker().getState() == FAILED) {
+                                SwingUtilities.invokeLater(() -> {
+                                    JOptionPane.showMessageDialog(panel,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
+                                                    : engine.getLocation() + "\nUnexpected Catatan.",
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
+                            }
+                        });
 
                 engine.locationProperty()
-                        .addListener(
-                                (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
-                                    SwingUtilities.invokeLater(() -> {
-                                        txtURL.setText(newValue);
-                                    });
-                                });
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                            SwingUtilities.invokeLater(() -> {
+                                txtURL.setText(newValue);
+                            });
+                        });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState,
-                            State newState) {
+                    public void changed(ObservableValue ov, State oldState, State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
                                 if (engine.getLocation()
-                                        .replaceAll("http://" + koneksiDB.
-                                                HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                        PORTWEB() + "/"
-                                                + koneksiDB.HYBRIDWEB() + "/",
-                                                "")
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                + koneksiDB.HYBRIDWEB() + "/", "")
                                         .contains("inacbg/pages")) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                                     Valid
                                             .panggilUrl(
                                                     engine.getLocation()
-                                                            .replaceAll(
-                                                                    "http://" + koneksiDB.
-                                                                            HOSTHYBRIDWEB() + ":"
-                                                                    + koneksiDB.
-                                                                            PORTWEB() + "/" + koneksiDB.
-                                                                            HYBRIDWEB() + "/",
+                                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/",
                                                                     ""));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
                                 } else if (engine.getLocation()
-                                        .replaceAll("http://" + koneksiDB.
-                                                HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                        PORTWEB() + "/"
-                                                + koneksiDB.HYBRIDWEB() + "/",
-                                                "")
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                + koneksiDB.HYBRIDWEB() + "/", "")
                                         .contains("Keluar")) {
                                     dispose();
                                 } else if (engine.getLocation()
-                                        .replaceAll("http://" + koneksiDB.
-                                                HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                        PORTWEB() + "/"
-                                                + koneksiDB.HYBRIDWEB() + "/",
-                                                "")
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                + koneksiDB.HYBRIDWEB() + "/", "")
                                         .contains("InputDiagnosa")) {
-                                    URL = engine.getLocation().replaceAll(
-                                            "InputDiagnosa", "no");
+                                    URL = engine.getLocation().replaceAll("InputDiagnosa", "no");
                                     ps = koneksi.prepareStatement(
                                             "select temppanggilnorawat.no_rawat, reg_periksa.status_lanjut, reg_periksa.tgl_registrasi  "
                                             + "from temppanggilnorawat inner join reg_periksa on temppanggilnorawat.no_rawat=reg_periksa.no_rawat");
                                     try {
                                         rs = ps.executeQuery();
                                         if (rs.next()) {
-                                            diagnosa.setSize(internalFrame1.
-                                                    getWidth() - 20,
+                                            diagnosa.setSize(internalFrame1.getWidth() - 20,
                                                     internalFrame1.getHeight() - 20);
-                                            diagnosa.setLocationRelativeTo(
-                                                    internalFrame1);
+                                            diagnosa.setLocationRelativeTo(internalFrame1);
                                             diagnosa.isCek();
-                                            diagnosa.setNoRm(rs.getString(
-                                                    "no_rawat"), rs.getDate(
-                                                            "tgl_registrasi"),
-                                                    rs.getDate("tgl_registrasi"),
-                                                    rs.
-                                                            getString(
-                                                                    "status_lanjut"));
+                                            diagnosa.setNoRm(rs.getString("no_rawat"), rs.getDate("tgl_registrasi"),
+                                                    rs.getDate("tgl_registrasi"), rs.getString("status_lanjut"));
                                             diagnosa.panelDiagnosa1.tampil();
                                             diagnosa.setVisible(true);
                                         }
@@ -321,14 +286,10 @@ public class INACBGHybrid extends javax.swing.JDialog {
                                         }
                                     }
                                 } else if (engine.getLocation()
-                                        .replaceAll("http://" + koneksiDB.
-                                                HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                        PORTWEB() + "/"
-                                                + koneksiDB.HYBRIDWEB() + "/",
-                                                "")
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/"
+                                                + koneksiDB.HYBRIDWEB() + "/", "")
                                         .contains("InputCorona")) {
-                                    URL = engine.getLocation().replaceAll(
-                                            "InputCorona", "no");
+                                    URL = engine.getLocation().replaceAll("InputCorona", "no");
                                     ps = koneksi.prepareStatement(
                                             "select temppanggilnorawat.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien "
                                             + "from temppanggilnorawat inner join reg_periksa on temppanggilnorawat.no_rawat=reg_periksa.no_rawat "
@@ -336,15 +297,11 @@ public class INACBGHybrid extends javax.swing.JDialog {
                                     try {
                                         rs = ps.executeQuery();
                                         if (rs.next()) {
-                                            corona.setSize(internalFrame1.
-                                                    getWidth() - 20,
+                                            corona.setSize(internalFrame1.getWidth() - 20,
                                                     internalFrame1.getHeight() - 20);
-                                            corona.setLocationRelativeTo(
-                                                    internalFrame1);
+                                            corona.setLocationRelativeTo(internalFrame1);
                                             corona.isCek();
-                                            corona.setPasien(rs.getString(
-                                                    "no_rawat"), rs.getString(
-                                                            "no_rkm_medis"),
+                                            corona.setPasien(rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
                                                     rs.getString("nm_pasien"));
                                             corona.tampil();
                                             corona.setVisible(true);
@@ -404,13 +361,10 @@ public class INACBGHybrid extends javax.swing.JDialog {
      */
     public void print(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
-                PageOrientation.PORTRAIT,
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT,
                 Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.
-                getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.
-                getBoundsInParent().getHeight();
+        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -423,7 +377,9 @@ public class INACBGHybrid extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -469,8 +425,7 @@ public class INACBGHybrid extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            INACBGHybrid dialog = new INACBGHybrid(new javax.swing.JFrame(),
-                    true);
+            INACBGHybrid dialog = new INACBGHybrid(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -488,15 +443,11 @@ public class INACBGHybrid extends javax.swing.JDialog {
 
     public void setJudul(String Judul) {
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
-                        240, 245, 235)), Judul,
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50,
-                        50))); // NOI18N
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), Judul,
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
     }
 
-    private static final Logger LOG = Logger.getLogger(INACBGHybrid.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(INACBGHybrid.class.getName());
 
 }

@@ -41,15 +41,20 @@ import simrskhanza.DlgCariBangsal;
 public class DlgBarang extends javax.swing.JDialog {
 
     private DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     public DlgCariJenis jenis = new DlgCariJenis(null, false);
 
     /**
      *
      */
     public DlgCariKategori kategori = new DlgCariKategori(null, false);
+
     public DlgCariGolongan golongan = new DlgCariGolongan(null, false);
 
     /**
@@ -60,57 +65,46 @@ public class DlgBarang extends javax.swing.JDialog {
     /**
      *
      */
-    public DlgCariIndustriFarmasi industri = new DlgCariIndustriFarmasi(null,
-            false);
+    public DlgCariIndustriFarmasi industri = new DlgCariIndustriFarmasi(null, false);
+
     private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+
     private double totalstok, stokgudang;
+
     private PreparedStatement ps, ps2, ps3, ps4;
+
     private ResultSet rs, rs2, rs3;
+
     private int i = 0;
 
     /**
      *
      */
-    public String aktifkanbatch = "no", pengaturanharga = Sequel.cariIsi(
-            "select set_harga_obat.setharga from set_harga_obat");
+    public String aktifkanbatch = "no",
+            pengaturanharga = Sequel.cariIsi("select set_harga_obat.setharga from set_harga_obat");
+
     private String kdlokasi = "", nmlokasi = "", tanggal = "0000-00-00", qrystok = "";
 
     public DlgBarang(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "P", "Kode Barang", "Nama Barang", "Kd.Sat Besar", "Nm.Satuan Besar",
-            "Isi", "Kd.Sat Kecil", "Nm.Satuan Kecil",
-            "Kps", "Kandungan", "Hrg.Dasar(Rp)", "Hrg.Beli(Rp)", "Ralan(Rp)",
-            "Ranap K1(Rp)", "Ranap K2(Rp)", "Ranap K3(Rp)",
-            "Kelas Utama/BPJS(Rp)", "Ranap VIP(Rp)", "Ranap VVIP(Rp)",
-            "Beli Luar(Rp)", "Jual Bebas(Rp)", "Karyawan(Rp)",
-            "Stok Min", "Kode Jenis", "Nama Jenis", "Kadaluwarsa", "Kode I.F.",
-            "Industri Farmasi", "Kode Kategori", "Kategori",
-            "Kode Golongan", "Golongan"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"P", "Kode Barang", "Nama Barang", "Kd.Sat Besar", "Nm.Satuan Besar", "Isi",
+                    "Kd.Sat Kecil", "Nm.Satuan Kecil", "Kps", "Kandungan", "Hrg.Dasar(Rp)", "Hrg.Beli(Rp)",
+                    "Ralan(Rp)", "Ranap K1(Rp)", "Ranap K2(Rp)", "Ranap K3(Rp)", "Kelas Utama/BPJS(Rp)",
+                    "Ranap VIP(Rp)", "Ranap VVIP(Rp)", "Beli Luar(Rp)", "Jual Bebas(Rp)", "Karyawan(Rp)",
+                    "Stok Min", "Kode Jenis", "Nama Jenis", "Kadaluwarsa", "Kode I.F.", "Industri Farmasi",
+                    "Kode Kategori", "Kategori", "Kode Golongan", "Golongan"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -225,8 +219,7 @@ public class DlgBarang extends javax.swing.JDialog {
         karyawan.setDocument(new batasInput((byte) 15).getKata(karyawan));
         Kapasitas.setDocument(new batasInput((byte) 15).getKata(Kapasitas));
         Isi.setDocument(new batasInput((byte) 15).getKata(Isi));
-        stok_minimal.
-                setDocument(new batasInput((byte) 15).getKata(stok_minimal));
+        stok_minimal.setDocument(new batasInput((byte) 15).getKata(stok_minimal));
         kdjns.setDocument(new batasInput((byte) 5).getKata(kdjns));
         kdgolongan.setDocument(new batasInput((byte) 4).getKata(kdgolongan));
         kdkategori.setDocument(new batasInput((byte) 4).getKata(kdkategori));
@@ -247,10 +240,8 @@ public class DlgBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (bangsal.getTable().getSelectedRow() != -1) {
-                    kdlokasi = bangsal.getTable().getValueAt(bangsal.getTable().
-                            getSelectedRow(), 0).toString();
-                    nmlokasi = bangsal.getTable().getValueAt(bangsal.getTable().
-                            getSelectedRow(), 1).toString();
+                    kdlokasi = bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString();
+                    nmlokasi = bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString();
                     tampil3();
                 }
             }
@@ -286,10 +277,8 @@ public class DlgBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 BtnJenis.requestFocus();
             }
@@ -326,18 +315,16 @@ public class DlgBarang extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgBarang")) {
                     if (satuan.getTable().getSelectedRow() != -1) {
                         if (i == 1) {
-                            kdsat.setText(satuan.getTable().getValueAt(satuan.
-                                    getTable().getSelectedRow(), 0).toString());
-                            nmsat.setText(satuan.getTable().getValueAt(satuan.
-                                    getTable().getSelectedRow(), 1).toString());
+                            kdsat.setText(
+                                    satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 0).toString());
+                            nmsat.setText(
+                                    satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 1).toString());
                             BtnSatuan.requestFocus();
                         } else {
-                            kdsatBesar.setText(satuan.getTable().getValueAt(
-                                    satuan.getTable().getSelectedRow(), 0).
-                                    toString());
-                            nmsatBesar.setText(satuan.getTable().getValueAt(
-                                    satuan.getTable().getSelectedRow(), 1).
-                                    toString());
+                            kdsatBesar.setText(
+                                    satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 0).toString());
+                            nmsatBesar.setText(
+                                    satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 1).toString());
                             BtnSatuanBesar.requestFocus();
                         }
 
@@ -380,12 +367,10 @@ public class DlgBarang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgBarang")) {
                     if (golongan.getTable().getSelectedRow() != -1) {
-                        kdgolongan.setText(golongan.getTable().getValueAt(
-                                golongan.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmgolongan.setText(golongan.getTable().getValueAt(
-                                golongan.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdgolongan.setText(
+                                golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 0).toString());
+                        nmgolongan.setText(
+                                golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
                     }
                 }
                 BtnGolongan.requestFocus();
@@ -423,12 +408,10 @@ public class DlgBarang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgBarang")) {
                     if (kategori.getTable().getSelectedRow() != -1) {
-                        kdkategori.setText(kategori.getTable().getValueAt(
-                                kategori.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmkategori.setText(kategori.getTable().getValueAt(
-                                kategori.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdkategori.setText(
+                                kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                        nmkategori.setText(
+                                kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                     }
                 }
                 BtnKategori.requestFocus();
@@ -466,10 +449,10 @@ public class DlgBarang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgBarang")) {
                     if (industri.getTable().getSelectedRow() != -1) {
-                        KdIF.setText(industri.getTable().getValueAt(industri.
-                                getTable().getSelectedRow(), 0).toString());
-                        NmIF.setText(industri.getTable().getValueAt(industri.
-                                getTable().getSelectedRow(), 1).toString());
+                        KdIF.setText(
+                                industri.getTable().getValueAt(industri.getTable().getSelectedRow(), 0).toString());
+                        NmIF.setText(
+                                industri.getTable().getValueAt(industri.getTable().getSelectedRow(), 1).toString());
                     }
                     BtnIF.requestFocus();
                 }
@@ -514,8 +497,7 @@ public class DlgBarang extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -542,7 +524,9 @@ public class DlgBarang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2758,39 +2742,17 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                     }
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            false, rs.getString("kode_brng"),
-                            rs.getString("nama_brng"),
-                            rs.getString("kode_satbesar"),
-                            rs.getString("satuanbesar"),
-                            rs.getDouble("isi"),
-                            rs.getString("kode_sat"),
-                            rs.getString("satuan"),
-                            rs.getDouble("kapasitas"),
-                            rs.getString("letak_barang"),
-                            rs.getDouble("dasar"),
-                            rs.getDouble("h_beli"),
-                            rs.getDouble("ralan"),
-                            rs.getDouble("kelas1"),
-                            rs.getDouble("kelas2"),
-                            rs.getDouble("kelas3"),
-                            rs.getDouble("utama"),
-                            rs.getDouble("vip"),
-                            rs.getDouble("vvip"),
-                            rs.getDouble("beliluar"),
-                            rs.getDouble("jualbebas"),
-                            rs.getDouble("karyawan"),
-                            rs.getDouble("stokminimal"),
-                            rs.getString("kdjns"),
-                            rs.getString("nama"),
-                            rs.getString("expire"),
-                            rs.getString("kode_industri"),
-                            rs.getString("nama_industri"),
-                            rs.getString("kode_kategori"),
-                            rs.getString("kategori"),
-                            rs.getString("kode_golongan"),
-                            rs.getString("golongan")
-                        });
+                        tabMode.addRow(new Object[]{false, rs.getString("kode_brng"), rs.getString("nama_brng"),
+                            rs.getString("kode_satbesar"), rs.getString("satuanbesar"), rs.getDouble("isi"),
+                            rs.getString("kode_sat"), rs.getString("satuan"), rs.getDouble("kapasitas"),
+                            rs.getString("letak_barang"), rs.getDouble("dasar"), rs.getDouble("h_beli"),
+                            rs.getDouble("ralan"), rs.getDouble("kelas1"), rs.getDouble("kelas2"),
+                            rs.getDouble("kelas3"), rs.getDouble("utama"), rs.getDouble("vip"),
+                            rs.getDouble("vvip"), rs.getDouble("beliluar"), rs.getDouble("jualbebas"),
+                            rs.getDouble("karyawan"), rs.getDouble("stokminimal"), rs.getString("kdjns"),
+                            rs.getString("nama"), rs.getString("expire"), rs.getString("kode_industri"),
+                            rs.getString("nama_industri"), rs.getString("kode_kategori"), rs.getString("kategori"),
+                            rs.getString("kode_golongan"), rs.getString("golongan")});
                     }
                     LCount.setText("" + tabMode.getRowCount());
                 } catch (Exception e) {
@@ -2857,41 +2819,18 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                     ps.setString(15, "%" + TCari.getText().trim() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            false, rs.getString("kode_brng"),
-                            rs.getString("nama_brng"),
-                            rs.getString("kode_satbesar"),
-                            rs.getString("satuanbesar"),
-                            rs.getDouble("isi"),
-                            rs.getString("kode_sat"),
-                            rs.getString("satuan"),
-                            rs.getDouble("kapasitas"),
-                            rs.getString("letak_barang"),
-                            rs.getDouble("dasar"),
-                            rs.getDouble("h_beli"),
-                            rs.getDouble("ralan"),
-                            rs.getDouble("kelas1"),
-                            rs.getDouble("kelas2"),
-                            rs.getDouble("kelas3"),
-                            rs.getDouble("utama"),
-                            rs.getDouble("vip"),
-                            rs.getDouble("vvip"),
-                            rs.getDouble("beliluar"),
-                            rs.getDouble("jualbebas"),
-                            rs.getDouble("karyawan"),
-                            rs.getDouble("stokminimal"),
-                            rs.getString("kdjns"),
-                            rs.getString("nama"),
-                            rs.getString("expire"),
-                            rs.getString("kode_industri"),
-                            rs.getString("nama_industri"),
-                            rs.getString("kode_kategori"),
-                            rs.getString("kategori"),
-                            rs.getString("kode_golongan"),
-                            rs.getString("golongan"),
-                            rs.getString("no_batch"),
-                            rs.getString("no_faktur")
-                        });
+                        tabMode.addRow(new Object[]{false, rs.getString("kode_brng"), rs.getString("nama_brng"),
+                            rs.getString("kode_satbesar"), rs.getString("satuanbesar"), rs.getDouble("isi"),
+                            rs.getString("kode_sat"), rs.getString("satuan"), rs.getDouble("kapasitas"),
+                            rs.getString("letak_barang"), rs.getDouble("dasar"), rs.getDouble("h_beli"),
+                            rs.getDouble("ralan"), rs.getDouble("kelas1"), rs.getDouble("kelas2"),
+                            rs.getDouble("kelas3"), rs.getDouble("utama"), rs.getDouble("vip"),
+                            rs.getDouble("vvip"), rs.getDouble("beliluar"), rs.getDouble("jualbebas"),
+                            rs.getDouble("karyawan"), rs.getDouble("stokminimal"), rs.getString("kdjns"),
+                            rs.getString("nama"), rs.getString("expire"), rs.getString("kode_industri"),
+                            rs.getString("nama_industri"), rs.getString("kode_kategori"), rs.getString("kategori"),
+                            rs.getString("kode_golongan"), rs.getString("golongan"), rs.getString("no_batch"),
+                            rs.getString("no_faktur")});
                     }
                     LCount.setText("" + tabMode.getRowCount());
                 } catch (Exception e) {
@@ -2984,42 +2923,19 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("kode_brng"),
-                        rs.getString("nama_brng"),
-                        rs.getString("kode_satbesar"),
-                        rs.getString("satuanbesar"),
-                        rs.getDouble("isi"),
-                        rs.getString("kode_sat"),
-                        rs.getString("satuan"),
-                        rs.getDouble("kapasitas"),
-                        rs.getString("letak_barang"),
-                        rs.getDouble("dasar"),
-                        rs.getDouble("h_beli"),
-                        rs.getDouble("ralan"),
-                        rs.getDouble("kelas1"),
-                        rs.getDouble("kelas2"),
-                        rs.getDouble("kelas3"),
-                        rs.getDouble("utama"),
-                        rs.getDouble("vip"),
-                        rs.getDouble("vvip"),
-                        rs.getDouble("beliluar"),
-                        rs.getDouble("jualbebas"),
-                        rs.getDouble("karyawan"),
-                        rs.getDouble("stokminimal"),
-                        rs.getString("kdjns"),
-                        rs.getString("nama"),
-                        rs.getString("expire"),
-                        rs.getString("kode_industri"),
-                        rs.getString("nama_industri"),
-                        rs.getString("kode_kategori"),
-                        rs.getString("kategori"),
-                        rs.getString("kode_golongan"),
-                        rs.getString("golongan")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("kode_satbesar"), rs.getString("satuanbesar"), rs.getDouble("isi"),
+                        rs.getString("kode_sat"), rs.getString("satuan"), rs.getDouble("kapasitas"),
+                        rs.getString("letak_barang"), rs.getDouble("dasar"), rs.getDouble("h_beli"),
+                        rs.getDouble("ralan"), rs.getDouble("kelas1"), rs.getDouble("kelas2"),
+                        rs.getDouble("kelas3"), rs.getDouble("utama"), rs.getDouble("vip"), rs.getDouble("vvip"),
+                        rs.getDouble("beliluar"), rs.getDouble("jualbebas"), rs.getDouble("karyawan"),
+                        rs.getDouble("stokminimal"), rs.getString("kdjns"), rs.getString("nama"),
+                        rs.getString("expire"), rs.getString("kode_industri"), rs.getString("nama_industri"),
+                        rs.getString("kode_kategori"), rs.getString("kategori"), rs.getString("kode_golongan"),
+                        rs.getString("golongan")});
 
-                    ps2 = koneksi.prepareStatement(
-                            "select bangsal.kd_bangsal,bangsal.nm_bangsal from bangsal");
+                    ps2 = koneksi.prepareStatement("select bangsal.kd_bangsal,bangsal.nm_bangsal from bangsal");
                     try {
                         rs2 = ps2.executeQuery();
                         totalstok = 0;
@@ -3034,12 +2950,9 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                     stokgudang = rs3.getDouble(1);
                                     totalstok += rs3.getDouble(1);
                                 }
-                                tabMode.addRow(new Object[]{false, "",
-                                    "    " + rs2.getString(2), ": " + stokgudang,
-                                    "", null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null,
-                                    null, null, null, null});
+                                tabMode.addRow(new Object[]{false, "", "    " + rs2.getString(2), ": " + stokgudang,
+                                    "", null, null, null, null, null, null, null, null, null, null, null, null,
+                                    null, null, null, null, null, null, null, null, null, null, null, null, null});
                             } catch (Exception e) {
                                 System.out.println("Notifikasi : " + e);
                             } finally {
@@ -3052,11 +2965,9 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                 }
                             }
                         }
-                        tabMode.addRow(new Object[]{false, "", "  Total Stok",
-                            ": " + totalstok, "", null, null, null, null, null,
-                            null, null, null, null, null, null, null, null, null,
-                            null, null, null, null, null, null, null, null, null,
-                            null, null});
+                        tabMode.addRow(new Object[]{false, "", "  Total Stok", ": " + totalstok, "", null, null, null,
+                            null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                            null, null, null, null, null, null, null, null});
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     } finally {
@@ -3160,39 +3071,17 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("kode_brng"),
-                        rs.getString("nama_brng"),
-                        rs.getString("kode_satbesar"),
-                        rs.getString("satuanbesar"),
-                        rs.getDouble("isi"),
-                        rs.getString("kode_sat"),
-                        rs.getString("satuan"),
-                        rs.getDouble("kapasitas"),
-                        rs.getString("letak_barang"),
-                        rs.getDouble("dasar"),
-                        rs.getDouble("h_beli"),
-                        rs.getDouble("ralan"),
-                        rs.getDouble("kelas1"),
-                        rs.getDouble("kelas2"),
-                        rs.getDouble("kelas3"),
-                        rs.getDouble("utama"),
-                        rs.getDouble("vip"),
-                        rs.getDouble("vvip"),
-                        rs.getDouble("beliluar"),
-                        rs.getDouble("jualbebas"),
-                        rs.getDouble("karyawan"),
-                        rs.getDouble("stokminimal"),
-                        rs.getString("kdjns"),
-                        rs.getString("nama"),
-                        rs.getString("expire"),
-                        rs.getString("kode_industri"),
-                        rs.getString("nama_industri"),
-                        rs.getString("kode_kategori"),
-                        rs.getString("kategori"),
-                        rs.getString("kode_golongan"),
-                        rs.getString("golongan")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("kode_satbesar"), rs.getString("satuanbesar"), rs.getDouble("isi"),
+                        rs.getString("kode_sat"), rs.getString("satuan"), rs.getDouble("kapasitas"),
+                        rs.getString("letak_barang"), rs.getDouble("dasar"), rs.getDouble("h_beli"),
+                        rs.getDouble("ralan"), rs.getDouble("kelas1"), rs.getDouble("kelas2"),
+                        rs.getDouble("kelas3"), rs.getDouble("utama"), rs.getDouble("vip"), rs.getDouble("vvip"),
+                        rs.getDouble("beliluar"), rs.getDouble("jualbebas"), rs.getDouble("karyawan"),
+                        rs.getDouble("stokminimal"), rs.getString("kdjns"), rs.getString("nama"),
+                        rs.getString("expire"), rs.getString("kode_industri"), rs.getString("nama_industri"),
+                        rs.getString("kode_kategori"), rs.getString("kategori"), rs.getString("kode_golongan"),
+                        rs.getString("golongan")});
                     stokgudang = 0;
                     ps3 = koneksi.prepareStatement(qrystok);
                     try {
@@ -3202,13 +3091,9 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                         if (rs3.next()) {
                             stokgudang = rs3.getDouble(1);
                         }
-                        tabMode.addRow(
-                                new Object[]{false, "", "    " + nmlokasi,
-                                    ": " + stokgudang, "", null, null, null,
-                                    null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null,
-                                    null});
+                        tabMode.addRow(new Object[]{false, "", "    " + nmlokasi, ": " + stokgudang, "", null, null,
+                            null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                            null, null, null, null, null, null, null, null, null});
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     } finally {
@@ -3239,7 +3124,6 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }
 
     /**
-     *
      * @param NoRetur
      */
     public void tampil4(String NoRetur) {
@@ -3268,41 +3152,18 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                         ps4.setString(1, NoRetur);
                         rs = ps4.executeQuery();
                         while (rs.next()) {
-                            tabMode.addRow(new Object[]{
-                                false, rs.getString("kode_brng"),
-                                rs.getString("nama_brng"),
-                                rs.getString("kode_satbesar"),
-                                rs.getString("satuanbesar"),
-                                rs.getDouble("isi"),
-                                rs.getString("kode_sat"),
-                                rs.getString("satuan"),
-                                rs.getDouble("kapasitas"),
-                                rs.getString("letak_barang"),
-                                rs.getDouble("dasar"),
-                                rs.getDouble("h_beli"),
-                                rs.getDouble("ralan"),
-                                rs.getDouble("kelas1"),
-                                rs.getDouble("kelas2"),
-                                rs.getDouble("kelas3"),
-                                rs.getDouble("utama"),
-                                rs.getDouble("vip"),
-                                rs.getDouble("vvip"),
-                                rs.getDouble("beliluar"),
-                                rs.getDouble("jualbebas"),
-                                rs.getDouble("karyawan"),
-                                rs.getDouble("stokminimal"),
-                                rs.getString("kdjns"),
-                                rs.getString("nama"),
-                                rs.getString("expire"),
-                                rs.getString("kode_industri"),
-                                rs.getString("nama_industri"),
-                                rs.getString("kode_kategori"),
-                                rs.getString("kategori"),
-                                rs.getString("kode_golongan"),
-                                rs.getString("golongan"),
-                                rs.getString("no_batch"),
-                                rs.getString("no_faktur")
-                            });
+                            tabMode.addRow(new Object[]{false, rs.getString("kode_brng"), rs.getString("nama_brng"),
+                                rs.getString("kode_satbesar"), rs.getString("satuanbesar"), rs.getDouble("isi"),
+                                rs.getString("kode_sat"), rs.getString("satuan"), rs.getDouble("kapasitas"),
+                                rs.getString("letak_barang"), rs.getDouble("dasar"), rs.getDouble("h_beli"),
+                                rs.getDouble("ralan"), rs.getDouble("kelas1"), rs.getDouble("kelas2"),
+                                rs.getDouble("kelas3"), rs.getDouble("utama"), rs.getDouble("vip"),
+                                rs.getDouble("vvip"), rs.getDouble("beliluar"), rs.getDouble("jualbebas"),
+                                rs.getDouble("karyawan"), rs.getDouble("stokminimal"), rs.getString("kdjns"),
+                                rs.getString("nama"), rs.getString("expire"), rs.getString("kode_industri"),
+                                rs.getString("nama_industri"), rs.getString("kode_kategori"),
+                                rs.getString("kategori"), rs.getString("kode_golongan"), rs.getString("golongan"),
+                                rs.getString("no_batch"), rs.getString("no_faktur")});
                         }
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
@@ -3344,39 +3205,18 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                         ps4.setString(1, NoRetur);
                         rs = ps4.executeQuery();
                         while (rs.next()) {
-                            tabMode.addRow(new Object[]{
-                                false, rs.getString("kode_brng"),
-                                rs.getString("nama_brng"),
-                                rs.getString("kode_satbesar"),
-                                rs.getString("satuanbesar"),
-                                rs.getDouble("isi"),
-                                rs.getString("kode_sat"),
-                                rs.getString("satuan"),
-                                rs.getDouble("kapasitas"),
-                                rs.getString("letak_barang"),
-                                rs.getDouble("dasar"),
-                                rs.getDouble("h_beli"),
-                                rs.getDouble("ralan"),
-                                rs.getDouble("kelas1"),
-                                rs.getDouble("kelas2"),
-                                rs.getDouble("kelas3"),
-                                rs.getDouble("utama"),
-                                rs.getDouble("vip"),
-                                rs.getDouble("vvip"),
-                                rs.getDouble("beliluar"),
-                                rs.getDouble("jualbebas"),
-                                rs.getDouble("karyawan"),
-                                rs.getDouble("stokminimal"),
-                                rs.getString("kdjns"),
-                                rs.getString("nama"),
-                                rs.getString("expire"),
-                                rs.getString("kode_industri"),
-                                rs.getString("nama_industri"),
-                                rs.getString("kode_kategori"),
-                                rs.getString("kategori"),
-                                rs.getString("kode_golongan"),
-                                rs.getString("golongan")
-                            });
+                            tabMode.addRow(new Object[]{false, rs.getString("kode_brng"), rs.getString("nama_brng"),
+                                rs.getString("kode_satbesar"), rs.getString("satuanbesar"), rs.getDouble("isi"),
+                                rs.getString("kode_sat"), rs.getString("satuan"), rs.getDouble("kapasitas"),
+                                rs.getString("letak_barang"), rs.getDouble("dasar"), rs.getDouble("h_beli"),
+                                rs.getDouble("ralan"), rs.getDouble("kelas1"), rs.getDouble("kelas2"),
+                                rs.getDouble("kelas3"), rs.getDouble("utama"), rs.getDouble("vip"),
+                                rs.getDouble("vvip"), rs.getDouble("beliluar"), rs.getDouble("jualbebas"),
+                                rs.getDouble("karyawan"), rs.getDouble("stokminimal"), rs.getString("kdjns"),
+                                rs.getString("nama"), rs.getString("expire"), rs.getString("kode_industri"),
+                                rs.getString("nama_industri"), rs.getString("kode_kategori"),
+                                rs.getString("kategori"), rs.getString("kode_golongan"),
+                                rs.getString("golongan")});
                         }
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
@@ -3433,10 +3273,9 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         nmgolongan.setText("");
 
         Kd.requestFocus();
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(databarang.kode_brng,4),signed)),0)  from databarang ",
-                "B", 9, Kd);
-        //Valid.autoNomer("databarang","B",9,Kd);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(databarang.kode_brng,4),signed)),0)  from databarang ", "B",
+                9, Kd);
+        // Valid.autoNomer("databarang","B",9,Kd);
     }
 
     private void getData() {
@@ -3446,36 +3285,23 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
             Nm.setText(tbObat.getValueAt(row, 2).toString());
             kdsatBesar.setText(tbObat.getValueAt(row, 3).toString());
             nmsatBesar.setText(tbObat.getValueAt(row, 4).toString());
-            Isi.setText(Double.toString(Double.parseDouble(tbObat.
-                    getValueAt(row, 5).toString())));
+            Isi.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 5).toString())));
             kdsat.setText(tbObat.getValueAt(row, 6).toString());
             nmsat.setText(tbObat.getValueAt(row, 7).toString());
             Kapasitas.setText(tbObat.getValueAt(row, 8).toString());
             Letak.setText(tbObat.getValueAt(row, 9).toString());
-            dasar.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(
-                    row, 10).toString())));
-            beli.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(
-                    row, 11).toString())));
-            ralan.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(
-                    row, 12).toString())));
-            kelas1.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(
-                    row, 13).toString())));
-            kelas2.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(
-                    row, 14).toString())));
-            kelas3.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(
-                    row, 15).toString())));
-            utama.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(
-                    row, 16).toString())));
-            kelasvip.setText(Double.toString(Double.parseDouble(tbObat.
-                    getValueAt(row, 17).toString())));
-            kelasvvip.setText(Double.toString(Double.parseDouble(tbObat.
-                    getValueAt(row, 18).toString())));
-            beliluar.setText(Double.toString(Double.parseDouble(tbObat.
-                    getValueAt(row, 19).toString())));
-            jualbebas.setText(Double.toString(Double.parseDouble(tbObat.
-                    getValueAt(row, 20).toString())));
-            karyawan.setText(Double.toString(Double.parseDouble(tbObat.
-                    getValueAt(row, 21).toString())));
+            dasar.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 10).toString())));
+            beli.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 11).toString())));
+            ralan.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 12).toString())));
+            kelas1.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 13).toString())));
+            kelas2.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 14).toString())));
+            kelas3.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 15).toString())));
+            utama.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 16).toString())));
+            kelasvip.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 17).toString())));
+            kelasvvip.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 18).toString())));
+            beliluar.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 19).toString())));
+            jualbebas.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 20).toString())));
+            karyawan.setText(Double.toString(Double.parseDouble(tbObat.getValueAt(row, 21).toString())));
             stok_minimal.setText(tbObat.getValueAt(row, 22).toString());
             kdjns.setText(tbObat.getValueAt(row, 23).toString());
             nmjns.setText(tbObat.getValueAt(row, 24).toString());
@@ -3488,8 +3314,8 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
             ChkKadaluarsa.setSelected(false);
             DTPExpired.setDate(new Date());
-            if (tbObat.getValueAt(row, 25).toString().isEmpty() || (tbObat.
-                    getValueAt(row, 25).toString().length() == 0)) {
+            if (tbObat.getValueAt(row, 25).toString().isEmpty()
+                    || (tbObat.getValueAt(row, 25).toString().length() == 0)) {
                 ChkKadaluarsa.setSelected(false);
                 DTPExpired.setDate(new Date());
             } else {
@@ -3500,7 +3326,6 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -3517,99 +3342,63 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                 Valid.textKosong(kdjns, "Kode Jenis");
                             } else {
                                 try {
-                                    rs = koneksi.prepareStatement(
-                                            "select * from setpenjualan where setpenjualan.kdjns='" + kdjns.
-                                                    getText() + "'").
-                                            executeQuery();
+                                    rs = koneksi
+                                            .prepareStatement("select * from setpenjualan where setpenjualan.kdjns='"
+                                                    + kdjns.getText() + "'")
+                                            .executeQuery();
                                     if (rs.next()) {
-                                        ralan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "ralan") / 100)),
-                                                        100)));
-                                        kelas1.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas1") / 100)),
-                                                        100)));
-                                        kelas2.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas2") / 100)),
-                                                        100)));
-                                        kelas3.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas3") / 100)),
-                                                        100)));
-                                        utama.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "utama") / 100)),
-                                                        100)));
-                                        kelasvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vip") / 100)),
-                                                        100)));
-                                        kelasvvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vvip") / 100)),
-                                                        100)));
-                                        beliluar.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "beliluar") / 100)),
-                                                        100)));
-                                        jualbebas.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "jualbebas") / 100)),
-                                                        100)));
-                                        karyawan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "karyawan") / 100)),
-                                                        100)));
+                                        ralan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("ralan") / 100)),
+                                                100)));
+                                        kelas1.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas1") / 100)),
+                                                100)));
+                                        kelas2.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas2") / 100)),
+                                                100)));
+                                        kelas3.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas3") / 100)),
+                                                100)));
+                                        utama.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("utama") / 100)),
+                                                100)));
+                                        kelasvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vip") / 100)),
+                                                                        100)));
+                                        kelasvvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vvip") / 100)),
+                                                                        100)));
+                                        beliluar.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("beliluar") / 100)),
+                                                                100)));
+                                        jualbebas
+                                                .setText(
+                                                        Double.toString(Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("jualbebas") / 100)),
+                                                                100)));
+                                        karyawan.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("karyawan") / 100)),
+                                                                100)));
                                     } else {
                                         JOptionPane.showMessageDialog(null,
                                                 "Pengaturan untuk jenis obat/alkes/bhp ini tidak ditemukan..!!");
@@ -3626,78 +3415,40 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             break;
                         case "Umum":
                             try {
-                                rs = koneksi.prepareStatement(
-                                        "select * from setpenjualanumum").
-                                        executeQuery();
+                                rs = koneksi.prepareStatement("select * from setpenjualanumum").executeQuery();
                                 if (rs.next()) {
-                                    ralan.setText(Double.toString(Valid.roundUp(
-                                            Double.parseDouble(beli.getText()) + (Double.
-                                            parseDouble(beli.getText()) * (rs.
-                                            getDouble("ralan") / 100)), 100)));
-                                    kelas1.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("kelas1") / 100)),
-                                                    100)));
-                                    kelas2.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("kelas2") / 100)),
-                                                    100)));
-                                    kelas3.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("kelas3") / 100)),
-                                                    100)));
-                                    utama.setText(Double.toString(Valid.roundUp(
-                                            Double.parseDouble(beli.getText()) + (Double.
-                                            parseDouble(beli.getText()) * (rs.
-                                            getDouble("utama") / 100)), 100)));
-                                    kelasvip.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("vip") / 100)),
-                                                    100)));
-                                    kelasvvip.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("vvip") / 100)),
-                                                    100)));
-                                    beliluar.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("beliluar") / 100)),
-                                                    100)));
-                                    jualbebas.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble(
-                                                                    "jualbebas") / 100)),
-                                                    100)));
-                                    karyawan.setText(Double.toString(Valid.
-                                            roundUp(Double.parseDouble(beli.
-                                                    getText()) + (Double.
-                                                            parseDouble(beli.
-                                                                    getText()) * (rs.
-                                                            getDouble("karyawan") / 100)),
-                                                    100)));
+                                    ralan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("ralan") / 100)),
+                                            100)));
+                                    kelas1.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas1") / 100)),
+                                            100)));
+                                    kelas2.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas2") / 100)),
+                                            100)));
+                                    kelas3.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas3") / 100)),
+                                            100)));
+                                    utama.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("utama") / 100)),
+                                            100)));
+                                    kelasvip.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("vip") / 100)),
+                                            100)));
+                                    kelasvvip.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("vvip") / 100)),
+                                            100)));
+                                    beliluar.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("beliluar") / 100)),
+                                            100)));
+                                    jualbebas.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("jualbebas") / 100)),
+                                            100)));
+                                    karyawan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                            + (Double.parseDouble(beli.getText()) * (rs.getDouble("karyawan") / 100)),
+                                            100)));
                                 } else {
-                                    JOptionPane.showMessageDialog(null,
-                                            "Pengaturan harga umum masih kosong..!!");
+                                    JOptionPane.showMessageDialog(null, "Pengaturan harga umum masih kosong..!!");
                                     TCari.requestFocus();
                                 }
                             } catch (Exception e) {
@@ -3714,98 +3465,62 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             } else {
                                 try {
                                     rs = koneksi.prepareStatement(
-                                            "select * from setpenjualanperbarang where setpenjualanperbarang.kode_brng='" + Kd.
-                                                    getText() + "'").
-                                            executeQuery();
+                                            "select * from setpenjualanperbarang where setpenjualanperbarang.kode_brng='"
+                                            + Kd.getText() + "'")
+                                            .executeQuery();
                                     if (rs.next()) {
-                                        ralan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "ralan") / 100)),
-                                                        100)));
-                                        kelas1.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas1") / 100)),
-                                                        100)));
-                                        kelas2.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas2") / 100)),
-                                                        100)));
-                                        kelas3.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "kelas3") / 100)),
-                                                        100)));
-                                        utama.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "utama") / 100)),
-                                                        100)));
-                                        kelasvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vip") / 100)),
-                                                        100)));
-                                        kelasvvip.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble("vvip") / 100)),
-                                                        100)));
-                                        beliluar.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "beliluar") / 100)),
-                                                        100)));
-                                        jualbebas.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "jualbebas") / 100)),
-                                                        100)));
-                                        karyawan.setText(Double.toString(Valid.
-                                                roundUp(Double.parseDouble(beli.
-                                                        getText()) + (Double.
-                                                                parseDouble(
-                                                                        beli.
-                                                                                getText()) * (rs.
-                                                                getDouble(
-                                                                        "karyawan") / 100)),
-                                                        100)));
+                                        ralan.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("ralan") / 100)),
+                                                100)));
+                                        kelas1.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas1") / 100)),
+                                                100)));
+                                        kelas2.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas2") / 100)),
+                                                100)));
+                                        kelas3.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("kelas3") / 100)),
+                                                100)));
+                                        utama.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                                + (Double.parseDouble(beli.getText()) * (rs.getDouble("utama") / 100)),
+                                                100)));
+                                        kelasvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vip") / 100)),
+                                                                        100)));
+                                        kelasvvip
+                                                .setText(
+                                                        Double.toString(
+                                                                Valid.roundUp(
+                                                                        Double.parseDouble(beli.getText())
+                                                                        + (Double.parseDouble(beli.getText())
+                                                                        * (rs.getDouble("vvip") / 100)),
+                                                                        100)));
+                                        beliluar.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("beliluar") / 100)),
+                                                                100)));
+                                        jualbebas
+                                                .setText(
+                                                        Double.toString(Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("jualbebas") / 100)),
+                                                                100)));
+                                        karyawan.setText(
+                                                Double.toString(
+                                                        Valid.roundUp(
+                                                                Double.parseDouble(beli.getText())
+                                                                + (Double.parseDouble(beli.getText())
+                                                                * (rs.getDouble("karyawan") / 100)),
+                                                                100)));
                                     } else {
                                         JOptionPane.showMessageDialog(null,
                                                 "Pengaturan untuk obat/alkes/bhp ini tidak ditemukan..!!");
@@ -3821,8 +3536,7 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             }
                             break;
                         default:
-                            JOptionPane.showMessageDialog(null,
-                                    "Pengaturan untuk obat/alkes/bhp belum disetting..!!");
+                            JOptionPane.showMessageDialog(null, "Pengaturan untuk obat/alkes/bhp belum disetting..!!");
                             break;
                     }
                 }
@@ -3847,7 +3561,6 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }
 
     /**
-     *
      * @param kodelokasi
      * @param namalokasi
      */
@@ -3873,39 +3586,22 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
      *
      */
     public void isBatch() {
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "P", "Kode Barang", "Nama Barang", "Kd.Sat Besar", "Nm.Satuan Besar",
-            "Isi", "Kd.Sat Kecil", "Nm.Satuan Kecil",
-            "Kps", "Kandungan", "Hrg.Dasar(Rp)", "Hrg.Beli(Rp)", "Ralan(Rp)",
-            "Ranap K1(Rp)", "Ranap K2(Rp)", "Ranap K3(Rp)",
-            "Kelas Utama/BPJS(Rp)", "Ranap VIP(Rp)", "Ranap VVIP(Rp)",
-            "Beli Luar(Rp)", "Jual Bebas(Rp)", "Karyawan(Rp)",
-            "Stok Min", "Kode Jenis", "Nama Jenis", "Kadaluwarsa", "Kode I.F.",
-            "Industri Farmasi", "Kode Kategori", "Kategori",
-            "Kode Golongan", "Golongan", "No.Batch", "No.Faktur"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"P", "Kode Barang", "Nama Barang", "Kd.Sat Besar", "Nm.Satuan Besar", "Isi",
+                    "Kd.Sat Kecil", "Nm.Satuan Kecil", "Kps", "Kandungan", "Hrg.Dasar(Rp)", "Hrg.Beli(Rp)",
+                    "Ralan(Rp)", "Ranap K1(Rp)", "Ranap K2(Rp)", "Ranap K3(Rp)", "Kelas Utama/BPJS(Rp)",
+                    "Ranap VIP(Rp)", "Ranap VVIP(Rp)", "Beli Luar(Rp)", "Jual Bebas(Rp)", "Karyawan(Rp)",
+                    "Stok Min", "Kode Jenis", "Nama Jenis", "Kadaluwarsa", "Kode I.F.", "Industri Farmasi",
+                    "Kode Kategori", "Kategori", "Kode Golongan", "Golongan", "No.Batch", "No.Faktur"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -4006,7 +3702,6 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
     }
 
-    private static final Logger LOG = Logger.
-            getLogger(DlgBarang.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgBarang.class.getName());
 
 }

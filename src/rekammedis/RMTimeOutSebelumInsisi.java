@@ -40,21 +40,30 @@ import kepegawaian.DlgCariDokter;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0, pilihan = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private String finger = "", finger2 = "";
+
     private StringBuilder htmlContent;
 
     /**
@@ -69,19 +78,13 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Tanggal",
-            "SN/CN", "Tindakan", "Kode Dokter Bedah", "Nama Dokter Bedah",
-            "Kode Dokter Anest", "Nama Dokter Anestesi", "Verbal Identitas",
-            "Verbal Tindakan", "Verbal Area Insisi", "Penandaan Area Operasi",
-            "Lama Operasi", "Penayangan Radiologi", "Penayangan CT Scan",
-            "Penayangan MRI", "Pemberian Antibiotik",
-            "Nama Antibiotik Diberikan",
-            "Jam Pemberian", "Antisipasi Kehilangan Darah", "Ada Hal Khusus",
-            "Hal Khusus Yang Perlu Diperhatikan", "Tgl.Steril",
-            "Petunjuk Sterilisasi",
-            "Verifikasi Pre Operatif", "NIP OK", "Petugas Ruang OK"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
+            "Tanggal", "SN/CN", "Tindakan", "Kode Dokter Bedah", "Nama Dokter Bedah", "Kode Dokter Anest",
+            "Nama Dokter Anestesi", "Verbal Identitas", "Verbal Tindakan", "Verbal Area Insisi",
+            "Penandaan Area Operasi", "Lama Operasi", "Penayangan Radiologi", "Penayangan CT Scan",
+            "Penayangan MRI", "Pemberian Antibiotik", "Nama Antibiotik Diberikan", "Jam Pemberian",
+            "Antisipasi Kehilangan Darah", "Ada Hal Khusus", "Hal Khusus Yang Perlu Diperhatikan", "Tgl.Steril",
+            "Petunjuk Sterilisasi", "Verifikasi Pre Operatif", "NIP OK", "Petugas Ruang OK"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -90,7 +93,8 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -165,24 +169,17 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         SNCN.setDocument(new batasInput((byte) 25).getKata(SNCN));
         Tindakan.setDocument(new batasInput((byte) 50).getKata(Tindakan));
-        AntisipisasiKehialnganDarah.setDocument(new batasInput((byte) 30).
-                getKata(AntisipisasiKehialnganDarah));
-        NamaAntibiotikDIberikan.setDocument(new batasInput((byte) 50).getKata(
-                NamaAntibiotikDIberikan));
-        JamPemberianAntibiotik.setDocument(new batasInput((byte) 10).getKata(
-                JamPemberianAntibiotik));
-        PerkiraanLama.setDocument(new batasInput((byte) 10).getKata(
-                PerkiraanLama));
-        AntisipisasiKehialnganDarah.setDocument(new batasInput((byte) 50).
-                getKata(AntisipisasiKehialnganDarah));
-        HalKhususDiperhatikan.setDocument(new batasInput((byte) 100).getKata(
-                HalKhususDiperhatikan));
+        AntisipisasiKehialnganDarah.setDocument(new batasInput((byte) 30).getKata(AntisipisasiKehialnganDarah));
+        NamaAntibiotikDIberikan.setDocument(new batasInput((byte) 50).getKata(NamaAntibiotikDIberikan));
+        JamPemberianAntibiotik.setDocument(new batasInput((byte) 10).getKata(JamPemberianAntibiotik));
+        PerkiraanLama.setDocument(new batasInput((byte) 10).getKata(PerkiraanLama));
+        AntisipisasiKehialnganDarah.setDocument(new batasInput((byte) 50).getKata(AntisipisasiKehialnganDarah));
+        HalKhususDiperhatikan.setDocument(new batasInput((byte) 100).getKata(HalKhususDiperhatikan));
 
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -219,10 +216,10 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugasOK.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugasOK.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugasOK
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugasOK
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     btnPetugasOK.requestFocus();
                 }
             }
@@ -258,20 +255,16 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        KodeDokterBedah.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 0).
-                                toString());
-                        NamaDokterBedah.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodeDokterBedah
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                        NamaDokterBedah
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         btnDokterBedah.requestFocus();
                     } else if (pilihan == 2) {
-                        KodeDokterAnestesi.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 0).
-                                toString());
-                        NamaDokterAnestesi.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodeDokterAnestesi
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                        NamaDokterAnestesi
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         btnDokterAnestesi.requestFocus();
                     }
                 }
@@ -312,14 +305,15 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1954,8 +1948,7 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMTimeOutSebelumInsisi dialog = new RMTimeOutSebelumInsisi(
-                    new javax.swing.JFrame(), true);
+            RMTimeOutSebelumInsisi dialog = new RMTimeOutSebelumInsisi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2117,15 +2110,11 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2136,31 +2125,21 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"),
-                        rs.getString("tanggal"), rs.getString("sncn"), rs.
-                        getString("tindakan"), rs.getString("kd_dokter_bedah"),
-                        rs.getString("dokterbedah"),
-                        rs.getString("kd_dokter_anestesi"), rs.getString(
-                        "dokteranestesi"), rs.getString("verbal_identitas"), rs.
-                        getString("verbal_tindakan"),
-                        rs.getString("verbal_area_insisi"), rs.getString(
-                        "penandaan_area_operasi"), rs.getString("lama_operasi"),
-                        rs.getString("penayangan_radiologi"),
-                        rs.getString("penayangan_ctscan"), rs.getString(
-                        "penayangan_mri"), rs.getString("antibiotik_profilaks"),
-                        rs.getString("nama_antibiotik"),
-                        rs.getString("jam_pemberian"), rs.getString(
-                        "antisipasi_kehilangan_darah"), rs.getString(
-                        "hal_khusus"), rs.getString("hal_khusus_diperhatikan"),
-                        rs.getString("tanggal_steril"), rs.getString(
-                        "petujuk_sterilisasi"), rs.getString(
-                        "verifikasi_preoperatif"), rs.
-                        getString("nip_perawat_ok"),
-                        rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("sncn"), rs.getString("tindakan"),
+                        rs.getString("kd_dokter_bedah"), rs.getString("dokterbedah"),
+                        rs.getString("kd_dokter_anestesi"), rs.getString("dokteranestesi"),
+                        rs.getString("verbal_identitas"), rs.getString("verbal_tindakan"),
+                        rs.getString("verbal_area_insisi"), rs.getString("penandaan_area_operasi"),
+                        rs.getString("lama_operasi"), rs.getString("penayangan_radiologi"),
+                        rs.getString("penayangan_ctscan"), rs.getString("penayangan_mri"),
+                        rs.getString("antibiotik_profilaks"), rs.getString("nama_antibiotik"),
+                        rs.getString("jam_pemberian"), rs.getString("antisipasi_kehilangan_darah"),
+                        rs.getString("hal_khusus"), rs.getString("hal_khusus_diperhatikan"),
+                        rs.getString("tanggal_steril"), rs.getString("petujuk_sterilisasi"),
+                        rs.getString("verifikasi_preoperatif"), rs.getString("nip_perawat_ok"),
+                        rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2211,94 +2190,59 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            SNCN.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            KodeDokterBedah.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 8).toString());
-            NamaDokterBedah.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 9).toString());
-            KodeDokterAnestesi.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 10).toString());
-            NamaDokterAnestesi.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 11).toString());
-            VerbalIdentitas.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            VerbalTindakan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            VerbalArea.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 14).toString());
-            AreaOperasi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 15).toString());
-            PerkiraanLama.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
-            PenayanganRadiologi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 17).toString());
-            PenayanganCTScan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            PenayanganMRI.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            PemberianAntibiotik.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            NamaAntibiotikDIberikan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            JamPemberianAntibiotik.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            AntisipisasiKehialnganDarah.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 23).toString());
-            AdaHalKhusus.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            HalKhususDiperhatikan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 25).toString());
-            PetunjukSterilisasi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 27).toString());
-            VerifikasiOperatif.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 28).toString());
-            KdPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).
-                    toString());
-            NmPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).
-                    toString());
-            Valid.SetTgl2(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
-            Valid.SetTgl(TanggalSeteril, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            SNCN.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            KodeDokterBedah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            NamaDokterBedah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            KodeDokterAnestesi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            NamaDokterAnestesi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            VerbalIdentitas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            VerbalTindakan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            VerbalArea.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            AreaOperasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            PerkiraanLama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            PenayanganRadiologi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            PenayanganCTScan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            PenayanganMRI.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            PemberianAntibiotik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            NamaAntibiotikDIberikan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            JamPemberianAntibiotik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            AntisipisasiKehialnganDarah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            AdaHalKhusus.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            HalKhususDiperhatikan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            PetunjukSterilisasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            VerifikasiOperatif.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            KdPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            NmPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Valid.SetTgl(TanggalSeteril, tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.getText()
+                + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
-        Sequel.cariIsi(
-                "select DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.getText() + "' ",
+                TPasien);
+        Sequel.cariIsi("select DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
                 TglLahir, TNoRM.getText());
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -2308,19 +2252,16 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      * @param KodeDokter
      * @param NamaDokter
      * @param Operasi
      */
-    public void setNoRm(String norwt, Date tgl2, String KodeDokter,
-            String NamaDokter, String Operasi) {
+    public void setNoRm(String norwt, Date tgl2, String KodeDokter, String NamaDokter, String Operasi) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -2341,8 +2282,7 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 172));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2366,31 +2306,23 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
                 "no_rawat=?,tanggal=?,sncn=?,tindakan=?,kd_dokter_bedah=?,kd_dokter_anestesi=?,verbal_identitas=?,verbal_tindakan=?,"
                 + "verbal_area_insisi=?,penandaan_area_operasi=?,lama_operasi=?,penayangan_radiologi=?,penayangan_ctscan=?,penayangan_mri=?,antibiotik_profilaks=?,nama_antibiotik=?,jam_pemberian=?,"
                 + "antisipasi_kehilangan_darah=?,hal_khusus=?,hal_khusus_diperhatikan=?,tanggal_steril=?,petujuk_sterilisasi=?,verifikasi_preoperatif=?,nip_perawat_ok=?",
-                26, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), SNCN.
-                    getText(), Tindakan.getText(),
-                    KodeDokterBedah.getText(), KodeDokterAnestesi.getText(),
-                    VerbalIdentitas.getSelectedItem().toString(),
-                    VerbalTindakan.getSelectedItem().toString(),
-                    VerbalArea.getSelectedItem().toString(), AreaOperasi.
-                    getSelectedItem().toString(), PerkiraanLama.getText(),
-                    PenayanganRadiologi.getSelectedItem().toString(),
-                    PenayanganCTScan.getSelectedItem().toString(),
-                    PenayanganMRI.getSelectedItem().toString(),
-                    PemberianAntibiotik.getSelectedItem().toString(),
-                    NamaAntibiotikDIberikan.getText(), JamPemberianAntibiotik.
-                    getText(), AntisipisasiKehialnganDarah.getText(),
-                    AdaHalKhusus.getSelectedItem().toString(),
-                    HalKhususDiperhatikan.getText(), Valid.SetTgl(
-                    TanggalSeteril.getSelectedItem() + ""), PetunjukSterilisasi.
-                    getSelectedItem().toString(),
-                    VerifikasiOperatif.getSelectedItem().toString(),
-                    KdPetugasOK.getText(), tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                });
+                26,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    SNCN.getText(), Tindakan.getText(), KodeDokterBedah.getText(), KodeDokterAnestesi.getText(),
+                    VerbalIdentitas.getSelectedItem().toString(), VerbalTindakan.getSelectedItem().toString(),
+                    VerbalArea.getSelectedItem().toString(), AreaOperasi.getSelectedItem().toString(),
+                    PerkiraanLama.getText(), PenayanganRadiologi.getSelectedItem().toString(),
+                    PenayanganCTScan.getSelectedItem().toString(), PenayanganMRI.getSelectedItem().toString(),
+                    PemberianAntibiotik.getSelectedItem().toString(), NamaAntibiotikDIberikan.getText(),
+                    JamPemberianAntibiotik.getText(), AntisipisasiKehialnganDarah.getText(),
+                    AdaHalKhusus.getSelectedItem().toString(), HalKhususDiperhatikan.getText(),
+                    Valid.SetTgl(TanggalSeteril.getSelectedItem() + ""),
+                    PetunjukSterilisasi.getSelectedItem().toString(),
+                    VerifikasiOperatif.getSelectedItem().toString(), KdPetugasOK.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()});
 
         if (tabMode.getRowCount() != 0) {
             tampil();
@@ -2399,12 +2331,9 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from timeout_sebelum_insisi where no_rawat=? and tanggal=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from timeout_sebelum_insisi where no_rawat=? and tanggal=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2413,6 +2342,6 @@ public class RMTimeOutSebelumInsisi extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMTimeOutSebelumInsisi.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMTimeOutSebelumInsisi.class.getName());
+
 }

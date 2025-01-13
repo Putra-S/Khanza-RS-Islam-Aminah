@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPerawatan.java
- *
- * Created on May 23, 2010, 6:36:30 PM
+* DlgPerawatan.java
+*
+* Created on May 23, 2010, 6:36:30 PM
  */
 package simrskhanza;
 
@@ -34,35 +34,58 @@ import keuangan.DlgJnsPerawatanLab;
 import keuangan.Jurnal;
 
 /**
- *
  * @author dosen
  */
 public class DlgUbahPeriksaLab extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private sekuel Sequel = new sekuel();
+
     private boolean sukses = false;
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
-    private PreparedStatement pstindakan, pstampil, pstampil2, pstampil3, pstampil4, pscariperawatan, psset_tarif, pscariperiksa, pscaridetailperiksa, psrekening;
+
+    private PreparedStatement pstindakan, pstampil, pstampil2, pstampil3, pstampil4, pscariperawatan, psset_tarif,
+            pscariperiksa, pscaridetailperiksa, psrekening;
+
     private ResultSet rstindakan, rstampil, rscari, rsset_tarif, rssetpj, rsrekening;
+
     private boolean[] pilih, pilih2;
+
     private String[] kode, nama, pemeriksaan2, hasil2, satuan2, nilai_rujukan2, keterangan2, idtemplate2;
-    private double[] total, bagian_rs, bhp, tarif_perujuk, tarif_tindakan_dokter, tarif_tindakan_petugas, kso, menejemen,
-            biaya_item2, bagian_rs2, bhp2, bagian_perujuk2, bagian_dokter2, bagian_laborat2, kso2, menejemen2;
+
+    private double[] total, bagian_rs, bhp, tarif_perujuk, tarif_tindakan_dokter, tarif_tindakan_petugas, kso,
+            menejemen, biaya_item2, bagian_rs2, bhp2, bagian_perujuk2, bagian_dokter2, bagian_laborat2, kso2,
+            menejemen2;
+
     private int jml = 0, i = 0, index = 0, jml2 = 0, i2 = 0, index2 = 0;
+
     private String cara_bayar_lab = "Yes";
+
     private double ttl = 0, item = 0;
+
     private Jurnal jur = new Jurnal();
-    private double ttljmdokter = 0, ttljmpetugas = 0, ttlkso = 0, ttlpendapatan = 0, ttlbhp = 0, ttljasasarana = 0, ttljmperujuk = 0, ttlmenejemen = 0;
-    private String Suspen_Piutang_Laborat_Ranap = "", Laborat_Ranap = "", Beban_Jasa_Medik_Dokter_Laborat_Ranap = "", Utang_Jasa_Medik_Dokter_Laborat_Ranap = "",
-            Beban_Jasa_Medik_Petugas_Laborat_Ranap = "", Utang_Jasa_Medik_Petugas_Laborat_Ranap = "", Beban_Kso_Laborat_Ranap = "", Utang_Kso_Laborat_Ranap = "",
-            HPP_Persediaan_Laborat_Rawat_inap = "", Persediaan_BHP_Laborat_Rawat_Inap = "", Beban_Jasa_Sarana_Laborat_Ranap = "", Utang_Jasa_Sarana_Laborat_Ranap = "",
-            Beban_Jasa_Perujuk_Laborat_Ranap = "", Utang_Jasa_Perujuk_Laborat_Ranap = "", Beban_Jasa_Menejemen_Laborat_Ranap = "", Utang_Jasa_Menejemen_Laborat_Ranap = "",
-            Suspen_Piutang_Laborat_Ralan = "", Laborat_Ralan = "", Beban_Jasa_Medik_Dokter_Laborat_Ralan = "", Utang_Jasa_Medik_Dokter_Laborat_Ralan = "",
-            Beban_Jasa_Medik_Petugas_Laborat_Ralan = "", Utang_Jasa_Medik_Petugas_Laborat_Ralan = "", Beban_Kso_Laborat_Ralan = "", Utang_Kso_Laborat_Ralan = "",
-            HPP_Persediaan_Laborat_Rawat_Jalan = "", Persediaan_BHP_Laborat_Rawat_Jalan = "", Beban_Jasa_Sarana_Laborat_Ralan = "", Utang_Jasa_Sarana_Laborat_Ralan = "",
-            Beban_Jasa_Perujuk_Laborat_Ralan = "", Utang_Jasa_Perujuk_Laborat_Ralan = "", Beban_Jasa_Menejemen_Laborat_Ralan = "", Utang_Jasa_Menejemen_Laborat_Ralan = "", status = "";
+
+    private double ttljmdokter = 0, ttljmpetugas = 0, ttlkso = 0, ttlpendapatan = 0, ttlbhp = 0, ttljasasarana = 0,
+            ttljmperujuk = 0, ttlmenejemen = 0;
+
+    private String Suspen_Piutang_Laborat_Ranap = "", Laborat_Ranap = "", Beban_Jasa_Medik_Dokter_Laborat_Ranap = "",
+            Utang_Jasa_Medik_Dokter_Laborat_Ranap = "", Beban_Jasa_Medik_Petugas_Laborat_Ranap = "",
+            Utang_Jasa_Medik_Petugas_Laborat_Ranap = "", Beban_Kso_Laborat_Ranap = "", Utang_Kso_Laborat_Ranap = "",
+            HPP_Persediaan_Laborat_Rawat_inap = "", Persediaan_BHP_Laborat_Rawat_Inap = "",
+            Beban_Jasa_Sarana_Laborat_Ranap = "", Utang_Jasa_Sarana_Laborat_Ranap = "",
+            Beban_Jasa_Perujuk_Laborat_Ranap = "", Utang_Jasa_Perujuk_Laborat_Ranap = "",
+            Beban_Jasa_Menejemen_Laborat_Ranap = "", Utang_Jasa_Menejemen_Laborat_Ranap = "",
+            Suspen_Piutang_Laborat_Ralan = "", Laborat_Ralan = "", Beban_Jasa_Medik_Dokter_Laborat_Ralan = "",
+            Utang_Jasa_Medik_Dokter_Laborat_Ralan = "", Beban_Jasa_Medik_Petugas_Laborat_Ralan = "",
+            Utang_Jasa_Medik_Petugas_Laborat_Ralan = "", Beban_Kso_Laborat_Ralan = "", Utang_Kso_Laborat_Ralan = "",
+            HPP_Persediaan_Laborat_Rawat_Jalan = "", Persediaan_BHP_Laborat_Rawat_Jalan = "",
+            Beban_Jasa_Sarana_Laborat_Ralan = "", Utang_Jasa_Sarana_Laborat_Ralan = "",
+            Beban_Jasa_Perujuk_Laborat_Ralan = "", Utang_Jasa_Perujuk_Laborat_Ralan = "",
+            Beban_Jasa_Menejemen_Laborat_Ralan = "", Utang_Jasa_Menejemen_Laborat_Ralan = "", status = "";
 
     /**
      * Creates new form DlgPerawatan
@@ -77,19 +100,13 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] row = {"P", "Pemeriksaan", "Hasil", "Satuan", "Nilai Rujukan",
-            "Keterangan", "", "", "", "", "", "", "", "", ""};
+        Object[] row = {"P", "Pemeriksaan", "Hasil", "Satuan", "Nilai Rujukan", "Keterangan", "", "", "", "", "", "",
+            "", "", ""};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -108,10 +125,9 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
         };
 
         tbPemeriksaan.setModel(tabMode);
-        //tampilPr();
+        // tampilPr();
 
-        tbPemeriksaan.
-                setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbPemeriksaan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPemeriksaan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 15; i++) {
@@ -141,18 +157,12 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
 
         tbPemeriksaan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        Object[] row2 = {"P", "Kode Periksa", "Nama Pemeriksaan", "Tarif",
-            "bagian_rs", "bhp", "tarif_perujuk", "tarif_tindakan_dokter",
-            "tarif_tindakan_petugas", "K.S.O.", "Menejemen"};
+        Object[] row2 = {"P", "Kode Periksa", "Nama Pemeriksaan", "Tarif", "bagian_rs", "bhp", "tarif_perujuk",
+            "tarif_tindakan_dokter", "tarif_tindakan_petugas", "K.S.O.", "Menejemen"};
         tabMode2 = new DefaultTableModel(null, row2) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -171,7 +181,8 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
         };
         tbTarif.setModel(tabMode2);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbTarif.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTarif.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -199,8 +210,7 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
         Pemeriksaan.setDocument(new batasInput((byte) 100).getKata(Pemeriksaan));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            Pemeriksaan.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            Pemeriksaan.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (Pemeriksaan.getText().length() > 2) {
@@ -223,8 +233,7 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
                 }
 
             });
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -250,49 +259,38 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
         }
 
         try {
-            psrekening = koneksi.prepareStatement(
-                    "select set_akun_ranap.Suspen_Piutang_Laborat_Ranap,set_akun_ranap.Laborat_Ranap,"
-                    + "set_akun_ranap.Beban_Jasa_Medik_Dokter_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Medik_Dokter_Laborat_Ranap,"
-                    + "set_akun_ranap.Beban_Jasa_Medik_Petugas_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Medik_Petugas_Laborat_Ranap,"
-                    + "set_akun_ranap.Beban_Kso_Laborat_Ranap,set_akun_ranap.Utang_Kso_Laborat_Ranap,"
-                    + "set_akun_ranap.HPP_Persediaan_Laborat_Rawat_inap,set_akun_ranap.Persediaan_BHP_Laborat_Rawat_Inap,"
-                    + "set_akun_ranap.Beban_Jasa_Sarana_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Sarana_Laborat_Ranap,"
-                    + "set_akun_ranap.Beban_Jasa_Perujuk_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Perujuk_Laborat_Ranap,"
-                    + "set_akun_ranap.Beban_Jasa_Menejemen_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Menejemen_Laborat_Ranap from set_akun_ranap");
+            psrekening = koneksi
+                    .prepareStatement("select set_akun_ranap.Suspen_Piutang_Laborat_Ranap,set_akun_ranap.Laborat_Ranap,"
+                            + "set_akun_ranap.Beban_Jasa_Medik_Dokter_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Medik_Dokter_Laborat_Ranap,"
+                            + "set_akun_ranap.Beban_Jasa_Medik_Petugas_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Medik_Petugas_Laborat_Ranap,"
+                            + "set_akun_ranap.Beban_Kso_Laborat_Ranap,set_akun_ranap.Utang_Kso_Laborat_Ranap,"
+                            + "set_akun_ranap.HPP_Persediaan_Laborat_Rawat_inap,set_akun_ranap.Persediaan_BHP_Laborat_Rawat_Inap,"
+                            + "set_akun_ranap.Beban_Jasa_Sarana_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Sarana_Laborat_Ranap,"
+                            + "set_akun_ranap.Beban_Jasa_Perujuk_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Perujuk_Laborat_Ranap,"
+                            + "set_akun_ranap.Beban_Jasa_Menejemen_Laborat_Ranap,set_akun_ranap.Utang_Jasa_Menejemen_Laborat_Ranap from set_akun_ranap");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Laborat_Ranap = rsrekening.getString(
-                            "Suspen_Piutang_Laborat_Ranap");
+                    Suspen_Piutang_Laborat_Ranap = rsrekening.getString("Suspen_Piutang_Laborat_Ranap");
                     Laborat_Ranap = rsrekening.getString("Laborat_Ranap");
-                    Beban_Jasa_Medik_Dokter_Laborat_Ranap = rsrekening.
-                            getString("Beban_Jasa_Medik_Dokter_Laborat_Ranap");
-                    Utang_Jasa_Medik_Dokter_Laborat_Ranap = rsrekening.
-                            getString("Utang_Jasa_Medik_Dokter_Laborat_Ranap");
-                    Beban_Jasa_Medik_Petugas_Laborat_Ranap = rsrekening.
-                            getString("Beban_Jasa_Medik_Petugas_Laborat_Ranap");
-                    Utang_Jasa_Medik_Petugas_Laborat_Ranap = rsrekening.
-                            getString("Utang_Jasa_Medik_Petugas_Laborat_Ranap");
-                    Beban_Kso_Laborat_Ranap = rsrekening.getString(
-                            "Beban_Kso_Laborat_Ranap");
-                    Utang_Kso_Laborat_Ranap = rsrekening.getString(
-                            "Utang_Kso_Laborat_Ranap");
-                    HPP_Persediaan_Laborat_Rawat_inap = rsrekening.getString(
-                            "HPP_Persediaan_Laborat_Rawat_inap");
-                    Persediaan_BHP_Laborat_Rawat_Inap = rsrekening.getString(
-                            "Persediaan_BHP_Laborat_Rawat_Inap");
-                    Beban_Jasa_Sarana_Laborat_Ranap = rsrekening.getString(
-                            "Beban_Jasa_Sarana_Laborat_Ranap");
-                    Utang_Jasa_Sarana_Laborat_Ranap = rsrekening.getString(
-                            "Utang_Jasa_Sarana_Laborat_Ranap");
-                    Beban_Jasa_Perujuk_Laborat_Ranap = rsrekening.getString(
-                            "Beban_Jasa_Perujuk_Laborat_Ranap");
-                    Utang_Jasa_Perujuk_Laborat_Ranap = rsrekening.getString(
-                            "Utang_Jasa_Perujuk_Laborat_Ranap");
-                    Beban_Jasa_Menejemen_Laborat_Ranap = rsrekening.getString(
-                            "Beban_Jasa_Menejemen_Laborat_Ranap");
-                    Utang_Jasa_Menejemen_Laborat_Ranap = rsrekening.getString(
-                            "Utang_Jasa_Menejemen_Laborat_Ranap");
+                    Beban_Jasa_Medik_Dokter_Laborat_Ranap = rsrekening
+                            .getString("Beban_Jasa_Medik_Dokter_Laborat_Ranap");
+                    Utang_Jasa_Medik_Dokter_Laborat_Ranap = rsrekening
+                            .getString("Utang_Jasa_Medik_Dokter_Laborat_Ranap");
+                    Beban_Jasa_Medik_Petugas_Laborat_Ranap = rsrekening
+                            .getString("Beban_Jasa_Medik_Petugas_Laborat_Ranap");
+                    Utang_Jasa_Medik_Petugas_Laborat_Ranap = rsrekening
+                            .getString("Utang_Jasa_Medik_Petugas_Laborat_Ranap");
+                    Beban_Kso_Laborat_Ranap = rsrekening.getString("Beban_Kso_Laborat_Ranap");
+                    Utang_Kso_Laborat_Ranap = rsrekening.getString("Utang_Kso_Laborat_Ranap");
+                    HPP_Persediaan_Laborat_Rawat_inap = rsrekening.getString("HPP_Persediaan_Laborat_Rawat_inap");
+                    Persediaan_BHP_Laborat_Rawat_Inap = rsrekening.getString("Persediaan_BHP_Laborat_Rawat_Inap");
+                    Beban_Jasa_Sarana_Laborat_Ranap = rsrekening.getString("Beban_Jasa_Sarana_Laborat_Ranap");
+                    Utang_Jasa_Sarana_Laborat_Ranap = rsrekening.getString("Utang_Jasa_Sarana_Laborat_Ranap");
+                    Beban_Jasa_Perujuk_Laborat_Ranap = rsrekening.getString("Beban_Jasa_Perujuk_Laborat_Ranap");
+                    Utang_Jasa_Perujuk_Laborat_Ranap = rsrekening.getString("Utang_Jasa_Perujuk_Laborat_Ranap");
+                    Beban_Jasa_Menejemen_Laborat_Ranap = rsrekening.getString("Beban_Jasa_Menejemen_Laborat_Ranap");
+                    Utang_Jasa_Menejemen_Laborat_Ranap = rsrekening.getString("Utang_Jasa_Menejemen_Laborat_Ranap");
                 }
             } catch (SQLException e) {
                 System.out.println("Notif Rekening : " + e);
@@ -305,49 +303,38 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
                 }
             }
 
-            psrekening = koneksi.prepareStatement(
-                    "select set_akun_ralan.Suspen_Piutang_Laborat_Ralan,set_akun_ralan.Laborat_Ralan,"
-                    + "set_akun_ralan.Beban_Jasa_Medik_Dokter_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Medik_Dokter_Laborat_Ralan,"
-                    + "set_akun_ralan.Beban_Jasa_Medik_Petugas_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Medik_Petugas_Laborat_Ralan,"
-                    + "set_akun_ralan.Beban_Kso_Laborat_Ralan,set_akun_ralan.Utang_Kso_Laborat_Ralan,"
-                    + "set_akun_ralan.HPP_Persediaan_Laborat_Rawat_Jalan,set_akun_ralan.Persediaan_BHP_Laborat_Rawat_Jalan,"
-                    + "set_akun_ralan.Beban_Jasa_Sarana_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Sarana_Laborat_Ralan,"
-                    + "set_akun_ralan.Beban_Jasa_Perujuk_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Perujuk_Laborat_Ralan,"
-                    + "set_akun_ralan.Beban_Jasa_Menejemen_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Menejemen_Laborat_Ralan from set_akun_ralan");
+            psrekening = koneksi
+                    .prepareStatement("select set_akun_ralan.Suspen_Piutang_Laborat_Ralan,set_akun_ralan.Laborat_Ralan,"
+                            + "set_akun_ralan.Beban_Jasa_Medik_Dokter_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Medik_Dokter_Laborat_Ralan,"
+                            + "set_akun_ralan.Beban_Jasa_Medik_Petugas_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Medik_Petugas_Laborat_Ralan,"
+                            + "set_akun_ralan.Beban_Kso_Laborat_Ralan,set_akun_ralan.Utang_Kso_Laborat_Ralan,"
+                            + "set_akun_ralan.HPP_Persediaan_Laborat_Rawat_Jalan,set_akun_ralan.Persediaan_BHP_Laborat_Rawat_Jalan,"
+                            + "set_akun_ralan.Beban_Jasa_Sarana_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Sarana_Laborat_Ralan,"
+                            + "set_akun_ralan.Beban_Jasa_Perujuk_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Perujuk_Laborat_Ralan,"
+                            + "set_akun_ralan.Beban_Jasa_Menejemen_Laborat_Ralan,set_akun_ralan.Utang_Jasa_Menejemen_Laborat_Ralan from set_akun_ralan");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Laborat_Ralan = rsrekening.getString(
-                            "Suspen_Piutang_Laborat_Ralan");
+                    Suspen_Piutang_Laborat_Ralan = rsrekening.getString("Suspen_Piutang_Laborat_Ralan");
                     Laborat_Ralan = rsrekening.getString("Laborat_Ralan");
-                    Beban_Jasa_Medik_Dokter_Laborat_Ralan = rsrekening.
-                            getString("Beban_Jasa_Medik_Dokter_Laborat_Ralan");
-                    Utang_Jasa_Medik_Dokter_Laborat_Ralan = rsrekening.
-                            getString("Utang_Jasa_Medik_Dokter_Laborat_Ralan");
-                    Beban_Jasa_Medik_Petugas_Laborat_Ralan = rsrekening.
-                            getString("Beban_Jasa_Medik_Petugas_Laborat_Ralan");
-                    Utang_Jasa_Medik_Petugas_Laborat_Ralan = rsrekening.
-                            getString("Utang_Jasa_Medik_Petugas_Laborat_Ralan");
-                    Beban_Kso_Laborat_Ralan = rsrekening.getString(
-                            "Beban_Kso_Laborat_Ralan");
-                    Utang_Kso_Laborat_Ralan = rsrekening.getString(
-                            "Utang_Kso_Laborat_Ralan");
-                    HPP_Persediaan_Laborat_Rawat_Jalan = rsrekening.getString(
-                            "HPP_Persediaan_Laborat_Rawat_Jalan");
-                    Persediaan_BHP_Laborat_Rawat_Jalan = rsrekening.getString(
-                            "Persediaan_BHP_Laborat_Rawat_Jalan");
-                    Beban_Jasa_Sarana_Laborat_Ralan = rsrekening.getString(
-                            "Beban_Jasa_Sarana_Laborat_Ralan");
-                    Utang_Jasa_Sarana_Laborat_Ralan = rsrekening.getString(
-                            "Utang_Jasa_Sarana_Laborat_Ralan");
-                    Beban_Jasa_Perujuk_Laborat_Ralan = rsrekening.getString(
-                            "Beban_Jasa_Perujuk_Laborat_Ralan");
-                    Utang_Jasa_Perujuk_Laborat_Ralan = rsrekening.getString(
-                            "Utang_Jasa_Perujuk_Laborat_Ralan");
-                    Beban_Jasa_Menejemen_Laborat_Ralan = rsrekening.getString(
-                            "Beban_Jasa_Menejemen_Laborat_Ralan");
-                    Utang_Jasa_Menejemen_Laborat_Ralan = rsrekening.getString(
-                            "Utang_Jasa_Menejemen_Laborat_Ralan");
+                    Beban_Jasa_Medik_Dokter_Laborat_Ralan = rsrekening
+                            .getString("Beban_Jasa_Medik_Dokter_Laborat_Ralan");
+                    Utang_Jasa_Medik_Dokter_Laborat_Ralan = rsrekening
+                            .getString("Utang_Jasa_Medik_Dokter_Laborat_Ralan");
+                    Beban_Jasa_Medik_Petugas_Laborat_Ralan = rsrekening
+                            .getString("Beban_Jasa_Medik_Petugas_Laborat_Ralan");
+                    Utang_Jasa_Medik_Petugas_Laborat_Ralan = rsrekening
+                            .getString("Utang_Jasa_Medik_Petugas_Laborat_Ralan");
+                    Beban_Kso_Laborat_Ralan = rsrekening.getString("Beban_Kso_Laborat_Ralan");
+                    Utang_Kso_Laborat_Ralan = rsrekening.getString("Utang_Kso_Laborat_Ralan");
+                    HPP_Persediaan_Laborat_Rawat_Jalan = rsrekening.getString("HPP_Persediaan_Laborat_Rawat_Jalan");
+                    Persediaan_BHP_Laborat_Rawat_Jalan = rsrekening.getString("Persediaan_BHP_Laborat_Rawat_Jalan");
+                    Beban_Jasa_Sarana_Laborat_Ralan = rsrekening.getString("Beban_Jasa_Sarana_Laborat_Ralan");
+                    Utang_Jasa_Sarana_Laborat_Ralan = rsrekening.getString("Utang_Jasa_Sarana_Laborat_Ralan");
+                    Beban_Jasa_Perujuk_Laborat_Ralan = rsrekening.getString("Beban_Jasa_Perujuk_Laborat_Ralan");
+                    Utang_Jasa_Perujuk_Laborat_Ralan = rsrekening.getString("Utang_Jasa_Perujuk_Laborat_Ralan");
+                    Beban_Jasa_Menejemen_Laborat_Ralan = rsrekening.getString("Beban_Jasa_Menejemen_Laborat_Ralan");
+                    Utang_Jasa_Menejemen_Laborat_Ralan = rsrekening.getString("Utang_Jasa_Menejemen_Laborat_Ralan");
                 }
             } catch (SQLException e) {
                 System.out.println("Notif Rekening : " + e);
@@ -365,7 +352,9 @@ public class DlgUbahPeriksaLab extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1611,8 +1600,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgUbahPeriksaLab dialog = new DlgUbahPeriksaLab(
-                    new javax.swing.JFrame(), true);
+            DlgUbahPeriksaLab dialog = new DlgUbahPeriksaLab(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1718,32 +1706,20 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             for (i2 = 0; i2 < tbPemeriksaan.getRowCount(); i2++) {
                 if (tbPemeriksaan.getValueAt(i2, 0).toString().equals("true")) {
                     pilih2[index2] = true;
-                    pemeriksaan2[index2] = tbPemeriksaan.getValueAt(i2, 1).
-                            toString();
+                    pemeriksaan2[index2] = tbPemeriksaan.getValueAt(i2, 1).toString();
                     hasil2[index2] = tbPemeriksaan.getValueAt(i2, 2).toString();
                     satuan2[index2] = tbPemeriksaan.getValueAt(i2, 3).toString();
-                    nilai_rujukan2[index2] = tbPemeriksaan.getValueAt(i2, 4).
-                            toString();
-                    keterangan2[index2] = tbPemeriksaan.getValueAt(i2, 5).
-                            toString();
-                    idtemplate2[index2] = tbPemeriksaan.getValueAt(i2, 6).
-                            toString();
-                    biaya_item2[index2] = Valid.SetAngka(tbPemeriksaan.
-                            getValueAt(i2, 7).toString());
-                    bagian_rs2[index2] = Valid.SetAngka(tbPemeriksaan.
-                            getValueAt(i2, 8).toString());
-                    bhp2[index2] = Valid.SetAngka(tbPemeriksaan.
-                            getValueAt(i2, 9).toString());
-                    bagian_perujuk2[index2] = Valid.SetAngka(tbPemeriksaan.
-                            getValueAt(i2, 10).toString());
-                    bagian_dokter2[index2] = Valid.SetAngka(tbPemeriksaan.
-                            getValueAt(i2, 11).toString());
-                    bagian_laborat2[index2] = Valid.SetAngka(tbPemeriksaan.
-                            getValueAt(i2, 12).toString());
-                    kso2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2,
-                            13).toString());
-                    menejemen2[index2] = Valid.SetAngka(tbPemeriksaan.
-                            getValueAt(i2, 14).toString());
+                    nilai_rujukan2[index2] = tbPemeriksaan.getValueAt(i2, 4).toString();
+                    keterangan2[index2] = tbPemeriksaan.getValueAt(i2, 5).toString();
+                    idtemplate2[index2] = tbPemeriksaan.getValueAt(i2, 6).toString();
+                    biaya_item2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 7).toString());
+                    bagian_rs2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 8).toString());
+                    bhp2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 9).toString());
+                    bagian_perujuk2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 10).toString());
+                    bagian_dokter2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 11).toString());
+                    bagian_laborat2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 12).toString());
+                    kso2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 13).toString());
+                    menejemen2[index2] = Valid.SetAngka(tbPemeriksaan.getValueAt(i2, 14).toString());
                     index2++;
                 }
             }
@@ -1751,48 +1727,32 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             Valid.tabelKosong(tabMode);
 
             for (i2 = 0; i2 < jml2; i2++) {
-                tabMode.addRow(new Object[]{
-                    pilih2[i2], pemeriksaan2[i2], hasil2[i2], satuan2[i2],
-                    nilai_rujukan2[i2], keterangan2[i2], idtemplate2[i2],
-                    biaya_item2[i2], bagian_rs2[i2], bhp2[i2],
-                    bagian_perujuk2[i2],
-                    bagian_dokter2[i2], bagian_laborat2[i2], kso2[i2],
-                    menejemen2[i2]
-                });
+                tabMode.addRow(new Object[]{pilih2[i2], pemeriksaan2[i2], hasil2[i2], satuan2[i2], nilai_rujukan2[i2],
+                    keterangan2[i2], idtemplate2[i2], biaya_item2[i2], bagian_rs2[i2], bhp2[i2],
+                    bagian_perujuk2[i2], bagian_dokter2[i2], bagian_laborat2[i2], kso2[i2], menejemen2[i2]});
             }
 
             for (i2 = 0; i2 < tbTarif.getRowCount(); i2++) {
                 if (tbTarif.getValueAt(i2, 0).toString().equals("true")) {
-                    tabMode.addRow(new Object[]{false,
-                        tbTarif.getValueAt(i2, 2).toString(), "", "", "", "", "",
-                        0, 0, 0, 0, 0, 0, 0, 0});
+                    tabMode.addRow(new Object[]{false, tbTarif.getValueAt(i2, 2).toString(), "", "", "", "", "", 0, 0,
+                        0, 0, 0, 0, 0, 0});
                     if (Jk.getText().equals("L") && (rbDewasa.isSelected() == true)) {
-                        pstampil = koneksi.prepareStatement(
-                                "select id_template, Pemeriksaan, satuan, nilai_rujukan_ld,biaya_item, "
-                                + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
-                                + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
+                        pstampil = koneksi
+                                .prepareStatement("select id_template, Pemeriksaan, satuan, nilai_rujukan_ld,biaya_item, "
+                                        + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
+                                        + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
                         try {
-                            pstampil.setString(1, tbTarif.getValueAt(i2, 1).
-                                    toString());
-                            pstampil.setString(2,
-                                    "%" + TCari.getText().trim() + "%");
+                            pstampil.setString(1, tbTarif.getValueAt(i2, 1).toString());
+                            pstampil.setString(2, "%" + TCari.getText().trim() + "%");
                             rstampil = pstampil.executeQuery();
                             while (rstampil.next()) {
-                                tabMode.addRow(new Object[]{
-                                    false, "   " + rstampil.getString(
-                                    "Pemeriksaan"), "",
-                                    rstampil.getString("satuan"),
-                                    rstampil.getString("nilai_rujukan_ld"), "",
-                                    rstampil.getString("id_template"),
-                                    rstampil.getDouble("biaya_item"),
-                                    rstampil.getDouble("bagian_rs"),
-                                    rstampil.getDouble("bhp"),
-                                    rstampil.getDouble("bagian_perujuk"),
-                                    rstampil.getDouble("bagian_dokter"),
-                                    rstampil.getDouble("bagian_laborat"),
-                                    rstampil.getDouble("kso"),
-                                    rstampil.getDouble("menejemen")
-                                });
+                                tabMode.addRow(new Object[]{false, "   " + rstampil.getString("Pemeriksaan"), "",
+                                    rstampil.getString("satuan"), rstampil.getString("nilai_rujukan_ld"), "",
+                                    rstampil.getString("id_template"), rstampil.getDouble("biaya_item"),
+                                    rstampil.getDouble("bagian_rs"), rstampil.getDouble("bhp"),
+                                    rstampil.getDouble("bagian_perujuk"), rstampil.getDouble("bagian_dokter"),
+                                    rstampil.getDouble("bagian_laborat"), rstampil.getDouble("kso"),
+                                    rstampil.getDouble("menejemen")});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi : " + e);
@@ -1805,32 +1765,22 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             }
                         }
                     } else if (Jk.getText().equals("L") && (rbAnak.isSelected() == true)) {
-                        pstampil2 = koneksi.prepareStatement(
-                                "select id_template, Pemeriksaan, satuan, nilai_rujukan_la,biaya_item, "
-                                + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
-                                + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
+                        pstampil2 = koneksi
+                                .prepareStatement("select id_template, Pemeriksaan, satuan, nilai_rujukan_la,biaya_item, "
+                                        + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
+                                        + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
                         try {
-                            pstampil2.setString(1, tbTarif.getValueAt(i2, 1).
-                                    toString());
-                            pstampil2.setString(2,
-                                    "%" + TCari.getText().trim() + "%");
+                            pstampil2.setString(1, tbTarif.getValueAt(i2, 1).toString());
+                            pstampil2.setString(2, "%" + TCari.getText().trim() + "%");
                             rstampil = pstampil2.executeQuery();
                             while (rstampil.next()) {
-                                tabMode.addRow(new Object[]{false,
-                                    "   " + rstampil.getString("Pemeriksaan"),
-                                    "",
-                                    rstampil.getString("satuan"),
-                                    rstampil.getString("nilai_rujukan_la"), "",
-                                    rstampil.getString("id_template"),
-                                    rstampil.getDouble("biaya_item"),
-                                    rstampil.getDouble("bagian_rs"),
-                                    rstampil.getDouble("bhp"),
-                                    rstampil.getDouble("bagian_perujuk"),
-                                    rstampil.getDouble("bagian_dokter"),
-                                    rstampil.getDouble("bagian_laborat"),
-                                    rstampil.getDouble("kso"),
-                                    rstampil.getDouble("menejemen")
-                                });
+                                tabMode.addRow(new Object[]{false, "   " + rstampil.getString("Pemeriksaan"), "",
+                                    rstampil.getString("satuan"), rstampil.getString("nilai_rujukan_la"), "",
+                                    rstampil.getString("id_template"), rstampil.getDouble("biaya_item"),
+                                    rstampil.getDouble("bagian_rs"), rstampil.getDouble("bhp"),
+                                    rstampil.getDouble("bagian_perujuk"), rstampil.getDouble("bagian_dokter"),
+                                    rstampil.getDouble("bagian_laborat"), rstampil.getDouble("kso"),
+                                    rstampil.getDouble("menejemen")});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi : " + e);
@@ -1842,34 +1792,23 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                                 pstampil2.close();
                             }
                         }
-                    } else if (Jk.getText().equals("P") && (rbDewasa.
-                            isSelected() == true)) {
-                        pstampil3 = koneksi.prepareStatement(
-                                "select id_template, Pemeriksaan, satuan, nilai_rujukan_pd,biaya_item, "
-                                + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
-                                + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
+                    } else if (Jk.getText().equals("P") && (rbDewasa.isSelected() == true)) {
+                        pstampil3 = koneksi
+                                .prepareStatement("select id_template, Pemeriksaan, satuan, nilai_rujukan_pd,biaya_item, "
+                                        + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
+                                        + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
                         try {
-                            pstampil3.setString(1, tbTarif.getValueAt(i2, 1).
-                                    toString());
-                            pstampil3.setString(2,
-                                    "%" + TCari.getText().trim() + "%");
+                            pstampil3.setString(1, tbTarif.getValueAt(i2, 1).toString());
+                            pstampil3.setString(2, "%" + TCari.getText().trim() + "%");
                             rstampil = pstampil3.executeQuery();
                             while (rstampil.next()) {
-                                tabMode.addRow(new Object[]{false,
-                                    "   " + rstampil.getString("Pemeriksaan"),
-                                    "",
-                                    rstampil.getString("satuan"),
-                                    rstampil.getString("nilai_rujukan_pd"), "",
-                                    rstampil.getString("id_template"),
-                                    rstampil.getDouble("biaya_item"),
-                                    rstampil.getDouble("bagian_rs"),
-                                    rstampil.getDouble("bhp"),
-                                    rstampil.getDouble("bagian_perujuk"),
-                                    rstampil.getDouble("bagian_dokter"),
-                                    rstampil.getDouble("bagian_laborat"),
-                                    rstampil.getDouble("kso"),
-                                    rstampil.getDouble("menejemen")
-                                });
+                                tabMode.addRow(new Object[]{false, "   " + rstampil.getString("Pemeriksaan"), "",
+                                    rstampil.getString("satuan"), rstampil.getString("nilai_rujukan_pd"), "",
+                                    rstampil.getString("id_template"), rstampil.getDouble("biaya_item"),
+                                    rstampil.getDouble("bagian_rs"), rstampil.getDouble("bhp"),
+                                    rstampil.getDouble("bagian_perujuk"), rstampil.getDouble("bagian_dokter"),
+                                    rstampil.getDouble("bagian_laborat"), rstampil.getDouble("kso"),
+                                    rstampil.getDouble("menejemen")});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi : " + e);
@@ -1882,32 +1821,22 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             }
                         }
                     } else if (Jk.getText().equals("P") && (rbAnak.isSelected() == true)) {
-                        pstampil4 = koneksi.prepareStatement(
-                                "select id_template, Pemeriksaan, satuan, nilai_rujukan_pa,biaya_item, "
-                                + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
-                                + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
+                        pstampil4 = koneksi
+                                .prepareStatement("select id_template, Pemeriksaan, satuan, nilai_rujukan_pa,biaya_item, "
+                                        + "bagian_rs,bhp,bagian_perujuk,bagian_dokter,bagian_laborat,kso,menejemen "
+                                        + "from template_laboratorium where kd_jenis_prw=? and Pemeriksaan like ? order by urut");
                         try {
-                            pstampil4.setString(1, tbTarif.getValueAt(i2, 1).
-                                    toString());
-                            pstampil4.setString(2,
-                                    "%" + TCari.getText().trim() + "%");
+                            pstampil4.setString(1, tbTarif.getValueAt(i2, 1).toString());
+                            pstampil4.setString(2, "%" + TCari.getText().trim() + "%");
                             rstampil = pstampil4.executeQuery();
                             while (rstampil.next()) {
-                                tabMode.addRow(new Object[]{false,
-                                    "   " + rstampil.getString("Pemeriksaan"),
-                                    "",
-                                    rstampil.getString("satuan"),
-                                    rstampil.getString("nilai_rujukan_pa"), "",
-                                    rstampil.getString("id_template"),
-                                    rstampil.getDouble("biaya_item"),
-                                    rstampil.getDouble("bagian_rs"),
-                                    rstampil.getDouble("bhp"),
-                                    rstampil.getDouble("bagian_perujuk"),
-                                    rstampil.getDouble("bagian_dokter"),
-                                    rstampil.getDouble("bagian_laborat"),
-                                    rstampil.getDouble("kso"),
-                                    rstampil.getDouble("menejemen")
-                                });
+                                tabMode.addRow(new Object[]{false, "   " + rstampil.getString("Pemeriksaan"), "",
+                                    rstampil.getString("satuan"), rstampil.getString("nilai_rujukan_pa"), "",
+                                    rstampil.getString("id_template"), rstampil.getDouble("biaya_item"),
+                                    rstampil.getDouble("bagian_rs"), rstampil.getDouble("bhp"),
+                                    rstampil.getDouble("bagian_perujuk"), rstampil.getDouble("bagian_dokter"),
+                                    rstampil.getDouble("bagian_laborat"), rstampil.getDouble("kso"),
+                                    rstampil.getDouble("menejemen")});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi : " + e);
@@ -1945,16 +1874,11 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",
-                TPasien, TNoRM.getText());
-        Sequel.cariIsi(
-                "select pasien.jk from pasien where pasien.no_rkm_medis=? ", Jk,
-                TNoRM.getText());
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ", TPasien, TNoRM.getText());
+        Sequel.cariIsi("select pasien.jk from pasien where pasien.no_rkm_medis=? ", Jk, TNoRM.getText());
     }
 
     /**
-     *
      * @param norwt
      * @param tanggal
      * @param jam
@@ -1962,12 +1886,10 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     public void setNoRm(String norwt, String tanggal, String jam) {
         try {
             TNoRw.setText(norwt);
-            Sequel.cariIsi(
-                    "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",
-                    TNoRM, TNoRw.getText());
-            Sequel.cariIsi(
-                    "select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=? ",
-                    Penjab, TNoRw.getText());
+            Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ", TNoRM,
+                    TNoRw.getText());
+            Sequel.cariIsi("select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=? ", Penjab,
+                    TNoRw.getText());
 
             isPsien();
             psset_tarif = koneksi.prepareStatement("select * from set_tarif");
@@ -1991,46 +1913,35 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
             Tanggal.setText(tanggal);
             Jam.setText(jam);
-            Sequel.cariIsi(
-                    "select kd_dokter from periksa_lab where no_rawat='" + TNoRw.
-                            getText() + "' and tgl_periksa='" + tanggal + "' and jam='" + jam + "'",
-                    KodePj);
-            Sequel.cariIsi(
-                    "select dokter.nm_dokter from dokter where dokter.kd_dokter='" + KodePj.
-                            getText() + "'", NmDokterPj);
-            Sequel.cariIsi(
-                    "select nip from periksa_lab where no_rawat='" + TNoRw.
-                            getText() + "' and tgl_periksa='" + tanggal + "' and jam='" + jam + "'",
-                    KdPtg);
-            Sequel.cariIsi("select nama from petugas where nip='" + KdPtg.
-                    getText() + "'", NmPtg);
-            Sequel.cariIsi(
-                    "select dokter_perujuk from periksa_lab where no_rawat='" + TNoRw.
-                            getText() + "' and tgl_periksa='" + tanggal + "' and jam='" + jam + "'",
-                    KodePerujuk);
-            Sequel.cariIsi(
-                    "select dokter.nm_dokter from dokter where dokter.kd_dokter=? ",
-                    NmPerujuk, KodePerujuk.getText());
+            Sequel.cariIsi("select kd_dokter from periksa_lab where no_rawat='" + TNoRw.getText()
+                    + "' and tgl_periksa='" + tanggal + "' and jam='" + jam + "'", KodePj);
+            Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter='" + KodePj.getText() + "'",
+                    NmDokterPj);
+            Sequel.cariIsi("select nip from periksa_lab where no_rawat='" + TNoRw.getText() + "' and tgl_periksa='"
+                    + tanggal + "' and jam='" + jam + "'", KdPtg);
+            Sequel.cariIsi("select nama from petugas where nip='" + KdPtg.getText() + "'", NmPtg);
+            Sequel.cariIsi("select dokter_perujuk from periksa_lab where no_rawat='" + TNoRw.getText()
+                    + "' and tgl_periksa='" + tanggal + "' and jam='" + jam + "'", KodePerujuk);
+            Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=? ", NmPerujuk,
+                    KodePerujuk.getText());
 
-            pscariperiksa = koneksi.prepareStatement(
-                    "select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan,periksa_lab.biaya,"
-                    + "periksa_lab.bagian_rs,periksa_lab.bhp,periksa_lab.tarif_perujuk,"
-                    + "periksa_lab.tarif_tindakan_dokter,periksa_lab.tarif_tindakan_petugas, "
-                    + "periksa_lab.kso,periksa_lab.menejemen from periksa_lab inner join jns_perawatan_lab "
-                    + "on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw where periksa_lab.kategori='PK' and periksa_lab.no_rawat=? and periksa_lab.tgl_periksa=? "
-                    + "and periksa_lab.jam=?");
+            pscariperiksa = koneksi
+                    .prepareStatement("select periksa_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan,periksa_lab.biaya,"
+                            + "periksa_lab.bagian_rs,periksa_lab.bhp,periksa_lab.tarif_perujuk,"
+                            + "periksa_lab.tarif_tindakan_dokter,periksa_lab.tarif_tindakan_petugas, "
+                            + "periksa_lab.kso,periksa_lab.menejemen from periksa_lab inner join jns_perawatan_lab "
+                            + "on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw where periksa_lab.kategori='PK' and periksa_lab.no_rawat=? and periksa_lab.tgl_periksa=? "
+                            + "and periksa_lab.jam=?");
             try {
                 pscariperiksa.setString(1, TNoRw.getText());
                 pscariperiksa.setString(2, tanggal);
                 pscariperiksa.setString(3, jam);
                 rstindakan = pscariperiksa.executeQuery();
                 while (rstindakan.next()) {
-                    tabMode2.addRow(new Object[]{true, rstindakan.getString(1),
-                        rstindakan.getString(2), rstindakan.getDouble(3),
-                        rstindakan.getDouble(4), rstindakan.getDouble(5),
-                        rstindakan.getDouble(6), rstindakan.getDouble(7),
-                        rstindakan.getDouble(8), rstindakan.getDouble(9),
-                        rstindakan.getDouble(10)});
+                    tabMode2.addRow(new Object[]{true, rstindakan.getString(1), rstindakan.getString(2),
+                        rstindakan.getDouble(3), rstindakan.getDouble(4), rstindakan.getDouble(5),
+                        rstindakan.getDouble(6), rstindakan.getDouble(7), rstindakan.getDouble(8),
+                        rstindakan.getDouble(9), rstindakan.getDouble(10)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2054,20 +1965,13 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 pscaridetailperiksa.setString(3, jam);
                 rstampil = pscaridetailperiksa.executeQuery();
                 while (rstampil.next()) {
-                    tabMode.addRow(new Object[]{true, "   " + rstampil.
-                        getString("Pemeriksaan"), rstampil.getString("nilai"),
-                        rstampil.getString("satuan"),
-                        rstampil.getString("nilai_rujukan"), "",
-                        rstampil.getString("id_template"),
-                        rstampil.getDouble("biaya_item"),
-                        rstampil.getDouble("bagian_rs"),
-                        rstampil.getDouble("bhp"),
-                        rstampil.getDouble("bagian_perujuk"),
-                        rstampil.getDouble("bagian_dokter"),
-                        rstampil.getDouble("bagian_laborat"),
-                        rstampil.getDouble("kso"),
-                        rstampil.getDouble("menejemen")
-                    });
+                    tabMode.addRow(new Object[]{true, "   " + rstampil.getString("Pemeriksaan"),
+                        rstampil.getString("nilai"), rstampil.getString("satuan"),
+                        rstampil.getString("nilai_rujukan"), "", rstampil.getString("id_template"),
+                        rstampil.getDouble("biaya_item"), rstampil.getDouble("bagian_rs"),
+                        rstampil.getDouble("bhp"), rstampil.getDouble("bagian_perujuk"),
+                        rstampil.getDouble("bagian_dokter"), rstampil.getDouble("bagian_laborat"),
+                        rstampil.getDouble("kso"), rstampil.getDouble("menejemen")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2148,32 +2052,22 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     pilih[index] = true;
                     kode[index] = tbTarif.getValueAt(i, 1).toString();
                     nama[index] = tbTarif.getValueAt(i, 2).toString();
-                    total[index] = Double.parseDouble(tbTarif.getValueAt(i, 3).
-                            toString());
-                    bagian_rs[index] = Double.parseDouble(tbTarif.getValueAt(i,
-                            4).toString());
-                    bhp[index] = Double.parseDouble(tbTarif.getValueAt(i, 5).
-                            toString());
-                    tarif_perujuk[index] = Double.parseDouble(tbTarif.
-                            getValueAt(i, 6).toString());
-                    tarif_tindakan_dokter[index] = Double.parseDouble(tbTarif.
-                            getValueAt(i, 7).toString());
-                    tarif_tindakan_petugas[index] = Double.parseDouble(tbTarif.
-                            getValueAt(i, 8).toString());
-                    kso[index] = Double.parseDouble(tbTarif.getValueAt(i, 9).
-                            toString());
-                    menejemen[index] = Double.parseDouble(tbTarif.getValueAt(i,
-                            10).toString());
+                    total[index] = Double.parseDouble(tbTarif.getValueAt(i, 3).toString());
+                    bagian_rs[index] = Double.parseDouble(tbTarif.getValueAt(i, 4).toString());
+                    bhp[index] = Double.parseDouble(tbTarif.getValueAt(i, 5).toString());
+                    tarif_perujuk[index] = Double.parseDouble(tbTarif.getValueAt(i, 6).toString());
+                    tarif_tindakan_dokter[index] = Double.parseDouble(tbTarif.getValueAt(i, 7).toString());
+                    tarif_tindakan_petugas[index] = Double.parseDouble(tbTarif.getValueAt(i, 8).toString());
+                    kso[index] = Double.parseDouble(tbTarif.getValueAt(i, 9).toString());
+                    menejemen[index] = Double.parseDouble(tbTarif.getValueAt(i, 10).toString());
                     index++;
                 }
             }
 
             Valid.tabelKosong(tabMode2);
             for (i = 0; i < jml; i++) {
-                tabMode2.addRow(new Object[]{pilih[i], kode[i], nama[i],
-                    total[i], bagian_rs[i], bhp[i], tarif_perujuk[i],
-                    tarif_tindakan_dokter[i], tarif_tindakan_petugas[i], kso[i],
-                    menejemen[i]});
+                tabMode2.addRow(new Object[]{pilih[i], kode[i], nama[i], total[i], bagian_rs[i], bhp[i],
+                    tarif_perujuk[i], tarif_tindakan_dokter[i], tarif_tindakan_petugas[i], kso[i], menejemen[i]});
             }
 
             switch (cara_bayar_lab) {
@@ -2187,21 +2081,15 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             + " jns_perawatan_lab.status='1' and jns_perawatan_lab.kd_pj like ? and (jns_perawatan_lab.kd_jenis_prw like ? or jns_perawatan_lab.nm_perawatan like ?) "
                             + "order by jns_perawatan_lab.kd_jenis_prw");
                     try {
-                        pstindakan.setString(1,
-                                "%" + Penjab.getText().trim() + "%");
-                        pstindakan.setString(2, "%" + Pemeriksaan.getText().
-                                trim() + "%");
-                        pstindakan.setString(3, "%" + Pemeriksaan.getText().
-                                trim() + "%");
+                        pstindakan.setString(1, "%" + Penjab.getText().trim() + "%");
+                        pstindakan.setString(2, "%" + Pemeriksaan.getText().trim() + "%");
+                        pstindakan.setString(3, "%" + Pemeriksaan.getText().trim() + "%");
                         rstindakan = pstindakan.executeQuery();
                         while (rstindakan.next()) {
-                            tabMode2.addRow(new Object[]{false, rstindakan.
-                                getString(1), rstindakan.getString(2),
-                                rstindakan.getDouble(3), rstindakan.getDouble(4),
-                                rstindakan.getDouble(5), rstindakan.getDouble(6),
-                                rstindakan.getDouble(7), rstindakan.getDouble(8),
-                                rstindakan.getDouble(9), rstindakan.
-                                getDouble(10)});
+                            tabMode2.addRow(new Object[]{false, rstindakan.getString(1), rstindakan.getString(2),
+                                rstindakan.getDouble(3), rstindakan.getDouble(4), rstindakan.getDouble(5),
+                                rstindakan.getDouble(6), rstindakan.getDouble(7), rstindakan.getDouble(8),
+                                rstindakan.getDouble(9), rstindakan.getDouble(10)});
                         }
                     } catch (SQLException e) {
                         System.out.println("Notif : " + e);
@@ -2226,19 +2114,14 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                             + " jns_perawatan_lab.status='1' and (jns_perawatan_lab.kd_jenis_prw like ? or jns_perawatan_lab.nm_perawatan like ?)  "
                             + "order by jns_perawatan_lab.kd_jenis_prw");
                     try {
-                        pstindakan.setString(1, "%" + Pemeriksaan.getText().
-                                trim() + "%");
-                        pstindakan.setString(2, "%" + Pemeriksaan.getText().
-                                trim() + "%");
+                        pstindakan.setString(1, "%" + Pemeriksaan.getText().trim() + "%");
+                        pstindakan.setString(2, "%" + Pemeriksaan.getText().trim() + "%");
                         rstindakan = pstindakan.executeQuery();
                         while (rstindakan.next()) {
-                            tabMode2.addRow(new Object[]{false, rstindakan.
-                                getString(1), rstindakan.getString(2),
-                                rstindakan.getDouble(3), rstindakan.getDouble(4),
-                                rstindakan.getDouble(5), rstindakan.getDouble(6),
-                                rstindakan.getDouble(7), rstindakan.getDouble(8),
-                                rstindakan.getDouble(9), rstindakan.
-                                getDouble(10)});
+                            tabMode2.addRow(new Object[]{false, rstindakan.getString(1), rstindakan.getString(2),
+                                rstindakan.getDouble(3), rstindakan.getDouble(4), rstindakan.getDouble(5),
+                                rstindakan.getDouble(6), rstindakan.getDouble(7), rstindakan.getDouble(8),
+                                rstindakan.getDouble(9), rstindakan.getDouble(10)});
                         }
                     } catch (SQLException e) {
                         System.out.println("Notif : " + e);
@@ -2258,7 +2141,6 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgUbahPeriksaLab.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgUbahPeriksaLab.class.getName());
 
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgBangsal.java
- *
- * Created on May 22, 2010, 9:58:42 PM
+* DlgBangsal.java
+*
+* Created on May 22, 2010, 9:58:42 PM
  */
 package kepegawaian;
 
@@ -28,19 +28,25 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class DlgPulang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
-    private String say = " rekap_presensi.jam_datang like '%" + Sequel.
-            cariString("select current_date()") + "%' and rekap_presensi.durasi!='' ";
+
+    private String say = " rekap_presensi.jam_datang like '%" + Sequel.cariString("select current_date()")
+            + "%' and rekap_presensi.durasi!='' ";
+
     private String[] primary;
 
     /**
@@ -53,8 +59,8 @@ public class DlgPulang extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"NIK", "Nama", "Shift", "Jam Datang", "Jam Pulang",
-            "Status", "Keterlambatan", "Durasi", "Catatan"};
+        Object[] row = {"NIK", "Nama", "Shift", "Jam Datang", "Jam Pulang", "Status", "Keterlambatan", "Durasi",
+            "Catatan"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -91,11 +97,10 @@ public class DlgPulang extends javax.swing.JDialog {
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        //catatan.setDocument(new batasInput((int)100).getKata(catatan));
+        // catatan.setDocument(new batasInput((int)100).getKata(catatan));
         TCari.setDocument(new batasInput(100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -120,26 +125,20 @@ public class DlgPulang extends javax.swing.JDialog {
             });
         }
         try {
-            ps = koneksi.prepareStatement(
-                    "select  pegawai.id, "
-                    + "pegawai.nik, "
-                    + "pegawai.nama, "
-                    + "rekap_presensi.shift, "
-                    + "rekap_presensi.jam_datang, "
-                    + "rekap_presensi.jam_pulang, "
-                    + "rekap_presensi.status, "
-                    + "rekap_presensi.keterlambatan, "
-                    + "rekap_presensi.durasi, "
-                    + "rekap_presensi.keterangan "
-                    + " from pegawai inner join rekap_presensi on pegawai.id=rekap_presensi.id where "
-                    + "  pegawai.stts_aktif<>'KELUAR' and pegawai.nik like ? and " + say + " or "
-                    + "  pegawai.stts_aktif<>'KELUAR' and pegawai.nama like ? and " + say + " or "
-                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.shift like ? and " + say + " or "
-                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.status like ? and " + say + " or "
-                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterlambatan like ? and " + say + " or "
-                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_datang like ? and " + say + " or "
-                    + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterangan like ? and " + say + " or "
-                    + " pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_pulang like ? and " + say + " order by rekap_presensi.jam_datang ");
+            ps = koneksi
+                    .prepareStatement("select  pegawai.id, " + "pegawai.nik, " + "pegawai.nama, " + "rekap_presensi.shift, "
+                            + "rekap_presensi.jam_datang, " + "rekap_presensi.jam_pulang, " + "rekap_presensi.status, "
+                            + "rekap_presensi.keterlambatan, " + "rekap_presensi.durasi, " + "rekap_presensi.keterangan "
+                            + " from pegawai inner join rekap_presensi on pegawai.id=rekap_presensi.id where "
+                            + "  pegawai.stts_aktif<>'KELUAR' and pegawai.nik like ? and " + say + " or "
+                            + "  pegawai.stts_aktif<>'KELUAR' and pegawai.nama like ? and " + say + " or "
+                            + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.shift like ? and " + say + " or "
+                            + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.status like ? and " + say + " or "
+                            + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterlambatan like ? and " + say + " or "
+                            + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_datang like ? and " + say + " or "
+                            + "  pegawai.stts_aktif<>'KELUAR' and rekap_presensi.keterangan like ? and " + say + " or "
+                            + " pegawai.stts_aktif<>'KELUAR' and rekap_presensi.jam_pulang like ? and " + say
+                            + " order by rekap_presensi.jam_datang ");
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -149,7 +148,9 @@ public class DlgPulang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -626,15 +627,8 @@ public class DlgPulang extends javax.swing.JDialog {
             rs.beforeFirst();
             int i = 0;
             while (rs.next()) {
-                String[] data = {rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    rs.getString(5),
-                    rs.getString(6),
-                    rs.getString(7),
-                    rs.getString(8),
-                    rs.getString(9),
-                    rs.getString(10)};
+                String[] data = {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6),
+                    rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10)};
                 tabMode.addRow(data);
                 primary[i] = rs.getString(1);
                 i++;
@@ -664,7 +658,6 @@ public class DlgPulang extends javax.swing.JDialog {
         jam_datang.setText("");
     }
 
-    private static final Logger LOG = Logger.
-            getLogger(DlgPulang.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgPulang.class.getName());
 
 }

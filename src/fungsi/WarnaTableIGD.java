@@ -6,6 +6,7 @@ package fungsi;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -15,45 +16,57 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class WarnaTableIGD extends DefaultTableCellRenderer {
 
-  /** */
-  public int kolom = 20;
+    /**
+     *
+     */
+    public int kolom = 20;
 
-  /** */
-  public int statusrawat = 18;
+    /**
+     *
+     */
+    public int statusrawat = 18;
 
-  /** */
-  public int statuslanjut = 21;
+    /**
+     *
+     */
+    public int statuslanjut = 21;
 
-  /**
-   * @param table
-   * @param value
-   * @param isSelected
-   * @param hasFocus
-   * @param row
-   * @param column
-   * @return
-   */
-  @Override
-  public Component getTableCellRendererComponent(
-      JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component component =
-        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (row % 2 == 1) {
-      component.setBackground(new Color(255, 246, 244));
-    } else {
-      component.setBackground(new Color(255, 255, 255));
+    /**
+     * @param table
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return
+     */
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+            int row, int column) {
+        Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        if (isSelected) {
+            // component.setBackground(new Color(93, 156, 236));
+            component.setForeground(Color.RED);
+        } else {
+            component.setForeground(new Color(50, 50, 50));
+            if (row % 2 == 1) {
+                component.setBackground(new Color(255, 246, 244));
+            } else {
+                component.setBackground(new Color(255, 255, 255));
+            }
+            if (table.getValueAt(row, kolom).toString().equals("Sudah Bayar")) {
+                component.setBackground(new Color(153, 255, 153));
+            }
+            if (table.getValueAt(row, statusrawat).toString().equals("Batal")) {
+                component.setBackground(new Color(255, 102, 102));
+            }
+            if (table.getValueAt(row, statuslanjut).toString().equals("Ranap")) {
+                component.setBackground(new Color(102, 255, 255));
+            }
+        }
+        return component;
     }
-    if (table.getValueAt(row, kolom).toString().equals("Sudah Bayar")) {
-      component.setBackground(new Color(153, 255, 153));
-    }
-    if (table.getValueAt(row, statusrawat).toString().equals("Batal")) {
-      component.setBackground(new Color(255, 102, 102));
-    }
-    if (table.getValueAt(row, statuslanjut).toString().equals("Ranap")) {
-      component.setBackground(new Color(102, 255, 255));
-    }
-    return component;
-  }
 
-  private static final Logger LOG = Logger.getLogger(WarnaTableIGD.class.getName());
+    private static final Logger LOG = Logger.getLogger(WarnaTableIGD.class.getName());
+
 }

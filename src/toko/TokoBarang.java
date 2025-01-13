@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package toko;
 
@@ -38,22 +38,27 @@ import javax.swing.table.TableColumn;
 import restore.DlgRestoreTokoBarang;
 
 /**
- *
  * @author dosen
  */
 public class TokoBarang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
      *
      */
     public DlgCariSatuan satuan = new DlgCariSatuan(null, false);
+
     public TokoCariJenis jenis = new TokoCariJenis(null, false);
 
     /**
@@ -69,17 +74,12 @@ public class TokoBarang extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Stok",
-            "H. Dasar", "H. Beli", "H. Distributor", "H. Grosir", "H. Retail"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Stok", "H. Dasar", "H. Beli",
+            "H. Distributor", "H. Grosir", "H. Retail"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -94,9 +94,9 @@ public class TokoBarang extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 10; i++) {
@@ -136,8 +136,7 @@ public class TokoBarang extends javax.swing.JDialog {
         retail.setDocument(new batasInput((byte) 20).getKata(retail));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -177,10 +176,10 @@ public class TokoBarang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoBarang")) {
                     if (satuan.getTable().getSelectedRow() != -1) {
-                        kode_sat.setText(satuan.getTable().getValueAt(satuan.
-                                getTable().getSelectedRow(), 0).toString());
-                        nama_sat.setText(satuan.getTable().getValueAt(satuan.
-                                getTable().getSelectedRow(), 1).toString());
+                        kode_sat
+                                .setText(satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 0).toString());
+                        nama_sat
+                                .setText(satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 1).toString());
                     }
                     kode_sat.requestFocus();
                 }
@@ -217,10 +216,8 @@ public class TokoBarang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoBarang")) {
                     if (jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(jenis.getTable().getValueAt(jenis.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmjenis.setText(jenis.getTable().getValueAt(jenis.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                        nmjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -247,7 +244,9 @@ public class TokoBarang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1278,14 +1277,10 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("satuan"), rs.getString("nm_jenis"), rs.
-                        getDouble("stok"),
-                        rs.getDouble("dasar"), rs.getDouble("h_beli"), rs.
-                        getDouble("distributor"), rs.getDouble("grosir"), rs.
-                        getDouble("retail")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("satuan"), rs.getString("nm_jenis"), rs.getDouble("stok"),
+                        rs.getDouble("dasar"), rs.getDouble("h_beli"), rs.getDouble("distributor"),
+                        rs.getDouble("grosir"), rs.getDouble("retail")});
                 }
             } catch (SQLException e) {
                 System.out.println("Data : " + e);
@@ -1318,9 +1313,8 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         nmjenis.setText("");
         TCari.setText("");
         kode_brng.requestFocus();
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(kode_brng,5),signed)),0) from tokobarang  ",
-                "BT", 6, kode_brng);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(kode_brng,5),signed)),0) from tokobarang  ", "BT", 6,
+                kode_brng);
         kode_brng.requestFocus();
     }
 
@@ -1333,37 +1327,22 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            kode_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 0).toString());
-            nama_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            nama_sat.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            nmjenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            stok.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            dasar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 5).toString());
-            beli.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 6).toString());
-            distributor.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
-            grosir.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 8).toString());
-            retail.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 9).toString());
-            kode_sat.setText(Sequel.cariIsi(
-                    "select kode_sat from tokobarang where kode_brng=?",
-                    kode_brng.getText()));
-            kdjenis.setText(Sequel.cariIsi(
-                    "select jenis from tokobarang where kode_brng=?", kode_brng.
-                            getText()));
+            kode_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            nama_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            nama_sat.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            nmjenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            stok.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            dasar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString());
+            beli.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString());
+            distributor.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            grosir.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            retail.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            kode_sat.setText(Sequel.cariIsi("select kode_sat from tokobarang where kode_brng=?", kode_brng.getText()));
+            kdjenis.setText(Sequel.cariIsi("select jenis from tokobarang where kode_brng=?", kode_brng.getText()));
         }
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1405,24 +1384,21 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             try {
                 if (!beli.getText().isEmpty()) {
                     try {
-                        rs = koneksi.prepareStatement(
-                                "select * from tokosetharga").executeQuery();
+                        rs = koneksi.prepareStatement("select * from tokosetharga").executeQuery();
                         if (rs.next()) {
-                            grosir.setText(Double.toString(Valid.roundUp(Double.
-                                    parseDouble(beli.getText()) + (Double.
-                                    parseDouble(beli.getText()) * (rs.getDouble(
-                                    "grosir") / 100)), 100)));
-                            distributor.setText(Double.toString(Valid.roundUp(
-                                    Double.parseDouble(beli.getText()) + (Double.
-                                    parseDouble(beli.getText()) * (rs.getDouble(
-                                    "distributor") / 100)), 100)));
-                            retail.setText(Double.toString(Valid.roundUp(Double.
-                                    parseDouble(beli.getText()) + (Double.
-                                    parseDouble(beli.getText()) * (rs.getDouble(
-                                    "retail") / 100)), 100)));
+                            grosir.setText(Double.toString(Valid.roundUp(
+                                    Double.parseDouble(beli.getText())
+                                    + (Double.parseDouble(beli.getText()) * (rs.getDouble("grosir") / 100)),
+                                    100)));
+                            distributor.setText(Double.toString(Valid.roundUp(Double.parseDouble(beli.getText())
+                                    + (Double.parseDouble(beli.getText()) * (rs.getDouble("distributor") / 100)),
+                                    100)));
+                            retail.setText(Double.toString(Valid.roundUp(
+                                    Double.parseDouble(beli.getText())
+                                    + (Double.parseDouble(beli.getText()) * (rs.getDouble("retail") / 100)),
+                                    100)));
                         } else {
-                            JOptionPane.showMessageDialog(null,
-                                    "Pengaturan harga masih kosong...!!");
+                            JOptionPane.showMessageDialog(null, "Pengaturan harga masih kosong...!!");
                             TCari.requestFocus();
                         }
                     } catch (HeadlessException | NumberFormatException | SQLException e) {
@@ -1439,7 +1415,6 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(TokoBarang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(TokoBarang.class.getName());
 
 }

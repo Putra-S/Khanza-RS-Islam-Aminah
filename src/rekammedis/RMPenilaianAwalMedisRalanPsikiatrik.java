@@ -39,20 +39,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "", pilihan = "";
 
     /**
@@ -61,28 +69,20 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public RMPenilaianAwalMedisRalanPsikiatrik(java.awt.Frame parent,
-            boolean modal) {
+    public RMPenilaianAwalMedisRalanPsikiatrik(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
-            "Kode Dokter", "Nama Dokter", "Tanggal", "Anamnesis", "Hubungan",
-            "Keluhan Utama", "Riwayat Penyakit Sekarang",
-            "Riwayat Penyakit Dahulu",
-            "Riwayat Penyakit Keluarga", "Riwayat Napza", "Riwayat Alergi",
-            "Penampilan", "Pembicaraan", "Psikomotor", "Sikap", "Mood",
-            "Fungsi Kognitif", "Gangguan Persepsi", "Proses Pikir",
-            "Pengendalian Impuls", "Tilikan", "Reality Testing Ability",
-            "Keadaan Umum", "GCS", "Kesadaran", "TD(mmHg)", "Nadi(x/menit)",
-            "RR(x/menit)", "Suhu", "SpO2", "BB(Kg)",
-            "TB(cm)", "Kepala", "Gigi & Mulut", "THT", "Thoraks", "Abdomen",
-            "Genital & Anus", "Ekstremitas", "Kulit",
-            "Keterangan Pemeriksaan Fisik", "Pemeriksaan Penunjang",
-            "Diagnosis/Asesmen",
-            "Tatalaksana", "Konsul/Rujuk"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Kode Dokter", "Nama Dokter",
+                    "Tanggal", "Anamnesis", "Hubungan", "Keluhan Utama", "Riwayat Penyakit Sekarang",
+                    "Riwayat Penyakit Dahulu", "Riwayat Penyakit Keluarga", "Riwayat Napza", "Riwayat Alergi",
+                    "Penampilan", "Pembicaraan", "Psikomotor", "Sikap", "Mood", "Fungsi Kognitif",
+                    "Gangguan Persepsi", "Proses Pikir", "Pengendalian Impuls", "Tilikan",
+                    "Reality Testing Ability", "Keadaan Umum", "GCS", "Kesadaran", "TD(mmHg)", "Nadi(x/menit)",
+                    "RR(x/menit)", "Suhu", "SpO2", "BB(Kg)", "TB(cm)", "Kepala", "Gigi & Mulut", "THT", "Thoraks",
+                    "Abdomen", "Genital & Anus", "Ekstremitas", "Kulit", "Keterangan Pemeriksaan Fisik",
+                    "Pemeriksaan Penunjang", "Diagnosis/Asesmen", "Tatalaksana", "Konsul/Rujuk"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -216,11 +216,9 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
         Sikap.setDocument(new batasInput(200).getKata(Sikap));
         Mood.setDocument(new batasInput(200).getKata(Mood));
         Fungsikognitif.setDocument(new batasInput(200).getKata(Fungsikognitif));
-        Gangguanpersepsi.setDocument(new batasInput(200).getKata(
-                Gangguanpersepsi));
+        Gangguanpersepsi.setDocument(new batasInput(200).getKata(Gangguanpersepsi));
         Prosespikir.setDocument(new batasInput(200).getKata(Prosespikir));
-        Pengendalianimpuls.setDocument(new batasInput(200).getKata(
-                Pengendalianimpuls));
+        Pengendalianimpuls.setDocument(new batasInput(200).getKata(Pengendalianimpuls));
         Tilikan.setDocument(new batasInput(200).getKata(Tilikan));
         RTA.setDocument(new batasInput(200).getKata(RTA));
         GCS.setDocument(new batasInput((byte) 10).getKata(GCS));
@@ -239,8 +237,7 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -277,10 +274,8 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
@@ -316,14 +311,15 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2982,15 +2978,11 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2999,34 +2991,22 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("kd_dokter"), rs.
-                        getString("nm_dokter"), rs.getString("tanggal"),
-                        rs.getString("anamnesis"), rs.getString("hubungan"), rs.
-                        getString("keluhan_utama"), rs.getString("rps"), rs.
-                        getString("rpd"), rs.getString("rpk"), rs.getString(
-                        "rpo"), rs.getString("alergi"), rs.getString(
-                        "penampilan"), rs.getString("pembicaraan"), rs.
-                        getString("psikomotor"),
-                        rs.getString("sikap"), rs.getString("mood"), rs.
-                        getString("fungsi_kognitif"), rs.getString(
-                        "gangguan_persepsi"), rs.getString("proses_pikir"), rs.
-                        getString("pengendalian_impuls"), rs.
-                        getString("tilikan"), rs.getString("rta"),
-                        rs.getString("keadaan"), rs.getString("gcs"), rs.
-                        getString("kesadaran"), rs.getString("td"), rs.
-                        getString("nadi"), rs.getString("rr"), rs.getString(
-                        "suhu"), rs.getString("spo"), rs.getString("bb"),
-                        rs.getString("tb"), rs.getString("kepala"), rs.
-                        getString("gigi"), rs.getString("tht"), rs.getString(
-                        "thoraks"), rs.getString("abdomen"), rs.getString(
-                        "genital"), rs.getString("ekstremitas"),
-                        rs.getString("kulit"), rs.getString("ket_fisik"), rs.
-                        getString("penunjang"), rs.getString("diagnosis"), rs.
-                        getString("tata"), rs.getString("konsulrujuk")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"), rs.getString("tanggal"),
+                        rs.getString("anamnesis"), rs.getString("hubungan"), rs.getString("keluhan_utama"),
+                        rs.getString("rps"), rs.getString("rpd"), rs.getString("rpk"), rs.getString("rpo"),
+                        rs.getString("alergi"), rs.getString("penampilan"), rs.getString("pembicaraan"),
+                        rs.getString("psikomotor"), rs.getString("sikap"), rs.getString("mood"),
+                        rs.getString("fungsi_kognitif"), rs.getString("gangguan_persepsi"),
+                        rs.getString("proses_pikir"), rs.getString("pengendalian_impuls"), rs.getString("tilikan"),
+                        rs.getString("rta"), rs.getString("keadaan"), rs.getString("gcs"),
+                        rs.getString("kesadaran"), rs.getString("td"), rs.getString("nadi"), rs.getString("rr"),
+                        rs.getString("suhu"), rs.getString("spo"), rs.getString("bb"), rs.getString("tb"),
+                        rs.getString("kepala"), rs.getString("gigi"), rs.getString("tht"), rs.getString("thoraks"),
+                        rs.getString("abdomen"), rs.getString("genital"), rs.getString("ekstremitas"),
+                        rs.getString("kulit"), rs.getString("ket_fisik"), rs.getString("penunjang"),
+                        rs.getString("diagnosis"), rs.getString("tata"), rs.getString("konsulrujuk")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -3095,105 +3075,54 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    8).toString());
-            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            KeluhanUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            RPS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            RPD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            RPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            RPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            Penampilan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            Pembicaraan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            Psikomotor.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            Sikap.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            Mood.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            Fungsikognitif.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 21).toString());
-            Gangguanpersepsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    22).toString());
-            Prosespikir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            Pengendalianimpuls.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 24).toString());
-            Tilikan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).
-                    toString());
-            RTA.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).
-                    toString());
-            Keadaan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    27).toString());
-            GCS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).
-                    toString());
-            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    29).toString());
-            TD.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).
-                            toString());
-            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).
-                    toString());
-            RR.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).
-                            toString());
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).
-                    toString());
-            SPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).
-                    toString());
-            BB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).
-                            toString());
-            TB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).
-                            toString());
-            Kepala.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 37).toString());
-            Gigi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 38).
-                    toString());
-            THT.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 39).
-                    toString());
-            Thoraks.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    40).toString());
-            Abdomen.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    41).toString());
-            Genital.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    42).toString());
-            Ekstremitas.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 43).toString());
-            Kulit.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
-            KetFisik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).
-                    toString());
-            Penunjang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 46).
-                    toString());
-            Diagnosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 47).
-                    toString());
-            Tatalaksana.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 48).
-                    toString());
-            Konsul.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 49).
-                    toString());
-            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString());
+            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            KeluhanUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            RPS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            RPD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            RPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            RPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Penampilan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Pembicaraan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Psikomotor.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Sikap.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            Mood.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Fungsikognitif.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Gangguanpersepsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Prosespikir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Pengendalianimpuls.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            Tilikan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            RTA.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            Keadaan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            GCS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            RR.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            SPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            BB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            TB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
+            Kepala.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            Gigi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
+            THT.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            Thoraks.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            Abdomen.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            Genital.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            Ekstremitas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
+            Kulit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
+            KetFisik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
+            Penunjang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 46).toString());
+            Diagnosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 47).toString());
+            Tatalaksana.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 48).toString());
+            Konsul.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 49).toString());
+            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
         }
     }
 
@@ -3249,8 +3178,7 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
             NmDokter.setText(dokter.tampil3(KdDokter.getText()));
             if (NmDokter.getText().isEmpty()) {
                 KdDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan Dokter...!!");
             }
         }
     }
@@ -3260,11 +3188,8 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_medis_ralan_psikiatrik where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_medis_ralan_psikiatrik where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -3276,39 +3201,29 @@ public class RMPenilaianAwalMedisRalanPsikiatrik extends javax.swing.JDialog {
     private void ganti() {
         if (Sequel.mengedittf("penilaian_medis_ralan_psikiatrik", "no_rawat=?",
                 "no_rawat=?,tanggal=?,kd_dokter=?,anamnesis=?,hubungan=?,keluhan_utama=?,rps=?,rpd=?,rpk=?,rpo=?,alergi=?,penampilan=?,pembicaraan=?,psikomotor=?,sikap=?,mood=?,fungsi_kognitif=?,gangguan_persepsi=?,proses_pikir=?,pengendalian_impuls=?,tilikan=?,rta=?,keadaan=?,gcs=?,kesadaran=?,td=?,nadi=?,rr=?,suhu=?,spo=?,bb=?,tb=?,kepala=?,gigi=?,tht=?,thoraks=?,abdomen=?,genital=?,ekstremitas=?,kulit=?,ket_fisik=?,penunjang=?,diagnosis=?,tata=?,konsulrujuk=?",
-                46, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), KdDokter.
-                    getText(), Anamnesis.getSelectedItem().toString(), Hubungan.
-                    getText(),
-                    KeluhanUtama.getText(), RPS.getText(), RPD.getText(), RPK.
-                    getText(), RPO.getText(), Alergi.getText(), Penampilan.
-                    getText(), Pembicaraan.getText(), Psikomotor.getText(),
-                    Sikap.getText(), Mood.getText(), Fungsikognitif.getText(),
-                    Gangguanpersepsi.getText(), Prosespikir.getText(),
-                    Pengendalianimpuls.getText(), Tilikan.getText(), RTA.
-                    getText(), Keadaan.getSelectedItem().toString(), GCS.
-                    getText(), Kesadaran.getSelectedItem().toString(), TD.
-                    getText(),
-                    Nadi.getText(), RR.getText(), Suhu.getText(), SPO.getText(),
-                    BB.getText(), TB.getText(), Kepala.getSelectedItem().
-                    toString(), Gigi.getSelectedItem().toString(), THT.
-                    getSelectedItem().toString(),
-                    Thoraks.getSelectedItem().toString(), Abdomen.
-                    getSelectedItem().toString(), Genital.getSelectedItem().
-                            toString(), Ekstremitas.getSelectedItem().toString(),
-                    Kulit.getSelectedItem().toString(), KetFisik.getText(),
-                    Penunjang.getText(), Diagnosis.getText(), Tatalaksana.
-                    getText(), Konsul.getText(), tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 0).toString()
-                }) == true) {
+                46,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), Anamnesis.getSelectedItem().toString(), Hubungan.getText(),
+                    KeluhanUtama.getText(), RPS.getText(), RPD.getText(), RPK.getText(), RPO.getText(),
+                    Alergi.getText(), Penampilan.getText(), Pembicaraan.getText(), Psikomotor.getText(),
+                    Sikap.getText(), Mood.getText(), Fungsikognitif.getText(), Gangguanpersepsi.getText(),
+                    Prosespikir.getText(), Pengendalianimpuls.getText(), Tilikan.getText(), RTA.getText(),
+                    Keadaan.getSelectedItem().toString(), GCS.getText(), Kesadaran.getSelectedItem().toString(),
+                    TD.getText(), Nadi.getText(), RR.getText(), Suhu.getText(), SPO.getText(), BB.getText(),
+                    TB.getText(), Kepala.getSelectedItem().toString(), Gigi.getSelectedItem().toString(),
+                    THT.getSelectedItem().toString(), Thoraks.getSelectedItem().toString(),
+                    Abdomen.getSelectedItem().toString(), Genital.getSelectedItem().toString(),
+                    Ekstremitas.getSelectedItem().toString(), Kulit.getSelectedItem().toString(),
+                    KetFisik.getText(), Penunjang.getText(), Diagnosis.getText(), Tatalaksana.getText(),
+                    Konsul.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tampil();
             emptTeks();
             TabRawat.setSelectedIndex(1);
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianAwalMedisRalanPsikiatrik.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianAwalMedisRalanPsikiatrik.class.getName());
+
 }

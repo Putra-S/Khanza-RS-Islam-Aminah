@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package laporan;
 
@@ -36,21 +36,30 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class DlgPenyakit extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private DlgKtgPenyakit ktg = new DlgKtgPenyakit(null, false);
+
     private String[] hlm;
+
     private String awal = "0";
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private double jumlah = 0, x = 0, i = 0;
+
     private int z = 0, j = 0, mulai = 0;
 
     /**
@@ -65,15 +74,12 @@ public class DlgPenyakit extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(628, 674);
 
-        Object[] row = {"P", "Kode", "Nama Penyakit", "Ciri-ciri Penyakit",
-            "Keterangan", "Kategori Penyakit", "Ciri-ciri Umum", "Status"};
+        Object[] row = {"P", "Kode", "Nama Penyakit", "Ciri-ciri Penyakit", "Keterangan", "Kategori Penyakit",
+            "Ciri-ciri Umum", "Status"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -91,7 +97,8 @@ public class DlgPenyakit extends javax.swing.JDialog {
 
         };
         tbPenyakit.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbPenyakit.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPenyakit.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -123,8 +130,7 @@ public class DlgPenyakit extends javax.swing.JDialog {
         TKeterangan.setDocument(new batasInput((byte) 60).getKata(TKeterangan));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -156,33 +162,27 @@ public class DlgPenyakit extends javax.swing.JDialog {
                     "select penyakit.kd_penyakit,penyakit.nm_penyakit,penyakit.ciri_ciri,penyakit.keterangan, "
                     + "kategori_penyakit.nm_kategori,kategori_penyakit.ciri_umum,status "
                     + "from kategori_penyakit inner join penyakit "
-                    + "on penyakit.kd_ktg=kategori_penyakit.kd_ktg where  "
-                    + " penyakit.kd_penyakit like ? or "
-                    + " penyakit.nm_penyakit like ? or "
-                    + " penyakit.ciri_ciri like ? or "
-                    + " penyakit.keterangan like ? or "
-                    + " kategori_penyakit.nm_kategori like ? or "
-                    + " penyakit.status like ? or "
-                    + " kategori_penyakit.ciri_umum like ? "
+                    + "on penyakit.kd_ktg=kategori_penyakit.kd_ktg where  " + " penyakit.kd_penyakit like ? or "
+                    + " penyakit.nm_penyakit like ? or " + " penyakit.ciri_ciri like ? or "
+                    + " penyakit.keterangan like ? or " + " kategori_penyakit.nm_kategori like ? or "
+                    + " penyakit.status like ? or " + " kategori_penyakit.ciri_umum like ? "
                     + "order by penyakit.kd_penyakit  LIMIT ?,500");
             ps2 = koneksi.prepareStatement(
                     "select count(penyakit.kd_penyakit) as jumlah from kategori_penyakit inner join penyakit "
                     + " on penyakit.kd_ktg=kategori_penyakit.kd_ktg where  "
-                    + " penyakit.kd_penyakit like ? or "
-                    + " penyakit.nm_penyakit like ? or "
-                    + " penyakit.ciri_ciri like ? or "
-                    + " penyakit.keterangan like ? or "
-                    + " kategori_penyakit.nm_kategori like ? or "
-                    + " penyakit.status like ? or "
-                    + " kategori_penyakit.ciri_umum like ? "
-                    + " order by penyakit.kd_penyakit");
+                    + " penyakit.kd_penyakit like ? or " + " penyakit.nm_penyakit like ? or "
+                    + " penyakit.ciri_ciri like ? or " + " penyakit.keterangan like ? or "
+                    + " kategori_penyakit.nm_kategori like ? or " + " penyakit.status like ? or "
+                    + " kategori_penyakit.ciri_umum like ? " + " order by penyakit.kd_penyakit");
         } catch (Exception ex) {
             System.out.println(ex);
         }
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1046,13 +1046,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             ps.setInt(8, Integer.parseInt(awal));
             rs = ps.executeQuery();
             while (rs.next()) {
-                tabMode.addRow(new Object[]{false, rs.getString(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    rs.getString(5),
-                    rs.getString(6),
-                    rs.getString(7)});
+                tabMode.addRow(new Object[]{false, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getString(5), rs.getString(6), rs.getString(7)});
             }
 
             cmbHlm.removeAllItems();
@@ -1102,14 +1097,13 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             TCiri.setText(tbPenyakit.getValueAt(row, 3).toString());
             TKeterangan.setText(tbPenyakit.getValueAt(row, 4).toString());
             TKtg.setText(tbPenyakit.getValueAt(row, 5).toString());
-            Sequel.cariIsi("select kd_ktg from penyakit where kd_penyakit=?",
-                    kd_ktg, tbPenyakit.getValueAt(row, 1).toString());
+            Sequel.cariIsi("select kd_ktg from penyakit where kd_penyakit=?", kd_ktg,
+                    tbPenyakit.getValueAt(row, 1).toString());
             cmbStatus.setSelectedItem(tbPenyakit.getValueAt(row, 6).toString());
         }
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -1117,7 +1111,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTable getTabel() {
@@ -1148,6 +1141,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         BtnPrint.setEnabled(akses.getpenyakit());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgPenyakit.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgPenyakit.class.getName());
+
 }

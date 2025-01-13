@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgAdmin.java
- *
- * Created on 21 Jun 10, 20:53:44
+* DlgAdmin.java
+*
+* Created on 21 Jun 10, 20:53:44
  */
 package keuangan;
 
@@ -30,19 +30,23 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgRekapPerShift extends javax.swing.JDialog {
 
     private final DefaultTableModel tabModeRalan, tabModeRanap, tabModePemasukan, tabModePengeluaran;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement psjamshift, pspasienralan, psbilling, pspasienranap, pspemasukan, pspengeluaran;
+
     private ResultSet rs, rspasien, rsbilling;
-    private String tanggal2 = "",
-            sqlpsjamshift = "select * from closing_kasir where shift like ? ",
+
+    private String tanggal2 = "", sqlpsjamshift = "select * from closing_kasir where shift like ? ",
             sqlpsbilling = "select billing.nm_perawatan,billing.totalbiaya,billing.status from billing where billing.no_rawat=? ",
             sqlpspasienranap = "select reg_periksa.no_rawat,nota_inap.no_nota,pasien.nm_pasien,nota_inap.tanggal,nota_inap.jam,penjab.png_jawab "
             + "from reg_periksa inner join pasien inner join penjab inner join nota_inap "
@@ -63,11 +67,16 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
             + "kategori_pengeluaran_harian.nama_kategori from pengeluaran_harian inner join kategori_pengeluaran_harian "
             + "on pengeluaran_harian.kode_kategori=kategori_pengeluaran_harian.kode_kategori "
             + "where pengeluaran_harian.tanggal between ? and ? order by pengeluaran_harian.tanggal";
+
     private int i;
-    private double all = 0, Laborat = 0, Radiologi = 0, Obat = 0, Ralan_Dokter = 0, Ralan_Dokter_Paramedis = 0, Ralan_Paramedis = 0, Tambahan = 0, Potongan = 0, Registrasi = 0, Service = 0,
-            ttlLaborat = 0, ttlRadiologi = 0, ttlObat = 0, ttlRalan_Dokter = 0, ttlRalan_Paramedis = 0, ttlTambahan = 0, ttlPotongan = 0, ttlRegistrasi = 0, ttlOperasi = 0,
-            ttlRanap_Dokter = 0, ttlRanap_Paramedis = 0, ttlKamar = 0, ttlHarian = 0, ttlRetur_Obat = 0, ttlResep_Pulang = 0, ttlService = 0,
-            Retur_Obat = 0, Resep_Pulang = 0, Harian = 0, Kamar = 0, Operasi = 0, Ranap_Dokter = 0, Ranap_Dokter_Paramedis = 0, Ranap_Paramedis = 0;
+
+    private double all = 0, Laborat = 0, Radiologi = 0, Obat = 0, Ralan_Dokter = 0, Ralan_Dokter_Paramedis = 0,
+            Ralan_Paramedis = 0, Tambahan = 0, Potongan = 0, Registrasi = 0, Service = 0, ttlLaborat = 0,
+            ttlRadiologi = 0, ttlObat = 0, ttlRalan_Dokter = 0, ttlRalan_Paramedis = 0, ttlTambahan = 0,
+            ttlPotongan = 0, ttlRegistrasi = 0, ttlOperasi = 0, ttlRanap_Dokter = 0, ttlRanap_Paramedis = 0,
+            ttlKamar = 0, ttlHarian = 0, ttlRetur_Obat = 0, ttlResep_Pulang = 0, ttlService = 0, Retur_Obat = 0,
+            Resep_Pulang = 0, Harian = 0, Kamar = 0, Operasi = 0, Ranap_Dokter = 0, Ranap_Dokter_Paramedis = 0,
+            Ranap_Paramedis = 0;
 
     /**
      * Creates new form DlgAdmin
@@ -80,11 +89,10 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         initComponents();
         this.setLocation(10, 10);
         setSize(457, 249);
-        tabModeRalan = new DefaultTableModel(null, new Object[]{
-            "Tanggal", "No.Nota", "Nama Pasien", "Jenis Bayar", "Perujuk",
-            "Registrasi", "Obat+Emb+Tsl",
-            "Paket Tindakan", "Operasi", "Laborat", "Radiologi", "Tambahan",
-            "Potongan", "Total", "Dokter"}) {
+        tabModeRalan = new DefaultTableModel(null,
+                new Object[]{"Tanggal", "No.Nota", "Nama Pasien", "Jenis Bayar", "Perujuk", "Registrasi",
+                    "Obat+Emb+Tsl", "Paket Tindakan", "Operasi", "Laborat", "Radiologi", "Tambahan", "Potongan",
+                    "Total", "Dokter"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -115,11 +123,10 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
 
         tbRalan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRanap = new DefaultTableModel(null, new Object[]{
-            "Tanggal", "No.Nota", "Nama Pasien", "Jenis Bayar", "Perujuk",
-            "Registrasi", "Tindakan", "Obt+Emb+Tsl",
-            "Retur Obat", "Resep Pulang", "Laborat", "Radiologi", "Potongan",
-            "Tambahan", "Kamar+Service", "Operasi", "Harian", "Total"}) {
+        tabModeRanap = new DefaultTableModel(null,
+                new Object[]{"Tanggal", "No.Nota", "Nama Pasien", "Jenis Bayar", "Perujuk", "Registrasi", "Tindakan",
+                    "Obt+Emb+Tsl", "Retur Obat", "Resep Pulang", "Laborat", "Radiologi", "Potongan", "Tambahan",
+                    "Kamar+Service", "Operasi", "Harian", "Total"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -150,8 +157,8 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         }
         tbRanap.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModePemasukan = new DefaultTableModel(null, new Object[]{
-            "Tanggal", "Kategori", "Pemasukan", "Keterangan"}) {
+        tabModePemasukan = new DefaultTableModel(null,
+                new Object[]{"Tanggal", "Kategori", "Pemasukan", "Keterangan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -178,8 +185,8 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
 
         tbPemasukan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModePengeluaran = new DefaultTableModel(null, new Object[]{
-            "Tanggal", "Kategori", "Pengeluaran", "Keterangan"}) {
+        tabModePengeluaran = new DefaultTableModel(null,
+                new Object[]{"Tanggal", "Kategori", "Pengeluaran", "Keterangan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -188,8 +195,7 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         };
 
         tbPengeluaran.setModel(tabModePengeluaran);
-        tbPengeluaran.
-                setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbPengeluaran.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPengeluaran.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 4; i++) {
@@ -210,7 +216,9 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -722,8 +730,7 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRekapPerShift dialog = new DlgRekapPerShift(
-                    new javax.swing.JFrame(), true);
+            DlgRekapPerShift dialog = new DlgRekapPerShift(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -767,30 +774,23 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         try {
             psjamshift = koneksi.prepareStatement(sqlpsjamshift);
             try {
-                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().
-                        toString().replaceAll("Semua", "") + "%");
+                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 rs = psjamshift.executeQuery();
                 while (rs.next()) {
-                    tabModeRalan.addRow(new Object[]{
-                        "Shift : " + rs.getString("shift"), rs.getString(
-                        "jam_masuk") + " - " + rs.getString("jam_pulang"), "",
-                        "", "", "", "", "", "", "", "", "", "", ""
-                    });
+                    tabModeRalan.addRow(new Object[]{"Shift : " + rs.getString("shift"),
+                        rs.getString("jam_masuk") + " - " + rs.getString("jam_pulang"), "", "", "", "", "", "", "",
+                        "", "", "", "", ""});
                     pspasienralan = koneksi.prepareStatement(sqlpspasienralan);
                     try {
-                        pspasienralan.setString(1, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + "") + " " + rs.getString(
-                                        "jam_masuk"));
+                        pspasienralan.setString(1,
+                                Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_masuk"));
                         if (rs.getString("shift").equals("Malam")) {
-                            tanggal2 = Sequel.cariIsi(
-                                    "select DATE_ADD('" + Valid.SetTgl(Tgl1.
-                                            getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang") + "',INTERVAL 1 DAY)");
+                            tanggal2 = Sequel.cariIsi("select DATE_ADD('" + Valid.SetTgl(Tgl1.getSelectedItem() + "")
+                                    + " " + rs.getString("jam_pulang") + "',INTERVAL 1 DAY)");
                             pspasienralan.setString(2, tanggal2);
                         } else {
-                            pspasienralan.setString(2, Valid.SetTgl(Tgl1.
-                                    getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang"));
+                            pspasienralan.setString(2,
+                                    Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_pulang"));
                         }
                         rspasien = pspasienralan.executeQuery();
                         all = 0;
@@ -817,92 +817,69 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
                             Registrasi = 0;
                             psbilling = koneksi.prepareStatement(sqlpsbilling);
                             try {
-                                psbilling.setString(1, rspasien.getString(
-                                        "no_rawat"));
+                                psbilling.setString(1, rspasien.getString("no_rawat"));
                                 rsbilling = psbilling.executeQuery();
                                 while (rsbilling.next()) {
                                     switch (rsbilling.getString("status")) {
                                         case "Laborat":
-                                            ttlLaborat += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Laborat += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlLaborat += rsbilling.getDouble("totalbiaya");
+                                            Laborat += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Radiologi":
-                                            ttlRadiologi += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Radiologi += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRadiologi += rsbilling.getDouble("totalbiaya");
+                                            Radiologi += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Operasi":
-                                            ttlOperasi += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Operasi += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlOperasi += rsbilling.getDouble("totalbiaya");
+                                            Operasi += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Obat":
-                                            ttlObat += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Obat += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlObat += rsbilling.getDouble("totalbiaya");
+                                            Obat += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ralan Dokter":
-                                            ttlRalan_Dokter += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ralan_Dokter += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRalan_Dokter += rsbilling.getDouble("totalbiaya");
+                                            Ralan_Dokter += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ralan Dokter Paramedis":
-                                            ttlRalan_Dokter += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ralan_Dokter_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
+                                            ttlRalan_Dokter += rsbilling.getDouble("totalbiaya");
+                                            Ralan_Dokter_Paramedis += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ralan Paramedis":
-                                            ttlRalan_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ralan_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
+                                            ttlRalan_Paramedis += rsbilling.getDouble("totalbiaya");
+                                            Ralan_Paramedis += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Tambahan":
-                                            ttlTambahan += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Tambahan += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlTambahan += rsbilling.getDouble("totalbiaya");
+                                            Tambahan += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Potongan":
-                                            ttlPotongan += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Potongan += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlPotongan += rsbilling.getDouble("totalbiaya");
+                                            Potongan += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Registrasi":
-                                            ttlRegistrasi += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Registrasi += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRegistrasi += rsbilling.getDouble("totalbiaya");
+                                            Registrasi += rsbilling.getDouble("totalbiaya");
                                             break;
                                     }
                                 }
-                                all = all + Operasi + Laborat + Radiologi + Obat + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Registrasi;
-                                tabModeRalan.addRow(new Object[]{
-                                    i + ". " + rspasien.getString("tanggal") + " " + rspasien.
-                                    getString("jam"), rspasien.getString(
-                                    "no_nota"),
-                                    rspasien.getString("nm_pasien"), rspasien.
-                                    getString("png_jawab"), Sequel.cariIsi(
-                                    "select perujuk from rujuk_masuk where no_rawat=?",
+                                all = all + Operasi + Laborat + Radiologi + Obat + Ralan_Dokter + Ralan_Dokter_Paramedis
+                                        + Ralan_Paramedis + Tambahan + Potongan + Registrasi;
+                                tabModeRalan
+                                        .addRow(new Object[]{
+                                    i + ". " + rspasien.getString("tanggal") + " " + rspasien.getString("jam"),
+                                    rspasien.getString("no_nota"), rspasien.getString("nm_pasien"),
+                                    rspasien.getString("png_jawab"),
+                                    Sequel.cariIsi("select perujuk from rujuk_masuk where no_rawat=?",
                                     rspasien.getString("no_rawat")),
-                                    Valid.SetAngka(Registrasi), Valid.SetAngka(
-                                    Obat), Valid.SetAngka(
-                                    Ralan_Dokter + Ralan_Paramedis + Ralan_Dokter_Paramedis),
-                                    Valid.SetAngka(Operasi), Valid.SetAngka(
-                                    Laborat), Valid.SetAngka(Radiologi), Valid.
-                                    SetAngka(Tambahan), Valid.SetAngka(Potongan),
-                                    Valid.SetAngka(
-                                    Operasi + Laborat + Radiologi + Obat + Ralan_Dokter + Ralan_Paramedis + Ralan_Dokter_Paramedis + Tambahan + Potongan + Registrasi),
-                                    rspasien.getString("nm_dokter")
-                                });
+                                    Valid.SetAngka(Registrasi), Valid.SetAngka(Obat),
+                                    Valid.SetAngka(Ralan_Dokter + Ralan_Paramedis + Ralan_Dokter_Paramedis),
+                                    Valid.SetAngka(Operasi), Valid.SetAngka(Laborat), Valid.SetAngka(Radiologi),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Operasi + Laborat + Radiologi + Obat + Ralan_Dokter
+                                    + Ralan_Paramedis + Ralan_Dokter_Paramedis + Tambahan + Potongan
+                                    + Registrasi),
+                                    rspasien.getString("nm_dokter")});
                                 i++;
                             } catch (Exception e) {
                                 System.out.println("Notifikasi : " + e);
@@ -915,20 +892,14 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
                                 }
                             }
                         }
-                        tabModeRalan.addRow(new Object[]{
-                            "   >> Total", ":", "", "", "",
-                            Valid.SetAngka(ttlRegistrasi),
-                            Valid.SetAngka(ttlObat),
-                            Valid.SetAngka(ttlRalan_Dokter + ttlRalan_Paramedis),
-                            Valid.SetAngka(ttlOperasi),
-                            Valid.SetAngka(ttlLaborat),
-                            Valid.SetAngka(ttlRadiologi),
-                            Valid.SetAngka(ttlTambahan),
+                        tabModeRalan.addRow(new Object[]{"   >> Total", ":", "", "", "",
+                            Valid.SetAngka(ttlRegistrasi), Valid.SetAngka(ttlObat),
+                            Valid.SetAngka(ttlRalan_Dokter + ttlRalan_Paramedis), Valid.SetAngka(ttlOperasi),
+                            Valid.SetAngka(ttlLaborat), Valid.SetAngka(ttlRadiologi), Valid.SetAngka(ttlTambahan),
                             Valid.SetAngka(ttlPotongan),
-                            Valid.SetAngka(
-                            ttlOperasi + ttlLaborat + ttlRadiologi + ttlObat + ttlRalan_Dokter + ttlRalan_Paramedis
-                            + ttlTambahan + ttlPotongan + ttlRegistrasi), ""
-                        });
+                            Valid.SetAngka(ttlOperasi + ttlLaborat + ttlRadiologi + ttlObat + ttlRalan_Dokter
+                            + ttlRalan_Paramedis + ttlTambahan + ttlPotongan + ttlRegistrasi),
+                            ""});
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     } finally {
@@ -962,31 +933,23 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         try {
             psjamshift = koneksi.prepareStatement(sqlpsjamshift);
             try {
-                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().
-                        toString().replaceAll("Semua", "") + "%");
+                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 rs = psjamshift.executeQuery();
                 while (rs.next()) {
-                    tabModeRanap.addRow(new Object[]{
-                        "Shift : " + rs.getString("shift"), rs.getString(
-                        "jam_masuk") + " - " + rs.getString("jam_pulang"), "",
-                        "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-                        ""
-                    });
+                    tabModeRanap.addRow(new Object[]{"Shift : " + rs.getString("shift"),
+                        rs.getString("jam_masuk") + " - " + rs.getString("jam_pulang"), "", "", "", "", "", "", "",
+                        "", "", "", "", "", "", "", "", ""});
                     pspasienranap = koneksi.prepareStatement(sqlpspasienranap);
                     try {
-                        pspasienranap.setString(1, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + "") + " " + rs.getString(
-                                        "jam_masuk"));
+                        pspasienranap.setString(1,
+                                Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_masuk"));
                         if (rs.getString("shift").equals("Malam")) {
-                            tanggal2 = Sequel.cariIsi(
-                                    "select DATE_ADD('" + Valid.SetTgl(Tgl1.
-                                            getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang") + "',INTERVAL 1 DAY)");
+                            tanggal2 = Sequel.cariIsi("select DATE_ADD('" + Valid.SetTgl(Tgl1.getSelectedItem() + "")
+                                    + " " + rs.getString("jam_pulang") + "',INTERVAL 1 DAY)");
                             pspasienranap.setString(2, tanggal2);
                         } else {
-                            pspasienranap.setString(2, Valid.SetTgl(Tgl1.
-                                    getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang"));
+                            pspasienranap.setString(2,
+                                    Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_pulang"));
                         }
 
                         rspasien = pspasienranap.executeQuery();
@@ -1029,144 +992,105 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
                             Ranap_Paramedis = 0;
                             psbilling = koneksi.prepareStatement(sqlpsbilling);
                             try {
-                                psbilling.setString(1, rspasien.getString(
-                                        "no_rawat"));
+                                psbilling.setString(1, rspasien.getString("no_rawat"));
                                 rsbilling = psbilling.executeQuery();
                                 while (rsbilling.next()) {
                                     switch (rsbilling.getString("status")) {
                                         case "Laborat":
-                                            ttlLaborat += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Laborat += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlLaborat += rsbilling.getDouble("totalbiaya");
+                                            Laborat += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Radiologi":
-                                            ttlRadiologi += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Radiologi += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRadiologi += rsbilling.getDouble("totalbiaya");
+                                            Radiologi += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Operasi":
-                                            ttlOperasi += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Operasi += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlOperasi += rsbilling.getDouble("totalbiaya");
+                                            Operasi += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Obat":
-                                            ttlObat += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Obat += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlObat += rsbilling.getDouble("totalbiaya");
+                                            Obat += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ranap Dokter":
-                                            ttlRanap_Dokter += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ranap_Dokter += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRanap_Dokter += rsbilling.getDouble("totalbiaya");
+                                            Ranap_Dokter += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ranap Dokter Paramedis":
-                                            ttlRanap_Dokter += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ranap_Dokter_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
+                                            ttlRanap_Dokter += rsbilling.getDouble("totalbiaya");
+                                            Ranap_Dokter_Paramedis += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ranap Paramedis":
-                                            ttlRanap_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ranap_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
+                                            ttlRanap_Paramedis += rsbilling.getDouble("totalbiaya");
+                                            Ranap_Paramedis += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ralan Dokter":
-                                            ttlRalan_Dokter += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ralan_Dokter += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRalan_Dokter += rsbilling.getDouble("totalbiaya");
+                                            Ralan_Dokter += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ralan Dokter Paramedis":
-                                            ttlRalan_Dokter += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ralan_Dokter_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
+                                            ttlRalan_Dokter += rsbilling.getDouble("totalbiaya");
+                                            Ralan_Dokter_Paramedis += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Ralan Paramedis":
-                                            ttlRalan_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Ralan_Paramedis += rsbilling.
-                                                    getDouble("totalbiaya");
+                                            ttlRalan_Paramedis += rsbilling.getDouble("totalbiaya");
+                                            Ralan_Paramedis += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Tambahan":
-                                            ttlTambahan += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Tambahan += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlTambahan += rsbilling.getDouble("totalbiaya");
+                                            Tambahan += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Potongan":
-                                            ttlPotongan += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Potongan += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlPotongan += rsbilling.getDouble("totalbiaya");
+                                            Potongan += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Kamar":
-                                            ttlKamar += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Kamar += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlKamar += rsbilling.getDouble("totalbiaya");
+                                            Kamar += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Registrasi":
-                                            ttlRegistrasi += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Registrasi += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRegistrasi += rsbilling.getDouble("totalbiaya");
+                                            Registrasi += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Harian":
-                                            ttlHarian += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Harian += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlHarian += rsbilling.getDouble("totalbiaya");
+                                            Harian += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Retur Obat":
-                                            ttlRetur_Obat += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Retur_Obat += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlRetur_Obat += rsbilling.getDouble("totalbiaya");
+                                            Retur_Obat += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Resep Pulang":
-                                            ttlResep_Pulang += rsbilling.
-                                                    getDouble("totalbiaya");
-                                            Resep_Pulang += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlResep_Pulang += rsbilling.getDouble("totalbiaya");
+                                            Resep_Pulang += rsbilling.getDouble("totalbiaya");
                                             break;
                                         case "Service":
-                                            ttlService += rsbilling.getDouble(
-                                                    "totalbiaya");
-                                            Service += rsbilling.getDouble(
-                                                    "totalbiaya");
+                                            ttlService += rsbilling.getDouble("totalbiaya");
+                                            Service += rsbilling.getDouble("totalbiaya");
                                             break;
                                     }
                                 }
                                 tabModeRanap.addRow(new Object[]{
-                                    i + ". " + rspasien.getString("tanggal") + " " + rspasien.
-                                    getString("jam"), rspasien.getString(
-                                    "no_nota"),
-                                    rspasien.getString("nm_pasien"), rspasien.
-                                    getString("png_jawab"),
-                                    Sequel.cariIsi(
-                                    "select perujuk from rujuk_masuk where no_rawat=?",
-                                    rspasien.getString("no_rawat")), Valid.
-                                    SetAngka(Registrasi),
-                                    Valid.SetAngka(
-                                    Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
-                                    Valid.SetAngka(Obat), Valid.SetAngka(
-                                    Retur_Obat), Valid.SetAngka(Resep_Pulang),
-                                    Valid.SetAngka(Laborat), Valid.SetAngka(
-                                    Radiologi), Valid.SetAngka(Potongan),
-                                    Valid.SetAngka(Tambahan), Valid.SetAngka(
-                                    Kamar + Service), Valid.SetAngka(Operasi),
-                                    Valid.SetAngka(Harian), Valid.SetAngka(
-                                    Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
-                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)
-                                });
-                                all = all + Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service;
+                                    i + ". " + rspasien.getString("tanggal") + " " + rspasien.getString("jam"),
+                                    rspasien.getString("no_nota"), rspasien.getString("nm_pasien"),
+                                    rspasien.getString("png_jawab"),
+                                    Sequel.cariIsi("select perujuk from rujuk_masuk where no_rawat=?",
+                                    rspasien.getString("no_rawat")),
+                                    Valid.SetAngka(Registrasi),
+                                    Valid.SetAngka(Ranap_Dokter + Ranap_Dokter_Paramedis + Ranap_Paramedis
+                                    + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis),
+                                    Valid.SetAngka(Obat), Valid.SetAngka(Retur_Obat), Valid.SetAngka(Resep_Pulang),
+                                    Valid.SetAngka(Laborat), Valid.SetAngka(Radiologi), Valid.SetAngka(Potongan),
+                                    Valid.SetAngka(Tambahan), Valid.SetAngka(Kamar + Service),
+                                    Valid.SetAngka(Operasi), Valid.SetAngka(Harian),
+                                    Valid.SetAngka(Laborat + Radiologi + Operasi + Obat + Ranap_Dokter
+                                    + Ranap_Dokter_Paramedis + Ranap_Paramedis + Ralan_Dokter
+                                    + Ralan_Dokter_Paramedis + Ralan_Paramedis + Tambahan + Potongan + Kamar
+                                    + Registrasi + Harian + Retur_Obat + Resep_Pulang + Service)});
+                                all = all + Laborat + Radiologi + Operasi + Obat + Ranap_Dokter + Ranap_Dokter_Paramedis
+                                        + Ranap_Paramedis + Ralan_Dokter + Ralan_Dokter_Paramedis + Ralan_Paramedis
+                                        + Tambahan + Potongan + Kamar + Registrasi + Harian + Retur_Obat + Resep_Pulang
+                                        + Service;
                                 i++;
                             } catch (Exception e) {
                                 System.out.println("Notifikasi : " + e);
@@ -1179,18 +1103,14 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
                                 }
                             }
                         }
-                        tabModeRanap.addRow(new Object[]{
-                            "   >> Total ", ":", "", "", "", Valid.SetAngka(
-                            ttlRegistrasi), Valid.SetAngka(
+                        tabModeRanap.addRow(new Object[]{"   >> Total ", ":", "", "", "",
+                            Valid.SetAngka(ttlRegistrasi),
+                            Valid.SetAngka(
                             ttlRanap_Dokter + ttlRanap_Paramedis + ttlRalan_Dokter + ttlRalan_Paramedis),
-                            Valid.SetAngka(ttlObat), Valid.SetAngka(
-                            ttlRetur_Obat), Valid.SetAngka(ttlResep_Pulang),
-                            Valid.SetAngka(ttlLaborat), Valid.SetAngka(
-                            ttlRadiologi), Valid.SetAngka(ttlPotongan),
-                            Valid.SetAngka(ttlTambahan), Valid.SetAngka(
-                            ttlKamar + ttlService), Valid.SetAngka(ttlOperasi),
-                            Valid.SetAngka(ttlHarian), Valid.SetAngka(all)
-                        });
+                            Valid.SetAngka(ttlObat), Valid.SetAngka(ttlRetur_Obat), Valid.SetAngka(ttlResep_Pulang),
+                            Valid.SetAngka(ttlLaborat), Valid.SetAngka(ttlRadiologi), Valid.SetAngka(ttlPotongan),
+                            Valid.SetAngka(ttlTambahan), Valid.SetAngka(ttlKamar + ttlService),
+                            Valid.SetAngka(ttlOperasi), Valid.SetAngka(ttlHarian), Valid.SetAngka(all)});
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     } finally {
@@ -1224,30 +1144,22 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         try {
             psjamshift = koneksi.prepareStatement(sqlpsjamshift);
             try {
-                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().
-                        toString().replaceAll("Semua", "") + "%");
+                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 rs = psjamshift.executeQuery();
                 while (rs.next()) {
-                    tabModePemasukan.addRow(new Object[]{
-                        "Shift : " + rs.getString("shift"), rs.getString(
-                        "jam_masuk") + " - " + rs.getString("jam_pulang"), "",
-                        ""
-                    });
+                    tabModePemasukan.addRow(new Object[]{"Shift : " + rs.getString("shift"),
+                        rs.getString("jam_masuk") + " - " + rs.getString("jam_pulang"), "", ""});
                     pspemasukan = koneksi.prepareStatement(sqlpspemasukan);
                     try {
-                        pspemasukan.setString(1, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + "") + " " + rs.getString(
-                                        "jam_masuk"));
+                        pspemasukan.setString(1,
+                                Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_masuk"));
                         if (rs.getString("shift").equals("Malam")) {
-                            tanggal2 = Sequel.cariIsi(
-                                    "select DATE_ADD('" + Valid.SetTgl(Tgl1.
-                                            getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang") + "',INTERVAL 1 DAY)");
+                            tanggal2 = Sequel.cariIsi("select DATE_ADD('" + Valid.SetTgl(Tgl1.getSelectedItem() + "")
+                                    + " " + rs.getString("jam_pulang") + "',INTERVAL 1 DAY)");
                             pspemasukan.setString(2, tanggal2);
                         } else {
-                            pspemasukan.setString(2, Valid.SetTgl(Tgl1.
-                                    getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang"));
+                            pspemasukan.setString(2,
+                                    Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_pulang"));
                         }
 
                         rsbilling = pspemasukan.executeQuery();
@@ -1255,17 +1167,12 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
                         all = 0;
                         while (rsbilling.next()) {
                             all += rsbilling.getDouble("besar");
-                            tabModePemasukan.addRow(new Object[]{
-                                i + ". " + rsbilling.getString("tanggal"),
-                                rsbilling.getString("nama_kategori"),
-                                Valid.SetAngka(rsbilling.getDouble("besar")),
-                                rsbilling.getString("keterangan")
-                            });
+                            tabModePemasukan.addRow(new Object[]{i + ". " + rsbilling.getString("tanggal"),
+                                rsbilling.getString("nama_kategori"), Valid.SetAngka(rsbilling.getDouble("besar")),
+                                rsbilling.getString("keterangan")});
                             i++;
                         }
-                        tabModePemasukan.addRow(new Object[]{
-                            "   >> Total ", ":", Valid.SetAngka(all), ""
-                        });
+                        tabModePemasukan.addRow(new Object[]{"   >> Total ", ":", Valid.SetAngka(all), ""});
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     } finally {
@@ -1299,30 +1206,22 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         try {
             psjamshift = koneksi.prepareStatement(sqlpsjamshift);
             try {
-                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().
-                        toString().replaceAll("Semua", "") + "%");
+                psjamshift.setString(1, "%" + CmbStatus.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 rs = psjamshift.executeQuery();
                 while (rs.next()) {
-                    tabModePengeluaran.addRow(new Object[]{
-                        "Shift : " + rs.getString("shift"), rs.getString(
-                        "jam_masuk") + " - " + rs.getString("jam_pulang"), "",
-                        ""
-                    });
+                    tabModePengeluaran.addRow(new Object[]{"Shift : " + rs.getString("shift"),
+                        rs.getString("jam_masuk") + " - " + rs.getString("jam_pulang"), "", ""});
                     pspengeluaran = koneksi.prepareStatement(sqlpspengeluaran);
                     try {
-                        pspengeluaran.setString(1, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + "") + " " + rs.getString(
-                                        "jam_masuk"));
+                        pspengeluaran.setString(1,
+                                Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_masuk"));
                         if (rs.getString("shift").equals("Malam")) {
-                            tanggal2 = Sequel.cariIsi(
-                                    "select DATE_ADD('" + Valid.SetTgl(Tgl1.
-                                            getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang") + "',INTERVAL 1 DAY)");
+                            tanggal2 = Sequel.cariIsi("select DATE_ADD('" + Valid.SetTgl(Tgl1.getSelectedItem() + "")
+                                    + " " + rs.getString("jam_pulang") + "',INTERVAL 1 DAY)");
                             pspengeluaran.setString(2, tanggal2);
                         } else {
-                            pspengeluaran.setString(2, Valid.SetTgl(Tgl1.
-                                    getSelectedItem() + "") + " " + rs.
-                                            getString("jam_pulang"));
+                            pspengeluaran.setString(2,
+                                    Valid.SetTgl(Tgl1.getSelectedItem() + "") + " " + rs.getString("jam_pulang"));
                         }
 
                         rsbilling = pspengeluaran.executeQuery();
@@ -1330,17 +1229,12 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
                         all = 0;
                         while (rsbilling.next()) {
                             all += rsbilling.getDouble("biaya");
-                            tabModePengeluaran.addRow(new Object[]{
-                                i + ". " + rsbilling.getString("tanggal"),
-                                rsbilling.getString("nama_kategori"),
-                                Valid.SetAngka(rsbilling.getDouble("biaya")),
-                                rsbilling.getString("keterangan")
-                            });
+                            tabModePengeluaran.addRow(new Object[]{i + ". " + rsbilling.getString("tanggal"),
+                                rsbilling.getString("nama_kategori"), Valid.SetAngka(rsbilling.getDouble("biaya")),
+                                rsbilling.getString("keterangan")});
                             i++;
                         }
-                        tabModePengeluaran.addRow(new Object[]{
-                            "   >> Total ", ":", Valid.SetAngka(all), ""
-                        });
+                        tabModePengeluaran.addRow(new Object[]{"   >> Total ", ":", Valid.SetAngka(all), ""});
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     } finally {
@@ -1368,7 +1262,6 @@ public class DlgRekapPerShift extends javax.swing.JDialog {
         this.setCursor(Cursor.getDefaultCursor());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgRekapPerShift.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgRekapPerShift.class.getName());
 
 }

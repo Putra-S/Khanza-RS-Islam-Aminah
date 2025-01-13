@@ -27,17 +27,22 @@ import setting.DlgCariJamDiet;
 import simrskhanza.DlgCariBangsal;
 
 /**
- *
  * @author dosen
  */
 public class LaporanSisaDietPasien extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0, x = 0, pilih = 0, hewani = 0, nabati = 0, karbo = 0, sayur = 0, buah = 0;
 
     /**
@@ -50,11 +55,8 @@ public class LaporanSisaDietPasien extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "Nama Pasien", "Kamar", "Tanggal", "Waktu", "Jam",
-            "Karbohidrat(%)", "Hewani(%)", "Nabati(%)", "Sayur(%)", "Buah(%)",
-            "Kode Kamar"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "Nama Pasien", "Kamar", "Tanggal", "Waktu",
+            "Jam", "Karbohidrat(%)", "Hewani(%)", "Nabati(%)", "Sayur(%)", "Buah(%)", "Kode Kamar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -103,8 +105,7 @@ public class LaporanSisaDietPasien extends javax.swing.JDialog {
         Sayur.setDocument(new batasInput((byte) 3).getOnlyAngka(Sayur));
         Buah.setDocument(new batasInput((byte) 3).getOnlyAngka(Buah));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -145,9 +146,8 @@ public class LaporanSisaDietPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("LaporanSisaDietPasien")) {
                     if (bangsal.getTable().getSelectedRow() != -1) {
-                        NmBangsalCari.setText(bangsal.getTable().getValueAt(
-                                bangsal.getTable().getSelectedRow(), 1).
-                                toString());
+                        NmBangsalCari
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                         NmBangsalCari.requestFocus();
                     }
                 }
@@ -185,19 +185,15 @@ public class LaporanSisaDietPasien extends javax.swing.JDialog {
                 if (akses.getform().equals("LaporanSisaDietPasien")) {
                     if (jamdiet.getTable().getSelectedRow() != -1) {
                         if (pilih == 1) {
-                            WaktuDiet.setText(jamdiet.getTable().getValueAt(
-                                    jamdiet.getTable().getSelectedRow(), 0).
-                                    toString());
-                            JamDiet.setText(jamdiet.getTable().getValueAt(
-                                    jamdiet.getTable().getSelectedRow(), 1).
-                                    toString());
+                            WaktuDiet.setText(
+                                    jamdiet.getTable().getValueAt(jamdiet.getTable().getSelectedRow(), 0).toString());
+                            JamDiet.setText(
+                                    jamdiet.getTable().getValueAt(jamdiet.getTable().getSelectedRow(), 1).toString());
                         } else if (pilih == 2) {
-                            WaktuDiet2.setText(jamdiet.getTable().getValueAt(
-                                    jamdiet.getTable().getSelectedRow(), 0).
-                                    toString());
-                            JamDiet2.setText(jamdiet.getTable().getValueAt(
-                                    jamdiet.getTable().getSelectedRow(), 1).
-                                    toString());
+                            WaktuDiet2.setText(
+                                    jamdiet.getTable().getValueAt(jamdiet.getTable().getSelectedRow(), 0).toString());
+                            JamDiet2.setText(
+                                    jamdiet.getTable().getValueAt(jamdiet.getTable().getSelectedRow(), 1).toString());
                             BtnJam2.requestFocus();
                         }
                     }
@@ -224,10 +220,13 @@ public class LaporanSisaDietPasien extends javax.swing.JDialog {
     }
 
     private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+
     private DlgCariJamDiet jamdiet = new DlgCariJamDiet(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1064,8 +1063,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            LaporanSisaDietPasien dialog = new LaporanSisaDietPasien(
-                    new javax.swing.JFrame(), true);
+            LaporanSisaDietPasien dialog = new LaporanSisaDietPasien(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1152,7 +1150,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     + "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "
                     + "inner join jam_diet_pasien on sisa_diet_pasien.waktu=jam_diet_pasien.waktu "
                     + "where sisa_diet_pasien.tanggal between ? and ? and sisa_diet_pasien.waktu like ? and bangsal.nm_bangsal like ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (sisa_diet_pasien.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ?) ")
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (sisa_diet_pasien.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ?) ")
                     + "order by bangsal.nm_bangsal");
             try {
                 ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
@@ -1166,16 +1165,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"),
-                        rs.getString("no_rkm_medis") + " " + rs.getString(
-                        "nm_pasien"), rs.getString("kamar"), rs.getString(
-                        "tanggal"),
-                        rs.getString("waktu"), rs.getString("jam"), rs.
-                        getString("karbohidrat"), rs.getString("hewani"), rs.
-                        getString("nabati"), rs.getString("sayur"),
-                        rs.getString("buah"), rs.getString("kd_kamar")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"), rs.getString("kamar"),
+                        rs.getString("tanggal"), rs.getString("waktu"), rs.getString("jam"),
+                        rs.getString("karbohidrat"), rs.getString("hewani"), rs.getString("nabati"),
+                        rs.getString("sayur"), rs.getString("buah"), rs.getString("kd_kamar")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1205,16 +1199,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         x = 0;
         for (i = 0; i < tabMode.getRowCount(); i++) {
             if (!tbDataDiet.getValueAt(i, 0).toString().isEmpty()) {
-                karbo += Valid.
-                        SetInteger(tbDataDiet.getValueAt(i, 6).toString());
-                hewani += Valid.SetInteger(tbDataDiet.getValueAt(i, 7).
-                        toString());
-                nabati += Valid.SetInteger(tbDataDiet.getValueAt(i, 8).
-                        toString());
-                sayur += Valid.
-                        SetInteger(tbDataDiet.getValueAt(i, 9).toString());
-                buah += Valid.
-                        SetInteger(tbDataDiet.getValueAt(i, 10).toString());
+                karbo += Valid.SetInteger(tbDataDiet.getValueAt(i, 6).toString());
+                hewani += Valid.SetInteger(tbDataDiet.getValueAt(i, 7).toString());
+                nabati += Valid.SetInteger(tbDataDiet.getValueAt(i, 8).toString());
+                sayur += Valid.SetInteger(tbDataDiet.getValueAt(i, 9).toString());
+                buah += Valid.SetInteger(tbDataDiet.getValueAt(i, 10).toString());
                 x++;
             } else {
                 tabMode.removeRow(i);
@@ -1223,11 +1212,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
         LCount.setText("" + tabMode.getRowCount());
         if (tabMode.getRowCount() > 0) {
-            tabMode.addRow(new String[]{
-                "", "Rata-rata Persentase Sisa Makanan", "", "", "", "",
-                (karbo / x) + "", (hewani / x) + "", (nabati / x) + "",
-                (sayur / x) + "", (buah / x) + "", ""
-            });
+            tabMode.addRow(new String[]{"", "Rata-rata Persentase Sisa Makanan", "", "", "", "", (karbo / x) + "",
+                (hewani / x) + "", (nabati / x) + "", (sayur / x) + "", (buah / x) + "", ""});
         }
     }
 
@@ -1242,32 +1228,19 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbDataDiet.getSelectedRow() != -1) {
-            if (!tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 0).
-                    toString().isEmpty()) {
-                TNoRw.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(),
-                        0).toString());
-                TPasien.setText(tbDataDiet.getValueAt(tbDataDiet.
-                        getSelectedRow(), 1).toString());
-                Ruang.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(),
-                        2).toString());
-                Tanggal.setText(Valid.SetTgl3(tbDataDiet.getValueAt(tbDataDiet.
-                        getSelectedRow(), 3).toString()));
-                WaktuDiet.setText(tbDataDiet.getValueAt(tbDataDiet.
-                        getSelectedRow(), 4).toString());
-                JamDiet.setText(tbDataDiet.getValueAt(tbDataDiet.
-                        getSelectedRow(), 5).toString());
-                Karbo.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(),
-                        6).toString());
-                Hewani.setText(tbDataDiet.
-                        getValueAt(tbDataDiet.getSelectedRow(), 7).toString());
-                Nabati.setText(tbDataDiet.
-                        getValueAt(tbDataDiet.getSelectedRow(), 8).toString());
-                Sayur.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(),
-                        9).toString());
-                Buah.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(),
-                        10).toString());
-                Kamar.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(),
-                        11).toString());
+            if (!tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 0).toString().isEmpty()) {
+                TNoRw.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 0).toString());
+                TPasien.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 1).toString());
+                Ruang.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 2).toString());
+                Tanggal.setText(Valid.SetTgl3(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 3).toString()));
+                WaktuDiet.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 4).toString());
+                JamDiet.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 5).toString());
+                Karbo.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 6).toString());
+                Hewani.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 7).toString());
+                Nabati.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 8).toString());
+                Sayur.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 9).toString());
+                Buah.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 10).toString());
+                Kamar.setText(tbDataDiet.getValueAt(tbDataDiet.getSelectedRow(), 11).toString());
             } else {
                 TNoRw.setText("");
                 TPasien.setText("");
@@ -1295,7 +1268,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @param norwt
      * @param pasien
      * @param kamar
@@ -1306,8 +1278,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      * @param waktudiet
      * @param jamdiet
      */
-    public void setNoRm(String norwt, String pasien, String kamar,
-            String bangsal, Date tgl1, Date tgl2, String tanggal,
+    public void setNoRm(String norwt, String pasien, String kamar, String bangsal, Date tgl1, Date tgl2, String tanggal,
             String waktudiet, String jamdiet) {
         TNoRw.setText(norwt);
         TPasien.setText(pasien);
@@ -1343,6 +1314,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         BtnPrint.setEnabled(akses.getsisa_diet_pasien());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            LaporanSisaDietPasien.class.getName());
+    private static final Logger LOG = Logger.getLogger(LaporanSisaDietPasien.class.getName());
+
 }

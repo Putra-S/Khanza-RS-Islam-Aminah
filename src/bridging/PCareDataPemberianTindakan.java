@@ -101,10 +101,8 @@ public class PCareDataPemberianTindakan extends javax.swing.JDialog {
         initComponents();
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"Tanggal", "Jam", "No.Kunjungan", "No.Rawat",
-                    "No.R.M.", "Nama Pasien", "Kd Tindakan SK",
-                    "Kode Tindakan", "Nama Tindakan", "material", "bhp",
-                    "tarif_tindakandr", "tarif_tindakanpr",
+                new Object[]{"Tanggal", "Jam", "No.Kunjungan", "No.Rawat", "No.R.M.", "Nama Pasien", "Kd Tindakan SK",
+                    "Kode Tindakan", "Nama Tindakan", "material", "bhp", "tarif_tindakandr", "tarif_tindakanpr",
                     "kso", "menejemen", "biaya_rawat"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -166,10 +164,8 @@ public class PCareDataPemberianTindakan extends javax.swing.JDialog {
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabMode2 = new DefaultTableModel(null,
-                new Object[]{"Tanggal", "Jam", "No.Kunjungan", "No.Rawat",
-                    "No.R.M.", "Nama Pasien", "Kd Tindakan SK",
-                    "Kode Tindakan", "Nama Tindakan", "material", "bhp",
-                    "tarif_tindakandr", "tarif_tindakanpr",
+                new Object[]{"Tanggal", "Jam", "No.Kunjungan", "No.Rawat", "No.R.M.", "Nama Pasien", "Kd Tindakan SK",
+                    "Kode Tindakan", "Nama Tindakan", "material", "bhp", "tarif_tindakandr", "tarif_tindakanpr",
                     "kso", "menejemen", "biaya_rawat"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -232,8 +228,7 @@ public class PCareDataPemberianTindakan extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -259,40 +254,28 @@ public class PCareDataPemberianTindakan extends javax.swing.JDialog {
         }
 
         try {
-            psrekening = koneksi.
-                    prepareStatement("select * from set_akun_ralan");
+            psrekening = koneksi.prepareStatement("select * from set_akun_ralan");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Tindakan_Ralan = rsrekening.getString(
-                            "Suspen_Piutang_Tindakan_Ralan");
+                    Suspen_Piutang_Tindakan_Ralan = rsrekening.getString("Suspen_Piutang_Tindakan_Ralan");
                     Tindakan_Ralan = rsrekening.getString("Tindakan_Ralan");
                     Beban_Jasa_Medik_Dokter_Tindakan_Ralan = rsrekening
                             .getString("Beban_Jasa_Medik_Dokter_Tindakan_Ralan");
                     Utang_Jasa_Medik_Dokter_Tindakan_Ralan = rsrekening
                             .getString("Utang_Jasa_Medik_Dokter_Tindakan_Ralan");
                     Beban_Jasa_Medik_Paramedis_Tindakan_Ralan = rsrekening
-                            .getString(
-                                    "Beban_Jasa_Medik_Paramedis_Tindakan_Ralan");
+                            .getString("Beban_Jasa_Medik_Paramedis_Tindakan_Ralan");
                     Utang_Jasa_Medik_Paramedis_Tindakan_Ralan = rsrekening
-                            .getString(
-                                    "Utang_Jasa_Medik_Paramedis_Tindakan_Ralan");
-                    Beban_KSO_Tindakan_Ralan = rsrekening.getString(
-                            "Beban_KSO_Tindakan_Ralan");
-                    Utang_KSO_Tindakan_Ralan = rsrekening.getString(
-                            "Utang_KSO_Tindakan_Ralan");
-                    Beban_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString(
-                            "Beban_Jasa_Sarana_Tindakan_Ralan");
-                    Utang_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString(
-                            "Utang_Jasa_Sarana_Tindakan_Ralan");
-                    Beban_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString(
-                            "Beban_Jasa_Menejemen_Tindakan_Ralan");
-                    Utang_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString(
-                            "Utang_Jasa_Menejemen_Tindakan_Ralan");
-                    HPP_BHP_Tindakan_Ralan = rsrekening.getString(
-                            "HPP_BHP_Tindakan_Ralan");
-                    Persediaan_BHP_Tindakan_Ralan = rsrekening.getString(
-                            "Persediaan_BHP_Tindakan_Ralan");
+                            .getString("Utang_Jasa_Medik_Paramedis_Tindakan_Ralan");
+                    Beban_KSO_Tindakan_Ralan = rsrekening.getString("Beban_KSO_Tindakan_Ralan");
+                    Utang_KSO_Tindakan_Ralan = rsrekening.getString("Utang_KSO_Tindakan_Ralan");
+                    Beban_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString("Beban_Jasa_Sarana_Tindakan_Ralan");
+                    Utang_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString("Utang_Jasa_Sarana_Tindakan_Ralan");
+                    Beban_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString("Beban_Jasa_Menejemen_Tindakan_Ralan");
+                    Utang_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString("Utang_Jasa_Menejemen_Tindakan_Ralan");
+                    HPP_BHP_Tindakan_Ralan = rsrekening.getString("HPP_BHP_Tindakan_Ralan");
+                    Persediaan_BHP_Tindakan_Ralan = rsrekening.getString("Persediaan_BHP_Tindakan_Ralan");
                 }
             } catch (Exception e) {
                 System.out.println("Notif Rekening : " + e);
@@ -305,40 +288,28 @@ public class PCareDataPemberianTindakan extends javax.swing.JDialog {
                 }
             }
 
-            psrekening = koneksi.
-                    prepareStatement("select * from set_akun_ranap");
+            psrekening = koneksi.prepareStatement("select * from set_akun_ranap");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Tindakan_Ranap = rsrekening.getString(
-                            "Suspen_Piutang_Tindakan_Ranap");
+                    Suspen_Piutang_Tindakan_Ranap = rsrekening.getString("Suspen_Piutang_Tindakan_Ranap");
                     Tindakan_Ranap = rsrekening.getString("Tindakan_Ranap");
                     Beban_Jasa_Medik_Dokter_Tindakan_Ranap = rsrekening
                             .getString("Beban_Jasa_Medik_Dokter_Tindakan_Ranap");
                     Utang_Jasa_Medik_Dokter_Tindakan_Ranap = rsrekening
                             .getString("Utang_Jasa_Medik_Dokter_Tindakan_Ranap");
                     Beban_Jasa_Medik_Paramedis_Tindakan_Ranap = rsrekening
-                            .getString(
-                                    "Beban_Jasa_Medik_Paramedis_Tindakan_Ranap");
+                            .getString("Beban_Jasa_Medik_Paramedis_Tindakan_Ranap");
                     Utang_Jasa_Medik_Paramedis_Tindakan_Ranap = rsrekening
-                            .getString(
-                                    "Utang_Jasa_Medik_Paramedis_Tindakan_Ranap");
-                    Beban_KSO_Tindakan_Ranap = rsrekening.getString(
-                            "Beban_KSO_Tindakan_Ranap");
-                    Utang_KSO_Tindakan_Ranap = rsrekening.getString(
-                            "Utang_KSO_Tindakan_Ranap");
-                    Beban_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString(
-                            "Beban_Jasa_Sarana_Tindakan_Ranap");
-                    Utang_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString(
-                            "Utang_Jasa_Sarana_Tindakan_Ranap");
-                    Beban_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString(
-                            "Beban_Jasa_Menejemen_Tindakan_Ranap");
-                    Utang_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString(
-                            "Utang_Jasa_Menejemen_Tindakan_Ranap");
-                    HPP_BHP_Tindakan_Ranap = rsrekening.getString(
-                            "HPP_BHP_Tindakan_Ranap");
-                    Persediaan_BHP_Tindakan_Ranap = rsrekening.getString(
-                            "Persediaan_BHP_Tindakan_Ranap");
+                            .getString("Utang_Jasa_Medik_Paramedis_Tindakan_Ranap");
+                    Beban_KSO_Tindakan_Ranap = rsrekening.getString("Beban_KSO_Tindakan_Ranap");
+                    Utang_KSO_Tindakan_Ranap = rsrekening.getString("Utang_KSO_Tindakan_Ranap");
+                    Beban_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString("Beban_Jasa_Sarana_Tindakan_Ranap");
+                    Utang_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString("Utang_Jasa_Sarana_Tindakan_Ranap");
+                    Beban_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString("Beban_Jasa_Menejemen_Tindakan_Ranap");
+                    Utang_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString("Utang_Jasa_Menejemen_Tindakan_Ranap");
+                    HPP_BHP_Tindakan_Ranap = rsrekening.getString("HPP_BHP_Tindakan_Ranap");
+                    Persediaan_BHP_Tindakan_Ranap = rsrekening.getString("Persediaan_BHP_Tindakan_Ranap");
                 }
             } catch (Exception e) {
                 System.out.println("Notif Rekening : " + e);
@@ -363,7 +334,9 @@ public class PCareDataPemberianTindakan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1190,8 +1163,7 @@ private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PCareDataPemberianTindakan dialog = new PCareDataPemberianTindakan(
-                    new javax.swing.JFrame(), true);
+            PCareDataPemberianTindakan dialog = new PCareDataPemberianTindakan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1266,16 +1238,11 @@ private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 ps.setString(15, "%" + TCari.getText() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{rs.getString("tgl_perawatan"),
-                        rs.getString("jam"),
-                        rs.getString("noKunjungan"), rs.getString("no_rawat"),
-                        rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("kdTindakanSK"),
-                        rs.getString("kd_jenis_prw"),
-                        rs.getString("nm_perawatan"), rs.getString("material"),
-                        rs.getString("bhp"),
-                        rs.getString("tarif_tindakandr"), rs.getString(
-                        "tarif_tindakanpr"), rs.getString("kso"),
+                    tabMode.addRow(new Object[]{rs.getString("tgl_perawatan"), rs.getString("jam"),
+                        rs.getString("noKunjungan"), rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("kdTindakanSK"), rs.getString("kd_jenis_prw"),
+                        rs.getString("nm_perawatan"), rs.getString("material"), rs.getString("bhp"),
+                        rs.getString("tarif_tindakandr"), rs.getString("tarif_tindakanpr"), rs.getString("kso"),
                         rs.getString("menejemen"), rs.getString("biaya_rawat")});
                 }
             } catch (Exception e) {
@@ -1331,16 +1298,11 @@ private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 ps.setString(15, "%" + TCari.getText() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new Object[]{rs.getString("tgl_perawatan"),
-                        rs.getString("jam"),
-                        rs.getString("noKunjungan"), rs.getString("no_rawat"),
-                        rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("kdTindakanSK"),
-                        rs.getString("kd_jenis_prw"),
-                        rs.getString("nm_perawatan"), rs.getString("material"),
-                        rs.getString("bhp"),
-                        rs.getString("tarif_tindakandr"), rs.getString(
-                        "tarif_tindakanpr"), rs.getString("kso"),
+                    tabMode2.addRow(new Object[]{rs.getString("tgl_perawatan"), rs.getString("jam"),
+                        rs.getString("noKunjungan"), rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("kdTindakanSK"), rs.getString("kd_jenis_prw"),
+                        rs.getString("nm_perawatan"), rs.getString("material"), rs.getString("bhp"),
+                        rs.getString("tarif_tindakandr"), rs.getString("tarif_tindakanpr"), rs.getString("kso"),
                         rs.getString("menejemen"), rs.getString("biaya_rawat")});
                 }
             } catch (Exception e) {
@@ -1378,7 +1340,6 @@ private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         DTPCari2.setDate(tgl2);
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PCareDataPemberianTindakan.class.getName());
+    private static final Logger LOG = Logger.getLogger(PCareDataPemberianTindakan.class.getName());
 
 }

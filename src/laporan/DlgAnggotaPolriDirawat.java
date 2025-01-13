@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -39,18 +39,24 @@ import simrskhanza.DlgPangkatPolri;
 import simrskhanza.DlgSatuanPolri;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     public DlgGolonganPolri golonganpolri = new DlgGolonganPolri(null, false);
 
     /**
@@ -62,6 +68,7 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
      *
      */
     public DlgPangkatPolri pangkatpolri = new DlgPangkatPolri(null, false);
+
     public DlgJabatanPolri jabatanpolri = new DlgJabatanPolri(null, false);
 
     /**
@@ -76,8 +83,8 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {"No.", "Nama Pasien", "Pangkat", "NRP/NIP",
-            "Kesatuan", "Diagnosa", "Golongan", "Jabatan"};
+        Object[] rowRwJlDr = {"No.", "Nama Pasien", "Pangkat", "NRP/NIP", "Kesatuan", "Diagnosa", "Golongan",
+            "Jabatan"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -86,7 +93,8 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -114,8 +122,7 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
 
         TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -152,9 +159,9 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golonganpolri.getTable().getSelectedRow() != -1) {
-                    Golongan.setText(golonganpolri.getTable().getValueAt(
-                            golonganpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Golongan.setText(golonganpolri.getTable()
+                            .getValueAt(golonganpolri.getTable().getSelectedRow(), 1)
+                            .toString());
                 }
                 Golongan.requestFocus();
             }
@@ -207,9 +214,8 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jabatanpolri.getTable().getSelectedRow() != -1) {
-                    Jabatan.setText(jabatanpolri.getTable().getValueAt(
-                            jabatanpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Jabatan.setText(
+                            jabatanpolri.getTable().getValueAt(jabatanpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Jabatan.requestFocus();
             }
@@ -262,9 +268,8 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (satuanpolri.getTable().getSelectedRow() != -1) {
-                    Satuan.setText(satuanpolri.getTable().getValueAt(
-                            satuanpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Satuan.setText(
+                            satuanpolri.getTable().getValueAt(satuanpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Satuan.requestFocus();
             }
@@ -317,9 +322,8 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pangkatpolri.getTable().getSelectedRow() != -1) {
-                    Pangkat.setText(pangkatpolri.getTable().getValueAt(
-                            pangkatpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Pangkat.setText(
+                            pangkatpolri.getTable().getValueAt(pangkatpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Pangkat.requestFocus();
             }
@@ -365,7 +369,9 @@ public class DlgAnggotaPolriDirawat extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -853,8 +859,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAnggotaPolriDirawat dialog = new DlgAnggotaPolriDirawat(
-                    new javax.swing.JFrame(), true);
+            DlgAnggotaPolriDirawat dialog = new DlgAnggotaPolriDirawat(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -932,16 +937,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 rs = ps.executeQuery();
                 i = 1;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        i, rs.getString("nm_pasien"), rs.getString(
-                        "nama_pangkat"), rs.getString("nip"), rs.getString(
-                        "nama_satuan"),
+                    tabMode.addRow(new Object[]{i, rs.getString("nm_pasien"), rs.getString("nama_pangkat"),
+                        rs.getString("nip"), rs.getString("nama_satuan"),
                         Sequel.cariIsi(
                         "select penyakit.nm_penyakit from penyakit inner join diagnosa_pasien on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit where diagnosa_pasien.no_rawat=?",
                         rs.getString("no_rawat")),
-                        rs.getString("nama_golongan"), rs.getString(
-                        "nama_jabatan")
-                    });
+                        rs.getString("nama_golongan"), rs.getString("nama_jabatan")});
                     i++;
                 }
             } catch (Exception e) {
@@ -981,7 +982,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgAnggotaPolriDirawat.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgAnggotaPolriDirawat.class.getName());
 
 }

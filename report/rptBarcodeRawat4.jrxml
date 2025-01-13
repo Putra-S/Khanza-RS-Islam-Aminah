@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="141" pageHeight="85" columnWidth="141" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="96f089c5-f6ed-4bd0-8a74-9c64f4c4ad84">
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<property name="com.jaspersoft.studio.data.sql.tables" value="cGFzaWVuICwxOTUsMTUsYzVlMWIwMmEtZGE5NS00MTFhLTgxYzctY2U0YzEyN2U4MTUwO3JlZ19w&#xA;ZXJpa3NhICwxNSwxNDcsYjM5YjRiNmQtN2NlZS00OWVjLTk2ZTItOTI1YTMzOWI1NTdjO3Blbmph&#xA;YiAsMTk1LDQ4NSwwMjc5ZmUwNi00ZjllLTQzM2EtODQxMC05MTM5YzNkZGEzYTY7a2FtYXJfaW5h&#xA;cCAsMTk1LDMwNCwzZDk5NDU3Zi04OWQ0LTRkZGItODUyZS1iMGNmYTljZmQ4Y2Q7YmFuZ3NhbCAs&#xA;NTMwLDU0Nyw3YjBkOTg3NS01MTMwLTQ4NTMtYjI5ZC1jMDZhZDYzMTU1YjY7ZHBqcF9yYW5hcCAs&#xA;MTk1LDYzMCw4YjVkNzYyZS1kZjRjLTRmOTYtYmE0OC1jMTU5ZmFkYzY4ZGQ7ZG9rdGVyICw2OTEs&#xA;NjMwLDNlOGYzYjI4LTM2MDMtNGIwNi05Yjc3LWQwOWU5ZGVkYTg0ZjtrYW1hciAsMzc1LDQ4NSxk&#xA;NWM4OThhNi02OGQ1LTQxYWUtYWI1Ny0wYTIyNzRiYTUxMTU7&#xA;"/>
-	<parameter name="nama" class="java.lang.String"/>
-	<parameter name="namars" class="java.lang.String"/>
-	<parameter name="alamatrs" class="java.lang.String"/>
-	<parameter name="kotars" class="java.lang.String"/>
-	<parameter name="propinsirs" class="java.lang.String"/>
-	<parameter name="kontakrs" class="java.lang.String"/>
-	<parameter name="no_rawat" class="java.lang.String"/>
-	<queryString>
+    <property name="com.jaspersoft.studio.unit." value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+    <property name="com.jaspersoft.studio.data.sql.tables" value="cGFzaWVuICwxOTUsMTUsYzVlMWIwMmEtZGE5NS00MTFhLTgxYzctY2U0YzEyN2U4MTUwO3JlZ19w&#xA;ZXJpa3NhICwxNSwxNDcsYjM5YjRiNmQtN2NlZS00OWVjLTk2ZTItOTI1YTMzOWI1NTdjO3Blbmph&#xA;YiAsMTk1LDQ4NSwwMjc5ZmUwNi00ZjllLTQzM2EtODQxMC05MTM5YzNkZGEzYTY7a2FtYXJfaW5h&#xA;cCAsMTk1LDMwNCwzZDk5NDU3Zi04OWQ0LTRkZGItODUyZS1iMGNmYTljZmQ4Y2Q7YmFuZ3NhbCAs&#xA;NTMwLDU0Nyw3YjBkOTg3NS01MTMwLTQ4NTMtYjI5ZC1jMDZhZDYzMTU1YjY7ZHBqcF9yYW5hcCAs&#xA;MTk1LDYzMCw4YjVkNzYyZS1kZjRjLTRmOTYtYmE0OC1jMTU5ZmFkYzY4ZGQ7ZG9rdGVyICw2OTEs&#xA;NjMwLDNlOGYzYjI4LTM2MDMtNGIwNi05Yjc3LWQwOWU5ZGVkYTg0ZjtrYW1hciAsMzc1LDQ4NSxk&#xA;NWM4OThhNi02OGQ1LTQxYWUtYWI1Ny0wYTIyNzRiYTUxMTU7&#xA;"/>
+    <parameter name="nama" class="java.lang.String"/>
+    <parameter name="namars" class="java.lang.String"/>
+    <parameter name="alamatrs" class="java.lang.String"/>
+    <parameter name="kotars" class="java.lang.String"/>
+    <parameter name="propinsirs" class="java.lang.String"/>
+    <parameter name="kontakrs" class="java.lang.String"/>
+    <parameter name="no_rawat" class="java.lang.String"/>
+    <queryString>
 		<![CDATA[SELECT reg_periksa.no_reg,
 	reg_periksa.no_rawat,
 	reg_periksa.tgl_registrasi,
@@ -61,159 +61,159 @@ FROM reg_periksa
 WHERE 
 	 reg_periksa.no_rawat = $P{no_rawat} 
 ORDER BY kamar_inap.tgl_masuk DESC]]>
-	</queryString>
-	<field name="no_reg" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="no_reg"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="no_rawat" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="no_rawat"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="tgl_registrasi" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.label" value="tgl_registrasi"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="jam_reg" class="java.sql.Time">
-		<property name="com.jaspersoft.studio.field.label" value="jam_reg"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="no_ktp" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="no_ktp"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
-	</field>
-	<field name="kd_dokter" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="kd_dokter"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="dpjp_ranap"/>
-	</field>
-	<field name="nm_dokter" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nm_dokter"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="dokter"/>
-	</field>
-	<field name="no_rkm_medis" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="no_rkm_medis"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="nm_pasien" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nm_pasien"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
-	</field>
-	<field name="jk" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="jk"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
-	</field>
-	<field name="umur" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="umur"/>
-	</field>
-	<field name="tgl_lahir" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="tgl_lahir"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
-	</field>
-	<field name="p_jawab" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="p_jawab"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="almt_pj" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="almt_pj"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="hubunganpj" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="hubunganpj"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="biaya_reg" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="biaya_reg"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="stts_daftar" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="stts_daftar"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="png_jawab" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="png_jawab"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="penjab"/>
-	</field>
-	<field name="no_tlp" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="no_tlp"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
-	</field>
-	<field name="stts" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="stts"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="status_poli" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="status_poli"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<field name="kd_kamar" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="kd_kamar"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="kamar_inap"/>
-	</field>
-	<field name="nm_bangsal" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nm_bangsal"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="bangsal"/>
-	</field>
-	<field name="kd_pj" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="kd_pj"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
-	</field>
-	<detail>
-		<band height="85" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
-				<reportElement x="5" y="35" width="130" height="11" uuid="f0cfb4c7-ee7b-4399-97a2-cad9b4a08c23">
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="8" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="5" y="4" width="130" height="20" uuid="a1daf337-62d1-4a3a-98a0-06c9bd245d3c">
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="8" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="5" y="24" width="130" height="11" uuid="7d689b64-40ec-448c-9e63-1a990f9d13e3">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="8" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{tgl_lahir}+" / "+$F{umur}+" / "+$F{jk}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="5" y="46" width="130" height="11" uuid="51587041-dcd3-4cd3-8533-045551605397">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="8" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{no_ktp}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="5" y="57" width="130" height="11" uuid="0071d3e3-5c69-459d-bc06-4a5577315707">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="8" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{no_rawat}]]></textFieldExpression>
-			</textField>
-		</band>
-	</detail>
+    </queryString>
+    <field name="no_reg" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="no_reg"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="no_rawat" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="no_rawat"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <field name="tgl_registrasi" class="java.sql.Date">
+        <property name="com.jaspersoft.studio.field.label" value="tgl_registrasi"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="jam_reg" class="java.sql.Time">
+        <property name="com.jaspersoft.studio.field.label" value="jam_reg"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="no_ktp" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="no_ktp"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
+    </field>
+    <field name="kd_dokter" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="kd_dokter"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="dpjp_ranap"/>
+    </field>
+    <field name="nm_dokter" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="nm_dokter"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="dokter"/>
+    </field>
+    <field name="no_rkm_medis" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="no_rkm_medis"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="nm_pasien" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="nm_pasien"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
+    </field>
+    <field name="jk" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="jk"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
+    </field>
+    <field name="umur" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="umur"/>
+    </field>
+    <field name="tgl_lahir" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="tgl_lahir"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
+    </field>
+    <field name="p_jawab" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="p_jawab"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="almt_pj" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="almt_pj"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="hubunganpj" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="hubunganpj"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="biaya_reg" class="java.lang.Double">
+        <property name="com.jaspersoft.studio.field.label" value="biaya_reg"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="stts_daftar" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="stts_daftar"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="png_jawab" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="png_jawab"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="penjab"/>
+    </field>
+    <field name="no_tlp" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="no_tlp"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
+    </field>
+    <field name="stts" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="stts"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="status_poli" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="status_poli"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <field name="kd_kamar" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="kd_kamar"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="kamar_inap"/>
+    </field>
+    <field name="nm_bangsal" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="nm_bangsal"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="bangsal"/>
+    </field>
+    <field name="kd_pj" class="java.lang.String">
+        <property name="com.jaspersoft.studio.field.label" value="kd_pj"/>
+        <property name="com.jaspersoft.studio.field.tree.path" value="reg_periksa"/>
+    </field>
+    <detail>
+        <band height="85" splitType="Stretch">
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+            <textField>
+                <reportElement x="5" y="35" width="130" height="11" uuid="f0cfb4c7-ee7b-4399-97a2-cad9b4a08c23">
+                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Tahoma" size="8" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="5" y="4" width="130" height="20" uuid="a1daf337-62d1-4a3a-98a0-06c9bd245d3c">
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                </reportElement>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Tahoma" size="8" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="5" y="24" width="130" height="11" uuid="7d689b64-40ec-448c-9e63-1a990f9d13e3">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Tahoma" size="8" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{tgl_lahir}+" / "+$F{umur}+" / "+$F{jk}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="5" y="46" width="130" height="11" uuid="51587041-dcd3-4cd3-8533-045551605397">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Tahoma" size="8" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{no_ktp}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="5" y="57" width="130" height="11" uuid="0071d3e3-5c69-459d-bc06-4a5577315707">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Tahoma" size="8" isBold="true"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{no_rawat}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
 </jasperReport>

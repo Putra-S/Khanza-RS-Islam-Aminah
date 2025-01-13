@@ -26,21 +26,30 @@ import kepegawaian.DlgCariDokter;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement psdokter, psresep, psresep2;
+
     private ResultSet rsdokter, rsresep;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private int i = 0, a = 0;
+
     private DlgCariCaraBayar carabayar = new DlgCariCaraBayar(null, false);
+
     private double subtotal = 0, ttlbiaya = 0, embalase = 0, ttlembalase = 0, tuslah = 0, ttltuslah = 0;
+
     private String pilihancarabayar = "", jumlah, total, emb, tsl;
 
     /**
@@ -53,16 +62,11 @@ public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.", "Dokter", "Tanggal", "Nama Obat", "Jml",
-            "Biaya Obat", "Embalase", "Tuslah"};
+        Object[] row = {"No.", "Dokter", "Tanggal", "Nama Obat", "Jml", "Biaya Obat", "Embalase", "Tuslah"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -116,10 +120,8 @@ public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     prosesCari();
                 }
                 kddokter.requestFocus();
@@ -156,8 +158,9 @@ public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (carabayar.getTable().getSelectedRow() != -1) {
-                    pilihancarabayar = carabayar.getTable().getValueAt(
-                            carabayar.getTable().getSelectedRow(), 1).toString();
+                    pilihancarabayar = carabayar.getTable()
+                            .getValueAt(carabayar.getTable().getSelectedRow(), 1)
+                            .toString();
                 }
                 prosesCari();
             }
@@ -202,8 +205,7 @@ public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
         try {
             psdokter = koneksi.prepareStatement(
                     "select kd_dokter,nm_dokter from dokter where  kd_dokter<>'-' and status='1' and kd_dokter like ?");
-            psresep = koneksi.prepareStatement(
-                    "select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam,"
+            psresep = koneksi.prepareStatement("select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam,"
                     + "resep_obat.no_rawat,pasien.nm_pasien,resep_obat.kd_dokter,databarang.nama_brng,"
                     + "detail_pemberian_obat.jml,detail_pemberian_obat.biaya_obat,detail_pemberian_obat.embalase,"
                     + "detail_pemberian_obat.tuslah,(detail_pemberian_obat.total-(detail_pemberian_obat.embalase+detail_pemberian_obat.tuslah)) as total, "
@@ -213,8 +215,7 @@ public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
                     + "and resep_obat.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "where detail_pemberian_obat.tgl_perawatan=resep_obat.tgl_perawatan and detail_pemberian_obat.jam=resep_obat.jam "
                     + "and resep_obat.kd_dokter=? and resep_obat.tgl_perawatan between ? and ? and reg_periksa.kd_pj like ? order by resep_obat.tgl_perawatan");
-            psresep2 = koneksi.prepareStatement(
-                    "select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam,"
+            psresep2 = koneksi.prepareStatement("select resep_obat.no_resep,resep_obat.tgl_perawatan,resep_obat.jam,"
                     + "resep_obat.no_rawat,pasien.nm_pasien,resep_obat.kd_dokter,databarang.nama_brng,"
                     + "detail_pemberian_obat.jml,detail_pemberian_obat.biaya_obat,detail_pemberian_obat.embalase,"
                     + "detail_pemberian_obat.tuslah,(detail_pemberian_obat.total-(detail_pemberian_obat.embalase+detail_pemberian_obat.tuslah)) as total, "
@@ -231,7 +232,9 @@ public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -507,14 +510,13 @@ public class DlgRBObatDokterPeresep extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         if (tabMode.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null,
                     "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
@@ -689,8 +691,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRBObatDokterPeresep dialog = new DlgRBObatDokterPeresep(
-                    new javax.swing.JFrame(), true);
+            DlgRBObatDokterPeresep dialog = new DlgRBObatDokterPeresep(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -739,8 +740,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             ttlembalase = 0;
             ttltuslah = 0;
             while (rsdokter.next()) {
-                tabMode.addRow(new Object[]{i + ". ", rsdokter.getString(
-                    "nm_dokter"), "", "", null, null, null});
+                tabMode.addRow(new Object[]{i + ". ", rsdokter.getString("nm_dokter"), "", "", null, null, null});
                 psresep.setString(1, rsdokter.getString("kd_dokter"));
                 psresep.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 psresep.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -750,7 +750,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 subtotal = 0;
                 embalase = 0;
                 tuslah = 0;
-                //Object[] row={"No.","Dokter","Tanggal","Nama Obat","Jml","Biaya Obat","Embalase","Tuslah"};
+                // Object[] row={"No.","Dokter","Tanggal","Nama Obat","Jml","Biaya
+                // Obat","Embalase","Tuslah"};
                 while (rsresep.next()) {
                     subtotal += rsresep.getDouble("total");
                     ttlbiaya += rsresep.getDouble("total");
@@ -758,29 +759,21 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     ttlembalase += rsresep.getDouble("embalase");
                     tuslah += rsresep.getDouble("tuslah");
                     ttltuslah += rsresep.getDouble("tuslah");
-                    tabMode.addRow(new Object[]{
-                        "",
-                        "   " + a + ". (" + rsresep.getString("no_resep") + ") " + rsresep.
-                        getString("nm_pasien"),
-                        rsresep.getString("tgl_perawatan") + " " + rsresep.
-                        getString("jam"),
-                        rsresep.getString("kode_brng") + " " + rsresep.
-                        getString("nama_brng"),
-                        rsresep.getDouble("jml"), rsresep.getDouble("total"),
-                        rsresep.getDouble("embalase"), rsresep.getDouble(
-                        "tuslah")
-                    });
+                    tabMode.addRow(new Object[]{"",
+                        "   " + a + ". (" + rsresep.getString("no_resep") + ") " + rsresep.getString("nm_pasien"),
+                        rsresep.getString("tgl_perawatan") + " " + rsresep.getString("jam"),
+                        rsresep.getString("kode_brng") + " " + rsresep.getString("nama_brng"),
+                        rsresep.getDouble("jml"), rsresep.getDouble("total"), rsresep.getDouble("embalase"),
+                        rsresep.getDouble("tuslah")});
                     a++;
                 }
                 if (subtotal > 0) {
                     tabMode.addRow(
-                            new Object[]{"", "       " + "Subtotal ", ":",
-                                "", null, subtotal, embalase, tuslah});
+                            new Object[]{"", "       " + "Subtotal ", ":", "", null, subtotal, embalase, tuslah});
                 }
                 i++;
             }
-            tabMode.addRow(new Object[]{">>", "Total ", ":", "", null, ttlbiaya,
-                ttlembalase, ttltuslah});
+            tabMode.addRow(new Object[]{">>", "Total ", ":", "", null, ttlbiaya, ttlembalase, ttltuslah});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -798,8 +791,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             ttlembalase = 0;
             ttltuslah = 0;
             while (rsdokter.next()) {
-                tabMode.addRow(new Object[]{i + ". ", rsdokter.getString(
-                    "nm_dokter"), "", "", null, null, null});
+                tabMode.addRow(new Object[]{i + ". ", rsdokter.getString("nm_dokter"), "", "", null, null, null});
                 psresep2.setString(1, rsdokter.getString("kd_dokter"));
                 psresep2.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 psresep2.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -809,7 +801,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 subtotal = 0;
                 embalase = 0;
                 tuslah = 0;
-                //Object[] row={"No.","Dokter","Tanggal","Nama Obat","Jml","Biaya Obat","Embalase","Tuslah"};
+                // Object[] row={"No.","Dokter","Tanggal","Nama Obat","Jml","Biaya
+                // Obat","Embalase","Tuslah"};
                 while (rsresep.next()) {
                     subtotal += rsresep.getDouble("total");
                     ttlbiaya += rsresep.getDouble("total");
@@ -817,36 +810,27 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     ttlembalase += rsresep.getDouble("embalase");
                     tuslah += rsresep.getDouble("tuslah");
                     ttltuslah += rsresep.getDouble("tuslah");
-                    tabMode.addRow(new Object[]{
-                        "",
-                        "   " + a + ". (" + rsresep.getString("no_resep") + ") " + rsresep.
-                        getString("nm_pasien"),
-                        rsresep.getString("tgl_perawatan") + " " + rsresep.
-                        getString("jam"),
-                        rsresep.getString("kode_brng") + " " + rsresep.
-                        getString("nama_brng"),
-                        rsresep.getDouble("jml"), rsresep.getDouble("total"),
-                        rsresep.getDouble("embalase"), rsresep.getDouble(
-                        "tuslah")
-                    });
+                    tabMode.addRow(new Object[]{"",
+                        "   " + a + ". (" + rsresep.getString("no_resep") + ") " + rsresep.getString("nm_pasien"),
+                        rsresep.getString("tgl_perawatan") + " " + rsresep.getString("jam"),
+                        rsresep.getString("kode_brng") + " " + rsresep.getString("nama_brng"),
+                        rsresep.getDouble("jml"), rsresep.getDouble("total"), rsresep.getDouble("embalase"),
+                        rsresep.getDouble("tuslah")});
                     a++;
                 }
                 if (subtotal > 0) {
                     tabMode.addRow(
-                            new Object[]{"", "       " + "Subtotal ", ":",
-                                "", null, subtotal, embalase, tuslah});
+                            new Object[]{"", "       " + "Subtotal ", ":", "", null, subtotal, embalase, tuslah});
                 }
                 i++;
             }
-            tabMode.addRow(new Object[]{">>", "Total ", ":", "", null, ttlbiaya,
-                ttlembalase, ttltuslah});
+            tabMode.addRow(new Object[]{">>", "Total ", ":", "", null, ttlbiaya, ttlembalase, ttltuslah});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgRBObatDokterPeresep.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgRBObatDokterPeresep.class.getName());
 
 }

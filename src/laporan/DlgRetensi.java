@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgAbout.java
- *
- * Created on 23 Jun 10, 19:03:08
+* DlgAbout.java
+*
+* Created on 23 Jun 10, 19:03:08
  */
 package laporan;
 
@@ -48,24 +48,27 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgRetensi extends javax.swing.JDialog {
 
     private final JFXPanel jfxPanel = new JFXPanel();
+
     private WebEngine engine;
 
     private final JPanel panel = new JPanel(new BorderLayout());
+
     private final JLabel lblStatus = new JLabel();
 
     private final JTextField txtURL = new JTextField();
+
     private final JProgressBar progressBar = new JProgressBar();
+
     private final Properties prop = new Properties();
+
     private final validasi Valid = new validasi();
 
     /**
-     *
      * @param parent
      * @param modal
      */
@@ -99,8 +102,7 @@ public class DlgRetensi extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -109,12 +111,13 @@ public class DlgRetensi extends javax.swing.JDialog {
 
                 });
 
-                engine.titleProperty().addListener(
-                        (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
-                            SwingUtilities.invokeLater(() -> {
-                                DlgRetensi.this.setTitle(newValue);
-                            });
-                        });
+                engine.titleProperty()
+                        .addListener(
+                                (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
+                                    SwingUtilities.invokeLater(() -> {
+                                        DlgRetensi.this.setTitle(newValue);
+                                    });
+                                });
 
                 engine.setOnStatusChanged((final WebEvent<String> event) -> {
                     SwingUtilities.invokeLater(() -> {
@@ -122,72 +125,64 @@ public class DlgRetensi extends javax.swing.JDialog {
                     });
                 });
 
-                engine.getLoadWorker().workDoneProperty().addListener(
-                        (ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
+                engine.getLoadWorker()
+                        .workDoneProperty()
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 progressBar.setValue(newValue.intValue());
                             });
                         });
 
-                engine.getLoadWorker().exceptionProperty().addListener(
-                        (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                engine.getLoadWorker()
+                        .exceptionProperty()
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
                             if (engine.getLoadWorker().getState() == FAILED) {
                                 SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(
-                                            panel,
-                                            (value != null)
-                                                    ? engine.getLocation() + "\n" + value.
-                                                    getMessage()
+                                    JOptionPane.showMessageDialog(panel,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
                                                     : engine.getLocation() + "\nUnexpected Catatan.",
-                                            "Loading Catatan...",
-                                            JOptionPane.ERROR_MESSAGE);
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
                             }
                         });
 
-                engine.locationProperty().addListener(
-                        (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                engine.locationProperty()
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 txtURL.setText(newValue);
                             });
                         });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState,
-                            State newState) {
+                    public void changed(ObservableValue ov, State oldState, State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
-                                prop.loadFromXML(new FileInputStream(
-                                        "setting/database.xml"));
-                                if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
-                                        getProperty("PORTWEB") + "/" + prop.
-                                        getProperty("HYBRIDWEB") + "/", "").
-                                        contains("medrec/pages")) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
-                                    Valid.panggilUrl(engine.getLocation().
-                                            replaceAll("http://" + koneksiDB.
-                                                    HOSTHYBRIDWEB() + ":" + prop.
-                                                            getProperty(
-                                                                    "PORTWEB") + "/" + prop.
-                                                            getProperty(
-                                                                    "HYBRIDWEB") + "/medrec/pages/upload/",
-                                                    "medrec/").replaceAll(
-                                                    "http://" + koneksiDB.
-                                                            HOSTHYBRIDWEB() + "/" + prop.
-                                                            getProperty(
-                                                                    "HYBRIDWEB") + "/medrec/pages/upload/",
+                                prop.loadFromXML(new FileInputStream("setting/database.xml"));
+                                if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/",
+                                                "")
+                                        .contains("medrec/pages")) {
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    Valid.panggilUrl(engine.getLocation()
+                                            .replaceAll(
+                                                    "http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                    + prop.getProperty("PORTWEB") + "/"
+                                                    + prop.getProperty("HYBRIDWEB") + "/medrec/pages/upload/",
+                                                    "medrec/")
+                                            .replaceAll(
+                                                    "http://" + koneksiDB.HOSTHYBRIDWEB() + "/"
+                                                    + prop.getProperty("HYBRIDWEB") + "/medrec/pages/upload/",
                                                     "medrec/"));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
-                                } else if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
-                                        getProperty("PORTWEB") + "/" + prop.
-                                        getProperty("HYBRIDWEB") + "/", "").
-                                        contains("Keluar")) {
+                                } else if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/",
+                                                "")
+                                        .contains("Keluar")) {
                                     dispose();
                                 }
                             } catch (Exception ex) {
@@ -205,7 +200,6 @@ public class DlgRetensi extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param url
      */
     public void loadURL(String url) {
@@ -231,17 +225,14 @@ public class DlgRetensi extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param node
      */
     public void print(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
-                PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.
-                getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.
-                getBoundsInParent().getHeight();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT,
+                Printer.MarginType.DEFAULT);
+        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -254,7 +245,9 @@ public class DlgRetensi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -315,7 +308,6 @@ public class DlgRetensi extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private widget.InternalFrame internalFrame1;
     // End of variables declaration//GEN-END:variables
-    private static final Logger LOG = Logger.getLogger(DlgRetensi.class.
-            getName());
+	private static final Logger LOG = Logger.getLogger(DlgRetensi.class.getName());
 
 }

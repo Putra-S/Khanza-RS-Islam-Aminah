@@ -42,25 +42,33 @@ import simrskhanza.DlgPasien;
 import simrskhanza.DlgReg;
 
 /**
- *
  * @author dosen
  */
 public class RMSKriningRawatJalan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgPasien pasien = new DlgPasien(null, false);
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DlgCatatan catatan = new DlgCatatan(null, false);
-    private String pilihan = "", nokartu = "", finger = "", validasiregistrasi = Sequel.
-            cariIsi("select wajib_closing_kasir from set_validasi_registrasi"),
-            validasicatatan = Sequel.cariIsi(
-                    "select set_validasi_catatan.tampilkan_catatan from set_validasi_catatan");
+
+    private String pilihan = "", nokartu = "", finger = "",
+            validasiregistrasi = Sequel.cariIsi("select wajib_closing_kasir from set_validasi_registrasi"),
+            validasicatatan = Sequel.cariIsi("select set_validasi_catatan.tampilkan_catatan from set_validasi_catatan");
 
     /**
      * Creates new form DlgPemberianInfus
@@ -72,12 +80,10 @@ public class RMSKriningRawatJalan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tgl.Skrining", "Jam Skrining", "No.R.M.", "Nama Pasien",
-            "Tgl.Lahir", "Ibu Kandung", "J.K.", "Geriatri",
-            "Kesadaran", "Pernafasan", "Nyeri Dada", "Skala Nyeri", "Keputusan",
-            "NIP", "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Tgl.Skrining", "Jam Skrining", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "Ibu Kandung",
+                    "J.K.", "Geriatri", "Kesadaran", "Pernafasan", "Nyeri Dada", "Skala Nyeri", "Keputusan", "NIP",
+                    "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -86,7 +92,8 @@ public class RMSKriningRawatJalan extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -130,8 +137,7 @@ public class RMSKriningRawatJalan extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -171,43 +177,37 @@ public class RMSKriningRawatJalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pasien.getTable().getSelectedRow() != -1) {
-                    TNoRM.setText(pasien.getTable().getValueAt(
-                            pasien.getTable().getSelectedRow(), 1).toString());
-                    TPasien.setText(pasien.getTable().getValueAt(pasien.
-                            getTable().getSelectedRow(), 2).toString());
-                    JK.setText(pasien.getTable().getValueAt(pasien.getTable().
-                            getSelectedRow(), 4).toString().replaceAll("L",
-                                    "LAKI-LAKI").replaceAll("P", "PEREMPUAN"));
-                    Lahir.setText(pasien.getTable().getValueAt(
-                            pasien.getTable().getSelectedRow(), 6).toString());
-                    Ibu.setText(pasien.getTable().getValueAt(pasien.getTable().
-                            getSelectedRow(), 7).toString());
+                    TNoRM.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 1).toString());
+                    TPasien.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 2).toString());
+                    JK.setText(pasien.getTable()
+                            .getValueAt(pasien.getTable().getSelectedRow(), 4)
+                            .toString()
+                            .replaceAll("L", "LAKI-LAKI")
+                            .replaceAll("P", "PEREMPUAN"));
+                    Lahir.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 6).toString());
+                    Ibu.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 7).toString());
                 }
                 if (pasien.getTable2().getSelectedRow() != -1) {
-                    TNoRM.setText(pasien.getTable2().getValueAt(pasien.
-                            getTable2().getSelectedRow(), 1).toString());
-                    TPasien.setText(pasien.getTable2().getValueAt(pasien.
-                            getTable2().getSelectedRow(), 2).toString());
-                    JK.setText(pasien.getTable2().getValueAt(pasien.getTable2().
-                            getSelectedRow(), 4).toString().replaceAll("L",
-                                    "LAKI-LAKI").replaceAll("P", "PEREMPUAN"));
-                    Lahir.setText(pasien.getTable2().getValueAt(pasien.
-                            getTable2().getSelectedRow(), 6).toString());
-                    Ibu.setText(pasien.getTable2().getValueAt(
-                            pasien.getTable2().getSelectedRow(), 7).toString());
+                    TNoRM.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 1).toString());
+                    TPasien.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 2).toString());
+                    JK.setText(pasien.getTable2()
+                            .getValueAt(pasien.getTable2().getSelectedRow(), 4)
+                            .toString()
+                            .replaceAll("L", "LAKI-LAKI")
+                            .replaceAll("P", "PEREMPUAN"));
+                    Lahir.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 6).toString());
+                    Ibu.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 7).toString());
                 }
                 if (pasien.getTable3().getSelectedRow() != -1) {
-                    TNoRM.setText(pasien.getTable3().getValueAt(pasien.
-                            getTable3().getSelectedRow(), 1).toString());
-                    TPasien.setText(pasien.getTable3().getValueAt(pasien.
-                            getTable3().getSelectedRow(), 2).toString());
-                    JK.setText(pasien.getTable3().getValueAt(pasien.getTable3().
-                            getSelectedRow(), 4).toString().replaceAll("L",
-                                    "LAKI-LAKI").replaceAll("P", "PEREMPUAN"));
-                    Lahir.setText(pasien.getTable3().getValueAt(pasien.
-                            getTable3().getSelectedRow(), 6).toString());
-                    Ibu.setText(pasien.getTable3().getValueAt(
-                            pasien.getTable3().getSelectedRow(), 7).toString());
+                    TNoRM.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 1).toString());
+                    TPasien.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 2).toString());
+                    JK.setText(pasien.getTable3()
+                            .getValueAt(pasien.getTable3().getSelectedRow(), 4)
+                            .toString()
+                            .replaceAll("L", "LAKI-LAKI")
+                            .replaceAll("P", "PEREMPUAN"));
+                    Lahir.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 6).toString());
+                    Ibu.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 7).toString());
                 }
                 TNoRM.requestFocus();
             }
@@ -296,10 +296,8 @@ public class RMSKriningRawatJalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPetugas.requestFocus();
             }
@@ -326,7 +324,9 @@ public class RMSKriningRawatJalan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1523,8 +1523,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMSKriningRawatJalan dialog = new RMSKriningRawatJalan(
-                    new javax.swing.JFrame(), true);
+            RMSKriningRawatJalan dialog = new RMSKriningRawatJalan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1649,17 +1648,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 ps.setString(27, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("tanggal"), rs.getString("jam"), rs.
-                        getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("tgl_lahir"),
-                        rs.getString("nm_ibu"), rs.getString("jk"), rs.
-                        getString("geriatri"), rs.getString("kesadaran"), rs.
-                        getString("pernapasan"),
-                        rs.getString("nyeri_dada"), rs.getString("skala_nyeri"),
-                        rs.getString("keputusan"), rs.getString("nip"), rs.
-                        getString("nama")
-                    });
+                    tabMode.addRow(
+                            new String[]{rs.getString("tanggal"), rs.getString("jam"), rs.getString("no_rkm_medis"),
+                                rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("nm_ibu"),
+                                rs.getString("jk"), rs.getString("geriatri"), rs.getString("kesadaran"),
+                                rs.getString("pernapasan"), rs.getString("nyeri_dada"), rs.getString("skala_nyeri"),
+                                rs.getString("keputusan"), rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1696,37 +1690,21 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            Valid.SetTgl(DTPReg, tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            CmbJam.setSelectedItem(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString().
-                            substring(0, 2));
-            CmbMenit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    1).toString().substring(3, 5));
-            CmbDetik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    1).toString().substring(6, 8));
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            Lahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            Ibu.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                            toString());
+            Valid.SetTgl(DTPReg, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            CmbJam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString().substring(0, 2));
+            CmbMenit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString().substring(3, 5));
+            CmbDetik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString().substring(6, 8));
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            Lahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Ibu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
-            Geriatri.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString());
-            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    8).toString());
-            Pernapasan.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 9).toString());
-            NyeriDada.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    10).toString());
-            SkalaNyeri.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 11).toString());
-            Keputusan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    12).toString());
+            Geriatri.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Pernapasan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            NyeriDada.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            SkalaNyeri.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Keputusan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
         }
     }
 
@@ -1756,8 +1734,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
             if (NmPetugas.getText().isEmpty()) {
                 KdPetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
@@ -1765,7 +1742,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1807,7 +1786,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 CmbJam.setSelectedItem(jam);
                 CmbMenit.setSelectedItem(menit);
                 CmbDetik.setSelectedItem(detik);
@@ -1827,11 +1806,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         "Maaf, pasien pada kunjungan sebelumnya memiliki tagihan yang belum di closing.\nSilahkan konfirmasi dengan pihak kasir.. !!");
             } else {
                 if (validasicatatan.equals("Yes")) {
-                    if (Sequel.cariInteger(
-                            "select count(no_rkm_medis) from catatan_pasien where no_rkm_medis=?",
+                    if (Sequel.cariInteger("select count(no_rkm_medis) from catatan_pasien where no_rkm_medis=?",
                             TNoRM.getText()) > 0) {
-                        this.setCursor(Cursor.getPredefinedCursor(
-                                Cursor.WAIT_CURSOR));
+                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                         catatan.setNoRm(TNoRM.getText());
                         catatan.setSize(720, 330);
                         catatan.setLocationRelativeTo(internalFrame1);
@@ -1843,11 +1820,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
         } else {
             if (validasicatatan.equals("Yes")) {
-                if (Sequel.cariInteger(
-                        "select count(no_rkm_medis) from catatan_pasien where no_rkm_medis=?",
+                if (Sequel.cariInteger("select count(no_rkm_medis) from catatan_pasien where no_rkm_medis=?",
                         TNoRM.getText()) > 0) {
-                    this.setCursor(Cursor.
-                            getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     catatan.setNoRm(TNoRM.getText());
                     catatan.setSize(720, 330);
                     catatan.setLocationRelativeTo(internalFrame1);
@@ -1862,8 +1837,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void isCekPasien() {
         if (!TNoRM.equals("")) {
             try {
-                ps = koneksi.prepareStatement(
-                        "select nm_pasien,jk,tgl_lahir,nm_ibu from pasien where no_rkm_medis=?");
+                ps = koneksi.prepareStatement("select nm_pasien,jk,tgl_lahir,nm_ibu from pasien where no_rkm_medis=?");
                 try {
                     ps.setString(1, TNoRM.getText());
                     rs = ps.executeQuery();
@@ -1890,19 +1864,15 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from skrining_rawat_jalan where tanggal=? and jam=? and no_rkm_medis=?",
-                3, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+        if (Sequel.queryu2tf("delete from skrining_rawat_jalan where tanggal=? and jam=? and no_rkm_medis=?", 3,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
                     tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString()
-                }) == true) {
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMSKriningRawatJalan.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMSKriningRawatJalan.class.getName());
 
 }

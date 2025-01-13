@@ -27,18 +27,24 @@ import simrskhanza.DlgPangkatPolri;
 import simrskhanza.DlgSatuanPolri;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private final validasi Valid = new validasi();
+
     private final Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private int i;
+
     private String tglkeluar, harirawat, kamar;
 
     /**
@@ -50,7 +56,9 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
      *
      */
     public DlgSatuanPolri satuanpolri = new DlgSatuanPolri(null, false);
+
     public DlgPangkatPolri pangkatpolri = new DlgPangkatPolri(null, false);
+
     public DlgJabatanPolri jabatanpolri = new DlgJabatanPolri(null, false);
 
     /**
@@ -63,9 +71,8 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] rowRwJlDr = {"No.", "No.RM", "Nama Pasien", "Cara Bayar",
-            "Tgl.Masuk", "Tgl.Pulang", "Ruangan", "H.P.", "Pangkat", "Satuan",
-            "Golongan", "Jabatan"};
+        Object[] rowRwJlDr = {"No.", "No.RM", "Nama Pasien", "Cara Bayar", "Tgl.Masuk", "Tgl.Pulang", "Ruangan",
+            "H.P.", "Pangkat", "Satuan", "Golongan", "Jabatan"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -74,7 +81,8 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -122,9 +130,9 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golonganpolri.getTable().getSelectedRow() != -1) {
-                    Golongan.setText(golonganpolri.getTable().getValueAt(
-                            golonganpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Golongan.setText(golonganpolri.getTable()
+                            .getValueAt(golonganpolri.getTable().getSelectedRow(), 1)
+                            .toString());
                 }
                 Golongan.requestFocus();
             }
@@ -177,9 +185,8 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jabatanpolri.getTable().getSelectedRow() != -1) {
-                    Jabatan.setText(jabatanpolri.getTable().getValueAt(
-                            jabatanpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Jabatan.setText(
+                            jabatanpolri.getTable().getValueAt(jabatanpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Jabatan.requestFocus();
             }
@@ -232,9 +239,8 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (satuanpolri.getTable().getSelectedRow() != -1) {
-                    Satuan.setText(satuanpolri.getTable().getValueAt(
-                            satuanpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Satuan.setText(
+                            satuanpolri.getTable().getValueAt(satuanpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Satuan.requestFocus();
             }
@@ -287,9 +293,8 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pangkatpolri.getTable().getSelectedRow() != -1) {
-                    Pangkat.setText(pangkatpolri.getTable().getValueAt(
-                            pangkatpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Pangkat.setText(
+                            pangkatpolri.getTable().getValueAt(pangkatpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Pangkat.requestFocus();
             }
@@ -335,7 +340,9 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -632,14 +639,13 @@ public class DlgDaftarPasienRanapPolri extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE) {//GEN-FIRST:event_BtnKeluarKeyPressed
             dispose();
         } else {
             Valid.pindah(evt, BtnPrint, ThnCari);
@@ -780,8 +786,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDaftarPasienRanapPolri dialog = new DlgDaftarPasienRanapPolri(
-                    new javax.swing.JFrame(), true);
+            DlgDaftarPasienRanapPolri dialog = new DlgDaftarPasienRanapPolri(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -837,8 +842,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     + "and pasien_polri.golongan_polri=golongan_polri.id and pasien_polri.jabatan_polri=jabatan_polri.id and reg_periksa.kd_pj=penjab.kd_pj "
                     + "where reg_periksa.tgl_registrasi like ? and status_lanjut='Ranap' and pangkat_polri.nama_pangkat like ? and satuan_polri.nama_satuan like ? and golongan_polri.nama_golongan like ? and jabatan_polri.nama_jabatan like ? order by reg_periksa.tgl_registrasi");
             try {
-                ps.setString(1, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.
-                        getSelectedItem() + "%");
+                ps.setString(1, "%" + ThnCari.getSelectedItem() + "-" + BlnCari.getSelectedItem() + "%");
                 ps.setString(2, "%" + Pangkat.getText().trim() + "%");
                 ps.setString(3, "%" + Satuan.getText().trim() + "%");
                 ps.setString(4, "%" + Golongan.getText().trim() + "%");
@@ -902,14 +906,10 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         }
                     }
 
-                    tabMode.addRow(new String[]{
-                        i + "", rs.getString("no_rkm_medis"), rs.getString(
-                        "nm_pasien"), rs.getString("png_jawab"), rs.getString(
-                        "tgl_registrasi"), tglkeluar,
-                        kamar, harirawat, rs.getString("nama_pangkat"), rs.
-                        getString("nama_satuan"), rs.getString("nama_golongan"),
-                        rs.getString("nama_jabatan")
-                    });
+                    tabMode.addRow(new String[]{i + "", rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("png_jawab"), rs.getString("tgl_registrasi"), tglkeluar, kamar, harirawat,
+                        rs.getString("nama_pangkat"), rs.getString("nama_satuan"), rs.getString("nama_golongan"),
+                        rs.getString("nama_jabatan")});
                     i++;
                 }
             } catch (Exception e) {
@@ -946,7 +946,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgDaftarPasienRanapPolri.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgDaftarPasienRanapPolri.class.getName());
 
 }

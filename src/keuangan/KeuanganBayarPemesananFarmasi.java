@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package keuangan;
 
@@ -45,30 +45,46 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author dosen
  */
 public class KeuanganBayarPemesananFarmasi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private InventoryCariSuplier suplier = new InventoryCariSuplier(null, false);
+
     private double total = 0, hutang = 0, sisahutang = 0;
+
     private String koderekening = "";
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private boolean sukses = false;
+
     private File file;
+
     private FileWriter fileWriter;
-    private String iyem, Bayar_Pemesanan_Obat = Sequel.cariIsi(
-            "select Bayar_Pemesanan_Obat from set_akun");
+
+    private String iyem, Bayar_Pemesanan_Obat = Sequel.cariIsi("select Bayar_Pemesanan_Obat from set_akun");
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -83,19 +99,13 @@ public class KeuanganBayarPemesananFarmasi extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(628, 674);
 
-        Object[] row = {"Tgl.Bayar", "Tgl.Faktur", "Tgl.Datang", "Tgl.Tempo",
-            "No.Faktur", "Supplier", "Akun Bayar", "No.Bukti", "Pembayaran",
-            "Keterangan", "Petugas", "Nip", "Nama"};
+        Object[] row = {"Tgl.Bayar", "Tgl.Faktur", "Tgl.Datang", "Tgl.Tempo", "No.Faktur", "Supplier", "Akun Bayar",
+            "No.Bukti", "Pembayaran", "Keterangan", "Petugas", "Nip", "Nama"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -109,7 +119,8 @@ public class KeuanganBayarPemesananFarmasi extends javax.swing.JDialog {
 
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -155,8 +166,7 @@ public class KeuanganBayarPemesananFarmasi extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -192,10 +202,9 @@ public class KeuanganBayarPemesananFarmasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    nip.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    nama_petugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    nip.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    nama_petugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -247,10 +256,8 @@ public class KeuanganBayarPemesananFarmasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (suplier.getTable().getSelectedRow() != -1) {
-                    kdsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                    nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     tampil();
                 }
                 kdsup.requestFocus();
@@ -295,7 +302,9 @@ public class KeuanganBayarPemesananFarmasi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1288,8 +1297,7 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganBayarPemesananFarmasi dialog = new KeuanganBayarPemesananFarmasi(
-                    new javax.swing.JFrame(), true);
+            KeuanganBayarPemesananFarmasi dialog = new KeuanganBayarPemesananFarmasi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1354,8 +1362,7 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     public void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select bayar_pemesanan.tgl_bayar,pemesanan.tgl_faktur,pemesanan.tgl_pesan,"
+            ps = koneksi.prepareStatement("select bayar_pemesanan.tgl_bayar,pemesanan.tgl_faktur,pemesanan.tgl_pesan,"
                     + "pemesanan.tgl_tempo, bayar_pemesanan.no_faktur,"
                     + "datasuplier.nama_suplier,bayar_pemesanan.nama_bayar,bayar_pemesanan.no_bukti,"
                     + "bayar_pemesanan.besar_bayar,bayar_pemesanan.keterangan,"
@@ -1399,16 +1406,12 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 total = 0;
                 while (rs.next()) {
                     total += rs.getDouble("besar_bayar");
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tgl_bayar"), rs.getString("tgl_faktur"),
-                        rs.getString("tgl_pesan"),
-                        rs.getString("tgl_tempo"), rs.getString("no_faktur"),
-                        rs.getString("nama_suplier"), rs.getString("nama_bayar"),
-                        rs.getString("no_bukti"), rs.getDouble("besar_bayar"),
-                        rs.getString("keterangan"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getString("nip"), rs.getString("nama")}
-                    );
+                    tabMode.addRow(new Object[]{rs.getString("tgl_bayar"), rs.getString("tgl_faktur"),
+                        rs.getString("tgl_pesan"), rs.getString("tgl_tempo"), rs.getString("no_faktur"),
+                        rs.getString("nama_suplier"), rs.getString("nama_bayar"), rs.getString("no_bukti"),
+                        rs.getDouble("besar_bayar"), rs.getString("keterangan"),
+                        rs.getString("nip") + " " + rs.getString("nama"), rs.getString("nip"),
+                        rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -1444,9 +1447,8 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     public void setData(String nofaktur) {
         no_faktur.setText(nofaktur);
         TCari.setText(nofaktur);
-        sisahutang = Math.round(Sequel.cariIsiAngka(
-                "SELECT pemesanan.tagihan FROM pemesanan where pemesanan.no_faktur=?",
-                nofaktur)
+        sisahutang = Math.round(Sequel
+                .cariIsiAngka("SELECT pemesanan.tagihan FROM pemesanan where pemesanan.no_faktur=?", nofaktur)
                 - Sequel.cariIsiAngka(
                         "SELECT ifnull(SUM(bayar_pemesanan.besar_bayar),0) FROM bayar_pemesanan where bayar_pemesanan.no_faktur=?",
                         nofaktur));
@@ -1459,11 +1461,10 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         if (row != -1) {
             Valid.SetTgl(tgl_bayar, tbKamar.getValueAt(row, 0).toString());
             no_faktur.setText(tbKamar.getValueAt(row, 4).toString());
-            //setData(no_faktur.getText());
+            // setData(no_faktur.getText());
             AkunBayar.setSelectedItem(tbKamar.getValueAt(row, 6).toString());
             no_bukti.setText(tbKamar.getValueAt(row, 7).toString());
-            besar_bayar.setText(Valid.SetAngka5(Double.parseDouble(tbKamar.
-                    getValueAt(row, 8).toString())));
+            besar_bayar.setText(Valid.SetAngka5(Double.parseDouble(tbKamar.getValueAt(row, 8).toString())));
             keterangan.setText(tbKamar.getValueAt(row, 9).toString());
         }
     }
@@ -1473,7 +1474,6 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     /**
-     *
      * @return
      */
     public JButton getButton() {
@@ -1503,16 +1503,14 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select * from akun_bayar_hutang order by akun_bayar_hutang.nama_bayar");
+            ps = koneksi.prepareStatement("select * from akun_bayar_hutang order by akun_bayar_hutang.nama_bayar");
             try {
                 rs = ps.executeQuery();
                 AkunBayar.removeAllItems();
                 while (rs.next()) {
                     AkunBayar.addItem(rs.getString(1).replaceAll("\"", ""));
-                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).
-                            replaceAll("\"", "") + "\",\"KodeRek\":\"" + rs.
-                            getString(2) + "\"},";
+                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).replaceAll("\"", "") + "\",\"KodeRek\":\""
+                            + rs.getString(2) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1525,8 +1523,7 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 }
             }
 
-            fileWriter.write("{\"akunbayarhutang\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"akunbayarhutang\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1542,8 +1539,7 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             response = root.path("akunbayarhutang");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll(
-                            "\"", ""));
+                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll("\"", ""));
                 }
             }
             myObj.close();
@@ -1552,6 +1548,6 @@ private void BtnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganBayarPemesananFarmasi.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganBayarPemesananFarmasi.class.getName());
+
 }

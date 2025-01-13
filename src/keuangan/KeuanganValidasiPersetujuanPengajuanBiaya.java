@@ -26,19 +26,26 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author perpustakaan
  */
 public class KeuanganValidasiPersetujuanPengajuanBiaya extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private int i;
+
     private double belumdivalidasi = 0;
 
     /**
@@ -47,31 +54,21 @@ public class KeuanganValidasiPersetujuanPengajuanBiaya extends javax.swing.JDial
      * @param parent
      * @param modal
      */
-    public KeuanganValidasiPersetujuanPengajuanBiaya(java.awt.Frame parent,
-            boolean modal) {
+    public KeuanganValidasiPersetujuanPengajuanBiaya(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Pengajuan", "Tanggal", "NIP", "Diajukan Oleh", "Bidang",
-            "Departemen", "Urgensi", "Uraian", "Tujuan",
-            "Target Sasaran", "Lokasi", "Jml", "Harga", "Total", "Keterangan",
-            "NIP P.J.", "P.J. Terkait"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Pengajuan", "Tanggal", "NIP", "Diajukan Oleh", "Bidang", "Departemen", "Urgensi",
+                    "Uraian", "Tujuan", "Target Sasaran", "Lokasi", "Jml", "Harga", "Total", "Keterangan",
+                    "NIP P.J.", "P.J. Terkait"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -86,7 +83,8 @@ public class KeuanganValidasiPersetujuanPengajuanBiaya extends javax.swing.JDial
         };
         tbBangsal.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -133,8 +131,7 @@ public class KeuanganValidasiPersetujuanPengajuanBiaya extends javax.swing.JDial
         TKd.setDocument(new batasInput((byte) 20).getKata(TKd));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -171,10 +168,8 @@ public class KeuanganValidasiPersetujuanPengajuanBiaya extends javax.swing.JDial
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    kdpegawai.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmpegawai.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdpegawai.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    nmpegawai.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                     tampil();
                 }
                 kdpegawai.requestFocus();
@@ -219,7 +214,9 @@ public class KeuanganValidasiPersetujuanPengajuanBiaya extends javax.swing.JDial
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -687,10 +684,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "inner join pegawai as peg2 on pengajuan_biaya.nik_pj=peg2.nik "
                     + "inner join pengajuan_biaya_disetujui on pengajuan_biaya_disetujui.no_pengajuan=pengajuan_biaya.no_pengajuan "
                     + "where pengajuan_biaya.status='Disetujui' and pengajuan_biaya.nik_pj like ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (pengajuan_biaya.no_pengajuan like ? or pengajuan_biaya.nik like ? or peg1.nama like ? or "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (pengajuan_biaya.no_pengajuan like ? or pengajuan_biaya.nik like ? or peg1.nama like ? or "
                     + "peg1.bidang like ? or peg1.departemen like ? or pengajuan_biaya.urgensi like ? or pengajuan_biaya.uraian_latar_belakang like ? or "
                     + "pengajuan_biaya.tujuan_pengajuan like ? or pengajuan_biaya.lokasi_kegiatan like ? or pengajuan_biaya.keterangan like ? or "
-                    + "pengajuan_biaya.nik_pj like ? or peg2.nama like ?)") + " order by pengajuan_biaya.tanggal");
+                    + "pengajuan_biaya.nik_pj like ? or peg2.nama like ?)")
+                    + " order by pengajuan_biaya.tanggal");
             try {
                 ps.setString(1, "%" + kdpegawai.getText().trim() + "%");
                 if (!TCari.getText().trim().isEmpty()) {
@@ -710,18 +709,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 rs = ps.executeQuery();
                 i = 1;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_pengajuan"), rs.getString("tanggal"),
-                        rs.getString("nik"), rs.getString("namapengaju"), rs.
-                        getString("bidang"),
-                        rs.getString("departemen"), rs.getString("urgensi"), rs.
-                        getString("uraian_latar_belakang"), rs.getString(
-                        "tujuan_pengajuan"), rs.getString("target_sasaran"),
-                        rs.getString("lokasi_kegiatan"), rs.getDouble("jumlah"),
-                        rs.getDouble("harga"), rs.getDouble("total"), rs.
-                        getString("keterangan"),
-                        rs.getString("nik_pj"), rs.getString("namapj")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_pengajuan"), rs.getString("tanggal"),
+                        rs.getString("nik"), rs.getString("namapengaju"), rs.getString("bidang"),
+                        rs.getString("departemen"), rs.getString("urgensi"), rs.getString("uraian_latar_belakang"),
+                        rs.getString("tujuan_pengajuan"), rs.getString("target_sasaran"),
+                        rs.getString("lokasi_kegiatan"), rs.getDouble("jumlah"), rs.getDouble("harga"),
+                        rs.getDouble("total"), rs.getString("keterangan"), rs.getString("nik_pj"),
+                        rs.getString("namapj")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -742,8 +736,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private void hitung() {
         belumdivalidasi = 0;
         for (i = 0; i < tabMode.getRowCount(); i++) {
-            belumdivalidasi += Valid.SetAngka(tbBangsal.getValueAt(i, 13).
-                    toString());
+            belumdivalidasi += Valid.SetAngka(tbBangsal.getValueAt(i, 13).toString());
         }
         LCount.setText("" + Valid.SetAngka(belumdivalidasi));
     }
@@ -752,6 +745,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         BtnBayar.setEnabled(akses.getpengeluaran());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganValidasiPersetujuanPengajuanBiaya.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganValidasiPersetujuanPengajuanBiaya.class.getName());
+
 }

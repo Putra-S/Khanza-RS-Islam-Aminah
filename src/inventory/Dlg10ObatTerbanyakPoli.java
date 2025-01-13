@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package inventory;
 
@@ -37,23 +37,34 @@ import simrskhanza.DlgCariCaraBayar;
 import simrskhanza.DlgCariPoli;
 
 /**
- *
  * @author perpustakaan
  */
 public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
 
     private final Connection koneksi = koneksiDB.condb();
+
     private final sekuel Sequel = new sekuel();
+
     private final validasi Valid = new validasi();
+
     private PreparedStatement pspoli, psobat, pspenjab;
+
     private ResultSet rspoli, rsobat, rspenjab;
+
     private int i = 0, a = 0, c;
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariJenis jenis = new DlgCariJenis(null, false);
+
     private DlgCariKategori kategori = new DlgCariKategori(null, false);
+
     private DlgCariGolongan golongan = new DlgCariGolongan(null, false);
+
     private StringBuilder htmlContent;
 
     /**
@@ -79,10 +90,8 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -118,10 +127,8 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -175,10 +182,8 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -232,10 +237,8 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -269,10 +272,10 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongan.getTable().getSelectedRow() != -1) {
-                    kdgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 0).toString());
+                    nmgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -307,10 +310,10 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    kdkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                    nmkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -340,11 +343,10 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
         LoadHTML1.setEditorKit(kit);
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(
-                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
-                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-        );
+                ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi2 td{font: 8.5px Tahoma;height:12px;background: #ffffff;color:#323232;}"
+                + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
         LoadHTML1.setDocument(doc);
@@ -354,7 +356,9 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -808,10 +812,10 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
             File g = new File("file2.css");
             try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
                 bg.write(
-                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
-                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                        + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi2 td{font: 8.5px Tahoma;height:12px;background: #ffffff;color:#323232;}"
+                        + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
+                        + ".isi4 td{font: 11px Tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
                 );
             }
 
@@ -1063,8 +1067,7 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            Dlg10ObatTerbanyakPoli dialog = new Dlg10ObatTerbanyakPoli(
-                    new javax.swing.JFrame(), true);
+            Dlg10ObatTerbanyakPoli dialog = new Dlg10ObatTerbanyakPoli(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1129,34 +1132,29 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             htmlContent = new StringBuilder();
-            pspoli = koneksi.prepareStatement(
-                    "select kd_poli,nm_poli from poliklinik where concat(kd_poli,nm_poli) like ?");
+            pspoli = koneksi
+                    .prepareStatement("select kd_poli,nm_poli from poliklinik where concat(kd_poli,nm_poli) like ?");
             try {
-                pspoli.setString(1,
-                        "%" + kdpoli.getText() + nmpoli.getText() + "%");
+                pspoli.setString(1, "%" + kdpoli.getText() + nmpoli.getText() + "%");
                 rspoli = pspoli.executeQuery();
                 i = 1;
                 if (rspoli.next()) {
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td valign='middle' bgcolor='#FFFAFA' width='3%'>No.</td>"
-                            + "<td valign='middle' bgcolor='#FFFAFA' width='97%'>Nama Poli</td>"
-                            + "</tr>"
-                    );
+                    htmlContent.append("<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' width='3%'>No.</td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' width='97%'>Nama Poli</td>" + "</tr>");
                 }
                 rspoli.beforeFirst();
                 while (rspoli.next()) {
-                    htmlContent.append("<tr class='isi'><td valign='middle'>").
-                            append(i).append("</td><td valign='middle'>").
-                            append(rspoli.getString("nm_poli")).append(
-                            "</td></tr><tr class='isi'><td align='center' valign='middle'></td><td align='left' valign='middle'>");
+                    htmlContent.append("<tr class='isi'><td valign='middle'>")
+                            .append(i)
+                            .append("</td><td valign='middle'>")
+                            .append(rspoli.getString("nm_poli"))
+                            .append("</td></tr><tr class='isi'><td align='center' valign='middle'></td><td align='left' valign='middle'>");
 
                     c = 0;
-                    pspenjab = koneksi.prepareStatement(
-                            "select kd_pj,png_jawab from penjab where concat(kd_pj, png_jawab) like ?");
+                    pspenjab = koneksi
+                            .prepareStatement("select kd_pj,png_jawab from penjab where concat(kd_pj, png_jawab) like ?");
                     try {
-                        pspenjab.setString(1,
-                                "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
+                        pspenjab.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                         rspenjab = pspenjab.executeQuery();
                         while (rspenjab.next()) {
                             psobat = koneksi.prepareStatement(
@@ -1174,71 +1172,52 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
                             try {
                                 psobat.setString(1, rspenjab.getString("kd_pj"));
                                 psobat.setString(2, rspoli.getString("kd_poli"));
-                                psobat.setString(3, Valid.SetTgl(Tgl1.
-                                        getSelectedItem() + ""));
-                                psobat.setString(4, Valid.SetTgl(Tgl2.
-                                        getSelectedItem() + ""));
-                                psobat.setString(5,
-                                        "%" + kddokter.getText() + nmdokter.
-                                        getText() + "%");
-                                psobat.setString(6,
-                                        "%" + kdjenis.getText() + nmjns.
-                                        getText() + "%");
-                                psobat.setString(7,
-                                        "%" + kdkategori.getText() + nmkategori.
-                                        getText() + "%");
-                                psobat.setString(8,
-                                        "%" + kdgolongan.getText() + nmgolongan.
-                                        getText() + "%");
+                                psobat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                                psobat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                                psobat.setString(5, "%" + kddokter.getText() + nmdokter.getText() + "%");
+                                psobat.setString(6, "%" + kdjenis.getText() + nmjns.getText() + "%");
+                                psobat.setString(7, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                                psobat.setString(8, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                                 rsobat = psobat.executeQuery();
                                 if (rsobat.next()) {
                                     c++;
                                     htmlContent.append(
-                                            "<table width='100%' border='0' align='center' cellspacing='0'><caption>").
-                                            append(rspenjab.getString(
-                                                    "png_jawab")).append(
-                                                    "</caption><tr class='isi'><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='15%'>Kode Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='43%'>Nama Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Satuan</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Obat</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Resep</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='17%'>Nilai Obat</td></tr>");
+                                            "<table width='100%' border='0' align='center' cellspacing='0'><caption>")
+                                            .append(rspenjab.getString("png_jawab"))
+                                            .append("</caption><tr class='isi'><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='15%'>Kode Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='43%'>Nama Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Satuan</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Obat</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Resep</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='17%'>Nilai Obat</td></tr>");
                                     rsobat.beforeFirst();
                                     a = 1;
                                     while (rsobat.next()) {
-                                        htmlContent.append(
-                                                "<tr class='isi'><td>").
-                                                append(a).append("</td><td>").
-                                                append(rsobat.getString(
-                                                        "kode_brng")).append(
-                                                        "</td><td>").append(
-                                                        rsobat.getString(
-                                                                "nama_brng")).
-                                                append("</td><td>").append(
-                                                rsobat.getString("kode_sat")).
-                                                append("</td><td align='right'>").
-                                                append(rsobat.getString("jml")).
-                                                append("</td><td align='right'>").
-                                                append(Sequel.cariIsiAngka(
+                                        htmlContent.append("<tr class='isi'><td>")
+                                                .append(a)
+                                                .append("</td><td>")
+                                                .append(rsobat.getString("kode_brng"))
+                                                .append("</td><td>")
+                                                .append(rsobat.getString("nama_brng"))
+                                                .append("</td><td>")
+                                                .append(rsobat.getString("kode_sat"))
+                                                .append("</td><td align='right'>")
+                                                .append(rsobat.getString("jml"))
+                                                .append("</td><td align='right'>")
+                                                .append(Sequel.cariIsiAngka(
                                                         "select count(resep_obat.no_resep) from resep_obat inner join detail_pemberian_obat inner join reg_periksa on detail_pemberian_obat.tgl_perawatan=resep_obat.tgl_perawatan "
                                                         + "and detail_pemberian_obat.jam=resep_obat.jam and detail_pemberian_obat.no_rawat=resep_obat.no_rawat and resep_obat.no_rawat=reg_periksa.no_rawat "
-                                                        + "where detail_pemberian_obat.kode_brng='" + rsobat.
-                                                                getString(
-                                                                        "kode_brng") + "' and detail_pemberian_obat.status='Ralan' and reg_periksa.kd_pj='" + rspenjab.
-                                                                getString(
-                                                                        "kd_pj") + "' "
-                                                        + "and reg_periksa.tgl_registrasi between '" + Valid.
-                                                                SetTgl(Tgl1.
-                                                                        getSelectedItem() + "") + "' and '" + Valid.
-                                                                SetTgl(Tgl2.
-                                                                        getSelectedItem() + "") + "' and reg_periksa.kd_poli='" + rspoli.
-                                                                getString(
-                                                                        "kd_poli") + "' "
-                                                        + "group by resep_obat.no_resep")).
-                                                append("</td><td align='right'>").
-                                                append(Valid.SetAngka(rsobat.
-                                                        getDouble("biaya"))).
-                                                append("</td></tr>");
+                                                        + "where detail_pemberian_obat.kode_brng='"
+                                                        + rsobat.getString("kode_brng")
+                                                        + "' and detail_pemberian_obat.status='Ralan' and reg_periksa.kd_pj='"
+                                                        + rspenjab.getString("kd_pj") + "' "
+                                                        + "and reg_periksa.tgl_registrasi between '"
+                                                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                                                        + Valid.SetTgl(Tgl2.getSelectedItem() + "")
+                                                        + "' and reg_periksa.kd_poli='"
+                                                        + rspoli.getString("kd_poli") + "' "
+                                                        + "group by resep_obat.no_resep"))
+                                                .append("</td><td align='right'>")
+                                                .append(Valid.SetAngka(rsobat.getDouble("biaya")))
+                                                .append("</td></tr>");
                                         a++;
                                     }
-                                    htmlContent.append(
-                                            "</table>"
-                                    );
+                                    htmlContent.append("</table>");
                                     if (c > 1) {
                                         htmlContent.append("<br><br>");
                                     }
@@ -1264,10 +1243,7 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
                             pspenjab.close();
                         }
                     }
-                    htmlContent.append(
-                            "</td>"
-                            + "</tr>"
-                    );
+                    htmlContent.append("</td>" + "</tr>");
 
                     i++;
                 }
@@ -1281,12 +1257,9 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
                     pspoli.close();
                 }
             }
-            LoadHTML.setText(
-                    "<html>"
+            LoadHTML.setText("<html>"
                     + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>");
+                    + htmlContent.toString() + "</table>" + "</html>");
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -1297,34 +1270,29 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             htmlContent = new StringBuilder();
-            pspoli = koneksi.prepareStatement(
-                    "select kd_poli,nm_poli from poliklinik where concat(kd_poli,nm_poli) like ?");
+            pspoli = koneksi
+                    .prepareStatement("select kd_poli,nm_poli from poliklinik where concat(kd_poli,nm_poli) like ?");
             try {
-                pspoli.setString(1,
-                        "%" + kdpoli.getText() + nmpoli.getText() + "%");
+                pspoli.setString(1, "%" + kdpoli.getText() + nmpoli.getText() + "%");
                 rspoli = pspoli.executeQuery();
                 i = 1;
                 if (rspoli.next()) {
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td valign='middle' bgcolor='#FFFAFA' width='3%'>No.</td>"
-                            + "<td valign='middle' bgcolor='#FFFAFA' width='97%'>Nama Poli</td>"
-                            + "</tr>"
-                    );
+                    htmlContent.append("<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' width='3%'>No.</td>"
+                            + "<td valign='middle' bgcolor='#FFFAFA' width='97%'>Nama Poli</td>" + "</tr>");
                 }
                 rspoli.beforeFirst();
                 while (rspoli.next()) {
-                    htmlContent.append("<tr class='isi'><td valign='middle'>").
-                            append(i).append("</td><td valign='middle'>").
-                            append(rspoli.getString("nm_poli")).append(
-                            "</td></tr><tr class='isi'><td align='center' valign='middle'></td><td align='left' valign='middle'>");
+                    htmlContent.append("<tr class='isi'><td valign='middle'>")
+                            .append(i)
+                            .append("</td><td valign='middle'>")
+                            .append(rspoli.getString("nm_poli"))
+                            .append("</td></tr><tr class='isi'><td align='center' valign='middle'></td><td align='left' valign='middle'>");
 
                     c = 0;
-                    pspenjab = koneksi.prepareStatement(
-                            "select kd_pj,png_jawab from penjab where concat(kd_pj, png_jawab) like ?");
+                    pspenjab = koneksi
+                            .prepareStatement("select kd_pj,png_jawab from penjab where concat(kd_pj, png_jawab) like ?");
                     try {
-                        pspenjab.setString(1,
-                                "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
+                        pspenjab.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                         rspenjab = pspenjab.executeQuery();
                         while (rspenjab.next()) {
                             psobat = koneksi.prepareStatement(
@@ -1342,71 +1310,52 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
                             try {
                                 psobat.setString(1, rspenjab.getString("kd_pj"));
                                 psobat.setString(2, rspoli.getString("kd_poli"));
-                                psobat.setString(3, Valid.SetTgl(Tgl1.
-                                        getSelectedItem() + ""));
-                                psobat.setString(4, Valid.SetTgl(Tgl2.
-                                        getSelectedItem() + ""));
-                                psobat.setString(5,
-                                        "%" + kddokter.getText() + nmdokter.
-                                        getText() + "%");
-                                psobat.setString(6,
-                                        "%" + kdjenis.getText() + nmjns.
-                                        getText() + "%");
-                                psobat.setString(7,
-                                        "%" + kdkategori.getText() + nmkategori.
-                                        getText() + "%");
-                                psobat.setString(8,
-                                        "%" + kdgolongan.getText() + nmgolongan.
-                                        getText() + "%");
+                                psobat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                                psobat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                                psobat.setString(5, "%" + kddokter.getText() + nmdokter.getText() + "%");
+                                psobat.setString(6, "%" + kdjenis.getText() + nmjns.getText() + "%");
+                                psobat.setString(7, "%" + kdkategori.getText() + nmkategori.getText() + "%");
+                                psobat.setString(8, "%" + kdgolongan.getText() + nmgolongan.getText() + "%");
                                 rsobat = psobat.executeQuery();
                                 if (rsobat.next()) {
                                     c++;
                                     htmlContent.append(
-                                            "<table width='100%' border='0' align='center' cellspacing='0'><caption>").
-                                            append(rspenjab.getString(
-                                                    "png_jawab")).append(
-                                                    "</caption><tr class='isi'><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='15%'>Kode Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='43%'>Nama Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Satuan</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Obat</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Resep</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='17%'>Nilai Obat</td></tr>");
+                                            "<table width='100%' border='0' align='center' cellspacing='0'><caption>")
+                                            .append(rspenjab.getString("png_jawab"))
+                                            .append("</caption><tr class='isi'><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>No.</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='15%'>Kode Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='43%'>Nama Barang</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Satuan</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Obat</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='7%'>Jml.Resep</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='17%'>Nilai Obat</td></tr>");
                                     rsobat.beforeFirst();
                                     a = 1;
                                     while (rsobat.next()) {
-                                        htmlContent.append(
-                                                "<tr class='isi'><td>").
-                                                append(a).append("</td><td>").
-                                                append(rsobat.getString(
-                                                        "kode_brng")).append(
-                                                        "</td><td>").append(
-                                                        rsobat.getString(
-                                                                "nama_brng")).
-                                                append("</td><td>").append(
-                                                rsobat.getString("kode_sat")).
-                                                append("</td><td align='right'>").
-                                                append(rsobat.getString("jml")).
-                                                append("</td><td align='right'>").
-                                                append(Sequel.cariIsiAngka(
+                                        htmlContent.append("<tr class='isi'><td>")
+                                                .append(a)
+                                                .append("</td><td>")
+                                                .append(rsobat.getString("kode_brng"))
+                                                .append("</td><td>")
+                                                .append(rsobat.getString("nama_brng"))
+                                                .append("</td><td>")
+                                                .append(rsobat.getString("kode_sat"))
+                                                .append("</td><td align='right'>")
+                                                .append(rsobat.getString("jml"))
+                                                .append("</td><td align='right'>")
+                                                .append(Sequel.cariIsiAngka(
                                                         "select count(resep_obat.no_resep) from resep_obat inner join detail_pemberian_obat inner join reg_periksa on detail_pemberian_obat.tgl_perawatan=resep_obat.tgl_perawatan "
                                                         + "and detail_pemberian_obat.jam=resep_obat.jam and detail_pemberian_obat.no_rawat=resep_obat.no_rawat and resep_obat.no_rawat=reg_periksa.no_rawat "
-                                                        + "where detail_pemberian_obat.kode_brng='" + rsobat.
-                                                                getString(
-                                                                        "kode_brng") + "' and detail_pemberian_obat.status='Ralan' and reg_periksa.kd_pj='" + rspenjab.
-                                                                getString(
-                                                                        "kd_pj") + "' "
-                                                        + "and reg_periksa.tgl_registrasi between '" + Valid.
-                                                                SetTgl(Tgl1.
-                                                                        getSelectedItem() + "") + "' and '" + Valid.
-                                                                SetTgl(Tgl2.
-                                                                        getSelectedItem() + "") + "' and reg_periksa.kd_poli='" + rspoli.
-                                                                getString(
-                                                                        "kd_poli") + "' "
-                                                        + "group by resep_obat.no_resep")).
-                                                append("</td><td align='right'>").
-                                                append(Valid.SetAngka(rsobat.
-                                                        getDouble("biaya"))).
-                                                append("</td></tr>");
+                                                        + "where detail_pemberian_obat.kode_brng='"
+                                                        + rsobat.getString("kode_brng")
+                                                        + "' and detail_pemberian_obat.status='Ralan' and reg_periksa.kd_pj='"
+                                                        + rspenjab.getString("kd_pj") + "' "
+                                                        + "and reg_periksa.tgl_registrasi between '"
+                                                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                                                        + Valid.SetTgl(Tgl2.getSelectedItem() + "")
+                                                        + "' and reg_periksa.kd_poli='"
+                                                        + rspoli.getString("kd_poli") + "' "
+                                                        + "group by resep_obat.no_resep"))
+                                                .append("</td><td align='right'>")
+                                                .append(Valid.SetAngka(rsobat.getDouble("biaya")))
+                                                .append("</td></tr>");
                                         a++;
                                     }
-                                    htmlContent.append(
-                                            "</table>"
-                                    );
+                                    htmlContent.append("</table>");
                                     if (c > 1) {
                                         htmlContent.append("<br><br>");
                                     }
@@ -1432,10 +1381,7 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
                             pspenjab.close();
                         }
                     }
-                    htmlContent.append(
-                            "</td>"
-                            + "</tr>"
-                    );
+                    htmlContent.append("</td>" + "</tr>");
 
                     i++;
                 }
@@ -1449,12 +1395,9 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
                     pspoli.close();
                 }
             }
-            LoadHTML.setText(
-                    "<html>"
+            LoadHTML.setText("<html>"
                     + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>");
+                    + htmlContent.toString() + "</table>" + "</html>");
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -1475,7 +1418,6 @@ public class Dlg10ObatTerbanyakPoli extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            Dlg10ObatTerbanyakPoli.class.getName());
+    private static final Logger LOG = Logger.getLogger(Dlg10ObatTerbanyakPoli.class.getName());
 
 }

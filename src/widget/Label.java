@@ -8,23 +8,24 @@ import java.util.logging.Logger;
  */
 public class Label extends usu.widget.Label {
 
-  /*
-   * Serial version UID
-   */
-  private static final long serialVersionUID = 1L;
+    /*
+	 * Serial version UID
+     */
+    /**
+     *
+     */
+    public Label() {
+        super();
+        // setForeground(new Color(90,90,90));
+        setForeground(new Color(50, 50, 50));
+        setFont(new java.awt.Font("Tahoma", 0, 11));
 
-  /** */
-  public Label() {
-    super();
-    // setForeground(new Color(90,90,90));
-    setForeground(new Color(50, 50, 50));
-    setFont(new java.awt.Font("Tahoma", 0, 11));
+        setHorizontalAlignment(RIGHT);
+        setVerticalAlignment(CENTER);
+        setHorizontalTextPosition(CENTER);
+        setVerticalTextPosition(CENTER);
+    }
 
-    setHorizontalAlignment(RIGHT);
-    setVerticalAlignment(CENTER);
-    setHorizontalTextPosition(CENTER);
-    setVerticalTextPosition(CENTER);
-  }
+    private static final Logger LOG = Logger.getLogger(Label.class.getName());
 
-  private static final Logger LOG = Logger.getLogger(Label.class.getName());
 }

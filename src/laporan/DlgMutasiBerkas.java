@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgAbout.java
- *
- * Created on 23 Jun 10, 19:03:08
+* DlgAbout.java
+*
+* Created on 23 Jun 10, 19:03:08
  */
 package laporan;
 
@@ -53,31 +53,39 @@ import javax.swing.SwingUtilities;
 import simrskhanza.DlgPilihanCetakDokumen;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgMutasiBerkas extends javax.swing.JDialog {
 
     private final JFXPanel jfxPanel = new JFXPanel();
+
     private WebEngine engine;
 
     private final JPanel panel = new JPanel(new BorderLayout());
+
     private final JLabel lblStatus = new JLabel();
 
     private final JTextField txtURL = new JTextField();
+
     private final JProgressBar progressBar = new JProgressBar();
+
     private final Properties prop = new Properties();
+
     private final validasi Valid = new validasi();
+
     private String halaman = "";
+
     private PreparedStatement ps, mutasi;
+
     private ResultSet rs, mutasirs;
+
     private BackgroundMusic music;
+
     private final Connection koneksi = koneksiDB.condb();
-    private final DlgPilihanCetakDokumen pilihan = new DlgPilihanCetakDokumen(
-            null, false);
+
+    private final DlgPilihanCetakDokumen pilihan = new DlgPilihanCetakDokumen(null, false);
 
     /**
-     *
      * @param parent
      * @param modal
      */
@@ -85,29 +93,31 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         initComponents2();
-//        alarm();
+        // alarm();
     }
 
-//    private void alarm(){
-//        ActionListener taskPerformer = (ActionEvent e) -> {
-//        try{
-//            mutasi=koneksi.prepareStatement("select mutasi_berkas.dikirim from reg_periksa inner join mutasi_berkas on reg_periksa.no_rawat = mutasi_berkas.no_rawat where reg_periksa.tgl_registrasi = CURDATE()");
-//            mutasirs=mutasi.executeQuery();
-//            if(mutasirs.equals("000-00-00 00:00:00")){
-//                try {
-//                    music = new BackgroundMusic("./suara/alarm.mp3");
-//                    music.start();
-//                } catch (Exception ex) {
-//                    System.out.println(ex);
-//                }
-//            }
-//        }catch(Exception d){
-//            System.out.println("Notif : "+d);
-//        }
-//        
-//        };
-//    }
-//    
+    // private void alarm(){
+    // ActionListener taskPerformer = (ActionEvent e) -> {
+    // try{
+    // mutasi=koneksi.prepareStatement("select mutasi_berkas.dikirim from reg_periksa
+    // inner join mutasi_berkas on reg_periksa.no_rawat = mutasi_berkas.no_rawat where
+    // reg_periksa.tgl_registrasi = CURDATE()");
+    // mutasirs=mutasi.executeQuery();
+    // if(mutasirs.equals("000-00-00 00:00:00")){
+    // try {
+    // music = new BackgroundMusic("./suara/alarm.mp3");
+    // music.start();
+    // } catch (Exception ex) {
+    // System.out.println(ex);
+    // }
+    // }
+    // }catch(Exception d){
+    // System.out.println("Notif : "+d);
+    // }
+    //
+    // };
+    // }
+    //
     private void initComponents2() {
         txtURL.addActionListener((ActionEvent e) -> {
             loadURL(txtURL.getText());
@@ -132,8 +142,7 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -142,12 +151,13 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
 
                 });
 
-                engine.titleProperty().addListener(
-                        (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
-                            SwingUtilities.invokeLater(() -> {
-                                DlgMutasiBerkas.this.setTitle(newValue);
-                            });
-                        });
+                engine.titleProperty()
+                        .addListener(
+                                (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
+                                    SwingUtilities.invokeLater(() -> {
+                                        DlgMutasiBerkas.this.setTitle(newValue);
+                                    });
+                                });
 
                 engine.setOnStatusChanged((final WebEvent<String> event) -> {
                     SwingUtilities.invokeLater(() -> {
@@ -155,102 +165,82 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
                     });
                 });
 
-                engine.getLoadWorker().workDoneProperty().addListener(
-                        (ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
+                engine.getLoadWorker()
+                        .workDoneProperty()
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 progressBar.setValue(newValue.intValue());
                             });
                         });
 
-                engine.getLoadWorker().exceptionProperty().addListener(
-                        (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                engine.getLoadWorker()
+                        .exceptionProperty()
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
                             if (engine.getLoadWorker().getState() == FAILED) {
                                 SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(
-                                            panel,
-                                            (value != null)
-                                                    ? engine.getLocation() + "\n" + value.
-                                                    getMessage()
+                                    JOptionPane.showMessageDialog(panel,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
                                                     : engine.getLocation() + "\nUnexpected Catatan.",
-                                            "Loading Catatan...",
-                                            JOptionPane.ERROR_MESSAGE);
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
                             }
                         });
 
-                engine.locationProperty().addListener(
-                        (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                engine.locationProperty()
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 txtURL.setText(newValue);
                             });
                         });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState,
-                            State newState) {
+                    public void changed(ObservableValue ov, State oldState, State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
-                                prop.loadFromXML(new FileInputStream(
-                                        "setting/database.xml"));
-                                if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
-                                        getProperty("PORTWEB") + "/" + prop.
-                                        getProperty("HYBRIDWEB") + "/", "").
-                                        contains(halaman)) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
-                                    Valid.panggilUrl(engine.getLocation().
-                                            replaceAll("http://" + koneksiDB.
-                                                    HOSTHYBRIDWEB() + ":" + prop.
-                                                            getProperty(
-                                                                    "PORTWEB") + "/" + prop.
-                                                            getProperty(
-                                                                    "HYBRIDWEB") + "/",
-                                                    ""));
+                                prop.loadFromXML(new FileInputStream("setting/database.xml"));
+                                if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/",
+                                                "")
+                                        .contains(halaman)) {
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    Valid.panggilUrl(engine.getLocation()
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                    + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB")
+                                                    + "/", ""));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
-                                } else if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
-                                        getProperty("PORTWEB") + "/" + prop.
-                                        getProperty("HYBRIDWEB") + "/", "").
-                                        contains("Keluar")) {
+                                } else if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/",
+                                                "")
+                                        .contains("Keluar")) {
                                     dispose();
-                                } else if (engine.getLocation().replaceAll(
-                                        "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + prop.
-                                        getProperty("PORTWEB") + "/" + prop.
-                                        getProperty("HYBRIDWEB") + "/", "").
-                                        contains("CetakBerkasRM")) {
+                                } else if (engine.getLocation()
+                                        .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                                + prop.getProperty("PORTWEB") + "/" + prop.getProperty("HYBRIDWEB") + "/",
+                                                "")
+                                        .contains("CetakBerkasRM")) {
                                     try {
-                                        ps = koneksi.prepareStatement(
-                                                "select * from temporary");
+                                        ps = koneksi.prepareStatement("select * from temporary");
                                         try {
                                             rs = ps.executeQuery();
                                             while (rs.next()) {
                                                 pilihan.tampil2();
-                                                pilihan.setNoRm(rs.getString(
-                                                        "temp1"), rs.getString(
-                                                                "temp2"), rs.
-                                                                getString(
-                                                                        "temp3"),
-                                                        rs.getString("temp4"),
-                                                        rs.getString("temp5"),
-                                                        rs.getString("temp6"),
-                                                        rs.getString("temp7"),
-                                                        rs.getString("temp8"),
-                                                        rs.getString("temp9"),
-                                                        rs.getString("temp10"),
-                                                        rs.getString("temp11"),
-                                                        rs.getString("temp12"));
+                                                pilihan.setNoRm(rs.getString("temp1"), rs.getString("temp2"),
+                                                        rs.getString("temp3"), rs.getString("temp4"),
+                                                        rs.getString("temp5"), rs.getString("temp6"),
+                                                        rs.getString("temp7"), rs.getString("temp8"),
+                                                        rs.getString("temp9"), rs.getString("temp10"),
+                                                        rs.getString("temp11"), rs.getString("temp12"));
                                                 pilihan.setSize(500, 400);
-                                                pilihan.setLocationRelativeTo(
-                                                        internalFrame1);
+                                                pilihan.setLocationRelativeTo(internalFrame1);
                                                 pilihan.setVisible(true);
                                             }
                                         } catch (Exception e) {
-                                            System.out.println(
-                                                    "Notif Cari Data : " + e);
+                                            System.out.println("Notif Cari Data : " + e);
                                         } finally {
                                             if (rs != null) {
                                                 rs.close();
@@ -260,8 +250,7 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
                                             }
                                         }
                                     } catch (Exception e) {
-                                        System.out.println(
-                                                "Notif Cetak Data RM : " + e);
+                                        System.out.println("Notif Cetak Data RM : " + e);
                                     }
                                 }
                             } catch (Exception ex) {
@@ -279,7 +268,6 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param url
      */
     public void loadURL(String url) {
@@ -303,12 +291,10 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
 
     public void print(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
-                PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.
-                getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.
-                getBoundsInParent().getHeight();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT,
+                Printer.MarginType.DEFAULT);
+        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -321,7 +307,9 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -367,8 +355,7 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgMutasiBerkas dialog = new DlgMutasiBerkas(
-                    new javax.swing.JFrame(), true);
+            DlgMutasiBerkas dialog = new DlgMutasiBerkas(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -386,15 +373,12 @@ public class DlgMutasiBerkas extends javax.swing.JDialog {
 
     public void setJudul(String Judul, String Pages) {
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
-                        240, 245, 235)), Judul,
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50,
-                        50)));
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), Judul,
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50)));
         this.halaman = Pages;
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgMutasiBerkas.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgMutasiBerkas.class.getName());
+
 }

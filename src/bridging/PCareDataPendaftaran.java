@@ -97,37 +97,27 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
     private PCareCekReferensiPoli poli = new PCareCekReferensiPoli(null, false);
 
-    private PCareCekReferensiKesadaran kesadaran = new PCareCekReferensiKesadaran(
-            null, false);
+    private PCareCekReferensiKesadaran kesadaran = new PCareCekReferensiKesadaran(null, false);
 
-    private PCareCekReferensiStatusPulang statuspulang = new PCareCekReferensiStatusPulang(
-            null, false);
+    private PCareCekReferensiStatusPulang statuspulang = new PCareCekReferensiStatusPulang(null, false);
 
-    private PCareCekReferensiDokter dokter = new PCareCekReferensiDokter(null,
-            false);
+    private PCareCekReferensiDokter dokter = new PCareCekReferensiDokter(null, false);
 
-    private PCareCekReferensiPenyakit penyakit = new PCareCekReferensiPenyakit(
-            null, false);
+    private PCareCekReferensiPenyakit penyakit = new PCareCekReferensiPenyakit(null, false);
 
-    private PCareCekReferensiSarana sarana = new PCareCekReferensiSarana(null,
-            false);
+    private PCareCekReferensiSarana sarana = new PCareCekReferensiSarana(null, false);
 
-    private PCareCekReferensiSubspesialis subspesialis = new PCareCekReferensiSubspesialis(
-            null, false);
+    private PCareCekReferensiSubspesialis subspesialis = new PCareCekReferensiSubspesialis(null, false);
 
-    private PCareCekFaskesSubspesialis provider = new PCareCekFaskesSubspesialis(
-            null, false);
+    private PCareCekFaskesSubspesialis provider = new PCareCekFaskesSubspesialis(null, false);
 
-    private PCareCekReferensiKhusus khusus = new PCareCekReferensiKhusus(null,
-            false);
+    private PCareCekReferensiKhusus khusus = new PCareCekReferensiKhusus(null, false);
 
     private PCareCekReferensiTACC tacc = new PCareCekReferensiTACC(null, false);
 
-    private PCareCekReferensiAlergi alergi = new PCareCekReferensiAlergi(null,
-            false);
+    private PCareCekReferensiAlergi alergi = new PCareCekReferensiAlergi(null, false);
 
-    private PCareCekReferensiPrognosa prognosa = new PCareCekReferensiPrognosa(
-            null, false);
+    private PCareCekReferensiPrognosa prognosa = new PCareCekReferensiPrognosa(null, false);
 
     private ApiPcare api = new ApiPcare();
 
@@ -163,12 +153,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
         this.setLocation(8, 1);
 
         tabMode = new DefaultTableModel(null,
-                new Object[]{"No.Rawat", "Tgl.Daftar", "No.RM", "Nama Pasien",
-                    "Kode Provider", "No.Kartu",
-                    "KodePoli", "Nama Poli", "Keluhan", "Jenis Kunjungan", "Sis",
-                    "Dias", "B.B.", "T.B.",
-                    "Respiratory Rate", "L.P.", "Heart Rate", "Rujuk Balik",
-                    "Perawatan", "No.Urut", "Status"}) {
+                new Object[]{"No.Rawat", "Tgl.Daftar", "No.RM", "Nama Pasien", "Kode Provider", "No.Kartu",
+                    "KodePoli", "Nama Poli", "Keluhan", "Jenis Kunjungan", "Sis", "Dias", "B.B.", "T.B.",
+                    "Respiratory Rate", "L.P.", "Heart Rate", "Rujuk Balik", "Perawatan", "No.Urut", "Status"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -176,8 +163,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
         };
         tbPendaftaran.setModel(tabMode);
-        tbPendaftaran.
-                setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbPendaftaran.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPendaftaran.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 21; i++) {
@@ -232,18 +218,12 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
         tbPendaftaran.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabMode2 = new DefaultTableModel(null,
-                new Object[]{"No.Rawat", "No.Kunjungan", "Tgl.Daftar", "No.RM",
-                    "Nm.Pasien", "No.Kartu", "Kd.Poli",
-                    "Nama Poli", "Keluhan", "Kd.Sadar", "Kesadaran", "Sis",
-                    "Dias", "B.B.", "T.B.",
-                    "Respiratory Rate", "Heart Rate", "L.P.", "Terapi",
-                    "Kd.Pulang", "Stts.Pulang", "Tgl.Pulang",
-                    "Kode Dokter", "Nama Dokter", "ICDX 1", "Nama Diagnosa 1",
-                    "ICDX 2", "Nama Diagnosa 2",
-                    "ICDX 3", "Nama Diagnosa 3", "Status", "Kode Alergi Makanan",
-                    "Nama Alergi Makanan",
-                    "Kode Alergi Udara", "Nama Alergi Udara", "Kode Alergi Obat",
-                    "Nama Alergi Obat",
+                new Object[]{"No.Rawat", "No.Kunjungan", "Tgl.Daftar", "No.RM", "Nm.Pasien", "No.Kartu", "Kd.Poli",
+                    "Nama Poli", "Keluhan", "Kd.Sadar", "Kesadaran", "Sis", "Dias", "B.B.", "T.B.",
+                    "Respiratory Rate", "Heart Rate", "L.P.", "Terapi", "Kd.Pulang", "Stts.Pulang", "Tgl.Pulang",
+                    "Kode Dokter", "Nama Dokter", "ICDX 1", "Nama Diagnosa 1", "ICDX 2", "Nama Diagnosa 2",
+                    "ICDX 3", "Nama Diagnosa 3", "Status", "Kode Alergi Makanan", "Nama Alergi Makanan",
+                    "Kode Alergi Udara", "Nama Alergi Udara", "Kode Alergi Obat", "Nama Alergi Obat",
                     "Kode Prognosa", "Nama Prognosa", "Terapi Non Obat", "BMHP"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -347,20 +327,13 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
         }
         tbKunjungan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode3 = new DefaultTableModel(null, new Object[]{"No.Rawat",
-            "No.Rujukan", "Tgl.Daftar", "No.RM",
-            "Nm.Pasien", "No.Kartu", "Kd.Poli", "Nama Poli", "Keluhan",
-            "Kd.Sadar", "Kesadaran", "Sis", "Dias",
-            "B.B.", "T.B.", "Respiratory Rate", "Heart Rate", "L.P.", "Terapi",
-            "Kd.Pulang", "Stts.Pulang",
-            "Tgl.Pulang", "Kode Dokter", "Nama Dokter", "ICDX 1",
-            "Nama Diagnosa 1", "ICDX 2", "Nama Diagnosa 2",
-            "ICDX 3", "Nama Diagnosa 3", "Tgl.Rujukan", "Kode PPK", "Nama PPK",
-            "Kode Spesialis", "Nama Spesialis",
-            "Kode Sarana", "Nama Sarana", "Kode TACC", "Nama TACC",
-            "Alasan TACC", "Kode Alergi Makanan",
-            "Nama Alergi Makanan", "Kode Alergi Udara", "Nama Alergi Udara",
-            "Kode Alergi Obat", "Nama Alergi Obat",
+        tabMode3 = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.Rujukan", "Tgl.Daftar", "No.RM",
+            "Nm.Pasien", "No.Kartu", "Kd.Poli", "Nama Poli", "Keluhan", "Kd.Sadar", "Kesadaran", "Sis", "Dias",
+            "B.B.", "T.B.", "Respiratory Rate", "Heart Rate", "L.P.", "Terapi", "Kd.Pulang", "Stts.Pulang",
+            "Tgl.Pulang", "Kode Dokter", "Nama Dokter", "ICDX 1", "Nama Diagnosa 1", "ICDX 2", "Nama Diagnosa 2",
+            "ICDX 3", "Nama Diagnosa 3", "Tgl.Rujukan", "Kode PPK", "Nama PPK", "Kode Spesialis", "Nama Spesialis",
+            "Kode Sarana", "Nama Sarana", "Kode TACC", "Nama TACC", "Alasan TACC", "Kode Alergi Makanan",
+            "Nama Alergi Makanan", "Kode Alergi Udara", "Nama Alergi Udara", "Kode Alergi Obat", "Nama Alergi Obat",
             "Kode Prognosa", "Nama Prognosa", "Terapi Non Obat", "BMHP"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -491,20 +464,15 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
         Keluhan.setDocument(new batasInput(400).getKata(Keluhan));
         Sistole.setDocument(new batasInput((byte) 3).getOnlyAngka(Sistole));
         Diastole.setDocument(new batasInput((byte) 3).getOnlyAngka(Diastole));
-        TinggiBadan.setDocument(new batasInput((byte) 5).getOnlyAngka(
-                TinggiBadan));
-        LingkarPerut.setDocument(new batasInput((byte) 5).getOnlyAngka(
-                LingkarPerut));
-        BeratBadan.
-                setDocument(new batasInput((byte) 5).getOnlyAngka(BeratBadan));
-        Respiratory.setDocument(new batasInput((byte) 3).getOnlyAngka(
-                Respiratory));
+        TinggiBadan.setDocument(new batasInput((byte) 5).getOnlyAngka(TinggiBadan));
+        LingkarPerut.setDocument(new batasInput((byte) 5).getOnlyAngka(LingkarPerut));
+        BeratBadan.setDocument(new batasInput((byte) 5).getOnlyAngka(BeratBadan));
+        Respiratory.setDocument(new batasInput((byte) 3).getOnlyAngka(Respiratory));
         Heartrate.setDocument(new batasInput((byte) 3).getOnlyAngka(Heartrate));
         TSuhu.setDocument(new batasInput((byte) 5).getFilter(TSuhu));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -543,23 +511,15 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 if (poli.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
                         KdPoliTujuan
-                                .setText(poli.getTable().getValueAt(poli.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                         NmPoliTujuan
-                                .setText(poli.getTable().getValueAt(poli.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 2).toString());
                         KdPoliTujuan.requestFocus();
                     } else if (pilihan == 2) {
                         KdPoliInternal
-                                .setText(poli.getTable().getValueAt(poli.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                         NmPoliInternal
-                                .setText(poli.getTable().getValueAt(poli.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                .setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 2).toString());
                         KdPoliInternal.requestFocus();
                     }
                 }
@@ -614,11 +574,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kesadaran.getTable().getSelectedRow() != -1) {
                     KdSadar
-                            .setText(kesadaran.getTable().getValueAt(kesadaran.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(kesadaran.getTable().getValueAt(kesadaran.getTable().getSelectedRow(), 1).toString());
                     NmSadar
-                            .setText(kesadaran.getTable().getValueAt(kesadaran.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(kesadaran.getTable().getValueAt(kesadaran.getTable().getSelectedRow(), 2).toString());
                     KdSadar.requestFocus();
                 }
             }
@@ -672,11 +630,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (statuspulang.getTable().getSelectedRow() != -1) {
                     KdStatusPulang.setText(
-                            statuspulang.getTable().getValueAt(statuspulang.
-                                    getTable().getSelectedRow(), 1).toString());
+                            statuspulang.getTable().getValueAt(statuspulang.getTable().getSelectedRow(), 1).toString());
                     NmStatusPulang.setText(
-                            statuspulang.getTable().getValueAt(statuspulang.
-                                    getTable().getSelectedRow(), 2).toString());
+                            statuspulang.getTable().getValueAt(statuspulang.getTable().getSelectedRow(), 2).toString());
                     KdStatusPulang.requestFocus();
                 }
             }
@@ -730,11 +686,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
                     KdTenagaMedis
-                            .setText(dokter.getTable().getValueAt(dokter.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     NmTenagaMedis
-                            .setText(dokter.getTable().getValueAt(dokter.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 2).toString());
                     KdTenagaMedis.requestFocus();
                 }
             }
@@ -789,45 +743,27 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 if (penyakit.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
                         KdDiagnosa1.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                         NmDiagnosa1.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 2).toString());
                         StatusDiagnosa1.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 3).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 3).toString());
                         KdDiagnosa1.requestFocus();
                     } else if (pilihan == 2) {
                         KdDiagnosa2.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                         NmDiagnosa2.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 2).toString());
                         StatusDiagnosa2.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 3).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 3).toString());
                         KdDiagnosa2.requestFocus();
                     } else if (pilihan == 3) {
                         KdDiagnosa3.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                         NmDiagnosa3.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 2).toString());
                         StatusDiagnosa3.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 3).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 3).toString());
                         KdDiagnosa3.requestFocus();
                     }
                 }
@@ -883,22 +819,18 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 if (subspesialis.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
                         KdSubSpesialis.setText(subspesialis.getTable()
-                                .getValueAt(subspesialis.getTable().
-                                        getSelectedRow(), 1)
+                                .getValueAt(subspesialis.getTable().getSelectedRow(), 1)
                                 .toString());
                         NmSubSpesialis.setText(subspesialis.getTable()
-                                .getValueAt(subspesialis.getTable().
-                                        getSelectedRow(), 2)
+                                .getValueAt(subspesialis.getTable().getSelectedRow(), 2)
                                 .toString());
                         KdSubSpesialis.requestFocus();
                     } else if (pilihan == 2) {
                         KdSubKhusus.setText(subspesialis.getTable()
-                                .getValueAt(subspesialis.getTable().
-                                        getSelectedRow(), 1)
+                                .getValueAt(subspesialis.getTable().getSelectedRow(), 1)
                                 .toString());
                         NmSubKhusus.setText(subspesialis.getTable()
-                                .getValueAt(subspesialis.getTable().
-                                        getSelectedRow(), 2)
+                                .getValueAt(subspesialis.getTable().getSelectedRow(), 2)
                                 .toString());
                         KdSubKhusus.requestFocus();
                     }
@@ -953,10 +885,8 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (sarana.getTable().getSelectedRow() != -1) {
-                    KdSarana.setText(sarana.getTable().getValueAt(sarana.
-                            getTable().getSelectedRow(), 1).toString());
-                    NmSarana.setText(sarana.getTable().getValueAt(sarana.
-                            getTable().getSelectedRow(), 2).toString());
+                    KdSarana.setText(sarana.getTable().getValueAt(sarana.getTable().getSelectedRow(), 1).toString());
+                    NmSarana.setText(sarana.getTable().getValueAt(sarana.getTable().getSelectedRow(), 2).toString());
                     KdSarana.requestFocus();
                 }
             }
@@ -1010,11 +940,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (provider.getTable().getSelectedRow() != -1) {
                     KdPPKRujukan
-                            .setText(provider.getTable().getValueAt(provider.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(provider.getTable().getValueAt(provider.getTable().getSelectedRow(), 1).toString());
                     NmPPKRujukan
-                            .setText(provider.getTable().getValueAt(provider.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(provider.getTable().getValueAt(provider.getTable().getSelectedRow(), 2).toString());
                     TanggalEstRujuk.setDate(provider.TanggalRujuk());
                     if (chkSubspesialis.isSelected() == true) {
                         KdSubSpesialis.setText(provider.KodeSpesialis());
@@ -1077,10 +1005,8 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (khusus.getTable().getSelectedRow() != -1) {
-                    KdKhusus.setText(khusus.getTable().getValueAt(khusus.
-                            getTable().getSelectedRow(), 1).toString());
-                    NmKhusus.setText(khusus.getTable().getValueAt(khusus.
-                            getTable().getSelectedRow(), 2).toString());
+                    KdKhusus.setText(khusus.getTable().getValueAt(khusus.getTable().getSelectedRow(), 1).toString());
+                    NmKhusus.setText(khusus.getTable().getValueAt(khusus.getTable().getSelectedRow(), 2).toString());
                     KdKhusus.requestFocus();
                 }
             }
@@ -1133,12 +1059,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (tacc.getTable().getSelectedRow() != -1) {
-                    KdTACC.setText(tacc.getTable().getValueAt(tacc.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmTACC.setText(tacc.getTable().getValueAt(tacc.getTable().
-                            getSelectedRow(), 1).toString());
-                    AlasanTACC.setText(tacc.getTable().getValueAt(tacc.
-                            getTable().getSelectedRow(), 2).toString());
+                    KdTACC.setText(tacc.getTable().getValueAt(tacc.getTable().getSelectedRow(), 0).toString());
+                    NmTACC.setText(tacc.getTable().getValueAt(tacc.getTable().getSelectedRow(), 1).toString());
+                    AlasanTACC.setText(tacc.getTable().getValueAt(tacc.getTable().getSelectedRow(), 2).toString());
                     KdKhusus.requestFocus();
                 }
             }
@@ -1193,33 +1116,21 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 if (alergi.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
                         KdAlergiMakanan
-                                .setText(alergi.getTable().getValueAt(alergi.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                .setText(alergi.getTable().getValueAt(alergi.getTable().getSelectedRow(), 1).toString());
                         NmAlergiMakanan
-                                .setText(alergi.getTable().getValueAt(alergi.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                .setText(alergi.getTable().getValueAt(alergi.getTable().getSelectedRow(), 2).toString());
                         btnAlergiMakanan.requestFocus();
                     } else if (pilihan == 2) {
                         KdAlergiUdara
-                                .setText(alergi.getTable().getValueAt(alergi.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                .setText(alergi.getTable().getValueAt(alergi.getTable().getSelectedRow(), 1).toString());
                         NmAlergiUdara
-                                .setText(alergi.getTable().getValueAt(alergi.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                .setText(alergi.getTable().getValueAt(alergi.getTable().getSelectedRow(), 2).toString());
                         BtnAlergiUdara.requestFocus();
                     } else if (pilihan == 3) {
                         KdAlergiObat
-                                .setText(alergi.getTable().getValueAt(alergi.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                .setText(alergi.getTable().getValueAt(alergi.getTable().getSelectedRow(), 1).toString());
                         NmAlergiObat
-                                .setText(alergi.getTable().getValueAt(alergi.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                .setText(alergi.getTable().getValueAt(alergi.getTable().getSelectedRow(), 2).toString());
                         BtnAlergiObat.requestFocus();
                     }
                 }
@@ -1274,11 +1185,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (prognosa.getTable().getSelectedRow() != -1) {
                     KdPrognosa
-                            .setText(prognosa.getTable().getValueAt(prognosa.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(prognosa.getTable().getValueAt(prognosa.getTable().getSelectedRow(), 1).toString());
                     NmPrognosa
-                            .setText(prognosa.getTable().getValueAt(prognosa.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(prognosa.getTable().getValueAt(prognosa.getTable().getSelectedRow(), 2).toString());
                     BtnPrognosa.requestFocus();
                 }
             }
@@ -1333,7 +1242,9 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -7564,8 +7475,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PCareDataPendaftaran dialog = new PCareDataPendaftaran(
-                    new javax.swing.JFrame(), true);
+            PCareDataPendaftaran dialog = new PCareDataPendaftaran(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -7834,20 +7744,13 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 ps.setString(10, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.
-                        getString("tglDaftar"),
-                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("kdProviderPeserta"),
-                        rs.getString("noKartu"), rs.getString("kdPoli"), rs.
-                        getString("nmPoli"),
-                        rs.getString("keluhan"), rs.getString("kunjSakit"), rs.
-                        getString("sistole"),
-                        rs.getString("diastole"), rs.getString("beratBadan"),
-                        rs.getString("tinggiBadan"),
-                        rs.getString("respRate"), rs.getString("lingkar_perut"),
-                        rs.getString("heartRate"),
-                        rs.getString("rujukBalik"), rs.getString("kdTkp"), rs.
-                        getString("noUrut"),
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("tglDaftar"),
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), rs.getString("kdProviderPeserta"),
+                        rs.getString("noKartu"), rs.getString("kdPoli"), rs.getString("nmPoli"),
+                        rs.getString("keluhan"), rs.getString("kunjSakit"), rs.getString("sistole"),
+                        rs.getString("diastole"), rs.getString("beratBadan"), rs.getString("tinggiBadan"),
+                        rs.getString("respRate"), rs.getString("lingkar_perut"), rs.getString("heartRate"),
+                        rs.getString("rujukBalik"), rs.getString("kdTkp"), rs.getString("noUrut"),
                         rs.getString("status")});
                 }
             } catch (Exception e) {
@@ -7903,34 +7806,20 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 ps.setString(12, "%" + TCari1.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new String[]{rs.getString("no_rawat"), rs.
-                        getString("noKunjungan"),
-                        rs.getString("tglDaftar"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("noKartu"), rs.getString("kdPoli"), rs.
-                        getString("nmPoli"),
-                        rs.getString("keluhan"), rs.getString("kdSadar"), rs.
-                        getString("nmSadar"),
-                        rs.getString("sistole"), rs.getString("diastole"), rs.
-                        getString("beratBadan"),
-                        rs.getString("tinggiBadan"), rs.getString("respRate"),
-                        rs.getString("heartRate"),
-                        rs.getString("lingkarPerut"), rs.getString("terapi"),
-                        rs.getString("kdStatusPulang"),
-                        rs.getString("nmStatusPulang"), rs.
-                        getString("tglPulang"), rs.getString("kdDokter"),
-                        rs.getString("nmDokter"), rs.getString("kdDiag1"), rs.
-                        getString("nmDiag1"),
-                        rs.getString("kdDiag2"), rs.getString("nmDiag2"), rs.
-                        getString("kdDiag3"),
-                        rs.getString("nmDiag3"), rs.getString("status"), rs.
-                        getString("KdAlergiMakanan"),
-                        rs.getString("NmAlergiMakanan"), rs.getString(
-                        "KdAlergiUdara"),
-                        rs.getString("NmAlergiUdara"), rs.getString(
-                        "KdAlergiObat"), rs.getString("NmAlergiObat"),
-                        rs.getString("KdPrognosa"), rs.getString("NmPrognosa"),
-                        rs.getString("terapi_non_obat"),
+                    tabMode2.addRow(new String[]{rs.getString("no_rawat"), rs.getString("noKunjungan"),
+                        rs.getString("tglDaftar"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("noKartu"), rs.getString("kdPoli"), rs.getString("nmPoli"),
+                        rs.getString("keluhan"), rs.getString("kdSadar"), rs.getString("nmSadar"),
+                        rs.getString("sistole"), rs.getString("diastole"), rs.getString("beratBadan"),
+                        rs.getString("tinggiBadan"), rs.getString("respRate"), rs.getString("heartRate"),
+                        rs.getString("lingkarPerut"), rs.getString("terapi"), rs.getString("kdStatusPulang"),
+                        rs.getString("nmStatusPulang"), rs.getString("tglPulang"), rs.getString("kdDokter"),
+                        rs.getString("nmDokter"), rs.getString("kdDiag1"), rs.getString("nmDiag1"),
+                        rs.getString("kdDiag2"), rs.getString("nmDiag2"), rs.getString("kdDiag3"),
+                        rs.getString("nmDiag3"), rs.getString("status"), rs.getString("KdAlergiMakanan"),
+                        rs.getString("NmAlergiMakanan"), rs.getString("KdAlergiUdara"),
+                        rs.getString("NmAlergiUdara"), rs.getString("KdAlergiObat"), rs.getString("NmAlergiObat"),
+                        rs.getString("KdPrognosa"), rs.getString("NmPrognosa"), rs.getString("terapi_non_obat"),
                         rs.getString("bmhp")});
                 }
             } catch (Exception e) {
@@ -7988,40 +7877,23 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 ps.setString(12, "%" + TCari2.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode3.addRow(new String[]{rs.getString("no_rawat"), rs.
-                        getString("noKunjungan"),
-                        rs.getString("tglDaftar"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("noKartu"), rs.getString("kdPoli"), rs.
-                        getString("nmPoli"),
-                        rs.getString("keluhan"), rs.getString("kdSadar"), rs.
-                        getString("nmSadar"),
-                        rs.getString("sistole"), rs.getString("diastole"), rs.
-                        getString("beratBadan"),
-                        rs.getString("tinggiBadan"), rs.getString("respRate"),
-                        rs.getString("heartRate"),
-                        rs.getString("lingkarPerut"), rs.getString("terapi"),
-                        rs.getString("kdStatusPulang"),
-                        rs.getString("nmStatusPulang"), rs.
-                        getString("tglPulang"), rs.getString("kdDokter"),
-                        rs.getString("nmDokter"), rs.getString("kdDiag1"), rs.
-                        getString("nmDiag1"),
-                        rs.getString("kdDiag2"), rs.getString("nmDiag2"), rs.
-                        getString("kdDiag3"),
-                        rs.getString("nmDiag3"), rs.getString("tglEstRujuk"),
-                        rs.getString("kdPPK"),
-                        rs.getString("nmPPK"), rs.getString("kdSubSpesialis"),
-                        rs.getString("nmSubSpesialis"),
-                        rs.getString("kdSarana"), rs.getString("nmSarana"), rs.
-                        getString("kdTACC"),
-                        rs.getString("nmTACC"), rs.getString("alasanTACC"), rs.
-                        getString("KdAlergiMakanan"),
-                        rs.getString("NmAlergiMakanan"), rs.getString(
-                        "KdAlergiUdara"),
-                        rs.getString("NmAlergiUdara"), rs.getString(
-                        "KdAlergiObat"), rs.getString("NmAlergiObat"),
-                        rs.getString("KdPrognosa"), rs.getString("NmPrognosa"),
-                        rs.getString("terapi_non_obat"),
+                    tabMode3.addRow(new String[]{rs.getString("no_rawat"), rs.getString("noKunjungan"),
+                        rs.getString("tglDaftar"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("noKartu"), rs.getString("kdPoli"), rs.getString("nmPoli"),
+                        rs.getString("keluhan"), rs.getString("kdSadar"), rs.getString("nmSadar"),
+                        rs.getString("sistole"), rs.getString("diastole"), rs.getString("beratBadan"),
+                        rs.getString("tinggiBadan"), rs.getString("respRate"), rs.getString("heartRate"),
+                        rs.getString("lingkarPerut"), rs.getString("terapi"), rs.getString("kdStatusPulang"),
+                        rs.getString("nmStatusPulang"), rs.getString("tglPulang"), rs.getString("kdDokter"),
+                        rs.getString("nmDokter"), rs.getString("kdDiag1"), rs.getString("nmDiag1"),
+                        rs.getString("kdDiag2"), rs.getString("nmDiag2"), rs.getString("kdDiag3"),
+                        rs.getString("nmDiag3"), rs.getString("tglEstRujuk"), rs.getString("kdPPK"),
+                        rs.getString("nmPPK"), rs.getString("kdSubSpesialis"), rs.getString("nmSubSpesialis"),
+                        rs.getString("kdSarana"), rs.getString("nmSarana"), rs.getString("kdTACC"),
+                        rs.getString("nmTACC"), rs.getString("alasanTACC"), rs.getString("KdAlergiMakanan"),
+                        rs.getString("NmAlergiMakanan"), rs.getString("KdAlergiUdara"),
+                        rs.getString("NmAlergiUdara"), rs.getString("KdAlergiObat"), rs.getString("NmAlergiObat"),
+                        rs.getString("KdPrognosa"), rs.getString("NmPrognosa"), rs.getString("terapi_non_obat"),
                         rs.getString("bmhp")});
                 }
             } catch (Exception e) {
@@ -8166,8 +8038,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     KdPoliTujuan.setText(rs.getString("kd_poli_pcare"));
                     NmPoliTujuan.setText(rs.getString("nm_poli_pcare"));
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Mapping poli tidak ditemukan...!!");
+                    JOptionPane.showMessageDialog(null, "Mapping poli tidak ditemukan...!!");
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -8189,8 +8060,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     KdTenagaMedis.setText(rs.getString("kd_dokter_pcare"));
                     NmTenagaMedis.setText(rs.getString("nm_dokter_pcare"));
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Mapping dokter tidak ditemukan...!!");
+                    JOptionPane.showMessageDialog(null, "Mapping dokter tidak ditemukan...!!");
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -8204,8 +8074,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
             ps = koneksi
-                    .prepareStatement(
-                            "select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "
+                    .prepareStatement("select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "
                             + "from diagnosa_pasien inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "
                             + "where diagnosa_pasien.no_rawat=? order by diagnosa_pasien.prioritas ");
             try {
@@ -8251,17 +8120,12 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 bmhp = "";
                 while (rs.next()) {
                     if (rs.getString("nama").toLowerCase().contains("obat")) {
-                        terapiobat = rs.getString("nama_brng") + " " + rs.
-                                getString("jml") + ", " + terapiobat;
-                    } else if (rs.getString("nama").toLowerCase().contains(
-                            "bmhp")
-                            || rs.getString("nama").toLowerCase().
-                                    contains("bhp")) {
-                        bmhp = rs.getString("nama_brng") + " " + rs.getString(
-                                "jml") + ", " + bmhp;
+                        terapiobat = rs.getString("nama_brng") + " " + rs.getString("jml") + ", " + terapiobat;
+                    } else if (rs.getString("nama").toLowerCase().contains("bmhp")
+                            || rs.getString("nama").toLowerCase().contains("bhp")) {
+                        bmhp = rs.getString("nama_brng") + " " + rs.getString("jml") + ", " + bmhp;
                     } else {
-                        terapinonobat = rs.getString("nama_brng") + " " + rs.
-                                getString("jml") + ", " + terapinonobat;
+                        terapinonobat = rs.getString("nama_brng") + " " + rs.getString("jml") + ", " + terapinonobat;
                     }
                 }
                 TerapiObat.setText(terapiobat);
@@ -8315,8 +8179,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                         TSuhu.setText(rs.getString("suhu_tubuh"));
                         if (rs.getString("kesadaran").equals("Compos Mentis")) {
                             KdSadar.setText("01");
-                        } else if (rs.getString("kesadaran").
-                                equals("Somnolence")) {
+                        } else if (rs.getString("kesadaran").equals("Somnolence")) {
                             KdSadar.setText("02");
                         } else if (rs.getString("kesadaran").equals("Sopor")) {
                             KdSadar.setText("03");
@@ -8324,64 +8187,44 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             KdSadar.setText("04");
                         }
 
-                        if (rs.getString("penilaian").toLowerCase().contains(
-                                "sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("sembuh")) {
+                        if (rs.getString("penilaian").toLowerCase().contains("sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("sembuh")) {
                             KdPrognosa.setText("01");
                             NmPrognosa.setText("Sanam (Sembuh)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("bonam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("baik")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("bonam")
+                                || rs.getString("penilaian").toLowerCase().contains("baik")) {
                             KdPrognosa.setText("02");
                             NmPrognosa.setText("Bonam (Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("buruk")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("jelek")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("malam")
+                                || rs.getString("penilaian").toLowerCase().contains("buruk")
+                                || rs.getString("penilaian").toLowerCase().contains("jelek")) {
                             KdPrognosa.setText("03");
                             NmPrognosa.setText("Malam (Buruk/Jelek)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("dubia ad sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("dubia ad bolam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("cenderung sembuh")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("dubia ad sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("dubia ad bolam")
+                                || rs.getString("penilaian").toLowerCase().contains("cenderung sembuh")) {
                             KdPrognosa.setText("04");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                equals("dubia ad malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("tidak tentu")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("ragu")) {
+                            NmPrognosa.setText("Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                        } else if (rs.getString("penilaian").toLowerCase().equals("dubia ad malam")
+                                || rs.getString("penilaian").toLowerCase().equals("tidak tentu")
+                                || rs.getString("penilaian").toLowerCase().equals("ragu")) {
                             KdPrognosa.setText("05");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                            NmPrognosa.setText("Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "seafood")) {
+                        if (rs.getString("alergi").toLowerCase().contains("seafood")) {
                             KdAlergiMakanan.setText("01");
                             NmAlergiMakanan.setText("Seafood");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("gandum")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("gandum")) {
                             KdAlergiMakanan.setText("02");
                             NmAlergiMakanan.setText("Gandum");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("susu sapi")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("susu sapi")) {
                             KdAlergiMakanan.setText("03");
                             NmAlergiMakanan.setText("Susu Sapi");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kacangan")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kacangan")) {
                             KdAlergiMakanan.setText("04");
                             NmAlergiMakanan.setText("Kacang-Kacangan");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("makanan lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("makanan lain")) {
                             KdAlergiMakanan.setText("05");
                             NmAlergiMakanan.setText("Makanan Lain");
                         } else {
@@ -8389,16 +8232,13 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiMakanan.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "udara panas")) {
+                        if (rs.getString("alergi").toLowerCase().contains("udara panas")) {
                             KdAlergiUdara.setText("01");
                             NmAlergiUdara.setText("Udara Panas");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara dingin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara dingin")) {
                             KdAlergiUdara.setText("02");
                             NmAlergiUdara.setText("Udara Dingin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara kotor")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara kotor")) {
                             KdAlergiUdara.setText("03");
                             NmAlergiUdara.setText("Udara Kotor");
                         } else {
@@ -8406,38 +8246,28 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiUdara.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "antibiotik")) {
+                        if (rs.getString("alergi").toLowerCase().contains("antibiotik")) {
                             KdAlergiObat.setText("01");
                             NmAlergiObat.setText("Antibiotik");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("antiinflamasi")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("anti inflamasi")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("antiinflamasi")
+                                || rs.getString("alergi").toLowerCase().trim().contains("anti inflamasi")) {
                             KdAlergiObat.setText("02");
                             NmAlergiObat.setText("Antiinflamasi");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("nonsteroid")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("non steroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("nonsteroid")
+                                || rs.getString("alergi").toLowerCase().trim().contains("non steroid")) {
                             KdAlergiObat.setText("03");
                             NmAlergiObat.setText("Non Steroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("aspirin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("aspirin")) {
                             KdAlergiObat.setText("04");
                             NmAlergiObat.setText("Aspirin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kortikosteroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kortikosteroid")) {
                             KdAlergiObat.setText("05");
                             NmAlergiObat.setText("Kortikosteroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("insulin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("insulin")) {
                             KdAlergiObat.setText("06");
                             NmAlergiObat.setText("Insulin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("obat-obatan lain")
-                                || rs.getString("alergi").toLowerCase().
-                                        contains("obat lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("obat-obatan lain")
+                                || rs.getString("alergi").toLowerCase().contains("obat lain")) {
                             KdAlergiObat.setText("07");
                             NmAlergiObat.setText("Obat-Obatan Lain");
                         } else {
@@ -8483,25 +8313,20 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     rs = ps.executeQuery();
                     if (rs.next()) {
                         TanggalPulang.setDate(rs.getDate("tgl_keluar"));
-                        if (rs.getString("stts_pulang").equals("Sehat") || rs.
-                                getString("stts_pulang").equals("Sembuh")
+                        if (rs.getString("stts_pulang").equals("Sehat") || rs.getString("stts_pulang").equals("Sembuh")
                                 || rs.getString("stts_pulang").equals("Membaik")
-                                || rs.getString("stts_pulang").equals(
-                                        "Atas Persetujuan Dokter")) {
+                                || rs.getString("stts_pulang").equals("Atas Persetujuan Dokter")) {
                             KdStatusPulang.setText("0");
                             NmStatusPulang.setText("Sembuh");
                         } else if (rs.getString("stts_pulang").equals("Rujuk")) {
                             KdStatusPulang.setText("4");
                             NmStatusPulang.setText("Rujuk Vertikal");
-                        } else if (rs.getString("stts_pulang").equals(
-                                "Meninggal")
+                        } else if (rs.getString("stts_pulang").equals("Meninggal")
                                 || rs.getString("stts_pulang").equals("+")) {
                             KdStatusPulang.setText("1");
                             NmStatusPulang.setText("Meninggal");
-                        } else if (rs.getString("stts_pulang").equals(
-                                "Pulang Paksa")
-                                || rs.getString("stts_pulang").equals(
-                                        "Atas Permintaan Sendiri")
+                        } else if (rs.getString("stts_pulang").equals("Pulang Paksa")
+                                || rs.getString("stts_pulang").equals("Atas Permintaan Sendiri")
                                 || rs.getString("stts_pulang").equals("APS")) {
                             KdStatusPulang.setText("2");
                             NmStatusPulang.setText("Pulang Paksa");
@@ -8555,8 +8380,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                         TSuhu.setText(rs.getString("suhu_tubuh"));
                         if (rs.getString("kesadaran").equals("Compos Mentis")) {
                             KdSadar.setText("01");
-                        } else if (rs.getString("kesadaran").
-                                equals("Somnolence")) {
+                        } else if (rs.getString("kesadaran").equals("Somnolence")) {
                             KdSadar.setText("02");
                         } else if (rs.getString("kesadaran").equals("Sopor")) {
                             KdSadar.setText("03");
@@ -8564,64 +8388,44 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             KdSadar.setText("04");
                         }
 
-                        if (rs.getString("penilaian").toLowerCase().contains(
-                                "sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("sembuh")) {
+                        if (rs.getString("penilaian").toLowerCase().contains("sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("sembuh")) {
                             KdPrognosa.setText("01");
                             NmPrognosa.setText("Sanam (Sembuh)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("bonam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("baik")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("bonam")
+                                || rs.getString("penilaian").toLowerCase().contains("baik")) {
                             KdPrognosa.setText("02");
                             NmPrognosa.setText("Bonam (Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("buruk")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("jelek")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("malam")
+                                || rs.getString("penilaian").toLowerCase().contains("buruk")
+                                || rs.getString("penilaian").toLowerCase().contains("jelek")) {
                             KdPrognosa.setText("03");
                             NmPrognosa.setText("Malam (Buruk/Jelek)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("dubia ad sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("dubia ad bolam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("cenderung sembuh")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("dubia ad sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("dubia ad bolam")
+                                || rs.getString("penilaian").toLowerCase().contains("cenderung sembuh")) {
                             KdPrognosa.setText("04");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                equals("dubia ad malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("tidak tentu")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("ragu")) {
+                            NmPrognosa.setText("Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                        } else if (rs.getString("penilaian").toLowerCase().equals("dubia ad malam")
+                                || rs.getString("penilaian").toLowerCase().equals("tidak tentu")
+                                || rs.getString("penilaian").toLowerCase().equals("ragu")) {
                             KdPrognosa.setText("05");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                            NmPrognosa.setText("Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "seafood")) {
+                        if (rs.getString("alergi").toLowerCase().contains("seafood")) {
                             KdAlergiMakanan.setText("01");
                             NmAlergiMakanan.setText("Seafood");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("gandum")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("gandum")) {
                             KdAlergiMakanan.setText("02");
                             NmAlergiMakanan.setText("Gandum");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("susu sapi")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("susu sapi")) {
                             KdAlergiMakanan.setText("03");
                             NmAlergiMakanan.setText("Susu Sapi");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kacangan")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kacangan")) {
                             KdAlergiMakanan.setText("04");
                             NmAlergiMakanan.setText("Kacang-Kacangan");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("makanan lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("makanan lain")) {
                             KdAlergiMakanan.setText("05");
                             NmAlergiMakanan.setText("Makanan Lain");
                         } else {
@@ -8629,16 +8433,13 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiMakanan.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "udara panas")) {
+                        if (rs.getString("alergi").toLowerCase().contains("udara panas")) {
                             KdAlergiUdara.setText("01");
                             NmAlergiUdara.setText("Udara Panas");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara dingin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara dingin")) {
                             KdAlergiUdara.setText("02");
                             NmAlergiUdara.setText("Udara Dingin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara kotor")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara kotor")) {
                             KdAlergiUdara.setText("03");
                             NmAlergiUdara.setText("Udara Kotor");
                         } else {
@@ -8646,38 +8447,28 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiUdara.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "antibiotik")) {
+                        if (rs.getString("alergi").toLowerCase().contains("antibiotik")) {
                             KdAlergiObat.setText("01");
                             NmAlergiObat.setText("Antibiotik");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("antiinflamasi")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("anti inflamasi")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("antiinflamasi")
+                                || rs.getString("alergi").toLowerCase().trim().contains("anti inflamasi")) {
                             KdAlergiObat.setText("02");
                             NmAlergiObat.setText("Antiinflamasi");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("nonsteroid")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("non steroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("nonsteroid")
+                                || rs.getString("alergi").toLowerCase().trim().contains("non steroid")) {
                             KdAlergiObat.setText("03");
                             NmAlergiObat.setText("Non Steroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("aspirin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("aspirin")) {
                             KdAlergiObat.setText("04");
                             NmAlergiObat.setText("Aspirin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kortikosteroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kortikosteroid")) {
                             KdAlergiObat.setText("05");
                             NmAlergiObat.setText("Kortikosteroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("insulin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("insulin")) {
                             KdAlergiObat.setText("06");
                             NmAlergiObat.setText("Insulin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("obat-obatan lain")
-                                || rs.getString("alergi").toLowerCase().
-                                        contains("obat lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("obat-obatan lain")
+                                || rs.getString("alergi").toLowerCase().contains("obat lain")) {
                             KdAlergiObat.setText("07");
                             NmAlergiObat.setText("Obat-Obatan Lain");
                         } else {
@@ -8777,8 +8568,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     KdPoliTujuan.setText(rs.getString("kd_poli_pcare"));
                     NmPoliTujuan.setText(rs.getString("nm_poli_pcare"));
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Mapping poli tidak ditemukan...!!");
+                    JOptionPane.showMessageDialog(null, "Mapping poli tidak ditemukan...!!");
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -8800,8 +8590,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     KdTenagaMedis.setText(rs.getString("kd_dokter_pcare"));
                     NmTenagaMedis.setText(rs.getString("nm_dokter_pcare"));
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Mapping dokter tidak ditemukan...!!");
+                    JOptionPane.showMessageDialog(null, "Mapping dokter tidak ditemukan...!!");
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -8815,8 +8604,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
             ps = koneksi
-                    .prepareStatement(
-                            "select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "
+                    .prepareStatement("select diagnosa_pasien.kd_penyakit,penyakit.nm_penyakit,diagnosa_pasien.prioritas "
                             + "from diagnosa_pasien inner join penyakit on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit "
                             + "where diagnosa_pasien.no_rawat=? order by diagnosa_pasien.prioritas ");
             try {
@@ -8862,17 +8650,12 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 bmhp = "";
                 while (rs.next()) {
                     if (rs.getString("nama").toLowerCase().contains("obat")) {
-                        terapiobat = rs.getString("nama_brng") + " " + rs.
-                                getString("jml") + ", " + terapiobat;
-                    } else if (rs.getString("nama").toLowerCase().contains(
-                            "bmhp")
-                            || rs.getString("nama").toLowerCase().
-                                    contains("bhp")) {
-                        bmhp = rs.getString("nama_brng") + " " + rs.getString(
-                                "jml") + ", " + bmhp;
+                        terapiobat = rs.getString("nama_brng") + " " + rs.getString("jml") + ", " + terapiobat;
+                    } else if (rs.getString("nama").toLowerCase().contains("bmhp")
+                            || rs.getString("nama").toLowerCase().contains("bhp")) {
+                        bmhp = rs.getString("nama_brng") + " " + rs.getString("jml") + ", " + bmhp;
                     } else {
-                        terapinonobat = rs.getString("nama_brng") + " " + rs.
-                                getString("jml") + ", " + terapinonobat;
+                        terapinonobat = rs.getString("nama_brng") + " " + rs.getString("jml") + ", " + terapinonobat;
                     }
                 }
                 TerapiObat.setText(terapiobat);
@@ -8926,8 +8709,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                         TSuhu.setText(rs.getString("suhu_tubuh"));
                         if (rs.getString("kesadaran").equals("Compos Mentis")) {
                             KdSadar.setText("01");
-                        } else if (rs.getString("kesadaran").
-                                equals("Somnolence")) {
+                        } else if (rs.getString("kesadaran").equals("Somnolence")) {
                             KdSadar.setText("02");
                         } else if (rs.getString("kesadaran").equals("Sopor")) {
                             KdSadar.setText("03");
@@ -8935,67 +8717,47 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             KdSadar.setText("04");
                         }
 
-                        if (rs.getString("penilaian").toLowerCase().contains(
-                                "sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("sembuh")) {
+                        if (rs.getString("penilaian").toLowerCase().contains("sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("sembuh")) {
                             KdPrognosa.setText("01");
                             NmPrognosa.setText("Sanam (Sembuh)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("bonam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("baik")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("bonam")
+                                || rs.getString("penilaian").toLowerCase().contains("baik")) {
                             KdPrognosa.setText("02");
                             NmPrognosa.setText("Bonam (Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("buruk")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("jelek")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("malam")
+                                || rs.getString("penilaian").toLowerCase().contains("buruk")
+                                || rs.getString("penilaian").toLowerCase().contains("jelek")) {
                             KdPrognosa.setText("03");
                             NmPrognosa.setText("Malam (Buruk/Jelek)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("dubia ad sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("dubia ad bolam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("cenderung sembuh")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("dubia ad sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("dubia ad bolam")
+                                || rs.getString("penilaian").toLowerCase().contains("cenderung sembuh")) {
                             KdPrognosa.setText("04");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                equals("dubia ad malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("tidak tentu")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("ragu")) {
+                            NmPrognosa.setText("Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                        } else if (rs.getString("penilaian").toLowerCase().equals("dubia ad malam")
+                                || rs.getString("penilaian").toLowerCase().equals("tidak tentu")
+                                || rs.getString("penilaian").toLowerCase().equals("ragu")) {
                             KdPrognosa.setText("05");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                            NmPrognosa.setText("Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
                         } else {
                             KdPrognosa.setText("02");
                             NmPrognosa.setText("Bonam (Baik)");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "seafood")) {
+                        if (rs.getString("alergi").toLowerCase().contains("seafood")) {
                             KdAlergiMakanan.setText("01");
                             NmAlergiMakanan.setText("Seafood");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("gandum")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("gandum")) {
                             KdAlergiMakanan.setText("02");
                             NmAlergiMakanan.setText("Gandum");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("susu sapi")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("susu sapi")) {
                             KdAlergiMakanan.setText("03");
                             NmAlergiMakanan.setText("Susu Sapi");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kacangan")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kacangan")) {
                             KdAlergiMakanan.setText("04");
                             NmAlergiMakanan.setText("Kacang-Kacangan");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("makanan lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("makanan lain")) {
                             KdAlergiMakanan.setText("05");
                             NmAlergiMakanan.setText("Makanan Lain");
                         } else {
@@ -9003,16 +8765,13 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiMakanan.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "udara panas")) {
+                        if (rs.getString("alergi").toLowerCase().contains("udara panas")) {
                             KdAlergiUdara.setText("01");
                             NmAlergiUdara.setText("Udara Panas");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara dingin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara dingin")) {
                             KdAlergiUdara.setText("02");
                             NmAlergiUdara.setText("Udara Dingin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara kotor")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara kotor")) {
                             KdAlergiUdara.setText("03");
                             NmAlergiUdara.setText("Udara Kotor");
                         } else {
@@ -9020,38 +8779,28 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiUdara.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "antibiotik")) {
+                        if (rs.getString("alergi").toLowerCase().contains("antibiotik")) {
                             KdAlergiObat.setText("01");
                             NmAlergiObat.setText("Antibiotik");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("antiinflamasi")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("anti inflamasi")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("antiinflamasi")
+                                || rs.getString("alergi").toLowerCase().trim().contains("anti inflamasi")) {
                             KdAlergiObat.setText("02");
                             NmAlergiObat.setText("Antiinflamasi");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("nonsteroid")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("non steroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("nonsteroid")
+                                || rs.getString("alergi").toLowerCase().trim().contains("non steroid")) {
                             KdAlergiObat.setText("03");
                             NmAlergiObat.setText("Non Steroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("aspirin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("aspirin")) {
                             KdAlergiObat.setText("04");
                             NmAlergiObat.setText("Aspirin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kortikosteroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kortikosteroid")) {
                             KdAlergiObat.setText("05");
                             NmAlergiObat.setText("Kortikosteroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("insulin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("insulin")) {
                             KdAlergiObat.setText("06");
                             NmAlergiObat.setText("Insulin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("obat-obatan lain")
-                                || rs.getString("alergi").toLowerCase().
-                                        contains("obat lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("obat-obatan lain")
+                                || rs.getString("alergi").toLowerCase().contains("obat lain")) {
                             KdAlergiObat.setText("07");
                             NmAlergiObat.setText("Obat-Obatan Lain");
                         } else {
@@ -9097,25 +8846,20 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     rs = ps.executeQuery();
                     if (rs.next()) {
                         TanggalPulang.setDate(rs.getDate("tgl_keluar"));
-                        if (rs.getString("stts_pulang").equals("Sehat") || rs.
-                                getString("stts_pulang").equals("Sembuh")
+                        if (rs.getString("stts_pulang").equals("Sehat") || rs.getString("stts_pulang").equals("Sembuh")
                                 || rs.getString("stts_pulang").equals("Membaik")
-                                || rs.getString("stts_pulang").equals(
-                                        "Atas Persetujuan Dokter")) {
+                                || rs.getString("stts_pulang").equals("Atas Persetujuan Dokter")) {
                             KdStatusPulang.setText("0");
                             NmStatusPulang.setText("Sembuh");
                         } else if (rs.getString("stts_pulang").equals("Rujuk")) {
                             KdStatusPulang.setText("4");
                             NmStatusPulang.setText("Rujuk Vertikal");
-                        } else if (rs.getString("stts_pulang").equals(
-                                "Meninggal")
+                        } else if (rs.getString("stts_pulang").equals("Meninggal")
                                 || rs.getString("stts_pulang").equals("+")) {
                             KdStatusPulang.setText("1");
                             NmStatusPulang.setText("Meninggal");
-                        } else if (rs.getString("stts_pulang").equals(
-                                "Pulang Paksa")
-                                || rs.getString("stts_pulang").equals(
-                                        "Atas Permintaan Sendiri")
+                        } else if (rs.getString("stts_pulang").equals("Pulang Paksa")
+                                || rs.getString("stts_pulang").equals("Atas Permintaan Sendiri")
                                 || rs.getString("stts_pulang").equals("APS")) {
                             KdStatusPulang.setText("2");
                             NmStatusPulang.setText("Pulang Paksa");
@@ -9170,8 +8914,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                         TSuhu.setText("suhu_tubuh");
                         if (rs.getString("kesadaran").equals("Compos Mentis")) {
                             KdSadar.setText("01");
-                        } else if (rs.getString("kesadaran").
-                                equals("Somnolence")) {
+                        } else if (rs.getString("kesadaran").equals("Somnolence")) {
                             KdSadar.setText("02");
                         } else if (rs.getString("kesadaran").equals("Sopor")) {
                             KdSadar.setText("03");
@@ -9179,67 +8922,47 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             KdSadar.setText("04");
                         }
 
-                        if (rs.getString("penilaian").toLowerCase().contains(
-                                "sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("sembuh")) {
+                        if (rs.getString("penilaian").toLowerCase().contains("sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("sembuh")) {
                             KdPrognosa.setText("01");
                             NmPrognosa.setText("Sanam (Sembuh)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("bonam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("baik")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("bonam")
+                                || rs.getString("penilaian").toLowerCase().contains("baik")) {
                             KdPrognosa.setText("02");
                             NmPrognosa.setText("Bonam (Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("buruk")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("jelek")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("malam")
+                                || rs.getString("penilaian").toLowerCase().contains("buruk")
+                                || rs.getString("penilaian").toLowerCase().contains("jelek")) {
                             KdPrognosa.setText("03");
                             NmPrognosa.setText("Malam (Buruk/Jelek)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                contains("dubia ad sanam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("dubia ad bolam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        contains("cenderung sembuh")) {
+                        } else if (rs.getString("penilaian").toLowerCase().contains("dubia ad sanam")
+                                || rs.getString("penilaian").toLowerCase().contains("dubia ad bolam")
+                                || rs.getString("penilaian").toLowerCase().contains("cenderung sembuh")) {
                             KdPrognosa.setText("04");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
-                        } else if (rs.getString("penilaian").toLowerCase().
-                                equals("dubia ad malam")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("tidak tentu")
-                                || rs.getString("penilaian").toLowerCase().
-                                        equals("ragu")) {
+                            NmPrognosa.setText("Dubia Ad Sanam/Bolam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                        } else if (rs.getString("penilaian").toLowerCase().equals("dubia ad malam")
+                                || rs.getString("penilaian").toLowerCase().equals("tidak tentu")
+                                || rs.getString("penilaian").toLowerCase().equals("ragu")) {
                             KdPrognosa.setText("05");
-                            NmPrognosa.setText(
-                                    "Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
+                            NmPrognosa.setText("Dubia Ad Malam (Tidak tentu/Ragu-ragu, Cenderung Sembuh/Baik)");
                         } else {
                             KdPrognosa.setText("02");
                             NmPrognosa.setText("Bonam (Baik)");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "seafood")) {
+                        if (rs.getString("alergi").toLowerCase().contains("seafood")) {
                             KdAlergiMakanan.setText("01");
                             NmAlergiMakanan.setText("Seafood");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("gandum")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("gandum")) {
                             KdAlergiMakanan.setText("02");
                             NmAlergiMakanan.setText("Gandum");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("susu sapi")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("susu sapi")) {
                             KdAlergiMakanan.setText("03");
                             NmAlergiMakanan.setText("Susu Sapi");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kacangan")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kacangan")) {
                             KdAlergiMakanan.setText("04");
                             NmAlergiMakanan.setText("Kacang-Kacangan");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("makanan lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("makanan lain")) {
                             KdAlergiMakanan.setText("05");
                             NmAlergiMakanan.setText("Makanan Lain");
                         } else {
@@ -9247,16 +8970,13 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiMakanan.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "udara panas")) {
+                        if (rs.getString("alergi").toLowerCase().contains("udara panas")) {
                             KdAlergiUdara.setText("01");
                             NmAlergiUdara.setText("Udara Panas");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara dingin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara dingin")) {
                             KdAlergiUdara.setText("02");
                             NmAlergiUdara.setText("Udara Dingin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("udara kotor")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("udara kotor")) {
                             KdAlergiUdara.setText("03");
                             NmAlergiUdara.setText("Udara Kotor");
                         } else {
@@ -9264,38 +8984,28 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             NmAlergiUdara.setText("Tidak Ada");
                         }
 
-                        if (rs.getString("alergi").toLowerCase().contains(
-                                "antibiotik")) {
+                        if (rs.getString("alergi").toLowerCase().contains("antibiotik")) {
                             KdAlergiObat.setText("01");
                             NmAlergiObat.setText("Antibiotik");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("antiinflamasi")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("anti inflamasi")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("antiinflamasi")
+                                || rs.getString("alergi").toLowerCase().trim().contains("anti inflamasi")) {
                             KdAlergiObat.setText("02");
                             NmAlergiObat.setText("Antiinflamasi");
-                        } else if (rs.getString("alergi").toLowerCase().trim().
-                                contains("nonsteroid")
-                                || rs.getString("alergi").toLowerCase().trim().
-                                        contains("non steroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().trim().contains("nonsteroid")
+                                || rs.getString("alergi").toLowerCase().trim().contains("non steroid")) {
                             KdAlergiObat.setText("03");
                             NmAlergiObat.setText("Non Steroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("aspirin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("aspirin")) {
                             KdAlergiObat.setText("04");
                             NmAlergiObat.setText("Aspirin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("kortikosteroid")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("kortikosteroid")) {
                             KdAlergiObat.setText("05");
                             NmAlergiObat.setText("Kortikosteroid");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("insulin")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("insulin")) {
                             KdAlergiObat.setText("06");
                             NmAlergiObat.setText("Insulin");
-                        } else if (rs.getString("alergi").toLowerCase().
-                                contains("obat-obatan lain")
-                                || rs.getString("alergi").toLowerCase().
-                                        contains("obat lain")) {
+                        } else if (rs.getString("alergi").toLowerCase().contains("obat-obatan lain")
+                                || rs.getString("alergi").toLowerCase().contains("obat lain")) {
                             KdAlergiObat.setText("07");
                             NmAlergiObat.setText("Obat-Obatan Lain");
                         } else {
@@ -9357,267 +9067,143 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
     private void getData() {
         if (tbPendaftaran.getSelectedRow() != -1) {
-            TNoRw.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 0).toString());
-            TNoRM.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 2).toString());
-            TPasien.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 3).toString());
+            TNoRw.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 2).toString());
+            TPasien.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 3).toString());
             TglLahir.setText(
-                    Sequel.cariIsi(
-                            "select pasien.tgl_lahir from pasien where pasien.no_rkm_medis=?",
-                            TNoRM.getText()));
-            JK.setText(Sequel.cariIsi(
-                    "select pasien.jk from pasien where pasien.no_rkm_medis=?",
-                    TNoRM.getText())
+                    Sequel.cariIsi("select pasien.tgl_lahir from pasien where pasien.no_rkm_medis=?", TNoRM.getText()));
+            JK.setText(Sequel.cariIsi("select pasien.jk from pasien where pasien.no_rkm_medis=?", TNoRM.getText())
                     .replaceAll("L", "Laki-Laki")
                     .replaceAll("P", "Perempuan"));
             JenisPeserta.setText(
-                    Sequel.cariIsi(
-                            "select pasien.pekerjaan from pasien where pasien.no_rkm_medis=?",
-                            TNoRM.getText()));
-            ProviderPeserta.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 4).toString());
-            NoKartu.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 5).toString());
-            KdPoliTujuan.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 6).toString());
-            NmPoliTujuan.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 7).toString());
-            Keluhan.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 8).toString());
-            JenisKunjungan.setSelectedItem(tbPendaftaran.getValueAt(
-                    tbPendaftaran.getSelectedRow(), 9).toString());
-            Sistole.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 10).toString());
-            Diastole.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 11).toString());
-            BeratBadan.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 12).toString());
-            TinggiBadan.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 13).toString());
-            Respiratory.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 14).toString());
-            LingkarPerut.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 15).toString());
-            Heartrate.setText(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 16).toString());
-            Perawatan.setSelectedItem(tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 18).toString());
-            Valid.SetTgl(TanggalDaftar, tbPendaftaran.getValueAt(tbPendaftaran.
-                    getSelectedRow(), 1).toString());
+                    Sequel.cariIsi("select pasien.pekerjaan from pasien where pasien.no_rkm_medis=?", TNoRM.getText()));
+            ProviderPeserta.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 4).toString());
+            NoKartu.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 5).toString());
+            KdPoliTujuan.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 6).toString());
+            NmPoliTujuan.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 7).toString());
+            Keluhan.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 8).toString());
+            JenisKunjungan.setSelectedItem(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 9).toString());
+            Sistole.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 10).toString());
+            Diastole.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 11).toString());
+            BeratBadan.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 12).toString());
+            TinggiBadan.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 13).toString());
+            Respiratory.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 14).toString());
+            LingkarPerut.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 15).toString());
+            Heartrate.setText(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 16).toString());
+            Perawatan.setSelectedItem(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 18).toString());
+            Valid.SetTgl(TanggalDaftar, tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 1).toString());
         }
     }
 
     private void getData2() {
         if (tbKunjungan.getSelectedRow() != -1) {
-            TNoRw.setText(tbKunjungan.
-                    getValueAt(tbKunjungan.getSelectedRow(), 0).toString());
-            Valid.SetTgl(TanggalDaftar, tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 2).toString());
-            TNoRM.setText(tbKunjungan.
-                    getValueAt(tbKunjungan.getSelectedRow(), 3).toString());
-            TPasien.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(),
-                    4).toString());
-            JK.setText(Sequel.cariIsi(
-                    "select pasien.jk from pasien where pasien.no_rkm_medis=?",
-                    TNoRM.getText())
+            TNoRw.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 0).toString());
+            Valid.SetTgl(TanggalDaftar, tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 2).toString());
+            TNoRM.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 3).toString());
+            TPasien.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 4).toString());
+            JK.setText(Sequel.cariIsi("select pasien.jk from pasien where pasien.no_rkm_medis=?", TNoRM.getText())
                     .replaceAll("L", "Laki-Laki")
                     .replaceAll("P", "Perempuan"));
             JenisPeserta.setText(
-                    Sequel.cariIsi(
-                            "select pasien.pekerjaan from pasien where pasien.no_rkm_medis=?",
-                            TNoRM.getText()));
-            NoKartu.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(),
-                    5).toString());
-            KdPoliTujuan.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 6).toString());
-            NmPoliTujuan.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 7).toString());
-            Keluhan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(),
-                    8).toString());
-            KdSadar.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(),
-                    9).toString());
-            NmSadar.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(),
-                    10).toString());
-            Sistole.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(),
-                    11).toString());
-            Diastole.setText(tbKunjungan.
-                    getValueAt(tbKunjungan.getSelectedRow(), 12).toString());
-            BeratBadan.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 13).toString());
-            TinggiBadan.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 14).toString());
-            Respiratory.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 15).toString());
-            Heartrate.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 16).toString());
-            LingkarPerut.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 17).toString());
-            TerapiObat.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 18).toString());
-            KdStatusPulang.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 19).toString());
-            NmStatusPulang.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 20).toString());
-            KdTenagaMedis.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 22).toString());
-            NmTenagaMedis.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 23).toString());
-            KdDiagnosa1.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 24).toString());
-            NmDiagnosa1.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 25).toString());
-            KdDiagnosa2.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 26).toString());
-            NmDiagnosa2.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 27).toString());
-            KdDiagnosa3.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 28).toString());
-            NmDiagnosa3.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 29).toString());
-            KdAlergiMakanan.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 30).toString());
-            NmAlergiMakanan.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 31).toString());
-            KdAlergiUdara.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 32).toString());
-            NmAlergiUdara.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 33).toString());
-            KdAlergiObat.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 34).toString());
-            NmAlergiObat.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 35).toString());
-            KdPrognosa.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 36).toString());
-            NmPrognosa.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 37).toString());
-            TerapiNonObat.setText(tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 38).toString());
-            BMHP.setText(tbKunjungan.
-                    getValueAt(tbKunjungan.getSelectedRow(), 39).toString());
-            Valid.SetTgl(TanggalPulang, tbKunjungan.getValueAt(tbKunjungan.
-                    getSelectedRow(), 21).toString());
+                    Sequel.cariIsi("select pasien.pekerjaan from pasien where pasien.no_rkm_medis=?", TNoRM.getText()));
+            NoKartu.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 5).toString());
+            KdPoliTujuan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 6).toString());
+            NmPoliTujuan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 7).toString());
+            Keluhan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 8).toString());
+            KdSadar.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 9).toString());
+            NmSadar.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 10).toString());
+            Sistole.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 11).toString());
+            Diastole.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 12).toString());
+            BeratBadan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 13).toString());
+            TinggiBadan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 14).toString());
+            Respiratory.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 15).toString());
+            Heartrate.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 16).toString());
+            LingkarPerut.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 17).toString());
+            TerapiObat.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 18).toString());
+            KdStatusPulang.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 19).toString());
+            NmStatusPulang.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 20).toString());
+            KdTenagaMedis.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 22).toString());
+            NmTenagaMedis.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 23).toString());
+            KdDiagnosa1.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 24).toString());
+            NmDiagnosa1.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 25).toString());
+            KdDiagnosa2.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 26).toString());
+            NmDiagnosa2.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 27).toString());
+            KdDiagnosa3.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 28).toString());
+            NmDiagnosa3.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 29).toString());
+            KdAlergiMakanan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 30).toString());
+            NmAlergiMakanan.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 31).toString());
+            KdAlergiUdara.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 32).toString());
+            NmAlergiUdara.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 33).toString());
+            KdAlergiObat.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 34).toString());
+            NmAlergiObat.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 35).toString());
+            KdPrognosa.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 36).toString());
+            NmPrognosa.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 37).toString());
+            TerapiNonObat.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 38).toString());
+            BMHP.setText(tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 39).toString());
+            Valid.SetTgl(TanggalPulang, tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 21).toString());
             TglLahir.setText(
-                    Sequel.cariIsi(
-                            "select pasien.tgl_lahir from pasien where pasien.no_rkm_medis=?",
-                            TNoRM.getText()));
+                    Sequel.cariIsi("select pasien.tgl_lahir from pasien where pasien.no_rkm_medis=?", TNoRM.getText()));
         }
     }
 
     private void getData3() {
         if (tbSpesialis.getSelectedRow() != -1) {
-            TNoRw.setText(tbSpesialis.
-                    getValueAt(tbSpesialis.getSelectedRow(), 0).toString());
-            Valid.SetTgl(TanggalDaftar, tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 2).toString());
-            TNoRM.setText(tbSpesialis.
-                    getValueAt(tbSpesialis.getSelectedRow(), 3).toString());
-            TPasien.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    4).toString());
-            JK.setText(Sequel.cariIsi(
-                    "select pasien.jk from pasien where pasien.no_rkm_medis=?",
-                    TNoRM.getText())
+            TNoRw.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 0).toString());
+            Valid.SetTgl(TanggalDaftar, tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 2).toString());
+            TNoRM.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 3).toString());
+            TPasien.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 4).toString());
+            JK.setText(Sequel.cariIsi("select pasien.jk from pasien where pasien.no_rkm_medis=?", TNoRM.getText())
                     .replaceAll("L", "Laki-Laki")
                     .replaceAll("P", "Perempuan"));
             JenisPeserta.setText(
-                    Sequel.cariIsi(
-                            "select pasien.pekerjaan from pasien where pasien.no_rkm_medis=?",
-                            TNoRM.getText()));
-            NoKartu.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    5).toString());
-            KdPoliTujuan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 6).toString());
-            NmPoliTujuan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 7).toString());
-            Keluhan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    8).toString());
-            KdSadar.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    9).toString());
-            NmSadar.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    10).toString());
-            Sistole.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    11).toString());
-            Diastole.setText(tbSpesialis.
-                    getValueAt(tbSpesialis.getSelectedRow(), 12).toString());
-            BeratBadan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 13).toString());
-            TinggiBadan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 14).toString());
-            Respiratory.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 15).toString());
-            Heartrate.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 16).toString());
-            LingkarPerut.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 17).toString());
-            TerapiObat.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 18).toString());
-            KdStatusPulang.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 19).toString());
-            NmStatusPulang.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 20).toString());
-            KdTenagaMedis.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 22).toString());
-            NmTenagaMedis.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 23).toString());
-            KdDiagnosa1.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 24).toString());
-            NmDiagnosa1.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 25).toString());
-            KdDiagnosa2.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 26).toString());
-            NmDiagnosa2.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 27).toString());
-            KdDiagnosa3.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 28).toString());
-            NmDiagnosa3.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 29).toString());
-            KdPPKRujukan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 31).toString());
-            NmPPKRujukan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 32).toString());
-            KdSubSpesialis.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 33).toString());
-            NmSubSpesialis.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 34).toString());
-            KdSarana.setText(tbSpesialis.
-                    getValueAt(tbSpesialis.getSelectedRow(), 35).toString());
-            NmSarana.setText(tbSpesialis.
-                    getValueAt(tbSpesialis.getSelectedRow(), 36).toString());
-            KdTACC.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    37).toString());
-            NmTACC.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(),
-                    38).toString());
-            AlasanTACC.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 39).toString());
-            KdAlergiMakanan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 40).toString());
-            NmAlergiMakanan.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 41).toString());
-            KdAlergiUdara.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 42).toString());
-            NmAlergiUdara.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 43).toString());
-            KdAlergiObat.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 44).toString());
-            NmAlergiObat.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 45).toString());
-            KdPrognosa.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 46).toString());
-            NmPrognosa.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 47).toString());
-            TerapiNonObat.setText(tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 48).toString());
-            BMHP.setText(tbSpesialis.
-                    getValueAt(tbSpesialis.getSelectedRow(), 49).toString());
-            Valid.SetTgl(TanggalPulang, tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 21).toString());
-            Valid.SetTgl(TanggalEstRujuk, tbSpesialis.getValueAt(tbSpesialis.
-                    getSelectedRow(), 30).toString());
+                    Sequel.cariIsi("select pasien.pekerjaan from pasien where pasien.no_rkm_medis=?", TNoRM.getText()));
+            NoKartu.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 5).toString());
+            KdPoliTujuan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 6).toString());
+            NmPoliTujuan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 7).toString());
+            Keluhan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 8).toString());
+            KdSadar.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 9).toString());
+            NmSadar.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 10).toString());
+            Sistole.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 11).toString());
+            Diastole.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 12).toString());
+            BeratBadan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 13).toString());
+            TinggiBadan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 14).toString());
+            Respiratory.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 15).toString());
+            Heartrate.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 16).toString());
+            LingkarPerut.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 17).toString());
+            TerapiObat.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 18).toString());
+            KdStatusPulang.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 19).toString());
+            NmStatusPulang.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 20).toString());
+            KdTenagaMedis.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 22).toString());
+            NmTenagaMedis.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 23).toString());
+            KdDiagnosa1.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 24).toString());
+            NmDiagnosa1.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 25).toString());
+            KdDiagnosa2.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 26).toString());
+            NmDiagnosa2.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 27).toString());
+            KdDiagnosa3.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 28).toString());
+            NmDiagnosa3.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 29).toString());
+            KdPPKRujukan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 31).toString());
+            NmPPKRujukan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 32).toString());
+            KdSubSpesialis.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 33).toString());
+            NmSubSpesialis.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 34).toString());
+            KdSarana.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 35).toString());
+            NmSarana.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 36).toString());
+            KdTACC.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 37).toString());
+            NmTACC.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 38).toString());
+            AlasanTACC.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 39).toString());
+            KdAlergiMakanan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 40).toString());
+            NmAlergiMakanan.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 41).toString());
+            KdAlergiUdara.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 42).toString());
+            NmAlergiUdara.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 43).toString());
+            KdAlergiObat.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 44).toString());
+            NmAlergiObat.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 45).toString());
+            KdPrognosa.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 46).toString());
+            NmPrognosa.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 47).toString());
+            TerapiNonObat.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 48).toString());
+            BMHP.setText(tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 49).toString());
+            Valid.SetTgl(TanggalPulang, tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 21).toString());
+            Valid.SetTgl(TanggalEstRujuk, tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 30).toString());
             TglLahir.setText(
-                    Sequel.cariIsi(
-                            "select pasien.tgl_lahir from pasien where pasien.no_rkm_medis=?",
-                            TNoRM.getText()));
+                    Sequel.cariIsi("select pasien.tgl_lahir from pasien where pasien.no_rkm_medis=?", TNoRM.getText()));
         }
     }
 
@@ -9629,44 +9215,32 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             utc = String.valueOf(api.GetUTCdatetimeAsString());
             headers2.add("X-timestamp", utc);
             headers2.add("X-signature", api.getHmac());
-            headers2.add("X-authorization", "Basic " + Base64.
-                    encodeBase64String(otorisasi.getBytes()));
+            headers2.add("X-authorization", "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
             headers2.add("user_key", koneksiDB.USERKEYAPIPCARE());
             if (chkKunjungan.isSelected() == true) {
                 if (Keluhan.getText().trim().isEmpty()) {
                     Valid.textKosong(Keluhan, "Keluhan");
-                } else if (TinggiBadan.getText().trim().isEmpty() || TinggiBadan.
-                        getText().trim().equals("0")) {
+                } else if (TinggiBadan.getText().trim().isEmpty() || TinggiBadan.getText().trim().equals("0")) {
                     Valid.textKosong(TinggiBadan, "Tinggi Badan");
-                } else if (BeratBadan.getText().trim().isEmpty() || BeratBadan.
-                        getText().trim().equals("0")) {
+                } else if (BeratBadan.getText().trim().isEmpty() || BeratBadan.getText().trim().equals("0")) {
                     Valid.textKosong(BeratBadan, "Berat Badan");
-                } else if (Sistole.getText().trim().isEmpty() || Sistole.
-                        getText().trim().equals("0")) {
+                } else if (Sistole.getText().trim().isEmpty() || Sistole.getText().trim().equals("0")) {
                     Valid.textKosong(Sistole, "Sistole");
-                } else if (Diastole.getText().trim().isEmpty() || Diastole.
-                        getText().trim().equals("0")) {
+                } else if (Diastole.getText().trim().isEmpty() || Diastole.getText().trim().equals("0")) {
                     Valid.textKosong(Diastole, "Diastole");
-                } else if (Respiratory.getText().trim().isEmpty() || Respiratory.
-                        getText().trim().equals("0")) {
+                } else if (Respiratory.getText().trim().isEmpty() || Respiratory.getText().trim().equals("0")) {
                     Valid.textKosong(Respiratory, "Respiratory Rate");
-                } else if (LingkarPerut.getText().trim().isEmpty() || LingkarPerut.
-                        getText().trim().equals("0")) {
+                } else if (LingkarPerut.getText().trim().isEmpty() || LingkarPerut.getText().trim().equals("0")) {
                     Valid.textKosong(LingkarPerut, "Lingkar Perut");
-                } else if (Heartrate.getText().trim().isEmpty() || Heartrate.
-                        getText().trim().equals("0")) {
+                } else if (Heartrate.getText().trim().isEmpty() || Heartrate.getText().trim().equals("0")) {
                     Valid.textKosong(Heartrate, "Heart Rate");
-                } else if (KdAlergiMakanan.getText().trim().isEmpty() || NmAlergiMakanan.
-                        getText().trim().isEmpty()) {
+                } else if (KdAlergiMakanan.getText().trim().isEmpty() || NmAlergiMakanan.getText().trim().isEmpty()) {
                     Valid.textKosong(btnAlergiMakanan, "Alergi Makanan");
-                } else if (KdAlergiUdara.getText().trim().isEmpty() || NmAlergiUdara.
-                        getText().trim().isEmpty()) {
+                } else if (KdAlergiUdara.getText().trim().isEmpty() || NmAlergiUdara.getText().trim().isEmpty()) {
                     Valid.textKosong(BtnAlergiUdara, "Alergi Udara");
-                } else if (KdAlergiObat.getText().trim().isEmpty() || NmAlergiObat.
-                        getText().trim().isEmpty()) {
+                } else if (KdAlergiObat.getText().trim().isEmpty() || NmAlergiObat.getText().trim().isEmpty()) {
                     Valid.textKosong(BtnAlergiObat, "Alergi Obat");
-                } else if (KdPrognosa.getText().trim().isEmpty() || NmPrognosa.
-                        getText().trim().isEmpty()) {
+                } else if (KdPrognosa.getText().trim().isEmpty() || NmPrognosa.getText().trim().isEmpty()) {
                     Valid.textKosong(BtnPrognosa, "Prognosa");
                 } else if (NmSadar.getText().isEmpty()) {
                     Valid.textKosong(BtnKesadaran, "Kesadaran");
@@ -9682,109 +9256,63 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     kdtacc = "-1";
                     alasantacc = "null";
                     if (ChkRujukLanjut.isSelected() == false) {
-                        requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.
-                                getText() + "\","
-                                + "\"tglDaftar\": \"" + TanggalKunjungan.
-                                        getSelectedItem() + "\"," + "\"kdPoli\": \""
-                                + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.
-                                getText() + "\","
-                                + "\"kdSadar\": \"" + KdSadar.getText() + "\"," + "\"sistole\": " + Sistole.
-                                getText()
+                        requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.getText() + "\","
+                                + "\"tglDaftar\": \"" + TanggalKunjungan.getSelectedItem() + "\"," + "\"kdPoli\": \""
+                                + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.getText() + "\","
+                                + "\"kdSadar\": \"" + KdSadar.getText() + "\"," + "\"sistole\": " + Sistole.getText()
                                 + "," + "\"diastole\": " + Diastole.getText() + "," + "\"beratBadan\": "
-                                + BeratBadan.getText() + "," + "\"tinggiBadan\": " + TinggiBadan.
-                                getText() + ","
+                                + BeratBadan.getText() + "," + "\"tinggiBadan\": " + TinggiBadan.getText() + ","
                                 + "\"respRate\": " + Respiratory.getText() + "," + "\"heartRate\": "
-                                + Heartrate.getText() + "," + "\"lingkarPerut\": " + LingkarPerut.
-                                getText() + ","
+                                + Heartrate.getText() + "," + "\"lingkarPerut\": " + LingkarPerut.getText() + ","
                                 + "\"terapi\": \"" + TerapiObat.getText() + "\"," + "\"kdStatusPulang\": \"3\","
-                                + "\"tglPulang\": \"" + TanggalPulang.
-                                        getSelectedItem() + "\"," + "\"kdDokter\": \""
-                                + KdTenagaMedis.getText() + "\"," + "\"kdDiag1\": \"" + KdDiagnosa1.
-                                getText() + "\","
+                                + "\"tglPulang\": \"" + TanggalPulang.getSelectedItem() + "\"," + "\"kdDokter\": \""
+                                + KdTenagaMedis.getText() + "\"," + "\"kdDiag1\": \"" + KdDiagnosa1.getText() + "\","
                                 + "\"kdDiag2\": " + diagnosa2 + "," + "\"kdDiag3\": " + diagnosa3 + ","
                                 + "\"kdPoliRujukInternal\":null," + "\"rujukLanjut\": null," + "\"kdTacc\": -1,"
-                                + "\"alasanTacc\": null," + "\"anamnesa\": \"" + Keluhan.
-                                        getText() + "\","
-                                + "\"alergiMakan\": \"" + KdAlergiMakanan.
-                                        getText() + "\"," + "\"alergiUdara\": \""
-                                + KdAlergiUdara.getText() + "\"," + "\"alergiObat\": \"" + KdAlergiObat.
-                                getText()
-                                + "\"," + "\"kdPrognosa\": \"" + KdPrognosa.
-                                        getText() + "\"," + "\"terapiObat\": \""
-                                + TerapiObat.getText() + "\"," + "\"terapiNonObat\": \"" + TerapiNonObat.
-                                getText()
-                                + "\"," + "\"bmhp\": \"" + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.
-                                getText()
+                                + "\"alasanTacc\": null," + "\"anamnesa\": \"" + Keluhan.getText() + "\","
+                                + "\"alergiMakan\": \"" + KdAlergiMakanan.getText() + "\"," + "\"alergiUdara\": \""
+                                + KdAlergiUdara.getText() + "\"," + "\"alergiObat\": \"" + KdAlergiObat.getText()
+                                + "\"," + "\"kdPrognosa\": \"" + KdPrognosa.getText() + "\"," + "\"terapiObat\": \""
+                                + TerapiObat.getText() + "\"," + "\"terapiNonObat\": \"" + TerapiNonObat.getText()
+                                + "\"," + "\"bmhp\": \"" + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.getText()
                                 + "\"" + "}";
                         System.out.println(requestJson);
                         requestEntity = new HttpEntity(requestJson, headers2);
                         requestJson = api.getRest()
-                                .exchange(URL + "/kunjungan", HttpMethod.POST,
-                                        requestEntity, String.class)
+                                .exchange(URL + "/kunjungan", HttpMethod.POST, requestEntity, String.class)
                                 .getBody();
                         System.out.println(requestJson);
                         root = mapper.readTree(requestJson);
                         nameNode = root.path("metaData");
-                        System.out.println("code : " + nameNode.path("code").
-                                asText());
-                        System.out.println("message : " + nameNode.path(
-                                "message").asText());
+                        System.out.println("code : " + nameNode.path("code").asText());
+                        System.out.println("message : " + nameNode.path("message").asText());
                         if (nameNode.path("code").asText().equals("201")) {
-                            for (JsonNode list : mapper.readTree(api.Decrypt(
-                                    root.path("response").asText(), utc))) {
+                            for (JsonNode list : mapper.readTree(api.Decrypt(root.path("response").asText(), utc))) {
                                 response = list.path("message");
                             }
                             if (Sequel.menyimpantf2("pcare_kunjungan_umum",
                                     "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?",
                                     "No.Urut", 40,
-                                    new String[]{TNoRw.getText(), response.
-                                        asText(),
-                                        Valid.SetTgl(TanggalKunjungan.
-                                                getSelectedItem() + ""), TNoRM.
-                                                getText(),
-                                        TPasien.getText(), NoKartu.getText(),
-                                        KdPoliTujuan.getText(),
-                                        NmPoliTujuan.getText(), Valid.MaxTeks(
-                                        Keluhan.getText(), 400),
-                                        KdSadar.getText(), NmSadar.getText(),
-                                        Sistole.getText(), Diastole.getText(),
-                                        BeratBadan.getText(), TinggiBadan.
-                                        getText(), Respiratory.getText(),
-                                        Heartrate.getText(), LingkarPerut.
-                                        getText(),
-                                        Valid.
-                                                MaxTeks(TerapiObat.getText(),
-                                                        2000), "3",
-                                        "Berobat Jalan",
-                                        Valid.SetTgl(TanggalPulang.
-                                                getSelectedItem() + ""),
-                                        KdTenagaMedis.getText(),
-                                        Valid.MaxTeks(NmTenagaMedis.getText(),
-                                                50), KdDiagnosa1.getText(),
-                                        Valid.
-                                                MaxTeks(NmDiagnosa1.getText(),
-                                                        400), KdDiagnosa2.
-                                                getText(),
-                                        Valid.
-                                                MaxTeks(NmDiagnosa2.getText(),
-                                                        400), KdDiagnosa3.
-                                                getText(),
-                                        Valid.
-                                                MaxTeks(NmDiagnosa3.getText(),
-                                                        400), KdAlergiMakanan.
-                                                getText(),
-                                        NmAlergiMakanan.getText(),
-                                        KdAlergiUdara.getText(), NmAlergiUdara.
-                                        getText(),
-                                        KdAlergiObat.getText(), NmAlergiObat.
-                                        getText(), KdPrognosa.getText(),
-                                        NmPrognosa.getText(), Valid.MaxTeks(
-                                        TerapiNonObat.getText(), 2000),
+                                    new String[]{TNoRw.getText(), response.asText(),
+                                        Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""), TNoRM.getText(),
+                                        TPasien.getText(), NoKartu.getText(), KdPoliTujuan.getText(),
+                                        NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.getText(), 400),
+                                        KdSadar.getText(), NmSadar.getText(), Sistole.getText(), Diastole.getText(),
+                                        BeratBadan.getText(), TinggiBadan.getText(), Respiratory.getText(),
+                                        Heartrate.getText(), LingkarPerut.getText(),
+                                        Valid.MaxTeks(TerapiObat.getText(), 2000), "3", "Berobat Jalan",
+                                        Valid.SetTgl(TanggalPulang.getSelectedItem() + ""), KdTenagaMedis.getText(),
+                                        Valid.MaxTeks(NmTenagaMedis.getText(), 50), KdDiagnosa1.getText(),
+                                        Valid.MaxTeks(NmDiagnosa1.getText(), 400), KdDiagnosa2.getText(),
+                                        Valid.MaxTeks(NmDiagnosa2.getText(), 400), KdDiagnosa3.getText(),
+                                        Valid.MaxTeks(NmDiagnosa3.getText(), 400), KdAlergiMakanan.getText(),
+                                        NmAlergiMakanan.getText(), KdAlergiUdara.getText(), NmAlergiUdara.getText(),
+                                        KdAlergiObat.getText(), NmAlergiObat.getText(), KdPrognosa.getText(),
+                                        NmPrognosa.getText(), Valid.MaxTeks(TerapiNonObat.getText(), 2000),
                                         Valid.MaxTeks(BMHP.getText(), 2000)}) == true) {
                                 simpandiagnosa();
                             } else {
-                                JOptionPane.showMessageDialog(null, nameNode.
-                                        path("message").asText());
+                                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
                             }
                         }
                     } else if (ChkRujukLanjut.isSelected() == true) {
@@ -9800,8 +9328,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                         }
                         if (tacccek > 0) {
                             if (KdTACC.getText().trim().isEmpty()) {
-                                JOptionPane.showMessageDialog(null,
-                                        "Diagnosa non spesialistik harus ada alasan TACC");
+                                JOptionPane.showMessageDialog(null, "Diagnosa non spesialistik harus ada alasan TACC");
                             } else if (!KdTACC.getText().trim().isEmpty()) {
                                 if (!KdTACC.getText().equals("-1")) {
                                     kdtacc = KdTACC.getText();
@@ -9810,194 +9337,112 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                 }
                                 if (ChkInternal.isSelected() == true) {
                                     if (NmPoliInternal.getText().isEmpty()) {
-                                        Valid.textKosong(BtnPoliInternal,
-                                                "Poli Internal");
+                                        Valid.textKosong(BtnPoliInternal, "Poli Internal");
                                     } else {
                                         requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \""
                                                 + NoKartu.getText() + "\"," + "\"tglDaftar\": \""
-                                                + TanggalKunjungan.
-                                                        getSelectedItem() + "\"," + "\"kdPoli\": \""
-                                                + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.
-                                                getText()
-                                                + "\"," + "\"kdSadar\": \"" + KdSadar.
-                                                        getText() + "\","
-                                                + "\"sistole\": " + Sistole.
-                                                        getText() + "," + "\"diastole\": "
-                                                + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.
-                                                getText()
-                                                + "," + "\"tinggiBadan\": " + TinggiBadan.
-                                                        getText() + ","
-                                                + "\"respRate\": " + Respiratory.
-                                                        getText() + "," + "\"heartRate\": "
+                                                + TanggalKunjungan.getSelectedItem() + "\"," + "\"kdPoli\": \""
+                                                + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.getText()
+                                                + "\"," + "\"kdSadar\": \"" + KdSadar.getText() + "\","
+                                                + "\"sistole\": " + Sistole.getText() + "," + "\"diastole\": "
+                                                + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.getText()
+                                                + "," + "\"tinggiBadan\": " + TinggiBadan.getText() + ","
+                                                + "\"respRate\": " + Respiratory.getText() + "," + "\"heartRate\": "
                                                 + Heartrate.getText() + "," + "\"lingkarPerut\": "
-                                                + LingkarPerut.getText() + "," + "\"terapi\": \"" + TerapiObat.
-                                                getText()
+                                                + LingkarPerut.getText() + "," + "\"terapi\": \"" + TerapiObat.getText()
                                                 + "\"," + "\"kdStatusPulang\": \"3\"," + "\"tglPulang\": \""
-                                                + TanggalPulang.
-                                                        getSelectedItem() + "\"," + "\"kdDokter\": \""
+                                                + TanggalPulang.getSelectedItem() + "\"," + "\"kdDokter\": \""
                                                 + KdTenagaMedis.getText() + "\"," + "\"kdDiag1\": \""
                                                 + KdDiagnosa1.getText() + "\"," + "\"kdDiag2\": " + diagnosa2 + ","
                                                 + "\"kdDiag3\": " + diagnosa3 + "," + "\"kdPoliRujukInternal\":\""
                                                 + KdPoliInternal.getText() + "\"," + "\"rujukLanjut\": null,"
                                                 + "\"kdTacc\": " + kdtacc + "," + "\"alasanTacc\": " + alasantacc + ","
-                                                + "\"anamnesa\": \"" + Keluhan.
-                                                        getText() + "\"," + "\"alergiMakan\": \""
+                                                + "\"anamnesa\": \"" + Keluhan.getText() + "\"," + "\"alergiMakan\": \""
                                                 + KdAlergiMakanan.getText() + "\"," + "\"alergiUdara\": \""
                                                 + KdAlergiUdara.getText() + "\"," + "\"alergiObat\": \""
                                                 + KdAlergiObat.getText() + "\"," + "\"kdPrognosa\": \""
                                                 + KdPrognosa.getText() + "\"," + "\"terapiObat\": \""
                                                 + TerapiObat.getText() + "\"," + "\"terapiNonObat\": \""
-                                                + TerapiNonObat.getText() + "\"," + "\"bmhp\": \"" + BMHP.
-                                                getText()
-                                                + "\"," + "\"suhu\": \"" + TSuhu.
-                                                        getText() + "\"" + "}";
+                                                + TerapiNonObat.getText() + "\"," + "\"bmhp\": \"" + BMHP.getText()
+                                                + "\"," + "\"suhu\": \"" + TSuhu.getText() + "\"" + "}";
                                         System.out.println(requestJson);
-                                        requestEntity = new HttpEntity(
-                                                requestJson, headers2);
+                                        requestEntity = new HttpEntity(requestJson, headers2);
                                         requestJson = api.getRest()
-                                                .exchange(URL + "/kunjungan",
-                                                        HttpMethod.POST,
-                                                        requestEntity,
-                                                        String.class)
+                                                .exchange(URL + "/kunjungan", HttpMethod.POST, requestEntity, String.class)
                                                 .getBody();
                                         System.out.println(requestJson);
                                         root = mapper.readTree(requestJson);
                                         nameNode = root.path("metaData");
-                                        System.out.println("code : " + nameNode.
-                                                path("code").asText());
-                                        System.out.println(
-                                                "message : " + nameNode.path(
-                                                        "message").asText());
-                                        if (nameNode.path("code").asText().
-                                                equals("201")) {
+                                        System.out.println("code : " + nameNode.path("code").asText());
+                                        System.out.println("message : " + nameNode.path("message").asText());
+                                        if (nameNode.path("code").asText().equals("201")) {
                                             for (JsonNode list : mapper
-                                                    .readTree(api.Decrypt(root.
-                                                            path("response").
-                                                            asText(), utc))) {
+                                                    .readTree(api.Decrypt(root.path("response").asText(), utc))) {
                                                 response = list.path("message");
                                             }
-                                            if (Sequel.menyimpantf2(
-                                                    "pcare_rujuk_internal",
+                                            if (Sequel.menyimpantf2("pcare_rujuk_internal",
                                                     "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
                                                     "No.Urut", 45,
-                                                    new String[]{TNoRw.getText(),
-                                                        response.asText(),
-                                                        Valid.SetTgl(
-                                                                TanggalKunjungan.
-                                                                        getSelectedItem() + ""),
-                                                        TNoRM.getText(),
-                                                        TPasien.getText(),
-                                                        NoKartu.getText(),
-                                                        KdPoliTujuan.getText(),
-                                                        NmPoliTujuan.getText(),
-                                                        Valid.MaxTeks(Keluhan.
-                                                                getText(), 400),
-                                                        KdSadar.getText(),
-                                                        NmSadar.getText(),
-                                                        Sistole.getText(),
-                                                        Diastole.getText(),
-                                                        BeratBadan.getText(),
-                                                        TinggiBadan.getText(),
-                                                        Respiratory.getText(),
-                                                        Heartrate.getText(),
+                                                    new String[]{TNoRw.getText(), response.asText(),
+                                                        Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""),
+                                                        TNoRM.getText(), TPasien.getText(), NoKartu.getText(),
+                                                        KdPoliTujuan.getText(), NmPoliTujuan.getText(),
+                                                        Valid.MaxTeks(Keluhan.getText(), 400), KdSadar.getText(),
+                                                        NmSadar.getText(), Sistole.getText(), Diastole.getText(),
+                                                        BeratBadan.getText(), TinggiBadan.getText(),
+                                                        Respiratory.getText(), Heartrate.getText(),
                                                         LingkarPerut.getText(),
-                                                        Valid.MaxTeks(
-                                                                TerapiObat.
-                                                                        getText(),
-                                                                2000), "3",
+                                                        Valid.MaxTeks(TerapiObat.getText(), 2000), "3",
                                                         "Berobat Jalan",
-                                                        Valid.SetTgl(
-                                                                TanggalPulang.
-                                                                        getSelectedItem() + ""),
+                                                        Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
                                                         KdTenagaMedis.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmTenagaMedis.
-                                                                        getText(),
-                                                                50),
+                                                        Valid.MaxTeks(NmTenagaMedis.getText(), 50),
                                                         KdDiagnosa1.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmDiagnosa1.
-                                                                        getText(),
-                                                                400),
+                                                        Valid.MaxTeks(NmDiagnosa1.getText(), 400),
                                                         KdDiagnosa2.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmDiagnosa2.
-                                                                        getText(),
-                                                                400),
+                                                        Valid.MaxTeks(NmDiagnosa2.getText(), 400),
                                                         KdDiagnosa3.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmDiagnosa3.
-                                                                        getText(),
-                                                                400),
-                                                        KdPoliInternal.getText(),
-                                                        NmPoliInternal.getText(),
-                                                        KdTACC.getText(),
-                                                        NmTACC.getText(),
-                                                        AlasanTACC.getText(),
-                                                        KdAlergiMakanan.
-                                                                getText(),
-                                                        NmAlergiMakanan.
-                                                                getText(),
-                                                        KdAlergiUdara.getText(),
-                                                        NmAlergiUdara.getText(),
-                                                        KdAlergiObat.getText(),
-                                                        NmAlergiObat.getText(),
-                                                        KdPrognosa.getText(),
-                                                        NmPrognosa.getText(),
-                                                        Valid.MaxTeks(
-                                                                TerapiNonObat.
-                                                                        getText(),
-                                                                2000),
-                                                        Valid.MaxTeks(BMHP.
-                                                                getText(), 2000)}) == true) {
+                                                        Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                                        KdPoliInternal.getText(), NmPoliInternal.getText(),
+                                                        KdTACC.getText(), NmTACC.getText(), AlasanTACC.getText(),
+                                                        KdAlergiMakanan.getText(), NmAlergiMakanan.getText(),
+                                                        KdAlergiUdara.getText(), NmAlergiUdara.getText(),
+                                                        KdAlergiObat.getText(), NmAlergiObat.getText(),
+                                                        KdPrognosa.getText(), NmPrognosa.getText(),
+                                                        Valid.MaxTeks(TerapiNonObat.getText(), 2000),
+                                                        Valid.MaxTeks(BMHP.getText(), 2000)}) == true) {
                                                 simpandiagnosa();
                                             }
                                         } else {
-                                            JOptionPane.showMessageDialog(null,
-                                                    nameNode.path("message").
-                                                            asText());
+                                            JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
                                         }
                                     }
                                 } else if (chkSubspesialis.isSelected() == true) {
-                                    if (KdSubSpesialis.getText().isEmpty() || NmSubSpesialis.
-                                            getText().isEmpty()) {
-                                        Valid.textKosong(BtnSubSpesialis,
-                                                "Poli Subspesialis");
+                                    if (KdSubSpesialis.getText().isEmpty() || NmSubSpesialis.getText().isEmpty()) {
+                                        Valid.textKosong(BtnSubSpesialis, "Poli Subspesialis");
                                     } else {
                                         kodesarana = "null";
                                         if (!KdSarana.getText().isEmpty()) {
-                                            kodesarana = "\"" + KdSarana.
-                                                    getText() + "\"";
+                                            kodesarana = "\"" + KdSarana.getText() + "\"";
                                         }
                                         requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \""
                                                 + NoKartu.getText() + "\"," + "\"tglDaftar\": \""
-                                                + TanggalKunjungan.
-                                                        getSelectedItem() + "\"," + "\"kdPoli\": \""
-                                                + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.
-                                                getText()
-                                                + "\"," + "\"kdSadar\": \"" + KdSadar.
-                                                        getText() + "\","
-                                                + "\"sistole\": " + Sistole.
-                                                        getText() + "," + "\"diastole\": "
-                                                + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.
-                                                getText()
-                                                + "," + "\"tinggiBadan\": " + TinggiBadan.
-                                                        getText() + ","
-                                                + "\"respRate\": " + Respiratory.
-                                                        getText() + "," + "\"heartRate\": "
+                                                + TanggalKunjungan.getSelectedItem() + "\"," + "\"kdPoli\": \""
+                                                + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.getText()
+                                                + "\"," + "\"kdSadar\": \"" + KdSadar.getText() + "\","
+                                                + "\"sistole\": " + Sistole.getText() + "," + "\"diastole\": "
+                                                + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.getText()
+                                                + "," + "\"tinggiBadan\": " + TinggiBadan.getText() + ","
+                                                + "\"respRate\": " + Respiratory.getText() + "," + "\"heartRate\": "
                                                 + Heartrate.getText() + "," + "\"lingkarPerut\": "
-                                                + LingkarPerut.getText() + "," + "\"terapi\": \"" + TerapiObat.
-                                                getText()
+                                                + LingkarPerut.getText() + "," + "\"terapi\": \"" + TerapiObat.getText()
                                                 + "\"," + "\"kdStatusPulang\": \"4\"," + "\"tglPulang\": \""
-                                                + TanggalPulang.
-                                                        getSelectedItem() + "\"," + "\"kdDokter\": \""
+                                                + TanggalPulang.getSelectedItem() + "\"," + "\"kdDokter\": \""
                                                 + KdTenagaMedis.getText() + "\"," + "\"kdDiag1\": \""
                                                 + KdDiagnosa1.getText() + "\"," + "\"kdDiag2\": " + diagnosa2 + ","
                                                 + "\"kdDiag3\": " + diagnosa3 + "," + "\"kdPoliRujukInternal\": null,"
-                                                + "\"rujukLanjut\": {" + "\"kdppk\":\"" + KdPPKRujukan.
-                                                        getText() + "\","
-                                                + "\"tglEstRujuk\":\"" + TanggalEstRujuk.
-                                                        getSelectedItem() + "\","
+                                                + "\"rujukLanjut\": {" + "\"kdppk\":\"" + KdPPKRujukan.getText() + "\","
+                                                + "\"tglEstRujuk\":\"" + TanggalEstRujuk.getSelectedItem() + "\","
                                                 + "\"subSpesialis\": {" + "\"kdSubSpesialis1\": \""
                                                 + KdSubSpesialis.getText() + "\"," + "\"kdSarana\": " + kodesarana
                                                 + "}," + "\"khusus\": null " + "}," + "\"kdTacc\": " + kdtacc + ","
@@ -10008,122 +9453,61 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                                 + KdAlergiObat.getText() + "\"," + "\"kdPrognosa\": \""
                                                 + KdPrognosa.getText() + "\"," + "\"terapiObat\": \""
                                                 + TerapiObat.getText() + "\"," + "\"terapiNonObat\": \""
-                                                + TerapiNonObat.getText() + "\"," + "\"bmhp\": \"" + BMHP.
-                                                getText()
-                                                + "\"," + "\"suhu\": \"" + TSuhu.
-                                                        getText() + "\"" + "}";
+                                                + TerapiNonObat.getText() + "\"," + "\"bmhp\": \"" + BMHP.getText()
+                                                + "\"," + "\"suhu\": \"" + TSuhu.getText() + "\"" + "}";
                                         System.out.println(requestJson);
-                                        requestEntity = new HttpEntity(
-                                                requestJson, headers2);
+                                        requestEntity = new HttpEntity(requestJson, headers2);
                                         requestJson = api.getRest()
-                                                .exchange(URL + "/kunjungan",
-                                                        HttpMethod.POST,
-                                                        requestEntity,
-                                                        String.class)
+                                                .exchange(URL + "/kunjungan", HttpMethod.POST, requestEntity, String.class)
                                                 .getBody();
                                         System.out.println(requestJson);
                                         root = mapper.readTree(requestJson);
                                         nameNode = root.path("metaData");
-                                        System.out.println("code : " + nameNode.
-                                                path("code").asText());
-                                        System.out.println(
-                                                "message : " + nameNode.path(
-                                                        "message").asText());
-                                        if (nameNode.path("code").asText().
-                                                equals("201")) {
+                                        System.out.println("code : " + nameNode.path("code").asText());
+                                        System.out.println("message : " + nameNode.path("message").asText());
+                                        if (nameNode.path("code").asText().equals("201")) {
                                             for (JsonNode list : mapper
-                                                    .readTree(api.Decrypt(root.
-                                                            path("response").
-                                                            asText(), utc))) {
+                                                    .readTree(api.Decrypt(root.path("response").asText(), utc))) {
                                                 response = list.path("message");
                                             }
-                                            if (Sequel.menyimpantf2(
-                                                    "pcare_rujuk_subspesialis",
+                                            if (Sequel.menyimpantf2("pcare_rujuk_subspesialis",
                                                     "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
                                                     "No.Urut", 50,
-                                                    new String[]{TNoRw.getText(),
-                                                        response.asText(),
-                                                        Valid.SetTgl(
-                                                                TanggalKunjungan.
-                                                                        getSelectedItem() + ""),
-                                                        TNoRM.getText(),
-                                                        TPasien.getText(),
-                                                        NoKartu.getText(),
-                                                        KdPoliTujuan.getText(),
-                                                        NmPoliTujuan.getText(),
-                                                        Valid.MaxTeks(Keluhan.
-                                                                getText(), 400),
-                                                        KdSadar.getText(),
-                                                        NmSadar.getText(),
-                                                        Sistole.getText(),
-                                                        Diastole.getText(),
-                                                        BeratBadan.getText(),
-                                                        TinggiBadan.getText(),
-                                                        Respiratory.getText(),
-                                                        Heartrate.getText(),
+                                                    new String[]{TNoRw.getText(), response.asText(),
+                                                        Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""),
+                                                        TNoRM.getText(), TPasien.getText(), NoKartu.getText(),
+                                                        KdPoliTujuan.getText(), NmPoliTujuan.getText(),
+                                                        Valid.MaxTeks(Keluhan.getText(), 400), KdSadar.getText(),
+                                                        NmSadar.getText(), Sistole.getText(), Diastole.getText(),
+                                                        BeratBadan.getText(), TinggiBadan.getText(),
+                                                        Respiratory.getText(), Heartrate.getText(),
                                                         LingkarPerut.getText(),
-                                                        Valid.MaxTeks(
-                                                                TerapiObat.
-                                                                        getText(),
-                                                                2000), "4",
+                                                        Valid.MaxTeks(TerapiObat.getText(), 2000), "4",
                                                         "Rujuk Lanjut",
-                                                        Valid.SetTgl(
-                                                                TanggalPulang.
-                                                                        getSelectedItem() + ""),
+                                                        Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
                                                         KdTenagaMedis.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmTenagaMedis.
-                                                                        getText(),
-                                                                50),
+                                                        Valid.MaxTeks(NmTenagaMedis.getText(), 50),
                                                         KdDiagnosa1.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmDiagnosa1.
-                                                                        getText(),
-                                                                400),
+                                                        Valid.MaxTeks(NmDiagnosa1.getText(), 400),
                                                         KdDiagnosa2.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmDiagnosa2.
-                                                                        getText(),
-                                                                400),
+                                                        Valid.MaxTeks(NmDiagnosa2.getText(), 400),
                                                         KdDiagnosa3.getText(),
-                                                        Valid.MaxTeks(
-                                                                NmDiagnosa3.
-                                                                        getText(),
-                                                                400),
-                                                        Valid.SetTgl(
-                                                                TanggalEstRujuk.
-                                                                        getSelectedItem() + ""),
-                                                        KdPPKRujukan.getText(),
-                                                        NmPPKRujukan.getText(),
-                                                        KdSubSpesialis.getText(),
-                                                        NmSubSpesialis.getText(),
-                                                        KdSarana.getText(),
-                                                        NmSarana.getText(),
-                                                        KdTACC.getText(),
-                                                        NmTACC.getText(),
-                                                        AlasanTACC.getText(),
-                                                        KdAlergiMakanan.
-                                                                getText(),
-                                                        NmAlergiMakanan.
-                                                                getText(),
-                                                        KdAlergiUdara.getText(),
-                                                        NmAlergiUdara.getText(),
-                                                        KdAlergiObat.getText(),
-                                                        NmAlergiObat.getText(),
-                                                        KdPrognosa.getText(),
-                                                        NmPrognosa.getText(),
-                                                        Valid.MaxTeks(
-                                                                TerapiNonObat.
-                                                                        getText(),
-                                                                2000),
-                                                        Valid.MaxTeks(BMHP.
-                                                                getText(), 2000)}) == true) {
+                                                        Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                                        Valid.SetTgl(TanggalEstRujuk.getSelectedItem() + ""),
+                                                        KdPPKRujukan.getText(), NmPPKRujukan.getText(),
+                                                        KdSubSpesialis.getText(), NmSubSpesialis.getText(),
+                                                        KdSarana.getText(), NmSarana.getText(), KdTACC.getText(),
+                                                        NmTACC.getText(), AlasanTACC.getText(),
+                                                        KdAlergiMakanan.getText(), NmAlergiMakanan.getText(),
+                                                        KdAlergiUdara.getText(), NmAlergiUdara.getText(),
+                                                        KdAlergiObat.getText(), NmAlergiObat.getText(),
+                                                        KdPrognosa.getText(), NmPrognosa.getText(),
+                                                        Valid.MaxTeks(TerapiNonObat.getText(), 2000),
+                                                        Valid.MaxTeks(BMHP.getText(), 2000)}) == true) {
                                                 simpandiagnosa();
                                             }
                                         } else {
-                                            JOptionPane.showMessageDialog(null,
-                                                    nameNode.path("message").
-                                                            asText());
+                                            JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
                                         }
                                     }
                                 }
@@ -10131,29 +9515,18 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                         } else if (tacccek == 0) {
                             if (ChkInternal.isSelected() == true) {
                                 if (NmPoliInternal.getText().isEmpty()) {
-                                    Valid.textKosong(BtnPoliInternal,
-                                            "Poli Internal");
+                                    Valid.textKosong(BtnPoliInternal, "Poli Internal");
                                 } else {
-                                    requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.
-                                            getText()
-                                            + "\"," + "\"tglDaftar\": \"" + TanggalKunjungan.
-                                                    getSelectedItem() + "\","
-                                            + "\"kdPoli\": \"" + KdPoliTujuan.
-                                                    getText() + "\"," + "\"keluhan\": \""
-                                            + Keluhan.getText() + "\"," + "\"kdSadar\": \"" + KdSadar.
-                                            getText() + "\","
-                                            + "\"sistole\": " + Sistole.
-                                                    getText() + "," + "\"diastole\": "
-                                            + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.
-                                            getText() + ","
-                                            + "\"tinggiBadan\": " + TinggiBadan.
-                                                    getText() + "," + "\"respRate\": "
-                                            + Respiratory.getText() + "," + "\"heartRate\": " + Heartrate.
-                                            getText()
-                                            + "," + "\"lingkarPerut\": " + LingkarPerut.
-                                                    getText() + ","
-                                            + "\"terapi\": \"" + TerapiObat.
-                                                    getText() + "\","
+                                    requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.getText()
+                                            + "\"," + "\"tglDaftar\": \"" + TanggalKunjungan.getSelectedItem() + "\","
+                                            + "\"kdPoli\": \"" + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \""
+                                            + Keluhan.getText() + "\"," + "\"kdSadar\": \"" + KdSadar.getText() + "\","
+                                            + "\"sistole\": " + Sistole.getText() + "," + "\"diastole\": "
+                                            + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.getText() + ","
+                                            + "\"tinggiBadan\": " + TinggiBadan.getText() + "," + "\"respRate\": "
+                                            + Respiratory.getText() + "," + "\"heartRate\": " + Heartrate.getText()
+                                            + "," + "\"lingkarPerut\": " + LingkarPerut.getText() + ","
+                                            + "\"terapi\": \"" + TerapiObat.getText() + "\","
                                             + "\"kdStatusPulang\": \"3\"," + "\"tglPulang\": \""
                                             + TanggalPulang.getSelectedItem() + "\"," + "\"kdDokter\": \""
                                             + KdTenagaMedis.getText() + "\"," + "\"kdDiag1\": \""
@@ -10161,148 +9534,90 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                             + "\"kdDiag3\": " + diagnosa3 + "," + "\"kdPoliRujukInternal\":\""
                                             + KdPoliInternal.getText() + "\"," + "\"rujukLanjut\": null,"
                                             + "\"kdTacc\": " + kdtacc + "," + "\"alasanTacc\": " + alasantacc + ","
-                                            + "\"anamnesa\": \"" + Keluhan.
-                                                    getText() + "\"," + "\"alergiMakan\": \""
+                                            + "\"anamnesa\": \"" + Keluhan.getText() + "\"," + "\"alergiMakan\": \""
                                             + KdAlergiMakanan.getText() + "\"," + "\"alergiUdara\": \""
                                             + KdAlergiUdara.getText() + "\"," + "\"alergiObat\": \""
                                             + KdAlergiObat.getText() + "\"," + "\"kdPrognosa\": \""
-                                            + KdPrognosa.getText() + "\"," + "\"terapiObat\": \"" + TerapiObat.
-                                            getText()
-                                            + "\"," + "\"terapiNonObat\": \"" + TerapiNonObat.
-                                                    getText() + "\","
-                                            + "\"bmhp\": \"" + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.
-                                            getText()
+                                            + KdPrognosa.getText() + "\"," + "\"terapiObat\": \"" + TerapiObat.getText()
+                                            + "\"," + "\"terapiNonObat\": \"" + TerapiNonObat.getText() + "\","
+                                            + "\"bmhp\": \"" + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.getText()
                                             + "\"" + "}";
                                     System.out.println(requestJson);
-                                    requestEntity = new HttpEntity(requestJson,
-                                            headers2);
+                                    requestEntity = new HttpEntity(requestJson, headers2);
                                     requestJson = api.getRest()
-                                            .exchange(URL + "/kunjungan",
-                                                    HttpMethod.POST,
-                                                    requestEntity, String.class)
+                                            .exchange(URL + "/kunjungan", HttpMethod.POST, requestEntity, String.class)
                                             .getBody();
                                     System.out.println(requestJson);
                                     root = mapper.readTree(requestJson);
                                     nameNode = root.path("metaData");
-                                    System.out.println("code : " + nameNode.
-                                            path("code").asText());
-                                    System.out.println("message : " + nameNode.
-                                            path("message").asText());
-                                    if (nameNode.path("code").asText().equals(
-                                            "201")) {
+                                    System.out.println("code : " + nameNode.path("code").asText());
+                                    System.out.println("message : " + nameNode.path("message").asText());
+                                    if (nameNode.path("code").asText().equals("201")) {
                                         for (JsonNode list : mapper
-                                                .readTree(api.Decrypt(root.path(
-                                                        "response").asText(),
-                                                        utc))) {
+                                                .readTree(api.Decrypt(root.path("response").asText(), utc))) {
                                             response = list.path("message");
                                         }
-                                        if (Sequel.menyimpantf2(
-                                                "pcare_rujuk_internal",
+                                        if (Sequel.menyimpantf2("pcare_rujuk_internal",
                                                 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
                                                 "No.Urut", 45,
-                                                new String[]{TNoRw.getText(),
-                                                    response.asText(),
-                                                    Valid.SetTgl(
-                                                            TanggalKunjungan.
-                                                                    getSelectedItem() + ""),
-                                                    TNoRM.getText(), TPasien.
-                                                    getText(), NoKartu.getText(),
-                                                    KdPoliTujuan.getText(),
-                                                    NmPoliTujuan.getText(),
-                                                    Valid.MaxTeks(Keluhan.
-                                                            getText(), 400),
-                                                    KdSadar.getText(),
-                                                    NmSadar.getText(), Sistole.
-                                                    getText(), Diastole.
-                                                            getText(),
-                                                    BeratBadan.getText(),
-                                                    TinggiBadan.getText(),
-                                                    Respiratory.getText(),
-                                                    Heartrate.getText(),
+                                                new String[]{TNoRw.getText(), response.asText(),
+                                                    Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""),
+                                                    TNoRM.getText(), TPasien.getText(), NoKartu.getText(),
+                                                    KdPoliTujuan.getText(), NmPoliTujuan.getText(),
+                                                    Valid.MaxTeks(Keluhan.getText(), 400), KdSadar.getText(),
+                                                    NmSadar.getText(), Sistole.getText(), Diastole.getText(),
+                                                    BeratBadan.getText(), TinggiBadan.getText(),
+                                                    Respiratory.getText(), Heartrate.getText(),
                                                     LingkarPerut.getText(),
-                                                    Valid.MaxTeks(TerapiObat.
-                                                            getText(), 2000),
-                                                    "3", "Berobat Jalan",
-                                                    Valid.SetTgl(TanggalPulang.
-                                                            getSelectedItem() + ""),
+                                                    Valid.MaxTeks(TerapiObat.getText(), 2000), "3", "Berobat Jalan",
+                                                    Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
                                                     KdTenagaMedis.getText(),
-                                                    Valid.MaxTeks(NmTenagaMedis.
-                                                            getText(), 50),
+                                                    Valid.MaxTeks(NmTenagaMedis.getText(), 50),
                                                     KdDiagnosa1.getText(),
-                                                    Valid.MaxTeks(NmDiagnosa1.
-                                                            getText(), 400),
+                                                    Valid.MaxTeks(NmDiagnosa1.getText(), 400),
                                                     KdDiagnosa2.getText(),
-                                                    Valid.MaxTeks(NmDiagnosa2.
-                                                            getText(), 400),
+                                                    Valid.MaxTeks(NmDiagnosa2.getText(), 400),
                                                     KdDiagnosa3.getText(),
-                                                    Valid.MaxTeks(NmDiagnosa3.
-                                                            getText(), 400),
-                                                    KdPoliInternal.getText(),
-                                                    NmPoliInternal.getText(),
-                                                    KdTACC.getText(), NmTACC.
-                                                    getText(), AlasanTACC.
-                                                            getText(),
-                                                    KdAlergiMakanan.getText(),
-                                                    NmAlergiMakanan.getText(),
-                                                    KdAlergiUdara.getText(),
-                                                    NmAlergiUdara.getText(),
-                                                    KdAlergiObat.getText(),
-                                                    NmAlergiObat.getText(),
-                                                    KdPrognosa.getText(),
-                                                    NmPrognosa.getText(),
-                                                    Valid.MaxTeks(TerapiNonObat.
-                                                            getText(), 2000),
-                                                    Valid.
-                                                            MaxTeks(BMHP.
-                                                                    getText(),
-                                                                    2000)}) == true) {
+                                                    Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                                    KdPoliInternal.getText(), NmPoliInternal.getText(),
+                                                    KdTACC.getText(), NmTACC.getText(), AlasanTACC.getText(),
+                                                    KdAlergiMakanan.getText(), NmAlergiMakanan.getText(),
+                                                    KdAlergiUdara.getText(), NmAlergiUdara.getText(),
+                                                    KdAlergiObat.getText(), NmAlergiObat.getText(),
+                                                    KdPrognosa.getText(), NmPrognosa.getText(),
+                                                    Valid.MaxTeks(TerapiNonObat.getText(), 2000),
+                                                    Valid.MaxTeks(BMHP.getText(), 2000)}) == true) {
                                             simpandiagnosa();
                                         }
                                     } else {
-                                        JOptionPane.showMessageDialog(null,
-                                                nameNode.path("message").
-                                                        asText());
+                                        JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
                                     }
                                 }
                             } else if (chkSubspesialis.isSelected() == true) {
-                                if (KdSubSpesialis.getText().isEmpty() || NmSubSpesialis.
-                                        getText().isEmpty()) {
-                                    Valid.textKosong(BtnSubSpesialis,
-                                            "Poli Subspesialis");
+                                if (KdSubSpesialis.getText().isEmpty() || NmSubSpesialis.getText().isEmpty()) {
+                                    Valid.textKosong(BtnSubSpesialis, "Poli Subspesialis");
                                 } else {
                                     kodesarana = "null";
                                     if (!KdSarana.getText().isEmpty()) {
                                         kodesarana = "\"" + KdSarana.getText() + "\"";
                                     }
-                                    requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.
-                                            getText()
-                                            + "\"," + "\"tglDaftar\": \"" + TanggalKunjungan.
-                                                    getSelectedItem() + "\","
-                                            + "\"kdPoli\": \"" + KdPoliTujuan.
-                                                    getText() + "\"," + "\"keluhan\": \""
-                                            + Keluhan.getText() + "\"," + "\"kdSadar\": \"" + KdSadar.
-                                            getText() + "\","
-                                            + "\"sistole\": " + Sistole.
-                                                    getText() + "," + "\"diastole\": "
-                                            + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.
-                                            getText() + ","
-                                            + "\"tinggiBadan\": " + TinggiBadan.
-                                                    getText() + "," + "\"respRate\": "
-                                            + Respiratory.getText() + "," + "\"heartRate\": " + Heartrate.
-                                            getText()
-                                            + "," + "\"lingkarPerut\": " + LingkarPerut.
-                                                    getText() + ","
-                                            + "\"terapi\": \"" + TerapiObat.
-                                                    getText() + "\","
+                                    requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.getText()
+                                            + "\"," + "\"tglDaftar\": \"" + TanggalKunjungan.getSelectedItem() + "\","
+                                            + "\"kdPoli\": \"" + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \""
+                                            + Keluhan.getText() + "\"," + "\"kdSadar\": \"" + KdSadar.getText() + "\","
+                                            + "\"sistole\": " + Sistole.getText() + "," + "\"diastole\": "
+                                            + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.getText() + ","
+                                            + "\"tinggiBadan\": " + TinggiBadan.getText() + "," + "\"respRate\": "
+                                            + Respiratory.getText() + "," + "\"heartRate\": " + Heartrate.getText()
+                                            + "," + "\"lingkarPerut\": " + LingkarPerut.getText() + ","
+                                            + "\"terapi\": \"" + TerapiObat.getText() + "\","
                                             + "\"kdStatusPulang\": \"4\"," + "\"tglPulang\": \""
                                             + TanggalPulang.getSelectedItem() + "\"," + "\"kdDokter\": \""
                                             + KdTenagaMedis.getText() + "\"," + "\"kdDiag1\": \""
                                             + KdDiagnosa1.getText() + "\"," + "\"kdDiag2\": " + diagnosa2 + ","
                                             + "\"kdDiag3\": " + diagnosa3 + "," + "\"kdPoliRujukInternal\": null,"
-                                            + "\"rujukLanjut\": {" + "\"kdppk\":\"" + KdPPKRujukan.
-                                                    getText() + "\","
-                                            + "\"tglEstRujuk\":\"" + TanggalEstRujuk.
-                                                    getSelectedItem() + "\","
+                                            + "\"rujukLanjut\": {" + "\"kdppk\":\"" + KdPPKRujukan.getText() + "\","
+                                            + "\"tglEstRujuk\":\"" + TanggalEstRujuk.getSelectedItem() + "\","
                                             + "\"subSpesialis\": {" + "\"kdSubSpesialis1\": \""
                                             + KdSubSpesialis.getText() + "\"," + "\"kdSarana\": " + kodesarana + "},"
                                             + "\"khusus\": null " + "}," + "\"kdTacc\": " + kdtacc + ","
@@ -10311,109 +9626,62 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                             + KdAlergiMakanan.getText() + "\"," + "\"alergiUdara\": \""
                                             + KdAlergiUdara.getText() + "\"," + "\"alergiObat\": \""
                                             + KdAlergiObat.getText() + "\"," + "\"kdPrognosa\": \""
-                                            + KdPrognosa.getText() + "\"," + "\"terapiObat\": \"" + TerapiObat.
-                                            getText()
-                                            + "\"," + "\"terapiNonObat\": \"" + TerapiNonObat.
-                                                    getText() + "\","
-                                            + "\"bmhp\": \"" + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.
-                                            getText()
+                                            + KdPrognosa.getText() + "\"," + "\"terapiObat\": \"" + TerapiObat.getText()
+                                            + "\"," + "\"terapiNonObat\": \"" + TerapiNonObat.getText() + "\","
+                                            + "\"bmhp\": \"" + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.getText()
                                             + "\"" + "}";
                                     System.out.println(requestJson);
-                                    requestEntity = new HttpEntity(requestJson,
-                                            headers2);
+                                    requestEntity = new HttpEntity(requestJson, headers2);
                                     requestJson = api.getRest()
-                                            .exchange(URL + "/kunjungan",
-                                                    HttpMethod.POST,
-                                                    requestEntity, String.class)
+                                            .exchange(URL + "/kunjungan", HttpMethod.POST, requestEntity, String.class)
                                             .getBody();
                                     System.out.println(requestJson);
                                     root = mapper.readTree(requestJson);
                                     nameNode = root.path("metaData");
-                                    System.out.println("code : " + nameNode.
-                                            path("code").asText());
-                                    System.out.println("message : " + nameNode.
-                                            path("message").asText());
-                                    if (nameNode.path("code").asText().equals(
-                                            "201")) {
+                                    System.out.println("code : " + nameNode.path("code").asText());
+                                    System.out.println("message : " + nameNode.path("message").asText());
+                                    if (nameNode.path("code").asText().equals("201")) {
                                         for (JsonNode list : mapper
-                                                .readTree(api.Decrypt(root.path(
-                                                        "response").asText(),
-                                                        utc))) {
+                                                .readTree(api.Decrypt(root.path("response").asText(), utc))) {
                                             response = list.path("message");
                                         }
-                                        if (Sequel.menyimpantf2(
-                                                "pcare_rujuk_subspesialis",
+                                        if (Sequel.menyimpantf2("pcare_rujuk_subspesialis",
                                                 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
                                                 "No.Urut", 50,
-                                                new String[]{TNoRw.getText(),
-                                                    response.asText(),
-                                                    Valid.SetTgl(
-                                                            TanggalKunjungan.
-                                                                    getSelectedItem() + ""),
-                                                    TNoRM.getText(), TPasien.
-                                                    getText(), NoKartu.getText(),
-                                                    KdPoliTujuan.getText(),
-                                                    NmPoliTujuan.getText(),
-                                                    Valid.MaxTeks(Keluhan.
-                                                            getText(), 400),
-                                                    KdSadar.getText(),
-                                                    NmSadar.getText(), Sistole.
-                                                    getText(), Diastole.
-                                                            getText(),
-                                                    BeratBadan.getText(),
-                                                    TinggiBadan.getText(),
-                                                    Respiratory.getText(),
-                                                    Heartrate.getText(),
+                                                new String[]{TNoRw.getText(), response.asText(),
+                                                    Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""),
+                                                    TNoRM.getText(), TPasien.getText(), NoKartu.getText(),
+                                                    KdPoliTujuan.getText(), NmPoliTujuan.getText(),
+                                                    Valid.MaxTeks(Keluhan.getText(), 400), KdSadar.getText(),
+                                                    NmSadar.getText(), Sistole.getText(), Diastole.getText(),
+                                                    BeratBadan.getText(), TinggiBadan.getText(),
+                                                    Respiratory.getText(), Heartrate.getText(),
                                                     LingkarPerut.getText(),
-                                                    Valid.MaxTeks(TerapiObat.
-                                                            getText(), 2000),
-                                                    "4", "Rujuk Lanjut",
-                                                    Valid.SetTgl(TanggalPulang.
-                                                            getSelectedItem() + ""),
+                                                    Valid.MaxTeks(TerapiObat.getText(), 2000), "4", "Rujuk Lanjut",
+                                                    Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
                                                     KdTenagaMedis.getText(),
-                                                    Valid.MaxTeks(NmTenagaMedis.
-                                                            getText(), 50),
+                                                    Valid.MaxTeks(NmTenagaMedis.getText(), 50),
                                                     KdDiagnosa1.getText(),
-                                                    Valid.MaxTeks(NmDiagnosa1.
-                                                            getText(), 400),
+                                                    Valid.MaxTeks(NmDiagnosa1.getText(), 400),
                                                     KdDiagnosa2.getText(),
-                                                    Valid.MaxTeks(NmDiagnosa2.
-                                                            getText(), 400),
+                                                    Valid.MaxTeks(NmDiagnosa2.getText(), 400),
                                                     KdDiagnosa3.getText(),
-                                                    Valid.MaxTeks(NmDiagnosa3.
-                                                            getText(), 400),
-                                                    Valid.SetTgl(
-                                                            TanggalEstRujuk.
-                                                                    getSelectedItem() + ""),
-                                                    KdPPKRujukan.getText(),
-                                                    NmPPKRujukan.getText(),
-                                                    KdSubSpesialis.getText(),
-                                                    NmSubSpesialis.getText(),
-                                                    KdSarana.getText(),
-                                                    NmSarana.getText(), KdTACC.
-                                                    getText(),
-                                                    NmTACC.getText(),
-                                                    AlasanTACC.getText(),
-                                                    KdAlergiMakanan.getText(),
-                                                    NmAlergiMakanan.getText(),
-                                                    KdAlergiUdara.getText(),
-                                                    NmAlergiUdara.getText(),
-                                                    KdAlergiObat.getText(),
-                                                    NmAlergiObat.getText(),
-                                                    KdPrognosa.getText(),
-                                                    NmPrognosa.getText(),
-                                                    Valid.MaxTeks(TerapiNonObat.
-                                                            getText(), 2000),
-                                                    Valid.
-                                                            MaxTeks(BMHP.
-                                                                    getText(),
-                                                                    2000)}) == true) {
+                                                    Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                                    Valid.SetTgl(TanggalEstRujuk.getSelectedItem() + ""),
+                                                    KdPPKRujukan.getText(), NmPPKRujukan.getText(),
+                                                    KdSubSpesialis.getText(), NmSubSpesialis.getText(),
+                                                    KdSarana.getText(), NmSarana.getText(), KdTACC.getText(),
+                                                    NmTACC.getText(), AlasanTACC.getText(),
+                                                    KdAlergiMakanan.getText(), NmAlergiMakanan.getText(),
+                                                    KdAlergiUdara.getText(), NmAlergiUdara.getText(),
+                                                    KdAlergiObat.getText(), NmAlergiObat.getText(),
+                                                    KdPrognosa.getText(), NmPrognosa.getText(),
+                                                    Valid.MaxTeks(TerapiNonObat.getText(), 2000),
+                                                    Valid.MaxTeks(BMHP.getText(), 2000)}) == true) {
                                             simpandiagnosa();
                                         }
                                     } else {
-                                        JOptionPane.showMessageDialog(null,
-                                                nameNode.path("message").
-                                                        asText());
+                                        JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
                                     }
                                 }
                             }
@@ -10426,23 +9694,17 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 | NoSuchPaddingException | RestClientException ex) {
             System.out.println("Notifikasi Bridging : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server PCare terputus...!!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server PCare terputus...!!");
             } else if (ex.toString().contains("500")) {
-                JOptionPane.showMessageDialog(null,
-                        "Server PCare baru ngambek broooh...!!");
+                JOptionPane.showMessageDialog(null, "Server PCare baru ngambek broooh...!!");
             } else if (ex.toString().contains("401")) {
-                JOptionPane.showMessageDialog(null,
-                        "Username/Password salah. Lupa password? Wani piro...!");
+                JOptionPane.showMessageDialog(null, "Username/Password salah. Lupa password? Wani piro...!");
             } else if (ex.toString().contains("408")) {
-                JOptionPane.showMessageDialog(null,
-                        "Time out, hayati lelah baaaang...!!");
+                JOptionPane.showMessageDialog(null, "Time out, hayati lelah baaaang...!!");
             } else if (ex.toString().contains("424")) {
-                JOptionPane.showMessageDialog(null,
-                        "Ambil data masternya yang bener dong coy...!");
+                JOptionPane.showMessageDialog(null, "Ambil data masternya yang bener dong coy...!");
             } else if (ex.toString().contains("412")) {
-                JOptionPane.showMessageDialog(null,
-                        "Tidak sesuai kondisi. Aku, kamu end...!");
+                JOptionPane.showMessageDialog(null, "Tidak sesuai kondisi. Aku, kamu end...!");
             } else if (ex.toString().contains("204")) {
                 JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             } else if (ex.toString().contains("refused")) {
@@ -10456,8 +9718,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
         if (Sequel.cariInteger(
                 "select count(pcare_kunjungan_umum.no_rawat) from pcare_kunjungan_umum where pcare_kunjungan_umum.no_rawat=?",
                 norawat) == 0) {
-            System.out.println(
-                    "No.Rawat : " + norawat + " ditemukan, proses mengirim ke server PCare BPJS.. ");
+            System.out.println("No.Rawat : " + norawat + " ditemukan, proses mengirim ke server PCare BPJS.. ");
             try {
                 headers2 = new HttpHeaders();
                 headers2.setContentType(MediaType.TEXT_PLAIN);
@@ -10465,8 +9726,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                 utc = String.valueOf(api.GetUTCdatetimeAsString());
                 headers2.add("X-timestamp", utc);
                 headers2.add("X-signature", api.getHmac());
-                headers2.add("X-authorization", "Basic " + Base64.
-                        encodeBase64String(otorisasi.getBytes()));
+                headers2.add("X-authorization", "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
                 headers2.add("user_key", koneksiDB.USERKEYAPIPCARE());
                 if (ChkRujukLanjut.isSelected() == false) {
                     diagnosa2 = "null";
@@ -10477,89 +9737,58 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     if (!KdDiagnosa3.getText().isEmpty()) {
                         diagnosa3 = "\"" + KdDiagnosa3.getText() + "\"";
                     }
-                    requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.
-                            getText() + "\","
-                            + "\"tglDaftar\": \"" + TanggalKunjungan.
-                                    getSelectedItem() + "\"," + "\"kdPoli\": \""
-                            + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.
-                            getText() + "\","
-                            + "\"kdSadar\": \"" + KdSadar.getText() + "\"," + "\"sistole\": " + Sistole.
-                            getText() + ","
-                            + "\"diastole\": " + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.
-                            getText()
+                    requestJson = "{" + "\"noKunjungan\": null," + "\"noKartu\": \"" + NoKartu.getText() + "\","
+                            + "\"tglDaftar\": \"" + TanggalKunjungan.getSelectedItem() + "\"," + "\"kdPoli\": \""
+                            + KdPoliTujuan.getText() + "\"," + "\"keluhan\": \"" + Keluhan.getText() + "\","
+                            + "\"kdSadar\": \"" + KdSadar.getText() + "\"," + "\"sistole\": " + Sistole.getText() + ","
+                            + "\"diastole\": " + Diastole.getText() + "," + "\"beratBadan\": " + BeratBadan.getText()
                             + "," + "\"tinggiBadan\": " + TinggiBadan.getText() + "," + "\"respRate\": "
-                            + Respiratory.getText() + "," + "\"heartRate\": " + Heartrate.
-                            getText() + ","
+                            + Respiratory.getText() + "," + "\"heartRate\": " + Heartrate.getText() + ","
                             + "\"lingkarPerut\": " + LingkarPerut.getText() + "," + "\"terapi\": \""
                             + TerapiObat.getText() + "\"," + "\"kdStatusPulang\": \"3\"," + "\"tglPulang\": \""
-                            + TanggalPulang.getSelectedItem() + "\"," + "\"kdDokter\": \"" + KdTenagaMedis.
-                            getText()
+                            + TanggalPulang.getSelectedItem() + "\"," + "\"kdDokter\": \"" + KdTenagaMedis.getText()
                             + "\"," + "\"kdDiag1\": \"" + KdDiagnosa1.getText() + "\"," + "\"kdDiag2\": " + diagnosa2
                             + "," + "\"kdDiag3\": " + diagnosa3 + "," + "\"kdPoliRujukInternal\":null,"
                             + "\"rujukLanjut\": null," + "\"kdTacc\": -1," + "\"alasanTacc\": null,"
                             + "\"anamnesa\": \"" + Keluhan.getText() + "\"," + "\"alergiMakan\": \""
-                            + KdAlergiMakanan.getText() + "\"," + "\"alergiUdara\": \"" + KdAlergiUdara.
-                            getText()
-                            + "\"," + "\"alergiObat\": \"" + KdAlergiObat.
-                                    getText() + "\"," + "\"kdPrognosa\": \""
-                            + KdPrognosa.getText() + "\"," + "\"terapiObat\": \"" + TerapiObat.
-                            getText() + "\","
+                            + KdAlergiMakanan.getText() + "\"," + "\"alergiUdara\": \"" + KdAlergiUdara.getText()
+                            + "\"," + "\"alergiObat\": \"" + KdAlergiObat.getText() + "\"," + "\"kdPrognosa\": \""
+                            + KdPrognosa.getText() + "\"," + "\"terapiObat\": \"" + TerapiObat.getText() + "\","
                             + "\"terapiNonObat\": \"" + TerapiNonObat.getText() + "\"," + "\"bmhp\": \""
-                            + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.
-                            getText() + "\"" + "}";
+                            + BMHP.getText() + "\"," + "\"suhu\": \"" + TSuhu.getText() + "\"" + "}";
                     System.out.println(requestJson);
                     requestEntity = new HttpEntity(requestJson, headers2);
                     requestJson = api.getRest()
-                            .exchange(URL + "/kunjungan", HttpMethod.POST,
-                                    requestEntity, String.class)
+                            .exchange(URL + "/kunjungan", HttpMethod.POST, requestEntity, String.class)
                             .getBody();
                     System.out.println(requestJson);
                     root = mapper.readTree(requestJson);
                     nameNode = root.path("metaData");
-                    System.out.println("code : " + nameNode.path("code").
-                            asText());
-                    System.out.println("message : " + nameNode.path("message").
-                            asText());
+                    System.out.println("code : " + nameNode.path("code").asText());
+                    System.out.println("message : " + nameNode.path("message").asText());
                     if (nameNode.path("code").asText().equals("201")) {
-                        for (JsonNode list : mapper.readTree(api.Decrypt(root.
-                                path("response").asText(), utc))) {
+                        for (JsonNode list : mapper.readTree(api.Decrypt(root.path("response").asText(), utc))) {
                             response = list.path("message");
                         }
                         Sequel.menyimpan("pcare_kunjungan_umum",
                                 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?",
                                 "No.Urut", 40,
                                 new String[]{TNoRw.getText(), response.asText(),
-                                    Valid.SetTgl(TanggalKunjungan.
-                                            getSelectedItem() + ""), TNoRM.
-                                            getText(),
-                                    TPasien.getText(), NoKartu.getText(),
-                                    KdPoliTujuan.getText(),
-                                    NmPoliTujuan.getText(), Valid.MaxTeks(
-                                    Keluhan.getText(), 400),
-                                    KdSadar.getText(), NmSadar.getText(),
-                                    Sistole.getText(), Diastole.getText(),
-                                    BeratBadan.getText(), TinggiBadan.getText(),
-                                    Respiratory.getText(),
+                                    Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""), TNoRM.getText(),
+                                    TPasien.getText(), NoKartu.getText(), KdPoliTujuan.getText(),
+                                    NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.getText(), 400),
+                                    KdSadar.getText(), NmSadar.getText(), Sistole.getText(), Diastole.getText(),
+                                    BeratBadan.getText(), TinggiBadan.getText(), Respiratory.getText(),
                                     Heartrate.getText(), LingkarPerut.getText(),
-                                    Valid.MaxTeks(TerapiObat.getText(), 2000),
-                                    "3", "Berobat Jalan",
-                                    Valid.SetTgl(
-                                            TanggalPulang.getSelectedItem() + ""),
-                                    KdTenagaMedis.getText(),
-                                    Valid.MaxTeks(NmTenagaMedis.getText(), 50),
-                                    KdDiagnosa1.getText(),
-                                    Valid.MaxTeks(NmDiagnosa1.getText(), 400),
-                                    KdDiagnosa2.getText(),
-                                    Valid.MaxTeks(NmDiagnosa2.getText(), 400),
-                                    KdDiagnosa3.getText(),
-                                    Valid.MaxTeks(NmDiagnosa3.getText(), 400),
-                                    KdAlergiMakanan.getText(),
-                                    NmAlergiMakanan.getText(), KdAlergiUdara.
-                                    getText(), NmAlergiUdara.getText(),
-                                    KdAlergiObat.getText(), NmAlergiObat.
-                                    getText(), KdPrognosa.getText(),
-                                    NmPrognosa.getText(), Valid.MaxTeks(
-                                    TerapiNonObat.getText(), 2000),
+                                    Valid.MaxTeks(TerapiObat.getText(), 2000), "3", "Berobat Jalan",
+                                    Valid.SetTgl(TanggalPulang.getSelectedItem() + ""), KdTenagaMedis.getText(),
+                                    Valid.MaxTeks(NmTenagaMedis.getText(), 50), KdDiagnosa1.getText(),
+                                    Valid.MaxTeks(NmDiagnosa1.getText(), 400), KdDiagnosa2.getText(),
+                                    Valid.MaxTeks(NmDiagnosa2.getText(), 400), KdDiagnosa3.getText(),
+                                    Valid.MaxTeks(NmDiagnosa3.getText(), 400), KdAlergiMakanan.getText(),
+                                    NmAlergiMakanan.getText(), KdAlergiUdara.getText(), NmAlergiUdara.getText(),
+                                    KdAlergiObat.getText(), NmAlergiObat.getText(), KdPrognosa.getText(),
+                                    NmPrognosa.getText(), Valid.MaxTeks(TerapiNonObat.getText(), 2000),
                                     Valid.MaxTeks(BMHP.getText(), 2000)});
                     }
                 }
@@ -10572,33 +9801,19 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?",
                             "No.Urut", 40,
                             new String[]{TNoRw.getText(), response.asText(),
-                                Valid.SetTgl(
-                                        TanggalKunjungan.getSelectedItem() + ""),
-                                TNoRM.getText(),
-                                TPasien.getText(), NoKartu.getText(),
-                                KdPoliTujuan.getText(),
-                                NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.
-                                getText(), 400), KdSadar.getText(),
-                                NmSadar.getText(), Sistole.getText(), Diastole.
-                                getText(), BeratBadan.getText(),
-                                TinggiBadan.getText(), Respiratory.getText(),
-                                Heartrate.getText(),
-                                LingkarPerut.getText(), Valid.MaxTeks(
-                                TerapiObat.getText(), 2000), "3",
-                                "Berobat Jalan", Valid.SetTgl(TanggalPulang.
-                                        getSelectedItem() + ""),
-                                KdTenagaMedis.getText(), Valid.MaxTeks(
-                                NmTenagaMedis.getText(), 50),
-                                KdDiagnosa1.getText(), Valid.MaxTeks(
-                                NmDiagnosa1.getText(), 400),
-                                KdDiagnosa2.getText(), Valid.MaxTeks(
-                                NmDiagnosa2.getText(), 400),
-                                KdDiagnosa3.getText(), Valid.MaxTeks(
-                                NmDiagnosa3.getText(), 400),
-                                KdAlergiMakanan.getText(), NmAlergiMakanan.
-                                getText(), KdAlergiUdara.getText(),
-                                NmAlergiUdara.getText(), KdAlergiObat.getText(),
-                                NmAlergiObat.getText(),
+                                Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""), TNoRM.getText(),
+                                TPasien.getText(), NoKartu.getText(), KdPoliTujuan.getText(),
+                                NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.getText(), 400), KdSadar.getText(),
+                                NmSadar.getText(), Sistole.getText(), Diastole.getText(), BeratBadan.getText(),
+                                TinggiBadan.getText(), Respiratory.getText(), Heartrate.getText(),
+                                LingkarPerut.getText(), Valid.MaxTeks(TerapiObat.getText(), 2000), "3",
+                                "Berobat Jalan", Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
+                                KdTenagaMedis.getText(), Valid.MaxTeks(NmTenagaMedis.getText(), 50),
+                                KdDiagnosa1.getText(), Valid.MaxTeks(NmDiagnosa1.getText(), 400),
+                                KdDiagnosa2.getText(), Valid.MaxTeks(NmDiagnosa2.getText(), 400),
+                                KdDiagnosa3.getText(), Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                KdAlergiMakanan.getText(), NmAlergiMakanan.getText(), KdAlergiUdara.getText(),
+                                NmAlergiUdara.getText(), KdAlergiObat.getText(), NmAlergiObat.getText(),
                                 KdPrognosa.getText(), NmPrognosa.getText(),
                                 Valid.MaxTeks(TerapiNonObat.getText(), 2000),
                                 Valid.MaxTeks(BMHP.getText(), 2000)});
@@ -10609,84 +9824,53 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?",
                             "No.Urut", 40,
                             new String[]{TNoRw.getText(), response.asText(),
-                                Valid.SetTgl(
-                                        TanggalKunjungan.getSelectedItem() + ""),
-                                TNoRM.getText(),
-                                TPasien.getText(), NoKartu.getText(),
-                                KdPoliTujuan.getText(),
-                                NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.
-                                getText(), 400), KdSadar.getText(),
-                                NmSadar.getText(), Sistole.getText(), Diastole.
-                                getText(), BeratBadan.getText(),
-                                TinggiBadan.getText(), Respiratory.getText(),
-                                Heartrate.getText(),
-                                LingkarPerut.getText(), Valid.MaxTeks(
-                                TerapiObat.getText(), 2000), "3",
-                                "Berobat Jalan", Valid.SetTgl(TanggalPulang.
-                                        getSelectedItem() + ""),
-                                KdTenagaMedis.getText(), Valid.MaxTeks(
-                                NmTenagaMedis.getText(), 50),
-                                KdDiagnosa1.getText(), Valid.MaxTeks(
-                                NmDiagnosa1.getText(), 400),
-                                KdDiagnosa2.getText(), Valid.MaxTeks(
-                                NmDiagnosa2.getText(), 400),
-                                KdDiagnosa3.getText(), Valid.MaxTeks(
-                                NmDiagnosa3.getText(), 400),
-                                KdAlergiMakanan.getText(), NmAlergiMakanan.
-                                getText(), KdAlergiUdara.getText(),
-                                NmAlergiUdara.getText(), KdAlergiObat.getText(),
-                                NmAlergiObat.getText(),
+                                Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""), TNoRM.getText(),
+                                TPasien.getText(), NoKartu.getText(), KdPoliTujuan.getText(),
+                                NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.getText(), 400), KdSadar.getText(),
+                                NmSadar.getText(), Sistole.getText(), Diastole.getText(), BeratBadan.getText(),
+                                TinggiBadan.getText(), Respiratory.getText(), Heartrate.getText(),
+                                LingkarPerut.getText(), Valid.MaxTeks(TerapiObat.getText(), 2000), "3",
+                                "Berobat Jalan", Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
+                                KdTenagaMedis.getText(), Valid.MaxTeks(NmTenagaMedis.getText(), 50),
+                                KdDiagnosa1.getText(), Valid.MaxTeks(NmDiagnosa1.getText(), 400),
+                                KdDiagnosa2.getText(), Valid.MaxTeks(NmDiagnosa2.getText(), 400),
+                                KdDiagnosa3.getText(), Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                KdAlergiMakanan.getText(), NmAlergiMakanan.getText(), KdAlergiUdara.getText(),
+                                NmAlergiUdara.getText(), KdAlergiObat.getText(), NmAlergiObat.getText(),
                                 KdPrognosa.getText(), NmPrognosa.getText(),
                                 Valid.MaxTeks(TerapiNonObat.getText(), 2000),
                                 Valid.MaxTeks(BMHP.getText(), 2000)});
                     System.out.println(
                             "Server PCare baru ngambek broooh. Data disimpan secara lokal, dan dapat dikirimkan kembali ke server PCare..!!");
                 } else if (ex.toString().contains("401")) {
-                    System.out.println(
-                            "Username/Password salah. Lupa password? Wani piro...!");
+                    System.out.println("Username/Password salah. Lupa password? Wani piro...!");
                 } else if (ex.toString().contains("408")) {
                     Sequel.menyimpan("pcare_kunjungan_umum",
                             "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?",
                             "No.Urut", 40,
                             new String[]{TNoRw.getText(), response.asText(),
-                                Valid.SetTgl(
-                                        TanggalKunjungan.getSelectedItem() + ""),
-                                TNoRM.getText(),
-                                TPasien.getText(), NoKartu.getText(),
-                                KdPoliTujuan.getText(),
-                                NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.
-                                getText(), 400), KdSadar.getText(),
-                                NmSadar.getText(), Sistole.getText(), Diastole.
-                                getText(), BeratBadan.getText(),
-                                TinggiBadan.getText(), Respiratory.getText(),
-                                Heartrate.getText(),
-                                LingkarPerut.getText(), Valid.MaxTeks(
-                                TerapiObat.getText(), 2000), "3",
-                                "Berobat Jalan", Valid.SetTgl(TanggalPulang.
-                                        getSelectedItem() + ""),
-                                KdTenagaMedis.getText(), Valid.MaxTeks(
-                                NmTenagaMedis.getText(), 50),
-                                KdDiagnosa1.getText(), Valid.MaxTeks(
-                                NmDiagnosa1.getText(), 400),
-                                KdDiagnosa2.getText(), Valid.MaxTeks(
-                                NmDiagnosa2.getText(), 400),
-                                KdDiagnosa3.getText(), Valid.MaxTeks(
-                                NmDiagnosa3.getText(), 400),
-                                KdAlergiMakanan.getText(), NmAlergiMakanan.
-                                getText(), KdAlergiUdara.getText(),
-                                NmAlergiUdara.getText(), KdAlergiObat.getText(),
-                                NmAlergiObat.getText(),
+                                Valid.SetTgl(TanggalKunjungan.getSelectedItem() + ""), TNoRM.getText(),
+                                TPasien.getText(), NoKartu.getText(), KdPoliTujuan.getText(),
+                                NmPoliTujuan.getText(), Valid.MaxTeks(Keluhan.getText(), 400), KdSadar.getText(),
+                                NmSadar.getText(), Sistole.getText(), Diastole.getText(), BeratBadan.getText(),
+                                TinggiBadan.getText(), Respiratory.getText(), Heartrate.getText(),
+                                LingkarPerut.getText(), Valid.MaxTeks(TerapiObat.getText(), 2000), "3",
+                                "Berobat Jalan", Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
+                                KdTenagaMedis.getText(), Valid.MaxTeks(NmTenagaMedis.getText(), 50),
+                                KdDiagnosa1.getText(), Valid.MaxTeks(NmDiagnosa1.getText(), 400),
+                                KdDiagnosa2.getText(), Valid.MaxTeks(NmDiagnosa2.getText(), 400),
+                                KdDiagnosa3.getText(), Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                KdAlergiMakanan.getText(), NmAlergiMakanan.getText(), KdAlergiUdara.getText(),
+                                NmAlergiUdara.getText(), KdAlergiObat.getText(), NmAlergiObat.getText(),
                                 KdPrognosa.getText(), NmPrognosa.getText(),
                                 Valid.MaxTeks(TerapiNonObat.getText(), 2000),
                                 Valid.MaxTeks(BMHP.getText(), 2000)});
                     System.out.println(
                             "Time out, hayati lelah baaaang. Data disimpan secara lokal, dan dapat dikirimkan kembali ke server PCare..!!");
                 } else if (ex.toString().contains("424")) {
-                    System.out.println(
-                            "Ambil data masternya yang bener dong coy...!");
+                    System.out.println("Ambil data masternya yang bener dong coy...!");
                 } else if (ex.toString().contains("412")) {
-                    System.out.
-                            println("Tidak sesuai kondisi. Aku, kamu end...!");
+                    System.out.println("Tidak sesuai kondisi. Aku, kamu end...!");
                 } else if (ex.toString().contains("204")) {
                     System.out.println("Data tidak ditemukan...!");
                 } else if (ex.toString().contains("refused")) {
@@ -10697,68 +9881,48 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
     }
 
     private void simpandiagnosa() {
-        Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6,
-                new String[]{KdDiagnosa1.getText(),
-                    NmDiagnosa1.getText(), NmDiagnosa1.getText(), "-", "-",
-                    "Tidak Menular"});
-        if (Sequel.cariInteger(
-                "select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
+        Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6, new String[]{KdDiagnosa1.getText(),
+            NmDiagnosa1.getText(), NmDiagnosa1.getText(), "-", "-", "Tidak Menular"});
+        if (Sequel.cariInteger("select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
                 + "inner join reg_periksa inner join pasien on " + "diagnosa_pasien.no_rawat=reg_periksa.no_rawat and "
-                + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='" + TNoRM.
-                        getText()
+                + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='" + TNoRM.getText()
                 + "' and diagnosa_pasien.kd_penyakit='" + KdDiagnosa1.getText() + "'") > 0) {
             Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
-                    new String[]{TNoRw.getText(), KdDiagnosa1.getText(), "Ralan",
-                        "1", "Lama"});
+                    new String[]{TNoRw.getText(), KdDiagnosa1.getText(), "Ralan", "1", "Lama"});
         } else {
             Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
-                    new String[]{TNoRw.getText(), KdDiagnosa1.getText(), "Ralan",
-                        "1", "Baru"});
+                    new String[]{TNoRw.getText(), KdDiagnosa1.getText(), "Ralan", "1", "Baru"});
         }
 
         if (!NmDiagnosa2.equals("")) {
-            Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6,
-                    new String[]{KdDiagnosa2.getText(),
-                        NmDiagnosa2.getText(), NmDiagnosa2.getText(), "-", "-",
-                        "Tidak Menular"});
-            if (Sequel.cariInteger(
-                    "select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
+            Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6, new String[]{KdDiagnosa2.getText(),
+                NmDiagnosa2.getText(), NmDiagnosa2.getText(), "-", "-", "Tidak Menular"});
+            if (Sequel.cariInteger("select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
                     + "inner join reg_periksa inner join pasien on "
                     + "diagnosa_pasien.no_rawat=reg_periksa.no_rawat and "
-                    + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='" + TNoRM.
-                            getText()
-                    + "' and diagnosa_pasien.kd_penyakit='" + KdDiagnosa2.
-                            getText() + "'") > 0) {
+                    + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='" + TNoRM.getText()
+                    + "' and diagnosa_pasien.kd_penyakit='" + KdDiagnosa2.getText() + "'") > 0) {
                 Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
-                        new String[]{TNoRw.getText(), KdDiagnosa2.getText(),
-                            "Ralan", "2", "Lama"});
+                        new String[]{TNoRw.getText(), KdDiagnosa2.getText(), "Ralan", "2", "Lama"});
             } else {
                 Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
-                        new String[]{TNoRw.getText(), KdDiagnosa2.getText(),
-                            "Ralan", "2", "Baru"});
+                        new String[]{TNoRw.getText(), KdDiagnosa2.getText(), "Ralan", "2", "Baru"});
             }
         }
 
         if (!NmDiagnosa3.equals("")) {
-            Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6,
-                    new String[]{KdDiagnosa3.getText(),
-                        NmDiagnosa3.getText(), NmDiagnosa3.getText(), "-", "-",
-                        "Tidak Menular"});
-            if (Sequel.cariInteger(
-                    "select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
+            Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6, new String[]{KdDiagnosa3.getText(),
+                NmDiagnosa3.getText(), NmDiagnosa3.getText(), "-", "-", "Tidak Menular"});
+            if (Sequel.cariInteger("select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
                     + "inner join reg_periksa inner join pasien on "
                     + "diagnosa_pasien.no_rawat=reg_periksa.no_rawat and "
-                    + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='" + TNoRM.
-                            getText()
-                    + "' and diagnosa_pasien.kd_penyakit='" + KdDiagnosa3.
-                            getText() + "'") > 0) {
+                    + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='" + TNoRM.getText()
+                    + "' and diagnosa_pasien.kd_penyakit='" + KdDiagnosa3.getText() + "'") > 0) {
                 Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
-                        new String[]{TNoRw.getText(), KdDiagnosa3.getText(),
-                            "Ralan", "3", "Lama"});
+                        new String[]{TNoRw.getText(), KdDiagnosa3.getText(), "Ralan", "3", "Lama"});
             } else {
                 Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
-                        new String[]{TNoRw.getText(), KdDiagnosa3.getText(),
-                            "Ralan", "3", "Baru"});
+                        new String[]{TNoRw.getText(), KdDiagnosa3.getText(), "Ralan", "3", "Baru"});
             }
         }
     }
@@ -10794,25 +9958,21 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             @Override
-            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
         }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         Scheme scheme = new Scheme("https", 443, sslFactory);
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() {
             @Override
-            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod,
-                    URI uri) {
+            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
                 if (HttpMethod.DELETE == httpMethod) {
                     return new HttpEntityEnclosingDeleteRequest(uri);
                 }
@@ -10820,8 +9980,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
         };
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         restTemplate.setRequestFactory(factory);
 
         try {
@@ -10831,80 +9990,55 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             utc = String.valueOf(api.GetUTCdatetimeAsString());
             headers.add("X-timestamp", utc);
             headers.add("X-signature", api.getHmac());
-            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(
-                    otorisasi.getBytes()));
+            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
             headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
             root = mapper
                     .readTree(
                             restTemplate
                                     .exchange(
                                             URL + "/pendaftaran/peserta/"
-                                            + tbPendaftaran.getValueAt(
-                                                    tbPendaftaran.
-                                                            getSelectedRow(), 5).
-                                                    toString()
+                                            + tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 5).toString()
                                             + "/tglDaftar/"
-                                            + Valid.SetTgl3(tbPendaftaran.
-                                                    getValueAt(tbPendaftaran.
-                                                            getSelectedRow(), 1)
+                                            + Valid.SetTgl3(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 1)
                                                     .toString())
                                             + "/noUrut/"
-                                            + tbPendaftaran.getValueAt(
-                                                    tbPendaftaran.
-                                                            getSelectedRow(), 18).
-                                                    toString()
+                                            + tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 18).toString()
                                             + "/kdPoli/"
-                                            + tbPendaftaran.getValueAt(
-                                                    tbPendaftaran.
-                                                            getSelectedRow(), 6).
-                                                    toString(),
-                                            HttpMethod.DELETE,
-                                            new HttpEntity<String>(requestJson,
-                                                    headers), String.class)
+                                            + tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 6).toString(),
+                                            HttpMethod.DELETE, new HttpEntity<String>(requestJson, headers), String.class)
                                     .getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
                 Sequel.meghapus("pcare_pendaftaran", "no_rawat",
-                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(),
-                                0).toString());
+                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 0).toString());
                 Sequel.meghapus("reg_periksa", "no_rawat",
-                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(),
-                                0).toString());
+                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 0).toString());
                 tampil();
             } else if (nameNode.path("code").asText().equals("304")) {
                 Sequel.meghapus("pcare_pendaftaran", "no_rawat",
-                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(),
-                                0).toString());
+                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 0).toString());
                 Sequel.meghapus("reg_periksa", "no_rawat",
-                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(),
-                                0).toString());
+                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 0).toString());
                 tampil();
             } else {
-                JOptionPane.showMessageDialog(null, nameNode.path("message").
-                        asText());
+                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
             }
         } catch (HeadlessException | IOException | RestClientException e) {
             System.out.println("Notif : " + e);
             if (e.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server PCare terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server PCare terputus...!");
             } else if (e.toString().contains("500")) {
-                JOptionPane.showMessageDialog(null,
-                        "Server PCare baru ngambek broooh...!");
+                JOptionPane.showMessageDialog(null, "Server PCare baru ngambek broooh...!");
             } else if (e.toString().contains("401")) {
-                JOptionPane.showMessageDialog(null,
-                        "Username/Password salah. Lupa password? Wani piro...!");
+                JOptionPane.showMessageDialog(null, "Username/Password salah. Lupa password? Wani piro...!");
             } else if (e.toString().contains("408")) {
-                JOptionPane.showMessageDialog(null,
-                        "Time out, hayati lelah baaaang...!");
+                JOptionPane.showMessageDialog(null, "Time out, hayati lelah baaaang...!");
             } else if (e.toString().contains("424")) {
-                JOptionPane.showMessageDialog(null,
-                        "Ambil data masternya yang bener dong coy...!");
+                JOptionPane.showMessageDialog(null, "Ambil data masternya yang bener dong coy...!");
             } else if (e.toString().contains("412")) {
-                JOptionPane.showMessageDialog(null,
-                        "Tidak sesuai kondisi. Aku, kamu end...!");
+                JOptionPane.showMessageDialog(null, "Tidak sesuai kondisi. Aku, kamu end...!");
             } else if (e.toString().contains("204")) {
                 JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             } else if (e.toString().contains("refused")) {
@@ -10924,25 +10058,21 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             @Override
-            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
         }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         Scheme scheme = new Scheme("https", 443, sslFactory);
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() {
             @Override
-            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod,
-                    URI uri) {
+            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
                 if (HttpMethod.DELETE == httpMethod) {
                     return new HttpEntityEnclosingDeleteRequest(uri);
                 }
@@ -10950,8 +10080,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
         };
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         restTemplate.setRequestFactory(factory);
 
         try {
@@ -10961,8 +10090,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             utc = String.valueOf(api.GetUTCdatetimeAsString());
             headers.add("X-timestamp", utc);
             headers.add("X-signature", api.getHmac());
-            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(
-                    otorisasi.getBytes()));
+            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
             headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
             mapper = new ObjectMapper();
             root = mapper
@@ -10970,60 +10098,39 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                             restTemplate
                                     .exchange(
                                             URL + "/pendaftaran/peserta/"
-                                            + tbPendaftaran.getValueAt(
-                                                    tbPendaftaran.
-                                                            getSelectedRow(), 5).
-                                                    toString()
+                                            + tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 5).toString()
                                             + "/tglDaftar/"
-                                            + Valid.SetTgl3(tbPendaftaran.
-                                                    getValueAt(tbPendaftaran.
-                                                            getSelectedRow(), 1)
+                                            + Valid.SetTgl3(tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 1)
                                                     .toString())
                                             + "/noUrut/"
-                                            + tbPendaftaran.getValueAt(
-                                                    tbPendaftaran.
-                                                            getSelectedRow(), 18).
-                                                    toString()
+                                            + tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 18).toString()
                                             + "/kdPoli/"
-                                            + tbPendaftaran.getValueAt(
-                                                    tbPendaftaran.
-                                                            getSelectedRow(), 6).
-                                                    toString(),
-                                            HttpMethod.DELETE,
-                                            new HttpEntity<String>(requestJson,
-                                                    headers), String.class)
+                                            + tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 6).toString(),
+                                            HttpMethod.DELETE, new HttpEntity<String>(requestJson, headers), String.class)
                                     .getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
                 Sequel.meghapus("pcare_pendaftaran", "no_rawat",
-                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(),
-                                0).toString());
+                        tbPendaftaran.getValueAt(tbPendaftaran.getSelectedRow(), 0).toString());
             } else {
-                JOptionPane.showMessageDialog(null, nameNode.path("message").
-                        asText());
+                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
             }
         } catch (HeadlessException | IOException | RestClientException e) {
             System.out.println("Notif : " + e);
             if (e.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server PCare terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server PCare terputus...!");
             } else if (e.toString().contains("500")) {
-                JOptionPane.showMessageDialog(null,
-                        "Server PCare baru ngambek broooh...!");
+                JOptionPane.showMessageDialog(null, "Server PCare baru ngambek broooh...!");
             } else if (e.toString().contains("401")) {
-                JOptionPane.showMessageDialog(null,
-                        "Username/Password salah. Lupa password? Wani piro...!");
+                JOptionPane.showMessageDialog(null, "Username/Password salah. Lupa password? Wani piro...!");
             } else if (e.toString().contains("408")) {
-                JOptionPane.showMessageDialog(null,
-                        "Time out, hayati lelah baaaang...!");
+                JOptionPane.showMessageDialog(null, "Time out, hayati lelah baaaang...!");
             } else if (e.toString().contains("424")) {
-                JOptionPane.showMessageDialog(null,
-                        "Ambil data masternya yang bener dong coy...!");
+                JOptionPane.showMessageDialog(null, "Ambil data masternya yang bener dong coy...!");
             } else if (e.toString().contains("412")) {
-                JOptionPane.showMessageDialog(null,
-                        "Tidak sesuai kondisi. Aku, kamu end...!");
+                JOptionPane.showMessageDialog(null, "Tidak sesuai kondisi. Aku, kamu end...!");
             } else if (e.toString().contains("204")) {
                 JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             } else if (e.toString().contains("refused")) {
@@ -11043,25 +10150,21 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             @Override
-            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
         }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         Scheme scheme = new Scheme("https", 443, sslFactory);
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() {
             @Override
-            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod,
-                    URI uri) {
+            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
                 if (HttpMethod.DELETE == httpMethod) {
                     return new HttpEntityEnclosingDeleteRequest(uri);
                 }
@@ -11069,8 +10172,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
         };
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         restTemplate.setRequestFactory(factory);
 
         try {
@@ -11080,50 +10182,39 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             utc = String.valueOf(api.GetUTCdatetimeAsString());
             headers.add("X-timestamp", utc);
             headers.add("X-signature", api.getHmac());
-            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(
-                    otorisasi.getBytes()));
+            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
             headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
             root = mapper.readTree(
                     restTemplate
                             .exchange(
                                     URL + "/kunjungan/"
-                                    + tbKunjungan.getValueAt(tbKunjungan.
-                                            getSelectedRow(), 1).toString(),
-                                    HttpMethod.DELETE, new HttpEntity<String>(
-                                            requestJson, headers), String.class)
+                                    + tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 1).toString(),
+                                    HttpMethod.DELETE, new HttpEntity<String>(requestJson, headers), String.class)
                             .getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
                 Sequel.meghapus("pcare_kunjungan_umum", "no_rawat",
-                        tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 0).
-                                toString());
+                        tbKunjungan.getValueAt(tbKunjungan.getSelectedRow(), 0).toString());
                 tampil2();
             } else {
-                JOptionPane.showMessageDialog(null, nameNode.path("message").
-                        asText());
+                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
             }
         } catch (HeadlessException | IOException | RestClientException e) {
             System.out.println("Notif : " + e);
             if (e.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server PCare terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server PCare terputus...!");
             } else if (e.toString().contains("500")) {
-                JOptionPane.showMessageDialog(null,
-                        "Server PCare baru ngambek broooh...!");
+                JOptionPane.showMessageDialog(null, "Server PCare baru ngambek broooh...!");
             } else if (e.toString().contains("401")) {
-                JOptionPane.showMessageDialog(null,
-                        "Username/Password salah. Lupa password? Wani piro...!");
+                JOptionPane.showMessageDialog(null, "Username/Password salah. Lupa password? Wani piro...!");
             } else if (e.toString().contains("408")) {
-                JOptionPane.showMessageDialog(null,
-                        "Time out, hayati lelah baaaang...!");
+                JOptionPane.showMessageDialog(null, "Time out, hayati lelah baaaang...!");
             } else if (e.toString().contains("424")) {
-                JOptionPane.showMessageDialog(null,
-                        "Ambil data masternya yang bener dong coy...!");
+                JOptionPane.showMessageDialog(null, "Ambil data masternya yang bener dong coy...!");
             } else if (e.toString().contains("412")) {
-                JOptionPane.showMessageDialog(null,
-                        "Tidak sesuai kondisi. Aku, kamu end...!");
+                JOptionPane.showMessageDialog(null, "Tidak sesuai kondisi. Aku, kamu end...!");
             } else if (e.toString().contains("204")) {
                 JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             } else if (e.toString().contains("refused")) {
@@ -11143,25 +10234,21 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             @Override
-            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
         }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         Scheme scheme = new Scheme("https", 443, sslFactory);
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() {
             @Override
-            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod,
-                    URI uri) {
+            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
                 if (HttpMethod.DELETE == httpMethod) {
                     return new HttpEntityEnclosingDeleteRequest(uri);
                 }
@@ -11169,8 +10256,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             }
 
         };
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         restTemplate.setRequestFactory(factory);
 
         try {
@@ -11180,50 +10266,39 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
             utc = String.valueOf(api.GetUTCdatetimeAsString());
             headers.add("X-timestamp", utc);
             headers.add("X-signature", api.getHmac());
-            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(
-                    otorisasi.getBytes()));
+            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
             headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
             root = mapper.readTree(
                     restTemplate
                             .exchange(
                                     URL + "/kunjungan/"
-                                    + tbSpesialis.getValueAt(tbSpesialis.
-                                            getSelectedRow(), 1).toString(),
-                                    HttpMethod.DELETE, new HttpEntity<String>(
-                                            requestJson, headers), String.class)
+                                    + tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 1).toString(),
+                                    HttpMethod.DELETE, new HttpEntity<String>(requestJson, headers), String.class)
                             .getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
                 Sequel.meghapus("pcare_rujuk_subspesialis", "no_rawat",
-                        tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 0).
-                                toString());
+                        tbSpesialis.getValueAt(tbSpesialis.getSelectedRow(), 0).toString());
                 tampil2();
             } else {
-                JOptionPane.showMessageDialog(null, nameNode.path("message").
-                        asText());
+                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
             }
         } catch (HeadlessException | IOException | RestClientException e) {
             System.out.println("Notif : " + e);
             if (e.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server PCare terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server PCare terputus...!");
             } else if (e.toString().contains("500")) {
-                JOptionPane.showMessageDialog(null,
-                        "Server PCare baru ngambek broooh...!");
+                JOptionPane.showMessageDialog(null, "Server PCare baru ngambek broooh...!");
             } else if (e.toString().contains("401")) {
-                JOptionPane.showMessageDialog(null,
-                        "Username/Password salah. Lupa password? Wani piro...!");
+                JOptionPane.showMessageDialog(null, "Username/Password salah. Lupa password? Wani piro...!");
             } else if (e.toString().contains("408")) {
-                JOptionPane.showMessageDialog(null,
-                        "Time out, hayati lelah baaaang...!");
+                JOptionPane.showMessageDialog(null, "Time out, hayati lelah baaaang...!");
             } else if (e.toString().contains("424")) {
-                JOptionPane.showMessageDialog(null,
-                        "Ambil data masternya yang bener dong coy...!");
+                JOptionPane.showMessageDialog(null, "Ambil data masternya yang bener dong coy...!");
             } else if (e.toString().contains("412")) {
-                JOptionPane.showMessageDialog(null,
-                        "Tidak sesuai kondisi. Aku, kamu end...!");
+                JOptionPane.showMessageDialog(null, "Tidak sesuai kondisi. Aku, kamu end...!");
             } else if (e.toString().contains("204")) {
                 JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             } else if (e.toString().contains("refused")) {
@@ -11271,129 +10346,71 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                     String menit = nol_menit + Integer.toString(nilai_menit);
                     String detik = nol_detik + Integer.toString(nilai_detik);
                     if (menit.equals("01") && detik.equals("01")) {
-                        if (jam.equals("01") && menit.equals("01") && detik.
-                                equals("01")) {
+                        if (jam.equals("01") && menit.equals("01") && detik.equals("01")) {
                             PesanKirim.setText("");
                         }
 
                         try {
                             PesanKirim.append("MEMULAI PENGIRIMAN DATA\n");
                             tampil();
-                            PesanKirim.append(
-                                    "Pengiriman data pendaftaran PCare dimulai\n");
+                            PesanKirim.append("Pengiriman data pendaftaran PCare dimulai\n");
                             for (i = 0; i < tbPendaftaran.getRowCount(); i++) {
-                                if (tbPendaftaran.getValueAt(i, 20).toString().
-                                        equals("Gagal")) {
+                                if (tbPendaftaran.getValueAt(i, 20).toString().equals("Gagal")) {
                                     try {
                                         headers = new HttpHeaders();
-                                        headers.setContentType(
-                                                MediaType.TEXT_PLAIN);
-                                        headers.add("X-cons-id", koneksiDB.
-                                                CONSIDAPIPCARE());
-                                        utc = String.valueOf(api.
-                                                GetUTCdatetimeAsString());
+                                        headers.setContentType(MediaType.TEXT_PLAIN);
+                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
                                         headers.add("X-timestamp", utc);
-                                        headers.
-                                                add("X-signature", api.getHmac());
+                                        headers.add("X-signature", api.getHmac());
                                         headers.add("X-authorization",
-                                                "Basic " + Base64.
-                                                        encodeBase64String(
-                                                                otorisasi.
-                                                                        getBytes()));
-                                        headers.add("user_key", koneksiDB.
-                                                USERKEYAPIPCARE());
+                                                "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
+                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                         requestJson = "{" + "\"kdProviderPeserta\": \""
-                                                + tbPendaftaran.getValueAt(i, 4).
-                                                        toString() + "\","
+                                                + tbPendaftaran.getValueAt(i, 4).toString() + "\","
                                                 + "\"tglDaftar\": \""
-                                                + Valid.SetTgl3(tbPendaftaran.
-                                                        getValueAt(i, 1).
-                                                        toString()) + "\","
-                                                + "\"noKartu\": \"" + tbPendaftaran.
-                                                        getValueAt(i, 5).
-                                                        toString() + "\","
-                                                + "\"kdPoli\": \"" + tbPendaftaran.
-                                                        getValueAt(i, 6).
-                                                        toString() + "\","
-                                                + "\"keluhan\": \"" + tbPendaftaran.
-                                                        getValueAt(i, 8).
-                                                        toString() + "\","
+                                                + Valid.SetTgl3(tbPendaftaran.getValueAt(i, 1).toString()) + "\","
+                                                + "\"noKartu\": \"" + tbPendaftaran.getValueAt(i, 5).toString() + "\","
+                                                + "\"kdPoli\": \"" + tbPendaftaran.getValueAt(i, 6).toString() + "\","
+                                                + "\"keluhan\": \"" + tbPendaftaran.getValueAt(i, 8).toString() + "\","
                                                 + "\"kunjSakit\": "
-                                                + (tbPendaftaran.
-                                                        getValueAt(i, 9).
-                                                        toString().equals(
-                                                                "Kunjungan Sakit")
-                                                        ? "true" : "false")
-                                                + "," + "\"sistole\": " + tbPendaftaran.
-                                                        getValueAt(i, 10).
-                                                        toString()
-                                                + "," + "\"diastole\": " + tbPendaftaran.
-                                                        getValueAt(i, 11).
-                                                        toString()
-                                                + "," + "\"beratBadan\": " + tbPendaftaran.
-                                                        getValueAt(i, 12).
-                                                        toString()
-                                                + "," + "\"tinggiBadan\": " + tbPendaftaran.
-                                                        getValueAt(i, 13).
-                                                        toString()
-                                                + "," + "\"respRate\": " + tbPendaftaran.
-                                                        getValueAt(i, 14).
-                                                        toString()
+                                                + (tbPendaftaran.getValueAt(i, 9).toString().equals("Kunjungan Sakit")
+                                                ? "true" : "false")
+                                                + "," + "\"sistole\": " + tbPendaftaran.getValueAt(i, 10).toString()
+                                                + "," + "\"diastole\": " + tbPendaftaran.getValueAt(i, 11).toString()
+                                                + "," + "\"beratBadan\": " + tbPendaftaran.getValueAt(i, 12).toString()
+                                                + "," + "\"tinggiBadan\": " + tbPendaftaran.getValueAt(i, 13).toString()
+                                                + "," + "\"respRate\": " + tbPendaftaran.getValueAt(i, 14).toString()
                                                 + "," + "\"lingkarPerut\": "
-                                                + tbPendaftaran.
-                                                        getValueAt(i, 15).
-                                                        toString() + "," + "\"heartRate\": "
-                                                + tbPendaftaran.
-                                                        getValueAt(i, 16).
-                                                        toString() + ","
+                                                + tbPendaftaran.getValueAt(i, 15).toString() + "," + "\"heartRate\": "
+                                                + tbPendaftaran.getValueAt(i, 16).toString() + ","
                                                 + "\"rujukBalik\": 0," + "\"kdTkp\": \""
-                                                + tbPendaftaran.
-                                                        getValueAt(i, 18).
-                                                        toString().substring(0,
-                                                                2) + "\""
+                                                + tbPendaftaran.getValueAt(i, 18).toString().substring(0, 2) + "\""
                                                 + "}";
                                         PesanKirim.append(requestJson + "\n");
-                                        requestEntity = new HttpEntity(
-                                                requestJson, headers);
+                                        requestEntity = new HttpEntity(requestJson, headers);
                                         requestJson = api.getRest()
-                                                .exchange(URL + "/pendaftaran",
-                                                        HttpMethod.POST,
-                                                        requestEntity,
+                                                .exchange(URL + "/pendaftaran", HttpMethod.POST, requestEntity,
                                                         String.class)
                                                 .getBody();
                                         root = mapper.readTree(requestJson);
                                         nameNode = root.path("metaData");
-                                        PesanKirim.append("code : " + nameNode.
-                                                path("code").asText() + "\n");
-                                        PesanKirim.append(
-                                                "message : " + nameNode.path(
-                                                        "message").asText() + "\n");
-                                        if (nameNode.path("code").asText().
-                                                equals("201")) {
-                                            response = mapper.readTree(api.
-                                                    Decrypt(root.
-                                                            path("response").
-                                                            asText(), utc))
+                                        PesanKirim.append("code : " + nameNode.path("code").asText() + "\n");
+                                        PesanKirim.append("message : " + nameNode.path("message").asText() + "\n");
+                                        if (nameNode.path("code").asText().equals("201")) {
+                                            response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc))
                                                     .path("message");
-                                            Sequel.mengedit("pcare_pendaftaran",
-                                                    "no_rawat=?",
-                                                    "noUrut=?,status='Terkirim'",
-                                                    2, new String[]{response.
-                                                                asText(),
-                                                        tbPendaftaran.
-                                                                getValueAt(i, 0).
-                                                                toString()});
+                                            Sequel.mengedit("pcare_pendaftaran", "no_rawat=?",
+                                                    "noUrut=?,status='Terkirim'", 2, new String[]{response.asText(),
+                                                        tbPendaftaran.getValueAt(i, 0).toString()});
                                         }
                                     } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException
                                             | KeyManagementException | NoSuchAlgorithmException | BadPaddingException
                                             | IllegalBlockSizeException | NoSuchPaddingException
                                             | RestClientException ex) {
-                                        PesanKirim.append(
-                                                "Notifikasi Bridging : " + ex + "\n");
-                                        if (ex.toString().contains(
-                                                "UnknownHostException")
-                                                || ex.toString().contains(
-                                                        "unreachable")) {
+                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                        if (ex.toString().contains("UnknownHostException")
+                                                || ex.toString().contains("unreachable")) {
                                             PesanKirim.append(
                                                     "Koneksi ke server PCare terputus. Data disimpan secara lokal, dan dapat dikirimkan kembali ke server PCare..!!"
                                                     + "\n");
@@ -11409,366 +10426,185 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                                     "Time out, hayati lelah baaaang. Data disimpan secara lokal, dan dapat dikirimkan kembali ke server PCare..!!"
                                                     + "\n");
                                         } else if (ex.toString().contains("424")) {
-                                            PesanKirim.append(
-                                                    "Ambil data masternya yang bener dong coy...!" + "\n");
+                                            PesanKirim.append("Ambil data masternya yang bener dong coy...!" + "\n");
                                         } else if (ex.toString().contains("412")) {
-                                            PesanKirim.append(
-                                                    "Tidak sesuai kondisi. Aku, kamu end...!" + "\n");
+                                            PesanKirim.append("Tidak sesuai kondisi. Aku, kamu end...!" + "\n");
                                         } else if (ex.toString().contains("204")) {
-                                            PesanKirim.append(
-                                                    "Data tidak ditemukan...!" + "\n");
-                                        } else if (ex.toString().contains(
-                                                "refused")) {
-                                            PesanKirim.append(
-                                                    "BPJSe ngelu...!" + "\n");
+                                            PesanKirim.append("Data tidak ditemukan...!" + "\n");
+                                        } else if (ex.toString().contains("refused")) {
+                                            PesanKirim.append("BPJSe ngelu...!" + "\n");
                                         }
                                     }
                                 }
                             }
-                            PesanKirim.append(
-                                    "Pengiriman data pendaftaran PCare selesai\n");
-                            PesanKirim.append(
-                                    "Pengiriman data kunjungan PCare dimulai\n");
+                            PesanKirim.append("Pengiriman data pendaftaran PCare selesai\n");
+                            PesanKirim.append("Pengiriman data kunjungan PCare dimulai\n");
                             for (i = 0; i < tbPendaftaran.getRowCount(); i++) {
-                                if (tbPendaftaran.getValueAt(i, 20).toString().
-                                        equals("Terkirim")) {
-                                    NoKartu.setText(tbPendaftaran.getValueAt(i,
-                                            5).toString());
-                                    TPasien.setText(tbPendaftaran.getValueAt(i,
-                                            3).toString());
-                                    setNoRm2(tbPendaftaran.getValueAt(i, 0).
-                                            toString());
-                                    if (TinggiBadan.getText().isEmpty() || TinggiBadan.
-                                            getText().equals("0")
-                                            || BeratBadan.getText().isEmpty() || BeratBadan.
-                                            getText().equals("0")
-                                            || Sistole.getText().isEmpty() || Diastole.
-                                            getText().equals("0")
-                                            || Keluhan.getText().isEmpty() || Keluhan.
-                                            getText().equals("0")
-                                            || Diastole.getText().isEmpty() || Diastole.
-                                            getText().equals("0")
-                                            || Respiratory.getText().isEmpty() || Respiratory.
-                                            getText().equals("0")
-                                            || Heartrate.getText().isEmpty() || Heartrate.
-                                            getText().equals("0")
-                                            || KdSadar.getText().isEmpty() || NmSadar.
-                                            getText().isEmpty()) {
-                                        PesanKirim.append(
-                                                "Notif 1 : " + "No.Pendaftaran "
-                                                + tbPendaftaran.getValueAt(i, 0).
-                                                        toString() + " / No.RM "
-                                                + tbPendaftaran.getValueAt(i, 2).
-                                                        toString() + " / Pasien "
-                                                + tbPendaftaran.getValueAt(i, 3).
-                                                        toString()
+                                if (tbPendaftaran.getValueAt(i, 20).toString().equals("Terkirim")) {
+                                    NoKartu.setText(tbPendaftaran.getValueAt(i, 5).toString());
+                                    TPasien.setText(tbPendaftaran.getValueAt(i, 3).toString());
+                                    setNoRm2(tbPendaftaran.getValueAt(i, 0).toString());
+                                    if (TinggiBadan.getText().isEmpty() || TinggiBadan.getText().equals("0")
+                                            || BeratBadan.getText().isEmpty() || BeratBadan.getText().equals("0")
+                                            || Sistole.getText().isEmpty() || Diastole.getText().equals("0")
+                                            || Keluhan.getText().isEmpty() || Keluhan.getText().equals("0")
+                                            || Diastole.getText().isEmpty() || Diastole.getText().equals("0")
+                                            || Respiratory.getText().isEmpty() || Respiratory.getText().equals("0")
+                                            || Heartrate.getText().isEmpty() || Heartrate.getText().equals("0")
+                                            || KdSadar.getText().isEmpty() || NmSadar.getText().isEmpty()) {
+                                        PesanKirim.append("Notif 1 : " + "No.Pendaftaran "
+                                                + tbPendaftaran.getValueAt(i, 0).toString() + " / No.RM "
+                                                + tbPendaftaran.getValueAt(i, 2).toString() + " / Pasien "
+                                                + tbPendaftaran.getValueAt(i, 3).toString()
                                                 + " dilewati karena data pemeriksaan fisik tidak ditemukan...!!"
                                                 + "\n");
                                     } else {
-                                        if (KdDiagnosa1.getText().isEmpty() || NmDiagnosa1.
-                                                getText().isEmpty()) {
-                                            PesanKirim.append(
-                                                    "Notif 2 : " + "No.Pendaftaran "
-                                                    + tbPendaftaran.
-                                                            getValueAt(i, 0).
-                                                            toString() + " / No.RM "
-                                                    + tbPendaftaran.
-                                                            getValueAt(i, 2).
-                                                            toString() + " / Pasien "
-                                                    + tbPendaftaran.
-                                                            getValueAt(i, 3).
-                                                            toString()
+                                        if (KdDiagnosa1.getText().isEmpty() || NmDiagnosa1.getText().isEmpty()) {
+                                            PesanKirim.append("Notif 2 : " + "No.Pendaftaran "
+                                                    + tbPendaftaran.getValueAt(i, 0).toString() + " / No.RM "
+                                                    + tbPendaftaran.getValueAt(i, 2).toString() + " / Pasien "
+                                                    + tbPendaftaran.getValueAt(i, 3).toString()
                                                     + " dilewati karena data diagnosa tidak ditemukan...!!" + "\n");
                                         } else {
-                                            if (KdTenagaMedis.getText().
-                                                    isEmpty()
-                                                    || NmTenagaMedis.getText().
-                                                            isEmpty()) {
-                                                PesanKirim.append(
-                                                        "Notif 3 : " + "No.Pendaftaran "
-                                                        + tbPendaftaran.
-                                                                getValueAt(i, 0).
-                                                                toString() + " / No.RM "
-                                                        + tbPendaftaran.
-                                                                getValueAt(i, 2).
-                                                                toString() + " / Pasien "
-                                                        + tbPendaftaran.
-                                                                getValueAt(i, 3).
-                                                                toString()
+                                            if (KdTenagaMedis.getText().isEmpty()
+                                                    || NmTenagaMedis.getText().isEmpty()) {
+                                                PesanKirim.append("Notif 3 : " + "No.Pendaftaran "
+                                                        + tbPendaftaran.getValueAt(i, 0).toString() + " / No.RM "
+                                                        + tbPendaftaran.getValueAt(i, 2).toString() + " / Pasien "
+                                                        + tbPendaftaran.getValueAt(i, 3).toString()
                                                         + " dilewati karena mapping tenaga medis tidak ditemukan...!!"
                                                         + "\n");
                                             } else {
-                                                PesanKirim.append(
-                                                        "Mencari data No.Rawat : "
-                                                        + tbPendaftaran.
-                                                                getValueAt(i, 0).
-                                                                toString() + "\n");
+                                                PesanKirim.append("Mencari data No.Rawat : "
+                                                        + tbPendaftaran.getValueAt(i, 0).toString() + "\n");
                                                 if (Sequel.cariInteger(
                                                         "select count(pcare_kunjungan_umum.no_rawat) from pcare_kunjungan_umum where pcare_kunjungan_umum.no_rawat=?",
-                                                        tbPendaftaran.
-                                                                getValueAt(i, 0).
-                                                                toString()) == 0) {
-                                                    PesanKirim.append(
-                                                            "No.Rawat : "
-                                                            + tbPendaftaran.
-                                                                    getValueAt(i,
-                                                                            0).
-                                                                    toString()
+                                                        tbPendaftaran.getValueAt(i, 0).toString()) == 0) {
+                                                    PesanKirim.append("No.Rawat : "
+                                                            + tbPendaftaran.getValueAt(i, 0).toString()
                                                             + " ditemukan, proses mengirim kunjungan ke server PCare BPJS.. "
                                                             + "\n");
                                                     try {
                                                         headers2 = new HttpHeaders();
-                                                        headers2.setContentType(
-                                                                MediaType.TEXT_PLAIN);
-                                                        headers2.
-                                                                add("X-cons-id",
-                                                                        koneksiDB.
-                                                                                CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers2.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers2.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers2.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers2.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
-                                                        if (ChkRujukLanjut.
-                                                                isSelected() == false) {
+                                                        headers2.setContentType(MediaType.TEXT_PLAIN);
+                                                        headers2.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers2.add("X-timestamp", utc);
+                                                        headers2.add("X-signature", api.getHmac());
+                                                        headers2.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers2.add("user_key", koneksiDB.USERKEYAPIPCARE());
+                                                        if (ChkRujukLanjut.isSelected() == false) {
                                                             diagnosa2 = "null";
-                                                            if (!KdDiagnosa2.
-                                                                    getText().
-                                                                    isEmpty()) {
-                                                                diagnosa2 = "\"" + KdDiagnosa2.
-                                                                        getText() + "\"";
+                                                            if (!KdDiagnosa2.getText().isEmpty()) {
+                                                                diagnosa2 = "\"" + KdDiagnosa2.getText() + "\"";
                                                             }
                                                             diagnosa3 = "null";
-                                                            if (!KdDiagnosa3.
-                                                                    getText().
-                                                                    isEmpty()) {
-                                                                diagnosa3 = "\"" + KdDiagnosa3.
-                                                                        getText() + "\"";
+                                                            if (!KdDiagnosa3.getText().isEmpty()) {
+                                                                diagnosa3 = "\"" + KdDiagnosa3.getText() + "\"";
                                                             }
                                                             requestJson = "{" + "\"noKunjungan\": null,"
-                                                                    + "\"noKartu\": \"" + NoKartu.
-                                                                            getText() + "\","
+                                                                    + "\"noKartu\": \"" + NoKartu.getText() + "\","
                                                                     + "\"tglDaftar\": \""
-                                                                    + TanggalDaftar.
-                                                                            getSelectedItem() + "\","
-                                                                    + "\"kdPoli\": \"" + KdPoliTujuan.
-                                                                            getText() + "\","
-                                                                    + "\"keluhan\": \"" + Keluhan.
-                                                                            getText() + "\","
-                                                                    + "\"kdSadar\": \"" + KdSadar.
-                                                                            getText() + "\","
-                                                                    + "\"sistole\": " + Sistole.
-                                                                            getText() + ","
-                                                                    + "\"diastole\": " + Diastole.
-                                                                            getText() + ","
-                                                                    + "\"beratBadan\": " + BeratBadan.
-                                                                            getText() + ","
-                                                                    + "\"tinggiBadan\": " + TinggiBadan.
-                                                                            getText() + ","
-                                                                    + "\"respRate\": " + Respiratory.
-                                                                            getText() + ","
-                                                                    + "\"heartRate\": " + Heartrate.
-                                                                            getText() + ","
-                                                                    + "\"lingkarPerut\": " + LingkarPerut.
-                                                                            getText()
-                                                                    + "," + "\"terapi\": \"" + TerapiObat.
-                                                                            getText()
+                                                                    + TanggalDaftar.getSelectedItem() + "\","
+                                                                    + "\"kdPoli\": \"" + KdPoliTujuan.getText() + "\","
+                                                                    + "\"keluhan\": \"" + Keluhan.getText() + "\","
+                                                                    + "\"kdSadar\": \"" + KdSadar.getText() + "\","
+                                                                    + "\"sistole\": " + Sistole.getText() + ","
+                                                                    + "\"diastole\": " + Diastole.getText() + ","
+                                                                    + "\"beratBadan\": " + BeratBadan.getText() + ","
+                                                                    + "\"tinggiBadan\": " + TinggiBadan.getText() + ","
+                                                                    + "\"respRate\": " + Respiratory.getText() + ","
+                                                                    + "\"heartRate\": " + Heartrate.getText() + ","
+                                                                    + "\"lingkarPerut\": " + LingkarPerut.getText()
+                                                                    + "," + "\"terapi\": \"" + TerapiObat.getText()
                                                                     + "\"," + "\"kdStatusPulang\": \"3\","
                                                                     + "\"tglPulang\": \""
-                                                                    + TanggalPulang.
-                                                                            getSelectedItem() + "\","
-                                                                    + "\"kdDokter\": \"" + KdTenagaMedis.
-                                                                            getText()
-                                                                    + "\"," + "\"kdDiag1\": \"" + KdDiagnosa1.
-                                                                            getText()
+                                                                    + TanggalPulang.getSelectedItem() + "\","
+                                                                    + "\"kdDokter\": \"" + KdTenagaMedis.getText()
+                                                                    + "\"," + "\"kdDiag1\": \"" + KdDiagnosa1.getText()
                                                                     + "\"," + "\"kdDiag2\": " + diagnosa2 + ","
                                                                     + "\"kdDiag3\": " + diagnosa3 + ","
                                                                     + "\"kdPoliRujukInternal\":null,"
                                                                     + "\"rujukLanjut\": null," + "\"kdTacc\": -1,"
                                                                     + "\"alasanTacc\": null," + "\"anamnesa\": \""
-                                                                    + Keluhan.
-                                                                            getText() + "\"," + "\"alergiMakan\": \""
-                                                                    + KdAlergiMakanan.
-                                                                            getText() + "\","
-                                                                    + "\"alergiUdara\": \"" + KdAlergiUdara.
-                                                                            getText()
+                                                                    + Keluhan.getText() + "\"," + "\"alergiMakan\": \""
+                                                                    + KdAlergiMakanan.getText() + "\","
+                                                                    + "\"alergiUdara\": \"" + KdAlergiUdara.getText()
                                                                     + "\"," + "\"alergiObat\": \""
-                                                                    + KdAlergiObat.
-                                                                            getText() + "\","
-                                                                    + "\"kdPrognosa\": \"" + KdPrognosa.
-                                                                            getText()
+                                                                    + KdAlergiObat.getText() + "\","
+                                                                    + "\"kdPrognosa\": \"" + KdPrognosa.getText()
                                                                     + "\"," + "\"terapiObat\": \""
-                                                                    + TerapiObat.
-                                                                            getText() + "\","
-                                                                    + "\"terapiNonObat\": \"" + TerapiNonObat.
-                                                                            getText()
-                                                                    + "\"," + "\"bmhp\": \"" + BMHP.
-                                                                            getText() + "\","
-                                                                    + "\"suhu\": \"" + TSuhu.
-                                                                            getText() + "\"" + "}";
+                                                                    + TerapiObat.getText() + "\","
+                                                                    + "\"terapiNonObat\": \"" + TerapiNonObat.getText()
+                                                                    + "\"," + "\"bmhp\": \"" + BMHP.getText() + "\","
+                                                                    + "\"suhu\": \"" + TSuhu.getText() + "\"" + "}";
+                                                            PesanKirim.append(requestJson + "\n");
+                                                            requestEntity = new HttpEntity(requestJson, headers2);
+                                                            requestJson = api.getRest()
+                                                                    .exchange(URL + "/kunjungan", HttpMethod.POST,
+                                                                            requestEntity, String.class)
+                                                                    .getBody();
+                                                            PesanKirim.append(requestJson + "\n");
+                                                            root = mapper.readTree(requestJson);
+                                                            nameNode = root.path("metaData");
                                                             PesanKirim.append(
-                                                                    requestJson + "\n");
-                                                            requestEntity = new HttpEntity(
-                                                                    requestJson,
-                                                                    headers2);
-                                                            requestJson = api.
-                                                                    getRest()
-                                                                    .exchange(
-                                                                            URL + "/kunjungan",
-                                                                            HttpMethod.POST,
-                                                                            requestEntity,
-                                                                            String.class).
-                                                                    getBody();
-                                                            PesanKirim.append(
-                                                                    requestJson + "\n");
-                                                            root = mapper.
-                                                                    readTree(
-                                                                            requestJson);
-                                                            nameNode = root.
-                                                                    path("metaData");
-                                                            PesanKirim.append(
-                                                                    "code : " + nameNode.
-                                                                            path("code").
-                                                                            asText() + "\n");
-                                                            PesanKirim.append(
-                                                                    "message : "
-                                                                    + nameNode.
-                                                                            path("message").
-                                                                            asText() + "\n");
-                                                            if (nameNode.path(
-                                                                    "code").
-                                                                    asText().
-                                                                    equals("201")) {
-                                                                for (JsonNode list : mapper.
-                                                                        readTree(
-                                                                                api.
-                                                                                        Decrypt(root.
-                                                                                                path("response").
-                                                                                                asText(),
-                                                                                                utc))) {
-                                                                    response = list.
-                                                                            path("message");
+                                                                    "code : " + nameNode.path("code").asText() + "\n");
+                                                            PesanKirim.append("message : "
+                                                                    + nameNode.path("message").asText() + "\n");
+                                                            if (nameNode.path("code").asText().equals("201")) {
+                                                                for (JsonNode list : mapper.readTree(api
+                                                                        .Decrypt(root.path("response").asText(), utc))) {
+                                                                    response = list.path("message");
                                                                 }
-                                                                Sequel.
-                                                                        menyimpan2(
-                                                                                "pcare_kunjungan_umum",
-                                                                                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?,?",
-                                                                                "No.Urut",
-                                                                                41,
-                                                                                new String[]{
-                                                                                    TNoRw.
-                                                                                            getText(),
-                                                                                    response.
-                                                                                            asText(),
-                                                                                    Valid.
-                                                                                            SetTgl(TanggalKunjungan.
-                                                                                                    getSelectedItem() + ""),
-                                                                                    TNoRM.
-                                                                                            getText(),
-                                                                                    TPasien.
-                                                                                            getText(),
-                                                                                    NoKartu.
-                                                                                            getText(),
-                                                                                    KdPoliTujuan.
-                                                                                            getText(),
-                                                                                    NmPoliTujuan.
-                                                                                            getText(),
-                                                                                    Valid.
-                                                                                            MaxTeks(Keluhan.
-                                                                                                    getText(),
-                                                                                                    400),
-                                                                                    KdSadar.
-                                                                                            getText(),
-                                                                                    NmSadar.
-                                                                                            getText(),
-                                                                                    Sistole.
-                                                                                            getText(),
-                                                                                    Diastole.
-                                                                                            getText(),
-                                                                                    BeratBadan.
-                                                                                            getText(),
-                                                                                    TinggiBadan.
-                                                                                            getText(),
-                                                                                    Respiratory.
-                                                                                            getText(),
-                                                                                    Heartrate.
-                                                                                            getText(),
-                                                                                    LingkarPerut.
-                                                                                            getText(),
-                                                                                    Valid.
-                                                                                            MaxTeks(TerapiObat.
-                                                                                                    getText(),
-                                                                                                    400),
-                                                                                    "3",
-                                                                                    "Berobat Jalan",
-                                                                                    Valid.
-                                                                                            SetTgl(
-                                                                                                    TanggalPulang.
-                                                                                                            getSelectedItem()
-                                                                                                    + ""),
-                                                                                    KdTenagaMedis.
-                                                                                            getText(),
-                                                                                    Valid.
-                                                                                            MaxTeks(
-                                                                                                    NmTenagaMedis.
-                                                                                                            getText(),
-                                                                                                    50),
-                                                                                    KdDiagnosa1.
-                                                                                            getText(),
-                                                                                    Valid.
-                                                                                            MaxTeks(
-                                                                                                    NmDiagnosa1.
-                                                                                                            getText(),
-                                                                                                    400),
-                                                                                    KdDiagnosa2.
-                                                                                            getText(),
-                                                                                    Valid.
-                                                                                            MaxTeks(
-                                                                                                    NmDiagnosa2.
-                                                                                                            getText(),
-                                                                                                    400),
-                                                                                    KdDiagnosa3.
-                                                                                            getText(),
-                                                                                    Valid.
-                                                                                            MaxTeks(NmDiagnosa3.
-                                                                                                    getText(),
-                                                                                                    400),
-                                                                                    KdAlergiMakanan.
-                                                                                            getText(),
-                                                                                    NmAlergiMakanan.
-                                                                                            getText(),
-                                                                                    KdAlergiUdara.
-                                                                                            getText(),
-                                                                                    NmAlergiUdara.
-                                                                                            getText(),
-                                                                                    KdAlergiObat.
-                                                                                            getText(),
-                                                                                    NmAlergiObat.
-                                                                                            getText(),
-                                                                                    KdPrognosa.
-                                                                                            getText(),
-                                                                                    NmPrognosa.
-                                                                                            getText(),
-                                                                                    TerapiObat.
-                                                                                            getText(),
-                                                                                    TerapiNonObat.
-                                                                                            getText(),
-                                                                                    BMHP.
-                                                                                            getText()});
+                                                                Sequel.menyimpan2("pcare_kunjungan_umum",
+                                                                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?,?",
+                                                                        "No.Urut", 41,
+                                                                        new String[]{TNoRw.getText(),
+                                                                            response.asText(),
+                                                                            Valid.SetTgl(TanggalKunjungan
+                                                                                    .getSelectedItem() + ""),
+                                                                            TNoRM.getText(), TPasien.getText(),
+                                                                            NoKartu.getText(),
+                                                                            KdPoliTujuan.getText(),
+                                                                            NmPoliTujuan.getText(),
+                                                                            Valid.MaxTeks(Keluhan.getText(), 400),
+                                                                            KdSadar.getText(), NmSadar.getText(),
+                                                                            Sistole.getText(), Diastole.getText(),
+                                                                            BeratBadan.getText(),
+                                                                            TinggiBadan.getText(),
+                                                                            Respiratory.getText(),
+                                                                            Heartrate.getText(),
+                                                                            LingkarPerut.getText(),
+                                                                            Valid
+                                                                                    .MaxTeks(TerapiObat.getText(), 400),
+                                                                            "3", "Berobat Jalan",
+                                                                            Valid.SetTgl(
+                                                                                    TanggalPulang.getSelectedItem()
+                                                                                    + ""),
+                                                                            KdTenagaMedis.getText(),
+                                                                            Valid.MaxTeks(
+                                                                                    NmTenagaMedis.getText(), 50),
+                                                                            KdDiagnosa1.getText(),
+                                                                            Valid.MaxTeks(
+                                                                                    NmDiagnosa1.getText(), 400),
+                                                                            KdDiagnosa2.getText(),
+                                                                            Valid.MaxTeks(
+                                                                                    NmDiagnosa2.getText(), 400),
+                                                                            KdDiagnosa3.getText(),
+                                                                            Valid.MaxTeks(NmDiagnosa3.getText(),
+                                                                                    400),
+                                                                            KdAlergiMakanan.getText(),
+                                                                            NmAlergiMakanan.getText(),
+                                                                            KdAlergiUdara.getText(),
+                                                                            NmAlergiUdara.getText(),
+                                                                            KdAlergiObat.getText(),
+                                                                            NmAlergiObat.getText(),
+                                                                            KdPrognosa.getText(),
+                                                                            NmPrognosa.getText(),
+                                                                            TerapiObat.getText(),
+                                                                            TerapiNonObat.getText(),
+                                                                            BMHP.getText()});
                                                             }
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
@@ -11776,351 +10612,140 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                                             | NoSuchAlgorithmException | BadPaddingException
                                                             | IllegalBlockSizeException | NoSuchPaddingException
                                                             | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_kunjungan_umum",
+                                                        PesanKirim.append(ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            Sequel.menyimpan2("pcare_kunjungan_umum",
                                                                     "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?,?",
-                                                                    "No.Urut",
-                                                                    41,
-                                                                    new String[]{
-                                                                        TNoRw.
-                                                                                getText(),
-                                                                        response.
-                                                                                asText(),
-                                                                        Valid.
-                                                                                SetTgl(
-                                                                                        TanggalKunjungan.
-                                                                                                getSelectedItem()
-                                                                                        + ""),
-                                                                        TNoRM.
-                                                                                getText(),
-                                                                        TPasien.
-                                                                                getText(),
-                                                                        NoKartu.
-                                                                                getText(),
-                                                                        KdPoliTujuan.
-                                                                                getText(),
-                                                                        NmPoliTujuan.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(Keluhan.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdSadar.
-                                                                                getText(),
-                                                                        NmSadar.
-                                                                                getText(),
-                                                                        Sistole.
-                                                                                getText(),
-                                                                        Diastole.
-                                                                                getText(),
-                                                                        BeratBadan.
-                                                                                getText(),
-                                                                        TinggiBadan.
-                                                                                getText(),
-                                                                        Respiratory.
-                                                                                getText(),
-                                                                        Heartrate.
-                                                                                getText(),
-                                                                        LingkarPerut.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(TerapiObat.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        "3",
-                                                                        "Berobat Jalan",
-                                                                        Valid.
-                                                                                SetTgl(TanggalPulang.
-                                                                                        getSelectedItem()
-                                                                                        + ""),
-                                                                        KdTenagaMedis.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmTenagaMedis.
-                                                                                        getText(),
-                                                                                        50),
-                                                                        KdDiagnosa1.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa1.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdDiagnosa2.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa2.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdDiagnosa3.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa3.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdAlergiMakanan.
-                                                                                getText(),
-                                                                        NmAlergiMakanan.
-                                                                                getText(),
-                                                                        KdAlergiUdara.
-                                                                                getText(),
-                                                                        NmAlergiUdara.
-                                                                                getText(),
-                                                                        KdAlergiObat.
-                                                                                getText(),
-                                                                        NmAlergiObat.
-                                                                                getText(),
-                                                                        KdPrognosa.
-                                                                                getText(),
-                                                                        NmPrognosa.
-                                                                                getText(),
-                                                                        TerapiObat.
-                                                                                getText(),
-                                                                        TerapiNonObat.
-                                                                                getText(),
-                                                                        BMHP.
-                                                                                getText()});
+                                                                    "No.Urut", 41,
+                                                                    new String[]{TNoRw.getText(), response.asText(),
+                                                                        Valid.SetTgl(
+                                                                                TanggalKunjungan.getSelectedItem()
+                                                                                + ""),
+                                                                        TNoRM.getText(), TPasien.getText(),
+                                                                        NoKartu.getText(), KdPoliTujuan.getText(),
+                                                                        NmPoliTujuan.getText(),
+                                                                        Valid.MaxTeks(Keluhan.getText(), 400),
+                                                                        KdSadar.getText(), NmSadar.getText(),
+                                                                        Sistole.getText(), Diastole.getText(),
+                                                                        BeratBadan.getText(), TinggiBadan.getText(),
+                                                                        Respiratory.getText(), Heartrate.getText(),
+                                                                        LingkarPerut.getText(),
+                                                                        Valid.MaxTeks(TerapiObat.getText(), 400),
+                                                                        "3", "Berobat Jalan",
+                                                                        Valid.SetTgl(TanggalPulang.getSelectedItem()
+                                                                                + ""),
+                                                                        KdTenagaMedis.getText(),
+                                                                        Valid.MaxTeks(NmTenagaMedis.getText(), 50),
+                                                                        KdDiagnosa1.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa1.getText(), 400),
+                                                                        KdDiagnosa2.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa2.getText(), 400),
+                                                                        KdDiagnosa3.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                                                        KdAlergiMakanan.getText(),
+                                                                        NmAlergiMakanan.getText(),
+                                                                        KdAlergiUdara.getText(),
+                                                                        NmAlergiUdara.getText(),
+                                                                        KdAlergiObat.getText(),
+                                                                        NmAlergiObat.getText(),
+                                                                        KdPrognosa.getText(), NmPrognosa.getText(),
+                                                                        TerapiObat.getText(),
+                                                                        TerapiNonObat.getText(), BMHP.getText()});
                                                             PesanKirim.append(
                                                                     "Koneksi ke server PCare terputus. Data disimpan secara lokal, dan dapat dikirimkan kembali ke server PCare..!!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_kunjungan_umum",
+                                                        } else if (ex.toString().contains("500")) {
+                                                            Sequel.menyimpan2("pcare_kunjungan_umum",
                                                                     "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?,?",
-                                                                    "No.Urut",
-                                                                    41,
-                                                                    new String[]{
-                                                                        TNoRw.
-                                                                                getText(),
-                                                                        response.
-                                                                                asText(),
-                                                                        Valid.
-                                                                                SetTgl(
-                                                                                        TanggalKunjungan.
-                                                                                                getSelectedItem()
-                                                                                        + ""),
-                                                                        TNoRM.
-                                                                                getText(),
-                                                                        TPasien.
-                                                                                getText(),
-                                                                        NoKartu.
-                                                                                getText(),
-                                                                        KdPoliTujuan.
-                                                                                getText(),
-                                                                        NmPoliTujuan.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(Keluhan.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdSadar.
-                                                                                getText(),
-                                                                        NmSadar.
-                                                                                getText(),
-                                                                        Sistole.
-                                                                                getText(),
-                                                                        Diastole.
-                                                                                getText(),
-                                                                        BeratBadan.
-                                                                                getText(),
-                                                                        TinggiBadan.
-                                                                                getText(),
-                                                                        Respiratory.
-                                                                                getText(),
-                                                                        Heartrate.
-                                                                                getText(),
-                                                                        LingkarPerut.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(TerapiObat.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        "3",
-                                                                        "Berobat Jalan",
-                                                                        Valid.
-                                                                                SetTgl(TanggalPulang.
-                                                                                        getSelectedItem()
-                                                                                        + ""),
-                                                                        KdTenagaMedis.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmTenagaMedis.
-                                                                                        getText(),
-                                                                                        50),
-                                                                        KdDiagnosa1.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa1.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdDiagnosa2.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa2.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdDiagnosa3.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa3.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdAlergiMakanan.
-                                                                                getText(),
-                                                                        NmAlergiMakanan.
-                                                                                getText(),
-                                                                        KdAlergiUdara.
-                                                                                getText(),
-                                                                        NmAlergiUdara.
-                                                                                getText(),
-                                                                        KdAlergiObat.
-                                                                                getText(),
-                                                                        NmAlergiObat.
-                                                                                getText(),
-                                                                        KdPrognosa.
-                                                                                getText(),
-                                                                        NmPrognosa.
-                                                                                getText(),
-                                                                        TerapiObat.
-                                                                                getText(),
-                                                                        TerapiNonObat.
-                                                                                getText(),
-                                                                        BMHP.
-                                                                                getText()});
+                                                                    "No.Urut", 41,
+                                                                    new String[]{TNoRw.getText(), response.asText(),
+                                                                        Valid.SetTgl(
+                                                                                TanggalKunjungan.getSelectedItem()
+                                                                                + ""),
+                                                                        TNoRM.getText(), TPasien.getText(),
+                                                                        NoKartu.getText(), KdPoliTujuan.getText(),
+                                                                        NmPoliTujuan.getText(),
+                                                                        Valid.MaxTeks(Keluhan.getText(), 400),
+                                                                        KdSadar.getText(), NmSadar.getText(),
+                                                                        Sistole.getText(), Diastole.getText(),
+                                                                        BeratBadan.getText(), TinggiBadan.getText(),
+                                                                        Respiratory.getText(), Heartrate.getText(),
+                                                                        LingkarPerut.getText(),
+                                                                        Valid.MaxTeks(TerapiObat.getText(), 400),
+                                                                        "3", "Berobat Jalan",
+                                                                        Valid.SetTgl(TanggalPulang.getSelectedItem()
+                                                                                + ""),
+                                                                        KdTenagaMedis.getText(),
+                                                                        Valid.MaxTeks(NmTenagaMedis.getText(), 50),
+                                                                        KdDiagnosa1.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa1.getText(), 400),
+                                                                        KdDiagnosa2.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa2.getText(), 400),
+                                                                        KdDiagnosa3.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                                                        KdAlergiMakanan.getText(),
+                                                                        NmAlergiMakanan.getText(),
+                                                                        KdAlergiUdara.getText(),
+                                                                        NmAlergiUdara.getText(),
+                                                                        KdAlergiObat.getText(),
+                                                                        NmAlergiObat.getText(),
+                                                                        KdPrognosa.getText(), NmPrognosa.getText(),
+                                                                        TerapiObat.getText(),
+                                                                        TerapiNonObat.getText(), BMHP.getText()});
                                                             PesanKirim.append(
                                                                     "Server PCare baru ngambek broooh. Data disimpan secara lokal, dan dapat dikirimkan kembali ke server PCare..!!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_kunjungan_umum",
+                                                        } else if (ex.toString().contains("408")) {
+                                                            Sequel.menyimpan2("pcare_kunjungan_umum",
                                                                     "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Terkirim',?,?,?,?,?,?,?,?,?,?,?",
-                                                                    "No.Urut",
-                                                                    41,
-                                                                    new String[]{
-                                                                        TNoRw.
-                                                                                getText(),
-                                                                        response.
-                                                                                asText(),
-                                                                        Valid.
-                                                                                SetTgl(
-                                                                                        TanggalKunjungan.
-                                                                                                getSelectedItem()
-                                                                                        + ""),
-                                                                        TNoRM.
-                                                                                getText(),
-                                                                        TPasien.
-                                                                                getText(),
-                                                                        NoKartu.
-                                                                                getText(),
-                                                                        KdPoliTujuan.
-                                                                                getText(),
-                                                                        NmPoliTujuan.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(Keluhan.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdSadar.
-                                                                                getText(),
-                                                                        NmSadar.
-                                                                                getText(),
-                                                                        Sistole.
-                                                                                getText(),
-                                                                        Diastole.
-                                                                                getText(),
-                                                                        BeratBadan.
-                                                                                getText(),
-                                                                        TinggiBadan.
-                                                                                getText(),
-                                                                        Respiratory.
-                                                                                getText(),
-                                                                        Heartrate.
-                                                                                getText(),
-                                                                        LingkarPerut.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(TerapiObat.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        "3",
-                                                                        "Berobat Jalan",
-                                                                        Valid.
-                                                                                SetTgl(TanggalPulang.
-                                                                                        getSelectedItem()
-                                                                                        + ""),
-                                                                        KdTenagaMedis.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmTenagaMedis.
-                                                                                        getText(),
-                                                                                        50),
-                                                                        KdDiagnosa1.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa1.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdDiagnosa2.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa2.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdDiagnosa3.
-                                                                                getText(),
-                                                                        Valid.
-                                                                                MaxTeks(NmDiagnosa3.
-                                                                                        getText(),
-                                                                                        400),
-                                                                        KdAlergiMakanan.
-                                                                                getText(),
-                                                                        NmAlergiMakanan.
-                                                                                getText(),
-                                                                        KdAlergiUdara.
-                                                                                getText(),
-                                                                        NmAlergiUdara.
-                                                                                getText(),
-                                                                        KdAlergiObat.
-                                                                                getText(),
-                                                                        NmAlergiObat.
-                                                                                getText(),
-                                                                        KdPrognosa.
-                                                                                getText(),
-                                                                        NmPrognosa.
-                                                                                getText(),
-                                                                        TerapiObat.
-                                                                                getText(),
-                                                                        TerapiNonObat.
-                                                                                getText(),
-                                                                        BMHP.
-                                                                                getText()});
+                                                                    "No.Urut", 41,
+                                                                    new String[]{TNoRw.getText(), response.asText(),
+                                                                        Valid.SetTgl(
+                                                                                TanggalKunjungan.getSelectedItem()
+                                                                                + ""),
+                                                                        TNoRM.getText(), TPasien.getText(),
+                                                                        NoKartu.getText(), KdPoliTujuan.getText(),
+                                                                        NmPoliTujuan.getText(),
+                                                                        Valid.MaxTeks(Keluhan.getText(), 400),
+                                                                        KdSadar.getText(), NmSadar.getText(),
+                                                                        Sistole.getText(), Diastole.getText(),
+                                                                        BeratBadan.getText(), TinggiBadan.getText(),
+                                                                        Respiratory.getText(), Heartrate.getText(),
+                                                                        LingkarPerut.getText(),
+                                                                        Valid.MaxTeks(TerapiObat.getText(), 400),
+                                                                        "3", "Berobat Jalan",
+                                                                        Valid.SetTgl(TanggalPulang.getSelectedItem()
+                                                                                + ""),
+                                                                        KdTenagaMedis.getText(),
+                                                                        Valid.MaxTeks(NmTenagaMedis.getText(), 50),
+                                                                        KdDiagnosa1.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa1.getText(), 400),
+                                                                        KdDiagnosa2.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa2.getText(), 400),
+                                                                        KdDiagnosa3.getText(),
+                                                                        Valid.MaxTeks(NmDiagnosa3.getText(), 400),
+                                                                        KdAlergiMakanan.getText(),
+                                                                        NmAlergiMakanan.getText(),
+                                                                        KdAlergiUdara.getText(),
+                                                                        NmAlergiUdara.getText(),
+                                                                        KdAlergiObat.getText(),
+                                                                        NmAlergiObat.getText(),
+                                                                        KdPrognosa.getText(), NmPrognosa.getText(),
+                                                                        TerapiObat.getText(),
+                                                                        TerapiNonObat.getText(), BMHP.getText()});
                                                             PesanKirim.append(
                                                                     "Time out, hayati lelah baaaang. Data disimpan secara lokal, dan dapat dikirimkan kembali ke server PCare..!!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
-                                                        } else if (ex.toString().
-                                                                contains(
-                                                                        "refused")) {
-                                                            PesanKirim.append(
-                                                                    "BPJSe ngelu...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("refused")) {
+                                                            PesanKirim.append("BPJSe ngelu...!\n");
                                                         }
                                                     }
                                                 }
@@ -12129,77 +10754,44 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                     }
                                 }
                             }
-                            PesanKirim.append(
-                                    "Pengiriman data kunjungan PCare selesai\n");
-                            PesanKirim.append(
-                                    "Pengiriman data obat & tindakan PCare dimulai\n");
+                            PesanKirim.append("Pengiriman data kunjungan PCare selesai\n");
+                            PesanKirim.append("Pengiriman data obat & tindakan PCare dimulai\n");
                             for (i = 0; i < tbKunjungan.getRowCount(); i++) {
-                                if (tbKunjungan.getValueAt(i, 30).toString().
-                                        equals("Terkirim")) {
+                                if (tbKunjungan.getValueAt(i, 30).toString().equals("Terkirim")) {
                                     try {
-                                        PesanKirim.append(
-                                                "Mencoba mencari data mapping obat No.Kunjungan "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.Rawat "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.RM "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString() + " / Pasien "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString()
+                                        PesanKirim.append("Mencoba mencari data mapping obat No.Kunjungan "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                 + " dan mengirimkan ke server PCare BPJS...!!\n");
                                         pscari = koneksi.prepareStatement(
                                                 "select detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam,detail_pemberian_obat.kode_brng,detail_pemberian_obat.jml,detail_pemberian_obat.no_rawat,maping_obat_pcare.kode_brng_pcare,detail_pemberian_obat.no_batch,"
                                                 + "detail_pemberian_obat.no_faktur from detail_pemberian_obat inner join maping_obat_pcare on maping_obat_pcare.kode_brng=detail_pemberian_obat.kode_brng where detail_pemberian_obat.no_rawat=?");
                                         try {
-                                            pscari.setString(1, tbKunjungan.
-                                                    getValueAt(i, 0).toString());
+                                            pscari.setString(1, tbKunjungan.getValueAt(i, 0).toString());
                                             rscari = pscari.executeQuery();
                                             while (rscari.next()) {
                                                 if (Sequel.cariInteger(
                                                         "select count(kode_brng) from pcare_obat_diberikan where tgl_perawatan='"
-                                                        + rscari.getString(
-                                                                "tgl_perawatan") + "' and jam='"
-                                                        + rscari.
-                                                                getString("jam") + "' and no_rawat='"
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 0).
-                                                                toString()
-                                                        + "' and kode_brng='" + rscari.
-                                                                getString(
-                                                                        "kode_brng")
+                                                        + rscari.getString("tgl_perawatan") + "' and jam='"
+                                                        + rscari.getString("jam") + "' and no_rawat='"
+                                                        + tbKunjungan.getValueAt(i, 0).toString()
+                                                        + "' and kode_brng='" + rscari.getString("kode_brng")
                                                         + "'") == 0) {
                                                     arrSplit = Sequel
-                                                            .cariIsi(
-                                                                    "select aturan from aturan_pakai where tgl_perawatan='"
-                                                                    + rscari.
-                                                                            getString(
-                                                                                    "tgl_perawatan") + "' and jam='"
-                                                                    + rscari.
-                                                                            getString(
-                                                                                    "jam") + "' and no_rawat='"
-                                                                    + tbKunjungan.
-                                                                            getValueAt(
-                                                                                    i,
-                                                                                    0).
-                                                                            toString()
-                                                                    + "' and kode_brng='" + rscari.
-                                                                            getString(
-                                                                                    "kode_brng")
+                                                            .cariIsi("select aturan from aturan_pakai where tgl_perawatan='"
+                                                                    + rscari.getString("tgl_perawatan") + "' and jam='"
+                                                                    + rscari.getString("jam") + "' and no_rawat='"
+                                                                    + tbKunjungan.getValueAt(i, 0).toString()
+                                                                    + "' and kode_brng='" + rscari.getString("kode_brng")
                                                                     + "'")
                                                             .toLowerCase()
                                                             .split("x");
                                                     signa1 = "1";
                                                     try {
-                                                        if (!arrSplit[0].
-                                                                replaceAll(
-                                                                        "[^0-9.]+",
-                                                                        "").
-                                                                isEmpty()) {
-                                                            signa1 = arrSplit[0].
-                                                                    replaceAll(
-                                                                            "[^0-9.]+",
-                                                                            "");
+                                                        if (!arrSplit[0].replaceAll("[^0-9.]+", "").isEmpty()) {
+                                                            signa1 = arrSplit[0].replaceAll("[^0-9.]+", "");
                                                         }
                                                     } catch (Exception a) {
                                                         signa1 = "1";
@@ -12207,15 +10799,8 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                                     signa2 = "1";
                                                     try {
-                                                        if (!arrSplit[1].
-                                                                replaceAll(
-                                                                        "[^0-9.]+",
-                                                                        "").
-                                                                isEmpty()) {
-                                                            signa2 = arrSplit[1].
-                                                                    replaceAll(
-                                                                            "[^0-9.]+",
-                                                                            "");
+                                                        if (!arrSplit[1].replaceAll("[^0-9.]+", "").isEmpty()) {
+                                                            signa2 = arrSplit[1].replaceAll("[^0-9.]+", "");
                                                         }
                                                     } catch (Exception a) {
                                                         signa2 = "1";
@@ -12223,195 +10808,98 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                                     try {
                                                         headers = new HttpHeaders();
-                                                        headers.setContentType(
-                                                                MediaType.TEXT_PLAIN);
-                                                        headers.add("X-cons-id",
-                                                                koneksiDB.
-                                                                        CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
+                                                        headers.setContentType(MediaType.TEXT_PLAIN);
+                                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers.add("X-timestamp", utc);
+                                                        headers.add("X-signature", api.getHmac());
+                                                        headers.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                                         requestJson = "{" + "\"kdObatSK\": 0," + "\"noKunjungan\": \""
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + "\","
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + "\","
                                                                 + "\"racikan\": false," + "\"kdRacikan\": null,"
                                                                 + "\"obatDPHO\": true," + "\"kdObat\": \""
-                                                                + rscari.
-                                                                        getString(
-                                                                                "kode_brng_pcare") + "\","
+                                                                + rscari.getString("kode_brng_pcare") + "\","
                                                                 + "\"signa1\": " + signa1 + "," + "\"signa2\": "
                                                                 + signa2 + "," + "\"jmlObat\": "
-                                                                + rscari.
-                                                                        getString(
-                                                                                "jml") + "," + "\"jmlPermintaan\": "
-                                                                + rscari.
-                                                                        getString(
-                                                                                "jml") + ","
+                                                                + rscari.getString("jml") + "," + "\"jmlPermintaan\": "
+                                                                + rscari.getString("jml") + ","
                                                                 + "\"nmObatNonDPHO\": \"-\"" + "}";
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        requestEntity = new HttpEntity(
-                                                                requestJson,
-                                                                headers);
-                                                        requestJson = api.
-                                                                getRest()
-                                                                .exchange(
-                                                                        URL + "/obat/kunjungan",
-                                                                        HttpMethod.POST,
-                                                                        requestEntity,
-                                                                        String.class).
-                                                                getBody();
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        root = mapper.readTree(
-                                                                requestJson);
-                                                        nameNode = root.path(
-                                                                "metaData");
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        requestEntity = new HttpEntity(requestJson, headers);
+                                                        requestJson = api.getRest()
+                                                                .exchange(URL + "/obat/kunjungan", HttpMethod.POST,
+                                                                        requestEntity, String.class)
+                                                                .getBody();
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        root = mapper.readTree(requestJson);
+                                                        nameNode = root.path("metaData");
                                                         PesanKirim
-                                                                .append("code : " + nameNode.
-                                                                        path("code").
-                                                                        asText() + "\n");
-                                                        PesanKirim.append(
-                                                                "message : "
-                                                                + nameNode.path(
-                                                                        "message").
-                                                                        asText() + "\n");
-                                                        if (nameNode.
-                                                                path("code").
-                                                                asText().equals(
-                                                                        "201")) {
-                                                            response = mapper.
-                                                                    readTree(
-                                                                            api.
-                                                                                    Decrypt(root.
-                                                                                            path("response").
-                                                                                            asText(),
-                                                                                            utc));
+                                                                .append("code : " + nameNode.path("code").asText() + "\n");
+                                                        PesanKirim.append("message : "
+                                                                + nameNode.path("message").asText() + "\n");
+                                                        if (nameNode.path("code").asText().equals("201")) {
+                                                            response = mapper.readTree(
+                                                                    api.Decrypt(root.path("response").asText(), utc));
                                                             kdObatSK = "";
-                                                            if (response.
-                                                                    isArray()) {
+                                                            if (response.isArray()) {
                                                                 for (JsonNode list : response) {
-                                                                    if (list.
-                                                                            path("field").
-                                                                            asText().
-                                                                            equals("kdObatSK")) {
-                                                                        kdObatSK = list.
-                                                                                path("message").
-                                                                                asText();
+                                                                    if (list.path("field")
+                                                                            .asText()
+                                                                            .equals("kdObatSK")) {
+                                                                        kdObatSK = list.path("message").asText();
                                                                     }
                                                                 }
                                                             }
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_obat_diberikan",
-                                                                    "?,?,?,?,?,?,?,?",
+                                                            Sequel.menyimpan2("pcare_obat_diberikan", "?,?,?,?,?,?,?,?",
                                                                     8,
                                                                     new String[]{
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        0).
-                                                                                toString(),
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        1).
-                                                                                toString(),
-                                                                        kdObatSK,
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tgl_perawatan"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "jam"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kode_brng"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "no_batch"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "no_faktur")});
+                                                                        tbKunjungan.getValueAt(i, 0).toString(),
+                                                                        tbKunjungan.getValueAt(i, 1).toString(),
+                                                                        kdObatSK, rscari.getString("tgl_perawatan"),
+                                                                        rscari.getString("jam"),
+                                                                        rscari.getString("kode_brng"),
+                                                                        rscari.getString("no_batch"),
+                                                                        rscari.getString("no_faktur")});
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
                                                             | InvalidKeyException | KeyManagementException
                                                             | NoSuchAlgorithmException | SQLException
                                                             | BadPaddingException | IllegalBlockSizeException
                                                             | NoSuchPaddingException | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                "Notifikasi Bridging : " + ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            PesanKirim.append(
-                                                                    "Koneksi ke server PCare terputus...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            PesanKirim.append(
-                                                                    "Server PCare baru ngambek broooh...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            PesanKirim.append("Koneksi ke server PCare terputus...!\n");
+                                                        } else if (ex.toString().contains("500")) {
+                                                            PesanKirim.append("Server PCare baru ngambek broooh...!\n");
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            PesanKirim.append(
-                                                                    "Time out, hayati lelah baaaang...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("408")) {
+                                                            PesanKirim.append("Time out, hayati lelah baaaang...!\n");
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
                                                         }
                                                     }
                                                 }
                                             }
                                             if (rscari.getRow() == 0) {
-                                                PesanKirim.append(
-                                                        "Mapping obat No.Kunjungan "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.Rawat "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.RM "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString() + " / Pasien "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString()
+                                                PesanKirim.append("Mapping obat No.Kunjungan "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                        + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                        + tbKunjungan.getValueAt(i, 3).toString()
                                                         + " tidak ditemukan...!!");
                                             }
                                         } catch (SQLException a) {
-                                            PesanKirim.append(
-                                                    "Notif : " + a + "\n");
+                                            PesanKirim.append("Notif : " + a + "\n");
                                         } finally {
                                             if (rscari != null) {
                                                 rscari.close();
@@ -12423,220 +10911,111 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                         PesanKirim.append(
                                                 "Mencoba mencari data mapping tindakan dokter rawat jalan, No.Kunjungan "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.Rawat "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.RM "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString() + " / Pasien "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString()
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                 + " dan mengirimkan ke server PCare BPJS...!!\n");
                                         pscari = koneksi.prepareStatement(
                                                 "select rawat_jl_dr.kd_jenis_prw,rawat_jl_dr.tgl_perawatan,rawat_jl_dr.jam_rawat,rawat_jl_dr.material,rawat_jl_dr.bhp,rawat_jl_dr.tarif_tindakandr,rawat_jl_dr.kso,rawat_jl_dr.menejemen,rawat_jl_dr.biaya_rawat, "
                                                 + "maping_tindakan_pcare.kd_tindakan_pcare from rawat_jl_dr inner join maping_tindakan_pcare on maping_tindakan_pcare.kd_jenis_prw=rawat_jl_dr.kd_jenis_prw where rawat_jl_dr.no_rawat=?");
                                         try {
-                                            pscari.setString(1, tbKunjungan.
-                                                    getValueAt(i, 0).toString());
+                                            pscari.setString(1, tbKunjungan.getValueAt(i, 0).toString());
                                             rscari = pscari.executeQuery();
                                             while (rscari.next()) {
                                                 if (Sequel.cariInteger(
                                                         "select count(kd_jenis_prw) from pcare_tindakan_ralan_diberikan where tgl_perawatan='"
-                                                        + rscari.getString(
-                                                                "tgl_perawatan") + "' and jam='"
-                                                        + rscari.
-                                                                getString("jam") + "' and no_rawat='"
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 0).
-                                                                toString()
+                                                        + rscari.getString("tgl_perawatan") + "' and jam='"
+                                                        + rscari.getString("jam") + "' and no_rawat='"
+                                                        + tbKunjungan.getValueAt(i, 0).toString()
                                                         + "' and kd_jenis_prw='"
-                                                        + rscari.getString(
-                                                                "kd_jenis_prw") + "'") == 0) {
+                                                        + rscari.getString("kd_jenis_prw") + "'") == 0) {
                                                     try {
                                                         headers = new HttpHeaders();
-                                                        headers.setContentType(
-                                                                MediaType.APPLICATION_JSON);
-                                                        headers.add("X-cons-id",
-                                                                koneksiDB.
-                                                                        CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
+                                                        headers.setContentType(MediaType.APPLICATION_JSON);
+                                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers.add("X-timestamp", utc);
+                                                        headers.add("X-signature", api.getHmac());
+                                                        headers.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                                         requestJson = "{" + "\"kdTindakanSK\": 0,"
                                                                 + "\"noKunjungan\": \""
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + "\","
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + "\","
                                                                 + "\"kdTindakan\": \""
-                                                                + rscari.
-                                                                        getString(
-                                                                                "kd_tindakan_pcare") + "\","
+                                                                + rscari.getString("kd_tindakan_pcare") + "\","
                                                                 + "\"biaya\": 0," + "\"keterangan\": null,"
                                                                 + "\"hasil\": 0" + "}";
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        requestEntity = new HttpEntity(
-                                                                requestJson,
-                                                                headers);
-                                                        requestJson = api.
-                                                                getRest()
-                                                                .exchange(
-                                                                        URL + "/tindakan",
-                                                                        HttpMethod.POST,
-                                                                        requestEntity,
-                                                                        String.class).
-                                                                getBody();
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        root = mapper.readTree(
-                                                                requestJson);
-                                                        nameNode = root.path(
-                                                                "metaData");
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        requestEntity = new HttpEntity(requestJson, headers);
+                                                        requestJson = api.getRest()
+                                                                .exchange(URL + "/tindakan", HttpMethod.POST, requestEntity,
+                                                                        String.class)
+                                                                .getBody();
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        root = mapper.readTree(requestJson);
+                                                        nameNode = root.path("metaData");
                                                         PesanKirim
-                                                                .append("code : " + nameNode.
-                                                                        path("code").
-                                                                        asText() + "\n");
-                                                        PesanKirim.append(
-                                                                "message : "
-                                                                + nameNode.path(
-                                                                        "message").
-                                                                        asText() + "\n");
-                                                        if (nameNode.
-                                                                path("code").
-                                                                asText().equals(
-                                                                        "201")) {
-                                                            response = mapper.
-                                                                    readTree(
-                                                                            api.
-                                                                                    Decrypt(root.
-                                                                                            path("response").
-                                                                                            asText(),
-                                                                                            utc));
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_tindakan_ralan_diberikan",
-                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?",
-                                                                    13,
+                                                                .append("code : " + nameNode.path("code").asText() + "\n");
+                                                        PesanKirim.append("message : "
+                                                                + nameNode.path("message").asText() + "\n");
+                                                        if (nameNode.path("code").asText().equals("201")) {
+                                                            response = mapper.readTree(
+                                                                    api.Decrypt(root.path("response").asText(), utc));
+                                                            Sequel.menyimpan2("pcare_tindakan_ralan_diberikan",
+                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?", 13,
                                                                     new String[]{
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        0).
-                                                                                toString(),
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        1).
-                                                                                toString(),
-                                                                        response.
-                                                                                path("message").
-                                                                                asText(),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tgl_perawatan"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "jam_rawat"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kd_jenis_prw"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "material"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "bhp"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakandr"),
-                                                                        "0",
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kso"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "menejemen"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "biaya_rawat")});
+                                                                        tbKunjungan.getValueAt(i, 0).toString(),
+                                                                        tbKunjungan.getValueAt(i, 1).toString(),
+                                                                        response.path("message").asText(),
+                                                                        rscari.getString("tgl_perawatan"),
+                                                                        rscari.getString("jam_rawat"),
+                                                                        rscari.getString("kd_jenis_prw"),
+                                                                        rscari.getString("material"),
+                                                                        rscari.getString("bhp"),
+                                                                        rscari.getString("tarif_tindakandr"), "0",
+                                                                        rscari.getString("kso"),
+                                                                        rscari.getString("menejemen"),
+                                                                        rscari.getString("biaya_rawat")});
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
                                                             | InvalidKeyException | KeyManagementException
                                                             | NoSuchAlgorithmException | SQLException
                                                             | BadPaddingException | IllegalBlockSizeException
                                                             | NoSuchPaddingException | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                "Notifikasi Bridging : " + ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            PesanKirim.append(
-                                                                    "Koneksi ke server PCare terputus...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            PesanKirim.append(
-                                                                    "Server PCare baru ngambek broooh...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            PesanKirim.append("Koneksi ke server PCare terputus...!\n");
+                                                        } else if (ex.toString().contains("500")) {
+                                                            PesanKirim.append("Server PCare baru ngambek broooh...!\n");
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            PesanKirim.append(
-                                                                    "Time out, hayati lelah baaaang...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("408")) {
+                                                            PesanKirim.append("Time out, hayati lelah baaaang...!\n");
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
                                                         }
                                                     }
                                                 }
                                             }
                                             if (rscari.getRow() == 0) {
-                                                PesanKirim.append(
-                                                        "Mapping tindakan dokter rawat jalan, No.Kunjungan "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.Rawat "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.RM "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString() + " / Pasien "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString()
+                                                PesanKirim.append("Mapping tindakan dokter rawat jalan, No.Kunjungan "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                        + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                        + tbKunjungan.getValueAt(i, 3).toString()
                                                         + " tidak ditemukan...!!\n");
                                             }
                                         } catch (SQLException a) {
-                                            PesanKirim.append(
-                                                    "Notif : " + a + "\n");
+                                            PesanKirim.append("Notif : " + a + "\n");
                                         } finally {
                                             if (rscari != null) {
                                                 rscari.close();
@@ -12648,196 +11027,97 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                         PesanKirim.append(
                                                 "Mencoba mencari data mapping tindakan paramedis rawat jalan, No.Kunjungan "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.Rawat "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.RM "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString() + " / Pasien "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString()
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                 + " dan mengirimkan ke server PCare BPJS...!!\n");
                                         pscari = koneksi.prepareStatement(
                                                 "select rawat_jl_pr.kd_jenis_prw,rawat_jl_pr.tgl_perawatan,rawat_jl_pr.jam_rawat,rawat_jl_pr.material,rawat_jl_pr.bhp,rawat_jl_pr.tarif_tindakanpr,rawat_jl_pr.kso,rawat_jl_pr.menejemen,rawat_jl_pr.biaya_rawat, "
                                                 + "maping_tindakan_pcare.kd_tindakan_pcare from rawat_jl_pr inner join maping_tindakan_pcare on maping_tindakan_pcare.kd_jenis_prw=rawat_jl_pr.kd_jenis_prw where rawat_jl_pr.no_rawat=?");
                                         try {
-                                            pscari.setString(1, tbKunjungan.
-                                                    getValueAt(i, 0).toString());
+                                            pscari.setString(1, tbKunjungan.getValueAt(i, 0).toString());
                                             rscari = pscari.executeQuery();
                                             while (rscari.next()) {
                                                 if (Sequel.cariInteger(
                                                         "select count(kd_jenis_prw) from pcare_tindakan_ralan_diberikan where tgl_perawatan='"
-                                                        + rscari.getString(
-                                                                "tgl_perawatan") + "' and jam='"
-                                                        + rscari.
-                                                                getString("jam") + "' and no_rawat='"
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 0).
-                                                                toString()
+                                                        + rscari.getString("tgl_perawatan") + "' and jam='"
+                                                        + rscari.getString("jam") + "' and no_rawat='"
+                                                        + tbKunjungan.getValueAt(i, 0).toString()
                                                         + "' and kd_jenis_prw='"
-                                                        + rscari.getString(
-                                                                "kd_jenis_prw") + "'") == 0) {
+                                                        + rscari.getString("kd_jenis_prw") + "'") == 0) {
                                                     try {
                                                         headers = new HttpHeaders();
-                                                        headers.setContentType(
-                                                                MediaType.APPLICATION_JSON);
-                                                        headers.add("X-cons-id",
-                                                                koneksiDB.
-                                                                        CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
+                                                        headers.setContentType(MediaType.APPLICATION_JSON);
+                                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers.add("X-timestamp", utc);
+                                                        headers.add("X-signature", api.getHmac());
+                                                        headers.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                                         requestJson = "{" + "\"kdTindakanSK\": 0,"
                                                                 + "\"noKunjungan\": \""
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + "\","
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + "\","
                                                                 + "\"kdTindakan\": \""
-                                                                + rscari.
-                                                                        getString(
-                                                                                "kd_tindakan_pcare") + "\","
+                                                                + rscari.getString("kd_tindakan_pcare") + "\","
                                                                 + "\"biaya\": 0," + "\"keterangan\": null,"
                                                                 + "\"hasil\": 0" + "}";
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        requestEntity = new HttpEntity(
-                                                                requestJson,
-                                                                headers);
-                                                        requestJson = api.
-                                                                getRest()
-                                                                .exchange(
-                                                                        URL + "/tindakan",
-                                                                        HttpMethod.POST,
-                                                                        requestEntity,
-                                                                        String.class).
-                                                                getBody();
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        root = mapper.readTree(
-                                                                requestJson);
-                                                        nameNode = root.path(
-                                                                "metaData");
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        requestEntity = new HttpEntity(requestJson, headers);
+                                                        requestJson = api.getRest()
+                                                                .exchange(URL + "/tindakan", HttpMethod.POST, requestEntity,
+                                                                        String.class)
+                                                                .getBody();
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        root = mapper.readTree(requestJson);
+                                                        nameNode = root.path("metaData");
                                                         PesanKirim
-                                                                .append("code : " + nameNode.
-                                                                        path("code").
-                                                                        asText() + "\n");
-                                                        PesanKirim.append(
-                                                                "message : "
-                                                                + nameNode.path(
-                                                                        "message").
-                                                                        asText() + "\n");
-                                                        if (nameNode.
-                                                                path("code").
-                                                                asText().equals(
-                                                                        "201")) {
-                                                            response = mapper.
-                                                                    readTree(
-                                                                            api.
-                                                                                    Decrypt(root.
-                                                                                            path("response").
-                                                                                            asText(),
-                                                                                            utc));
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_tindakan_ralan_diberikan",
-                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?",
-                                                                    13,
+                                                                .append("code : " + nameNode.path("code").asText() + "\n");
+                                                        PesanKirim.append("message : "
+                                                                + nameNode.path("message").asText() + "\n");
+                                                        if (nameNode.path("code").asText().equals("201")) {
+                                                            response = mapper.readTree(
+                                                                    api.Decrypt(root.path("response").asText(), utc));
+                                                            Sequel.menyimpan2("pcare_tindakan_ralan_diberikan",
+                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?", 13,
                                                                     new String[]{
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        0).
-                                                                                toString(),
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        1).
-                                                                                toString(),
-                                                                        response.
-                                                                                path("message").
-                                                                                asText(),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tgl_perawatan"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "jam_rawat"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kd_jenis_prw"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "material"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "bhp"),
-                                                                        "0",
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakanpr"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kso"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "menejemen"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "biaya_rawat")});
+                                                                        tbKunjungan.getValueAt(i, 0).toString(),
+                                                                        tbKunjungan.getValueAt(i, 1).toString(),
+                                                                        response.path("message").asText(),
+                                                                        rscari.getString("tgl_perawatan"),
+                                                                        rscari.getString("jam_rawat"),
+                                                                        rscari.getString("kd_jenis_prw"),
+                                                                        rscari.getString("material"),
+                                                                        rscari.getString("bhp"), "0",
+                                                                        rscari.getString("tarif_tindakanpr"),
+                                                                        rscari.getString("kso"),
+                                                                        rscari.getString("menejemen"),
+                                                                        rscari.getString("biaya_rawat")});
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
                                                             | InvalidKeyException | KeyManagementException
                                                             | NoSuchAlgorithmException | SQLException
                                                             | BadPaddingException | IllegalBlockSizeException
                                                             | NoSuchPaddingException | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                "Notifikasi Bridging : " + ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            PesanKirim.append(
-                                                                    "Koneksi ke server PCare terputus...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            PesanKirim.append(
-                                                                    "Server PCare baru ngambek broooh...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            PesanKirim.append("Koneksi ke server PCare terputus...!\n");
+                                                        } else if (ex.toString().contains("500")) {
+                                                            PesanKirim.append("Server PCare baru ngambek broooh...!\n");
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            PesanKirim.append(
-                                                                    "Time out, hayati lelah baaaang...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("408")) {
+                                                            PesanKirim.append("Time out, hayati lelah baaaang...!\n");
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
                                                         }
                                                     }
                                                 }
@@ -12845,31 +11125,14 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                             if (rscari.getRow() == 0) {
                                                 PesanKirim
                                                         .append("Mapping tindakan paramedis rawat jalan, No.Kunjungan "
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + " / No.Rawat "
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + " / No.RM "
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                3).
-                                                                        toString() + " / Pasien "
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                3).
-                                                                        toString()
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                                 + " tidak ditemukan...!!\n");
                                             }
                                         } catch (SQLException a) {
-                                            PesanKirim.append(
-                                                    "Notif : " + a + "\n");
+                                            PesanKirim.append("Notif : " + a + "\n");
                                         } finally {
                                             if (rscari != null) {
                                                 rscari.close();
@@ -12881,198 +11144,98 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                         PesanKirim.append(
                                                 "Mencoba mencari data mapping tindakan dokter & paramedis rawat jalan, No.Kunjungan "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.Rawat "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.RM "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString() + " / Pasien "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString()
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                 + " dan mengirimkan ke server PCare BPJS...!!\n");
                                         pscari = koneksi.prepareStatement(
                                                 "select rawat_jl_drpr.kd_jenis_prw,rawat_jl_drpr.tgl_perawatan,rawat_jl_drpr.jam_rawat,rawat_jl_drpr.material,rawat_jl_drpr.bhp,rawat_jl_drpr.tarif_tindakandr,rawat_jl_drpr.tarif_tindakanpr,rawat_jl_drpr.kso,rawat_jl_drpr.menejemen, "
                                                 + "rawat_jl_drpr.biaya_rawat,maping_tindakan_pcare.kd_tindakan_pcare from rawat_jl_drpr inner join maping_tindakan_pcare on maping_tindakan_pcare.kd_jenis_prw=rawat_jl_drpr.kd_jenis_prw where rawat_jl_drpr.no_rawat=?");
                                         try {
-                                            pscari.setString(1, tbKunjungan.
-                                                    getValueAt(i, 0).toString());
+                                            pscari.setString(1, tbKunjungan.getValueAt(i, 0).toString());
                                             rscari = pscari.executeQuery();
                                             while (rscari.next()) {
                                                 if (Sequel.cariInteger(
                                                         "select count(kd_jenis_prw) from pcare_tindakan_ralan_diberikan where tgl_perawatan='"
-                                                        + rscari.getString(
-                                                                "tgl_perawatan") + "' and jam='"
-                                                        + rscari.
-                                                                getString("jam") + "' and no_rawat='"
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 0).
-                                                                toString()
+                                                        + rscari.getString("tgl_perawatan") + "' and jam='"
+                                                        + rscari.getString("jam") + "' and no_rawat='"
+                                                        + tbKunjungan.getValueAt(i, 0).toString()
                                                         + "' and kd_jenis_prw='"
-                                                        + rscari.getString(
-                                                                "kd_jenis_prw") + "'") == 0) {
+                                                        + rscari.getString("kd_jenis_prw") + "'") == 0) {
                                                     try {
                                                         headers = new HttpHeaders();
-                                                        headers.setContentType(
-                                                                MediaType.APPLICATION_JSON);
-                                                        headers.add("X-cons-id",
-                                                                koneksiDB.
-                                                                        CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
+                                                        headers.setContentType(MediaType.APPLICATION_JSON);
+                                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers.add("X-timestamp", utc);
+                                                        headers.add("X-signature", api.getHmac());
+                                                        headers.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                                         requestJson = "{" + "\"kdTindakanSK\": 0,"
                                                                 + "\"noKunjungan\": \""
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + "\","
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + "\","
                                                                 + "\"kdTindakan\": \""
-                                                                + rscari.
-                                                                        getString(
-                                                                                "kd_tindakan_pcare") + "\","
+                                                                + rscari.getString("kd_tindakan_pcare") + "\","
                                                                 + "\"biaya\": 0," + "\"keterangan\": null,"
                                                                 + "\"hasil\": 0" + "}";
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        requestEntity = new HttpEntity(
-                                                                requestJson,
-                                                                headers);
-                                                        requestJson = api.
-                                                                getRest()
-                                                                .exchange(
-                                                                        URL + "/tindakan",
-                                                                        HttpMethod.POST,
-                                                                        requestEntity,
-                                                                        String.class).
-                                                                getBody();
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        root = mapper.readTree(
-                                                                requestJson);
-                                                        nameNode = root.path(
-                                                                "metaData");
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        requestEntity = new HttpEntity(requestJson, headers);
+                                                        requestJson = api.getRest()
+                                                                .exchange(URL + "/tindakan", HttpMethod.POST, requestEntity,
+                                                                        String.class)
+                                                                .getBody();
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        root = mapper.readTree(requestJson);
+                                                        nameNode = root.path("metaData");
                                                         PesanKirim
-                                                                .append("code : " + nameNode.
-                                                                        path("code").
-                                                                        asText() + "\n");
-                                                        PesanKirim.append(
-                                                                "message : "
-                                                                + nameNode.path(
-                                                                        "message").
-                                                                        asText() + "\n");
-                                                        if (nameNode.
-                                                                path("code").
-                                                                asText().equals(
-                                                                        "201")) {
-                                                            response = mapper.
-                                                                    readTree(
-                                                                            api.
-                                                                                    Decrypt(root.
-                                                                                            path("response").
-                                                                                            asText(),
-                                                                                            utc));
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_tindakan_ralan_diberikan",
-                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?",
-                                                                    13,
+                                                                .append("code : " + nameNode.path("code").asText() + "\n");
+                                                        PesanKirim.append("message : "
+                                                                + nameNode.path("message").asText() + "\n");
+                                                        if (nameNode.path("code").asText().equals("201")) {
+                                                            response = mapper.readTree(
+                                                                    api.Decrypt(root.path("response").asText(), utc));
+                                                            Sequel.menyimpan2("pcare_tindakan_ralan_diberikan",
+                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?", 13,
                                                                     new String[]{
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        0).
-                                                                                toString(),
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        1).
-                                                                                toString(),
-                                                                        response.
-                                                                                path("message").
-                                                                                asText(),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tgl_perawatan"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "jam_rawat"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kd_jenis_prw"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "material"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "bhp"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakandr"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakanpr"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kso"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "menejemen"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "biaya_rawat")});
+                                                                        tbKunjungan.getValueAt(i, 0).toString(),
+                                                                        tbKunjungan.getValueAt(i, 1).toString(),
+                                                                        response.path("message").asText(),
+                                                                        rscari.getString("tgl_perawatan"),
+                                                                        rscari.getString("jam_rawat"),
+                                                                        rscari.getString("kd_jenis_prw"),
+                                                                        rscari.getString("material"),
+                                                                        rscari.getString("bhp"),
+                                                                        rscari.getString("tarif_tindakandr"),
+                                                                        rscari.getString("tarif_tindakanpr"),
+                                                                        rscari.getString("kso"),
+                                                                        rscari.getString("menejemen"),
+                                                                        rscari.getString("biaya_rawat")});
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
                                                             | InvalidKeyException | KeyManagementException
                                                             | NoSuchAlgorithmException | SQLException
                                                             | BadPaddingException | IllegalBlockSizeException
                                                             | NoSuchPaddingException | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                "Notifikasi Bridging : " + ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            PesanKirim.append(
-                                                                    "Koneksi ke server PCare terputus...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            PesanKirim.append(
-                                                                    "Server PCare baru ngambek broooh...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            PesanKirim.append("Koneksi ke server PCare terputus...!\n");
+                                                        } else if (ex.toString().contains("500")) {
+                                                            PesanKirim.append("Server PCare baru ngambek broooh...!\n");
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            PesanKirim.append(
-                                                                    "Time out, hayati lelah baaaang...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("408")) {
+                                                            PesanKirim.append("Time out, hayati lelah baaaang...!\n");
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
                                                         }
                                                     }
                                                 }
@@ -13080,24 +11243,15 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                             if (rscari.getRow() == 0) {
                                                 PesanKirim.append(
                                                         "Mapping tindakan dokter & paramedis rawat jalan, No.Kunjungan "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString()
+                                                        + tbKunjungan.getValueAt(i, 1).toString()
                                                         + " / No.Rawat "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.RM "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString() + " / Pasien "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString()
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                        + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                        + tbKunjungan.getValueAt(i, 3).toString()
                                                         + " tidak ditemukan...!!\n");
                                             }
                                         } catch (SQLException a) {
-                                            PesanKirim.append(
-                                                    "Notif : " + a + "\n");
+                                            PesanKirim.append("Notif : " + a + "\n");
                                         } finally {
                                             if (rscari != null) {
                                                 rscari.close();
@@ -13109,222 +11263,113 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                         PesanKirim.append(
                                                 "Mencoba mencari data mapping tindakan dokter rawat inap, No.Kunjungan "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.Rawat "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.RM "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString() + " / Pasien "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString()
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                 + " dan mengirimkan ke server PCare BPJS...!!\n");
                                         pscari = koneksi.prepareStatement(
                                                 "select rawat_inap_dr.kd_jenis_prw,rawat_inap_dr.tgl_perawatan,rawat_inap_dr.jam_rawat,rawat_inap_dr.material,rawat_inap_dr.bhp,rawat_inap_dr.tarif_tindakandr,rawat_inap_dr.kso,rawat_inap_dr.menejemen,rawat_inap_dr.biaya_rawat, "
                                                 + "maping_tindakan_ranap_pcare.kd_tindakan_pcare from rawat_inap_dr inner join maping_tindakan_ranap_pcare on maping_tindakan_ranap_pcare.kd_jenis_prw=rawat_inap_dr.kd_jenis_prw where rawat_inap_dr.no_rawat=?");
                                         try {
-                                            pscari.setString(1, tbKunjungan.
-                                                    getValueAt(i, 0).toString());
+                                            pscari.setString(1, tbKunjungan.getValueAt(i, 0).toString());
                                             rscari = pscari.executeQuery();
                                             while (rscari.next()) {
                                                 if (Sequel.cariInteger(
                                                         "select count(pcare_tindakan_ranap_diberikan.kd_jenis_prw) from pcare_tindakan_ranap_diberikan where pcare_tindakan_ranap_diberikan.tgl_perawatan='"
-                                                        + rscari.getString(
-                                                                "tgl_perawatan")
+                                                        + rscari.getString("tgl_perawatan")
                                                         + "' and pcare_tindakan_ranap_diberikan.jam='"
-                                                        + rscari.
-                                                                getString("jam")
+                                                        + rscari.getString("jam")
                                                         + "' and pcare_tindakan_ranap_diberikan.no_rawat='"
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 0).
-                                                                toString()
+                                                        + tbKunjungan.getValueAt(i, 0).toString()
                                                         + "' and pcare_tindakan_ranap_diberikan.kd_jenis_prw='"
-                                                        + rscari.getString(
-                                                                "kd_jenis_prw") + "'") == 0) {
+                                                        + rscari.getString("kd_jenis_prw") + "'") == 0) {
                                                     try {
                                                         headers = new HttpHeaders();
-                                                        headers.setContentType(
-                                                                MediaType.APPLICATION_JSON);
-                                                        headers.add("X-cons-id",
-                                                                koneksiDB.
-                                                                        CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
+                                                        headers.setContentType(MediaType.APPLICATION_JSON);
+                                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers.add("X-timestamp", utc);
+                                                        headers.add("X-signature", api.getHmac());
+                                                        headers.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                                         requestJson = "{" + "\"kdTindakanSK\": 0,"
                                                                 + "\"noKunjungan\": \""
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + "\","
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + "\","
                                                                 + "\"kdTindakan\": \""
-                                                                + rscari.
-                                                                        getString(
-                                                                                "kd_tindakan_pcare") + "\","
+                                                                + rscari.getString("kd_tindakan_pcare") + "\","
                                                                 + "\"biaya\": 0," + "\"keterangan\": null,"
                                                                 + "\"hasil\": 0" + "}";
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        requestEntity = new HttpEntity(
-                                                                requestJson,
-                                                                headers);
-                                                        requestJson = api.
-                                                                getRest()
-                                                                .exchange(
-                                                                        URL + "/tindakan",
-                                                                        HttpMethod.POST,
-                                                                        requestEntity,
-                                                                        String.class).
-                                                                getBody();
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        root = mapper.readTree(
-                                                                requestJson);
-                                                        nameNode = root.path(
-                                                                "metaData");
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        requestEntity = new HttpEntity(requestJson, headers);
+                                                        requestJson = api.getRest()
+                                                                .exchange(URL + "/tindakan", HttpMethod.POST, requestEntity,
+                                                                        String.class)
+                                                                .getBody();
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        root = mapper.readTree(requestJson);
+                                                        nameNode = root.path("metaData");
                                                         PesanKirim
-                                                                .append("code : " + nameNode.
-                                                                        path("code").
-                                                                        asText() + "\n");
-                                                        PesanKirim.append(
-                                                                "message : "
-                                                                + nameNode.path(
-                                                                        "message").
-                                                                        asText() + "\n");
-                                                        if (nameNode.
-                                                                path("code").
-                                                                asText().equals(
-                                                                        "201")) {
-                                                            response = mapper.
-                                                                    readTree(
-                                                                            api.
-                                                                                    Decrypt(root.
-                                                                                            path("response").
-                                                                                            asText(),
-                                                                                            utc));
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_tindakan_ranap_diberikan",
-                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?",
-                                                                    13,
+                                                                .append("code : " + nameNode.path("code").asText() + "\n");
+                                                        PesanKirim.append("message : "
+                                                                + nameNode.path("message").asText() + "\n");
+                                                        if (nameNode.path("code").asText().equals("201")) {
+                                                            response = mapper.readTree(
+                                                                    api.Decrypt(root.path("response").asText(), utc));
+                                                            Sequel.menyimpan2("pcare_tindakan_ranap_diberikan",
+                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?", 13,
                                                                     new String[]{
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        0).
-                                                                                toString(),
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        1).
-                                                                                toString(),
-                                                                        response.
-                                                                                path("message").
-                                                                                asText(),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tgl_perawatan"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "jam_rawat"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kd_jenis_prw"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "material"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "bhp"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakandr"),
-                                                                        "0",
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kso"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "menejemen"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "biaya_rawat")});
+                                                                        tbKunjungan.getValueAt(i, 0).toString(),
+                                                                        tbKunjungan.getValueAt(i, 1).toString(),
+                                                                        response.path("message").asText(),
+                                                                        rscari.getString("tgl_perawatan"),
+                                                                        rscari.getString("jam_rawat"),
+                                                                        rscari.getString("kd_jenis_prw"),
+                                                                        rscari.getString("material"),
+                                                                        rscari.getString("bhp"),
+                                                                        rscari.getString("tarif_tindakandr"), "0",
+                                                                        rscari.getString("kso"),
+                                                                        rscari.getString("menejemen"),
+                                                                        rscari.getString("biaya_rawat")});
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
                                                             | InvalidKeyException | KeyManagementException
                                                             | NoSuchAlgorithmException | SQLException
                                                             | BadPaddingException | IllegalBlockSizeException
                                                             | NoSuchPaddingException | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                "Notifikasi Bridging : " + ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            PesanKirim.append(
-                                                                    "Koneksi ke server PCare terputus...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            PesanKirim.append(
-                                                                    "Server PCare baru ngambek broooh...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            PesanKirim.append("Koneksi ke server PCare terputus...!\n");
+                                                        } else if (ex.toString().contains("500")) {
+                                                            PesanKirim.append("Server PCare baru ngambek broooh...!\n");
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            PesanKirim.append(
-                                                                    "Time out, hayati lelah baaaang...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("408")) {
+                                                            PesanKirim.append("Time out, hayati lelah baaaang...!\n");
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
                                                         }
                                                     }
                                                 }
                                             }
                                             if (rscari.getRow() == 0) {
-                                                PesanKirim.append(
-                                                        "Mapping tindakan dokter rawat inap, No.Kunjungan "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.Rawat "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.RM "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString() + " / Pasien "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString()
+                                                PesanKirim.append("Mapping tindakan dokter rawat inap, No.Kunjungan "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                        + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                        + tbKunjungan.getValueAt(i, 3).toString()
                                                         + " tidak ditemukan...!!\n");
                                             }
                                         } catch (SQLException a) {
-                                            PesanKirim.append(
-                                                    "Notif : " + a + "\n");
+                                            PesanKirim.append("Notif : " + a + "\n");
                                         } finally {
                                             if (rscari != null) {
                                                 rscari.close();
@@ -13336,222 +11381,113 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                         PesanKirim.append(
                                                 "Mencoba mencari data mapping tindakan paramedis rawat inap, No.Kunjungan "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.Rawat "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.RM "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString() + " / Pasien "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString()
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                 + " dan mengirimkan ke server PCare BPJS...!!\n");
                                         pscari = koneksi.prepareStatement(
                                                 "select rawat_inap_pr.kd_jenis_prw,rawat_inap_pr.tgl_perawatan,rawat_inap_pr.jam_rawat,rawat_inap_pr.material,rawat_inap_pr.bhp,rawat_inap_pr.tarif_tindakanpr,rawat_inap_pr.kso,rawat_inap_pr.menejemen,rawat_inap_pr.biaya_rawat, "
                                                 + "maping_tindakan_ranap_pcare.kd_tindakan_pcare from rawat_inap_pr inner join maping_tindakan_ranap_pcare on maping_tindakan_ranap_pcare.kd_jenis_prw=rawat_inap_pr.kd_jenis_prw where rawat_inap_pr.no_rawat=?");
                                         try {
-                                            pscari.setString(1, tbKunjungan.
-                                                    getValueAt(i, 0).toString());
+                                            pscari.setString(1, tbKunjungan.getValueAt(i, 0).toString());
                                             rscari = pscari.executeQuery();
                                             while (rscari.next()) {
                                                 if (Sequel.cariInteger(
                                                         "select count(pcare_tindakan_ranap_diberikan.kd_jenis_prw) from pcare_tindakan_ranap_diberikan where pcare_tindakan_ranap_diberikan.tgl_perawatan='"
-                                                        + rscari.getString(
-                                                                "tgl_perawatan")
+                                                        + rscari.getString("tgl_perawatan")
                                                         + "' and pcare_tindakan_ranap_diberikan.jam='"
-                                                        + rscari.
-                                                                getString("jam")
+                                                        + rscari.getString("jam")
                                                         + "' and pcare_tindakan_ranap_diberikan.no_rawat='"
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 0).
-                                                                toString()
+                                                        + tbKunjungan.getValueAt(i, 0).toString()
                                                         + "' and pcare_tindakan_ranap_diberikan.kd_jenis_prw='"
-                                                        + rscari.getString(
-                                                                "kd_jenis_prw") + "'") == 0) {
+                                                        + rscari.getString("kd_jenis_prw") + "'") == 0) {
                                                     try {
                                                         headers = new HttpHeaders();
-                                                        headers.setContentType(
-                                                                MediaType.APPLICATION_JSON);
-                                                        headers.add("X-cons-id",
-                                                                koneksiDB.
-                                                                        CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
+                                                        headers.setContentType(MediaType.APPLICATION_JSON);
+                                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers.add("X-timestamp", utc);
+                                                        headers.add("X-signature", api.getHmac());
+                                                        headers.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                                         requestJson = "{" + "\"kdTindakanSK\": 0,"
                                                                 + "\"noKunjungan\": \""
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + "\","
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + "\","
                                                                 + "\"kdTindakan\": \""
-                                                                + rscari.
-                                                                        getString(
-                                                                                "kd_tindakan_pcare") + "\","
+                                                                + rscari.getString("kd_tindakan_pcare") + "\","
                                                                 + "\"biaya\": 0," + "\"keterangan\": null,"
                                                                 + "\"hasil\": 0" + "}";
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        requestEntity = new HttpEntity(
-                                                                requestJson,
-                                                                headers);
-                                                        requestJson = api.
-                                                                getRest()
-                                                                .exchange(
-                                                                        URL + "/tindakan",
-                                                                        HttpMethod.POST,
-                                                                        requestEntity,
-                                                                        String.class).
-                                                                getBody();
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        root = mapper.readTree(
-                                                                requestJson);
-                                                        nameNode = root.path(
-                                                                "metaData");
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        requestEntity = new HttpEntity(requestJson, headers);
+                                                        requestJson = api.getRest()
+                                                                .exchange(URL + "/tindakan", HttpMethod.POST, requestEntity,
+                                                                        String.class)
+                                                                .getBody();
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        root = mapper.readTree(requestJson);
+                                                        nameNode = root.path("metaData");
                                                         PesanKirim
-                                                                .append("code : " + nameNode.
-                                                                        path("code").
-                                                                        asText() + "\n");
-                                                        PesanKirim.append(
-                                                                "message : "
-                                                                + nameNode.path(
-                                                                        "message").
-                                                                        asText() + "\n");
-                                                        if (nameNode.
-                                                                path("code").
-                                                                asText().equals(
-                                                                        "201")) {
-                                                            response = mapper.
-                                                                    readTree(
-                                                                            api.
-                                                                                    Decrypt(root.
-                                                                                            path("response").
-                                                                                            asText(),
-                                                                                            utc));
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_tindakan_ranap_diberikan",
-                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?",
-                                                                    13,
+                                                                .append("code : " + nameNode.path("code").asText() + "\n");
+                                                        PesanKirim.append("message : "
+                                                                + nameNode.path("message").asText() + "\n");
+                                                        if (nameNode.path("code").asText().equals("201")) {
+                                                            response = mapper.readTree(
+                                                                    api.Decrypt(root.path("response").asText(), utc));
+                                                            Sequel.menyimpan2("pcare_tindakan_ranap_diberikan",
+                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?", 13,
                                                                     new String[]{
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        0).
-                                                                                toString(),
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        1).
-                                                                                toString(),
-                                                                        response.
-                                                                                path("message").
-                                                                                asText(),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tgl_perawatan"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "jam_rawat"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kd_jenis_prw"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "material"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "bhp"),
-                                                                        "0",
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakanpr"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kso"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "menejemen"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "biaya_rawat")});
+                                                                        tbKunjungan.getValueAt(i, 0).toString(),
+                                                                        tbKunjungan.getValueAt(i, 1).toString(),
+                                                                        response.path("message").asText(),
+                                                                        rscari.getString("tgl_perawatan"),
+                                                                        rscari.getString("jam_rawat"),
+                                                                        rscari.getString("kd_jenis_prw"),
+                                                                        rscari.getString("material"),
+                                                                        rscari.getString("bhp"), "0",
+                                                                        rscari.getString("tarif_tindakanpr"),
+                                                                        rscari.getString("kso"),
+                                                                        rscari.getString("menejemen"),
+                                                                        rscari.getString("biaya_rawat")});
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
                                                             | InvalidKeyException | KeyManagementException
                                                             | NoSuchAlgorithmException | SQLException
                                                             | BadPaddingException | IllegalBlockSizeException
                                                             | NoSuchPaddingException | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                "Notifikasi Bridging : " + ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            PesanKirim.append(
-                                                                    "Koneksi ke server PCare terputus...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            PesanKirim.append(
-                                                                    "Server PCare baru ngambek broooh...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            PesanKirim.append("Koneksi ke server PCare terputus...!\n");
+                                                        } else if (ex.toString().contains("500")) {
+                                                            PesanKirim.append("Server PCare baru ngambek broooh...!\n");
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            PesanKirim.append(
-                                                                    "Time out, hayati lelah baaaang...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("408")) {
+                                                            PesanKirim.append("Time out, hayati lelah baaaang...!\n");
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
                                                         }
                                                     }
                                                 }
                                             }
                                             if (rscari.getRow() == 0) {
-                                                PesanKirim.append(
-                                                        "Mapping tindakan paramedis rawat inap, No.Kunjungan "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.Rawat "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.RM "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString() + " / Pasien "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString()
+                                                PesanKirim.append("Mapping tindakan paramedis rawat inap, No.Kunjungan "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                        + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                        + tbKunjungan.getValueAt(i, 3).toString()
                                                         + " tidak ditemukan...!!\n");
                                             }
                                         } catch (SQLException a) {
-                                            PesanKirim.append(
-                                                    "Notif : " + a + "\n");
+                                            PesanKirim.append("Notif : " + a + "\n");
                                         } finally {
                                             if (rscari != null) {
                                                 rscari.close();
@@ -13563,200 +11499,100 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
 
                                         PesanKirim.append(
                                                 "Mencoba mencari data mapping tindakan dokter & paramedis rawat inap, No.Kunjungan "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.Rawat "
-                                                + tbKunjungan.getValueAt(i, 1).
-                                                        toString() + " / No.RM "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString() + " / Pasien "
-                                                + tbKunjungan.getValueAt(i, 3).
-                                                        toString()
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.Rawat "
+                                                + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                + tbKunjungan.getValueAt(i, 3).toString()
                                                 + " dan mengirimkan ke server PCare BPJS...!!\n");
                                         pscari = koneksi.prepareStatement(
                                                 "select rawat_inap_drpr.kd_jenis_prw,rawat_inap_drpr.tgl_perawatan,rawat_inap_drpr.jam_rawat,rawat_inap_drpr.material,rawat_inap_drpr.bhp,rawat_inap_drpr.tarif_tindakandr,rawat_inap_drpr.tarif_tindakanpr,rawat_inap_drpr.kso,rawat_inap_drpr.menejemen, "
                                                 + "rawat_inap_drpr.biaya_rawat,maping_tindakan_ranap_pcare.kd_tindakan_pcare from rawat_inap_drpr inner join maping_tindakan_ranap_pcare on maping_tindakan_ranap_pcare.kd_jenis_prw=rawat_inap_drpr.kd_jenis_prw where rawat_inap_drpr.no_rawat=?");
                                         try {
-                                            pscari.setString(1, tbKunjungan.
-                                                    getValueAt(i, 0).toString());
+                                            pscari.setString(1, tbKunjungan.getValueAt(i, 0).toString());
                                             rscari = pscari.executeQuery();
                                             while (rscari.next()) {
                                                 if (Sequel.cariInteger(
                                                         "select count(pcare_tindakan_ranap_diberikan.kd_jenis_prw) from pcare_tindakan_ranap_diberikan where pcare_tindakan_ranap_diberikan.tgl_perawatan='"
-                                                        + rscari.getString(
-                                                                "tgl_perawatan")
+                                                        + rscari.getString("tgl_perawatan")
                                                         + "' and pcare_tindakan_ranap_diberikan.jam='"
-                                                        + rscari.
-                                                                getString("jam")
+                                                        + rscari.getString("jam")
                                                         + "' and pcare_tindakan_ranap_diberikan.no_rawat='"
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 0).
-                                                                toString()
+                                                        + tbKunjungan.getValueAt(i, 0).toString()
                                                         + "' and pcare_tindakan_ranap_diberikan.kd_jenis_prw='"
-                                                        + rscari.getString(
-                                                                "kd_jenis_prw") + "'") == 0) {
+                                                        + rscari.getString("kd_jenis_prw") + "'") == 0) {
                                                     try {
                                                         headers = new HttpHeaders();
-                                                        headers.setContentType(
-                                                                MediaType.APPLICATION_JSON);
-                                                        headers.add("X-cons-id",
-                                                                koneksiDB.
-                                                                        CONSIDAPIPCARE());
-                                                        utc = String.valueOf(
-                                                                api.
-                                                                        GetUTCdatetimeAsString());
-                                                        headers.add(
-                                                                "X-timestamp",
-                                                                utc);
-                                                        headers.add(
-                                                                "X-signature",
-                                                                api.getHmac());
-                                                        headers.add(
-                                                                "X-authorization",
-                                                                "Basic "
-                                                                + Base64.
-                                                                        encodeBase64String(
-                                                                                otorisasi.
-                                                                                        getBytes()));
-                                                        headers.add("user_key",
-                                                                koneksiDB.
-                                                                        USERKEYAPIPCARE());
+                                                        headers.setContentType(MediaType.APPLICATION_JSON);
+                                                        headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
+                                                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                                                        headers.add("X-timestamp", utc);
+                                                        headers.add("X-signature", api.getHmac());
+                                                        headers.add("X-authorization", "Basic "
+                                                                + Base64.encodeBase64String(otorisasi.getBytes()));
+                                                        headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
                                                         requestJson = "{" + "\"kdTindakanSK\": 0,"
                                                                 + "\"noKunjungan\": \""
-                                                                + tbKunjungan.
-                                                                        getValueAt(
-                                                                                i,
-                                                                                1).
-                                                                        toString() + "\","
+                                                                + tbKunjungan.getValueAt(i, 1).toString() + "\","
                                                                 + "\"kdTindakan\": \""
-                                                                + rscari.
-                                                                        getString(
-                                                                                "kd_tindakan_pcare") + "\","
+                                                                + rscari.getString("kd_tindakan_pcare") + "\","
                                                                 + "\"biaya\": 0," + "\"keterangan\": null,"
                                                                 + "\"hasil\": 0" + "}";
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        requestEntity = new HttpEntity(
-                                                                requestJson,
-                                                                headers);
-                                                        requestJson = api.
-                                                                getRest()
-                                                                .exchange(
-                                                                        URL + "/tindakan",
-                                                                        HttpMethod.POST,
-                                                                        requestEntity,
-                                                                        String.class).
-                                                                getBody();
-                                                        PesanKirim.append(
-                                                                requestJson + "\n");
-                                                        root = mapper.readTree(
-                                                                requestJson);
-                                                        nameNode = root.path(
-                                                                "metaData");
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        requestEntity = new HttpEntity(requestJson, headers);
+                                                        requestJson = api.getRest()
+                                                                .exchange(URL + "/tindakan", HttpMethod.POST, requestEntity,
+                                                                        String.class)
+                                                                .getBody();
+                                                        PesanKirim.append(requestJson + "\n");
+                                                        root = mapper.readTree(requestJson);
+                                                        nameNode = root.path("metaData");
                                                         PesanKirim
-                                                                .append("code : " + nameNode.
-                                                                        path("code").
-                                                                        asText() + "\n");
-                                                        PesanKirim.append(
-                                                                "message : "
-                                                                + nameNode.path(
-                                                                        "message").
-                                                                        asText() + "\n");
-                                                        if (nameNode.
-                                                                path("code").
-                                                                asText().equals(
-                                                                        "201")) {
-                                                            response = mapper.
-                                                                    readTree(
-                                                                            api.
-                                                                                    Decrypt(root.
-                                                                                            path("response").
-                                                                                            asText(),
-                                                                                            utc));
-                                                            Sequel.menyimpan2(
-                                                                    "pcare_tindakan_ranap_diberikan",
-                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?",
-                                                                    13,
+                                                                .append("code : " + nameNode.path("code").asText() + "\n");
+                                                        PesanKirim.append("message : "
+                                                                + nameNode.path("message").asText() + "\n");
+                                                        if (nameNode.path("code").asText().equals("201")) {
+                                                            response = mapper.readTree(
+                                                                    api.Decrypt(root.path("response").asText(), utc));
+                                                            Sequel.menyimpan2("pcare_tindakan_ranap_diberikan",
+                                                                    "?,?,?,?,?,?,?,?,?,?,?,?,?", 13,
                                                                     new String[]{
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        0).
-                                                                                toString(),
-                                                                        tbKunjungan.
-                                                                                getValueAt(
-                                                                                        i,
-                                                                                        1).
-                                                                                toString(),
-                                                                        response.
-                                                                                path("message").
-                                                                                asText(),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tgl_perawatan"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "jam_rawat"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kd_jenis_prw"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "material"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "bhp"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakandr"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "tarif_tindakanpr"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "kso"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "menejemen"),
-                                                                        rscari.
-                                                                                getString(
-                                                                                        "biaya_rawat")});
+                                                                        tbKunjungan.getValueAt(i, 0).toString(),
+                                                                        tbKunjungan.getValueAt(i, 1).toString(),
+                                                                        response.path("message").asText(),
+                                                                        rscari.getString("tgl_perawatan"),
+                                                                        rscari.getString("jam_rawat"),
+                                                                        rscari.getString("kd_jenis_prw"),
+                                                                        rscari.getString("material"),
+                                                                        rscari.getString("bhp"),
+                                                                        rscari.getString("tarif_tindakandr"),
+                                                                        rscari.getString("tarif_tindakanpr"),
+                                                                        rscari.getString("kso"),
+                                                                        rscari.getString("menejemen"),
+                                                                        rscari.getString("biaya_rawat")});
                                                         }
                                                     } catch (IOException | InvalidAlgorithmParameterException
                                                             | InvalidKeyException | KeyManagementException
                                                             | NoSuchAlgorithmException | SQLException
                                                             | BadPaddingException | IllegalBlockSizeException
                                                             | NoSuchPaddingException | RestClientException ex) {
-                                                        PesanKirim.append(
-                                                                "Notifikasi Bridging : " + ex + "\n");
-                                                        if (ex.toString().
-                                                                contains(
-                                                                        "UnknownHostException")) {
-                                                            PesanKirim.append(
-                                                                    "Koneksi ke server PCare terputus...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("500")) {
-                                                            PesanKirim.append(
-                                                                    "Server PCare baru ngambek broooh...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("401")) {
+                                                        PesanKirim.append("Notifikasi Bridging : " + ex + "\n");
+                                                        if (ex.toString().contains("UnknownHostException")) {
+                                                            PesanKirim.append("Koneksi ke server PCare terputus...!\n");
+                                                        } else if (ex.toString().contains("500")) {
+                                                            PesanKirim.append("Server PCare baru ngambek broooh...!\n");
+                                                        } else if (ex.toString().contains("401")) {
                                                             PesanKirim.append(
                                                                     "Username/Password salah. Lupa password? Wani piro...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("408")) {
-                                                            PesanKirim.append(
-                                                                    "Time out, hayati lelah baaaang...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("424")) {
+                                                        } else if (ex.toString().contains("408")) {
+                                                            PesanKirim.append("Time out, hayati lelah baaaang...!\n");
+                                                        } else if (ex.toString().contains("424")) {
                                                             PesanKirim.append(
                                                                     "Ambil data masternya yang bener dong coy...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("412")) {
+                                                        } else if (ex.toString().contains("412")) {
                                                             PesanKirim
                                                                     .append("Tidak sesuai kondisi. Aku, kamu end...!\n");
-                                                        } else if (ex.toString().
-                                                                contains("204")) {
-                                                            PesanKirim.append(
-                                                                    "Data tidak ditemukan...!\n");
+                                                        } else if (ex.toString().contains("204")) {
+                                                            PesanKirim.append("Data tidak ditemukan...!\n");
                                                         }
                                                     }
                                                 }
@@ -13764,24 +11600,15 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                             if (rscari.getRow() == 0) {
                                                 PesanKirim.append(
                                                         "Mapping tindakan dokter & paramedis rawat inap, No.Kunjungan "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString()
+                                                        + tbKunjungan.getValueAt(i, 1).toString()
                                                         + " / No.Rawat "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 1).
-                                                                toString() + " / No.RM "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString() + " / Pasien "
-                                                        + tbKunjungan.
-                                                                getValueAt(i, 3).
-                                                                toString()
+                                                        + tbKunjungan.getValueAt(i, 1).toString() + " / No.RM "
+                                                        + tbKunjungan.getValueAt(i, 3).toString() + " / Pasien "
+                                                        + tbKunjungan.getValueAt(i, 3).toString()
                                                         + " tidak ditemukan...!!\n");
                                             }
                                         } catch (SQLException a) {
-                                            PesanKirim.append(
-                                                    "Notif : " + a + "\n");
+                                            PesanKirim.append("Notif : " + a + "\n");
                                         } finally {
                                             if (rscari != null) {
                                                 rscari.close();
@@ -13795,8 +11622,7 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
                                     }
                                 }
                             }
-                            PesanKirim.append(
-                                    "Pengiriman data obat & tindakan PCare selesai\n");
+                            PesanKirim.append("Pengiriman data obat & tindakan PCare selesai\n");
                             PesanKirim.append("PROSES KIRIM SELESAI\n");
                         } catch (Exception ez) {
                             System.out.println("Notif : " + ez);
@@ -13810,7 +11636,6 @@ public class PCareDataPendaftaran extends javax.swing.JDialog {
         new Timer(1000, taskPerformer).start();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PCareDataPendaftaran.class.getName());
+    private static final Logger LOG = Logger.getLogger(PCareDataPendaftaran.class.getName());
 
 }

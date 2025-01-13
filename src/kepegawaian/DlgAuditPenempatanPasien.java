@@ -33,25 +33,29 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
-    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(
-            null, false);
-    private double audit1 = 0, audit2 = 0, audit3 = 0,
-            audit4 = 0, audit5 = 0, ttlaudit1 = 0, audit6 = 0,
-            audit7 = 0, audit8 = 0, audit9 = 0, ttlaudit2 = 0,
-            ttlaudit3 = 0, ttlaudit4 = 0, ttlaudit5 = 0,
-            ttlaudit6 = 0, ttlaudit7 = 0, ttlaudit8 = 0, ttlaudit9 = 0, ttlpenilaian = 0;
+
+    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(null, false);
+
+    private double audit1 = 0, audit2 = 0, audit3 = 0, audit4 = 0, audit5 = 0, ttlaudit1 = 0, audit6 = 0, audit7 = 0,
+            audit8 = 0, audit9 = 0, ttlaudit2 = 0, ttlaudit3 = 0, ttlaudit4 = 0, ttlaudit5 = 0, ttlaudit6 = 0,
+            ttlaudit7 = 0, ttlaudit8 = 0, ttlaudit9 = 0, ttlpenilaian = 0;
 
     /**
      * Creates new form DlgRujuk
@@ -65,8 +69,7 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tanggal Audit", "ID Ruang", "Ruang/Unit",
+        tabMode = new DefaultTableModel(null, new Object[]{"Tanggal Audit", "ID Ruang", "Ruang/Unit",
             "1.Petugas Melakukan Kebersihan Tangan",
             "2.Petugas Menggunakan APD Sesuai Dengan Pola Transmisi Infeksi Pasien",
             "3.Petugas Menempatkan Pasien Sesuai Dengan Pola Transmisi Infeksi Penyakit Pasien (Kontak, Udara, Droplet)",
@@ -74,10 +77,8 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
             "5.Petugas Memberi Informasi Kepada Penunggu Pasien Pintu Ruang Isolasi Harus Selalu Tertutup",
             "6.Petugas Konsultasi Terlebih Dahulu Dengan Komite PPI Untuk Menentukan Pasien Yang Dapat Disatukan Dalam 1 Ruangan",
             "7.Petugas Memberikan Edukasi Berdasarkan Jenis Transmisinya (Kontak, Droplet, Udara) Untuk Semua Ruangan",
-            "8.Petugas Melepaskan Segera APD",
-            "9.Petugas Melakukan Kebersihan Tangan Setelah Kontak Pasien",
-            "Ttl.Nilai(%)"
-        }) {
+            "8.Petugas Melepaskan Segera APD", "9.Petugas Melakukan Kebersihan Tangan Setelah Kontak Pasien",
+            "Ttl.Nilai(%)"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -86,7 +87,8 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -126,8 +128,7 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -164,10 +165,8 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    KdRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 0).toString());
-                    NmRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 1).toString());
+                    KdRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 0).toString());
+                    NmRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                 }
                 KdRuang.requestFocus();
             }
@@ -196,7 +195,9 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1114,8 +1115,7 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAuditPenempatanPasien dialog = new DlgAuditPenempatanPasien(
-                    new javax.swing.JFrame(), true);
+            DlgAuditPenempatanPasien dialog = new DlgAuditPenempatanPasien(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1211,15 +1211,11 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                 }
@@ -1237,82 +1233,53 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
                 ttlpenilaian = 0;
                 i = 1;
                 while (rs.next()) {
-                    audit1 = Double.parseDouble(rs.getString("audit1").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit1 = Double.parseDouble(rs.getString("audit1").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit1 += audit1;
-                    audit2 = Double.parseDouble(rs.getString("audit2").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit2 = Double.parseDouble(rs.getString("audit2").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit2 += audit2;
-                    audit3 = Double.parseDouble(rs.getString("audit3").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit3 = Double.parseDouble(rs.getString("audit3").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit3 += audit3;
-                    audit4 = Double.parseDouble(rs.getString("audit4").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit4 = Double.parseDouble(rs.getString("audit4").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit4 += audit4;
-                    audit5 = Double.parseDouble(rs.getString("audit5").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit5 = Double.parseDouble(rs.getString("audit5").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit5 += audit5;
-                    audit6 = Double.parseDouble(rs.getString("audit6").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit6 = Double.parseDouble(rs.getString("audit6").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit6 += audit6;
-                    audit7 = Double.parseDouble(rs.getString("audit7").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit7 = Double.parseDouble(rs.getString("audit7").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit7 += audit7;
-                    audit8 = Double.parseDouble(rs.getString("audit8").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit8 = Double.parseDouble(rs.getString("audit8").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit8 += audit8;
-                    audit9 = Double.parseDouble(rs.getString("audit9").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    audit9 = Double.parseDouble(rs.getString("audit9").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttlaudit9 += audit9;
-                    ttlpenilaian += (((audit1 + audit2 + audit3
-                            + audit4 + audit5 + audit6 + audit7 + audit8 + audit9) / 9) * 100);
-                    tabMode.addRow(new String[]{
-                        rs.getString("tanggal"), rs.getString("id_ruang"), rs.
-                        getString("nama_ruang"), rs.getString("audit1"), rs.
-                        getString("audit2"),
-                        rs.getString("audit3"), rs.getString("audit4"), rs.
-                        getString("audit5"), rs.getString("audit6"), rs.
-                        getString("audit7"), rs.getString("audit8"),
-                        rs.getString("audit9"), Math.round(
-                        ((audit1 + audit2 + audit3 + audit4 + audit5 + audit6 + audit7 + audit8 + audit9) / 9) * 100) + " %"
-                    });
+                    ttlpenilaian += (((audit1 + audit2 + audit3 + audit4 + audit5 + audit6 + audit7 + audit8 + audit9)
+                            / 9) * 100);
+                    tabMode.addRow(new String[]{rs.getString("tanggal"), rs.getString("id_ruang"),
+                        rs.getString("nama_ruang"), rs.getString("audit1"), rs.getString("audit2"),
+                        rs.getString("audit3"), rs.getString("audit4"), rs.getString("audit5"),
+                        rs.getString("audit6"), rs.getString("audit7"), rs.getString("audit8"),
+                        rs.getString("audit9"),
+                        Math.round(((audit1 + audit2 + audit3 + audit4 + audit5 + audit6 + audit7 + audit8 + audit9)
+                        / 9) * 100) + " %"});
                     i++;
                 }
                 i -= 1;
                 if (i > 0) {
-                    tabMode.addRow(new String[]{
-                        "", "Ya", ":", "" + ttlaudit1, "" + ttlaudit2,
-                        "" + ttlaudit3,
-                        "" + ttlaudit4, "" + ttlaudit5, "" + ttlaudit6,
-                        "" + ttlaudit7,
-                        "" + ttlaudit8, "" + ttlaudit9,
-                        "" + (ttlaudit1 + ttlaudit2
-                        + ttlaudit3 + ttlaudit4 + ttlaudit5 + ttlaudit6
-                        + ttlaudit7 + ttlaudit8 + ttlaudit9)
-                    });
-                    tabMode.addRow(new String[]{
-                        "", "Tidak", ":", "" + (i - ttlaudit1),
-                        "" + (i - ttlaudit2), "" + (i - ttlaudit3),
-                        "" + (i - ttlaudit4), "" + (i - ttlaudit5),
-                        "" + (i - ttlaudit6), "" + (i - ttlaudit7),
-                        "" + (i - ttlaudit8), "" + (i - ttlaudit9),
-                        "" + ((i - ttlaudit1) + (i - ttlaudit2)
-                        + (i - ttlaudit3) + (i - ttlaudit4) + (i - ttlaudit5) + (i - ttlaudit6)
-                        + (i - ttlaudit7) + (i - ttlaudit8) + (i - ttlaudit9))
-                    });
-                    tabMode.addRow(new String[]{
-                        "", "Rata-rata", ":",
-                        Math.round((ttlaudit1 / i) * 100) + " %", Math.round(
-                        (ttlaudit2 / i) * 100) + " %", Math.round(
-                        (ttlaudit3 / i) * 100) + " %",
-                        Math.round((ttlaudit4 / i) * 100) + " %", Math.round(
-                        (ttlaudit5 / i) * 100) + " %", Math.round(
-                        (ttlaudit6 / i) * 100) + " %",
-                        Math.round((ttlaudit7 / i) * 100) + " %", Math.round(
-                        (ttlaudit8 / i) * 100) + " %", Math.round(
-                        (ttlaudit9 / i) * 100) + " %",
-                        Math.round(ttlpenilaian / i) + " %"
-                    });
+                    tabMode.addRow(new String[]{"", "Ya", ":", "" + ttlaudit1, "" + ttlaudit2, "" + ttlaudit3,
+                        "" + ttlaudit4, "" + ttlaudit5, "" + ttlaudit6, "" + ttlaudit7, "" + ttlaudit8,
+                        "" + ttlaudit9, "" + (ttlaudit1 + ttlaudit2 + ttlaudit3 + ttlaudit4 + ttlaudit5 + ttlaudit6
+                        + ttlaudit7 + ttlaudit8 + ttlaudit9)});
+                    tabMode.addRow(new String[]{"", "Tidak", ":", "" + (i - ttlaudit1), "" + (i - ttlaudit2),
+                        "" + (i - ttlaudit3), "" + (i - ttlaudit4), "" + (i - ttlaudit5), "" + (i - ttlaudit6),
+                        "" + (i - ttlaudit7), "" + (i - ttlaudit8), "" + (i - ttlaudit9),
+                        "" + ((i - ttlaudit1) + (i - ttlaudit2) + (i - ttlaudit3) + (i - ttlaudit4)
+                        + (i - ttlaudit5) + (i - ttlaudit6) + (i - ttlaudit7) + (i - ttlaudit8)
+                        + (i - ttlaudit9))});
+                    tabMode.addRow(new String[]{"", "Rata-rata", ":", Math.round((ttlaudit1 / i) * 100) + " %",
+                        Math.round((ttlaudit2 / i) * 100) + " %", Math.round((ttlaudit3 / i) * 100) + " %",
+                        Math.round((ttlaudit4 / i) * 100) + " %", Math.round((ttlaudit5 / i) * 100) + " %",
+                        Math.round((ttlaudit6 / i) * 100) + " %", Math.round((ttlaudit7 / i) * 100) + " %",
+                        Math.round((ttlaudit8 / i) * 100) + " %", Math.round((ttlaudit9 / i) * 100) + " %",
+                        Math.round(ttlpenilaian / i) + " %"});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1351,32 +1318,19 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().
-                    isEmpty()) {
-                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                        toString());
-                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                        toString());
-                Audit1.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 3).toString());
-                Audit2.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 4).toString());
-                Audit3.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 5).toString());
-                Audit4.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 6).toString());
-                Audit5.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 7).toString());
-                Audit6.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 8).toString());
-                Audit7.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 9).toString());
-                Audit8.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 10).toString());
-                Audit9.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 11).toString());
-                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(),
-                        0).toString());
+            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().isEmpty()) {
+                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+                Audit1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+                Audit2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+                Audit3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+                Audit4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+                Audit5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+                Audit6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+                Audit7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+                Audit8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+                Audit9.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
             }
         }
     }
@@ -1387,8 +1341,7 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
             if (this.getHeight() > 470) {
                 PanelInput.setPreferredSize(new Dimension(WIDTH, 335));
             } else {
-                PanelInput.setPreferredSize(new Dimension(WIDTH, this.
-                        getHeight() - 122));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, this.getHeight() - 122));
             }
             FormInput.setVisible(true);
             ChkInput.setVisible(true);
@@ -1410,7 +1363,9 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1452,7 +1407,7 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -1463,6 +1418,6 @@ public class DlgAuditPenempatanPasien extends javax.swing.JDialog {
         new Timer(1000, taskPerformer).start();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgAuditPenempatanPasien.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgAuditPenempatanPasien.class.getName());
+
 }

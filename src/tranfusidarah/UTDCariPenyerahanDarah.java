@@ -31,27 +31,41 @@ import kepegawaian.DlgCariPetugas;
 import keuangan.Jurnal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class UTDCariPenyerahanDarah extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement pspenyerahan, psdarah, pscekmedis, psceknonmedis;
+
     private ResultSet rs, rs2;
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private riwayatobat Trackobat = new riwayatobat();
+
     private int i = 0, no = 1, pilih = 0;
+
     private double pendapatan = 0, subtotalpendapatan = 0, subtotalmedis = 0, subtotalnonmedis = 0;
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private UTDKomponenDarah komponen = new UTDKomponenDarah(null, true);
+
     private boolean sukses = false;
-    private String verifikasi_penyerahan_darah_di_kasir = Sequel.cariIsi(
-            "select verifikasi_penyerahan_darah_di_kasir from set_nota");
+
+    private String verifikasi_penyerahan_darah_di_kasir = Sequel
+            .cariIsi("select verifikasi_penyerahan_darah_di_kasir from set_nota");
+
     private String aktifkan = "",
             sqlpscekmedis = "select utd_penggunaan_medis_penyerahan_darah.kode_brng,databarang.nama_brng,utd_penggunaan_medis_penyerahan_darah.jml,utd_penggunaan_medis_penyerahan_darah.harga,"
             + "utd_penggunaan_medis_penyerahan_darah.total,databarang.kode_sat from utd_penggunaan_medis_penyerahan_darah inner join databarang "
@@ -70,11 +84,8 @@ public class UTDCariPenyerahanDarah extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new String[]{
-            "No.Penyerahan", "Tanggal", "Dinas", "Petugas Cross", "Keterangan",
-            "Status",
-            "Pengambil Darah", "Alamat Pengambil Darah", "Petugas P.J."
-        }) {
+        tabMode = new DefaultTableModel(null, new String[]{"No.Penyerahan", "Tanggal", "Dinas", "Petugas Cross",
+            "Keterangan", "Status", "Pengambil Darah", "Alamat Pengambil Darah", "Petugas P.J."}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -110,16 +121,14 @@ public class UTDCariPenyerahanDarah extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());
 
-        nopenyerahan.
-                setDocument(new batasInput((byte) 17).getKata(nopenyerahan));
+        nopenyerahan.setDocument(new batasInput((byte) 17).getKata(nopenyerahan));
         kdptgcross.setDocument(new batasInput((byte) 20).getKata(kdptgcross));
         kdptgpj.setDocument(new batasInput((byte) 20).getKata(kdptgpj));
         kdkomponen.setDocument(new batasInput((byte) 5).getKata(kdkomponen));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -156,10 +165,10 @@ public class UTDCariPenyerahanDarah extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (komponen.getTable().getSelectedRow() != -1) {
-                    kdkomponen.setText(komponen.getTable().getValueAt(komponen.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmkomponen.setText(komponen.getTable().getValueAt(komponen.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdkomponen
+                            .setText(komponen.getTable().getValueAt(komponen.getTable().getSelectedRow(), 0).toString());
+                    nmkomponen
+                            .setText(komponen.getTable().getValueAt(komponen.getTable().getSelectedRow(), 1).toString());
                     kdkomponen.requestFocus();
                 }
             }
@@ -213,18 +222,16 @@ public class UTDCariPenyerahanDarah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
-                        kdptgcross.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmptgcross.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdptgcross
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptgcross
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         kdptgcross.requestFocus();
                     } else if (pilih == 2) {
-                        kdptgpj.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptgpj.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptgpj
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptgpj
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         kdptgpj.requestFocus();
                     }
                 }
@@ -257,7 +264,9 @@ public class UTDCariPenyerahanDarah extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -762,14 +771,13 @@ public class UTDCariPenyerahanDarah extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPetugasCrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasCrosActionPerformed
-        pilih = 1;
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPetugasCrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        pilih = 1;//GEN-FIRST:event_btnPetugasCrosActionPerformed
         petugas.emptTeks();
         petugas.isCek();
         petugas.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
@@ -1506,8 +1514,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            UTDCariPenyerahanDarah dialog = new UTDCariPenyerahanDarah(
-                    new javax.swing.JFrame(), true);
+            UTDCariPenyerahanDarah dialog = new UTDCariPenyerahanDarah(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1569,132 +1576,94 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         Valid.tabelKosong(tabMode);
         try {
             pendapatan = 0;
-            pspenyerahan = koneksi.prepareStatement(
-                    "select utd_penyerahan_darah.no_penyerahan,utd_penyerahan_darah.tanggal,"
-                    + "utd_penyerahan_darah.dinas,utd_penyerahan_darah.nip_cross,"
-                    + "utd_penyerahan_darah.keterangan,utd_penyerahan_darah.status,"
-                    + "utd_penyerahan_darah.pengambil_darah,utd_penyerahan_darah.alamat_pengambil_darah,"
-                    + "utd_penyerahan_darah.nip_pj from utd_penyerahan_darah where "
-                    + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.no_penyerahan like ? or "
-                    + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.dinas like ? or "
-                    + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.keterangan like ? or "
-                    + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.status like ? or "
-                    + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.pengambil_darah like ? or "
-                    + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.alamat_pengambil_darah like ? order by utd_penyerahan_darah.tanggal");
+            pspenyerahan = koneksi
+                    .prepareStatement("select utd_penyerahan_darah.no_penyerahan,utd_penyerahan_darah.tanggal,"
+                            + "utd_penyerahan_darah.dinas,utd_penyerahan_darah.nip_cross,"
+                            + "utd_penyerahan_darah.keterangan,utd_penyerahan_darah.status,"
+                            + "utd_penyerahan_darah.pengambil_darah,utd_penyerahan_darah.alamat_pengambil_darah,"
+                            + "utd_penyerahan_darah.nip_pj from utd_penyerahan_darah where "
+                            + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.no_penyerahan like ? or "
+                            + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.dinas like ? or "
+                            + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.keterangan like ? or "
+                            + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.status like ? or "
+                            + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.pengambil_darah like ? or "
+                            + "utd_penyerahan_darah.tanggal between ? and ? and utd_penyerahan_darah.no_penyerahan like ? and utd_penyerahan_darah.nip_cross like ? and utd_penyerahan_darah.nip_pj like ? and utd_penyerahan_darah.alamat_pengambil_darah like ? order by utd_penyerahan_darah.tanggal");
             try {
-                pspenyerahan.setString(1, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pspenyerahan.setString(2, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
-                pspenyerahan.setString(3,
-                        "%" + nopenyerahan.getText().trim() + "%");
-                pspenyerahan.setString(4,
-                        "%" + kdptgcross.getText().trim() + "%");
+                pspenyerahan.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspenyerahan.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pspenyerahan.setString(3, "%" + nopenyerahan.getText().trim() + "%");
+                pspenyerahan.setString(4, "%" + kdptgcross.getText().trim() + "%");
                 pspenyerahan.setString(5, "%" + kdptgpj.getText().trim() + "%");
                 pspenyerahan.setString(6, "%" + TCari.getText().trim() + "%");
-                pspenyerahan.setString(7, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pspenyerahan.setString(8, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
-                pspenyerahan.setString(9,
-                        "%" + nopenyerahan.getText().trim() + "%");
-                pspenyerahan.setString(10,
-                        "%" + kdptgcross.getText().trim() + "%");
+                pspenyerahan.setString(7, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspenyerahan.setString(8, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pspenyerahan.setString(9, "%" + nopenyerahan.getText().trim() + "%");
+                pspenyerahan.setString(10, "%" + kdptgcross.getText().trim() + "%");
                 pspenyerahan.setString(11, "%" + kdptgpj.getText().trim() + "%");
                 pspenyerahan.setString(12, "%" + TCari.getText().trim() + "%");
-                pspenyerahan.setString(13, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pspenyerahan.setString(14, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
-                pspenyerahan.setString(15,
-                        "%" + nopenyerahan.getText().trim() + "%");
-                pspenyerahan.setString(16,
-                        "%" + kdptgcross.getText().trim() + "%");
+                pspenyerahan.setString(13, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspenyerahan.setString(14, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pspenyerahan.setString(15, "%" + nopenyerahan.getText().trim() + "%");
+                pspenyerahan.setString(16, "%" + kdptgcross.getText().trim() + "%");
                 pspenyerahan.setString(17, "%" + kdptgpj.getText().trim() + "%");
                 pspenyerahan.setString(18, "%" + TCari.getText().trim() + "%");
-                pspenyerahan.setString(19, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pspenyerahan.setString(20, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
-                pspenyerahan.setString(21,
-                        "%" + nopenyerahan.getText().trim() + "%");
-                pspenyerahan.setString(22,
-                        "%" + kdptgcross.getText().trim() + "%");
+                pspenyerahan.setString(19, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspenyerahan.setString(20, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pspenyerahan.setString(21, "%" + nopenyerahan.getText().trim() + "%");
+                pspenyerahan.setString(22, "%" + kdptgcross.getText().trim() + "%");
                 pspenyerahan.setString(23, "%" + kdptgpj.getText().trim() + "%");
                 pspenyerahan.setString(24, "%" + TCari.getText().trim() + "%");
-                pspenyerahan.setString(25, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pspenyerahan.setString(26, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
-                pspenyerahan.setString(27,
-                        "%" + nopenyerahan.getText().trim() + "%");
-                pspenyerahan.setString(28,
-                        "%" + kdptgcross.getText().trim() + "%");
+                pspenyerahan.setString(25, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspenyerahan.setString(26, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pspenyerahan.setString(27, "%" + nopenyerahan.getText().trim() + "%");
+                pspenyerahan.setString(28, "%" + kdptgcross.getText().trim() + "%");
                 pspenyerahan.setString(29, "%" + kdptgpj.getText().trim() + "%");
                 pspenyerahan.setString(30, "%" + TCari.getText().trim() + "%");
-                pspenyerahan.setString(31, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pspenyerahan.setString(32, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
-                pspenyerahan.setString(33,
-                        "%" + nopenyerahan.getText().trim() + "%");
-                pspenyerahan.setString(34,
-                        "%" + kdptgcross.getText().trim() + "%");
+                pspenyerahan.setString(31, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspenyerahan.setString(32, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pspenyerahan.setString(33, "%" + nopenyerahan.getText().trim() + "%");
+                pspenyerahan.setString(34, "%" + kdptgcross.getText().trim() + "%");
                 pspenyerahan.setString(35, "%" + kdptgpj.getText().trim() + "%");
                 pspenyerahan.setString(36, "%" + TCari.getText().trim() + "%");
                 rs = pspenyerahan.executeQuery();
                 while (rs.next()) {
-                    //data penyerahan
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_penyerahan"), rs.getString("tanggal"),
-                        rs.getString("dinas"),
-                        petugas.tampil3(rs.getString("nip_cross")),
-                        rs.getString("keterangan"), rs.getString("status"), rs.
-                        getString("pengambil_darah"),
-                        rs.getString("alamat_pengambil_darah"),
-                        petugas.tampil3(rs.getString("nip_pj"))
-                    });
-                    //data darah
-                    tabMode.addRow(new Object[]{
-                        "", "", "No.", "No.Kantung", "Komponen", "G.D. & Rhesus",
-                        "Asal Darah", "Aftap & Kadaluarsa", "Biaya"
-                    });
-                    psdarah = koneksi.prepareStatement(
-                            "select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
-                            + "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"
-                            + "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"
-                            + "utd_stok_darah.asal_darah,utd_komponen_darah.total "
-                            + "from utd_komponen_darah inner join utd_stok_darah inner join utd_penyerahan_darah_detail "
-                            + "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "
-                            + "and utd_penyerahan_darah_detail.no_kantong=utd_stok_darah.no_kantong where "
-                            + "utd_komponen_darah.nama like ? and utd_penyerahan_darah_detail.no_penyerahan=? order by utd_komponen_darah.nama");
+                    // data penyerahan
+                    tabMode.addRow(new Object[]{rs.getString("no_penyerahan"), rs.getString("tanggal"),
+                        rs.getString("dinas"), petugas.tampil3(rs.getString("nip_cross")),
+                        rs.getString("keterangan"), rs.getString("status"), rs.getString("pengambil_darah"),
+                        rs.getString("alamat_pengambil_darah"), petugas.tampil3(rs.getString("nip_pj"))});
+                    // data darah
+                    tabMode.addRow(new Object[]{"", "", "No.", "No.Kantung", "Komponen", "G.D. & Rhesus",
+                        "Asal Darah", "Aftap & Kadaluarsa", "Biaya"});
+                    psdarah = koneksi
+                            .prepareStatement("select utd_stok_darah.no_kantong,utd_komponen_darah.nama as darah,"
+                                    + "utd_stok_darah.golongan_darah,utd_stok_darah.resus,"
+                                    + "utd_stok_darah.tanggal_aftap,utd_stok_darah.tanggal_kadaluarsa,"
+                                    + "utd_stok_darah.asal_darah,utd_komponen_darah.total "
+                                    + "from utd_komponen_darah inner join utd_stok_darah inner join utd_penyerahan_darah_detail "
+                                    + "on utd_stok_darah.kode_komponen=utd_komponen_darah.kode "
+                                    + "and utd_penyerahan_darah_detail.no_kantong=utd_stok_darah.no_kantong where "
+                                    + "utd_komponen_darah.nama like ? and utd_penyerahan_darah_detail.no_penyerahan=? order by utd_komponen_darah.nama");
                     try {
                         subtotalpendapatan = 0;
                         no = 1;
-                        psdarah.setString(1,
-                                "%" + nmkomponen.getText().trim() + "%");
+                        psdarah.setString(1, "%" + nmkomponen.getText().trim() + "%");
                         psdarah.setString(2, rs.getString("no_penyerahan"));
                         rs2 = psdarah.executeQuery();
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{
-                                "", "", no + ".", rs2.getString("no_kantong"),
+                            tabMode.addRow(new Object[]{"", "", no + ".", rs2.getString("no_kantong"),
                                 rs2.getString("darah"),
-                                rs2.getString("golongan_darah") + " " + rs2.
-                                getString("resus"),
-                                rs2.getString("asal_darah"), rs2.getString(
-                                "tanggal_aftap") + " | " + rs2.getString(
-                                "tanggal_kadaluarsa"),
-                                Valid.SetAngka(rs2.getDouble("total"))
-                            });
+                                rs2.getString("golongan_darah") + " " + rs2.getString("resus"),
+                                rs2.getString("asal_darah"),
+                                rs2.getString("tanggal_aftap") + " | " + rs2.getString("tanggal_kadaluarsa"),
+                                Valid.SetAngka(rs2.getDouble("total"))});
                             subtotalpendapatan += rs2.getDouble("total");
                             pendapatan += rs2.getDouble("total");
                             no++;
                         }
                         if (subtotalpendapatan > 0) {
-                            tabMode.addRow(new Object[]{
-                                "", "", "", "", "Total Biaya", ":", "", "",
-                                Valid.SetAngka(subtotalpendapatan)
-                            });
+                            tabMode.addRow(new Object[]{"", "", "", "", "Total Biaya", ":", "", "",
+                                Valid.SetAngka(subtotalpendapatan)});
                         }
                     } catch (SQLException e) {
                         System.out.println("Notifikasi Darah : " + e);
@@ -1706,41 +1675,30 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             psdarah.close();
                         }
                     }
-                    //data penggunaan BHP
+                    // data penggunaan BHP
                     if (aktifkan.equals("medis")) {
                         pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
                             subtotalmedis = 0;
-                            pscekmedis.setString(1, rs.
-                                    getString("no_penyerahan"));
+                            pscekmedis.setString(1, rs.getString("no_penyerahan"));
                             rs2 = pscekmedis.executeQuery();
                             if (rs2.next()) {
                                 no = 1;
-                                tabMode.addRow(new String[]{
-                                    "", "", "No", "Kode Barang",
-                                    "Penggunaan BHP Medis", "Jumlah", "Satuan",
-                                    "Harga", "Total"
-                                });
+                                tabMode.addRow(new String[]{"", "", "No", "Kode Barang", "Penggunaan BHP Medis",
+                                    "Jumlah", "Satuan", "Harga", "Total"});
                             }
                             rs2.beforeFirst();
                             while (rs2.next()) {
-                                tabMode.addRow(new String[]{
-                                    "", "", no + ". ", rs2.
-                                    getString("kode_brng"), rs2.getString(
-                                    "nama_brng"),
-                                    rs2.getString("jml"), rs2.getString(
-                                    "kode_sat"), Valid.SetAngka(rs2.getDouble(
-                                    "harga")),
-                                    Valid.SetAngka(rs2.getDouble("total"))
-                                });
+                                tabMode.addRow(new String[]{"", "", no + ". ", rs2.getString("kode_brng"),
+                                    rs2.getString("nama_brng"), rs2.getString("jml"), rs2.getString("kode_sat"),
+                                    Valid.SetAngka(rs2.getDouble("harga")),
+                                    Valid.SetAngka(rs2.getDouble("total"))});
                                 subtotalmedis += rs2.getDouble("total");
                                 no++;
                             }
                             if (subtotalmedis > 0) {
-                                tabMode.addRow(new Object[]{
-                                    "", "", "", "", "Total BHP Medis", ":", "",
-                                    "", Valid.SetAngka(subtotalmedis)
-                                });
+                                tabMode.addRow(new Object[]{"", "", "", "", "Total BHP Medis", ":", "", "",
+                                    Valid.SetAngka(subtotalmedis)});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi BHP Medis : " + e);
@@ -1753,40 +1711,28 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             }
                         }
                     } else if (aktifkan.equals("nonmedis")) {
-                        psceknonmedis = koneksi.prepareStatement(
-                                sqlpsceknonmedis);
+                        psceknonmedis = koneksi.prepareStatement(sqlpsceknonmedis);
                         try {
                             subtotalnonmedis = 0;
-                            psceknonmedis.setString(1, rs.getString(
-                                    "no_penyerahan"));
+                            psceknonmedis.setString(1, rs.getString("no_penyerahan"));
                             rs2 = psceknonmedis.executeQuery();
                             if (rs2.next()) {
                                 no = 1;
-                                tabMode.addRow(new String[]{
-                                    "", "", "No", "Kode Barang",
-                                    "Penggunaan BHP Non Medis", "Jumlah",
-                                    "Satuan", "Harga", "Total"
-                                });
+                                tabMode.addRow(new String[]{"", "", "No", "Kode Barang", "Penggunaan BHP Non Medis",
+                                    "Jumlah", "Satuan", "Harga", "Total"});
                             }
                             rs2.beforeFirst();
                             while (rs2.next()) {
-                                tabMode.addRow(new String[]{
-                                    "", "", no + ". ", rs2.
-                                    getString("kode_brng"), rs2.getString(
-                                    "nama_brng"),
-                                    rs2.getString("jml"), rs2.getString(
-                                    "kode_sat"), Valid.SetAngka(rs2.getDouble(
-                                    "harga")),
-                                    Valid.SetAngka(rs2.getDouble("total"))
-                                });
+                                tabMode.addRow(new String[]{"", "", no + ". ", rs2.getString("kode_brng"),
+                                    rs2.getString("nama_brng"), rs2.getString("jml"), rs2.getString("kode_sat"),
+                                    Valid.SetAngka(rs2.getDouble("harga")),
+                                    Valid.SetAngka(rs2.getDouble("total"))});
                                 subtotalnonmedis += rs2.getDouble("total");
                                 no++;
                             }
                             if (subtotalnonmedis > 0) {
-                                tabMode.addRow(new Object[]{
-                                    "", "", "", "", "Total BHP Non Medis", ":",
-                                    "", "", Valid.SetAngka(subtotalnonmedis)
-                                });
+                                tabMode.addRow(new Object[]{"", "", "", "", "Total BHP Non Medis", ":", "", "",
+                                    Valid.SetAngka(subtotalnonmedis)});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi : " + e);
@@ -1802,36 +1748,25 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         pscekmedis = koneksi.prepareStatement(sqlpscekmedis);
                         try {
                             subtotalmedis = 0;
-                            pscekmedis.setString(1, rs.
-                                    getString("no_penyerahan"));
+                            pscekmedis.setString(1, rs.getString("no_penyerahan"));
                             rs2 = pscekmedis.executeQuery();
                             if (rs2.next()) {
                                 no = 1;
-                                tabMode.addRow(new String[]{
-                                    "", "", "No", "Kode Barang",
-                                    "Penggunaan BHP Medis", "Jumlah", "Satuan",
-                                    "Harga", "Total"
-                                });
+                                tabMode.addRow(new String[]{"", "", "No", "Kode Barang", "Penggunaan BHP Medis",
+                                    "Jumlah", "Satuan", "Harga", "Total"});
                             }
                             rs2.beforeFirst();
                             while (rs2.next()) {
-                                tabMode.addRow(new String[]{
-                                    "", "", no + ". ", rs2.
-                                    getString("kode_brng"), rs2.getString(
-                                    "nama_brng"),
-                                    rs2.getString("jml"), rs2.getString(
-                                    "kode_sat"), Valid.SetAngka(rs2.getDouble(
-                                    "harga")),
-                                    Valid.SetAngka(rs2.getDouble("total"))
-                                });
+                                tabMode.addRow(new String[]{"", "", no + ". ", rs2.getString("kode_brng"),
+                                    rs2.getString("nama_brng"), rs2.getString("jml"), rs2.getString("kode_sat"),
+                                    Valid.SetAngka(rs2.getDouble("harga")),
+                                    Valid.SetAngka(rs2.getDouble("total"))});
                                 subtotalmedis += rs2.getDouble("total");
                                 no++;
                             }
                             if (subtotalmedis > 0) {
-                                tabMode.addRow(new Object[]{
-                                    "", "", "", "", "Total BHP Medis", ":", "",
-                                    "", Valid.SetAngka(subtotalmedis)
-                                });
+                                tabMode.addRow(new Object[]{"", "", "", "", "Total BHP Medis", ":", "", "",
+                                    Valid.SetAngka(subtotalmedis)});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi : " + e);
@@ -1844,40 +1779,28 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             }
                         }
 
-                        psceknonmedis = koneksi.prepareStatement(
-                                sqlpsceknonmedis);
+                        psceknonmedis = koneksi.prepareStatement(sqlpsceknonmedis);
                         try {
                             subtotalnonmedis = 0;
-                            psceknonmedis.setString(1, rs.getString(
-                                    "no_penyerahan"));
+                            psceknonmedis.setString(1, rs.getString("no_penyerahan"));
                             rs2 = psceknonmedis.executeQuery();
                             if (rs2.next()) {
                                 no = 1;
-                                tabMode.addRow(new String[]{
-                                    "", "", "No", "Kode Barang",
-                                    "Penggunaan BHP Non Medis", "Jumlah",
-                                    "Satuan", "Harga", "Total"
-                                });
+                                tabMode.addRow(new String[]{"", "", "No", "Kode Barang", "Penggunaan BHP Non Medis",
+                                    "Jumlah", "Satuan", "Harga", "Total"});
                             }
                             rs2.beforeFirst();
                             while (rs2.next()) {
-                                tabMode.addRow(new String[]{
-                                    "", "", no + ". ", rs2.
-                                    getString("kode_brng"), rs2.getString(
-                                    "nama_brng"),
-                                    rs2.getString("jml"), rs2.getString(
-                                    "kode_sat"), Valid.SetAngka(rs2.getDouble(
-                                    "harga")),
-                                    Valid.SetAngka(rs2.getDouble("total"))
-                                });
+                                tabMode.addRow(new String[]{"", "", no + ". ", rs2.getString("kode_brng"),
+                                    rs2.getString("nama_brng"), rs2.getString("jml"), rs2.getString("kode_sat"),
+                                    Valid.SetAngka(rs2.getDouble("harga")),
+                                    Valid.SetAngka(rs2.getDouble("total"))});
                                 subtotalnonmedis += rs2.getDouble("total");
                                 no++;
                             }
                             if (subtotalnonmedis > 0) {
-                                tabMode.addRow(new Object[]{
-                                    "", "", "", "", "Total BHP Non Medis", ":",
-                                    "", "", Valid.SetAngka(subtotalnonmedis)
-                                });
+                                tabMode.addRow(new Object[]{"", "", "", "", "Total BHP Non Medis", ":", "", "",
+                                    Valid.SetAngka(subtotalnonmedis)});
                             }
                         } catch (SQLException e) {
                             System.out.println("Notifikasi : " + e);
@@ -1926,6 +1849,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            UTDCariPenyerahanDarah.class.getName());
+    private static final Logger LOG = Logger.getLogger(UTDCariPenyerahanDarah.class.getName());
+
 }

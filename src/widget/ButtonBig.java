@@ -9,17 +9,18 @@ import usu.widget.glass.ButtonImageReflection;
  */
 public class ButtonBig extends ButtonImageReflection {
 
-  /*
-   * Serial version UID
-   */
-  private static final long serialVersionUID = 1L;
+    /*
+	 * Serial version UID
+     */
+    /**
+     *
+     */
+    public ButtonBig() {
+        super();
+        setForeground(new Color(50, 50, 50));
+        setFont(new java.awt.Font("Tahoma", 0, 11));
+    }
 
-  /** */
-  public ButtonBig() {
-    super();
-    setForeground(new Color(50, 50, 50));
-    setFont(new java.awt.Font("Tahoma", 0, 11));
-  }
+    private static final Logger LOG = Logger.getLogger(ButtonBig.class.getName());
 
-  private static final Logger LOG = Logger.getLogger(ButtonBig.class.getName());
 }

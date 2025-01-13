@@ -100,8 +100,7 @@ public class OrthancDICOM extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -126,52 +125,40 @@ public class OrthancDICOM extends javax.swing.JDialog {
 
                 engine.getLoadWorker()
                         .workDoneProperty()
-                        .addListener(
-                                (ObservableValue<? extends Number> observableValue, Number oldValue,
-                                        final Number newValue) -> {
-                                    SwingUtilities.invokeLater(() -> {
-                                        progressBar.
-                                                setValue(newValue.intValue());
-                                    });
-                                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
+                            SwingUtilities.invokeLater(() -> {
+                                progressBar.setValue(newValue.intValue());
+                            });
+                        });
 
                 engine.getLoadWorker()
                         .exceptionProperty()
-                        .addListener(
-                                (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
-                                    if (engine.getLoadWorker().getState() == FAILED) {
-                                        SwingUtilities.invokeLater(() -> {
-                                            JOptionPane.showMessageDialog(panel,
-                                                    (value != null) ? engine.
-                                                                    getLocation() + "\n" + value.
-                                                                    getMessage()
-                                                            : engine.
-                                                                    getLocation() + "\nUnexpected Catatan.",
-                                                    "Loading Catatan...",
-                                                    JOptionPane.ERROR_MESSAGE);
-                                        });
-                                    }
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                            if (engine.getLoadWorker().getState() == FAILED) {
+                                SwingUtilities.invokeLater(() -> {
+                                    JOptionPane.showMessageDialog(panel,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
+                                                    : engine.getLocation() + "\nUnexpected Catatan.",
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
+                            }
+                        });
 
                 engine.locationProperty()
-                        .addListener(
-                                (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
-                                    SwingUtilities.invokeLater(() -> {
-                                        txtURL.setText(newValue);
-                                    });
-                                });
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                            SwingUtilities.invokeLater(() -> {
+                                txtURL.setText(newValue);
+                            });
+                        });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<Worker.State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
                     @Override
-                    public void changed(ObservableValue ov,
-                            Worker.State oldState, Worker.State newState) {
+                    public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
                         if (newState == Worker.State.SUCCEEDED) {
                             try {
-                                if (engine.getLocation().contains(
-                                        "https://www.orthanc-server.com")) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
+                                if (engine.getLocation().contains("https://www.orthanc-server.com")) {
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                                     Valid.panggilUrl2(urlpanggil);
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
@@ -204,8 +191,7 @@ public class OrthancDICOM extends javax.swing.JDialog {
             try {
                 engine.getCreatePopupHandler();
                 engine.setJavaScriptEnabled(true);
-                engine.setUserAgent("foo\nAuthorization: Basic " + orthanc.
-                        Auth());
+                engine.setUserAgent("foo\nAuthorization: Basic " + orthanc.Auth());
                 engine.load(url);
             } catch (Exception exception) {
                 engine.load(url);
@@ -219,13 +205,10 @@ public class OrthancDICOM extends javax.swing.JDialog {
 
     public void print(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
-                PageOrientation.PORTRAIT,
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT,
                 Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.
-                getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.
-                getBoundsInParent().getHeight();
+        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -238,7 +221,9 @@ public class OrthancDICOM extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -392,8 +377,7 @@ public class OrthancDICOM extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            OrthancDICOM dialog = new OrthancDICOM(new javax.swing.JFrame(),
-                    true);
+            OrthancDICOM dialog = new OrthancDICOM(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -424,15 +408,11 @@ public class OrthancDICOM extends javax.swing.JDialog {
         norawat = NoRawat;
         series = Series;
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
-                        240, 245, 235)), Judul,
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION,
-                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(70, 70,
-                        70)));
+                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), Judul,
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(70, 70, 70)));
     }
 
-    private static final Logger LOG = Logger.getLogger(OrthancDICOM.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(OrthancDICOM.class.getName());
 
 }

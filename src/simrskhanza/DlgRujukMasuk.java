@@ -39,19 +39,26 @@ import javax.swing.table.TableColumn;
 import laporan.DlgCariPenyakit;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgRujukMasuk extends javax.swing.JDialog {
 
     private DefaultTableModel tabMode, tabMode2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement pstampil, pskamin, psperujuk, psobat, psreseppulang, psdiagnosapulang;
+
     private ResultSet rs, rs2;
+
     private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
+
     private int i = 0;
+
     private DlgCariPenyakit penyakit = new DlgCariPenyakit(null, false);
 
     /**
@@ -66,27 +73,17 @@ public class DlgRujukMasuk extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"P", "Perujuk/Rujukan", "Alamat Perujuk", "No.Rujuk",
-            "No.Rawat", "No.R.M.",
-            "Nama Pasien", "Alamat", "Umur", "Tgl.Masuk", "Tgl.Keluar",
-            "JM.Perujuk", "Diagnosa Awal",
-            "Diagnosa Akhir", "Status", "Dokter Perujuk", "Kategori Rujuk",
-            "Poli Rujukan", "No.Balasan", "Keterangan", "Kode Penyakit",
+        Object[] row = {"P", "Perujuk/Rujukan", "Alamat Perujuk", "No.Rujuk", "No.Rawat", "No.R.M.", "Nama Pasien",
+            "Alamat", "Umur", "Tgl.Masuk", "Tgl.Keluar", "JM.Perujuk", "Diagnosa Awal", "Diagnosa Akhir", "Status",
+            "Dokter Perujuk", "Kategori Rujuk", "Poli Rujukan", "No.Balasan", "Keterangan", "Kode Penyakit",
             "Nama Penyakit"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -105,7 +102,8 @@ public class DlgRujukMasuk extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -158,7 +156,7 @@ public class DlgRujukMasuk extends javax.swing.JDialog {
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        //Perujuk
+        // Perujuk
         Object[] row2 = {"Perujuk", "Alamat Perujuk"};
         tabMode2 = new DefaultTableModel(null, row2) {
             @Override
@@ -169,7 +167,8 @@ public class DlgRujukMasuk extends javax.swing.JDialog {
         };
         tbPerujuk.setModel(tabMode2);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbPerujuk.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPerujuk.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -189,11 +188,9 @@ public class DlgRujukMasuk extends javax.swing.JDialog {
         NoRujuk.setDocument(new batasInput((byte) 20).getKata(NoRujuk));
         JMPerujuk.setDocument(new batasInput((byte) 14).getOnlyAngka(JMPerujuk));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
-        TCariPerujuk.setDocument(new batasInput((byte) 100).
-                getKata(TCariPerujuk));
+        TCariPerujuk.setDocument(new batasInput((byte) 100).getKata(TCariPerujuk));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -230,10 +227,10 @@ public class DlgRujukMasuk extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penyakit.getTable().getSelectedRow() != -1) {
-                    kdDiagnosa.setText(penyakit.getTable().getValueAt(penyakit.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDiagnosa.setText(penyakit.getTable().getValueAt(penyakit.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdDiagnosa
+                            .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString());
+                    NmDiagnosa
+                            .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                 }
                 kdDiagnosa.requestFocus();
             }
@@ -263,7 +260,9 @@ public class DlgRujukMasuk extends javax.swing.JDialog {
     private String diagnosa = "", diagnosa2 = "", keluar = "", status = "", diagnosapulang = "";
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1805,8 +1804,7 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRujukMasuk dialog = new DlgRujukMasuk(new javax.swing.JFrame(),
-                    true);
+            DlgRujukMasuk dialog = new DlgRujukMasuk(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1907,10 +1905,8 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
                     + "rujuk_masuk.keterangan like ? or rujuk_masuk.no_balasan like ? or rujuk_masuk.kd_penyakit like ?) "
                     + "order by reg_periksa.tgl_registrasi ");
             try {
-                pstampil.setString(1, Valid.SetTgl(
-                        DTPCari1.getSelectedItem() + ""));
-                pstampil.setString(2, Valid.SetTgl(
-                        DTPCari2.getSelectedItem() + ""));
+                pstampil.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                pstampil.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                 pstampil.setString(3, "%" + TCari.getText().trim() + "%");
                 pstampil.setString(4, "%" + TCari.getText().trim() + "%");
                 pstampil.setString(5, "%" + TCari.getText().trim() + "%");
@@ -1952,22 +1948,14 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
                         }
                     }
 
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("perujuk"), rs.getString("alamat"),
-                        rs.getString("no_rujuk"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("almt_pj"), rs.getString("umur"), rs.
-                        getString("tgl_registrasi"), keluar,
-                        rs.getDouble("jm_perujuk"),
-                        rs.getString("kd_penyakit") + " " + rs.getString(
-                        "nm_penyakit"),
-                        diagnosa2, status, rs.getString("dokter_perujuk"), rs.
-                        getString("kategori_rujuk"),
-                        rs.getString("nm_poli"), rs.getString("no_balasan"), rs.
-                        getString("keterangan"),
-                        rs.getString("kd_penyakit"), rs.getString("nm_penyakit")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("perujuk"), rs.getString("alamat"),
+                        rs.getString("no_rujuk"), rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("almt_pj"), rs.getString("umur"),
+                        rs.getString("tgl_registrasi"), keluar, rs.getDouble("jm_perujuk"),
+                        rs.getString("kd_penyakit") + " " + rs.getString("nm_penyakit"), diagnosa2, status,
+                        rs.getString("dokter_perujuk"), rs.getString("kategori_rujuk"), rs.getString("nm_poli"),
+                        rs.getString("no_balasan"), rs.getString("keterangan"), rs.getString("kd_penyakit"),
+                        rs.getString("nm_penyakit")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2000,39 +1988,27 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
         TPasien.setText("");
         NoRujuk.requestFocus();
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(rujuk_masuk.no_balasan,4),signed)),0) from reg_periksa inner join rujuk_masuk on reg_periksa.no_rawat=rujuk_masuk.no_rawat where reg_periksa.tgl_registrasi='" + Valid.
-                        SetTgl(DTPReg.getSelectedItem() + "") + "' ",
+                "select ifnull(MAX(CONVERT(RIGHT(rujuk_masuk.no_balasan,4),signed)),0) from reg_periksa inner join rujuk_masuk on reg_periksa.no_rawat=rujuk_masuk.no_rawat where reg_periksa.tgl_registrasi='"
+                + Valid.SetTgl(DTPReg.getSelectedItem() + "") + "' ",
                 "BR/" + dateformat.format(DTPReg.getDate()) + "/", 4, NoBalasan);
     }
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TAlamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            NoRujuk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            JMPerujuk.setText(Valid.SetAngka2(Double.parseDouble(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 11).toString())));
-            Dokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            KategoriRujuk.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            NoBalasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            kdDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            NmDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
+            TRujukan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TAlamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            NoRujuk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            JMPerujuk.setText(
+                    Valid.SetAngka2(Double.parseDouble(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString())));
+            Dokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            KategoriRujuk.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            NoBalasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            kdDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            NmDiagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
         }
     }
 
@@ -2063,7 +2039,6 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
     }
 
     /**
-     *
      * @param norwt
      * @param tgl1
      * @param tgl2
@@ -2095,16 +2070,14 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
     public void tampil2() {
         Valid.tabelKosong(tabMode2);
         try {
-            psperujuk = koneksi.prepareStatement(
-                    "select rujuk_masuk.perujuk,rujuk_masuk.alamat from rujuk_masuk where "
+            psperujuk = koneksi.prepareStatement("select rujuk_masuk.perujuk,rujuk_masuk.alamat from rujuk_masuk where "
                     + "rujuk_masuk.perujuk like ? or rujuk_masuk.alamat like ? group by rujuk_masuk.perujuk order by rujuk_masuk.perujuk");
             try {
                 psperujuk.setString(1, "%" + TCariPerujuk.getText() + "%");
                 psperujuk.setString(2, "%" + TCariPerujuk.getText() + "%");
                 rs = psperujuk.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new Object[]{rs.getString(1), rs.
-                        getString(2)});
+                    tabMode2.addRow(new Object[]{rs.getString(1), rs.getString(2)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2124,11 +2097,8 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
 
     private void getData2() {
         if (tbPerujuk.getSelectedRow() != -1) {
-            TRujukan.setText(
-                    tbPerujuk.getValueAt(tbPerujuk.getSelectedRow(), 0).
-                            toString());
-            TAlamat.setText(tbPerujuk.getValueAt(tbPerujuk.getSelectedRow(), 1).
-                    toString());
+            TRujukan.setText(tbPerujuk.getValueAt(tbPerujuk.getSelectedRow(), 0).toString());
+            TAlamat.setText(tbPerujuk.getValueAt(tbPerujuk.getSelectedRow(), 1).toString());
         }
     }
 
@@ -2146,7 +2116,6 @@ private void TAlamatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgRujukMasuk.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgRujukMasuk.class.getName());
 
 }

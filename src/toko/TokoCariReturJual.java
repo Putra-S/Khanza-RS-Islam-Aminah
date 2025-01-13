@@ -31,9 +31,13 @@ import keuangan.Jurnal;
 public class TokoCariReturJual extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     public TokoMember member = new TokoMember(null, false);
 
     /**
@@ -45,13 +49,21 @@ public class TokoCariReturJual extends javax.swing.JDialog {
      *
      */
     public TokoBarang barang = new TokoBarang(null, false);
+
     private riwayattoko Trackbarang = new riwayattoko();
+
     private PreparedStatement ps, ps2, pscaripesan, pstoko_detail_returjual;
+
     private ResultSet rs, rs2;
+
     private int i;
+
     private double tagihan = 0, subtotal = 0;
+
     private Jurnal jur = new Jurnal();
+
     private String carifaktur, carimember, caripetugas, carijenis, caribarang;
+
     private boolean sukses = false;
 
     /**
@@ -64,8 +76,7 @@ public class TokoCariReturJual extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.Retur", "Member", "Petugas", "Keterangan", "Jml",
-            "Harga(Rp)", "Total(Rp)"};
+        Object[] row = {"No.Retur", "Member", "Petugas", "Keterangan", "Jml", "Harga(Rp)", "Total(Rp)"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -106,8 +117,7 @@ public class TokoCariReturJual extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -145,10 +155,8 @@ public class TokoCariReturJual extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoCariReturJual")) {
                     if (member.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(member.getTable().getValueAt(member.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmsup.setText(member.getTable().getValueAt(member.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdsup.setText(member.getTable().getValueAt(member.getTable().getSelectedRow(), 0).toString());
+                        nmsup.setText(member.getTable().getValueAt(member.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -205,10 +213,8 @@ public class TokoCariReturJual extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoCariReturJual")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -245,10 +251,8 @@ public class TokoCariReturJual extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoCariReturJual")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -305,12 +309,12 @@ public class TokoCariReturJual extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("TokoCariReturJual")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -336,7 +340,9 @@ public class TokoCariReturJual extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -769,13 +775,12 @@ public class TokoCariReturJual extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        akses.setform("TokoCariReturJual");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("TokoCariReturJual");//GEN-FIRST:event_btnSuplierActionPerformed
         member.emptTeks();
         member.isCek();
         member.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1108,8 +1113,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoCariReturJual dialog = new TokoCariReturJual(
-                    new javax.swing.JFrame(), true);
+            TokoCariReturJual dialog = new TokoCariReturJual(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1172,8 +1176,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             carijenis = "";
             caribarang = "";
             if (!NoFaktur.getText().isEmpty()) {
-                carifaktur = " and tokoreturjual.no_retur_jual like '%" + NoFaktur.
-                        getText() + "%' ";
+                carifaktur = " and tokoreturjual.no_retur_jual like '%" + NoFaktur.getText() + "%' ";
             }
             if (!nmsup.getText().isEmpty()) {
                 carimember = " and tokomember.nama like '%" + nmsup.getText() + "%' ";
@@ -1182,37 +1185,32 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 caripetugas = " and petugas.nama like '%" + nmptg.getText() + "%' ";
             }
             if (!nmjenis.getText().isEmpty()) {
-                carijenis = " and tokojenisbarang.nm_jenis like '%" + nmjenis.
-                        getText() + "%' ";
+                carijenis = " and tokojenisbarang.nm_jenis like '%" + nmjenis.getText() + "%' ";
             }
             if (!nmbar.getText().isEmpty()) {
-                caribarang = " and tokobarang.nama_brng like '%" + nmbar.
-                        getText() + "%' ";
+                caribarang = " and tokobarang.nama_brng like '%" + nmbar.getText() + "%' ";
             }
-            ps = koneksi.prepareStatement(
-                    "select tokoreturjual.no_retur_jual,tokoreturjual.no_member,tokomember.nama, "
+            ps = koneksi.prepareStatement("select tokoreturjual.no_retur_jual,tokoreturjual.no_member,tokomember.nama, "
                     + "tokoreturjual.nip,petugas.nama,tokoreturjual.tgl_retur,tokoreturjual.catatan "
                     + " from tokoreturjual inner join tokomember inner join petugas  "
                     + " inner join toko_detail_returjual inner join tokobarang inner join kodesatuan "
-                    + " inner join tokojenisbarang "
-                    + " on toko_detail_returjual.kode_brng=tokobarang.kode_brng "
+                    + " inner join tokojenisbarang " + " on toko_detail_returjual.kode_brng=tokobarang.kode_brng "
                     + " and toko_detail_returjual.kode_sat=kodesatuan.kode_sat "
                     + " and tokoreturjual.no_retur_jual=toko_detail_returjual.no_retur_jual "
                     + " and tokoreturjual.no_member=tokomember.no_member "
                     + " and tokoreturjual.nip=petugas.nip and tokobarang.jenis=tokojenisbarang.kd_jenis"
-                    + " where tokoreturjual.tgl_retur between '" + Valid.SetTgl(
-                            TglBeli1.getSelectedItem() + "") + "' and '" + Valid.
-                    SetTgl(TglBeli2.getSelectedItem() + "") + "' " + carifaktur + carimember + caripetugas + carijenis + caribarang
-                    + (TCari.getText().trim().isEmpty() ? "" : " and (tokoreturjual.no_retur_jual like '%" + TCari.
-                    getText() + "%' or tokoreturjual.no_member like '%" + TCari.
-                            getText() + "%' or tokomember.nama like '%" + TCari.
-                            getText() + "%' or "
-                    + " tokoreturjual.nip like '%" + TCari.getText() + "%' or petugas.nama like '%" + TCari.
-                    getText() + "%' or toko_detail_returjual.kode_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + " tokobarang.nama_brng like '%" + TCari.getText() + "%' or toko_detail_returjual.kode_sat like '%" + TCari.
-                    getText() + "%' or tokojenisbarang.nm_jenis like '%" + TCari.
-                            getText() + "%') ")
+                    + " where tokoreturjual.tgl_retur between '" + Valid.SetTgl(TglBeli1.getSelectedItem() + "")
+                    + "' and '" + Valid.SetTgl(TglBeli2.getSelectedItem() + "") + "' " + carifaktur + carimember
+                    + caripetugas + carijenis + caribarang
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : " and (tokoreturjual.no_retur_jual like '%" + TCari.getText()
+                    + "%' or tokoreturjual.no_member like '%" + TCari.getText()
+                    + "%' or tokomember.nama like '%" + TCari.getText() + "%' or "
+                    + " tokoreturjual.nip like '%" + TCari.getText() + "%' or petugas.nama like '%"
+                    + TCari.getText() + "%' or toko_detail_returjual.kode_brng like '%"
+                    + TCari.getText() + "%' or " + " tokobarang.nama_brng like '%" + TCari.getText()
+                    + "%' or toko_detail_returjual.kode_sat like '%" + TCari.getText()
+                    + "%' or tokojenisbarang.nm_jenis like '%" + TCari.getText() + "%') ")
                     + " group by tokoreturjual.no_retur_jual order by tokoreturjual.tgl_retur,tokoreturjual.no_retur_jual ");
             try {
                 rs = ps.executeQuery();
@@ -1220,27 +1218,20 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 while (rs.next()) {
                     tabMode.addRow(new Object[]{rs.getString("no_retur_jual"),
                         rs.getString("no_member") + " " + rs.getString("nama"),
-                        rs.getString("nip") + " " + rs.getString("nama"), rs.
-                        getString("catatan"), "", "", ""
-                    });
+                        rs.getString("nip") + " " + rs.getString("nama"), rs.getString("catatan"), "", "", ""});
 
-                    ps2 = koneksi.prepareStatement(
-                            "select toko_detail_returjual.kode_brng,tokobarang.nama_brng, "
+                    ps2 = koneksi.prepareStatement("select toko_detail_returjual.kode_brng,tokobarang.nama_brng, "
                             + "toko_detail_returjual.kode_sat,kodesatuan.satuan,toko_detail_returjual.jml_retur,toko_detail_returjual.h_retur, "
                             + "toko_detail_returjual.h_jual,toko_detail_returjual.total,toko_detail_returjual.nota_jual "
                             + "from toko_detail_returjual inner join tokobarang inner join kodesatuan inner join tokojenisbarang "
                             + " on toko_detail_returjual.kode_brng=tokobarang.kode_brng and tokobarang.jenis=tokojenisbarang.kd_jenis "
                             + " and toko_detail_returjual.kode_sat=kodesatuan.kode_sat where "
-                            + " toko_detail_returjual.no_retur_jual='" + rs.
-                                    getString("no_retur_jual") + "'" + carijenis + caribarang
-                            + " and (toko_detail_returjual.kode_brng like '%" + TCari.
-                                    getText().trim() + "%' or tokobarang.nama_brng like '%" + TCari.
-                                    getText().trim() + "%' or "
-                            + " toko_detail_returjual.kode_sat like '%" + TCari.
-                                    getText().trim() + "%' or tokojenisbarang.nm_jenis like '%" + TCari.
-                                    getText().trim() + "%' or "
-                            + " toko_detail_returjual.nota_jual like '%" + TCari.
-                                    getText().trim() + "%') "
+                            + " toko_detail_returjual.no_retur_jual='" + rs.getString("no_retur_jual") + "'" + carijenis
+                            + caribarang + " and (toko_detail_returjual.kode_brng like '%" + TCari.getText().trim()
+                            + "%' or tokobarang.nama_brng like '%" + TCari.getText().trim() + "%' or "
+                            + " toko_detail_returjual.kode_sat like '%" + TCari.getText().trim()
+                            + "%' or tokojenisbarang.nm_jenis like '%" + TCari.getText().trim() + "%' or "
+                            + " toko_detail_returjual.nota_jual like '%" + TCari.getText().trim() + "%') "
                             + "order by toko_detail_returjual.kode_brng  ");
                     try {
                         rs2 = ps2.executeQuery();
@@ -1249,14 +1240,10 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         while (rs2.next()) {
                             tagihan += rs2.getDouble("total");
                             subtotal += rs2.getDouble("total");
-                            tabMode.addRow(new Object[]{
-                                i + ". " + rs2.getString("kode_brng"), rs2.
-                                getString("nama_brng"), "No. Nota : " + rs2.
-                                getString("nota_jual"), rs2.getString("satuan"),
-                                rs2.getString("jml_retur"), Valid.SetAngka(rs2.
-                                getDouble("h_retur")), Valid.SetAngka(rs2.
-                                getDouble("total"))
-                            });
+                            tabMode.addRow(new Object[]{i + ". " + rs2.getString("kode_brng"),
+                                rs2.getString("nama_brng"), "No. Nota : " + rs2.getString("nota_jual"),
+                                rs2.getString("satuan"), rs2.getString("jml_retur"),
+                                Valid.SetAngka(rs2.getDouble("h_retur")), Valid.SetAngka(rs2.getDouble("total"))});
                             i++;
                         }
                     } catch (SQLException e) {
@@ -1269,9 +1256,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             ps2.close();
                         }
                     }
-                    tabMode.addRow(new Object[]{"", "Tgl.Retur : " + rs.
-                        getString("tgl_retur"), "", "", "", "Total : ", Valid.
-                        SetAngka(subtotal)});
+                    tabMode.addRow(new Object[]{"", "Tgl.Retur : " + rs.getString("tgl_retur"), "", "", "",
+                        "Total : ", Valid.SetAngka(subtotal)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1304,7 +1290,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(TokoCariReturJual.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(TokoCariReturJual.class.getName());
 
 }

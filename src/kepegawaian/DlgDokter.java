@@ -40,18 +40,24 @@ import restore.DlgRestoreDokter;
 import simrskhanza.DlgCariSpesialis;
 
 /**
- *
  * @author dosen
  */
 public class DlgDokter extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private DlgCariSpesialis spesial = new DlgCariSpesialis(null, false);
+
     private PreparedStatement stat;
+
     private ResultSet rs;
 
     /**
@@ -67,9 +73,8 @@ public class DlgDokter extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] row = {"Kode Dokter", "Nama Dokter", "J.K.", "Tmp.Lahir",
-            "Tgl.Lahir", "G.D.", "Agama", "Alamat Tinggal", "No.HP/Telp",
-            "Stts.Nikah", "Spesialis", "Alumni", "No.Ijin Praktek"};
+        Object[] row = {"Kode Dokter", "Nama Dokter", "J.K.", "Tmp.Lahir", "Tgl.Lahir", "G.D.", "Agama",
+            "Alamat Tinggal", "No.HP/Telp", "Stts.Nikah", "Spesialis", "Alumni", "No.Ijin Praktek"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -79,8 +84,9 @@ public class DlgDokter extends javax.swing.JDialog {
         };
         tbDokter.setModel(tabMode);
 
-        //tampil();
-        //tbPetugas.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPetugas.getBackground()));
+        // tampil();
+        // tbPetugas.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPetugas.getBackground()));
         tbDokter.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -126,8 +132,7 @@ public class DlgDokter extends javax.swing.JDialog {
         TTlp.setDocument(new batasInput((byte) 13).getOnlyAngka(TTlp));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -167,10 +172,9 @@ public class DlgDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (spesial.getTable().getSelectedRow() != -1) {
-                    KdSps.setText(spesial.getTable().getValueAt(spesial.
-                            getTable().getSelectedRow(), 0).toString());
-                    TSpesialis.setText(spesial.getTable().getValueAt(spesial.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdSps.setText(spesial.getTable().getValueAt(spesial.getTable().getSelectedRow(), 0).toString());
+                    TSpesialis
+                            .setText(spesial.getTable().getValueAt(spesial.getTable().getSelectedRow(), 1).toString());
                 }
                 KdSps.requestFocus();
             }
@@ -205,20 +209,15 @@ public class DlgDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    TKd.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 0).toString());
-                    TNm.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 1).toString());
-                    CmbJk.setSelectedItem(pegawai.tbKamar.getValueAt(
-                            pegawai.tbKamar.getSelectedRow(), 2).toString().
-                            replaceAll("Wanita", "PEREMPUAN").replaceAll("Pria",
-                            "LAKI-LAKI"));
-                    TTmp.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 11).toString());
-                    TAlmt.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 13).toString());
-                    Valid.SetTgl(DTPLahir, pegawai.tbKamar.getValueAt(
-                            pegawai.tbKamar.getSelectedRow(), 12).toString());
+                    TKd.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                    TNm.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
+                    CmbJk.setSelectedItem(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 2)
+                            .toString()
+                            .replaceAll("Wanita", "PEREMPUAN")
+                            .replaceAll("Pria", "LAKI-LAKI"));
+                    TTmp.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 11).toString());
+                    TAlmt.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 13).toString());
+                    Valid.SetTgl(DTPLahir, pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 12).toString());
                 }
                 TKd.requestFocus();
             }
@@ -243,7 +242,9 @@ public class DlgDokter extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1412,8 +1413,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            stat = koneksi.prepareStatement(
-                    "select dokter.kd_dokter,dokter.nm_dokter,dokter.jk,dokter.tmp_lahir, "
+            stat = koneksi.prepareStatement("select dokter.kd_dokter,dokter.nm_dokter,dokter.jk,dokter.tmp_lahir, "
                     + "dokter.tgl_lahir,dokter.gol_drh,dokter.agama,dokter.almt_tgl,dokter.no_telp, "
                     + "dokter.stts_nikah,spesialis.nm_sps,dokter.alumni,dokter.no_ijn_praktek "
                     + "from dokter inner join spesialis on dokter.kd_sps=spesialis.kd_sps "
@@ -1430,110 +1430,110 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     + "dokter.status='1' and dokter.jk like ? and dokter.gol_drh like ? and dokter.stts_nikah like ? and dokter.no_ijn_praktek like ? "
                     + "order by dokter.kd_dokter");
             try {
-                stat.setString(1, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(2, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(3, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(1,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(2, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(3, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(4, "%" + TCari.getText().trim() + "%");
-                stat.setString(5, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(6, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(7, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(5,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(6, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(7, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(8, "%" + TCari.getText().trim() + "%");
-                stat.setString(9, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(10, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(11, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(9,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(10, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(11, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(12, "%" + TCari.getText().trim() + "%");
-                stat.setString(13, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(14, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(15, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(13,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(14, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(15, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(16, "%" + TCari.getText().trim() + "%");
-                stat.setString(17, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(18, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(19, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(17,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(18, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(19, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(20, "%" + TCari.getText().trim() + "%");
-                stat.setString(21, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(22, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(23, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(21,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(22, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(23, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(24, "%" + TCari.getText().trim() + "%");
-                stat.setString(25, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(26, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(27, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(25,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(26, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(27, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(28, "%" + TCari.getText().trim() + "%");
-                stat.setString(29, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(30, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(31, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(29,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(30, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(31, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(32, "%" + TCari.getText().trim() + "%");
-                stat.setString(33, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(34, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(35, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(33,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(34, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(35, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(36, "%" + TCari.getText().trim() + "%");
-                stat.setString(37, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(38, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(39, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(37,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(38, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(39, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(40, "%" + TCari.getText().trim() + "%");
-                stat.setString(41, "%" + cmbCrJk.getSelectedItem().toString().
-                        replaceAll("LAKI-LAKI", "L").
-                        replaceAll("PEREMPUAN", "P").trim() + "%");
-                stat.setString(42, "%" + CmbCrGd.getSelectedItem().toString().
-                        trim() + "%");
-                stat.setString(43, "%" + CmbCrStts.getSelectedItem().toString().
-                        trim() + "%");
+                stat.setString(41,
+                        "%" + cmbCrJk.getSelectedItem()
+                                .toString()
+                                .replaceAll("LAKI-LAKI", "L")
+                                .replaceAll("PEREMPUAN", "P")
+                                .trim() + "%");
+                stat.setString(42, "%" + CmbCrGd.getSelectedItem().toString().trim() + "%");
+                stat.setString(43, "%" + CmbCrStts.getSelectedItem().toString().trim() + "%");
                 stat.setString(44, "%" + TCari.getText().trim() + "%");
                 rs = stat.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getString(7),
-                        rs.getString(8),
-                        rs.getString(9),
-                        rs.getString(10),
-                        rs.getString(11),
-                        rs.getString(12),
-                        rs.getString(13)});
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13)});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1587,8 +1587,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             CmbStts.setSelectedItem(tbDokter.getValueAt(row, 9).toString());
             TSpesialis.setText(tbDokter.getValueAt(row, 10).toString());
             Sequel.cariIsi(
-                    "select kd_sps from spesialis where nm_sps='" + tbDokter.
-                            getValueAt(row, 10).toString() + "'", KdSps);
+                    "select kd_sps from spesialis where nm_sps='" + tbDokter.getValueAt(row, 10).toString() + "'",
+                    KdSps);
             TAlumni.setText(tbDokter.getValueAt(row, 11).toString());
             TNoi.setText(tbDokter.getValueAt(row, 12).toString());
 
@@ -1606,7 +1606,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -1646,6 +1645,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.
-            getLogger(DlgDokter.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgDokter.class.getName());
+
 }

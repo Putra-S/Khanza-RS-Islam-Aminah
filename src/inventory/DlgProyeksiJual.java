@@ -26,20 +26,28 @@ import javax.swing.table.TableColumn;
 import simrskhanza.DlgCariBangsal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgProyeksiJual extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariJenis jenis = new DlgCariJenis(null, false);
+
     private DlgCariKategori kategori = new DlgCariKategori(null, false);
+
     private DlgCariGolongan golongan = new DlgCariGolongan(null, false);
+
     private DlgCariBangsal asalstok = new DlgCariBangsal(null, false);
 
     /**
@@ -49,12 +57,10 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tgl.Jual", "No.Nota", "Barang", "Satuan", "Harga Jual", "Jml.Jual",
-            "Subtotal Jual", "Disc(%)", "Besar Disc(Rp)", "Tambahan",
-            "Total Jual",
-            "Harga Beli", "Total Beli", "Keuntungan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Tgl.Jual", "No.Nota", "Barang", "Satuan", "Harga Jual", "Jml.Jual", "Subtotal Jual",
+                    "Disc(%)", "Besar Disc(Rp)", "Tambahan", "Total Jual", "Harga Beli", "Total Beli",
+                    "Keuntungan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -102,8 +108,7 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -140,10 +145,8 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (asalstok.getTable().getSelectedRow() != -1) {
-                    kdasal.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmasal.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdasal.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 0).toString());
+                    nmasal.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 1).toString());
                 }
                 kdasal.requestFocus();
             }
@@ -196,10 +199,8 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -233,10 +234,10 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongan.getTable().getSelectedRow() != -1) {
-                    kdgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 0).toString());
+                    nmgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -271,10 +272,10 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    kdkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                    nmkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -305,7 +306,9 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
     private double total = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -683,14 +686,13 @@ public class DlgProyeksiJual extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         BtnCariActionPerformed(evt);
         if (tabMode.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null,
@@ -900,8 +902,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                DlgProyeksiJual dialog = new DlgProyeksiJual(
-                        new javax.swing.JFrame(), true);
+                DlgProyeksiJual dialog = new DlgProyeksiJual(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -959,10 +960,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void prosesCari() {
         Valid.tabelKosong(tabMode);
         try {
-            if (Jenisjual.getSelectedItem().toString().equals("Semua") & nmasal.
-                    getText().isEmpty() && nmjns.getText().isEmpty() && nmkategori.
-                    getText().isEmpty() && nmgolongan.getText().isEmpty() && TCari.
-                    getText().isEmpty()) {
+            if (Jenisjual.getSelectedItem().toString().equals("Semua") & nmasal.getText().isEmpty()
+                    && nmjns.getText().isEmpty() && nmkategori.getText().isEmpty() && nmgolongan.getText().isEmpty()
+                    && TCari.getText().isEmpty()) {
                 ps = koneksi.prepareStatement(
                         "select penjualan.tgl_jual,penjualan.nota_jual,detailjual.kode_brng,databarang.nama_brng,kodesatuan.satuan,detailjual.h_jual,detailjual.jumlah, "
                         + "detailjual.subtotal,detailjual.dis,detailjual.bsr_dis,detailjual.tambahan,detailjual.total, detailjual.h_beli,(detailjual.h_beli * detailjual.jumlah) as total_asal, "
@@ -974,9 +974,10 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         + "inner join jenis on databarang.kdjns=jenis.kdjns "
                         + "inner join kategori_barang on kategori_barang.kode=databarang.kode_kategori "
                         + "inner join golongan_barang on golongan_barang.kode=databarang.kode_golongan "
-                        + "where penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(Tgl2.getSelectedItem() + "") + "' order by penjualan.tgl_jual,penjualan.nota_jual");
+                        + "where penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '"
+                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTgl(Tgl2.getSelectedItem() + "")
+                        + "' order by penjualan.tgl_jual,penjualan.nota_jual");
             } else {
                 ps = koneksi.prepareStatement(
                         "select penjualan.tgl_jual,penjualan.nota_jual,detailjual.kode_brng,databarang.nama_brng,kodesatuan.satuan,detailjual.h_jual,detailjual.jumlah, "
@@ -989,43 +990,54 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         + "inner join jenis on databarang.kdjns=jenis.kdjns "
                         + "inner join kategori_barang on kategori_barang.kode=databarang.kode_kategori "
                         + "inner join golongan_barang on golongan_barang.kode=databarang.kode_golongan "
-                        + "where penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%" + Jenisjual.
-                        getSelectedItem().toString().replaceAll("Semua", "") + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.
-                        getText() + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%" + kdjenis.
-                        getText() + nmjns.getText() + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%" + kdkategori.
-                        getText() + nmkategori.getText() + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%" + kdgolongan.
-                        getText() + nmgolongan.getText() + "%' and penjualan.nota_jual like '%" + TCari.
-                        getText().trim() + "%' or "
-                        + "penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%" + Jenisjual.
-                        getSelectedItem().toString().replaceAll("Semua", "") + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.
-                        getText() + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%" + kdjenis.
-                        getText() + nmjns.getText() + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%" + kdkategori.
-                        getText() + nmkategori.getText() + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%" + kdgolongan.
-                        getText() + nmgolongan.getText() + "%' and detailjual.kode_brng like '%" + TCari.
-                        getText().trim() + "%' or "
-                        + "penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%" + Jenisjual.
-                        getSelectedItem().toString().replaceAll("Semua", "") + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.
-                        getText() + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%" + kdjenis.
-                        getText() + nmjns.getText() + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%" + kdkategori.
-                        getText() + nmkategori.getText() + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%" + kdgolongan.
-                        getText() + nmgolongan.getText() + "%' and databarang.nama_brng like '%" + TCari.
-                        getText().trim() + "%' or "
-                        + "penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '" + Valid.
-                                SetTgl(Tgl1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%" + Jenisjual.
-                        getSelectedItem().toString().replaceAll("Semua", "") + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.
-                        getText() + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%" + kdjenis.
-                        getText() + nmjns.getText() + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%" + kdkategori.
-                        getText() + nmkategori.getText() + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%" + kdgolongan.
-                        getText() + nmgolongan.getText() + "%' and kodesatuan.satuan like '%" + TCari.
-                        getText().trim() + "%' "
-                        + " order by penjualan.tgl_jual,penjualan.nota_jual");
+                        + "where penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '"
+                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%"
+                        + Jenisjual.getSelectedItem().toString().replaceAll("Semua", "")
+                        + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.getText()
+                        + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%"
+                        + kdjenis.getText() + nmjns.getText()
+                        + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%"
+                        + kdkategori.getText() + nmkategori.getText()
+                        + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%"
+                        + kdgolongan.getText() + nmgolongan.getText() + "%' and penjualan.nota_jual like '%"
+                        + TCari.getText().trim() + "%' or "
+                        + "penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '"
+                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%"
+                        + Jenisjual.getSelectedItem().toString().replaceAll("Semua", "")
+                        + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.getText()
+                        + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%"
+                        + kdjenis.getText() + nmjns.getText()
+                        + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%"
+                        + kdkategori.getText() + nmkategori.getText()
+                        + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%"
+                        + kdgolongan.getText() + nmgolongan.getText() + "%' and detailjual.kode_brng like '%"
+                        + TCari.getText().trim() + "%' or "
+                        + "penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '"
+                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%"
+                        + Jenisjual.getSelectedItem().toString().replaceAll("Semua", "")
+                        + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.getText()
+                        + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%"
+                        + kdjenis.getText() + nmjns.getText()
+                        + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%"
+                        + kdkategori.getText() + nmkategori.getText()
+                        + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%"
+                        + kdgolongan.getText() + nmgolongan.getText() + "%' and databarang.nama_brng like '%"
+                        + TCari.getText().trim() + "%' or "
+                        + "penjualan.status='Sudah Dibayar' and penjualan.tgl_jual between '"
+                        + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                        + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' and penjualan.jns_jual like '%"
+                        + Jenisjual.getSelectedItem().toString().replaceAll("Semua", "")
+                        + "%' and concat(penjualan.kd_bangsal,bangsal.nm_bangsal) like '%" + kdasal.getText()
+                        + nmasal.getText() + "%' and concat(databarang.kdjns,jenis.nama) like '%"
+                        + kdjenis.getText() + nmjns.getText()
+                        + "%' and concat(databarang.kode_kategori,kategori_barang.nama) like '%"
+                        + kdkategori.getText() + nmkategori.getText()
+                        + "%' and concat(databarang.kode_golongan,golongan_barang.nama) like '%"
+                        + kdgolongan.getText() + nmgolongan.getText() + "%' and kodesatuan.satuan like '%"
+                        + TCari.getText().trim() + "%' " + " order by penjualan.tgl_jual,penjualan.nota_jual");
             }
 
             try {
@@ -1033,18 +1045,13 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 total = 0;
                 while (rs.next()) {
                     total += rs.getDouble(15);
-                    tabMode.addRow(new String[]{
-                        rs.getString(1), rs.getString(2),
-                        rs.getString(3) + ", " + rs.getString(4), rs.
-                        getString(5),
-                        Valid.SetAngka(rs.getDouble(6)), Valid.SetAngka(rs.
-                        getDouble(7)), Valid.SetAngka(rs.getDouble(8)),
-                        Valid.SetAngka(rs.getDouble(9)), Valid.SetAngka(rs.
-                        getDouble(10)), Valid.SetAngka(rs.getDouble(11)),
-                        Valid.SetAngka(rs.getDouble(12)), Valid.SetAngka(rs.
-                        getDouble(13)), Valid.SetAngka(rs.getDouble(14)),
-                        Valid.SetAngka(rs.getDouble(15))
-                    });
+                    tabMode.addRow(
+                            new String[]{rs.getString(1), rs.getString(2), rs.getString(3) + ", " + rs.getString(4),
+                                rs.getString(5), Valid.SetAngka(rs.getDouble(6)), Valid.SetAngka(rs.getDouble(7)),
+                                Valid.SetAngka(rs.getDouble(8)), Valid.SetAngka(rs.getDouble(9)),
+                                Valid.SetAngka(rs.getDouble(10)), Valid.SetAngka(rs.getDouble(11)),
+                                Valid.SetAngka(rs.getDouble(12)), Valid.SetAngka(rs.getDouble(13)),
+                                Valid.SetAngka(rs.getDouble(14)), Valid.SetAngka(rs.getDouble(15))});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1085,7 +1092,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgProyeksiJual.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgProyeksiJual.class.getName());
 
 }

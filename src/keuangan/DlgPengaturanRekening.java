@@ -20,86 +20,90 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class DlgPengaturanRekening extends javax.swing.JDialog {
 
     private DefaultTableModel tabMode, tabModeRalan, tabModeRanap;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private int i = 0, barisdicopy = -1;
-    private String Tindakan_Ralan, Laborat_Ralan, Radiologi_Ralan, Obat_Ralan, Registrasi_Ralan,
-            Tambahan_Ralan, Potongan_Ralan, Tindakan_Ranap, Laborat_Ranap, Radiologi_Ranap,
-            Obat_Ranap, Registrasi_Ranap, Tambahan_Ranap, Potongan_Ranap, Retur_Obat_Ranap,
-            Resep_Pulang_Ranap, Kamar_Inap, Operasi_Ranap, Harian_Ranap, Pengadaan_Obat,
-            Pemesanan_Obat, Kontra_Pemesanan_Obat, Bayar_Pemesanan_Obat, Penjualan_Obat,
-            Piutang_Obat, Kontra_Piutang_Obat, Retur_Ke_Suplayer, Kontra_Retur_Ke_Suplayer,
-            Retur_Dari_pembeli, Kontra_Retur_Dari_Pembeli, Hibah_Obat, Kontra_Hibah_Obat,
-            Retur_Piutang_Obat, Kontra_Retur_Piutang_Obat, Pengadaan_Ipsrs, Stok_Keluar_Ipsrs,
-            Kontra_Stok_Keluar_Ipsrs, Uang_Muka_Ranap,
-            Piutang_Pasien_Ranap, Bayar_Piutang_Pasien, Service_Ranap, Pengambilan_Utd,
-            Kontra_Pengambilan_Utd, Pengambilan_Penunjang_Utd, Kontra_Pengambilan_Penunjang_Utd,
-            Operasi_Ralan, Penyerahan_Darah, Beban_Jasa_Medik_Dokter_Tindakan_Ralan,
+
+    private String Tindakan_Ralan, Laborat_Ralan, Radiologi_Ralan, Obat_Ralan, Registrasi_Ralan, Tambahan_Ralan,
+            Potongan_Ralan, Tindakan_Ranap, Laborat_Ranap, Radiologi_Ranap, Obat_Ranap, Registrasi_Ranap,
+            Tambahan_Ranap, Potongan_Ranap, Retur_Obat_Ranap, Resep_Pulang_Ranap, Kamar_Inap, Operasi_Ranap,
+            Harian_Ranap, Pengadaan_Obat, Pemesanan_Obat, Kontra_Pemesanan_Obat, Bayar_Pemesanan_Obat, Penjualan_Obat,
+            Piutang_Obat, Kontra_Piutang_Obat, Retur_Ke_Suplayer, Kontra_Retur_Ke_Suplayer, Retur_Dari_pembeli,
+            Kontra_Retur_Dari_Pembeli, Hibah_Obat, Kontra_Hibah_Obat, Retur_Piutang_Obat, Kontra_Retur_Piutang_Obat,
+            Pengadaan_Ipsrs, Stok_Keluar_Ipsrs, Kontra_Stok_Keluar_Ipsrs, Uang_Muka_Ranap, Piutang_Pasien_Ranap,
+            Bayar_Piutang_Pasien, Service_Ranap, Pengambilan_Utd, Kontra_Pengambilan_Utd, Pengambilan_Penunjang_Utd,
+            Kontra_Pengambilan_Penunjang_Utd, Operasi_Ralan, Penyerahan_Darah, Beban_Jasa_Medik_Dokter_Tindakan_Ralan,
             Utang_Jasa_Medik_Dokter_Tindakan_Ralan, Beban_Jasa_Medik_Paramedis_Tindakan_Ralan,
-            Utang_Jasa_Medik_Paramedis_Tindakan_Ralan, Beban_KSO_Tindakan_Ralan,
-            Utang_KSO_Tindakan_Ralan, Beban_Jasa_Medik_Dokter_Laborat_Ralan,
-            Utang_Jasa_Medik_Dokter_Laborat_Ralan, Beban_Jasa_Medik_Petugas_Laborat_Ralan,
-            Utang_Jasa_Medik_Petugas_Laborat_Ralan, Beban_Kso_Laborat_Ralan,
-            Utang_Kso_Laborat_Ralan, HPP_Persediaan_Laborat_Rawat_Jalan,
-            Persediaan_BHP_Laborat_Rawat_Jalan, Beban_Jasa_Medik_Dokter_Radiologi_Ralan,
-            Utang_Jasa_Medik_Dokter_Radiologi_Ralan, Beban_Jasa_Medik_Petugas_Radiologi_Ralan,
-            Utang_Jasa_Medik_Petugas_Radiologi_Ralan, Beban_Kso_Radiologi_Ralan, Utang_Kso_Radiologi_Ralan,
-            HPP_Persediaan_Radiologi_Rawat_Jalan, Persediaan_BHP_Radiologi_Rawat_Jalan,
-            HPP_Obat_Rawat_Jalan, Persediaan_Obat_Rawat_Jalan, Beban_Jasa_Medik_Dokter_Operasi_Ralan,
-            Utang_Jasa_Medik_Dokter_Operasi_Ralan, Beban_Jasa_Medik_Paramedis_Operasi_Ralan,
-            Utang_Jasa_Medik_Paramedis_Operasi_Ralan, HPP_Obat_Operasi_Ralan, Persediaan_Obat_Kamar_Operasi_Ralan,
-            Suspen_Piutang_Tindakan_Ranap, Beban_Jasa_Medik_Dokter_Tindakan_Ranap, Utang_Jasa_Medik_Dokter_Tindakan_Ranap,
-            Beban_Jasa_Medik_Paramedis_Tindakan_Ranap, Utang_Jasa_Medik_Paramedis_Tindakan_Ranap, Beban_KSO_Tindakan_Ranap,
-            Utang_KSO_Tindakan_Ranap, Suspen_Piutang_Laborat_Ranap, Beban_Jasa_Medik_Dokter_Laborat_Ranap,
-            Utang_Jasa_Medik_Dokter_Laborat_Ranap, Beban_Jasa_Medik_Petugas_Laborat_Ranap,
-            Utang_Jasa_Medik_Petugas_Laborat_Ranap, Beban_Kso_Laborat_Ranap, Utang_Kso_Laborat_Ranap,
-            HPP_Persediaan_Laborat_Rawat_inap, Persediaan_BHP_Laborat_Rawat_Inap,
+            Utang_Jasa_Medik_Paramedis_Tindakan_Ralan, Beban_KSO_Tindakan_Ralan, Utang_KSO_Tindakan_Ralan,
+            Beban_Jasa_Medik_Dokter_Laborat_Ralan, Utang_Jasa_Medik_Dokter_Laborat_Ralan,
+            Beban_Jasa_Medik_Petugas_Laborat_Ralan, Utang_Jasa_Medik_Petugas_Laborat_Ralan, Beban_Kso_Laborat_Ralan,
+            Utang_Kso_Laborat_Ralan, HPP_Persediaan_Laborat_Rawat_Jalan, Persediaan_BHP_Laborat_Rawat_Jalan,
+            Beban_Jasa_Medik_Dokter_Radiologi_Ralan, Utang_Jasa_Medik_Dokter_Radiologi_Ralan,
+            Beban_Jasa_Medik_Petugas_Radiologi_Ralan, Utang_Jasa_Medik_Petugas_Radiologi_Ralan,
+            Beban_Kso_Radiologi_Ralan, Utang_Kso_Radiologi_Ralan, HPP_Persediaan_Radiologi_Rawat_Jalan,
+            Persediaan_BHP_Radiologi_Rawat_Jalan, HPP_Obat_Rawat_Jalan, Persediaan_Obat_Rawat_Jalan,
+            Beban_Jasa_Medik_Dokter_Operasi_Ralan, Utang_Jasa_Medik_Dokter_Operasi_Ralan,
+            Beban_Jasa_Medik_Paramedis_Operasi_Ralan, Utang_Jasa_Medik_Paramedis_Operasi_Ralan, HPP_Obat_Operasi_Ralan,
+            Persediaan_Obat_Kamar_Operasi_Ralan, Suspen_Piutang_Tindakan_Ranap, Beban_Jasa_Medik_Dokter_Tindakan_Ranap,
+            Utang_Jasa_Medik_Dokter_Tindakan_Ranap, Beban_Jasa_Medik_Paramedis_Tindakan_Ranap,
+            Utang_Jasa_Medik_Paramedis_Tindakan_Ranap, Beban_KSO_Tindakan_Ranap, Utang_KSO_Tindakan_Ranap,
+            Suspen_Piutang_Laborat_Ranap, Beban_Jasa_Medik_Dokter_Laborat_Ranap, Utang_Jasa_Medik_Dokter_Laborat_Ranap,
+            Beban_Jasa_Medik_Petugas_Laborat_Ranap, Utang_Jasa_Medik_Petugas_Laborat_Ranap, Beban_Kso_Laborat_Ranap,
+            Utang_Kso_Laborat_Ranap, HPP_Persediaan_Laborat_Rawat_inap, Persediaan_BHP_Laborat_Rawat_Inap,
             Suspen_Piutang_Radiologi_Ranap, Beban_Jasa_Medik_Dokter_Radiologi_Ranap,
             Utang_Jasa_Medik_Dokter_Radiologi_Ranap, Beban_Jasa_Medik_Petugas_Radiologi_Ranap,
             Utang_Jasa_Medik_Petugas_Radiologi_Ranap, Beban_Kso_Radiologi_Ranap, Utang_Kso_Radiologi_Ranap,
             HPP_Persediaan_Radiologi_Rawat_Inap, Persediaan_BHP_Radiologi_Rawat_Inap, HPP_Obat_Rawat_Inap,
             Persediaan_Obat_Rawat_Inap, Suspen_Piutang_Obat_Ranap, Suspen_Piutang_Operasi_Ranap,
             Beban_Jasa_Medik_Dokter_Operasi_Ranap, Utang_Jasa_Medik_Dokter_Operasi_Ranap,
-            Beban_Jasa_Medik_Paramedis_Operasi_Ranap, Utang_Jasa_Medik_Paramedis_Operasi_Ranap,
-            HPP_Obat_Operasi_Ranap, Persediaan_Obat_Kamar_Operasi_Ranap, Stok_Keluar_Medis,
-            Kontra_Stok_Keluar_Medis, HPP_Obat_Jual_Bebas, Persediaan_Obat_Jual_Bebas,
-            Penerimaan_NonMedis, Kontra_Penerimaan_NonMedis, Bayar_Pemesanan_Non_Medis,
-            Penerimaan_Toko, Kontra_Penerimaan_Toko, Pengadaan_Toko, Bayar_Pemesanan_Toko,
-            Penjualan_Toko, HPP_Barang_Toko, Persediaan_Barang_Toko, Piutang_Toko, Kontra_Piutang_Toko,
-            Retur_Beli_Toko, Kontra_Retur_Beli_Toko, Retur_Beli_Non_Medis, Kontra_Retur_Beli_Non_Medis,
-            Retur_Jual_Toko, Kontra_Retur_Jual_Toko, Retur_Piutang_Toko, Kontra_Retur_Piutang_Toko,
-            kode_pendapatan_tindakan, nama_pendapatan_tindakan, kode_beban_jasa_dokter, nama_beban_jasa_dokter, kode_utang_jasa_dokter,
-            nama_utang_jasa_dokter, kode_beban_jasa_paramedis, nama_beban_jasa_paramedis, kode_utang_jasa_paramedis, nama_utang_jasa_paramedis,
-            kode_beban_kso, nama_beban_kso, kode_utang_kso, nama_utang_kso, kode_hpp_persediaan, nama_hpp_persediaan, kode_persediaan_bhp,
-            nama_persediaan_bhp, kode_beban_jasa_sarana, nama_beban_jasa_sarana, kode_utang_jasa_sarana, nama_utang_jasa_sarana,
-            kode_beban_menejemen, nama_beban_menejemen, kode_utang_menejemen, nama_utang_menejemen,
-            Suspen_Piutang_Tindakan_Ralan, Beban_Jasa_Sarana_Tindakan_Ralan, Utang_Jasa_Sarana_Tindakan_Ralan,
-            HPP_BHP_Tindakan_Ralan, Persediaan_BHP_Tindakan_Ralan, Beban_Jasa_Menejemen_Tindakan_Ralan,
-            Utang_Jasa_Menejemen_Tindakan_Ralan, Suspen_Piutang_Laborat_Ralan, Beban_Jasa_Sarana_Laborat_Ralan,
-            Utang_Jasa_Sarana_Laborat_Ralan, Beban_Jasa_Perujuk_Laborat_Ralan, Utang_Jasa_Perujuk_Laborat_Ralan,
-            Beban_Jasa_Menejemen_Laborat_Ralan, Utang_Jasa_Menejemen_Laborat_Ralan, Suspen_Piutang_Radiologi_Ralan,
-            Beban_Jasa_Sarana_Radiologi_Ralan, Utang_Jasa_Sarana_Radiologi_Ralan, Beban_Jasa_Perujuk_Radiologi_Ralan,
-            Utang_Jasa_Perujuk_Radiologi_Ralan, Beban_Jasa_Menejemen_Radiologi_Ralan, Utang_Jasa_Menejemen_Radiologi_Ralan,
-            Suspen_Piutang_Obat_Ralan, Suspen_Piutang_Operasi_Ralan, Beban_Jasa_Sarana_Tindakan_Ranap,
-            Utang_Jasa_Sarana_Tindakan_Ranap, Beban_Jasa_Menejemen_Tindakan_Ranap, Utang_Jasa_Menejemen_Tindakan_Ranap,
-            HPP_BHP_Tindakan_Ranap, Persediaan_BHP_Tindakan_Ranap, Beban_Jasa_Sarana_Laborat_Ranap,
-            Utang_Jasa_Sarana_Laborat_Ranap, Beban_Jasa_Perujuk_Laborat_Ranap, Utang_Jasa_Perujuk_Laborat_Ranap,
-            Beban_Jasa_Menejemen_Laborat_Ranap, Utang_Jasa_Menejemen_Laborat_Ranap, Beban_Jasa_Sarana_Radiologi_Ranap,
-            Utang_Jasa_Sarana_Radiologi_Ranap, Beban_Jasa_Perujuk_Radiologi_Ranap, Utang_Jasa_Perujuk_Radiologi_Ranap,
+            Beban_Jasa_Medik_Paramedis_Operasi_Ranap, Utang_Jasa_Medik_Paramedis_Operasi_Ranap, HPP_Obat_Operasi_Ranap,
+            Persediaan_Obat_Kamar_Operasi_Ranap, Stok_Keluar_Medis, Kontra_Stok_Keluar_Medis, HPP_Obat_Jual_Bebas,
+            Persediaan_Obat_Jual_Bebas, Penerimaan_NonMedis, Kontra_Penerimaan_NonMedis, Bayar_Pemesanan_Non_Medis,
+            Penerimaan_Toko, Kontra_Penerimaan_Toko, Pengadaan_Toko, Bayar_Pemesanan_Toko, Penjualan_Toko,
+            HPP_Barang_Toko, Persediaan_Barang_Toko, Piutang_Toko, Kontra_Piutang_Toko, Retur_Beli_Toko,
+            Kontra_Retur_Beli_Toko, Retur_Beli_Non_Medis, Kontra_Retur_Beli_Non_Medis, Retur_Jual_Toko,
+            Kontra_Retur_Jual_Toko, Retur_Piutang_Toko, Kontra_Retur_Piutang_Toko, kode_pendapatan_tindakan,
+            nama_pendapatan_tindakan, kode_beban_jasa_dokter, nama_beban_jasa_dokter, kode_utang_jasa_dokter,
+            nama_utang_jasa_dokter, kode_beban_jasa_paramedis, nama_beban_jasa_paramedis, kode_utang_jasa_paramedis,
+            nama_utang_jasa_paramedis, kode_beban_kso, nama_beban_kso, kode_utang_kso, nama_utang_kso,
+            kode_hpp_persediaan, nama_hpp_persediaan, kode_persediaan_bhp, nama_persediaan_bhp, kode_beban_jasa_sarana,
+            nama_beban_jasa_sarana, kode_utang_jasa_sarana, nama_utang_jasa_sarana, kode_beban_menejemen,
+            nama_beban_menejemen, kode_utang_menejemen, nama_utang_menejemen, Suspen_Piutang_Tindakan_Ralan,
+            Beban_Jasa_Sarana_Tindakan_Ralan, Utang_Jasa_Sarana_Tindakan_Ralan, HPP_BHP_Tindakan_Ralan,
+            Persediaan_BHP_Tindakan_Ralan, Beban_Jasa_Menejemen_Tindakan_Ralan, Utang_Jasa_Menejemen_Tindakan_Ralan,
+            Suspen_Piutang_Laborat_Ralan, Beban_Jasa_Sarana_Laborat_Ralan, Utang_Jasa_Sarana_Laborat_Ralan,
+            Beban_Jasa_Perujuk_Laborat_Ralan, Utang_Jasa_Perujuk_Laborat_Ralan, Beban_Jasa_Menejemen_Laborat_Ralan,
+            Utang_Jasa_Menejemen_Laborat_Ralan, Suspen_Piutang_Radiologi_Ralan, Beban_Jasa_Sarana_Radiologi_Ralan,
+            Utang_Jasa_Sarana_Radiologi_Ralan, Beban_Jasa_Perujuk_Radiologi_Ralan, Utang_Jasa_Perujuk_Radiologi_Ralan,
+            Beban_Jasa_Menejemen_Radiologi_Ralan, Utang_Jasa_Menejemen_Radiologi_Ralan, Suspen_Piutang_Obat_Ralan,
+            Suspen_Piutang_Operasi_Ralan, Beban_Jasa_Sarana_Tindakan_Ranap, Utang_Jasa_Sarana_Tindakan_Ranap,
+            Beban_Jasa_Menejemen_Tindakan_Ranap, Utang_Jasa_Menejemen_Tindakan_Ranap, HPP_BHP_Tindakan_Ranap,
+            Persediaan_BHP_Tindakan_Ranap, Beban_Jasa_Sarana_Laborat_Ranap, Utang_Jasa_Sarana_Laborat_Ranap,
+            Beban_Jasa_Perujuk_Laborat_Ranap, Utang_Jasa_Perujuk_Laborat_Ranap, Beban_Jasa_Menejemen_Laborat_Ranap,
+            Utang_Jasa_Menejemen_Laborat_Ranap, Beban_Jasa_Sarana_Radiologi_Ranap, Utang_Jasa_Sarana_Radiologi_Ranap,
+            Beban_Jasa_Perujuk_Radiologi_Ranap, Utang_Jasa_Perujuk_Radiologi_Ranap,
             Beban_Jasa_Menejemen_Radiologi_Ranap, Utang_Jasa_Menejemen_Radiologi_Ranap, Kerugian_Klaim_BPJS_RVP,
             Lebih_Bayar_Klaim_BPJS_RVP, Piutang_BPJS_RVP, Sisa_Uang_Muka_Ranap, Kontra_Penerimaan_AsetInventaris,
             Kontra_Hibah_Aset, Hibah_Non_Medis, Kontra_Hibah_Non_Medis, Bayar_JM_Dokter, PPN_Masukan, Pengadaan_Dapur,
-            Stok_Keluar_Dapur, Kontra_Stok_Keluar_Dapur, PPN_Keluaran, Diskon_Piutang, Piutang_Tidak_Terbayar, Lebih_Bayar_Piutang;
+            Stok_Keluar_Dapur, Kontra_Stok_Keluar_Dapur, PPN_Keluaran, Diskon_Piutang, Piutang_Tidak_Terbayar,
+            Lebih_Bayar_Piutang;
+
     private String copyakun = "";
+
     private DlgRekeningTahun rekening = new DlgRekeningTahun(null, false);
 
     /**
@@ -113,8 +117,7 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
         initComponents();
 
         tabMode = new DefaultTableModel(null,
-                new String[]{"Letak Akun Rekening", "Kode Akun", "Nama Akun",
-                    "Tipe", "Balance"}) {
+                new String[]{"Letak Akun Rekening", "Kode Akun", "Nama Akun", "Tipe", "Balance"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -143,23 +146,15 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
 
         tbPengaturan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRalan = new DefaultTableModel(null, new String[]{
-            "Kode Tindakan", "Nama Tnd/Prw/Tagihan", "Kategori", "Jenis Bayar",
-            "Unit/Poli",
-            "Kode Akun", "Nama Akun Pendapatan Tindakan Ralan", "Kode Akun",
-            "Nama Akun Beban Jasa Dokter",
-            "Kode Akun", "Nama Akun Utang Jasa Dokter", "Kode Akun",
-            "Nama Akun Beban Jasa Paramedis",
-            "Kode Akun", "Nama Akun Utang Jasa Paramedis", "Kode Akun",
-            "Nama Akun Beban KSO",
-            "Kode Akun", "Nama Akun Utang KSO", "Kode Akun",
-            "Nama Akun HPP Persediaan Ralan",
-            "Kode Akun", "Nama Akun Persediaan BHP Ralan", "Kode Akun",
-            "Nama Akun Beban Jasa Sarana",
-            "Kode Akun", "Nama Akun Utang Jasa Sarana", "Kode Akun",
-            "Nama Akun Utang Beban Jasa Menejemen",
-            "Kode Akun", "Nama Akun Utang Jasa Menejemen"
-        }) {
+        tabModeRalan = new DefaultTableModel(null,
+                new String[]{"Kode Tindakan", "Nama Tnd/Prw/Tagihan", "Kategori", "Jenis Bayar", "Unit/Poli",
+                    "Kode Akun", "Nama Akun Pendapatan Tindakan Ralan", "Kode Akun", "Nama Akun Beban Jasa Dokter",
+                    "Kode Akun", "Nama Akun Utang Jasa Dokter", "Kode Akun", "Nama Akun Beban Jasa Paramedis",
+                    "Kode Akun", "Nama Akun Utang Jasa Paramedis", "Kode Akun", "Nama Akun Beban KSO", "Kode Akun",
+                    "Nama Akun Utang KSO", "Kode Akun", "Nama Akun HPP Persediaan Ralan", "Kode Akun",
+                    "Nama Akun Persediaan BHP Ralan", "Kode Akun", "Nama Akun Beban Jasa Sarana", "Kode Akun",
+                    "Nama Akun Utang Jasa Sarana", "Kode Akun", "Nama Akun Utang Beban Jasa Menejemen", "Kode Akun",
+                    "Nama Akun Utang Jasa Menejemen"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -168,8 +163,7 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
         };
 
         tbPengaturanRalan.setModel(tabModeRalan);
-        tbPengaturanRalan.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbPengaturanRalan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPengaturanRalan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 31; i++) {
@@ -241,23 +235,15 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
 
         tbPengaturanRalan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRanap = new DefaultTableModel(null, new String[]{
-            "Kode Tindakan", "Nama Tnd/Prw/Tagihan", "Kategori", "Jenis Bayar",
-            "Ruang", "Kelas",
-            "Kode Akun", "Nama Akun Pendapatan Tindakan Ranap", "Kode Akun",
-            "Nama Akun Beban Jasa Dokter",
-            "Kode Akun", "Nama Akun Utang Jasa Dokter", "Kode Akun",
-            "Nama Akun Beban Jasa Paramedis",
-            "Kode Akun", "Nama Akun Utang Jasa Paramedis", "Kode Akun",
-            "Nama Akun Beban KSO",
-            "Kode Akun", "Nama Akun Utang KSO", "Kode Akun",
-            "Nama Akun HPP Persediaan Ranap",
-            "Kode Akun", "Nama Akun Persediaan BHP Ranap", "Kode Akun",
-            "Nama Akun Beban Jasa Sarana",
-            "Kode Akun", "Nama Akun Utang Jasa Sarana", "Kode Akun",
-            "Nama Akun Utang Beban Jasa Menejemen",
-            "Kode Akun", "Nama Akun Utang Jasa Menejemen"
-        }) {
+        tabModeRanap = new DefaultTableModel(null,
+                new String[]{"Kode Tindakan", "Nama Tnd/Prw/Tagihan", "Kategori", "Jenis Bayar", "Ruang", "Kelas",
+                    "Kode Akun", "Nama Akun Pendapatan Tindakan Ranap", "Kode Akun", "Nama Akun Beban Jasa Dokter",
+                    "Kode Akun", "Nama Akun Utang Jasa Dokter", "Kode Akun", "Nama Akun Beban Jasa Paramedis",
+                    "Kode Akun", "Nama Akun Utang Jasa Paramedis", "Kode Akun", "Nama Akun Beban KSO", "Kode Akun",
+                    "Nama Akun Utang KSO", "Kode Akun", "Nama Akun HPP Persediaan Ranap", "Kode Akun",
+                    "Nama Akun Persediaan BHP Ranap", "Kode Akun", "Nama Akun Beban Jasa Sarana", "Kode Akun",
+                    "Nama Akun Utang Jasa Sarana", "Kode Akun", "Nama Akun Utang Beban Jasa Menejemen", "Kode Akun",
+                    "Nama Akun Utang Jasa Menejemen"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -266,8 +252,7 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
         };
 
         tbPengaturanRanap.setModel(tabModeRanap);
-        tbPengaturanRanap.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbPengaturanRanap.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPengaturanRanap.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 32; i++) {
@@ -355,139 +340,113 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPengaturanRekening")) {
                     if (rekening.getTabel().getSelectedRow() != -1) {
                         if (tbPengaturan.getSelectedColumn() == 1) {
-                            tabMode.setValueAt(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 1).
-                                    toString(), tbPengaturan.getSelectedRow(), 1);
-                            tabMode.setValueAt(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 2).
-                                    toString(), tbPengaturan.getSelectedRow(), 2);
-                            tabMode.setValueAt(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 3).
-                                    toString(), tbPengaturan.getSelectedRow(), 3);
-                            tabMode.setValueAt(rekening.getTabel().getValueAt(
-                                    rekening.getTabel().getSelectedRow(), 4).
-                                    toString(), tbPengaturan.getSelectedRow(), 4);
+                            tabMode.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
+                                    tbPengaturan.getSelectedRow(), 1);
+                            tabMode.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
+                                    tbPengaturan.getSelectedRow(), 2);
+                            tabMode.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 3).toString(),
+                                    tbPengaturan.getSelectedRow(), 3);
+                            tabMode.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 4).toString(),
+                                    tbPengaturan.getSelectedRow(), 4);
                         }
                     }
                     tbPengaturan.requestFocus();
                 } else if (akses.getform().equals("DlgPengaturanRekeningRalan")) {
                     if (rekening.getTabel().getSelectedRow() != -1) {
                         if (tbPengaturanRalan.getSelectedColumn() == 5) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 5);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 6);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 7) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 7);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 8);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 9) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 9);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 10);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 11) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 11);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 12);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 13) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 13);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 14);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 15) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 15);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 16);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 17) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 17);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 18);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 19) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 19);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 20);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 21) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 21);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 22);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 23) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 23);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 24);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 25) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 25);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 26);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 27) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 27);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 28);
                         } else if (tbPengaturanRalan.getSelectedColumn() == 29) {
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 29);
-                            tabModeRalan.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRalan.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRalan.getSelectedRow(), 30);
                         }
                     }
@@ -495,121 +454,95 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                 } else if (akses.getform().equals("DlgPengaturanRekeningRanap")) {
                     if (rekening.getTabel().getSelectedRow() != -1) {
                         if (tbPengaturanRanap.getSelectedColumn() == 6) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 6);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 7);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 8) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 8);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 9);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 10) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 10);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 11);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 12) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 12);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 13);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 14) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 14);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 15);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 16) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 16);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 17);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 18) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 18);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 19);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 20) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 20);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 21);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 22) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 22);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 23);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 24) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 24);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 25);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 26) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 26);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 27);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 28) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 28);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 29);
                         } else if (tbPengaturanRanap.getSelectedColumn() == 30) {
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 1).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 30);
-                            tabModeRanap.setValueAt(rekening.getTabel().
-                                    getValueAt(rekening.getTabel().
-                                            getSelectedRow(), 2).toString(),
+                            tabModeRanap.setValueAt(
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString(),
                                     tbPengaturanRanap.getSelectedRow(), 31);
                         }
                     }
@@ -667,7 +600,9 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1829,8 +1764,7 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPengaturanRekening dialog = new DlgPengaturanRekening(
-                    new javax.swing.JFrame(), true);
+            DlgPengaturanRekening dialog = new DlgPengaturanRekening(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2060,117 +1994,67 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
             try {
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    Suspen_Piutang_Tindakan_Ralan = rs.getString(
-                            "Suspen_Piutang_Tindakan_Ralan");
+                    Suspen_Piutang_Tindakan_Ralan = rs.getString("Suspen_Piutang_Tindakan_Ralan");
                     Tindakan_Ralan = rs.getString("Tindakan_Ralan");
-                    Beban_Jasa_Medik_Dokter_Tindakan_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Tindakan_Ralan");
-                    Utang_Jasa_Medik_Dokter_Tindakan_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Tindakan_Ralan");
-                    Beban_Jasa_Medik_Paramedis_Tindakan_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Paramedis_Tindakan_Ralan");
-                    Utang_Jasa_Medik_Paramedis_Tindakan_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Paramedis_Tindakan_Ralan");
-                    Beban_KSO_Tindakan_Ralan = rs.getString(
-                            "Beban_KSO_Tindakan_Ralan");
-                    Utang_KSO_Tindakan_Ralan = rs.getString(
-                            "Utang_KSO_Tindakan_Ralan");
-                    Beban_Jasa_Sarana_Tindakan_Ralan = rs.getString(
-                            "Beban_Jasa_Sarana_Tindakan_Ralan");
-                    Utang_Jasa_Sarana_Tindakan_Ralan = rs.getString(
-                            "Utang_Jasa_Sarana_Tindakan_Ralan");
-                    HPP_BHP_Tindakan_Ralan = rs.getString(
-                            "HPP_BHP_Tindakan_Ralan");
-                    Persediaan_BHP_Tindakan_Ralan = rs.getString(
-                            "Persediaan_BHP_Tindakan_Ralan");
-                    Beban_Jasa_Menejemen_Tindakan_Ralan = rs.getString(
-                            "Beban_Jasa_Menejemen_Tindakan_Ralan");
-                    Utang_Jasa_Menejemen_Tindakan_Ralan = rs.getString(
-                            "Utang_Jasa_Menejemen_Tindakan_Ralan");
-                    Suspen_Piutang_Laborat_Ralan = rs.getString(
-                            "Suspen_Piutang_Laborat_Ralan");
+                    Beban_Jasa_Medik_Dokter_Tindakan_Ralan = rs.getString("Beban_Jasa_Medik_Dokter_Tindakan_Ralan");
+                    Utang_Jasa_Medik_Dokter_Tindakan_Ralan = rs.getString("Utang_Jasa_Medik_Dokter_Tindakan_Ralan");
+                    Beban_Jasa_Medik_Paramedis_Tindakan_Ralan = rs
+                            .getString("Beban_Jasa_Medik_Paramedis_Tindakan_Ralan");
+                    Utang_Jasa_Medik_Paramedis_Tindakan_Ralan = rs
+                            .getString("Utang_Jasa_Medik_Paramedis_Tindakan_Ralan");
+                    Beban_KSO_Tindakan_Ralan = rs.getString("Beban_KSO_Tindakan_Ralan");
+                    Utang_KSO_Tindakan_Ralan = rs.getString("Utang_KSO_Tindakan_Ralan");
+                    Beban_Jasa_Sarana_Tindakan_Ralan = rs.getString("Beban_Jasa_Sarana_Tindakan_Ralan");
+                    Utang_Jasa_Sarana_Tindakan_Ralan = rs.getString("Utang_Jasa_Sarana_Tindakan_Ralan");
+                    HPP_BHP_Tindakan_Ralan = rs.getString("HPP_BHP_Tindakan_Ralan");
+                    Persediaan_BHP_Tindakan_Ralan = rs.getString("Persediaan_BHP_Tindakan_Ralan");
+                    Beban_Jasa_Menejemen_Tindakan_Ralan = rs.getString("Beban_Jasa_Menejemen_Tindakan_Ralan");
+                    Utang_Jasa_Menejemen_Tindakan_Ralan = rs.getString("Utang_Jasa_Menejemen_Tindakan_Ralan");
+                    Suspen_Piutang_Laborat_Ralan = rs.getString("Suspen_Piutang_Laborat_Ralan");
                     Laborat_Ralan = rs.getString("Laborat_Ralan");
-                    Beban_Jasa_Medik_Dokter_Laborat_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Laborat_Ralan");
-                    Utang_Jasa_Medik_Dokter_Laborat_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Laborat_Ralan");
-                    Beban_Jasa_Medik_Petugas_Laborat_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Petugas_Laborat_Ralan");
-                    Utang_Jasa_Medik_Petugas_Laborat_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Petugas_Laborat_Ralan");
-                    Beban_Kso_Laborat_Ralan = rs.getString(
-                            "Beban_Kso_Laborat_Ralan");
-                    Utang_Kso_Laborat_Ralan = rs.getString(
-                            "Utang_Kso_Laborat_Ralan");
-                    HPP_Persediaan_Laborat_Rawat_Jalan = rs.getString(
-                            "HPP_Persediaan_Laborat_Rawat_Jalan");
-                    Persediaan_BHP_Laborat_Rawat_Jalan = rs.getString(
-                            "Persediaan_BHP_Laborat_Rawat_Jalan");
-                    Beban_Jasa_Sarana_Laborat_Ralan = rs.getString(
-                            "Beban_Jasa_Sarana_Laborat_Ralan");
-                    Utang_Jasa_Sarana_Laborat_Ralan = rs.getString(
-                            "Utang_Jasa_Sarana_Laborat_Ralan");
-                    Beban_Jasa_Perujuk_Laborat_Ralan = rs.getString(
-                            "Beban_Jasa_Perujuk_Laborat_Ralan");
-                    Utang_Jasa_Perujuk_Laborat_Ralan = rs.getString(
-                            "Utang_Jasa_Perujuk_Laborat_Ralan");
-                    Beban_Jasa_Menejemen_Laborat_Ralan = rs.getString(
-                            "Beban_Jasa_Menejemen_Laborat_Ralan");
-                    Utang_Jasa_Menejemen_Laborat_Ralan = rs.getString(
-                            "Utang_Jasa_Menejemen_Laborat_Ralan");
-                    Suspen_Piutang_Radiologi_Ralan = rs.getString(
-                            "Suspen_Piutang_Radiologi_Ralan");
+                    Beban_Jasa_Medik_Dokter_Laborat_Ralan = rs.getString("Beban_Jasa_Medik_Dokter_Laborat_Ralan");
+                    Utang_Jasa_Medik_Dokter_Laborat_Ralan = rs.getString("Utang_Jasa_Medik_Dokter_Laborat_Ralan");
+                    Beban_Jasa_Medik_Petugas_Laborat_Ralan = rs.getString("Beban_Jasa_Medik_Petugas_Laborat_Ralan");
+                    Utang_Jasa_Medik_Petugas_Laborat_Ralan = rs.getString("Utang_Jasa_Medik_Petugas_Laborat_Ralan");
+                    Beban_Kso_Laborat_Ralan = rs.getString("Beban_Kso_Laborat_Ralan");
+                    Utang_Kso_Laborat_Ralan = rs.getString("Utang_Kso_Laborat_Ralan");
+                    HPP_Persediaan_Laborat_Rawat_Jalan = rs.getString("HPP_Persediaan_Laborat_Rawat_Jalan");
+                    Persediaan_BHP_Laborat_Rawat_Jalan = rs.getString("Persediaan_BHP_Laborat_Rawat_Jalan");
+                    Beban_Jasa_Sarana_Laborat_Ralan = rs.getString("Beban_Jasa_Sarana_Laborat_Ralan");
+                    Utang_Jasa_Sarana_Laborat_Ralan = rs.getString("Utang_Jasa_Sarana_Laborat_Ralan");
+                    Beban_Jasa_Perujuk_Laborat_Ralan = rs.getString("Beban_Jasa_Perujuk_Laborat_Ralan");
+                    Utang_Jasa_Perujuk_Laborat_Ralan = rs.getString("Utang_Jasa_Perujuk_Laborat_Ralan");
+                    Beban_Jasa_Menejemen_Laborat_Ralan = rs.getString("Beban_Jasa_Menejemen_Laborat_Ralan");
+                    Utang_Jasa_Menejemen_Laborat_Ralan = rs.getString("Utang_Jasa_Menejemen_Laborat_Ralan");
+                    Suspen_Piutang_Radiologi_Ralan = rs.getString("Suspen_Piutang_Radiologi_Ralan");
                     Radiologi_Ralan = rs.getString("Radiologi_Ralan");
-                    Beban_Jasa_Medik_Dokter_Radiologi_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Radiologi_Ralan");
-                    Utang_Jasa_Medik_Dokter_Radiologi_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Radiologi_Ralan");
-                    Beban_Jasa_Medik_Petugas_Radiologi_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Petugas_Radiologi_Ralan");
-                    Utang_Jasa_Medik_Petugas_Radiologi_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Petugas_Radiologi_Ralan");
-                    Beban_Kso_Radiologi_Ralan = rs.getString(
-                            "Beban_Kso_Radiologi_Ralan");
-                    Utang_Kso_Radiologi_Ralan = rs.getString(
-                            "Utang_Kso_Radiologi_Ralan");
-                    HPP_Persediaan_Radiologi_Rawat_Jalan = rs.getString(
-                            "HPP_Persediaan_Radiologi_Rawat_Jalan");
-                    Persediaan_BHP_Radiologi_Rawat_Jalan = rs.getString(
-                            "Persediaan_BHP_Radiologi_Rawat_Jalan");
-                    Beban_Jasa_Sarana_Radiologi_Ralan = rs.getString(
-                            "Beban_Jasa_Sarana_Radiologi_Ralan");
-                    Utang_Jasa_Sarana_Radiologi_Ralan = rs.getString(
-                            "Utang_Jasa_Sarana_Radiologi_Ralan");
-                    Beban_Jasa_Perujuk_Radiologi_Ralan = rs.getString(
-                            "Beban_Jasa_Perujuk_Radiologi_Ralan");
-                    Utang_Jasa_Perujuk_Radiologi_Ralan = rs.getString(
-                            "Utang_Jasa_Perujuk_Radiologi_Ralan");
-                    Beban_Jasa_Menejemen_Radiologi_Ralan = rs.getString(
-                            "Beban_Jasa_Menejemen_Radiologi_Ralan");
-                    Utang_Jasa_Menejemen_Radiologi_Ralan = rs.getString(
-                            "Utang_Jasa_Menejemen_Radiologi_Ralan");
-                    Suspen_Piutang_Obat_Ralan = rs.getString(
-                            "Suspen_Piutang_Obat_Ralan");
+                    Beban_Jasa_Medik_Dokter_Radiologi_Ralan = rs.getString("Beban_Jasa_Medik_Dokter_Radiologi_Ralan");
+                    Utang_Jasa_Medik_Dokter_Radiologi_Ralan = rs.getString("Utang_Jasa_Medik_Dokter_Radiologi_Ralan");
+                    Beban_Jasa_Medik_Petugas_Radiologi_Ralan = rs.getString("Beban_Jasa_Medik_Petugas_Radiologi_Ralan");
+                    Utang_Jasa_Medik_Petugas_Radiologi_Ralan = rs.getString("Utang_Jasa_Medik_Petugas_Radiologi_Ralan");
+                    Beban_Kso_Radiologi_Ralan = rs.getString("Beban_Kso_Radiologi_Ralan");
+                    Utang_Kso_Radiologi_Ralan = rs.getString("Utang_Kso_Radiologi_Ralan");
+                    HPP_Persediaan_Radiologi_Rawat_Jalan = rs.getString("HPP_Persediaan_Radiologi_Rawat_Jalan");
+                    Persediaan_BHP_Radiologi_Rawat_Jalan = rs.getString("Persediaan_BHP_Radiologi_Rawat_Jalan");
+                    Beban_Jasa_Sarana_Radiologi_Ralan = rs.getString("Beban_Jasa_Sarana_Radiologi_Ralan");
+                    Utang_Jasa_Sarana_Radiologi_Ralan = rs.getString("Utang_Jasa_Sarana_Radiologi_Ralan");
+                    Beban_Jasa_Perujuk_Radiologi_Ralan = rs.getString("Beban_Jasa_Perujuk_Radiologi_Ralan");
+                    Utang_Jasa_Perujuk_Radiologi_Ralan = rs.getString("Utang_Jasa_Perujuk_Radiologi_Ralan");
+                    Beban_Jasa_Menejemen_Radiologi_Ralan = rs.getString("Beban_Jasa_Menejemen_Radiologi_Ralan");
+                    Utang_Jasa_Menejemen_Radiologi_Ralan = rs.getString("Utang_Jasa_Menejemen_Radiologi_Ralan");
+                    Suspen_Piutang_Obat_Ralan = rs.getString("Suspen_Piutang_Obat_Ralan");
                     Obat_Ralan = rs.getString("Obat_Ralan");
                     HPP_Obat_Rawat_Jalan = rs.getString("HPP_Obat_Rawat_Jalan");
-                    Persediaan_Obat_Rawat_Jalan = rs.getString(
-                            "Persediaan_Obat_Rawat_Jalan");
+                    Persediaan_Obat_Rawat_Jalan = rs.getString("Persediaan_Obat_Rawat_Jalan");
                     Registrasi_Ralan = rs.getString("Registrasi_Ralan");
-                    Suspen_Piutang_Operasi_Ralan = rs.getString(
-                            "Suspen_Piutang_Operasi_Ralan");
+                    Suspen_Piutang_Operasi_Ralan = rs.getString("Suspen_Piutang_Operasi_Ralan");
                     Operasi_Ralan = rs.getString("Operasi_Ralan");
-                    Beban_Jasa_Medik_Dokter_Operasi_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Operasi_Ralan");
-                    Utang_Jasa_Medik_Dokter_Operasi_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Operasi_Ralan");
-                    Beban_Jasa_Medik_Paramedis_Operasi_Ralan = rs.getString(
-                            "Beban_Jasa_Medik_Paramedis_Operasi_Ralan");
-                    Utang_Jasa_Medik_Paramedis_Operasi_Ralan = rs.getString(
-                            "Utang_Jasa_Medik_Paramedis_Operasi_Ralan");
-                    HPP_Obat_Operasi_Ralan = rs.getString(
-                            "HPP_Obat_Operasi_Ralan");
-                    Persediaan_Obat_Kamar_Operasi_Ralan = rs.getString(
-                            "Persediaan_Obat_Kamar_Operasi_Ralan");
+                    Beban_Jasa_Medik_Dokter_Operasi_Ralan = rs.getString("Beban_Jasa_Medik_Dokter_Operasi_Ralan");
+                    Utang_Jasa_Medik_Dokter_Operasi_Ralan = rs.getString("Utang_Jasa_Medik_Dokter_Operasi_Ralan");
+                    Beban_Jasa_Medik_Paramedis_Operasi_Ralan = rs.getString("Beban_Jasa_Medik_Paramedis_Operasi_Ralan");
+                    Utang_Jasa_Medik_Paramedis_Operasi_Ralan = rs.getString("Utang_Jasa_Medik_Paramedis_Operasi_Ralan");
+                    HPP_Obat_Operasi_Ralan = rs.getString("HPP_Obat_Operasi_Ralan");
+                    Persediaan_Obat_Kamar_Operasi_Ralan = rs.getString("Persediaan_Obat_Kamar_Operasi_Ralan");
                     Tambahan_Ralan = rs.getString("Tambahan_Ralan");
                     Potongan_Ralan = rs.getString("Potongan_Ralan");
                 }
@@ -2189,101 +2073,58 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
             try {
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    Suspen_Piutang_Tindakan_Ranap = rs.getString(
-                            "Suspen_Piutang_Tindakan_Ranap");
+                    Suspen_Piutang_Tindakan_Ranap = rs.getString("Suspen_Piutang_Tindakan_Ranap");
                     Tindakan_Ranap = rs.getString("Tindakan_Ranap");
-                    Beban_Jasa_Medik_Dokter_Tindakan_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Tindakan_Ranap");
-                    Utang_Jasa_Medik_Dokter_Tindakan_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Tindakan_Ranap");
-                    Beban_Jasa_Medik_Paramedis_Tindakan_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Paramedis_Tindakan_Ranap");
-                    Utang_Jasa_Medik_Paramedis_Tindakan_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Paramedis_Tindakan_Ranap");
-                    Beban_KSO_Tindakan_Ranap = rs.getString(
-                            "Beban_KSO_Tindakan_Ranap");
-                    Utang_KSO_Tindakan_Ranap = rs.getString(
-                            "Utang_KSO_Tindakan_Ranap");
-                    Beban_Jasa_Sarana_Tindakan_Ranap = rs.getString(
-                            "Beban_Jasa_Sarana_Tindakan_Ranap");
-                    Utang_Jasa_Sarana_Tindakan_Ranap = rs.getString(
-                            "Utang_Jasa_Sarana_Tindakan_Ranap");
-                    Beban_Jasa_Menejemen_Tindakan_Ranap = rs.getString(
-                            "Beban_Jasa_Menejemen_Tindakan_Ranap");
-                    Utang_Jasa_Menejemen_Tindakan_Ranap = rs.getString(
-                            "Utang_Jasa_Menejemen_Tindakan_Ranap");
-                    HPP_BHP_Tindakan_Ranap = rs.getString(
-                            "HPP_BHP_Tindakan_Ranap");
-                    Persediaan_BHP_Tindakan_Ranap = rs.getString(
-                            "Persediaan_BHP_Tindakan_Ranap");
-                    Suspen_Piutang_Laborat_Ranap = rs.getString(
-                            "Suspen_Piutang_Laborat_Ranap");
+                    Beban_Jasa_Medik_Dokter_Tindakan_Ranap = rs.getString("Beban_Jasa_Medik_Dokter_Tindakan_Ranap");
+                    Utang_Jasa_Medik_Dokter_Tindakan_Ranap = rs.getString("Utang_Jasa_Medik_Dokter_Tindakan_Ranap");
+                    Beban_Jasa_Medik_Paramedis_Tindakan_Ranap = rs
+                            .getString("Beban_Jasa_Medik_Paramedis_Tindakan_Ranap");
+                    Utang_Jasa_Medik_Paramedis_Tindakan_Ranap = rs
+                            .getString("Utang_Jasa_Medik_Paramedis_Tindakan_Ranap");
+                    Beban_KSO_Tindakan_Ranap = rs.getString("Beban_KSO_Tindakan_Ranap");
+                    Utang_KSO_Tindakan_Ranap = rs.getString("Utang_KSO_Tindakan_Ranap");
+                    Beban_Jasa_Sarana_Tindakan_Ranap = rs.getString("Beban_Jasa_Sarana_Tindakan_Ranap");
+                    Utang_Jasa_Sarana_Tindakan_Ranap = rs.getString("Utang_Jasa_Sarana_Tindakan_Ranap");
+                    Beban_Jasa_Menejemen_Tindakan_Ranap = rs.getString("Beban_Jasa_Menejemen_Tindakan_Ranap");
+                    Utang_Jasa_Menejemen_Tindakan_Ranap = rs.getString("Utang_Jasa_Menejemen_Tindakan_Ranap");
+                    HPP_BHP_Tindakan_Ranap = rs.getString("HPP_BHP_Tindakan_Ranap");
+                    Persediaan_BHP_Tindakan_Ranap = rs.getString("Persediaan_BHP_Tindakan_Ranap");
+                    Suspen_Piutang_Laborat_Ranap = rs.getString("Suspen_Piutang_Laborat_Ranap");
                     Laborat_Ranap = rs.getString("Laborat_Ranap");
-                    Beban_Jasa_Medik_Dokter_Laborat_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Laborat_Ranap");
-                    Utang_Jasa_Medik_Dokter_Laborat_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Laborat_Ranap");
-                    Beban_Jasa_Medik_Petugas_Laborat_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Petugas_Laborat_Ranap");
-                    Utang_Jasa_Medik_Petugas_Laborat_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Petugas_Laborat_Ranap");
-                    Beban_Kso_Laborat_Ranap = rs.getString(
-                            "Beban_Kso_Laborat_Ranap");
-                    Utang_Kso_Laborat_Ranap = rs.getString(
-                            "Utang_Kso_Laborat_Ranap");
-                    HPP_Persediaan_Laborat_Rawat_inap = rs.getString(
-                            "HPP_Persediaan_Laborat_Rawat_inap");
-                    Persediaan_BHP_Laborat_Rawat_Inap = rs.getString(
-                            "Persediaan_BHP_Laborat_Rawat_Inap");
-                    Beban_Jasa_Sarana_Laborat_Ranap = rs.getString(
-                            "Beban_Jasa_Sarana_Laborat_Ranap");
-                    Utang_Jasa_Sarana_Laborat_Ranap = rs.getString(
-                            "Utang_Jasa_Sarana_Laborat_Ranap");
-                    Beban_Jasa_Perujuk_Laborat_Ranap = rs.getString(
-                            "Beban_Jasa_Perujuk_Laborat_Ranap");
-                    Utang_Jasa_Perujuk_Laborat_Ranap = rs.getString(
-                            "Utang_Jasa_Perujuk_Laborat_Ranap");
-                    Beban_Jasa_Menejemen_Laborat_Ranap = rs.getString(
-                            "Beban_Jasa_Menejemen_Laborat_Ranap");
-                    Utang_Jasa_Menejemen_Laborat_Ranap = rs.getString(
-                            "Utang_Jasa_Menejemen_Laborat_Ranap");
-                    Suspen_Piutang_Radiologi_Ranap = rs.getString(
-                            "Suspen_Piutang_Radiologi_Ranap");
+                    Beban_Jasa_Medik_Dokter_Laborat_Ranap = rs.getString("Beban_Jasa_Medik_Dokter_Laborat_Ranap");
+                    Utang_Jasa_Medik_Dokter_Laborat_Ranap = rs.getString("Utang_Jasa_Medik_Dokter_Laborat_Ranap");
+                    Beban_Jasa_Medik_Petugas_Laborat_Ranap = rs.getString("Beban_Jasa_Medik_Petugas_Laborat_Ranap");
+                    Utang_Jasa_Medik_Petugas_Laborat_Ranap = rs.getString("Utang_Jasa_Medik_Petugas_Laborat_Ranap");
+                    Beban_Kso_Laborat_Ranap = rs.getString("Beban_Kso_Laborat_Ranap");
+                    Utang_Kso_Laborat_Ranap = rs.getString("Utang_Kso_Laborat_Ranap");
+                    HPP_Persediaan_Laborat_Rawat_inap = rs.getString("HPP_Persediaan_Laborat_Rawat_inap");
+                    Persediaan_BHP_Laborat_Rawat_Inap = rs.getString("Persediaan_BHP_Laborat_Rawat_Inap");
+                    Beban_Jasa_Sarana_Laborat_Ranap = rs.getString("Beban_Jasa_Sarana_Laborat_Ranap");
+                    Utang_Jasa_Sarana_Laborat_Ranap = rs.getString("Utang_Jasa_Sarana_Laborat_Ranap");
+                    Beban_Jasa_Perujuk_Laborat_Ranap = rs.getString("Beban_Jasa_Perujuk_Laborat_Ranap");
+                    Utang_Jasa_Perujuk_Laborat_Ranap = rs.getString("Utang_Jasa_Perujuk_Laborat_Ranap");
+                    Beban_Jasa_Menejemen_Laborat_Ranap = rs.getString("Beban_Jasa_Menejemen_Laborat_Ranap");
+                    Utang_Jasa_Menejemen_Laborat_Ranap = rs.getString("Utang_Jasa_Menejemen_Laborat_Ranap");
+                    Suspen_Piutang_Radiologi_Ranap = rs.getString("Suspen_Piutang_Radiologi_Ranap");
                     Radiologi_Ranap = rs.getString("Radiologi_Ranap");
-                    Beban_Jasa_Medik_Dokter_Radiologi_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Radiologi_Ranap");
-                    Utang_Jasa_Medik_Dokter_Radiologi_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Radiologi_Ranap");
-                    Beban_Jasa_Medik_Petugas_Radiologi_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Petugas_Radiologi_Ranap");
-                    Utang_Jasa_Medik_Petugas_Radiologi_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Petugas_Radiologi_Ranap");
-                    Beban_Kso_Radiologi_Ranap = rs.getString(
-                            "Beban_Kso_Radiologi_Ranap");
-                    Utang_Kso_Radiologi_Ranap = rs.getString(
-                            "Utang_Kso_Radiologi_Ranap");
-                    HPP_Persediaan_Radiologi_Rawat_Inap = rs.getString(
-                            "HPP_Persediaan_Radiologi_Rawat_Inap");
-                    Persediaan_BHP_Radiologi_Rawat_Inap = rs.getString(
-                            "Persediaan_BHP_Radiologi_Rawat_Inap");
-                    Beban_Jasa_Sarana_Radiologi_Ranap = rs.getString(
-                            "Beban_Jasa_Sarana_Radiologi_Ranap");
-                    Utang_Jasa_Sarana_Radiologi_Ranap = rs.getString(
-                            "Utang_Jasa_Sarana_Radiologi_Ranap");
-                    Beban_Jasa_Perujuk_Radiologi_Ranap = rs.getString(
-                            "Beban_Jasa_Perujuk_Radiologi_Ranap");
-                    Utang_Jasa_Perujuk_Radiologi_Ranap = rs.getString(
-                            "Utang_Jasa_Perujuk_Radiologi_Ranap");
-                    Beban_Jasa_Menejemen_Radiologi_Ranap = rs.getString(
-                            "Beban_Jasa_Menejemen_Radiologi_Ranap");
-                    Utang_Jasa_Menejemen_Radiologi_Ranap = rs.getString(
-                            "Utang_Jasa_Menejemen_Radiologi_Ranap");
-                    Suspen_Piutang_Obat_Ranap = rs.getString(
-                            "Suspen_Piutang_Obat_Ranap");
+                    Beban_Jasa_Medik_Dokter_Radiologi_Ranap = rs.getString("Beban_Jasa_Medik_Dokter_Radiologi_Ranap");
+                    Utang_Jasa_Medik_Dokter_Radiologi_Ranap = rs.getString("Utang_Jasa_Medik_Dokter_Radiologi_Ranap");
+                    Beban_Jasa_Medik_Petugas_Radiologi_Ranap = rs.getString("Beban_Jasa_Medik_Petugas_Radiologi_Ranap");
+                    Utang_Jasa_Medik_Petugas_Radiologi_Ranap = rs.getString("Utang_Jasa_Medik_Petugas_Radiologi_Ranap");
+                    Beban_Kso_Radiologi_Ranap = rs.getString("Beban_Kso_Radiologi_Ranap");
+                    Utang_Kso_Radiologi_Ranap = rs.getString("Utang_Kso_Radiologi_Ranap");
+                    HPP_Persediaan_Radiologi_Rawat_Inap = rs.getString("HPP_Persediaan_Radiologi_Rawat_Inap");
+                    Persediaan_BHP_Radiologi_Rawat_Inap = rs.getString("Persediaan_BHP_Radiologi_Rawat_Inap");
+                    Beban_Jasa_Sarana_Radiologi_Ranap = rs.getString("Beban_Jasa_Sarana_Radiologi_Ranap");
+                    Utang_Jasa_Sarana_Radiologi_Ranap = rs.getString("Utang_Jasa_Sarana_Radiologi_Ranap");
+                    Beban_Jasa_Perujuk_Radiologi_Ranap = rs.getString("Beban_Jasa_Perujuk_Radiologi_Ranap");
+                    Utang_Jasa_Perujuk_Radiologi_Ranap = rs.getString("Utang_Jasa_Perujuk_Radiologi_Ranap");
+                    Beban_Jasa_Menejemen_Radiologi_Ranap = rs.getString("Beban_Jasa_Menejemen_Radiologi_Ranap");
+                    Utang_Jasa_Menejemen_Radiologi_Ranap = rs.getString("Utang_Jasa_Menejemen_Radiologi_Ranap");
+                    Suspen_Piutang_Obat_Ranap = rs.getString("Suspen_Piutang_Obat_Ranap");
                     Obat_Ranap = rs.getString("Obat_Ranap");
                     HPP_Obat_Rawat_Inap = rs.getString("HPP_Obat_Rawat_Inap");
-                    Persediaan_Obat_Rawat_Inap = rs.getString(
-                            "Persediaan_Obat_Rawat_Inap");
+                    Persediaan_Obat_Rawat_Inap = rs.getString("Persediaan_Obat_Rawat_Inap");
                     Registrasi_Ranap = rs.getString("Registrasi_Ranap");
                     Service_Ranap = rs.getString("Service_Ranap");
                     Tambahan_Ranap = rs.getString("Tambahan_Ranap");
@@ -2291,19 +2132,13 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                     Retur_Obat_Ranap = rs.getString("Retur_Obat_Ranap");
                     Resep_Pulang_Ranap = rs.getString("Resep_Pulang_Ranap");
                     Kamar_Inap = rs.getString("Kamar_Inap");
-                    Suspen_Piutang_Operasi_Ranap = rs.getString(
-                            "Suspen_Piutang_Operasi_Ranap");
+                    Suspen_Piutang_Operasi_Ranap = rs.getString("Suspen_Piutang_Operasi_Ranap");
                     Operasi_Ranap = rs.getString("Operasi_Ranap");
-                    Beban_Jasa_Medik_Dokter_Operasi_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Dokter_Operasi_Ranap");
-                    Utang_Jasa_Medik_Dokter_Operasi_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Dokter_Operasi_Ranap");
-                    Beban_Jasa_Medik_Paramedis_Operasi_Ranap = rs.getString(
-                            "Beban_Jasa_Medik_Paramedis_Operasi_Ranap");
-                    Utang_Jasa_Medik_Paramedis_Operasi_Ranap = rs.getString(
-                            "Utang_Jasa_Medik_Paramedis_Operasi_Ranap");
-                    HPP_Obat_Operasi_Ranap = rs.getString(
-                            "HPP_Obat_Operasi_Ranap");
+                    Beban_Jasa_Medik_Dokter_Operasi_Ranap = rs.getString("Beban_Jasa_Medik_Dokter_Operasi_Ranap");
+                    Utang_Jasa_Medik_Dokter_Operasi_Ranap = rs.getString("Utang_Jasa_Medik_Dokter_Operasi_Ranap");
+                    Beban_Jasa_Medik_Paramedis_Operasi_Ranap = rs.getString("Beban_Jasa_Medik_Paramedis_Operasi_Ranap");
+                    Utang_Jasa_Medik_Paramedis_Operasi_Ranap = rs.getString("Utang_Jasa_Medik_Paramedis_Operasi_Ranap");
+                    HPP_Obat_Operasi_Ranap = rs.getString("HPP_Obat_Operasi_Ranap");
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -2320,8 +2155,7 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
             try {
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    Persediaan_Obat_Kamar_Operasi_Ranap = rs.getString(
-                            "Persediaan_Obat_Kamar_Operasi_Ranap");
+                    Persediaan_Obat_Kamar_Operasi_Ranap = rs.getString("Persediaan_Obat_Kamar_Operasi_Ranap");
                     Harian_Ranap = rs.getString("Harian_Ranap");
                     Uang_Muka_Ranap = rs.getString("Uang_Muka_Ranap");
                     Piutang_Pasien_Ranap = rs.getString("Piutang_Pasien_Ranap");
@@ -2344,91 +2178,67 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                 if (rs.next()) {
                     Pengadaan_Obat = rs.getString("Pengadaan_Obat");
                     Pemesanan_Obat = rs.getString("Pemesanan_Obat");
-                    Kontra_Pemesanan_Obat = rs.
-                            getString("Kontra_Pemesanan_Obat");
+                    Kontra_Pemesanan_Obat = rs.getString("Kontra_Pemesanan_Obat");
                     Bayar_Pemesanan_Obat = rs.getString("Bayar_Pemesanan_Obat");
                     Penjualan_Obat = rs.getString("Penjualan_Obat");
                     Piutang_Obat = rs.getString("Piutang_Obat");
                     Kontra_Piutang_Obat = rs.getString("Kontra_Piutang_Obat");
                     Retur_Ke_Suplayer = rs.getString("Retur_Ke_Suplayer");
-                    Kontra_Retur_Ke_Suplayer = rs.getString(
-                            "Kontra_Retur_Ke_Suplayer");
+                    Kontra_Retur_Ke_Suplayer = rs.getString("Kontra_Retur_Ke_Suplayer");
                     Retur_Dari_pembeli = rs.getString("Retur_Dari_pembeli");
-                    Kontra_Retur_Dari_Pembeli = rs.getString(
-                            "Kontra_Retur_Dari_Pembeli");
+                    Kontra_Retur_Dari_Pembeli = rs.getString("Kontra_Retur_Dari_Pembeli");
                     Retur_Piutang_Obat = rs.getString("Retur_Piutang_Obat");
-                    Kontra_Retur_Piutang_Obat = rs.getString(
-                            "Kontra_Retur_Piutang_Obat");
+                    Kontra_Retur_Piutang_Obat = rs.getString("Kontra_Retur_Piutang_Obat");
                     Pengadaan_Ipsrs = rs.getString("Pengadaan_Ipsrs");
                     Stok_Keluar_Ipsrs = rs.getString("Stok_Keluar_Ipsrs");
-                    Kontra_Stok_Keluar_Ipsrs = rs.getString(
-                            "Kontra_Stok_Keluar_Ipsrs");
+                    Kontra_Stok_Keluar_Ipsrs = rs.getString("Kontra_Stok_Keluar_Ipsrs");
                     Bayar_Piutang_Pasien = rs.getString("Bayar_Piutang_Pasien");
                     Pengambilan_Utd = rs.getString("Pengambilan_Utd");
-                    Kontra_Pengambilan_Utd = rs.getString(
-                            "Kontra_Pengambilan_Utd");
-                    Pengambilan_Penunjang_Utd = rs.getString(
-                            "Pengambilan_Penunjang_Utd");
-                    Kontra_Pengambilan_Penunjang_Utd = rs.getString(
-                            "Kontra_Pengambilan_Penunjang_Utd");
+                    Kontra_Pengambilan_Utd = rs.getString("Kontra_Pengambilan_Utd");
+                    Pengambilan_Penunjang_Utd = rs.getString("Pengambilan_Penunjang_Utd");
+                    Kontra_Pengambilan_Penunjang_Utd = rs.getString("Kontra_Pengambilan_Penunjang_Utd");
                     Penyerahan_Darah = rs.getString("Penyerahan_Darah");
                     Stok_Keluar_Medis = rs.getString("Stok_Keluar_Medis");
-                    Kontra_Stok_Keluar_Medis = rs.getString(
-                            "Kontra_Stok_Keluar_Medis");
+                    Kontra_Stok_Keluar_Medis = rs.getString("Kontra_Stok_Keluar_Medis");
                     HPP_Obat_Jual_Bebas = rs.getString("HPP_Obat_Jual_Bebas");
-                    Persediaan_Obat_Jual_Bebas = rs.getString(
-                            "Persediaan_Obat_Jual_Bebas");
+                    Persediaan_Obat_Jual_Bebas = rs.getString("Persediaan_Obat_Jual_Bebas");
                     Penerimaan_NonMedis = rs.getString("Penerimaan_NonMedis");
-                    Kontra_Penerimaan_NonMedis = rs.getString(
-                            "Kontra_Penerimaan_NonMedis");
-                    Bayar_Pemesanan_Non_Medis = rs.getString(
-                            "Bayar_Pemesanan_Non_Medis");
+                    Kontra_Penerimaan_NonMedis = rs.getString("Kontra_Penerimaan_NonMedis");
+                    Bayar_Pemesanan_Non_Medis = rs.getString("Bayar_Pemesanan_Non_Medis");
                     Hibah_Obat = rs.getString("Hibah_Obat");
                     Kontra_Hibah_Obat = rs.getString("Kontra_Hibah_Obat");
                     Penerimaan_Toko = rs.getString("Penerimaan_Toko");
-                    Kontra_Penerimaan_Toko = rs.getString(
-                            "Kontra_Penerimaan_Toko");
+                    Kontra_Penerimaan_Toko = rs.getString("Kontra_Penerimaan_Toko");
                     Pengadaan_Toko = rs.getString("Pengadaan_Toko");
                     Bayar_Pemesanan_Toko = rs.getString("Bayar_Pemesanan_Toko");
                     Penjualan_Toko = rs.getString("Penjualan_Toko");
                     HPP_Barang_Toko = rs.getString("HPP_Barang_Toko");
-                    Persediaan_Barang_Toko = rs.getString(
-                            "Persediaan_Barang_Toko");
+                    Persediaan_Barang_Toko = rs.getString("Persediaan_Barang_Toko");
                     Piutang_Toko = rs.getString("Piutang_Toko");
                     Kontra_Piutang_Toko = rs.getString("Kontra_Piutang_Toko");
                     Retur_Beli_Toko = rs.getString("Retur_Beli_Toko");
-                    Kontra_Retur_Beli_Toko = rs.getString(
-                            "Kontra_Retur_Beli_Toko");
+                    Kontra_Retur_Beli_Toko = rs.getString("Kontra_Retur_Beli_Toko");
                     Retur_Beli_Non_Medis = rs.getString("Retur_Beli_Non_Medis");
-                    Kontra_Retur_Beli_Non_Medis = rs.getString(
-                            "Kontra_Retur_Beli_Non_Medis");
+                    Kontra_Retur_Beli_Non_Medis = rs.getString("Kontra_Retur_Beli_Non_Medis");
                     Retur_Jual_Toko = rs.getString("Retur_Jual_Toko");
-                    Kontra_Retur_Jual_Toko = rs.getString(
-                            "Kontra_Retur_Jual_Toko");
+                    Kontra_Retur_Jual_Toko = rs.getString("Kontra_Retur_Jual_Toko");
                     Retur_Piutang_Toko = rs.getString("Retur_Piutang_Toko");
-                    Kontra_Retur_Piutang_Toko = rs.getString(
-                            "Kontra_Retur_Piutang_Toko");
-                    Kerugian_Klaim_BPJS_RVP = rs.getString(
-                            "Kerugian_Klaim_BPJS_RVP");
-                    Lebih_Bayar_Klaim_BPJS_RVP = rs.getString(
-                            "Lebih_Bayar_Klaim_BPJS_RVP");
+                    Kontra_Retur_Piutang_Toko = rs.getString("Kontra_Retur_Piutang_Toko");
+                    Kerugian_Klaim_BPJS_RVP = rs.getString("Kerugian_Klaim_BPJS_RVP");
+                    Lebih_Bayar_Klaim_BPJS_RVP = rs.getString("Lebih_Bayar_Klaim_BPJS_RVP");
                     Piutang_BPJS_RVP = rs.getString("Piutang_BPJS_RVP");
-                    Kontra_Penerimaan_AsetInventaris = rs.getString(
-                            "Kontra_Penerimaan_AsetInventaris");
+                    Kontra_Penerimaan_AsetInventaris = rs.getString("Kontra_Penerimaan_AsetInventaris");
                     Kontra_Hibah_Aset = rs.getString("Kontra_Hibah_Aset");
                     Hibah_Non_Medis = rs.getString("Hibah_Non_Medis");
-                    Kontra_Hibah_Non_Medis = rs.getString(
-                            "Kontra_Hibah_Non_Medis");
+                    Kontra_Hibah_Non_Medis = rs.getString("Kontra_Hibah_Non_Medis");
                     Bayar_JM_Dokter = rs.getString("Bayar_JM_Dokter");
                     PPN_Masukan = rs.getString("PPN_Masukan");
                     Pengadaan_Dapur = rs.getString("Pengadaan_Dapur");
                     Stok_Keluar_Dapur = rs.getString("Stok_Keluar_Dapur");
-                    Kontra_Stok_Keluar_Dapur = rs.getString(
-                            "Kontra_Stok_Keluar_Dapur");
+                    Kontra_Stok_Keluar_Dapur = rs.getString("Kontra_Stok_Keluar_Dapur");
                     PPN_Keluaran = rs.getString("PPN_Keluaran");
                     Diskon_Piutang = rs.getString("Diskon_Piutang");
-                    Piutang_Tidak_Terbayar = rs.getString(
-                            "Piutang_Tidak_Terbayar");
+                    Piutang_Tidak_Terbayar = rs.getString("Piutang_Tidak_Terbayar");
                     Lebih_Bayar_Piutang = rs.getString("Lebih_Bayar_Piutang");
                 }
             } catch (Exception e) {
@@ -2442,2519 +2252,1371 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                 }
             }
 
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Tindakan Rawat Jalan",
-                Suspen_Piutang_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Tindakan pada menu Billing Rawat Jalan",
+            tabMode.addRow(
+                    new Object[]{" [Debet] Akun Suspen Piutang Tindakan Rawat Jalan", Suspen_Piutang_Tindakan_Ralan,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Tindakan_Ralan),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Tindakan_Ralan),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Tindakan pada menu Billing Rawat Jalan",
                 Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Tindakan_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Tindakan_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Tindakan Rawat Jalan",
                 Beban_Jasa_Medik_Dokter_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Tindakan Rawat Jalan",
                 Utang_Jasa_Medik_Dokter_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Paramedis Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Paramedis Tindakan Rawat Jalan",
                 Beban_Jasa_Medik_Paramedis_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Paramedis_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Paramedis Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Paramedis_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Paramedis Tindakan Rawat Jalan",
                 Utang_Jasa_Medik_Paramedis_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Paramedis_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban KSO Tindakan Rawat Jalan",
-                Beban_KSO_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Paramedis_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban KSO Tindakan Rawat Jalan", Beban_KSO_Tindakan_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_KSO_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_KSO_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_KSO_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang KSO Tindakan Rawat Jalan",
-                Utang_KSO_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_KSO_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang KSO Tindakan Rawat Jalan", Utang_KSO_Tindakan_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_KSO_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_KSO_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_KSO_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Sarana Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_KSO_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Sarana Tindakan Rawat Jalan",
                 Beban_Jasa_Sarana_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Sarana Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Sarana_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Sarana Tindakan Rawat Jalan",
                 Utang_Jasa_Sarana_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun HPP BHP Tindakan Rawat Jalan",
-                HPP_BHP_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Sarana_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP BHP Tindakan Rawat Jalan", HPP_BHP_Tindakan_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 HPP_BHP_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 HPP_BHP_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_BHP_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan BHP Tindakan Rawat Jalan",
-                Persediaan_BHP_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Menejemen Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_BHP_Tindakan_Ralan)});
+            tabMode.addRow(
+                    new Object[]{" [Kredit] Akun Persediaan BHP Tindakan Rawat Jalan", Persediaan_BHP_Tindakan_Ralan,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Persediaan_BHP_Tindakan_Ralan),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Persediaan_BHP_Tindakan_Ralan),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Persediaan_BHP_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Menejemen Tindakan Rawat Jalan",
                 Beban_Jasa_Menejemen_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Menejemen_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Menejemen Tindakan Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Menejemen_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Menejemen Tindakan Rawat Jalan",
                 Utang_Jasa_Menejemen_Tindakan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Tindakan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Menejemen_Tindakan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Laborat Ralan",
-                Suspen_Piutang_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Menejemen_Tindakan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Suspen Piutang Laborat Ralan", Suspen_Piutang_Laborat_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Laborat pada menu Billing Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Suspen_Piutang_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Laborat pada menu Billing Rawat Jalan",
                 Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Laborat_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Laborat_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Laborat Rawat Jalan",
                 Beban_Jasa_Medik_Dokter_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Laborat Rawat Jalan",
                 Utang_Jasa_Medik_Dokter_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Petugas Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Petugas Laborat Rawat Jalan",
                 Beban_Jasa_Medik_Petugas_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Petugas_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Petugas Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Petugas_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Petugas Laborat Rawat Jalan",
                 Utang_Jasa_Medik_Petugas_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Petugas_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban KSO Laborat Rawat Jalan",
-                Beban_Kso_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Petugas_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban KSO Laborat Rawat Jalan", Beban_Kso_Laborat_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Kso_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Kso_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Kso_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang KSO Laborat Rawat Jalan",
-                Utang_Kso_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Kso_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang KSO Laborat Rawat Jalan", Utang_Kso_Laborat_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Kso_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Kso_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Kso_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun HPP BHP Laborat Rawat Jalan",
-                HPP_Persediaan_Laborat_Rawat_Jalan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Kso_Laborat_Ralan)});
+            tabMode
+                    .addRow(new Object[]{" [Debet] Akun HPP BHP Laborat Rawat Jalan", HPP_Persediaan_Laborat_Rawat_Jalan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 HPP_Persediaan_Laborat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 HPP_Persediaan_Laborat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Laborat_Rawat_Jalan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan BHP Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_Persediaan_Laborat_Rawat_Jalan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan BHP Laborat Rawat Jalan",
                 Persediaan_BHP_Laborat_Rawat_Jalan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Laborat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Laborat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Laborat_Rawat_Jalan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Sarana Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_BHP_Laborat_Rawat_Jalan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Sarana Laborat Rawat Jalan",
                 Beban_Jasa_Sarana_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Sarana Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Sarana_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Sarana Laborat Rawat Jalan",
                 Utang_Jasa_Sarana_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Perujuk Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Sarana_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Perujuk Laborat Rawat Jalan",
                 Beban_Jasa_Perujuk_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Perujuk_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Perujuk_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Perujuk_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Perujuk Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Perujuk_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Perujuk Laborat Rawat Jalan",
                 Utang_Jasa_Perujuk_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Perujuk_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Perujuk_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Perujuk_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Menejemen Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Perujuk_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Menejemen Laborat Rawat Jalan",
                 Beban_Jasa_Menejemen_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Menejemen_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Menejemen Laborat Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Menejemen_Laborat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Menejemen Laborat Rawat Jalan",
                 Utang_Jasa_Menejemen_Laborat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Laborat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Menejemen_Laborat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Radiologi Rawat Jalan",
-                Suspen_Piutang_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Radiologi pada menu Billing Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Menejemen_Laborat_Ralan)});
+            tabMode.addRow(
+                    new Object[]{" [Debet] Akun Suspen Piutang Radiologi Rawat Jalan", Suspen_Piutang_Radiologi_Ralan,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Radiologi_Ralan),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Radiologi_Ralan),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Radiologi pada menu Billing Rawat Jalan",
                 Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Radiologi_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Radiologi_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Radiologi Rawat Jalan",
                 Beban_Jasa_Medik_Dokter_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Radiologi Rawat Jalan",
                 Utang_Jasa_Medik_Dokter_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Petugas Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Petugas Radiologi Rawat Jalan",
                 Beban_Jasa_Medik_Petugas_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Petugas_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Petugas Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Petugas_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Petugas Radiologi Rawat Jalan",
                 Utang_Jasa_Medik_Petugas_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Petugas_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban KSO Radiologi Rawat Jalan",
-                Beban_Kso_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Petugas_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban KSO Radiologi Rawat Jalan", Beban_Kso_Radiologi_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Kso_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Kso_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Kso_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang KSO Radiologi Rawat Jalan",
-                Utang_Kso_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Kso_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang KSO Radiologi Rawat Jalan", Utang_Kso_Radiologi_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Kso_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Kso_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Kso_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun HPP BHP Radiologi Rawat Jalan",
-                HPP_Persediaan_Radiologi_Rawat_Jalan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Radiologi_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Radiologi_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Radiologi_Rawat_Jalan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan BHP Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Kso_Radiologi_Ralan)});
+            tabMode.addRow(
+                    new Object[]{" [Debet] Akun HPP BHP Radiologi Rawat Jalan", HPP_Persediaan_Radiologi_Rawat_Jalan,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                HPP_Persediaan_Radiologi_Rawat_Jalan),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                HPP_Persediaan_Radiologi_Rawat_Jalan),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                HPP_Persediaan_Radiologi_Rawat_Jalan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan BHP Radiologi Rawat Jalan",
                 Persediaan_BHP_Radiologi_Rawat_Jalan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Radiologi_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Radiologi_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Radiologi_Rawat_Jalan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Sarana Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_BHP_Radiologi_Rawat_Jalan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Sarana Radiologi Rawat Jalan",
                 Beban_Jasa_Sarana_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Sarana Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Sarana_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Sarana Radiologi Rawat Jalan",
                 Utang_Jasa_Sarana_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Perujuk Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Sarana_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Perujuk Radiologi Rawat Jalan",
                 Beban_Jasa_Perujuk_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Perujuk_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Perujuk_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Perujuk_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Perujuk Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Perujuk_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Perujuk Radiologi Rawat Jalan",
                 Utang_Jasa_Perujuk_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Perujuk_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Perujuk_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Perujuk_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Menejemen Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Perujuk_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Menejemen Radiologi Rawat Jalan",
                 Beban_Jasa_Menejemen_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Menejemen_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Menejemen Radiologi Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Menejemen_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Menejemen Radiologi Rawat Jalan",
                 Utang_Jasa_Menejemen_Radiologi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Radiologi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Menejemen_Radiologi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Obat Rawat Jalan",
-                Suspen_Piutang_Obat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Menejemen_Radiologi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Suspen Piutang Obat Rawat Jalan", Suspen_Piutang_Obat_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Obat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Obat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Obat_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Obat pada menu Billing Rawat Jalan",
-                Obat_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Obat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Obat_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Obat_Ralan)
-            });
-            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Rawat Jalan",
-                HPP_Obat_Rawat_Jalan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Suspen_Piutang_Obat_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Obat pada menu Billing Rawat Jalan", Obat_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Obat_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Obat_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Obat_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Rawat Jalan", HPP_Obat_Rawat_Jalan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 HPP_Obat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                HPP_Obat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Obat_Rawat_Jalan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan Obat Rawat Jalan",
-                Persediaan_Obat_Rawat_Jalan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", HPP_Obat_Rawat_Jalan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_Obat_Rawat_Jalan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan Obat Rawat Jalan", Persediaan_Obat_Rawat_Jalan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Rawat_Jalan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_Obat_Rawat_Jalan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Registrasi pada menu Billing Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_Obat_Rawat_Jalan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Registrasi pada menu Billing Rawat Jalan",
                 Registrasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Registrasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Registrasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Registrasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Operasi Rawat Jalan",
-                Suspen_Piutang_Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Registrasi_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Registrasi_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Registrasi_Ralan)});
+            tabMode
+                    .addRow(new Object[]{" [Debet] Akun Suspen Piutang Operasi Rawat Jalan", Suspen_Piutang_Operasi_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Operasi pada menu Billing Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Suspen_Piutang_Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Operasi pada menu Billing Rawat Jalan",
                 Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Operasi Ralan",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Operasi_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Operasi_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Operasi Ralan",
                 Beban_Jasa_Medik_Dokter_Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Operasi Ralan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Operasi Ralan",
                 Utang_Jasa_Medik_Dokter_Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Paramedis Operasi Ralan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Paramedis Operasi Ralan",
                 Beban_Jasa_Medik_Paramedis_Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Paramedis_Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Paramedis Operasi Ralan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Paramedis_Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Paramedis Operasi Ralan",
                 Utang_Jasa_Medik_Paramedis_Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Paramedis_Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Operasi Ralan",
-                HPP_Obat_Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Paramedis_Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Operasi Ralan", HPP_Obat_Operasi_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 HPP_Obat_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 HPP_Obat_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Obat_Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan Obat Kamar Operasi Ralan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_Obat_Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan Obat Kamar Operasi Ralan",
                 Persediaan_Obat_Kamar_Operasi_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Kamar_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Kamar_Operasi_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_Obat_Kamar_Operasi_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Tambahan Biaya pada menu Billing Rawat Jalan",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_Obat_Kamar_Operasi_Ralan)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Tambahan Biaya pada menu Billing Rawat Jalan",
                 Tambahan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Tambahan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Tambahan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Tambahan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Potongan Biaya pada Billing menu Rawat Jalan",
-                Potongan_Ralan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Potongan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Potongan_Ralan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Potongan_Ralan)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Tindakan Rawat Inap",
-                Suspen_Piutang_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Tindakan Rawat Inap", Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Tindakan Ranap",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Tambahan_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Tambahan_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Tambahan_Ralan)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Potongan Biaya pada Billing menu Rawat Jalan", Potongan_Ralan,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Potongan_Ralan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Potongan_Ralan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Potongan_Ralan)});
+            tabMode.addRow(
+                    new Object[]{" [Debet] Akun Suspen Piutang Tindakan Rawat Inap", Suspen_Piutang_Tindakan_Ranap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Tindakan_Ranap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Tindakan_Ranap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Suspen_Piutang_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Tindakan Rawat Inap", Tindakan_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Tindakan_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Tindakan_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Tindakan Ranap",
                 Beban_Jasa_Medik_Dokter_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Tindakan Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Tindakan Ranap",
                 Utang_Jasa_Medik_Dokter_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Paramedis Tindakan Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Paramedis Tindakan Ranap",
                 Beban_Jasa_Medik_Paramedis_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Paramedis_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Paramedis Tindakan Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Paramedis_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Paramedis Tindakan Ranap",
                 Utang_Jasa_Medik_Paramedis_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Paramedis_Tindakan_Ranap)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Paramedis_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban KSO Tindakan Ranap", Beban_KSO_Tindakan_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Beban_KSO_Tindakan_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                Beban_KSO_Tindakan_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_KSO_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang KSO Tindakan Ranap", Utang_KSO_Tindakan_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Utang_KSO_Tindakan_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                Utang_KSO_Tindakan_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_KSO_Tindakan_Ranap)});
             tabMode.addRow(
-                    new Object[]{" [Debet] Akun Beban KSO Tindakan Ranap",
-                        Beban_KSO_Tindakan_Ranap,
-                        Sequel.cariIsi(
-                                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                                Beban_KSO_Tindakan_Ranap),
-                        Sequel.cariIsi(
-                                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                                Beban_KSO_Tindakan_Ranap),
-                        Sequel.cariIsi(
-                                "select rekening.balance from rekening where rekening.kd_rek=?",
-                                Beban_KSO_Tindakan_Ranap)
-                    });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang KSO Tindakan Ranap",
-                Utang_KSO_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Utang_KSO_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Utang_KSO_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_KSO_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Sarana Tindakan Ranap",
-                Beban_Jasa_Sarana_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Sarana Tindakan Ranap",
-                Utang_Jasa_Sarana_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Menejemen Tindakan Ranap",
+                    new Object[]{" [Debet] Akun Beban Jasa Sarana Tindakan Ranap", Beban_Jasa_Sarana_Tindakan_Ranap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Sarana_Tindakan_Ranap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Sarana_Tindakan_Ranap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Sarana_Tindakan_Ranap)});
+            tabMode.addRow(
+                    new Object[]{" [Kredit] Akun Utang Jasa Sarana Tindakan Ranap", Utang_Jasa_Sarana_Tindakan_Ranap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Sarana_Tindakan_Ranap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Sarana_Tindakan_Ranap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Sarana_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Menejemen Tindakan Ranap",
                 Beban_Jasa_Menejemen_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Menejemen_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Menejemen Tindakan Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Menejemen_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Menejemen Tindakan Ranap",
                 Utang_Jasa_Menejemen_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Menejemen_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{" [Debet] Akun HPP BHP Tindakan Ranap",
-                HPP_BHP_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Menejemen_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP BHP Tindakan Ranap", HPP_BHP_Tindakan_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 HPP_BHP_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 HPP_BHP_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_BHP_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan BHP Tindakan Ranap",
-                Persediaan_BHP_Tindakan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_BHP_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan BHP Tindakan Ranap", Persediaan_BHP_Tindakan_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Tindakan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Tindakan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Laborat Ranap",
-                Suspen_Piutang_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_BHP_Tindakan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Suspen Piutang Laborat Ranap", Suspen_Piutang_Laborat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Laborat Rawat Inap", Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Laborat Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Suspen_Piutang_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Laborat Rawat Inap", Laborat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Laborat_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Laborat_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Laborat Ranap",
                 Beban_Jasa_Medik_Dokter_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Laborat Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Laborat Ranap",
                 Utang_Jasa_Medik_Dokter_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Petugas Laborat Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Petugas Laborat Ranap",
                 Beban_Jasa_Medik_Petugas_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Petugas_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Petugas Laborat Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Petugas_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Petugas Laborat Ranap",
                 Utang_Jasa_Medik_Petugas_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Petugas_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{" [Debet] Akun Beban KSO Laborat Ranap",
-                Beban_Kso_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Petugas_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban KSO Laborat Ranap", Beban_Kso_Laborat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Kso_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Kso_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Kso_Laborat_Ranap)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Kso_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang KSO Laborat Ranap", Utang_Kso_Laborat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Utang_Kso_Laborat_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                Utang_Kso_Laborat_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Kso_Laborat_Ranap)});
             tabMode.addRow(
-                    new Object[]{" [Kredit] Akun Utang KSO Laborat Ranap",
-                        Utang_Kso_Laborat_Ranap,
-                        Sequel.cariIsi(
-                                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                                Utang_Kso_Laborat_Ranap),
-                        Sequel.cariIsi(
-                                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                                Utang_Kso_Laborat_Ranap),
-                        Sequel.cariIsi(
-                                "select rekening.balance from rekening where rekening.kd_rek=?",
-                                Utang_Kso_Laborat_Ranap)
-                    });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun HPP Persediaan Laborat Rawat Inap",
-                HPP_Persediaan_Laborat_Rawat_inap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Laborat_Rawat_inap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Laborat_Rawat_inap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Laborat_Rawat_inap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan BHP Laborat Rawat Inap",
+                    new Object[]{" [Debet] Akun HPP Persediaan Laborat Rawat Inap", HPP_Persediaan_Laborat_Rawat_inap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                HPP_Persediaan_Laborat_Rawat_inap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                HPP_Persediaan_Laborat_Rawat_inap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                HPP_Persediaan_Laborat_Rawat_inap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan BHP Laborat Rawat Inap",
                 Persediaan_BHP_Laborat_Rawat_Inap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Laborat_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Laborat_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Laborat_Rawat_Inap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Sarana Laborat Ranap",
-                Beban_Jasa_Sarana_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_BHP_Laborat_Rawat_Inap)});
+            tabMode
+                    .addRow(new Object[]{" [Debet] Akun Beban Jasa Sarana Laborat Ranap", Beban_Jasa_Sarana_Laborat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Sarana_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Sarana Laborat Ranap",
-                Utang_Jasa_Sarana_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Perujuk Laborat Ranap",
-                Beban_Jasa_Perujuk_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Perujuk_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Perujuk_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Perujuk_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Perujuk Laborat Ranap",
-                Utang_Jasa_Perujuk_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Perujuk_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Perujuk_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Perujuk_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Menejemen Laborat Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Sarana_Laborat_Ranap)});
+            tabMode.addRow(
+                    new Object[]{" [Kredit] Akun Utang Jasa Sarana Laborat Ranap", Utang_Jasa_Sarana_Laborat_Ranap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Sarana_Laborat_Ranap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Sarana_Laborat_Ranap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Sarana_Laborat_Ranap)});
+            tabMode.addRow(
+                    new Object[]{" [Debet] Akun Beban Jasa Perujuk Laborat Ranap", Beban_Jasa_Perujuk_Laborat_Ranap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Perujuk_Laborat_Ranap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Perujuk_Laborat_Ranap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Perujuk_Laborat_Ranap)});
+            tabMode.addRow(
+                    new Object[]{" [Kredit] Akun Utang Jasa Perujuk Laborat Ranap", Utang_Jasa_Perujuk_Laborat_Ranap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Perujuk_Laborat_Ranap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Perujuk_Laborat_Ranap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Utang_Jasa_Perujuk_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Menejemen Laborat Ranap",
                 Beban_Jasa_Menejemen_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Menejemen_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Menejemen Laborat Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Menejemen_Laborat_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Menejemen Laborat Ranap",
                 Utang_Jasa_Menejemen_Laborat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Laborat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Menejemen_Laborat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Radiologi Ranap",
-                Suspen_Piutang_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Menejemen_Laborat_Ranap)});
+            tabMode
+                    .addRow(new Object[]{" [Debet] Akun Suspen Piutang Radiologi Ranap", Suspen_Piutang_Radiologi_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Radiologi Rawat Inap",
-                Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Suspen_Piutang_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Radiologi Rawat Inap", Radiologi_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Radiologi_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Radiologi_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Radiologi Ranap",
                 Beban_Jasa_Medik_Dokter_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Radiologi Ranap",
                 Utang_Jasa_Medik_Dokter_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Petugas Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Petugas Radiologi Ranap",
                 Beban_Jasa_Medik_Petugas_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Petugas_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Petugas_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Petugas Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Petugas_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Petugas Radiologi Ranap",
                 Utang_Jasa_Medik_Petugas_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Petugas_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Petugas_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban KSO Radiologi Ranap",
-                Beban_Kso_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Petugas_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban KSO Radiologi Ranap", Beban_Kso_Radiologi_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Kso_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Kso_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Kso_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang KSO Radiologi Ranap",
-                Utang_Kso_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Kso_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang KSO Radiologi Ranap", Utang_Kso_Radiologi_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Kso_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Kso_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Kso_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun HPP Persediaan Radiologi Rawat Inap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Kso_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP Persediaan Radiologi Rawat Inap",
                 HPP_Persediaan_Radiologi_Rawat_Inap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 HPP_Persediaan_Radiologi_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 HPP_Persediaan_Radiologi_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Persediaan_Radiologi_Rawat_Inap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan BHP Radiologi Rawat Inap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_Persediaan_Radiologi_Rawat_Inap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan BHP Radiologi Rawat Inap",
                 Persediaan_BHP_Radiologi_Rawat_Inap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Radiologi_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_BHP_Radiologi_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_BHP_Radiologi_Rawat_Inap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Sarana Radiologi Ranap",
-                Beban_Jasa_Sarana_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Sarana_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Sarana Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_BHP_Radiologi_Rawat_Inap)});
+            tabMode.addRow(
+                    new Object[]{" [Debet] Akun Beban Jasa Sarana Radiologi Ranap", Beban_Jasa_Sarana_Radiologi_Ranap,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Sarana_Radiologi_Ranap),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Sarana_Radiologi_Ranap),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Beban_Jasa_Sarana_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Sarana Radiologi Ranap",
                 Utang_Jasa_Sarana_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Sarana_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Sarana_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Perujuk Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Sarana_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Perujuk Radiologi Ranap",
                 Beban_Jasa_Perujuk_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Perujuk_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Perujuk_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Perujuk_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Perujuk Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Perujuk_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Perujuk Radiologi Ranap",
                 Utang_Jasa_Perujuk_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Perujuk_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Perujuk_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Perujuk_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Menejemen Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Perujuk_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Menejemen Radiologi Ranap",
                 Beban_Jasa_Menejemen_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Menejemen_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Menejemen_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Menejemen Radiologi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Menejemen_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Menejemen Radiologi Ranap",
                 Utang_Jasa_Menejemen_Radiologi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Menejemen_Radiologi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Menejemen_Radiologi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Obat Ranap",
-                Suspen_Piutang_Obat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Menejemen_Radiologi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Suspen Piutang Obat Ranap", Suspen_Piutang_Obat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Obat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Obat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Obat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Obat pada menu Billing Rawat Inap",
-                Obat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Obat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Obat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Obat_Ranap)
-            });
-            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Rawat Inap",
-                HPP_Obat_Rawat_Inap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                HPP_Obat_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                HPP_Obat_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Obat_Rawat_Inap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan Obat Rawat Inap",
-                Persediaan_Obat_Rawat_Inap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Suspen_Piutang_Obat_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Obat pada menu Billing Rawat Inap", Obat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Obat_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Obat_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Obat_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Rawat Inap", HPP_Obat_Rawat_Inap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", HPP_Obat_Rawat_Inap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", HPP_Obat_Rawat_Inap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_Obat_Rawat_Inap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan Obat Rawat Inap", Persediaan_Obat_Rawat_Inap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Rawat_Inap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_Obat_Rawat_Inap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Registrasi pada menu Billing Rawat Inap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_Obat_Rawat_Inap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Registrasi pada menu Billing Rawat Inap",
                 Registrasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Registrasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Registrasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Registrasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Biaya Service pada menu Billing Rawat Inap",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Registrasi_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Registrasi_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Registrasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Biaya Service pada menu Billing Rawat Inap",
                 Service_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Service_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Service_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Service_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Tambahan Biaya pada menu Billing Rawat Inap",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Service_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Service_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Service_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Tambahan Biaya pada menu Billing Rawat Inap",
                 Tambahan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Tambahan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Tambahan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Tambahan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Potongan Biaya pada menu Billing Rawat Inap",
-                Potongan_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Potongan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Potongan_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Potongan_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Retur Obat pada menu Billing Rawat Inap",
-                Retur_Obat_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Retur_Obat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Obat_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Obat_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Resep Pulang pada menu Billing Rawat Inap",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Tambahan_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Tambahan_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Tambahan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Potongan Biaya pada menu Billing Rawat Inap", Potongan_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Potongan_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Potongan_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Potongan_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Retur Obat pada menu Billing Rawat Inap", Retur_Obat_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Retur_Obat_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Obat_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Retur_Obat_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Resep Pulang pada menu Billing Rawat Inap",
                 Resep_Pulang_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Resep_Pulang_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Resep_Pulang_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Resep_Pulang_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Kamar Inap pada menu Billing Rawat Inap",
-                Kamar_Inap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Kamar_Inap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kamar_Inap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kamar_Inap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Suspen Piutang Operasi Ranap",
-                Suspen_Piutang_Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Resep_Pulang_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Resep_Pulang_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Resep_Pulang_Ranap)});
+            tabMode
+                    .addRow(new Object[]{" [Kredit] Akun Pendapatan Kamar Inap pada menu Billing Rawat Inap", Kamar_Inap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Kamar_Inap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Kamar_Inap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Kamar_Inap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Suspen Piutang Operasi Ranap", Suspen_Piutang_Operasi_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Suspen_Piutang_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Suspen_Piutang_Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Operasi Rawat Inap", Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Dokter Operasi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Suspen_Piutang_Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Operasi Rawat Inap", Operasi_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Operasi_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Operasi_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Dokter Operasi Ranap",
                 Beban_Jasa_Medik_Dokter_Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Dokter_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Dokter_Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Dokter Operasi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Dokter_Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Dokter Operasi Ranap",
                 Utang_Jasa_Medik_Dokter_Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Dokter_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Dokter_Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Beban Jasa Medik Paramedis Operasi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Dokter_Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Beban Jasa Medik Paramedis Operasi Ranap",
                 Beban_Jasa_Medik_Paramedis_Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Beban_Jasa_Medik_Paramedis_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Beban_Jasa_Medik_Paramedis_Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Utang Jasa Medik Paramedis Operasi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Beban_Jasa_Medik_Paramedis_Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Utang Jasa Medik Paramedis Operasi Ranap",
                 Utang_Jasa_Medik_Paramedis_Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Utang_Jasa_Medik_Paramedis_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Utang_Jasa_Medik_Paramedis_Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Operasi Ranap",
-                HPP_Obat_Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Utang_Jasa_Medik_Paramedis_Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Operasi Ranap", HPP_Obat_Operasi_Ranap,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 HPP_Obat_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 HPP_Obat_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Obat_Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan Obat Kamar Operasi Ranap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_Obat_Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan Obat Kamar Operasi Ranap",
                 Persediaan_Obat_Kamar_Operasi_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Kamar_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Kamar_Operasi_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_Obat_Kamar_Operasi_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Harian Ranap pada menu Billing Rawat Inap",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_Obat_Kamar_Operasi_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Harian Ranap pada menu Billing Rawat Inap",
                 Harian_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Harian_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Harian_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Harian_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Uang Muka Pasien pada Deposit menu Rawat Inap",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Harian_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Harian_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Harian_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Uang Muka Pasien pada Deposit menu Rawat Inap",
                 Uang_Muka_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Uang_Muka_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Uang_Muka_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Uang_Muka_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Piutang Pasien pada Billing menu Rawat Inap",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Uang_Muka_Ranap),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Uang_Muka_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Uang_Muka_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Piutang Pasien pada Billing menu Rawat Inap",
                 Piutang_Pasien_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Piutang_Pasien_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Piutang_Pasien_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Piutang_Pasien_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Sisa Uang Muka Pasien pada Billing menu Rawat Inap",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Piutang_Pasien_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Piutang_Pasien_Ranap)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Sisa Uang Muka Pasien pada Billing menu Rawat Inap",
                 Sisa_Uang_Muka_Ranap,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Sisa_Uang_Muka_Ranap),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Sisa_Uang_Muka_Ranap),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Sisa_Uang_Muka_Ranap)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Pengadaan Obat & BHP pada menu Pengadaan Obat & BHP",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Sisa_Uang_Muka_Ranap),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Sisa_Uang_Muka_Ranap)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Pengadaan Obat & BHP pada menu Pengadaan Obat & BHP",
                 Pengadaan_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Pengadaan_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Pengadaan_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Pengadaan_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Penerimaan Obat & BHP pada menu Penerimaan Obat & BHP",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Pengadaan_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Pengadaan_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Pengadaan_Obat)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Penerimaan Obat & BHP pada menu Penerimaan Obat & BHP",
                 Pemesanan_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Pemesanan_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Pemesanan_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Pemesanan_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Penerimaan Obat & BHP pada menu Penerimaan Obat & BHP",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Pemesanan_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Pemesanan_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Pemesanan_Obat)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Penerimaan Obat & BHP pada menu Penerimaan Obat & BHP",
                 Kontra_Pemesanan_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Pemesanan_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kontra_Pemesanan_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Pemesanan_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Bayar Pemesanan Obat/BHP pada menu Bayar Pesan Obat/BHP",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Kontra_Pemesanan_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Pemesanan_Obat)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Bayar Pemesanan Obat/BHP pada menu Bayar Pesan Obat/BHP",
                 Bayar_Pemesanan_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Bayar_Pemesanan_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Bayar_Pemesanan_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Bayar_Pemesanan_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Penjualan Obat & BHP pada menu Penjualan Obat & BHP",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Bayar_Pemesanan_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Bayar_Pemesanan_Obat)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Penjualan Obat & BHP pada menu Penjualan Obat & BHP",
                 Penjualan_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Penjualan_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Penjualan_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Penjualan_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Piutang Obat & BHP pada menu Piutang Obat & BHP",
-                Piutang_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Piutang_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Piutang Obat & BHP pada menu Piutang Obat & BHP",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Penjualan_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Penjualan_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Penjualan_Obat)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Piutang Obat & BHP pada menu Piutang Obat & BHP", Piutang_Obat,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Piutang_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Piutang_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Piutang_Obat)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Piutang Obat & BHP pada menu Piutang Obat & BHP",
                 Kontra_Piutang_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Kontra_Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kontra_Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Piutang_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Retur Obat & BHP ke Suplier pada menu Retur Ke Suplier",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Kontra_Piutang_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Kontra_Piutang_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Piutang_Obat)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Retur Obat & BHP ke Suplier pada menu Retur Ke Suplier",
                 Retur_Ke_Suplayer,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Retur_Ke_Suplayer),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Ke_Suplayer),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Ke_Suplayer)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Kontra Akun Retur Obat & BHP ke Suplier pada menu Retur Ke Suplier",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Retur_Ke_Suplayer),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Ke_Suplayer),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Retur_Ke_Suplayer)});
+            tabMode.addRow(new Object[]{" [Debet] Kontra Akun Retur Obat & BHP ke Suplier pada menu Retur Ke Suplier",
                 Kontra_Retur_Ke_Suplayer,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Ke_Suplayer),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Ke_Suplayer),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Ke_Suplayer)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Retur_Ke_Suplayer)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Akun Retur Obat & BHP dari Pasien/Pembeli pada menu Retur Dari Pembeli",
                 Retur_Dari_pembeli,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Retur_Dari_pembeli),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Dari_pembeli),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Dari_pembeli)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Retur_Dari_pembeli),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Dari_pembeli),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Retur_Dari_pembeli)});
             tabMode.addRow(new Object[]{
                 " [Debet] Kontra Akun Retur Obat & BHP dari Pasien/Pembeli pada menu Retur Dari Pembeli",
                 Kontra_Retur_Dari_Pembeli,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Dari_Pembeli),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Dari_Pembeli),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Dari_Pembeli)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Retur Piutang Obat & BHP pada menu Retur Piutang Pembeli",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Retur_Dari_Pembeli)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Retur Piutang Obat & BHP pada menu Retur Piutang Pembeli",
                 Retur_Piutang_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Retur_Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Piutang_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Retur Piutang Obat & BHP pada menu Retur Piutang Pembeli",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Retur_Piutang_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Piutang_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Retur_Piutang_Obat)});
+            tabMode
+                    .addRow(new Object[]{" [Kredit] Kontra Akun Retur Piutang Obat & BHP pada menu Retur Piutang Pembeli",
                 Kontra_Retur_Piutang_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Piutang_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Piutang_Obat)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Retur_Piutang_Obat)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Pengadaan Barang Non Medis dan Penunjang ( Lab & RO ) pada menu Pengadaan Barang",
                 Pengadaan_Ipsrs,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Pengadaan_Ipsrs),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Pengadaan_Ipsrs),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Pengadaan_Ipsrs)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Pengadaan_Ipsrs),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Pengadaan_Ipsrs),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Pengadaan_Ipsrs)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Stok Keluar Barang Non Medis dan Penunjang ( Lab & RO ) pada menu Stok Keluar",
                 Stok_Keluar_Ipsrs,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Ipsrs),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Ipsrs),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Ipsrs)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Stok_Keluar_Ipsrs),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Stok_Keluar_Ipsrs),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Stok_Keluar_Ipsrs)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Kontra Akun Stok Keluar Barang Non Medis dan Penunjang ( Lab & RO ) pada menu Stok Keluar",
                 Kontra_Stok_Keluar_Ipsrs,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Stok_Keluar_Ipsrs),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Stok_Keluar_Ipsrs),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Stok_Keluar_Ipsrs)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pembayaran Piutang Pasien pada menu Piutang Pasien",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Stok_Keluar_Ipsrs)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pembayaran Piutang Pasien pada menu Piutang Pasien",
                 Bayar_Piutang_Pasien,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Bayar_Piutang_Pasien),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Bayar_Piutang_Pasien),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Bayar_Piutang_Pasien)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Pengambilan BHP Medis UTD pada menu Pengambilan BHP UTD",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Bayar_Piutang_Pasien),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Bayar_Piutang_Pasien)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Pengambilan BHP Medis UTD pada menu Pengambilan BHP UTD",
                 Pengambilan_Utd,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Pengambilan_Utd),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Pengambilan_Utd),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Pengambilan_Utd)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Pengambilan BHP Medis UTD pada menu Pengambilan BHP UTD",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Pengambilan_Utd),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Pengambilan_Utd),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Pengambilan_Utd)});
+            tabMode
+                    .addRow(new Object[]{" [Kredit] Kontra Akun Pengambilan BHP Medis UTD pada menu Pengambilan BHP UTD",
                 Kontra_Pengambilan_Utd,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Pengambilan_Utd),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Pengambilan_Utd),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Pengambilan_Utd)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Pengambilan_Utd)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Pengambilan Barang Penunjang/Non Medis UTD pada menu Pengambilan Non Medis UTD",
                 Pengambilan_Penunjang_Utd,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Pengambilan_Penunjang_Utd),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Pengambilan_Penunjang_Utd),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Pengambilan_Penunjang_Utd)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Pengambilan_Penunjang_Utd)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Kontra Akun Pengambilan Barang Penunjang/Non Medis UTD pada menu Pengambilan Non Medis UTD",
                 Kontra_Pengambilan_Penunjang_Utd,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Pengambilan_Penunjang_Utd),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Pengambilan_Penunjang_Utd),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Pengambilan_Penunjang_Utd)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Pendapatan Penjualan Darah pada menu Penyerahan Darah",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Pengambilan_Penunjang_Utd)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Pendapatan Penjualan Darah pada menu Penyerahan Darah",
                 Penyerahan_Darah,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Penyerahan_Darah),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Penyerahan_Darah),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Penyerahan_Darah)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Penyerahan_Darah),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Penyerahan_Darah),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Penyerahan_Darah)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Stok Keluar Barang Medis (Obat, Alkes & BHP) pada menu Stok Keluar Medis",
                 Stok_Keluar_Medis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Medis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Medis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Medis)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Stok_Keluar_Medis),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Stok_Keluar_Medis),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Stok_Keluar_Medis)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Kontra Akun Stok Keluar Barang Medis (Obat, Alkes & BHP) pada menu Stok Keluar Medis",
                 Kontra_Stok_Keluar_Medis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Stok_Keluar_Medis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Stok_Keluar_Medis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Stok_Keluar_Medis)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun HPP Obat Jual Bebas pada menu Penjualan Obat Bebas",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Stok_Keluar_Medis)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP Obat Jual Bebas pada menu Penjualan Obat Bebas",
                 HPP_Obat_Jual_Bebas,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                HPP_Obat_Jual_Bebas),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                HPP_Obat_Jual_Bebas),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Obat_Jual_Bebas)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan Obat Jual Bebas pada menu Penjualan Obat Bebas",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", HPP_Obat_Jual_Bebas),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", HPP_Obat_Jual_Bebas),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                HPP_Obat_Jual_Bebas)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan Obat Jual Bebas pada menu Penjualan Obat Bebas",
                 Persediaan_Obat_Jual_Bebas,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Jual_Bebas),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_Obat_Jual_Bebas),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_Obat_Jual_Bebas)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_Obat_Jual_Bebas)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Penerimaan Barang Non Medis dan Penunjang ( Lab & RO ) pada menu Penerimaan Barang Non Medis",
                 Penerimaan_NonMedis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Penerimaan_NonMedis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Penerimaan_NonMedis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Penerimaan_NonMedis)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Penerimaan_NonMedis),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Penerimaan_NonMedis),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Penerimaan_NonMedis)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Kontra Akun Penerimaan Barang Non Medis dan Penunjang ( Lab & RO ) pada menu Penerimaan Barang Non Medis",
                 Kontra_Penerimaan_NonMedis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Penerimaan_NonMedis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Penerimaan_NonMedis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Penerimaan_NonMedis)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Penerimaan_NonMedis)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Bayar Pemesanan Barang Non Medis dan Penunjang ( Lab & RO ) pada menu Bayar Pesan Non Medis",
                 Bayar_Pemesanan_Non_Medis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Bayar_Pemesanan_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Bayar_Pemesanan_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Bayar_Pemesanan_Non_Medis)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Hibah Obat & BHP pada menu Hibah Obat & BHP",
-                Hibah_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Hibah_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Hibah_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Hibah_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Hibah Obat & BHP pada menu Hibah Obat & BHP",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Bayar_Pemesanan_Non_Medis)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Hibah Obat & BHP pada menu Hibah Obat & BHP", Hibah_Obat,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Hibah_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Hibah_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Hibah_Obat)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Hibah Obat & BHP pada menu Hibah Obat & BHP",
                 Kontra_Hibah_Obat,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Kontra_Hibah_Obat),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kontra_Hibah_Obat),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Hibah_Obat)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Penerimaan Barang Toko pada menu Penerimaan Barang Toko",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Kontra_Hibah_Obat),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Kontra_Hibah_Obat),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Hibah_Obat)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Penerimaan Barang Toko pada menu Penerimaan Barang Toko",
                 Penerimaan_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Penerimaan_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Penerimaan_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Penerimaan_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Penerimaan Barang Toko pada menu Penerimaan Barang Toko",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Penerimaan_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Penerimaan_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Penerimaan_Toko)});
+            tabMode
+                    .addRow(new Object[]{" [Kredit] Kontra Akun Penerimaan Barang Toko pada menu Penerimaan Barang Toko",
                 Kontra_Penerimaan_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Penerimaan_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Penerimaan_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Penerimaan_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Pengadaan Barang Toko pada menu Pengadaan Barang Toko",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Penerimaan_Toko)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Pengadaan Barang Toko pada menu Pengadaan Barang Toko",
                 Pengadaan_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Pengadaan_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Pengadaan_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Pengadaan_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Bayar Pemesanan Barang Toko pada menu Bayar Pesan Toko",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Pengadaan_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Pengadaan_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Pengadaan_Toko)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Bayar Pemesanan Barang Toko pada menu Bayar Pesan Toko",
                 Bayar_Pemesanan_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Bayar_Pemesanan_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Bayar_Pemesanan_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Bayar_Pemesanan_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Penjualan Toko pada menu Penjualan Toko",
-                Penjualan_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Penjualan_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Penjualan_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Penjualan_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun HPP Barang Toko pada menu Penjualan Toko",
-                HPP_Barang_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                HPP_Barang_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                HPP_Barang_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                HPP_Barang_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Persediaan Barang Toko pada menu Penjualan Toko",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Bayar_Pemesanan_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Bayar_Pemesanan_Toko)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Penjualan Toko pada menu Penjualan Toko", Penjualan_Toko,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Penjualan_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Penjualan_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Penjualan_Toko)});
+            tabMode.addRow(new Object[]{" [Debet] Akun HPP Barang Toko pada menu Penjualan Toko", HPP_Barang_Toko,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", HPP_Barang_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", HPP_Barang_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", HPP_Barang_Toko)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Persediaan Barang Toko pada menu Penjualan Toko",
                 Persediaan_Barang_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Persediaan_Barang_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Persediaan_Barang_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Persediaan_Barang_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Piutang Toko pada menu Piutang Toko",
-                Piutang_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Piutang_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Piutang Toko pada menu Piutang Toko",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Persediaan_Barang_Toko)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Piutang Toko pada menu Piutang Toko", Piutang_Toko,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Piutang_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Piutang_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Piutang_Toko)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Piutang Toko pada menu Piutang Toko",
                 Kontra_Piutang_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Kontra_Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kontra_Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Piutang_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Akun Retur Barang Toko ke Suplier pada menu Retur Ke Suplier Toko",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Kontra_Piutang_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Kontra_Piutang_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Piutang_Toko)});
+            tabMode.addRow(new Object[]{" [Kredit] Akun Retur Barang Toko ke Suplier pada menu Retur Ke Suplier Toko",
                 Retur_Beli_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Retur_Beli_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Beli_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Beli_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Kontra Akun Retur Barang Toko ke Suplier pada menu Retur Ke Suplier Toko",
-                Kontra_Retur_Beli_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Beli_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Beli_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Beli_Toko)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Retur_Beli_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Beli_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Retur_Beli_Toko)});
+            tabMode.addRow(
+                    new Object[]{" [Debet] Kontra Akun Retur Barang Toko ke Suplier pada menu Retur Ke Suplier Toko",
+                        Kontra_Retur_Beli_Toko,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Kontra_Retur_Beli_Toko),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Kontra_Retur_Beli_Toko),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Kontra_Retur_Beli_Toko)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Akun Retur Barang Non Medis dan Penunjang ( Lab & RO ) Ke Suplier pada menu Retur Ke Suplier Non Medis",
                 Retur_Beli_Non_Medis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Retur_Beli_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Beli_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Beli_Non_Medis)
-            });
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Beli_Non_Medis),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Retur_Beli_Non_Medis)});
             tabMode.addRow(new Object[]{
                 " [Debet] Kontra Akun Retur Barang Non Medis dan Penunjang ( Lab & RO ) ke Suplier pada menu Retur Ke Suplier Non Medis",
                 Kontra_Retur_Beli_Non_Medis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Beli_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Beli_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Beli_Non_Medis)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Retur Jual Toko pada menu Retur Jual Toko",
-                Retur_Jual_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Retur_Jual_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Jual_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Jual_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Retur Jual Toko pada menu Retur Jual Toko",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Retur_Beli_Non_Medis)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Retur Jual Toko pada menu Retur Jual Toko", Retur_Jual_Toko,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Retur_Jual_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Jual_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Retur_Jual_Toko)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Retur Jual Toko pada menu Retur Jual Toko",
                 Kontra_Retur_Jual_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Jual_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Jual_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Jual_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Retur Piutang Toko pada menu Retur Piutang Toko",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Retur_Jual_Toko)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Retur Piutang Toko pada menu Retur Piutang Toko",
                 Retur_Piutang_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Retur_Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Retur_Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Retur_Piutang_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Retur Piutang Toko pada menu Retur Piutang Toko",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Retur_Piutang_Toko),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Retur_Piutang_Toko),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Retur_Piutang_Toko)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Retur Piutang Toko pada menu Retur Piutang Toko",
                 Kontra_Retur_Piutang_Toko,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Retur_Piutang_Toko),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Retur_Piutang_Toko)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Kerugian Klaim BPJS pada menu RVP Piutang BPJS",
-                Kerugian_Klaim_BPJS_RVP,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Kerugian_Klaim_BPJS_RVP),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kerugian_Klaim_BPJS_RVP),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kerugian_Klaim_BPJS_RVP)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Lebih Bayar Klaim BPJS pada menu RVP Piutang BPJS",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Retur_Piutang_Toko)});
+            tabMode.addRow(
+                    new Object[]{" [Debet] Kerugian Klaim BPJS pada menu RVP Piutang BPJS", Kerugian_Klaim_BPJS_RVP,
+                        Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                                Kerugian_Klaim_BPJS_RVP),
+                        Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
+                                Kerugian_Klaim_BPJS_RVP),
+                        Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                                Kerugian_Klaim_BPJS_RVP)});
+            tabMode.addRow(new Object[]{" [Kredit] Lebih Bayar Klaim BPJS pada menu RVP Piutang BPJS",
                 Lebih_Bayar_Klaim_BPJS_RVP,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Lebih_Bayar_Klaim_BPJS_RVP),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Lebih_Bayar_Klaim_BPJS_RVP),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Lebih_Bayar_Klaim_BPJS_RVP)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Piutang BPJS pada menu RVP Piutang BPJS",
-                Piutang_BPJS_RVP,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Piutang_BPJS_RVP),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Piutang_BPJS_RVP),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Piutang_BPJS_RVP)
-            });
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Lebih_Bayar_Klaim_BPJS_RVP)});
+            tabMode.addRow(new Object[]{" [Kredit] Piutang BPJS pada menu RVP Piutang BPJS", Piutang_BPJS_RVP,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Piutang_BPJS_RVP),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Piutang_BPJS_RVP),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Piutang_BPJS_RVP)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Kontra Akun Penerimaan Barang Aset/Inventaris pada menu Penerimaan Barang Aset/Inventaris",
                 Kontra_Penerimaan_AsetInventaris,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Penerimaan_AsetInventaris),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Penerimaan_AsetInventaris),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Penerimaan_AsetInventaris)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Hibah Aset/Inventaris pada menu Hibah Aset/Inventaris",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Penerimaan_AsetInventaris)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Hibah Aset/Inventaris pada menu Hibah Aset/Inventaris",
                 Kontra_Hibah_Aset,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Kontra_Hibah_Aset),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Kontra_Hibah_Aset),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Hibah_Aset)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Akun Hibah Non Medis pada menu Hibah Non Medis",
-                Hibah_Non_Medis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Hibah_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Hibah_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Hibah_Non_Medis)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Kontra Akun Hibah Non Medis pada menu Hibah Non Medis",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Kontra_Hibah_Aset),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Kontra_Hibah_Aset),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Hibah_Aset)});
+            tabMode.addRow(new Object[]{" [Debet] Akun Hibah Non Medis pada menu Hibah Non Medis", Hibah_Non_Medis,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Hibah_Non_Medis),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Hibah_Non_Medis),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Hibah_Non_Medis)});
+            tabMode.addRow(new Object[]{" [Kredit] Kontra Akun Hibah Non Medis pada menu Hibah Non Medis",
                 Kontra_Hibah_Non_Medis,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Hibah_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Hibah_Non_Medis),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Hibah_Non_Medis)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Bayar Jasa Medis Dokter pada menu Bayar JM Dokter",
-                Bayar_JM_Dokter,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Bayar_JM_Dokter),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Bayar_JM_Dokter),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Bayar_JM_Dokter)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] PPN Masukan Barang/Aset Inventaris/Alkes/BHP/Obat/Farmasi",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Hibah_Non_Medis)});
+            tabMode.addRow(new Object[]{" [Debet] Bayar Jasa Medis Dokter pada menu Bayar JM Dokter", Bayar_JM_Dokter,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Bayar_JM_Dokter),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Bayar_JM_Dokter),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Bayar_JM_Dokter)});
+            tabMode.addRow(new Object[]{" [Debet] PPN Masukan Barang/Aset Inventaris/Alkes/BHP/Obat/Farmasi",
                 PPN_Masukan,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                PPN_Masukan),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                PPN_Masukan),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                PPN_Masukan)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", PPN_Masukan),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", PPN_Masukan),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", PPN_Masukan)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Pengadaan Barang Dapur Kering & Basah pada menu Pengadaan Barang Dapur",
                 Pengadaan_Dapur,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Pengadaan_Dapur),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Pengadaan_Dapur),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Pengadaan_Dapur)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Pengadaan_Dapur),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Pengadaan_Dapur),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Pengadaan_Dapur)});
             tabMode.addRow(new Object[]{
                 " [Debet] Akun Stok Keluar Barang Dapur Kering & Basah pada menu Stok Keluar Dapur",
                 Stok_Keluar_Dapur,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Dapur),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Dapur),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Stok_Keluar_Dapur)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Stok_Keluar_Dapur),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Stok_Keluar_Dapur),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Stok_Keluar_Dapur)});
             tabMode.addRow(new Object[]{
                 " [Kredit] Kontra Akun Stok Keluar Barang Dapur Kering & Basah pada menu Stok Keluar Dapur",
                 Kontra_Stok_Keluar_Dapur,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Kontra_Stok_Keluar_Dapur),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Kontra_Stok_Keluar_Dapur),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Kontra_Stok_Keluar_Dapur)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] PPN Keluaran Barang/Aset Inventaris/Alkes/BHP/Obat/Farmasi",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Kontra_Stok_Keluar_Dapur)});
+            tabMode.addRow(new Object[]{" [Kredit] PPN Keluaran Barang/Aset Inventaris/Alkes/BHP/Obat/Farmasi",
                 PPN_Keluaran,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                PPN_Keluaran),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                PPN_Keluaran),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                PPN_Keluaran)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Diskon Piutang pada menu Piutang Belum Lunas",
-                Diskon_Piutang,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Diskon_Piutang),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Diskon_Piutang),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Diskon_Piutang)
-            });
-            tabMode.addRow(new Object[]{
-                " [Debet] Piutang Tidak Terbayar pada menu Piutang Belum Lunas",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", PPN_Keluaran),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", PPN_Keluaran),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", PPN_Keluaran)});
+            tabMode.addRow(new Object[]{" [Debet] Diskon Piutang pada menu Piutang Belum Lunas", Diskon_Piutang,
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Diskon_Piutang),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Diskon_Piutang),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?", Diskon_Piutang)});
+            tabMode.addRow(new Object[]{" [Debet] Piutang Tidak Terbayar pada menu Piutang Belum Lunas",
                 Piutang_Tidak_Terbayar,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?",
                 Piutang_Tidak_Terbayar),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?",
                 Piutang_Tidak_Terbayar),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Piutang_Tidak_Terbayar)
-            });
-            tabMode.addRow(new Object[]{
-                " [Kredit] Lebih Bayar Piutang pada menu Piutang Belum Lunas",
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Piutang_Tidak_Terbayar)});
+            tabMode.addRow(new Object[]{" [Kredit] Lebih Bayar Piutang pada menu Piutang Belum Lunas",
                 Lebih_Bayar_Piutang,
-                Sequel.cariIsi(
-                "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                Lebih_Bayar_Piutang),
-                Sequel.cariIsi(
-                "select rekening.tipe from rekening where rekening.kd_rek=?",
-                Lebih_Bayar_Piutang),
-                Sequel.cariIsi(
-                "select rekening.balance from rekening where rekening.kd_rek=?",
-                Lebih_Bayar_Piutang)
-            });
+                Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", Lebih_Bayar_Piutang),
+                Sequel.cariIsi("select rekening.tipe from rekening where rekening.kd_rek=?", Lebih_Bayar_Piutang),
+                Sequel.cariIsi("select rekening.balance from rekening where rekening.kd_rek=?",
+                Lebih_Bayar_Piutang)});
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
@@ -5036,54 +3698,32 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                         ps2.setString(1, rs.getString("kd_jenis_prw"));
                         rs2 = ps2.executeQuery();
                         if (rs2.next()) {
-                            kode_pendapatan_tindakan = rs2.getString(
-                                    "pendapatan_tindakan");
-                            nama_pendapatan_tindakan = rs2.getString(
-                                    "nama_pendapatan_tindakan");
-                            kode_beban_jasa_dokter = rs2.getString(
-                                    "beban_jasa_dokter");
-                            nama_beban_jasa_dokter = rs2.getString(
-                                    "nama_beban_jasa_dokter");
-                            kode_utang_jasa_dokter = rs2.getString(
-                                    "utang_jasa_dokter");
-                            nama_utang_jasa_dokter = rs2.getString(
-                                    "nama_utang_jasa_dokter");
-                            kode_beban_jasa_paramedis = rs2.getString(
-                                    "beban_jasa_paramedis");
-                            nama_beban_jasa_paramedis = rs2.getString(
-                                    "nama_beban_jasa_paramedis");
-                            kode_utang_jasa_paramedis = rs2.getString(
-                                    "utang_jasa_paramedis");
-                            nama_utang_jasa_paramedis = rs2.getString(
-                                    "nama_utang_jasa_paramedis");
+                            kode_pendapatan_tindakan = rs2.getString("pendapatan_tindakan");
+                            nama_pendapatan_tindakan = rs2.getString("nama_pendapatan_tindakan");
+                            kode_beban_jasa_dokter = rs2.getString("beban_jasa_dokter");
+                            nama_beban_jasa_dokter = rs2.getString("nama_beban_jasa_dokter");
+                            kode_utang_jasa_dokter = rs2.getString("utang_jasa_dokter");
+                            nama_utang_jasa_dokter = rs2.getString("nama_utang_jasa_dokter");
+                            kode_beban_jasa_paramedis = rs2.getString("beban_jasa_paramedis");
+                            nama_beban_jasa_paramedis = rs2.getString("nama_beban_jasa_paramedis");
+                            kode_utang_jasa_paramedis = rs2.getString("utang_jasa_paramedis");
+                            nama_utang_jasa_paramedis = rs2.getString("nama_utang_jasa_paramedis");
                             kode_beban_kso = rs2.getString("beban_kso");
                             nama_beban_kso = rs2.getString("nama_beban_kso");
                             kode_utang_kso = rs2.getString("utang_kso");
                             nama_utang_kso = rs2.getString("nama_utang_kso");
-                            kode_hpp_persediaan = rs2.
-                                    getString("hpp_persediaan");
-                            nama_hpp_persediaan = rs2.getString(
-                                    "nama_hpp_persediaan");
-                            kode_persediaan_bhp = rs2.
-                                    getString("persediaan_bhp");
-                            nama_persediaan_bhp = rs2.getString(
-                                    "nama_persediaan_bhp");
-                            kode_beban_jasa_sarana = rs2.getString(
-                                    "beban_jasa_sarana");
-                            nama_beban_jasa_sarana = rs2.getString(
-                                    "nama_beban_jasa_sarana");
-                            kode_utang_jasa_sarana = rs2.getString(
-                                    "utang_jasa_sarana");
-                            nama_utang_jasa_sarana = rs2.getString(
-                                    "nama_utang_jasa_sarana");
-                            kode_beban_menejemen = rs2.getString(
-                                    "beban_menejemen");
-                            nama_beban_menejemen = rs2.getString(
-                                    "nama_beban_menejemen");
-                            kode_utang_menejemen = rs2.getString(
-                                    "utang_menejemen");
-                            nama_utang_menejemen = rs2.getString(
-                                    "nama_utang_menejemen");
+                            kode_hpp_persediaan = rs2.getString("hpp_persediaan");
+                            nama_hpp_persediaan = rs2.getString("nama_hpp_persediaan");
+                            kode_persediaan_bhp = rs2.getString("persediaan_bhp");
+                            nama_persediaan_bhp = rs2.getString("nama_persediaan_bhp");
+                            kode_beban_jasa_sarana = rs2.getString("beban_jasa_sarana");
+                            nama_beban_jasa_sarana = rs2.getString("nama_beban_jasa_sarana");
+                            kode_utang_jasa_sarana = rs2.getString("utang_jasa_sarana");
+                            nama_utang_jasa_sarana = rs2.getString("nama_utang_jasa_sarana");
+                            kode_beban_menejemen = rs2.getString("beban_menejemen");
+                            nama_beban_menejemen = rs2.getString("nama_beban_menejemen");
+                            kode_utang_menejemen = rs2.getString("utang_menejemen");
+                            nama_utang_menejemen = rs2.getString("nama_utang_menejemen");
                         }
                     } catch (Exception e) {
                         System.out.println("Notif : " + e);
@@ -5096,24 +3736,16 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                         }
                     }
 
-                    tabModeRalan.addRow(new Object[]{
-                        rs.getString("kd_jenis_prw"), rs.getString(
-                        "nm_perawatan"), rs.getString("nm_kategori"), rs.
-                        getString("png_jawab"), rs.getString("nm_poli"),
-                        kode_pendapatan_tindakan, nama_pendapatan_tindakan,
-                        kode_beban_jasa_dokter, nama_beban_jasa_dokter,
-                        kode_utang_jasa_dokter, nama_utang_jasa_dokter,
-                        kode_beban_jasa_paramedis, nama_beban_jasa_paramedis,
-                        kode_utang_jasa_paramedis, nama_utang_jasa_paramedis,
-                        kode_beban_kso, nama_beban_kso,
-                        kode_utang_kso, nama_utang_kso, kode_hpp_persediaan,
-                        nama_hpp_persediaan, kode_persediaan_bhp,
-                        nama_persediaan_bhp, kode_beban_jasa_sarana,
-                        nama_beban_jasa_sarana, kode_utang_jasa_sarana,
-                        nama_utang_jasa_sarana, kode_beban_menejemen,
-                        nama_beban_menejemen, kode_utang_menejemen,
-                        nama_utang_menejemen
-                    });
+                    tabModeRalan.addRow(new Object[]{rs.getString("kd_jenis_prw"), rs.getString("nm_perawatan"),
+                        rs.getString("nm_kategori"), rs.getString("png_jawab"), rs.getString("nm_poli"),
+                        kode_pendapatan_tindakan, nama_pendapatan_tindakan, kode_beban_jasa_dokter,
+                        nama_beban_jasa_dokter, kode_utang_jasa_dokter, nama_utang_jasa_dokter,
+                        kode_beban_jasa_paramedis, nama_beban_jasa_paramedis, kode_utang_jasa_paramedis,
+                        nama_utang_jasa_paramedis, kode_beban_kso, nama_beban_kso, kode_utang_kso, nama_utang_kso,
+                        kode_hpp_persediaan, nama_hpp_persediaan, kode_persediaan_bhp, nama_persediaan_bhp,
+                        kode_beban_jasa_sarana, nama_beban_jasa_sarana, kode_utang_jasa_sarana,
+                        nama_utang_jasa_sarana, kode_beban_menejemen, nama_beban_menejemen, kode_utang_menejemen,
+                        nama_utang_menejemen});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -5199,54 +3831,32 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                         ps2.setString(1, rs.getString("kd_jenis_prw"));
                         rs2 = ps2.executeQuery();
                         if (rs2.next()) {
-                            kode_pendapatan_tindakan = rs2.getString(
-                                    "pendapatan_tindakan");
-                            nama_pendapatan_tindakan = rs2.getString(
-                                    "nama_pendapatan_tindakan");
-                            kode_beban_jasa_dokter = rs2.getString(
-                                    "beban_jasa_dokter");
-                            nama_beban_jasa_dokter = rs2.getString(
-                                    "nama_beban_jasa_dokter");
-                            kode_utang_jasa_dokter = rs2.getString(
-                                    "utang_jasa_dokter");
-                            nama_utang_jasa_dokter = rs2.getString(
-                                    "nama_utang_jasa_dokter");
-                            kode_beban_jasa_paramedis = rs2.getString(
-                                    "beban_jasa_paramedis");
-                            nama_beban_jasa_paramedis = rs2.getString(
-                                    "nama_beban_jasa_paramedis");
-                            kode_utang_jasa_paramedis = rs2.getString(
-                                    "utang_jasa_paramedis");
-                            nama_utang_jasa_paramedis = rs2.getString(
-                                    "nama_utang_jasa_paramedis");
+                            kode_pendapatan_tindakan = rs2.getString("pendapatan_tindakan");
+                            nama_pendapatan_tindakan = rs2.getString("nama_pendapatan_tindakan");
+                            kode_beban_jasa_dokter = rs2.getString("beban_jasa_dokter");
+                            nama_beban_jasa_dokter = rs2.getString("nama_beban_jasa_dokter");
+                            kode_utang_jasa_dokter = rs2.getString("utang_jasa_dokter");
+                            nama_utang_jasa_dokter = rs2.getString("nama_utang_jasa_dokter");
+                            kode_beban_jasa_paramedis = rs2.getString("beban_jasa_paramedis");
+                            nama_beban_jasa_paramedis = rs2.getString("nama_beban_jasa_paramedis");
+                            kode_utang_jasa_paramedis = rs2.getString("utang_jasa_paramedis");
+                            nama_utang_jasa_paramedis = rs2.getString("nama_utang_jasa_paramedis");
                             kode_beban_kso = rs2.getString("beban_kso");
                             nama_beban_kso = rs2.getString("nama_beban_kso");
                             kode_utang_kso = rs2.getString("utang_kso");
                             nama_utang_kso = rs2.getString("nama_utang_kso");
-                            kode_hpp_persediaan = rs2.
-                                    getString("hpp_persediaan");
-                            nama_hpp_persediaan = rs2.getString(
-                                    "nama_hpp_persediaan");
-                            kode_persediaan_bhp = rs2.
-                                    getString("persediaan_bhp");
-                            nama_persediaan_bhp = rs2.getString(
-                                    "nama_persediaan_bhp");
-                            kode_beban_jasa_sarana = rs2.getString(
-                                    "beban_jasa_sarana");
-                            nama_beban_jasa_sarana = rs2.getString(
-                                    "nama_beban_jasa_sarana");
-                            kode_utang_jasa_sarana = rs2.getString(
-                                    "utang_jasa_sarana");
-                            nama_utang_jasa_sarana = rs2.getString(
-                                    "nama_utang_jasa_sarana");
-                            kode_beban_menejemen = rs2.getString(
-                                    "beban_menejemen");
-                            nama_beban_menejemen = rs2.getString(
-                                    "nama_beban_menejemen");
-                            kode_utang_menejemen = rs2.getString(
-                                    "utang_menejemen");
-                            nama_utang_menejemen = rs2.getString(
-                                    "nama_utang_menejemen");
+                            kode_hpp_persediaan = rs2.getString("hpp_persediaan");
+                            nama_hpp_persediaan = rs2.getString("nama_hpp_persediaan");
+                            kode_persediaan_bhp = rs2.getString("persediaan_bhp");
+                            nama_persediaan_bhp = rs2.getString("nama_persediaan_bhp");
+                            kode_beban_jasa_sarana = rs2.getString("beban_jasa_sarana");
+                            nama_beban_jasa_sarana = rs2.getString("nama_beban_jasa_sarana");
+                            kode_utang_jasa_sarana = rs2.getString("utang_jasa_sarana");
+                            nama_utang_jasa_sarana = rs2.getString("nama_utang_jasa_sarana");
+                            kode_beban_menejemen = rs2.getString("beban_menejemen");
+                            nama_beban_menejemen = rs2.getString("nama_beban_menejemen");
+                            kode_utang_menejemen = rs2.getString("utang_menejemen");
+                            nama_utang_menejemen = rs2.getString("nama_utang_menejemen");
                         }
                     } catch (Exception e) {
                         System.out.println("Notif : " + e);
@@ -5259,25 +3869,16 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
                         }
                     }
 
-                    tabModeRanap.addRow(new Object[]{
-                        rs.getString("kd_jenis_prw"), rs.getString(
-                        "nm_perawatan"), rs.getString("nm_kategori"), rs.
-                        getString("png_jawab"), rs.getString("nm_bangsal"), rs.
-                        getString("kelas"),
-                        kode_pendapatan_tindakan, nama_pendapatan_tindakan,
-                        kode_beban_jasa_dokter, nama_beban_jasa_dokter,
-                        kode_utang_jasa_dokter, nama_utang_jasa_dokter,
-                        kode_beban_jasa_paramedis, nama_beban_jasa_paramedis,
-                        kode_utang_jasa_paramedis, nama_utang_jasa_paramedis,
-                        kode_beban_kso, nama_beban_kso,
-                        kode_utang_kso, nama_utang_kso, kode_hpp_persediaan,
-                        nama_hpp_persediaan, kode_persediaan_bhp,
-                        nama_persediaan_bhp, kode_beban_jasa_sarana,
-                        nama_beban_jasa_sarana, kode_utang_jasa_sarana,
-                        nama_utang_jasa_sarana, kode_beban_menejemen,
-                        nama_beban_menejemen, kode_utang_menejemen,
-                        nama_utang_menejemen
-                    });
+                    tabModeRanap.addRow(new Object[]{rs.getString("kd_jenis_prw"), rs.getString("nm_perawatan"),
+                        rs.getString("nm_kategori"), rs.getString("png_jawab"), rs.getString("nm_bangsal"),
+                        rs.getString("kelas"), kode_pendapatan_tindakan, nama_pendapatan_tindakan,
+                        kode_beban_jasa_dokter, nama_beban_jasa_dokter, kode_utang_jasa_dokter,
+                        nama_utang_jasa_dokter, kode_beban_jasa_paramedis, nama_beban_jasa_paramedis,
+                        kode_utang_jasa_paramedis, nama_utang_jasa_paramedis, kode_beban_kso, nama_beban_kso,
+                        kode_utang_kso, nama_utang_kso, kode_hpp_persediaan, nama_hpp_persediaan,
+                        kode_persediaan_bhp, nama_persediaan_bhp, kode_beban_jasa_sarana, nama_beban_jasa_sarana,
+                        kode_utang_jasa_sarana, nama_utang_jasa_sarana, kode_beban_menejemen, nama_beban_menejemen,
+                        kode_utang_menejemen, nama_utang_menejemen});
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -5294,7 +3895,6 @@ public class DlgPengaturanRekening extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgPengaturanRekening.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgPengaturanRekening.class.getName());
 
 }

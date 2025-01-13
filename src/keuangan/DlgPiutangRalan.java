@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package keuangan;
 
@@ -40,24 +40,36 @@ import simrskhanza.DlgCariCaraBayar;
 import simrskhanza.DlgCariPoli;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgPiutangRalan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
-    private double all = 0, Laborat = 0, Radiologi = 0, Obat = 0, Ralan_Dokter = 0, Ralan_Dokter_paramedis = 0, Ralan_Paramedis = 0, Tambahan = 0, Potongan = 0, Registrasi = 0,
-            ttlLaborat = 0, ttlRadiologi = 0, ttlObat = 0, ttlRalan_Dokter = 0, ttlRalan_Paramedis = 0, ttlTambahan = 0, ttlPotongan = 0, ttlRegistrasi = 0,
-            Operasi = 0, ttlOperasi = 0, ekses = 0, ttlekses = 0, dibayar = 0, ttldibayar = 0, sisa = 0, ttlsisa = 0, diskon = 0, ttldiskon = 0, tidakdibayar = 0, ttltidakdibayar = 0;
-    private String pilihan = "", status = "";
+
+    private double all = 0, Laborat = 0, Radiologi = 0, Obat = 0, Ralan_Dokter = 0, Ralan_Dokter_paramedis = 0,
+            Ralan_Paramedis = 0, Tambahan = 0, Potongan = 0, Registrasi = 0, ttlLaborat = 0, ttlRadiologi = 0,
+            ttlObat = 0, ttlRalan_Dokter = 0, ttlRalan_Paramedis = 0, ttlTambahan = 0, ttlPotongan = 0,
+            ttlRegistrasi = 0, Operasi = 0, ttlOperasi = 0, ekses = 0, ttlekses = 0, dibayar = 0, ttldibayar = 0,
+            sisa = 0, ttlsisa = 0, diskon = 0, ttldiskon = 0, tidakdibayar = 0, ttltidakdibayar = 0;
+
+    private String pilihan = "", status = "", sep = "";
+
     private StringBuilder htmlContent;
+
     private int i = 0;
 
     /**
@@ -72,12 +84,9 @@ public class DlgPiutangRalan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {"Tanggal", "No.Nota", "No.RM", "Nama Pasien",
-            "Jenis Bayar", "Perujuk",
-            "Registrasi", "Obat+Emb+Tsl", "Paket Tindakan", "Operasi",
-            "Laborat", "Radiologi", "Tambahan", "Potongan",
-            "Total", "Ekses", "Sudah Dibayar", "Diskon Bayar", "Tidak Terbayar",
-            "Sisa", "Dokter"};
+        Object[] rowRwJlDr = {"Tanggal", "No.Nota", "No.RM", "Nama Pasien", "Jenis Bayar", "Perujuk", "Registrasi",
+            "Obat+Emb+Tsl", "Paket Tindakan", "Operasi", "Laborat", "Radiologi", "Tambahan", "Potongan", "Total",
+            "Ekses", "Sudah Dibayar", "Diskon Bayar", "Tidak Terbayar", "Sisa", "Dokter", "SEP"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -86,11 +95,12 @@ public class DlgPiutangRalan extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 21; i++) {
+        for (i = 0; i < 22; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(65);
@@ -126,10 +136,8 @@ public class DlgPiutangRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                     tampil();
                 }
                 kdpenjab.requestFocus();
@@ -184,10 +192,8 @@ public class DlgPiutangRalan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 BtnPoli.requestFocus();
             }
@@ -231,7 +237,9 @@ public class DlgPiutangRalan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -257,6 +265,7 @@ public class DlgPiutangRalan extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         LCount = new javax.swing.JLabel();
         BtnPrint = new widget.Button();
+        BtnExcel = new widget.Button();
         BtnKeluar = new widget.Button();
         panelisi4 = new widget.panelisi();
         label19 = new widget.Label();
@@ -436,6 +445,24 @@ public class DlgPiutangRalan extends javax.swing.JDialog {
             }
         });
         panelGlass5.add(BtnPrint);
+
+        BtnExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/excel.png"))); // NOI18N
+        BtnExcel.setMnemonic('T');
+        BtnExcel.setText("Excel");
+        BtnExcel.setToolTipText("Alt+T");
+        BtnExcel.setName("BtnExcel"); // NOI18N
+        BtnExcel.setPreferredSize(new java.awt.Dimension(100, 23));
+        BtnExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnExcelActionPerformed(evt);
+            }
+        });
+        BtnExcel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnExcelKeyPressed(evt);
+            }
+        });
+        panelGlass5.add(BtnExcel);
 
         BtnKeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
         BtnKeluar.setMnemonic('K');
@@ -1013,13 +1040,20 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         poli.setVisible(true);
     }//GEN-LAST:event_BtnPoliActionPerformed
 
+    private void BtnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExcelActionPerformed
+        Valid.exportToExcel(tbBangsal);
+    }//GEN-LAST:event_BtnExcelActionPerformed
+
+    private void BtnExcelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnExcelKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnExcelKeyPressed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPiutangRalan dialog = new DlgPiutangRalan(
-                    new javax.swing.JFrame(), true);
+            DlgPiutangRalan dialog = new DlgPiutangRalan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1034,6 +1068,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private widget.Button BtnAll;
     private widget.Button BtnCari1;
+    private widget.Button BtnExcel;
     private widget.Button BtnKeluar;
     private widget.Button BtnPoli;
     private widget.Button BtnPrint;
@@ -1085,14 +1120,14 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     + "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "
                     + "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "
                     + "inner join piutang_pasien on piutang_pasien.no_rawat=reg_periksa.no_rawat "
-                    + "where reg_periksa.status_lanjut='Ralan' " + status + " and reg_periksa.tgl_registrasi between ? and ? "
+                    + "where reg_periksa.status_lanjut='Ralan' " + status
+                    + " and reg_periksa.tgl_registrasi between ? and ? "
                     + "and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? and concat(reg_periksa.kd_poli,poliklinik.nm_poli) like ? "
                     + "order by reg_periksa.tgl_registrasi");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
-                ps.setString(3,
-                        "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
+                ps.setString(3, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                 ps.setString(4, "%" + KdPoli.getText() + NmPoli.getText() + "%");
                 rs = ps.executeQuery();
                 all = 0;
@@ -1144,21 +1179,16 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     Obat += rs2.getDouble("totalbiaya");
                                     break;
                                 case "Ralan Dokter":
-                                    ttlRalan_Dokter += rs2.getDouble(
-                                            "totalbiaya");
+                                    ttlRalan_Dokter += rs2.getDouble("totalbiaya");
                                     Ralan_Dokter += rs2.getDouble("totalbiaya");
                                     break;
                                 case "Ralan Dokter Paramedis":
-                                    ttlRalan_Dokter += rs2.getDouble(
-                                            "totalbiaya");
-                                    Ralan_Dokter_paramedis += rs2.getDouble(
-                                            "totalbiaya");
+                                    ttlRalan_Dokter += rs2.getDouble("totalbiaya");
+                                    Ralan_Dokter_paramedis += rs2.getDouble("totalbiaya");
                                     break;
                                 case "Ralan Paramedis":
-                                    ttlRalan_Paramedis += rs2.getDouble(
-                                            "totalbiaya");
-                                    Ralan_Paramedis += rs2.getDouble(
-                                            "totalbiaya");
+                                    ttlRalan_Paramedis += rs2.getDouble("totalbiaya");
+                                    Ralan_Paramedis += rs2.getDouble("totalbiaya");
                                     break;
                                 case "Tambahan":
                                     ttlTambahan += rs2.getDouble("totalbiaya");
@@ -1178,7 +1208,8 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     break;
                             }
                         }
-                        all = all + Operasi + Laborat + Radiologi + Obat + Ralan_Dokter + Ralan_Dokter_paramedis + Ralan_Paramedis + Tambahan + Potongan + Registrasi;
+                        all = all + Operasi + Laborat + Radiologi + Obat + Ralan_Dokter + Ralan_Dokter_paramedis
+                                + Ralan_Paramedis + Tambahan + Potongan + Registrasi;
                     } catch (Exception e) {
                         System.out.println("Notif 2 : " + e);
                     } finally {
@@ -1206,45 +1237,34 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     sisa = rs.getDouble("totalpiutang") - ekses - dibayar - diskon - tidakdibayar;
                     ttlsisa += sisa;
 
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tgl_registrasi"),
-                        Sequel.cariIsi(
-                        "select nota_jalan.no_nota from nota_jalan where nota_jalan.no_rawat=?",
+                    sep = Sequel.cariIsi("select IF(COUNT(bridging_sep.no_sep)=0,'-',bridging_sep.no_sep) as no_sep from bridging_sep where bridging_sep.no_rawat=?", rs.getString("no_rawat"));
+
+                    tabMode.addRow(new Object[]{rs.getString("tgl_registrasi"),
+                        Sequel.cariIsi("select nota_jalan.no_nota from nota_jalan where nota_jalan.no_rawat=?",
                         rs.getString("no_rawat")),
-                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
-                        rs.getString("png_jawab"),
-                        Sequel.cariIsi(
-                        "select rujuk_masuk.perujuk from rujuk_masuk where rujuk_masuk.no_rawat=?",
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), rs.getString("png_jawab"),
+                        Sequel.cariIsi("select rujuk_masuk.perujuk from rujuk_masuk where rujuk_masuk.no_rawat=?",
                         rs.getString("no_rawat")),
-                        Valid.SetAngka(Registrasi), Valid.SetAngka(Obat), Valid.
-                        SetAngka(
-                        Ralan_Dokter + Ralan_Paramedis + Ralan_Dokter_paramedis),
-                        Valid.SetAngka(Operasi), Valid.SetAngka(Laborat), Valid.
-                        SetAngka(Radiologi), Valid.SetAngka(Tambahan), Valid.
-                        SetAngka(Potongan),
-                        Valid.SetAngka(
-                        Operasi + Laborat + Radiologi + Obat + Ralan_Dokter + Ralan_Paramedis + Ralan_Dokter_paramedis + Tambahan + Potongan + Registrasi),
-                        Valid.SetAngka(ekses), Valid.SetAngka(dibayar), Valid.
-                        SetAngka(diskon), Valid.SetAngka(tidakdibayar), Valid.
-                        SetAngka(sisa), rs.getString("nm_dokter")
-                    });
+                        Valid.SetAngka(Registrasi), Valid.SetAngka(Obat),
+                        Valid.SetAngka(Ralan_Dokter + Ralan_Paramedis + Ralan_Dokter_paramedis),
+                        Valid.SetAngka(Operasi), Valid.SetAngka(Laborat), Valid.SetAngka(Radiologi),
+                        Valid.SetAngka(Tambahan), Valid.SetAngka(Potongan),
+                        Valid.SetAngka(Operasi + Laborat + Radiologi + Obat + Ralan_Dokter + Ralan_Paramedis
+                        + Ralan_Dokter_paramedis + Tambahan + Potongan + Registrasi),
+                        Valid.SetAngka(ekses), Valid.SetAngka(dibayar), Valid.SetAngka(diskon),
+                        Valid.SetAngka(tidakdibayar), Valid.SetAngka(sisa), rs.getString("nm_dokter"), sep});
                 }
 
                 LCount2.setText("" + tabMode.getRowCount());
                 if (tabMode.getRowCount() > 0) {
-                    tabMode.addRow(new Object[]{
-                        ">> Total", ":", "", "", "", "", Valid.SetAngka(
-                        ttlRegistrasi), Valid.SetAngka(ttlObat), Valid.SetAngka(
-                        ttlRalan_Dokter + ttlRalan_Paramedis),
-                        Valid.SetAngka(ttlOperasi), Valid.SetAngka(ttlLaborat),
-                        Valid.SetAngka(ttlRadiologi), Valid.
-                        SetAngka(ttlTambahan), Valid.SetAngka(ttlPotongan),
-                        Valid.SetAngka(
-                        ttlLaborat + ttlRadiologi + ttlObat + ttlRalan_Dokter + ttlRalan_Paramedis + ttlTambahan + ttlPotongan + ttlRegistrasi + ttlOperasi),
-                        Valid.SetAngka(ttlekses), Valid.SetAngka(ttldibayar),
-                        Valid.SetAngka(ttldiskon), Valid.SetAngka(
-                        ttltidakdibayar), Valid.SetAngka(ttlsisa), ""
-                    });
+                    tabMode.addRow(new Object[]{">> Total", ":", "", "", "", "", Valid.SetAngka(ttlRegistrasi),
+                        Valid.SetAngka(ttlObat), Valid.SetAngka(ttlRalan_Dokter + ttlRalan_Paramedis),
+                        Valid.SetAngka(ttlOperasi), Valid.SetAngka(ttlLaborat), Valid.SetAngka(ttlRadiologi),
+                        Valid.SetAngka(ttlTambahan), Valid.SetAngka(ttlPotongan),
+                        Valid.SetAngka(ttlLaborat + ttlRadiologi + ttlObat + ttlRalan_Dokter + ttlRalan_Paramedis
+                        + ttlTambahan + ttlPotongan + ttlRegistrasi + ttlOperasi),
+                        Valid.SetAngka(ttlekses), Valid.SetAngka(ttldibayar), Valid.SetAngka(ttldiskon),
+                        Valid.SetAngka(ttltidakdibayar), Valid.SetAngka(ttlsisa), ""});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1270,7 +1290,6 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgPiutangRalan.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgPiutangRalan.class.getName());
 
 }

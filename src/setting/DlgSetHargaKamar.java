@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgSpesialis.java
- *
- * Created on May 23, 2010, 1:25:13 AM
+* DlgSpesialis.java
+*
+* Created on May 23, 2010, 1:25:13 AM
  */
 package setting;
 
@@ -33,17 +33,22 @@ import keuangan.DlgKamar;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author dosen
  */
 public class DlgSetHargaKamar extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
 
     /**
@@ -59,15 +64,11 @@ public class DlgSetHargaKamar extends javax.swing.JDialog {
         this.setLocation(10, 10);
         setSize(459, 539);
 
-        Object[] row = {"No.Bed/Kamar", "Kode Bangsal", "Nama Bangsal/Kamar",
-            "Kode Bayar", "Cara Bayar", "Tarif Kamar"};
+        Object[] row = {"No.Bed/Kamar", "Kode Bangsal", "Nama Bangsal/Kamar", "Kode Bayar", "Cara Bayar",
+            "Tarif Kamar"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -82,8 +83,9 @@ public class DlgSetHargaKamar extends javax.swing.JDialog {
         };
 
         tbSpesialis.setModel(tabMode);
-        //tampil();
-        //tbJabatan.setDefaultRenderer(Object.class, new WarnaTable(Scroll.getBackground(),Color.GREEN));
+        // tampil();
+        // tbJabatan.setDefaultRenderer(Object.class, new
+        // WarnaTable(Scroll.getBackground(),Color.GREEN));
         tbSpesialis.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbSpesialis.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -113,8 +115,7 @@ public class DlgSetHargaKamar extends javax.swing.JDialog {
         Tarif.setDocument(new batasInput((byte) 15).getKata(Tarif));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -150,12 +151,9 @@ public class DlgSetHargaKamar extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kamar.getTable().getSelectedRow() != -1) {
-                    kdkamar.setText(kamar.getTable().getValueAt(
-                            kamar.getTable().getSelectedRow(), 1).toString());
-                    TKdBngsal.setText(kamar.getTable().getValueAt(kamar.
-                            getTable().getSelectedRow(), 2).toString());
-                    TBangsal.setText(kamar.getTable().getValueAt(kamar.
-                            getTable().getSelectedRow(), 3).toString());
+                    kdkamar.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 1).toString());
+                    TKdBngsal.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 2).toString());
+                    TBangsal.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 3).toString());
                 }
                 kdkamar.requestFocus();
             }
@@ -208,10 +206,8 @@ public class DlgSetHargaKamar extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpj.setText(penjab.getTable().getValueAt(penjab.getTable().
-                            getSelectedRow(), 1).toString());
-                    nmpj.setText(penjab.getTable().getValueAt(penjab.getTable().
-                            getSelectedRow(), 2).toString());
+                    kdpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpj.requestFocus();
             }
@@ -253,8 +249,7 @@ public class DlgSetHargaKamar extends javax.swing.JDialog {
         });
 
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_harga_kamar.kd_kamar,bangsal.kd_bangsal,bangsal.nm_bangsal,"
+            ps = koneksi.prepareStatement("select set_harga_kamar.kd_kamar,bangsal.kd_bangsal,bangsal.nm_bangsal,"
                     + "set_harga_kamar.kd_pj,penjab.png_jawab,set_harga_kamar.tarif "
                     + "from set_harga_kamar inner join kamar inner join bangsal inner join penjab "
                     + "on set_harga_kamar.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal "
@@ -268,7 +263,9 @@ public class DlgSetHargaKamar extends javax.swing.JDialog {
     private DlgKamar kamar = new DlgKamar(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -841,8 +838,7 @@ private void BtnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetHargaKamar dialog = new DlgSetHargaKamar(
-                    new javax.swing.JFrame(), true);
+            DlgSetHargaKamar dialog = new DlgSetHargaKamar(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -894,10 +890,8 @@ private void BtnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             ps.setString(3, "%" + TCari.getText().trim() + "%");
             rs = ps.executeQuery();
             while (rs.next()) {
-                tabMode.addRow(new Object[]{
-                    rs.getString(1), rs.getString(2), rs.getString(3),
-                    rs.getString(4), rs.getString(5), rs.getDouble(6)
-                });
+                tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getString(5), rs.getDouble(6)});
             }
         } catch (SQLException e) {
             System.out.println("Notifikasi : " + e);
@@ -929,7 +923,6 @@ private void BtnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgSetHargaKamar.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgSetHargaKamar.class.getName());
 
 }

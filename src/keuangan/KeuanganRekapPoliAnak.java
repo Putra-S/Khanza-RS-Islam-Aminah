@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package keuangan;
 
@@ -35,24 +35,30 @@ import kepegawaian.DlgCariDokter;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author maskhanza
  */
 public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
 
     private final Connection koneksi = koneksiDB.condb();
+
     private final sekuel Sequel = new sekuel();
+
     private final validasi Valid = new validasi();
+
     private PreparedStatement pstanggal, psdokter, psreg, pstindakandokter;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private ResultSet rstanggal, rsdokter, rsreg, rstindakandokter;
-    private int i = 0, jmlh0s6l = 0, jmlh0s6p = 0, jmlh7s28l = 0, jmlh7s28p = 0, jmlh29st1l = 0,
-            jmlh29st1p = 0, jmlt1s4l = 0, jmlt1s4p = 0, jmlt5s14l = 0, jmlt5s14p = 0,
-            ttlh0s6l = 0, ttlh0s6p = 0, ttlh7s28l = 0, ttlh7s28p = 0, ttlh29st1l = 0,
-            ttlh29st1p = 0, ttlt1s4l = 0, ttlt1s4p = 0, ttlt5s14l = 0, ttlt5s14p = 0;
-    private String h0s6l = "", h0s6p = "", h7s28l = "", h7s28p = "", h29st1l = "", h29st1p = "",
-            t1s4l = "", t1s4p = "", t5s14l = "", t5s14p = "";
+
+    private int i = 0, jmlh0s6l = 0, jmlh0s6p = 0, jmlh7s28l = 0, jmlh7s28p = 0, jmlh29st1l = 0, jmlh29st1p = 0,
+            jmlt1s4l = 0, jmlt1s4p = 0, jmlt5s14l = 0, jmlt5s14p = 0, ttlh0s6l = 0, ttlh0s6p = 0, ttlh7s28l = 0,
+            ttlh7s28p = 0, ttlh29st1l = 0, ttlh29st1p = 0, ttlt1s4l = 0, ttlt1s4p = 0, ttlt5s14l = 0, ttlt5s14p = 0;
+
+    private String h0s6l = "", h0s6p = "", h7s28l = "", h7s28p = "", h29st1l = "", h29st1p = "", t1s4l = "", t1s4p = "",
+            t5s14l = "", t5s14p = "";
 
     /**
      * Creates new form DlgLhtBiaya
@@ -67,8 +73,7 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
         setSize(885, 674);
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -105,10 +110,8 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -144,10 +147,8 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -197,14 +198,15 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
                 ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
                 + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
                 + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-        );
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -638,8 +640,7 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganRekapPoliAnak dialog = new KeuanganRekapPoliAnak(
-                    new javax.swing.JFrame(), true);
+            KeuanganRekapPoliAnak dialog = new KeuanganRekapPoliAnak(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -702,32 +703,27 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
                     + "where reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like '%anak%' "
                     + "group by reg_periksa.tgl_registrasi order by reg_periksa.tgl_registrasi ");
             try {
-                pstanggal.
-                        setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
-                pstanggal.
-                        setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pstanggal.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstanggal.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rstanggal = pstanggal.executeQuery();
                 while (rstanggal.next()) {
-                    psdokter = koneksi.prepareStatement(
-                            "select reg_periksa.kd_dokter,dokter.nm_dokter from reg_periksa "
-                            + "inner join dokter inner join poliklinik on reg_periksa.kd_dokter=dokter.kd_dokter "
-                            + "and reg_periksa.kd_poli=poliklinik.kd_poli "
-                            + "where poliklinik.nm_poli like '%anak%' and tgl_registrasi=? and dokter.nm_dokter like ? group by reg_periksa.kd_dokter");
+                    psdokter = koneksi
+                            .prepareStatement("select reg_periksa.kd_dokter,dokter.nm_dokter from reg_periksa "
+                                    + "inner join dokter inner join poliklinik on reg_periksa.kd_dokter=dokter.kd_dokter "
+                                    + "and reg_periksa.kd_poli=poliklinik.kd_poli "
+                                    + "where poliklinik.nm_poli like '%anak%' and tgl_registrasi=? and dokter.nm_dokter like ? group by reg_periksa.kd_dokter");
                     try {
-                        psdokter.setString(1, rstanggal.getString(
-                                "tgl_registrasi"));
-                        psdokter.setString(2,
-                                "%" + nmdokter.getText().trim() + "%");
+                        psdokter.setString(1, rstanggal.getString("tgl_registrasi"));
+                        psdokter.setString(2, "%" + nmdokter.getText().trim() + "%");
                         rsdokter = psdokter.executeQuery();
                         while (rsdokter.next()) {
-                            htmlContent.append(
-                                    "<tr class='isi2'><td valign='top' align='left'>TANGGAL : ").
-                                    append(rstanggal.getString("tanggal")).
-                                    append(" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DOKTER : ").
-                                    append(rsdokter.getString("kd_dokter")).
-                                    append(" ").append(rsdokter.getString(
-                                    "nm_dokter")).append(
-                                            "</td></tr><tr class='isi2'><table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='center' width='3%' rowspan='3'>NO.</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>NO.RM</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='3'>NAMA IBU</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='3'>NAMA ANAK</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='12%' rowspan='3'>ALAMAT</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%' rowspan='3'>TGL.LAHIR</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>LAHIR</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='1%' rowspan='2'>L/B</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='25%' colspan='10'>USIA</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='20%' rowspan='2'>TINDAKAN & HARGA</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>L.P.</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='center'>DIMANA</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-6 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>7-28 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>28-1 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>1-4 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>5-14 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center'>BERAPA</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td></tr>");
+                            htmlContent.append("<tr class='isi2'><td valign='top' align='left'>TANGGAL : ")
+                                    .append(rstanggal.getString("tanggal"))
+                                    .append(" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DOKTER : ")
+                                    .append(rsdokter.getString("kd_dokter"))
+                                    .append(" ")
+                                    .append(rsdokter.getString("nm_dokter"))
+                                    .append("</td></tr><tr class='isi2'><table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='center' width='3%' rowspan='3'>NO.</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='3'>NO.RM</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='3'>NAMA IBU</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='10%' rowspan='3'>NAMA ANAK</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='12%' rowspan='3'>ALAMAT</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%' rowspan='3'>TGL.LAHIR</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='6%'>LAHIR</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='1%' rowspan='2'>L/B</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='25%' colspan='10'>USIA</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='20%' rowspan='2'>TINDAKAN & HARGA</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='4%'>L.P.</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='center'>DIMANA</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>0-6 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>7-28 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>28-1 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>1-4 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' colspan='2'>5-14 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center'>BERAPA</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td><td valign='middle' bgcolor='#FFFAFA' align='center'>&nbsp;</td></tr>");
                             psreg = koneksi.prepareStatement(
                                     "select reg_periksa.no_rkm_medis,pasien.nm_ibu,pasien.nm_pasien,pasien.alamat,pasien.jk,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur) as umur,"
                                     + "reg_periksa.stts_daftar,penjab.png_jawab,reg_periksa.no_rawat,reg_periksa.almt_pj,pasien.tgl_lahir,pasien.tmp_lahir,reg_periksa.stts_daftar,"
@@ -749,38 +745,22 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
                                 jmlt1s4p = 0;
                                 jmlt5s14l = 0;
                                 jmlt5s14p = 0;
-                                psreg.setString(1, rstanggal.getString(
-                                        "tgl_registrasi"));
-                                psreg.setString(2, rsdokter.getString(
-                                        "kd_dokter"));
-                                psreg.setString(3, "%" + nmpenjab.getText().
-                                        trim() + "%");
-                                psreg.setString(4,
-                                        "%" + TCari.getText().trim() + "%");
-                                psreg.setString(5, rstanggal.getString(
-                                        "tgl_registrasi"));
-                                psreg.setString(6, rsdokter.getString(
-                                        "kd_dokter"));
-                                psreg.setString(7, "%" + nmpenjab.getText().
-                                        trim() + "%");
-                                psreg.setString(8,
-                                        "%" + TCari.getText().trim() + "%");
-                                psreg.setString(9, rstanggal.getString(
-                                        "tgl_registrasi"));
-                                psreg.setString(10, rsdokter.getString(
-                                        "kd_dokter"));
-                                psreg.setString(11, "%" + nmpenjab.getText().
-                                        trim() + "%");
-                                psreg.setString(12,
-                                        "%" + TCari.getText().trim() + "%");
-                                psreg.setString(13, rstanggal.getString(
-                                        "tgl_registrasi"));
-                                psreg.setString(14, rsdokter.getString(
-                                        "kd_dokter"));
-                                psreg.setString(15, "%" + nmpenjab.getText().
-                                        trim() + "%");
-                                psreg.setString(16,
-                                        "%" + TCari.getText().trim() + "%");
+                                psreg.setString(1, rstanggal.getString("tgl_registrasi"));
+                                psreg.setString(2, rsdokter.getString("kd_dokter"));
+                                psreg.setString(3, "%" + nmpenjab.getText().trim() + "%");
+                                psreg.setString(4, "%" + TCari.getText().trim() + "%");
+                                psreg.setString(5, rstanggal.getString("tgl_registrasi"));
+                                psreg.setString(6, rsdokter.getString("kd_dokter"));
+                                psreg.setString(7, "%" + nmpenjab.getText().trim() + "%");
+                                psreg.setString(8, "%" + TCari.getText().trim() + "%");
+                                psreg.setString(9, rstanggal.getString("tgl_registrasi"));
+                                psreg.setString(10, rsdokter.getString("kd_dokter"));
+                                psreg.setString(11, "%" + nmpenjab.getText().trim() + "%");
+                                psreg.setString(12, "%" + TCari.getText().trim() + "%");
+                                psreg.setString(13, rstanggal.getString("tgl_registrasi"));
+                                psreg.setString(14, rsdokter.getString("kd_dokter"));
+                                psreg.setString(15, "%" + nmpenjab.getText().trim() + "%");
+                                psreg.setString(16, "%" + TCari.getText().trim() + "%");
                                 rsreg = psreg.executeQuery();
                                 while (rsreg.next()) {
                                     h0s6l = "";
@@ -794,157 +774,129 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
                                     t5s14l = "";
                                     t5s14p = "";
                                     if (rsreg.getString("sttsumur").equals("Hr")) {
-                                        if ((rsreg.getInt("umurdaftar") >= 0) && (rsreg.
-                                                getInt("umurdaftar") <= 6)) {
-                                            if (rsreg.getString("jk").
-                                                    equals("L")) {
+                                        if ((rsreg.getInt("umurdaftar") >= 0) && (rsreg.getInt("umurdaftar") <= 6)) {
+                                            if (rsreg.getString("jk").equals("L")) {
                                                 h0s6l = "V";
                                                 jmlh0s6l++;
                                                 ttlh0s6l++;
-                                            } else if (rsreg.getString("jk").
-                                                    equals("P")) {
+                                            } else if (rsreg.getString("jk").equals("P")) {
                                                 h0s6p = "V";
                                                 jmlh0s6p++;
                                                 ttlh0s6p++;
                                             }
-                                        } else if ((rsreg.getInt("umurdaftar") >= 7) && (rsreg.
-                                                getInt("umurdaftar") <= 28)) {
-                                            if (rsreg.getString("jk").
-                                                    equals("L")) {
+                                        } else if ((rsreg.getInt("umurdaftar") >= 7)
+                                                && (rsreg.getInt("umurdaftar") <= 28)) {
+                                            if (rsreg.getString("jk").equals("L")) {
                                                 h7s28l = "V";
                                                 jmlh7s28l++;
                                                 ttlh7s28l++;
-                                            } else if (rsreg.getString("jk").
-                                                    equals("P")) {
+                                            } else if (rsreg.getString("jk").equals("P")) {
                                                 h7s28p = "V";
                                                 jmlh7s28p++;
                                                 ttlh7s28p++;
                                             }
                                         } else if (rsreg.getInt("umurdaftar") > 28) {
-                                            if (rsreg.getString("jk").
-                                                    equals("L")) {
+                                            if (rsreg.getString("jk").equals("L")) {
                                                 h29st1l = "V";
                                                 jmlh29st1l++;
                                                 ttlh29st1l++;
-                                            } else if (rsreg.getString("jk").
-                                                    equals("P")) {
+                                            } else if (rsreg.getString("jk").equals("P")) {
                                                 h29st1p = "V";
                                                 jmlh29st1p++;
                                                 ttlh29st1p++;
                                             }
                                         }
-                                    } else if (rsreg.getString("sttsumur").
-                                            equals("Bl")) {
+                                    } else if (rsreg.getString("sttsumur").equals("Bl")) {
                                         if (rsreg.getString("jk").equals("L")) {
                                             h29st1l = "V";
                                             jmlh29st1l++;
                                             ttlh29st1l++;
-                                        } else if (rsreg.getString("jk").equals(
-                                                "P")) {
+                                        } else if (rsreg.getString("jk").equals("P")) {
                                             h29st1p = "V";
                                             jmlh29st1p++;
                                             ttlh29st1p++;
                                         }
-                                    } else if (rsreg.getString("sttsumur").
-                                            equals("Th")) {
-                                        if ((rsreg.getInt("umurdaftar") >= 0) && (rsreg.
-                                                getInt("umurdaftar") <= 4)) {
-                                            if (rsreg.getString("jk").
-                                                    equals("L")) {
+                                    } else if (rsreg.getString("sttsumur").equals("Th")) {
+                                        if ((rsreg.getInt("umurdaftar") >= 0) && (rsreg.getInt("umurdaftar") <= 4)) {
+                                            if (rsreg.getString("jk").equals("L")) {
                                                 t1s4l = "V";
                                                 jmlt1s4l++;
                                                 ttlt1s4l++;
-                                            } else if (rsreg.getString("jk").
-                                                    equals("P")) {
+                                            } else if (rsreg.getString("jk").equals("P")) {
                                                 t1s4p = "V";
                                                 jmlt1s4p++;
                                                 ttlt1s4p++;
                                             }
-                                        } else if ((rsreg.getInt("umurdaftar") >= 5) && (rsreg.
-                                                getInt("umurdaftar") <= 14)) {
-                                            if (rsreg.getString("jk").
-                                                    equals("L")) {
+                                        } else if ((rsreg.getInt("umurdaftar") >= 5)
+                                                && (rsreg.getInt("umurdaftar") <= 14)) {
+                                            if (rsreg.getString("jk").equals("L")) {
                                                 t5s14l = "V";
                                                 jmlt5s14l++;
                                                 ttlt5s14l++;
-                                            } else if (rsreg.getString("jk").
-                                                    equals("P")) {
+                                            } else if (rsreg.getString("jk").equals("P")) {
                                                 t5s14p = "V";
                                                 jmlt5s14p++;
                                                 ttlt5s14p++;
                                             }
                                         }
                                     }
-                                    htmlContent.append(
-                                            "<tr class='isi3'><td valign='top' align='center'>").
-                                            append(i).append(
-                                            "</td><td valign='top'>").append(
-                                                    rsreg.getString(
-                                                            "no_rkm_medis")).
-                                            append("</td><td valign='top'>").
-                                            append(rsreg.getString("nm_ibu")).
-                                            append("</td><td valign='top'>").
-                                            append(rsreg.getString("nm_pasien")).
-                                            append("</td><td valign='top'>").
-                                            append(rsreg.getString("almt_pj")).
-                                            append("</td><td valign='top' align='center'>").
-                                            append(rsreg.getString("tgl_lahir")).
-                                            append("</td><td valign='top'>").
-                                            append(rsreg.getString("tmp_lahir")).
-                                            append("</td><td valign='top' align='center'>").
-                                            append(rsreg.
-                                                    getString("stts_daftar").
-                                                    substring(0, 1)).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(h0s6l).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(h0s6p).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(h7s28l).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(h7s28p).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(h29st1l).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(h29st1p).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(t1s4l).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(t1s4p).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(t5s14l).append(
-                                            "</td><td valign='top' align='center'>").
-                                            append(t5s14p).append(
-                                            "</td><td valign='top'><table width='100%' border='0' align='center' cellpadding='0px' cellspacing='0' class='tbl_form'>");
-                                    pstindakandokter = koneksi.prepareStatement(
-                                            "select jns_perawatan.nm_perawatan,rawat_jl_dr.biaya_rawat "
-                                            + "from reg_periksa inner join rawat_jl_dr inner join jns_perawatan "
-                                            + "on rawat_jl_dr.no_rawat=reg_periksa.no_rawat "
-                                            + "and rawat_jl_dr.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
-                                            + "where rawat_jl_dr.kd_dokter=? and rawat_jl_dr.no_rawat=?");
+                                    htmlContent.append("<tr class='isi3'><td valign='top' align='center'>")
+                                            .append(i)
+                                            .append("</td><td valign='top'>")
+                                            .append(rsreg.getString("no_rkm_medis"))
+                                            .append("</td><td valign='top'>")
+                                            .append(rsreg.getString("nm_ibu"))
+                                            .append("</td><td valign='top'>")
+                                            .append(rsreg.getString("nm_pasien"))
+                                            .append("</td><td valign='top'>")
+                                            .append(rsreg.getString("almt_pj"))
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(rsreg.getString("tgl_lahir"))
+                                            .append("</td><td valign='top'>")
+                                            .append(rsreg.getString("tmp_lahir"))
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(rsreg.getString("stts_daftar").substring(0, 1))
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(h0s6l)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(h0s6p)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(h7s28l)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(h7s28p)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(h29st1l)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(h29st1p)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(t1s4l)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(t1s4p)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(t5s14l)
+                                            .append("</td><td valign='top' align='center'>")
+                                            .append(t5s14p)
+                                            .append("</td><td valign='top'><table width='100%' border='0' align='center' cellpadding='0px' cellspacing='0' class='tbl_form'>");
+                                    pstindakandokter = koneksi
+                                            .prepareStatement("select jns_perawatan.nm_perawatan,rawat_jl_dr.biaya_rawat "
+                                                    + "from reg_periksa inner join rawat_jl_dr inner join jns_perawatan "
+                                                    + "on rawat_jl_dr.no_rawat=reg_periksa.no_rawat "
+                                                    + "and rawat_jl_dr.kd_jenis_prw=jns_perawatan.kd_jenis_prw "
+                                                    + "where rawat_jl_dr.kd_dokter=? and rawat_jl_dr.no_rawat=?");
                                     try {
-                                        pstindakandokter.setString(1, rsdokter.
-                                                getString("kd_dokter"));
-                                        pstindakandokter.setString(2, rsreg.
-                                                getString("no_rawat"));
-                                        rstindakandokter = pstindakandokter.
-                                                executeQuery();
+                                        pstindakandokter.setString(1, rsdokter.getString("kd_dokter"));
+                                        pstindakandokter.setString(2, rsreg.getString("no_rawat"));
+                                        rstindakandokter = pstindakandokter.executeQuery();
                                         while (rstindakandokter.next()) {
                                             htmlContent.append(
-                                                    "<tr class='isi3'><td valign='top' align='left' width='69%'>&nbsp;").
-                                                    append(rstindakandokter.
-                                                            getString(
-                                                                    "nm_perawatan")).
-                                                    append("</td><td valign='top' align='right' width='30%'>").
-                                                    append(Valid.SetAngka(
-                                                            rstindakandokter.
-                                                                    getDouble(
-                                                                            "biaya_rawat"))).
-                                                    append("</td></tr>");
+                                                    "<tr class='isi3'><td valign='top' align='left' width='69%'>&nbsp;")
+                                                    .append(rstindakandokter.getString("nm_perawatan"))
+                                                    .append("</td><td valign='top' align='right' width='30%'>")
+                                                    .append(Valid.SetAngka(rstindakandokter.getDouble("biaya_rawat")))
+                                                    .append("</td></tr>");
                                         }
                                     } catch (Exception e) {
-                                        System.out.println(
-                                                "keuangan.DlgRekapPoliAnak.tampil() : " + e);
+                                        System.out.println("keuangan.DlgRekapPoliAnak.tampil() : " + e);
                                     } finally {
                                         if (rstindakandokter != null) {
                                             rstindakandokter.close();
@@ -953,17 +905,15 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
                                             pstindakandokter.close();
                                         }
                                     }
-                                    htmlContent.append(
-                                            "</table></td><td valign='top' align='center'>").
-                                            append(Sequel.cariIsi(
+                                    htmlContent.append("</table></td><td valign='top' align='center'>")
+                                            .append(Sequel.cariIsi(
                                                     "select lingkar_perut  from pemeriksaan_ralan where no_rawat=?",
-                                                    rsreg.getString("no_rawat"))).
-                                            append("</td></tr>");
+                                                    rsreg.getString("no_rawat")))
+                                            .append("</td></tr>");
                                     i++;
                                 }
                             } catch (Exception e) {
-                                System.out.println(
-                                        "keuangan.DlgRekapPoliAnak.tampil() : " + e);
+                                System.out.println("keuangan.DlgRekapPoliAnak.tampil() : " + e);
                             } finally {
                                 if (rsreg != null) {
                                     rsreg.close();
@@ -973,34 +923,31 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
                                 }
                             }
                             htmlContent.append(
-                                    "<tr class='isi3'><td valign='top' align='left' colspan='8'>Total : </td><td valign='top' align='center'>").
-                                    append(jmlh0s6l).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlh0s6p).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlh7s28l).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlh7s28p).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlh29st1l).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlh29st1p).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlt1s4l).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlt1s4p).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlt5s14l).append(
-                                    "</td><td valign='top' align='center'>").
-                                    append(jmlt5s14p).append(
-                                    "</td><td valign='top' colspan='2'></td></tr><tr class='isi4'><td valign='top' align='center'>&nbsp;</td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td></tr>");
-                            htmlContent.append(
-                                    "</table>"
-                                    + "</tr>");
+                                    "<tr class='isi3'><td valign='top' align='left' colspan='8'>Total : </td><td valign='top' align='center'>")
+                                    .append(jmlh0s6l)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlh0s6p)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlh7s28l)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlh7s28p)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlh29st1l)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlh29st1p)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlt1s4l)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlt1s4p)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlt5s14l)
+                                    .append("</td><td valign='top' align='center'>")
+                                    .append(jmlt5s14p)
+                                    .append("</td><td valign='top' colspan='2'></td></tr><tr class='isi4'><td valign='top' align='center'>&nbsp;</td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td><td valign='top' align='center'></td></tr>");
+                            htmlContent.append("</table>" + "</tr>");
                         }
                     } catch (Exception e) {
-                        System.out.println(
-                                "keuangan.DlgRekapPoliAnak.tampil() : " + e);
+                        System.out.println("keuangan.DlgRekapPoliAnak.tampil() : " + e);
                     } finally {
                         if (rsdokter != null) {
                             rsdokter.close();
@@ -1020,42 +967,40 @@ public class KeuanganRekapPoliAnak extends javax.swing.JDialog {
                     pstanggal.close();
                 }
             }
-            if ((ttlh0s6l + ttlh0s6p + ttlh7s28l + ttlh7s28p + ttlh29st1l + ttlh29st1p + ttlt1s4l + ttlt1s4p + ttlt5s14l + ttlt5s14p) > 0) {
+            if ((ttlh0s6l + ttlh0s6p + ttlh7s28l + ttlh7s28p + ttlh29st1l + ttlh29st1p + ttlt1s4l + ttlt1s4p + ttlt5s14l
+                    + ttlt5s14p) > 0) {
                 htmlContent.append(
-                        "<tr class='isi2'><td valign='top' align='left'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr class='isi2'><td valign='top' align='left'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr class='isi2'><table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='right' width='10%'>Usia : </td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>0-6 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>7-28 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>28-1 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>1-4 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>5-14 thn</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='right'>Jenis Kelamin :</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='right'>Jumlah Total :</td><td valign='top' align='center'>").
-                        append(ttlh0s6l).append(
-                        "</td><td valign='top' align='center'>").
-                        append(ttlh0s6p).append(
-                        "</td><td valign='top' align='center'>").append(
-                                ttlh7s28l).append(
-                                "</td><td valign='top' align='center'>").append(
-                                ttlh7s28p).append(
-                                "</td><td valign='top' align='center'>").append(
-                                ttlh29st1l).append(
-                                "</td><td valign='top' align='center'>").append(
-                                ttlh29st1p).append(
-                                "</td><td valign='top' align='center'>").append(
-                                ttlt1s4l).append(
-                                "</td><td valign='top' align='center'>").append(
-                                ttlt1s4p).append(
-                                "</td><td valign='top' align='center'>").append(
-                                ttlt5s14l).append(
-                                "</td><td valign='top' align='center'>").append(
-                                ttlt5s14p).append("</td></tr></table></tr>");
+                        "<tr class='isi2'><td valign='top' align='left'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr class='isi2'><td valign='top' align='left'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr><tr class='isi2'><table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='right' width='10%'>Usia : </td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>0-6 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>7-28 hari</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>28-1 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>1-4 thn</td><td valign='middle' bgcolor='#FFFAFA' align='center' width='18%' colspan='2'>5-14 thn</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='right'>Jenis Kelamin :</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td><td valign='middle' bgcolor='#FFFAFA' align='center'>L</td><td valign='middle' bgcolor='#FFFAFA' align='center'>P</td></tr><tr class='isi3'><td valign='middle' bgcolor='#FFFAFA' align='right'>Jumlah Total :</td><td valign='top' align='center'>")
+                        .append(ttlh0s6l)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlh0s6p)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlh7s28l)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlh7s28p)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlh29st1l)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlh29st1p)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlt1s4l)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlt1s4p)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlt5s14l)
+                        .append("</td><td valign='top' align='center'>")
+                        .append(ttlt5s14p)
+                        .append("</td></tr></table></tr>");
             }
-            LoadHTML.setText(
-                    "<html>"
+            LoadHTML.setText("<html>"
                     + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>");
+                    + htmlContent.toString() + "</table>" + "</html>");
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
         this.setCursor(Cursor.getDefaultCursor());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganRekapPoliAnak.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganRekapPoliAnak.class.getName());
 
 }

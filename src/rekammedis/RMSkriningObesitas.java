@@ -24,12 +24,10 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
@@ -42,21 +40,30 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
-public class RMSkriningObesitas extends javax.swing.JDialog {
+public final class RMSkriningObesitas extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -71,24 +78,20 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
-            "Kode Petugas", "Nama Petugas", "Tanggal",
-            "Kebiasaan Makan Manis", "Aktifitas Fisik", "Istirahat Cukup",
-            "Risiko Merokok", "Riwayat Alkohol/Merokok Keluarga",
-            "Riwayat Penggunaan Steroid", "BB(Kg)", "TB(Cm)", "IMT",
-            "Kasifikasi IMT", "LP(Cm)", "Risiko L.P.",
-            "Status Obesitas", "Keterangan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Kode Petugas", "Nama Petugas",
+                    "Tanggal", "Kebiasaan Makan Manis", "Aktifitas Fisik", "Istirahat Cukup", "Risiko Merokok",
+                    "Riwayat Alkohol/Merokok Keluarga", "Riwayat Penggunaan Steroid", "BB(Kg)", "TB(Cm)", "IMT",
+                    "Kasifikasi IMT", "LP(Cm)", "Risiko L.P.", "Status Obesitas", "Keterangan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
-
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -148,11 +151,10 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
         BB.setDocument(new batasInput((byte) 6).getOnlyAngka(BB));
         LP.setDocument(new batasInput((byte) 6).getOnlyAngka(LP));
         Keterangan.setDocument(new batasInput((byte) 40).getKata(Keterangan));
-        TCari.setDocument(new batasInput(100).getKata(TCari));
+        TCari.setDocument(new batasInput((int) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -173,7 +175,6 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                         tampil();
                     }
                 }
-
             });
         }
 
@@ -189,10 +190,8 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPetugas.requestFocus();
             }
@@ -212,11 +211,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             @Override
             public void windowDeactivated(WindowEvent e) {
             }
-
         });
 
-        BB.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        BB.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isBMI();
@@ -231,11 +228,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) {
                 isBMI();
             }
-
         });
 
-        TB.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        TB.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isBMI();
@@ -250,11 +245,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) {
                 isBMI();
             }
-
         });
 
-        IMT.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        IMT.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isLP();
@@ -269,11 +262,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) {
                 isLP();
             }
-
         });
 
-        LP.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        LP.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 isLP();
@@ -288,7 +279,6 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) {
                 isLP();
             }
-
         });
 
         ChkInput.setSelected(false);
@@ -307,8 +297,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -322,7 +311,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1080,7 +1071,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
         jSeparator2.setBounds(0, 180, 807, 1);
 
         jLabel100.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel100.setText("II. PEMERIKSAAN FISIK (KLASIFIKASI WHO ASIA PASIFIK , 2020)");
+        jLabel100.setText("II. PEMERIKSAAN FISIK (KLASIFIKASI WHO ASIA PASIFIK, 2020)");
         jLabel100.setName("jLabel100"); // NOI18N
         FormInput.add(jLabel100);
         jLabel100.setBounds(10, 180, 490, 23);
@@ -1219,11 +1210,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 }//GEN-LAST:event_TPasienKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
-                isEmpty()) {
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().isEmpty()) {
             Valid.textKosong(TNoRw, "pasien");
-        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().
-                trim().isEmpty()) {
+        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().trim().isEmpty()) {
             Valid.textKosong(KdPetugas, "Petugas");
         } else if (BB.getText().trim().isEmpty()) {
             Valid.textKosong(BB, "Berat Badan");
@@ -1244,14 +1233,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 simpan();
             } else {
                 if (TanggalRegistrasi.getText().isEmpty()) {
-                    TanggalRegistrasi.setText(Sequel.cariIsi(
-                            "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
-                            TNoRw.getText()));
+                    TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?", TNoRw.getText()));
                 }
-                if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(),
-                        Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                        getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                        getSelectedItem()) == true) {
+                if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem()) == true) {
                     simpan();
                 }
             }
@@ -1285,21 +1269,16 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             if (akses.getkode().equals("Admin Utama")) {
                 hapus();
             } else {
-                if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
-                        getSelectedRow(), 5).toString())) {
-                    if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 7).toString(), Sequel.
-                                    ambiltanggalsekarang()) == true) {
+                if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString())) {
+                    if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString(), Sequel.ambiltanggalsekarang()) == true) {
                         hapus();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
+                    JOptionPane.showMessageDialog(null, "Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(rootPane,
-                    "Silahkan anda pilih data terlebih dahulu..!!");
+            JOptionPane.showMessageDialog(rootPane, "Silahkan anda pilih data terlebih dahulu..!!");
         }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
@@ -1312,11 +1291,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().
-                isEmpty()) {
+        if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().isEmpty()) {
             Valid.textKosong(TNoRw, "pasien");
-        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().
-                trim().isEmpty()) {
+        } else if (KdPetugas.getText().trim().isEmpty() || NmPetugas.getText().trim().isEmpty()) {
             Valid.textKosong(KdPetugas, "Petugas");
         } else if (BB.getText().trim().isEmpty()) {
             Valid.textKosong(BB, "Berat Badan");
@@ -1337,33 +1314,21 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 if (akses.getkode().equals("Admin Utama")) {
                     ganti();
                 } else {
-                    if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 5).toString())) {
-                        if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.
-                                getSelectedRow(), 7).toString(), Sequel.
-                                        ambiltanggalsekarang()) == true) {
+                    if (KdPetugas.getText().equals(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString())) {
+                        if (Sequel.cekTanggal48jam(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString(), Sequel.ambiltanggalsekarang()) == true) {
                             if (TanggalRegistrasi.getText().isEmpty()) {
-                                TanggalRegistrasi.setText(Sequel.cariIsi(
-                                        "select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?",
-                                        TNoRw.getText()));
+                                TanggalRegistrasi.setText(Sequel.cariIsi("select concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) from reg_periksa where reg_periksa.no_rawat=?", TNoRw.getText()));
                             }
-                            if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.
-                                    getText(), Valid.SetTgl(Tanggal.
-                                            getSelectedItem() + "") + " " + Jam.
-                                            getSelectedItem() + ":" + Menit.
-                                            getSelectedItem() + ":" + Detik.
-                                            getSelectedItem()) == true) {
+                            if (Sequel.cekTanggalRegistrasi(TanggalRegistrasi.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem()) == true) {
                                 ganti();
                             }
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null,
-                                "Hanya bisa diganti oleh petugas yang bersangkutan..!!");
+                        JOptionPane.showMessageDialog(null, "Hanya bisa diganti oleh petugas yang bersangkutan..!!");
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(rootPane,
-                        "Silahkan anda pilih data terlebih dahulu..!!");
+                JOptionPane.showMessageDialog(rootPane, "Silahkan anda pilih data terlebih dahulu..!!");
             }
         }
 }//GEN-LAST:event_BtnEditActionPerformed
@@ -1392,8 +1357,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
     private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         if (tabMode.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(null,
-                    "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+            JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
             BtnBatal.requestFocus();
         } else if (tabMode.getRowCount() != 0) {
             try {
@@ -1427,50 +1391,28 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 for (i = 0; i < tabMode.getRowCount(); i++) {
                     htmlContent.append(
                             "<tr class='isi'>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 0).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 1).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 2).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 3).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 4).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 5).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 6).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 7).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 8).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 9).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 10).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 11).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 12).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 13).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 14).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 15).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 16).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 17).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 18).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 19).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 20).
-                                    toString() + "</td>"
-                            + "<td valign='top'>" + tbObat.getValueAt(i, 21).
-                                    toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 0).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 1).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 2).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 3).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 4).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 5).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 6).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 7).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 8).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 9).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 10).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 11).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 12).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 13).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 14).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 15).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 16).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 17).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 18).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 19).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 20).toString() + "</td>"
+                            + "<td valign='top'>" + tbObat.getValueAt(i, 21).toString() + "</td>"
                             + "</tr>");
                 }
                 LoadHTML.setText(
@@ -1497,24 +1439,21 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 }
 
                 File f = new File("DataSkriningObesitas.html");
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
-                    bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
-                            + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
-                            + "<table width='1700px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                            + "<tr class='isi2'>"
-                            + "<td valign='top' align='center'>"
-                            + "<font size='4' face='Tahoma'>" + akses.
-                                    getnamars() + "</font><br>"
-                            + akses.getalamatrs() + ", " + akses.
-                            getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
-                            + akses.getkontakrs() + ", E-mail : " + akses.
-                            getemailrs() + "<br><br>"
-                            + "<font size='2' face='Tahoma'>DATA SEKRINING OBESITAS<br><br></font>"
-                            + "</td>"
-                            + "</tr>"
-                            + "</table>")
-                    );
-                }
+                BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+                bw.write(LoadHTML.getText().replaceAll("<head>", "<head>"
+                        + "<link href=\"file2.css\" rel=\"stylesheet\" type=\"text/css\" />"
+                        + "<table width='1700px' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
+                        + "<tr class='isi2'>"
+                        + "<td valign='top' align='center'>"
+                        + "<font size='4' face='Tahoma'>" + akses.getnamars() + "</font><br>"
+                        + akses.getalamatrs() + ", " + akses.getkabupatenrs() + ", " + akses.getpropinsirs() + "<br>"
+                        + akses.getkontakrs() + ", E-mail : " + akses.getemailrs() + "<br><br>"
+                        + "<font size='2' face='Tahoma'>DATA SEKRINING OBESITAS<br><br></font>"
+                        + "</td>"
+                        + "</tr>"
+                        + "</table>")
+                );
+                bw.close();
                 Desktop.getDesktop().browse(f.toURI());
 
             } catch (Exception e) {
@@ -1587,8 +1526,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 
     private void tbObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbObatKeyPressed
         if (tabMode.getRowCount() != 0) {
-            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.
-                    getKeyCode() == KeyEvent.VK_DOWN)) {
+            if ((evt.getKeyCode() == KeyEvent.VK_ENTER) || (evt.getKeyCode() == KeyEvent.VK_UP) || (evt.getKeyCode() == KeyEvent.VK_DOWN)) {
                 try {
                     getData();
                 } catch (java.lang.NullPointerException e) {
@@ -1624,8 +1562,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
     private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetugasActionPerformed
         petugas.emptTeks();
         petugas.isCek();
-        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.
-                getHeight() - 20);
+        petugas.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
         petugas.setLocationRelativeTo(internalFrame1);
         petugas.setVisible(true);
     }//GEN-LAST:event_btnPetugasActionPerformed
@@ -1643,28 +1580,17 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             param.put("propinsirs", akses.getpropinsirs());
             param.put("kontakrs", akses.getkontakrs());
             param.put("emailrs", akses.getemailrs());
-            param.put("logo", Sequel.cariGambar(
-                    "select setting.logo from setting"));
-            finger = Sequel.cariIsi(
-                    "select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
-            param.put("finger",
-                    "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.
-                    getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 6).toString() + "\nID " + (finger.
-                    isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                                    toString() : finger) + "\n" + Tanggal.
-                            getSelectedItem());
-            Valid.MyReportqry("rptFormulirSkriningObesitas.jasper", "report",
-                    "::[ Formulir Skrining Obesitas ]::",
+            param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+            finger = Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?", tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            param.put("finger", "Dikeluarkan di " + akses.getnamars() + ", Kabupaten/Kota " + akses.getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString() + "\nID " + (finger.isEmpty() ? tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString() : finger) + "\n" + Tanggal.getSelectedItem());
+            Valid.MyReportqry("rptFormulirSkriningObesitas.jasper", "report", "::[ Formulir Skrining Obesitas ]::",
                     "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,skrining_obesitas.nip,petugas.nama,skrining_obesitas.tanggal,"
                     + "skrining_obesitas.kebiasaan_makan_manis,skrining_obesitas.aktifitas_fisik_setiap_hari,skrining_obesitas.istirahat_cukup,skrining_obesitas.risiko_merokok,"
                     + "skrining_obesitas.riwayat_minum_alkohol_merokok_keluarga,skrining_obesitas.riwayat_penggunaan_obat_steroid,skrining_obesitas.berat_badan,skrining_obesitas.tinggi_badan,"
                     + "skrining_obesitas.imt,skrining_obesitas.kasifikasi_imt,skrining_obesitas.lingkar_pinggang,skrining_obesitas.risiko_lingkar_pinggang,skrining_obesitas.status_obesitas,"
                     + "skrining_obesitas.keterangan from skrining_obesitas inner join reg_periksa on skrining_obesitas.no_rawat=reg_periksa.no_rawat "
                     + "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join petugas on skrining_obesitas.nip=petugas.nip "
-                    + "where reg_periksa.no_rawat='" + tbObat.getValueAt(tbObat.
-                            getSelectedRow(), 0).toString() + "'", param);
+                    + "where reg_periksa.no_rawat='" + tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString() + "'", param);
         }
     }//GEN-LAST:event_MnSkriningObesitasActionPerformed
 
@@ -1717,14 +1643,12 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMSkriningObesitas dialog = new RMSkriningObesitas(
-                    new javax.swing.JFrame(), true);
+            RMSkriningObesitas dialog = new RMSkriningObesitas(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     System.exit(0);
                 }
-
             });
             dialog.setVisible(true);
         });
@@ -1833,10 +1757,12 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
         Valid.tabelKosong(tabMode);
         try {
             /*
-            "No.Rawat","No.RM","Nama Pasien","Tgl.Lahir","J.K.","Kode Petugas","Nama Petugas","Tanggal",
-            "Kebiasaan Makan Manis","Aktifitas Fisik","Istirahat Cukup","Risiko Merokok","Riwayat Alkohol/Merokok Keluarga",
-            "Riwayat Penggunaan Steroid","BB(Kg)","TB(Cm)","IMT","Kasifikasi IMT","LP","Risiko L.P.",
-            "Status Obesitas","Keterangan"
+			 * "No.Rawat","No.RM","Nama Pasien","Tgl.Lahir","J.K.","Kode Petugas"
+			 * ,"Nama Petugas","Tanggal",
+			 * "Kebiasaan Makan Manis","Aktifitas Fisik","Istirahat Cukup"
+			 * ,"Risiko Merokok","Riwayat Alkohol/Merokok Keluarga",
+			 * "Riwayat Penggunaan Steroid","BB(Kg)","TB(Cm)","IMT","Kasifikasi IMT"
+			 * ,"LP","Risiko L.P.", "Status Obesitas","Keterangan"
              */
             if (TCari.getText().trim().isEmpty()) {
                 ps = koneksi.prepareStatement(
@@ -1862,15 +1788,11 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1880,24 +1802,18 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("nip"), rs.getString(
-                        "nama"), rs.getString("tanggal"),
-                        rs.getString("kebiasaan_makan_manis"), rs.getString(
-                        "aktifitas_fisik_setiap_hari"), rs.getString(
-                        "istirahat_cukup"), rs.getString("risiko_merokok"), rs.
-                        getString("riwayat_minum_alkohol_merokok_keluarga"),
-                        rs.getString("riwayat_penggunaan_obat_steroid"), rs.
-                        getString("berat_badan"), rs.getString("tinggi_badan"),
-                        rs.getString("imt"), rs.getString("kasifikasi_imt"), rs.
-                        getString("lingkar_pinggang"),
-                        rs.getString("risiko_lingkar_pinggang"), rs.getString(
-                        "status_obesitas"), rs.getString("keterangan")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("nip"), rs.getString("nama"), rs.getString("tanggal"),
+                        rs.getString("kebiasaan_makan_manis"), rs.getString("aktifitas_fisik_setiap_hari"),
+                        rs.getString("istirahat_cukup"), rs.getString("risiko_merokok"),
+                        rs.getString("riwayat_minum_alkohol_merokok_keluarga"),
+                        rs.getString("riwayat_penggunaan_obat_steroid"), rs.getString("berat_badan"),
+                        rs.getString("tinggi_badan"), rs.getString("imt"), rs.getString("kasifikasi_imt"),
+                        rs.getString("lingkar_pinggang"), rs.getString("risiko_lingkar_pinggang"),
+                        rs.getString("status_obesitas"), rs.getString("keterangan")});
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 System.out.println("Notif : " + e);
             } finally {
                 if (rs != null) {
@@ -1907,7 +1823,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                     ps.close();
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
         }
         LCount.setText("" + tabMode.getRowCount());
@@ -1934,61 +1850,35 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(14, 15));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(17, 19));
-            KebiasaanMakanManis.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            AktifitasFisik.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 9).toString());
-            IstirahatCukup.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            RisikoMerokok.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 11).toString());
-            RiwayatKeluarga.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            RiwayatSteroid.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            BB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                            toString());
-            TB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                            toString());
-            IMT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            KlasifikasiIMT.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 17).toString());
-            LP.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                            toString());
-            RisikoLP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            StatusObesitas.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 20).toString());
-            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(14, 15));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(17, 19));
+            KebiasaanMakanManis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            AktifitasFisik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            IstirahatCukup.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            RisikoMerokok.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            RiwayatKeluarga.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            RiwayatSteroid.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            BB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            TB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            IMT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            KlasifikasiIMT.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            LP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            RisikoLP.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            StatusObesitas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
         }
     }
 
     private void isRawat() {
         try {
-            ps = koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"
+            ps = koneksi.prepareStatement("select reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,"
                     + "reg_periksa.tgl_registrasi,reg_periksa.jam_reg "
                     + "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "where reg_periksa.no_rawat=?");
@@ -2001,11 +1891,9 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 System.out.println("Notif : " + e);
             } finally {
                 if (rs != null) {
@@ -2015,7 +1903,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                     ps.close();
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Notif : " + e);
         }
     }
@@ -2038,8 +1926,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 172));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2063,8 +1950,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
             if (NmPetugas.getText().isEmpty()) {
                 KdPetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
 
@@ -2083,10 +1969,11 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
-            @Override
             public void actionPerformed(ActionEvent e) {
                 String nol_jam = "";
                 String nol_menit = "";
@@ -2125,12 +2012,11 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
             }
-
         };
         // Timer
         new Timer(1000, taskPerformer).start();
@@ -2141,22 +2027,16 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                 "no_rawat=?,tanggal=?,kebiasaan_makan_manis=?,aktifitas_fisik_setiap_hari=?,istirahat_cukup=?,risiko_merokok=?,"
                 + "riwayat_minum_alkohol_merokok_keluarga=?,riwayat_penggunaan_obat_steroid=?,berat_badan=?,tinggi_badan=?,imt=?,kasifikasi_imt=?,lingkar_pinggang=?,"
                 + "risiko_lingkar_pinggang=?,status_obesitas=?,keterangan=?,nip=?",
-                18, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    KebiasaanMakanManis.getSelectedItem().toString(),
-                    AktifitasFisik.getSelectedItem().toString(), IstirahatCukup.
-                    getSelectedItem().toString(),
-                    RisikoMerokok.getSelectedItem().toString(), RiwayatKeluarga.
-                    getSelectedItem().toString(), RiwayatSteroid.
-                            getSelectedItem().toString(), BB.getText(),
-                    TB.getText(), IMT.getText(), KlasifikasiIMT.getText(), LP.
-                    getText(), RisikoLP.getText(), StatusObesitas.getText(),
-                    Keterangan.getText(), KdPetugas.getText(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                18,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    KebiasaanMakanManis.getSelectedItem().toString(), AktifitasFisik.getSelectedItem().toString(),
+                    IstirahatCukup.getSelectedItem().toString(), RisikoMerokok.getSelectedItem().toString(),
+                    RiwayatKeluarga.getSelectedItem().toString(), RiwayatSteroid.getSelectedItem().toString(),
+                    BB.getText(), TB.getText(), IMT.getText(), KlasifikasiIMT.getText(), LP.getText(),
+                    RisikoLP.getText(), StatusObesitas.getText(), Keterangan.getText(), KdPetugas.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
@@ -2164,43 +2044,29 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
             tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(KdPetugas.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 7);
-            tbObat.setValueAt(KebiasaanMakanManis.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 8);
-            tbObat.setValueAt(AktifitasFisik.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 9);
-            tbObat.setValueAt(IstirahatCukup.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 10);
-            tbObat.setValueAt(RisikoMerokok.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 11);
-            tbObat.setValueAt(RiwayatKeluarga.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 12);
-            tbObat.setValueAt(RiwayatSteroid.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(KebiasaanMakanManis.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(AktifitasFisik.getSelectedItem().toString(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(IstirahatCukup.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(RisikoMerokok.getSelectedItem().toString(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(RiwayatKeluarga.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(RiwayatSteroid.getSelectedItem().toString(), tbObat.getSelectedRow(), 13);
             tbObat.setValueAt(BB.getText(), tbObat.getSelectedRow(), 14);
             tbObat.setValueAt(TB.getText(), tbObat.getSelectedRow(), 15);
             tbObat.setValueAt(IMT.getText(), tbObat.getSelectedRow(), 16);
-            tbObat.setValueAt(KlasifikasiIMT.getText(), tbObat.getSelectedRow(),
-                    17);
+            tbObat.setValueAt(KlasifikasiIMT.getText(), tbObat.getSelectedRow(), 17);
             tbObat.setValueAt(LP.getText(), tbObat.getSelectedRow(), 18);
             tbObat.setValueAt(RisikoLP.getText(), tbObat.getSelectedRow(), 19);
-            tbObat.setValueAt(StatusObesitas.getText(), tbObat.getSelectedRow(),
-                    20);
+            tbObat.setValueAt(StatusObesitas.getText(), tbObat.getSelectedRow(), 20);
             tbObat.setValueAt(Keterangan.getText(), tbObat.getSelectedRow(), 21);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.
-                queryu2tf("delete from skrining_obesitas where no_rawat=?", 1,
-                        new String[]{
-                            tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                                    toString()
-                        }) == true) {
+        if (Sequel.queryu2tf("delete from skrining_obesitas where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2213,23 +2079,18 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
         try {
             if ((!TB.getText().isEmpty()) && (!BB.getText().isEmpty())) {
                 try {
-                    IMT.setText(Valid.SetAngka8(
-                            Valid.SetAngka(BB.getText()) / ((Valid.SetAngka(TB.
-                            getText()) / 100) * (Valid.SetAngka(TB.getText()) / 100)),
-                            1) + "");
+                    IMT.setText(Valid.SetAngka8(Valid.SetAngka(BB.getText())
+                            / ((Valid.SetAngka(TB.getText()) / 100) * (Valid.SetAngka(TB.getText()) / 100)), 1) + "");
                 } catch (Exception e) {
                     IMT.setText("");
                 }
                 if (Valid.SetAngka(IMT.getText()) < 18.5) {
                     KlasifikasiIMT.setText("Berat Badan Kurang");
-                } else if ((Valid.SetAngka(IMT.getText()) >= 18.5) && (Valid.
-                        SetAngka(IMT.getText()) <= 22.9)) {
+                } else if ((Valid.SetAngka(IMT.getText()) >= 18.5) && (Valid.SetAngka(IMT.getText()) <= 22.9)) {
                     KlasifikasiIMT.setText("Berat Badan Normal");
-                } else if ((Valid.SetAngka(IMT.getText()) >= 23) && (Valid.
-                        SetAngka(IMT.getText()) <= 24.9)) {
+                } else if ((Valid.SetAngka(IMT.getText()) >= 23) && (Valid.SetAngka(IMT.getText()) <= 24.9)) {
                     KlasifikasiIMT.setText("Kelebihan Berat Badan");
-                } else if ((Valid.SetAngka(IMT.getText()) >= 25) && (Valid.
-                        SetAngka(IMT.getText()) <= 29.9)) {
+                } else if ((Valid.SetAngka(IMT.getText()) >= 25) && (Valid.SetAngka(IMT.getText()) <= 29.9)) {
                     KlasifikasiIMT.setText("Obesitas I");
                 } else if (Valid.SetAngka(IMT.getText()) >= 30) {
                     KlasifikasiIMT.setText("Obesitas II");
@@ -2249,8 +2110,7 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 
     private void isLP() {
         try {
-            if ((!LP.getText().isEmpty()) && (!Jk.getText().isEmpty()) && (!KlasifikasiIMT.
-                    getText().isEmpty())) {
+            if ((!LP.getText().isEmpty()) && (!Jk.getText().isEmpty()) && (!KlasifikasiIMT.getText().isEmpty())) {
                 if (Jk.getText().equals("L")) {
                     if (KlasifikasiIMT.getText().equals("Berat Badan Kurang")) {
                         if (Valid.SetAngka(LP.getText()) < 90) {
@@ -2258,15 +2118,13 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                         } else if (Valid.SetAngka(LP.getText()) >= 90) {
                             RisikoLP.setText("Cukup");
                         }
-                    } else if (KlasifikasiIMT.getText().equals(
-                            "Berat Badan Normal")) {
+                    } else if (KlasifikasiIMT.getText().equals("Berat Badan Normal")) {
                         if (Valid.SetAngka(LP.getText()) < 90) {
                             RisikoLP.setText("Cukup");
                         } else if (Valid.SetAngka(LP.getText()) >= 90) {
                             RisikoLP.setText("Meningkat");
                         }
-                    } else if (KlasifikasiIMT.getText().equals(
-                            "Kelebihan Berat Badan")) {
+                    } else if (KlasifikasiIMT.getText().equals("Kelebihan Berat Badan")) {
                         if (Valid.SetAngka(LP.getText()) < 90) {
                             RisikoLP.setText("Meningkat");
                         } else if (Valid.SetAngka(LP.getText()) >= 90) {
@@ -2294,15 +2152,13 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
                         } else if (Valid.SetAngka(LP.getText()) >= 80) {
                             RisikoLP.setText("Cukup");
                         }
-                    } else if (KlasifikasiIMT.getText().equals(
-                            "Berat Badan Normal")) {
+                    } else if (KlasifikasiIMT.getText().equals("Berat Badan Normal")) {
                         if (Valid.SetAngka(LP.getText()) < 80) {
                             RisikoLP.setText("Cukup");
                         } else if (Valid.SetAngka(LP.getText()) >= 80) {
                             RisikoLP.setText("Meningkat");
                         }
-                    } else if (KlasifikasiIMT.getText().equals(
-                            "Kelebihan Berat Badan")) {
+                    } else if (KlasifikasiIMT.getText().equals("Kelebihan Berat Badan")) {
                         if (Valid.SetAngka(LP.getText()) < 80) {
                             RisikoLP.setText("Meningkat");
                         } else if (Valid.SetAngka(LP.getText()) >= 80) {
@@ -2337,18 +2193,15 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
 
     private void isObesitas() {
         try {
-            if ((!LP.getText().isEmpty()) && (!Jk.getText().isEmpty()) && (!IMT.
-                    getText().isEmpty())) {
+            if ((!LP.getText().isEmpty()) && (!Jk.getText().isEmpty()) && (!IMT.getText().isEmpty())) {
                 if (Jk.getText().equals("L")) {
-                    if ((Valid.SetAngka(LP.getText()) >= 90) || (Valid.SetAngka(
-                            IMT.getText()) >= 25)) {
+                    if ((Valid.SetAngka(LP.getText()) >= 90) || (Valid.SetAngka(IMT.getText()) >= 25)) {
                         StatusObesitas.setText("Berisiko");
                     } else {
                         StatusObesitas.setText("Normal");
                     }
                 } else if (Jk.getText().equals("P")) {
-                    if ((Valid.SetAngka(LP.getText()) >= 80) || (Valid.SetAngka(
-                            IMT.getText()) >= 25)) {
+                    if ((Valid.SetAngka(LP.getText()) >= 80) || (Valid.SetAngka(IMT.getText()) >= 25)) {
                         StatusObesitas.setText("Berisiko");
                     } else {
                         StatusObesitas.setText("Normal");
@@ -2365,43 +2218,28 @@ public class RMSkriningObesitas extends javax.swing.JDialog {
     }
 
     private void simpan() {
-        if (Sequel.menyimpantf("skrining_obesitas",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    KebiasaanMakanManis.getSelectedItem().toString(),
-                    AktifitasFisik.getSelectedItem().toString(), IstirahatCukup.
-                    getSelectedItem().toString(),
-                    RisikoMerokok.getSelectedItem().toString(), RiwayatKeluarga.
-                    getSelectedItem().toString(), RiwayatSteroid.
-                            getSelectedItem().toString(), BB.getText(),
-                    TB.getText(), IMT.getText(), KlasifikasiIMT.getText(), LP.
-                    getText(), RisikoLP.getText(), StatusObesitas.getText(),
-                    Keterangan.getText(), KdPetugas.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), Jk.getText(), KdPetugas.getText(), NmPetugas.
-                getText(),
-                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                getSelectedItem(),
-                KebiasaanMakanManis.getSelectedItem().toString(),
-                AktifitasFisik.getSelectedItem().toString(), IstirahatCukup.
-                getSelectedItem().toString(), RisikoMerokok.getSelectedItem().
-                toString(), RiwayatKeluarga.getSelectedItem().toString(),
-                RiwayatSteroid.getSelectedItem().toString(), BB.getText(), TB.
-                getText(), IMT.getText(), KlasifikasiIMT.getText(), LP.getText(),
-                RisikoLP.getText(), StatusObesitas.getText(), Keterangan.
-                getText()
-            });
+        if (Sequel.menyimpantf("skrining_obesitas", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    KebiasaanMakanManis.getSelectedItem().toString(), AktifitasFisik.getSelectedItem().toString(),
+                    IstirahatCukup.getSelectedItem().toString(), RisikoMerokok.getSelectedItem().toString(),
+                    RiwayatKeluarga.getSelectedItem().toString(), RiwayatSteroid.getSelectedItem().toString(),
+                    BB.getText(), TB.getText(), IMT.getText(), KlasifikasiIMT.getText(), LP.getText(),
+                    RisikoLP.getText(), StatusObesitas.getText(), Keterangan.getText(),
+                    KdPetugas.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                Jk.getText(), KdPetugas.getText(), NmPetugas.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                KebiasaanMakanManis.getSelectedItem().toString(), AktifitasFisik.getSelectedItem().toString(),
+                IstirahatCukup.getSelectedItem().toString(), RisikoMerokok.getSelectedItem().toString(),
+                RiwayatKeluarga.getSelectedItem().toString(), RiwayatSteroid.getSelectedItem().toString(),
+                BB.getText(), TB.getText(), IMT.getText(), KlasifikasiIMT.getText(), LP.getText(),
+                RisikoLP.getText(), StatusObesitas.getText(), Keterangan.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(RMSkriningObesitas.class.
-            getName());
 }

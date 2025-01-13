@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -41,24 +41,37 @@ import simrskhanza.DlgKecamatan;
 import simrskhanza.DlgKelurahan;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgKunjunganRanap extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private int i = 0, lama = 0, baru = 0, laki = 0, per = 0;
-    private String setbaru = "", setlama = "", umurlk = "", umurpr = "", kddiagnosa = "", diagnosa = "", dokterdpjp = "", status = "";
+
+    private String setbaru = "", setlama = "", umurlk = "", umurpr = "", kddiagnosa = "", diagnosa = "",
+            dokterdpjp = "", status = "";
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private DlgCariBangsal kamar = new DlgCariBangsal(null, false);
+
     private DlgKecamatan kecamatan = new DlgKecamatan(null, false);
+
     private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
 
     /**
@@ -73,10 +86,9 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
         tabMode = new DefaultTableModel(null,
-                new String[]{"No.", "Lama", "Baru", "Nama Pasien", "L", "P",
-                    "Alamat", "Kelurahan", "Kecamatan", "Kabupaten", "Kode",
-                    "Diagnosa", "Ruang", "Stts.Pulang", "Tgl.Masuk",
-                    "Tgl.Keluar", "DPJP", "Cara Bayar"}) {
+                new String[]{"No.", "Lama", "Baru", "Nama Pasien", "L", "P", "Alamat", "Kelurahan", "Kecamatan",
+                    "Kabupaten", "Kode", "Diagnosa", "Ruang", "Stts.Pulang", "Tgl.Masuk", "Tgl.Keluar", "DPJP",
+                    "Cara Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -84,7 +96,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -130,10 +143,10 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new String[]{"No.", "Lama",
-            "Baru", "Nama Pasien", "L", "P", "Alamat", "Kelurahan", "Kecamatan",
-            "Kabupaten", "Kode", "Diagnosa", "Ruang", "Stts.Pulang", "Tgl.Masuk",
-            "Tgl.Keluar", "DPJP", "Cara Bayar"}) {
+        tabMode2 = new DefaultTableModel(null,
+                new String[]{"No.", "Lama", "Baru", "Nama Pasien", "L", "P", "Alamat", "Kelurahan", "Kecamatan",
+                    "Kabupaten", "Kode", "Diagnosa", "Ruang", "Stts.Pulang", "Tgl.Masuk", "Tgl.Keluar", "DPJP",
+                    "Cara Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -141,7 +154,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
 
         };
         tbBangsal2.setModel(tabMode2);
-        //tbBangsal2.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
+        // tbBangsal2.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal2.getBackground()));
         tbBangsal2.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -189,8 +203,7 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput(90).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -239,10 +252,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -296,8 +307,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
-                            kabupaten.getTable().getSelectedRow(), 0).toString());
+                    nmkabupaten
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkabupaten.requestFocus();
             }
@@ -351,8 +362,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kecamatan.getTable().getSelectedRow() != -1) {
-                    nmkecamatan.setText(kecamatan.getTable().getValueAt(
-                            kecamatan.getTable().getSelectedRow(), 0).toString());
+                    nmkecamatan
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkecamatan.requestFocus();
             }
@@ -406,8 +417,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kelurahan.getTable().getSelectedRow() != -1) {
-                    nmkelurahan.setText(kelurahan.getTable().getValueAt(
-                            kelurahan.getTable().getSelectedRow(), 0).toString());
+                    nmkelurahan
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkelurahan.requestFocus();
             }
@@ -461,10 +472,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -518,10 +527,8 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kamar.getTable().getSelectedRow() != -1) {
-                    kdkamar.setText(kamar.getTable().getValueAt(
-                            kamar.getTable().getSelectedRow(), 0).toString());
-                    nmkamar.setText(kamar.getTable().getValueAt(
-                            kamar.getTable().getSelectedRow(), 1).toString());
+                    kdkamar.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 0).toString());
+                    nmkamar.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 1).toString());
                     kdkamar.requestFocus();
                 }
             }
@@ -549,7 +556,9 @@ public class DlgKunjunganRanap extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1411,8 +1420,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgKunjunganRanap dialog = new DlgKunjunganRanap(
-                    new javax.swing.JFrame(), true);
+            DlgKunjunganRanap dialog = new DlgKunjunganRanap(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1487,11 +1495,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "inner join kabupaten inner join kecamatan inner join kelurahan on reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat "
                     + "and reg_periksa.kd_pj=penjab.kd_pj and pasien.kd_kab=kabupaten.kd_kab and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal "
                     + "and reg_periksa.kd_dokter=dokter.kd_dokter and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel where "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.alamat like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.nm_pasien like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and dokter.nm_dokter like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and reg_periksa.no_rkm_medis like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and kamar_inap.kd_kamar like ? "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.alamat like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.nm_pasien like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and dokter.nm_dokter like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and reg_periksa.no_rkm_medis like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and reg_periksa.status_lanjut='Ranap' and reg_periksa.stts<>'Batal' and kamar_inap.stts_pulang<>'Pindah Kamar' and reg_periksa.tgl_registrasi between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and kamar_inap.kd_kamar like ? "
                     + "group by reg_periksa.no_rawat order by reg_periksa.tgl_registrasi");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
@@ -1543,8 +1556,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rs.next()) {
                     dokterdpjp = rs.getString("nm_dokter");
                     try {
-                        ps2 = koneksi.prepareStatement(
-                                "select dokter.nm_dokter from dpjp_ranap inner join dokter "
+                        ps2 = koneksi.prepareStatement("select dokter.nm_dokter from dpjp_ranap inner join dokter "
                                 + "on dpjp_ranap.kd_dokter=dokter.kd_dokter where dpjp_ranap.no_rawat=? ");
                         try {
                             ps2.setString(1, rs.getString("no_rawat"));
@@ -1566,8 +1578,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         System.out.println("Notifikasi : " + e);
                     }
 
-                    if (dokterdpjp.toLowerCase().contains(nmdokter.getText().
-                            toLowerCase())) {
+                    if (dokterdpjp.toLowerCase().contains(nmdokter.getText().toLowerCase())) {
                         setbaru = "";
                         setlama = "";
                         if (rs.getString("stts_daftar").equals("Baru")) {
@@ -1613,24 +1624,18 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                             }
                         }
 
-                        tabMode.addRow(new Object[]{
-                            i, setlama, setbaru, rs.getString("nm_pasien"),
-                            umurlk, umurpr, rs.getString("almt_pj"), rs.
-                            getString("nm_kel"), rs.getString("nm_kec"), rs.
-                            getString("nm_kab"), kddiagnosa, diagnosa, rs.
-                            getString("kd_kamar") + " " + rs.getString(
-                            "nm_bangsal"), rs.getString("stts_pulang"), rs.
-                            getString("tgl_masuk"), rs.getString("tgl_keluar"),
-                            dokterdpjp, rs.getString("png_jawab")
-                        });
+                        tabMode.addRow(new Object[]{i, setlama, setbaru, rs.getString("nm_pasien"), umurlk, umurpr,
+                            rs.getString("almt_pj"), rs.getString("nm_kel"), rs.getString("nm_kec"),
+                            rs.getString("nm_kab"), kddiagnosa, diagnosa,
+                            rs.getString("kd_kamar") + " " + rs.getString("nm_bangsal"),
+                            rs.getString("stts_pulang"), rs.getString("tgl_masuk"), rs.getString("tgl_keluar"),
+                            dokterdpjp, rs.getString("png_jawab")});
                         i++;
                     }
 
                 }
                 if (i >= 2) {
-                    tabMode.addRow(new Object[]{
-                        ">>", lama, baru, "", laki, per, "", "", "", ""
-                    });
+                    tabMode.addRow(new Object[]{">>", lama, baru, "", laki, per, "", "", "", ""});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1662,11 +1667,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "inner join kabupaten inner join kecamatan inner join kelurahan on reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=kamar_inap.no_rawat and "
                     + "kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal and reg_periksa.kd_pj=penjab.kd_pj and pasien.kd_kab=kabupaten.kd_kab "
                     + "and reg_periksa.kd_dokter=dokter.kd_dokter and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel where "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and dokter.nm_dokter like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.alamat like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.nm_pasien like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and reg_periksa.no_rkm_medis like ? or "
-                    + "reg_periksa.stts_daftar like '%" + status + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and kamar_inap.kd_kamar like ? "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and dokter.nm_dokter like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.alamat like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.nm_pasien like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and reg_periksa.no_rkm_medis like ? or "
+                    + "reg_periksa.stts_daftar like '%" + status
+                    + "%' and kamar_inap.stts_pulang<>'Pindah Kamar' and kamar_inap.tgl_keluar between ? and ? and bangsal.nm_bangsal like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and kamar_inap.kd_kamar like ? "
                     + "group by reg_periksa.no_rawat order by kamar_inap.tgl_keluar");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
@@ -1718,8 +1728,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while (rs.next()) {
                     dokterdpjp = rs.getString("nm_dokter");
                     try {
-                        ps2 = koneksi.prepareStatement(
-                                "select dokter.nm_dokter from dpjp_ranap inner join dokter "
+                        ps2 = koneksi.prepareStatement("select dokter.nm_dokter from dpjp_ranap inner join dokter "
                                 + "on dpjp_ranap.kd_dokter=dokter.kd_dokter where dpjp_ranap.no_rawat=? ");
                         try {
                             ps2.setString(1, rs.getString("no_rawat"));
@@ -1740,8 +1749,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
                     }
-                    if (dokterdpjp.toLowerCase().contains(nmdokter.getText().
-                            toLowerCase())) {
+                    if (dokterdpjp.toLowerCase().contains(nmdokter.getText().toLowerCase())) {
                         setbaru = "";
                         setlama = "";
                         if (rs.getString("stts_daftar").equals("Baru")) {
@@ -1786,23 +1794,17 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                 ps2.close();
                             }
                         }
-                        tabMode2.addRow(new Object[]{
-                            i, setlama, setbaru, rs.getString("nm_pasien"),
-                            umurlk, umurpr, rs.getString("almt_pj"), rs.
-                            getString("nm_kel"), rs.getString("nm_kec"), rs.
-                            getString("nm_kab"), kddiagnosa, diagnosa, rs.
-                            getString("kd_kamar") + " " + rs.getString(
-                            "nm_bangsal"), rs.getString("stts_pulang"), rs.
-                            getString("tgl_masuk"), rs.getString("tgl_keluar"),
-                            dokterdpjp, rs.getString("png_jawab")
-                        });
+                        tabMode2.addRow(new Object[]{i, setlama, setbaru, rs.getString("nm_pasien"), umurlk, umurpr,
+                            rs.getString("almt_pj"), rs.getString("nm_kel"), rs.getString("nm_kec"),
+                            rs.getString("nm_kab"), kddiagnosa, diagnosa,
+                            rs.getString("kd_kamar") + " " + rs.getString("nm_bangsal"),
+                            rs.getString("stts_pulang"), rs.getString("tgl_masuk"), rs.getString("tgl_keluar"),
+                            dokterdpjp, rs.getString("png_jawab")});
                         i++;
                     }
                 }
                 if (i >= 2) {
-                    tabMode2.addRow(new Object[]{
-                        ">>", lama, baru, "", laki, per, "", "", "", ""
-                    });
+                    tabMode2.addRow(new Object[]{">>", lama, baru, "", laki, per, "", "", "", ""});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1841,7 +1843,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgKunjunganRanap.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgKunjunganRanap.class.getName());
 
 }

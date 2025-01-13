@@ -33,25 +33,35 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
-    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(
-            null, false);
-    private double pemisahan_limbah_oleh_penghasil_limbah = 0, limbah_infeksius_dimasukkan_kantong_kuning = 0, limbah_noninfeksius_dimasukkan_kantong_hitam = 0,
-            limbah_tigaperempat_diikat = 0, limbah_segera_dibawa_kepembuangan_sementara = 0, ttlpemisahan_limbah_oleh_penghasil_limbah = 0, kotak_sampah_dalam_kondisi_bersih = 0,
-            pembersihan_tempat_sampah_dengan_desinfekten = 0, pembersihan_penampungan_sementara_dengan_desinfekten = 0, ttllimbah_infeksius_dimasukkan_kantong_kuning = 0,
-            ttllimbah_noninfeksius_dimasukkan_kantong_hitam = 0, ttllimbah_tigaperempat_diikat = 0, ttllimbah_segera_dibawa_kepembuangan_sementara = 0,
-            ttlkotak_sampah_dalam_kondisi_bersih = 0, ttlpembersihan_tempat_sampah_dengan_desinfekten = 0, ttlpembersihan_penampungan_sementara_dengan_desinfekten = 0, ttlpenilaian = 0;
+
+    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(null, false);
+
+    private double pemisahan_limbah_oleh_penghasil_limbah = 0, limbah_infeksius_dimasukkan_kantong_kuning = 0,
+            limbah_noninfeksius_dimasukkan_kantong_hitam = 0, limbah_tigaperempat_diikat = 0,
+            limbah_segera_dibawa_kepembuangan_sementara = 0, ttlpemisahan_limbah_oleh_penghasil_limbah = 0,
+            kotak_sampah_dalam_kondisi_bersih = 0, pembersihan_tempat_sampah_dengan_desinfekten = 0,
+            pembersihan_penampungan_sementara_dengan_desinfekten = 0, ttllimbah_infeksius_dimasukkan_kantong_kuning = 0,
+            ttllimbah_noninfeksius_dimasukkan_kantong_hitam = 0, ttllimbah_tigaperempat_diikat = 0,
+            ttllimbah_segera_dibawa_kepembuangan_sementara = 0, ttlkotak_sampah_dalam_kondisi_bersih = 0,
+            ttlpembersihan_tempat_sampah_dengan_desinfekten = 0,
+            ttlpembersihan_penampungan_sementara_dengan_desinfekten = 0, ttlpenilaian = 0;
 
     /**
      * Creates new form DlgRujuk
@@ -65,18 +75,14 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tanggal Audit", "ID Ruang", "Ruang/Unit",
-            "1.Pemisahan Limbah Dilakukan Segera Oleh Penghasilan Limbah",
-            "2.Limbah Infeksius Dimasukkan Ke Dalam Kantong Plastik Kuning",
-            "3.Limbah Non Infeksius Dimasukkan Ke Dalam Kantong Plastik Hitam",
-            "4.Limbah 3/4 Penuh Diikat",
-            "5.Limbah Segera Dibawa Ke Tempat Pembuangan Sampah Sementara",
-            "6.Kotak Sampah Dalam Kondisi Bersih",
-            "7.Pembersihan Tempat Sampah Menggunakan Disinkektan",
-            "8.Pembersihan Penampungan Sementara Menggunakan Disinfektan",
-            "Ttl.Nilai(%)"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Tanggal Audit", "ID Ruang", "Ruang/Unit",
+                    "1.Pemisahan Limbah Dilakukan Segera Oleh Penghasilan Limbah",
+                    "2.Limbah Infeksius Dimasukkan Ke Dalam Kantong Plastik Kuning",
+                    "3.Limbah Non Infeksius Dimasukkan Ke Dalam Kantong Plastik Hitam", "4.Limbah 3/4 Penuh Diikat",
+                    "5.Limbah Segera Dibawa Ke Tempat Pembuangan Sampah Sementara",
+                    "6.Kotak Sampah Dalam Kondisi Bersih", "7.Pembersihan Tempat Sampah Menggunakan Disinkektan",
+                    "8.Pembersihan Penampungan Sementara Menggunakan Disinfektan", "Ttl.Nilai(%)"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -85,7 +91,8 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -123,8 +130,7 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -161,10 +167,8 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    KdRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 0).toString());
-                    NmRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 1).toString());
+                    KdRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 0).toString());
+                    NmRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                 }
                 KdRuang.requestFocus();
             }
@@ -193,7 +197,9 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1095,8 +1101,7 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAuditPembuanganLimbah dialog = new DlgAuditPembuanganLimbah(
-                    new javax.swing.JFrame(), true);
+            DlgAuditPembuanganLimbah dialog = new DlgAuditPembuanganLimbah(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1188,15 +1193,11 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                 }
@@ -1213,91 +1214,84 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
                 ttlpenilaian = 0;
                 i = 1;
                 while (rs.next()) {
-                    pemisahan_limbah_oleh_penghasil_limbah = Double.parseDouble(
-                            rs.getString(
-                                    "pemisahan_limbah_oleh_penghasil_limbah").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    pemisahan_limbah_oleh_penghasil_limbah = Double
+                            .parseDouble(rs.getString("pemisahan_limbah_oleh_penghasil_limbah")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlpemisahan_limbah_oleh_penghasil_limbah += pemisahan_limbah_oleh_penghasil_limbah;
-                    limbah_infeksius_dimasukkan_kantong_kuning = Double.
-                            parseDouble(rs.getString(
-                                    "limbah_infeksius_dimasukkan_kantong_kuning").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    limbah_infeksius_dimasukkan_kantong_kuning = Double
+                            .parseDouble(rs.getString("limbah_infeksius_dimasukkan_kantong_kuning")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttllimbah_infeksius_dimasukkan_kantong_kuning += limbah_infeksius_dimasukkan_kantong_kuning;
-                    limbah_noninfeksius_dimasukkan_kantong_hitam = Double.
-                            parseDouble(rs.getString(
-                                    "limbah_noninfeksius_dimasukkan_kantong_hitam").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    limbah_noninfeksius_dimasukkan_kantong_hitam = Double
+                            .parseDouble(rs.getString("limbah_noninfeksius_dimasukkan_kantong_hitam")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttllimbah_noninfeksius_dimasukkan_kantong_hitam += limbah_noninfeksius_dimasukkan_kantong_hitam;
-                    limbah_tigaperempat_diikat = Double.parseDouble(rs.
-                            getString("limbah_tigaperempat_diikat").replaceAll(
-                            "Ya", "1").replaceAll("Tidak", "0"));
+                    limbah_tigaperempat_diikat = Double.parseDouble(
+                            rs.getString("limbah_tigaperempat_diikat").replaceAll("Ya", "1").replaceAll("Tidak", "0"));
                     ttllimbah_tigaperempat_diikat += limbah_tigaperempat_diikat;
-                    limbah_segera_dibawa_kepembuangan_sementara = Double.
-                            parseDouble(rs.getString(
-                                    "limbah_segera_dibawa_kepembuangan_sementara").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    limbah_segera_dibawa_kepembuangan_sementara = Double
+                            .parseDouble(rs.getString("limbah_segera_dibawa_kepembuangan_sementara")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttllimbah_segera_dibawa_kepembuangan_sementara += limbah_segera_dibawa_kepembuangan_sementara;
-                    kotak_sampah_dalam_kondisi_bersih = Double.parseDouble(rs.
-                            getString("kotak_sampah_dalam_kondisi_bersih").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    kotak_sampah_dalam_kondisi_bersih = Double
+                            .parseDouble(rs.getString("kotak_sampah_dalam_kondisi_bersih")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlkotak_sampah_dalam_kondisi_bersih += kotak_sampah_dalam_kondisi_bersih;
-                    pembersihan_tempat_sampah_dengan_desinfekten = Double.
-                            parseDouble(rs.getString(
-                                    "pembersihan_tempat_sampah_dengan_desinfekten").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    pembersihan_tempat_sampah_dengan_desinfekten = Double
+                            .parseDouble(rs.getString("pembersihan_tempat_sampah_dengan_desinfekten")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlpembersihan_tempat_sampah_dengan_desinfekten += pembersihan_tempat_sampah_dengan_desinfekten;
-                    pembersihan_penampungan_sementara_dengan_desinfekten = Double.
-                            parseDouble(rs.getString(
-                                    "pembersihan_penampungan_sementara_dengan_desinfekten").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    pembersihan_penampungan_sementara_dengan_desinfekten = Double
+                            .parseDouble(rs.getString("pembersihan_penampungan_sementara_dengan_desinfekten")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlpembersihan_penampungan_sementara_dengan_desinfekten += pembersihan_penampungan_sementara_dengan_desinfekten;
-                    ttlpenilaian += (((pemisahan_limbah_oleh_penghasil_limbah + limbah_infeksius_dimasukkan_kantong_kuning + limbah_noninfeksius_dimasukkan_kantong_hitam
-                            + limbah_tigaperempat_diikat + limbah_segera_dibawa_kepembuangan_sementara + kotak_sampah_dalam_kondisi_bersih + pembersihan_tempat_sampah_dengan_desinfekten
+                    ttlpenilaian += (((pemisahan_limbah_oleh_penghasil_limbah
+                            + limbah_infeksius_dimasukkan_kantong_kuning + limbah_noninfeksius_dimasukkan_kantong_hitam
+                            + limbah_tigaperempat_diikat + limbah_segera_dibawa_kepembuangan_sementara
+                            + kotak_sampah_dalam_kondisi_bersih + pembersihan_tempat_sampah_dengan_desinfekten
                             + pembersihan_penampungan_sementara_dengan_desinfekten) / 8) * 100);
-                    tabMode.addRow(new String[]{
-                        rs.getString("tanggal"), rs.getString("id_ruang"), rs.
-                        getString("nama_ruang"), rs.getString(
-                        "pemisahan_limbah_oleh_penghasil_limbah"), rs.getString(
-                        "limbah_infeksius_dimasukkan_kantong_kuning"),
-                        rs.getString(
-                        "limbah_noninfeksius_dimasukkan_kantong_hitam"), rs.
-                        getString("limbah_tigaperempat_diikat"), rs.getString(
-                        "limbah_segera_dibawa_kepembuangan_sementara"),
-                        rs.getString("kotak_sampah_dalam_kondisi_bersih"), rs.
-                        getString("pembersihan_tempat_sampah_dengan_desinfekten"),
-                        rs.getString(
-                        "pembersihan_penampungan_sementara_dengan_desinfekten"),
-                        Math.round(
-                        ((pemisahan_limbah_oleh_penghasil_limbah + limbah_infeksius_dimasukkan_kantong_kuning + limbah_noninfeksius_dimasukkan_kantong_hitam + limbah_tigaperempat_diikat
-                        + limbah_segera_dibawa_kepembuangan_sementara + kotak_sampah_dalam_kondisi_bersih + pembersihan_tempat_sampah_dengan_desinfekten + pembersihan_penampungan_sementara_dengan_desinfekten) / 8) * 100) + " %"
-                    });
+                    tabMode.addRow(new String[]{rs.getString("tanggal"), rs.getString("id_ruang"),
+                        rs.getString("nama_ruang"), rs.getString("pemisahan_limbah_oleh_penghasil_limbah"),
+                        rs.getString("limbah_infeksius_dimasukkan_kantong_kuning"),
+                        rs.getString("limbah_noninfeksius_dimasukkan_kantong_hitam"),
+                        rs.getString("limbah_tigaperempat_diikat"),
+                        rs.getString("limbah_segera_dibawa_kepembuangan_sementara"),
+                        rs.getString("kotak_sampah_dalam_kondisi_bersih"),
+                        rs.getString("pembersihan_tempat_sampah_dengan_desinfekten"),
+                        rs.getString("pembersihan_penampungan_sementara_dengan_desinfekten"),
+                        Math.round(((pemisahan_limbah_oleh_penghasil_limbah
+                        + limbah_infeksius_dimasukkan_kantong_kuning
+                        + limbah_noninfeksius_dimasukkan_kantong_hitam + limbah_tigaperempat_diikat
+                        + limbah_segera_dibawa_kepembuangan_sementara + kotak_sampah_dalam_kondisi_bersih
+                        + pembersihan_tempat_sampah_dengan_desinfekten
+                        + pembersihan_penampungan_sementara_dengan_desinfekten) / 8) * 100) + " %"});
                     i++;
                 }
                 i -= 1;
                 if (i > 0) {
-                    tabMode.addRow(new String[]{
-                        "", "Ya", ":",
-                        "" + ttlpemisahan_limbah_oleh_penghasil_limbah,
+                    tabMode.addRow(new String[]{"", "Ya", ":", "" + ttlpemisahan_limbah_oleh_penghasil_limbah,
                         "" + ttllimbah_infeksius_dimasukkan_kantong_kuning,
-                        "" + ttllimbah_noninfeksius_dimasukkan_kantong_hitam,
-                        "" + ttllimbah_tigaperempat_diikat,
+                        "" + ttllimbah_noninfeksius_dimasukkan_kantong_hitam, "" + ttllimbah_tigaperempat_diikat,
                         "" + ttllimbah_segera_dibawa_kepembuangan_sementara,
                         "" + ttlkotak_sampah_dalam_kondisi_bersih,
                         "" + ttlpembersihan_tempat_sampah_dengan_desinfekten,
                         "" + ttlpembersihan_penampungan_sementara_dengan_desinfekten,
-                        "" + (ttlpemisahan_limbah_oleh_penghasil_limbah + ttllimbah_infeksius_dimasukkan_kantong_kuning
-                        + ttllimbah_noninfeksius_dimasukkan_kantong_hitam + ttllimbah_tigaperempat_diikat + ttllimbah_segera_dibawa_kepembuangan_sementara + ttlkotak_sampah_dalam_kondisi_bersih
-                        + ttlpembersihan_tempat_sampah_dengan_desinfekten + ttlpembersihan_penampungan_sementara_dengan_desinfekten)
-                    });
-                    tabMode.addRow(new String[]{
-                        "", "Tidak", ":",
-                        "" + (i - ttlpemisahan_limbah_oleh_penghasil_limbah),
+                        "" + (ttlpemisahan_limbah_oleh_penghasil_limbah
+                        + ttllimbah_infeksius_dimasukkan_kantong_kuning
+                        + ttllimbah_noninfeksius_dimasukkan_kantong_hitam + ttllimbah_tigaperempat_diikat
+                        + ttllimbah_segera_dibawa_kepembuangan_sementara
+                        + ttlkotak_sampah_dalam_kondisi_bersih
+                        + ttlpembersihan_tempat_sampah_dengan_desinfekten
+                        + ttlpembersihan_penampungan_sementara_dengan_desinfekten)});
+                    tabMode
+                            .addRow(new String[]{"", "Tidak", ":", "" + (i - ttlpemisahan_limbah_oleh_penghasil_limbah),
                         "" + (i - ttllimbah_infeksius_dimasukkan_kantong_kuning),
                         "" + (i - ttllimbah_noninfeksius_dimasukkan_kantong_hitam),
                         "" + (i - ttllimbah_tigaperempat_diikat),
@@ -1305,28 +1299,24 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
                         "" + (i - ttlkotak_sampah_dalam_kondisi_bersih),
                         "" + (i - ttlpembersihan_tempat_sampah_dengan_desinfekten),
                         "" + (i - ttlpembersihan_penampungan_sementara_dengan_desinfekten),
-                        "" + ((i - ttlpemisahan_limbah_oleh_penghasil_limbah) + (i - ttllimbah_infeksius_dimasukkan_kantong_kuning)
-                        + (i - ttllimbah_noninfeksius_dimasukkan_kantong_hitam) + (i - ttllimbah_tigaperempat_diikat) + (i - ttllimbah_segera_dibawa_kepembuangan_sementara) + (i - ttlkotak_sampah_dalam_kondisi_bersih)
-                        + (i - ttlpembersihan_tempat_sampah_dengan_desinfekten) + (i - ttlpembersihan_penampungan_sementara_dengan_desinfekten))
-                    });
-                    tabMode.addRow(new String[]{
-                        "", "Rata-rata", ":", Math.round(
-                        (ttlpemisahan_limbah_oleh_penghasil_limbah / i) * 100) + " %",
-                        Math.round(
-                        (ttllimbah_infeksius_dimasukkan_kantong_kuning / i) * 100) + " %",
-                        Math.round(
-                        (ttllimbah_noninfeksius_dimasukkan_kantong_hitam / i) * 100) + " %",
+                        "" + ((i - ttlpemisahan_limbah_oleh_penghasil_limbah)
+                        + (i - ttllimbah_infeksius_dimasukkan_kantong_kuning)
+                        + (i - ttllimbah_noninfeksius_dimasukkan_kantong_hitam)
+                        + (i - ttllimbah_tigaperempat_diikat)
+                        + (i - ttllimbah_segera_dibawa_kepembuangan_sementara)
+                        + (i - ttlkotak_sampah_dalam_kondisi_bersih)
+                        + (i - ttlpembersihan_tempat_sampah_dengan_desinfekten)
+                        + (i - ttlpembersihan_penampungan_sementara_dengan_desinfekten))});
+                    tabMode.addRow(new String[]{"", "Rata-rata", ":",
+                        Math.round((ttlpemisahan_limbah_oleh_penghasil_limbah / i) * 100) + " %",
+                        Math.round((ttllimbah_infeksius_dimasukkan_kantong_kuning / i) * 100) + " %",
+                        Math.round((ttllimbah_noninfeksius_dimasukkan_kantong_hitam / i) * 100) + " %",
                         Math.round((ttllimbah_tigaperempat_diikat / i) * 100) + " %",
-                        Math.round(
-                        (ttllimbah_segera_dibawa_kepembuangan_sementara / i) * 100) + " %",
-                        Math.round(
-                        (ttlkotak_sampah_dalam_kondisi_bersih / i) * 100) + " %",
-                        Math.round(
-                        (ttlpembersihan_tempat_sampah_dengan_desinfekten / i) * 100) + " %",
-                        Math.round(
-                        (ttlpembersihan_penampungan_sementara_dengan_desinfekten / i) * 100) + " %",
-                        Math.round(ttlpenilaian / i) + " %"
-                    });
+                        Math.round((ttllimbah_segera_dibawa_kepembuangan_sementara / i) * 100) + " %",
+                        Math.round((ttlkotak_sampah_dalam_kondisi_bersih / i) * 100) + " %",
+                        Math.round((ttlpembersihan_tempat_sampah_dengan_desinfekten / i) * 100) + " %",
+                        Math.round((ttlpembersihan_penampungan_sementara_dengan_desinfekten / i) * 100) + " %",
+                        Math.round(ttlpenilaian / i) + " %"});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1364,31 +1354,24 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().
-                    isEmpty()) {
-                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                        toString());
-                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                        toString());
-                PemisahanLimbahOlehPenghasilLimbah.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 3).toString());
-                LimbahInfeksiusDimasukkanKantongKuning.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 4).toString());
-                LimbahNoninfeksiusDimasukkanKantongHitam.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 5).toString());
-                LimbahTigaperempatDiikat.setSelectedItem(tbObat.getValueAt(
-                        tbObat.getSelectedRow(), 6).toString());
-                LimbahSegeraDibawaKepembuanganSementara.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 7).toString());
-                KotakSampahDalamKondisiBersih.setSelectedItem(tbObat.getValueAt(
-                        tbObat.getSelectedRow(), 8).toString());
-                PembersihanTempatSampahDenganDesinfekten.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 9).toString());
-                PembersihanPenampunganSementaraDenganDesinfekten.
-                        setSelectedItem(tbObat.getValueAt(tbObat.
-                                getSelectedRow(), 10).toString());
-                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(),
-                        0).toString());
+            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().isEmpty()) {
+                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+                PemisahanLimbahOlehPenghasilLimbah
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+                LimbahInfeksiusDimasukkanKantongKuning
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+                LimbahNoninfeksiusDimasukkanKantongHitam
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+                LimbahTigaperempatDiikat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+                LimbahSegeraDibawaKepembuanganSementara
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+                KotakSampahDalamKondisiBersih.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+                PembersihanTempatSampahDenganDesinfekten
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+                PembersihanPenampunganSementaraDenganDesinfekten
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
             }
         }
     }
@@ -1420,7 +1403,9 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1462,7 +1447,7 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -1473,6 +1458,6 @@ public class DlgAuditPembuanganLimbah extends javax.swing.JDialog {
         new Timer(1000, taskPerformer).start();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgAuditPembuanganLimbah.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgAuditPembuanganLimbah.class.getName());
+
 }

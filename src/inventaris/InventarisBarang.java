@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package inventaris;
 
@@ -34,13 +34,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class InventarisBarang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
 
     /**
@@ -56,16 +57,8 @@ public class InventarisBarang extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"Kode Barang",
-            "Nama Koleksi Barang",
-            "Jml.Brg",
-            "Produsen",
-            "Merk",
-            "Thn.Produksi",
-            "Barcode SN",
-            "Kategori",
-            "Jenis"
-        };
+        Object[] row = {"Kode Barang", "Nama Koleksi Barang", "Jml.Brg", "Produsen", "Merk", "Thn.Produksi",
+            "Barcode SN", "Kategori", "Jenis"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -75,9 +68,9 @@ public class InventarisBarang extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 9; i++) {
@@ -106,10 +99,8 @@ public class InventarisBarang extends javax.swing.JDialog {
 
         kode_barang.setDocument(new batasInput((byte) 20).getKata(kode_barang));
         nama_barang.setDocument(new batasInput((byte) 60).getKata(nama_barang));
-        jml_barang.
-                setDocument(new batasInput((byte) 5).getOnlyAngka(jml_barang));
-        kode_produsen.setDocument(new batasInput((byte) 10).getKata(
-                kode_produsen));
+        jml_barang.setDocument(new batasInput((byte) 5).getOnlyAngka(jml_barang));
+        kode_produsen.setDocument(new batasInput((byte) 10).getKata(kode_produsen));
         id_merk.setDocument(new batasInput((byte) 7).getKata(id_merk));
         isbn.setDocument(new batasInput((byte) 20).getKata(isbn));
         id_kategori.setDocument(new batasInput((byte) 5).getKata(id_kategori));
@@ -133,10 +124,10 @@ public class InventarisBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (produsen.getTable().getSelectedRow() != -1) {
-                    kode_produsen.setText(produsen.getTable().getValueAt(
-                            produsen.getTable().getSelectedRow(), 0).toString());
-                    nama_produsen.setText(produsen.getTable().getValueAt(
-                            produsen.getTable().getSelectedRow(), 1).toString());
+                    kode_produsen
+                            .setText(produsen.getTable().getValueAt(produsen.getTable().getSelectedRow(), 0).toString());
+                    nama_produsen
+                            .setText(produsen.getTable().getValueAt(produsen.getTable().getSelectedRow(), 1).toString());
                 }
                 kode_produsen.requestFocus();
             }
@@ -189,10 +180,8 @@ public class InventarisBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (merk.getTable().getSelectedRow() != -1) {
-                    id_merk.setText(merk.getTable().getValueAt(merk.getTable().
-                            getSelectedRow(), 0).toString());
-                    nm_merk.setText(merk.getTable().getValueAt(merk.getTable().
-                            getSelectedRow(), 1).toString());
+                    id_merk.setText(merk.getTable().getValueAt(merk.getTable().getSelectedRow(), 0).toString());
+                    nm_merk.setText(merk.getTable().getValueAt(merk.getTable().getSelectedRow(), 1).toString());
                 }
                 id_merk.requestFocus();
             }
@@ -245,10 +234,10 @@ public class InventarisBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    id_kategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 0).toString());
-                    nm_kategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 1).toString());
+                    id_kategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                    nm_kategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
                 id_kategori.requestFocus();
             }
@@ -301,10 +290,8 @@ public class InventarisBarang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    id_jenis.setText(jenis.getTable().getValueAt(jenis.
-                            getTable().getSelectedRow(), 0).toString());
-                    nm_jenis.setText(jenis.getTable().getValueAt(jenis.
-                            getTable().getSelectedRow(), 1).toString());
+                    id_jenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nm_jenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 id_jenis.requestFocus();
             }
@@ -346,8 +333,7 @@ public class InventarisBarang extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -374,12 +360,17 @@ public class InventarisBarang extends javax.swing.JDialog {
     }
 
     private InventarisProdusen produsen = new InventarisProdusen(null, false);
+
     private InventarisMerk merk = new InventarisMerk(null, false);
+
     private InventarisKategori kategori = new InventarisKategori(null, false);
+
     public InventarisJenis jenis = new InventarisJenis(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1285,8 +1276,7 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventarisBarang dialog = new InventarisBarang(
-                    new javax.swing.JFrame(), true);
+            InventarisBarang dialog = new InventarisBarang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1355,41 +1345,28 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 + "inner join inventaris_jenis inner join inventaris_kategori inner join inventaris_merk "
                 + "on inventaris_barang.kode_produsen=inventaris_produsen.kode_produsen and inventaris_barang.id_merk=inventaris_merk.id_merk "
                 + "and inventaris_barang.id_kategori=inventaris_kategori.id_kategori and inventaris_barang.id_jenis=inventaris_jenis.id_jenis "
-                + "where inventaris_barang.kode_barang like '%" + TCari.
-                        getText().trim() + "%' "
-                + "or inventaris_barang.nama_barang like '%" + TCari.getText().
-                        trim() + "%' "
-                + "or inventaris_barang.jml_barang like '%" + TCari.getText().
-                        trim() + "%' "
-                + "or inventaris_produsen.nama_produsen like '%" + TCari.
-                        getText().trim() + "%' "
-                + "or inventaris_merk.nama_merk like '%" + TCari.getText().
-                        trim() + "%' "
-                + "or inventaris_barang.thn_produksi like '%" + TCari.getText().
-                        trim() + "%' "
+                + "where inventaris_barang.kode_barang like '%" + TCari.getText().trim() + "%' "
+                + "or inventaris_barang.nama_barang like '%" + TCari.getText().trim() + "%' "
+                + "or inventaris_barang.jml_barang like '%" + TCari.getText().trim() + "%' "
+                + "or inventaris_produsen.nama_produsen like '%" + TCari.getText().trim() + "%' "
+                + "or inventaris_merk.nama_merk like '%" + TCari.getText().trim() + "%' "
+                + "or inventaris_barang.thn_produksi like '%" + TCari.getText().trim() + "%' "
                 + "or inventaris_barang.isbn like '%" + TCari.getText().trim() + "%' "
-                + "or inventaris_kategori.nama_kategori like '%" + TCari.
-                        getText().trim() + "%' "
-                + "or inventaris_jenis.nama_jenis like '%" + TCari.getText().
-                        trim() + "%' order by inventaris_barang.kode_barang";
+                + "or inventaris_kategori.nama_kategori like '%" + TCari.getText().trim() + "%' "
+                + "or inventaris_jenis.nama_jenis like '%" + TCari.getText().trim()
+                + "%' order by inventaris_barang.kode_barang";
         prosesCari(sql);
     }
 
     private void prosesCari(String sql) {
         Valid.tabelKosong(tabMode);
         try {
-            ResultSet rs = koneksiDB.condb().prepareStatement(sql).
-                    executeQuery();
+            ResultSet rs = koneksiDB.condb().prepareStatement(sql).executeQuery();
             while (rs.next()) {
-                tabMode.addRow(new Object[]{rs.getString("kode_barang"),
-                    rs.getString("nama_barang"),
-                    rs.getString("jml_barang"),
-                    rs.getString("nama_produsen"),
-                    rs.getString("nama_merk"),
-                    rs.getString("thn_produksi").substring(0, 4),
-                    rs.getString("isbn"),
-                    rs.getString("nama_kategori"),
-                    rs.getString("nama_jenis")});
+                tabMode.addRow(new Object[]{rs.getString("kode_barang"), rs.getString("nama_barang"),
+                    rs.getString("jml_barang"), rs.getString("nama_produsen"), rs.getString("nama_merk"),
+                    rs.getString("thn_produksi").substring(0, 4), rs.getString("isbn"),
+                    rs.getString("nama_kategori"), rs.getString("nama_jenis")});
             }
         } catch (Exception e) {
             System.out.println("Notifikasi : " + e);
@@ -1416,22 +1393,21 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         nm_jenis.setText("");
         TCari.setText("");
         kode_barang.requestFocus();
-        //Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(kode_barang,4),signed)),0) from inventaris_barang  ",
-                "BI", 8, kode_barang);
+        // Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(kode_barang,4),signed)),0) from inventaris_barang  ", "BI", 8,
+                kode_barang);
         kode_barang.requestFocus();
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
             try {
-                PreparedStatement ps = koneksiDB.condb().prepareStatement(
-                        "select inventaris_barang.kode_barang, inventaris_barang.nama_barang, inventaris_barang.jml_barang, "
-                        + "inventaris_barang.kode_produsen, inventaris_barang.id_merk, inventaris_barang.thn_produksi, inventaris_barang.isbn,"
-                        + "inventaris_barang.id_kategori, inventaris_barang.id_jenis from inventaris_barang where inventaris_barang.kode_barang=? ");
-                ps.setString(1, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 0).toString());
+                PreparedStatement ps = koneksiDB.condb()
+                        .prepareStatement(
+                                "select inventaris_barang.kode_barang, inventaris_barang.nama_barang, inventaris_barang.jml_barang, "
+                                + "inventaris_barang.kode_produsen, inventaris_barang.id_merk, inventaris_barang.thn_produksi, inventaris_barang.isbn,"
+                                + "inventaris_barang.id_kategori, inventaris_barang.id_jenis from inventaris_barang where inventaris_barang.kode_barang=? ");
+                ps.setString(1, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     kode_barang.setText(rs.getString("kode_barang"));
@@ -1444,16 +1420,11 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     id_kategori.setText(rs.getString("id_kategori"));
                     id_jenis.setText(rs.getString("id_jenis"));
                 }
-                nama_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 3).toString());
-                nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 4).toString());
-                nama_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 3).toString());
-                nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 7).toString());
-                nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 8).toString());
+                nama_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+                nm_merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+                nama_produsen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+                nm_kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+                nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
             } catch (Exception ex) {
                 System.out.println("Notifikasi : " + ex);
             }
@@ -1461,7 +1432,6 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1493,7 +1463,6 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         TCari.requestFocus();
     }
 
-    private static final Logger LOG = Logger.getLogger(InventarisBarang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(InventarisBarang.class.getName());
 
 }

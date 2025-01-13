@@ -37,21 +37,30 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "";
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -60,22 +69,17 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
      * @param parent
      * @param modal
      */
-    public RMPenilaianAwalMedisRalanKulitDanKelamin(java.awt.Frame parent,
-            boolean modal) {
+    public RMPenilaianAwalMedisRalanKulitDanKelamin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
-            "Kode Dokter", "Nama Dokter", "Tanggal", "Anamnesis", "Hubungan",
-            "Keluhan Utama", "Riwayat Penyakit Sekarang",
-            "Riwayat Penyakit Dahulu",
-            "Riwayat Penggunakan Obat", "Riwayat Penyakit Keluarga", "Kesadaran",
-            "Status Nutrisi", "TD(mmHg)", "Nadi(x/menit)", "Suhu", "RR(x/menit)",
-            "BB(Kg)", "Nyeri", "GCS",
-            "Keterangan Dermatovenereologis", "Pemeriksaan", "Diagnosis Kerja",
-            "Diagnosis Banding", "Permasalahan", "Terapi", "Tindakan", "Edukasi"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Kode Dokter", "Nama Dokter",
+                    "Tanggal", "Anamnesis", "Hubungan", "Keluhan Utama", "Riwayat Penyakit Sekarang",
+                    "Riwayat Penyakit Dahulu", "Riwayat Penggunakan Obat", "Riwayat Penyakit Keluarga", "Kesadaran",
+                    "Status Nutrisi", "TD(mmHg)", "Nadi(x/menit)", "Suhu", "RR(x/menit)", "BB(Kg)", "Nyeri", "GCS",
+                    "Keterangan Dermatovenereologis", "Pemeriksaan", "Diagnosis Kerja", "Diagnosis Banding",
+                    "Permasalahan", "Terapi", "Tindakan", "Edukasi"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -182,8 +186,7 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -220,10 +223,8 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
@@ -259,8 +260,7 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -272,7 +272,9 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2148,15 +2150,11 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2165,24 +2163,16 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("kd_dokter"), rs.
-                        getString("nm_dokter"), rs.getString("tanggal"),
-                        rs.getString("anamnesis"), rs.getString("hubungan"), rs.
-                        getString("keluhan_utama"), rs.getString("rps"), rs.
-                        getString("rpd"), rs.getString("rpo"), rs.getString(
-                        "rpk"), rs.getString("kesadaran"), rs.
-                        getString("status"),
-                        rs.getString("td"), rs.getString("nadi"), rs.getString(
-                        "suhu"), rs.getString("rr"), rs.getString("bb"), rs.
-                        getString("nyeri"), rs.getString("gcs"),
-                        rs.getString("statusderma"), rs.getString("pemeriksaan"),
-                        rs.getString("diagnosis"), rs.getString("diagnosis2"),
-                        rs.getString("permasalahan"), rs.getString("terapi"),
-                        rs.getString("tindakan"), rs.getString("edukasi")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"), rs.getString("tanggal"),
+                        rs.getString("anamnesis"), rs.getString("hubungan"), rs.getString("keluhan_utama"),
+                        rs.getString("rps"), rs.getString("rpd"), rs.getString("rpo"), rs.getString("rpk"),
+                        rs.getString("kesadaran"), rs.getString("status"), rs.getString("td"), rs.getString("nadi"),
+                        rs.getString("suhu"), rs.getString("rr"), rs.getString("bb"), rs.getString("nyeri"),
+                        rs.getString("gcs"), rs.getString("statusderma"), rs.getString("pemeriksaan"),
+                        rs.getString("diagnosis"), rs.getString("diagnosis2"), rs.getString("permasalahan"),
+                        rs.getString("terapi"), rs.getString("tindakan"), rs.getString("edukasi")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2233,72 +2223,38 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    8).toString());
-            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            KeluhanUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            RPS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            RPD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            RPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            RPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    15).toString());
-            StatusNutrisi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            TD.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                            toString());
-            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            RR.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                            toString());
-            BB.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                            toString());
-            Nyeri.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            GCS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            Statusderma.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).
-                    toString());
-            Pemeriksaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).
-                    toString());
-            Diagnosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).
-                    toString());
-            Diagnosis2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).
-                    toString());
-            Permasalahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).
-                    toString());
-            Terapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).
-                    toString());
-            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).
-                    toString());
-            Edukasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).
-                    toString());
-            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            KeluhanUtama.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            RPS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            RPD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            RPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            RPK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Kesadaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            StatusNutrisi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            RR.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            BB.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Nyeri.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            GCS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Statusderma.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            Pemeriksaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            Diagnosis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            Diagnosis2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            Permasalahan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            Terapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            Edukasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
         }
     }
 
@@ -2318,9 +2274,7 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
                     TPasien.setText(rs.getString("nm_pasien"));
                     Jk.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2345,8 +2299,7 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
     }
 
     public void isCek() {
-        BtnSimpan.
-                setEnabled(akses.getpenilaian_awal_medis_ralan_kulit_kelamin());
+        BtnSimpan.setEnabled(akses.getpenilaian_awal_medis_ralan_kulit_kelamin());
         BtnHapus.setEnabled(akses.getpenilaian_awal_medis_ralan_kulit_kelamin());
         BtnEdit.setEnabled(akses.getpenilaian_awal_medis_ralan_kulit_kelamin());
         if (akses.getjml2() >= 1) {
@@ -2356,8 +2309,7 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
             NmDokter.setText(dokter.tampil3(KdDokter.getText()));
             if (NmDokter.getText().isEmpty()) {
                 KdDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan Dokter...!!");
             }
         }
 
@@ -2375,11 +2327,8 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_medis_ralan_kulitdankelamin where no_rawat=?",
-                1, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_medis_ralan_kulitdankelamin where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -2389,26 +2338,19 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("penilaian_medis_ralan_kulitdankelamin",
-                "no_rawat=?",
+        if (Sequel.mengedittf("penilaian_medis_ralan_kulitdankelamin", "no_rawat=?",
                 "no_rawat=?,tanggal=?,kd_dokter=?,anamnesis=?,hubungan=?,keluhan_utama=?,rps=?,rpd=?,rpo=?,rpk=?,kesadaran=?,status=?,td=?,nadi=?,suhu=?,rr=?,bb=?,nyeri=?,gcs=?,statusderma=?,pemeriksaan=?,diagnosis=?,diagnosis2=?,permasalahan=?,terapi=?,tindakan=?,edukasi=?",
-                28, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), KdDokter.
-                    getText(), Anamnesis.getSelectedItem().toString(), Hubungan.
-                    getText(), KeluhanUtama.getText(), RPS.getText(), RPD.
-                    getText(), RPO.getText(), RPK.getText(), Kesadaran.
-                    getSelectedItem().toString(), StatusNutrisi.
-                            getSelectedItem().toString(), TD.getText(), Nadi.
-                    getText(),
-                    Suhu.getText(), RR.getText(), BB.getText(), Nyeri.getText(),
-                    GCS.getText(),
-                    Statusderma.getText(), Pemeriksaan.getText(), Diagnosis.
-                    getText(), Diagnosis2.getText(), Permasalahan.getText(),
-                    Terapi.getText(), Tindakan.getText(), Edukasi.getText(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                28,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), Anamnesis.getSelectedItem().toString(), Hubungan.getText(),
+                    KeluhanUtama.getText(), RPS.getText(), RPD.getText(), RPO.getText(), RPK.getText(),
+                    Kesadaran.getSelectedItem().toString(), StatusNutrisi.getSelectedItem().toString(),
+                    TD.getText(), Nadi.getText(), Suhu.getText(), RR.getText(), BB.getText(), Nyeri.getText(),
+                    GCS.getText(), Statusderma.getText(), Pemeriksaan.getText(), Diagnosis.getText(),
+                    Diagnosis2.getText(), Permasalahan.getText(), Terapi.getText(), Tindakan.getText(),
+                    Edukasi.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
@@ -2416,23 +2358,17 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
             tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(KdDokter.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(NmDokter.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(
-                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(Anamnesis.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
+            tbObat.setValueAt(Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Anamnesis.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(Hubungan.getText(), tbObat.getSelectedRow(), 9);
-            tbObat.setValueAt(KeluhanUtama.getText(), tbObat.getSelectedRow(),
-                    10);
+            tbObat.setValueAt(KeluhanUtama.getText(), tbObat.getSelectedRow(), 10);
             tbObat.setValueAt(RPS.getText(), tbObat.getSelectedRow(), 11);
             tbObat.setValueAt(RPD.getText(), tbObat.getSelectedRow(), 12);
             tbObat.setValueAt(RPO.getText(), tbObat.getSelectedRow(), 13);
             tbObat.setValueAt(RPK.getText(), tbObat.getSelectedRow(), 14);
-            tbObat.setValueAt(Kesadaran.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(StatusNutrisi.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(Kesadaran.getSelectedItem().toString(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(StatusNutrisi.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
             tbObat.setValueAt(TD.getText(), tbObat.getSelectedRow(), 17);
             tbObat.setValueAt(Nadi.getText(), tbObat.getSelectedRow(), 18);
             tbObat.setValueAt(Suhu.getText(), tbObat.getSelectedRow(), 19);
@@ -2440,16 +2376,11 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
             tbObat.setValueAt(BB.getText(), tbObat.getSelectedRow(), 21);
             tbObat.setValueAt(Nyeri.getText(), tbObat.getSelectedRow(), 22);
             tbObat.setValueAt(GCS.getText(), tbObat.getSelectedRow(), 23);
-            tbObat.
-                    setValueAt(Statusderma.getText(), tbObat.getSelectedRow(),
-                            24);
-            tbObat.
-                    setValueAt(Pemeriksaan.getText(), tbObat.getSelectedRow(),
-                            25);
+            tbObat.setValueAt(Statusderma.getText(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(Pemeriksaan.getText(), tbObat.getSelectedRow(), 25);
             tbObat.setValueAt(Diagnosis.getText(), tbObat.getSelectedRow(), 26);
             tbObat.setValueAt(Diagnosis2.getText(), tbObat.getSelectedRow(), 27);
-            tbObat.setValueAt(Permasalahan.getText(), tbObat.getSelectedRow(),
-                    28);
+            tbObat.setValueAt(Permasalahan.getText(), tbObat.getSelectedRow(), 28);
             tbObat.setValueAt(Terapi.getText(), tbObat.getSelectedRow(), 29);
             tbObat.setValueAt(Tindakan.getText(), tbObat.getSelectedRow(), 30);
             tbObat.setValueAt(Edukasi.getText(), tbObat.getSelectedRow(), 31);
@@ -2460,43 +2391,32 @@ public class RMPenilaianAwalMedisRalanKulitDanKelamin extends javax.swing.JDialo
 
     private void simpan() {
         if (Sequel.menyimpantf("penilaian_medis_ralan_kulitdankelamin",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                "No.Rawat", 27, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), KdDokter.
-                    getText(), Anamnesis.getSelectedItem().toString(), Hubungan.
-                    getText(),
-                    KeluhanUtama.getText(), RPS.getText(), RPD.getText(), RPO.
-                    getText(), RPK.getText(), Kesadaran.getSelectedItem().
-                    toString(), StatusNutrisi.getSelectedItem().toString(), TD.
-                    getText(), Nadi.getText(), Suhu.getText(), RR.getText(), BB.
-                    getText(), Nyeri.getText(), GCS.getText(),
-                    Statusderma.getText(), Pemeriksaan.getText(), Diagnosis.
-                    getText(), Diagnosis2.getText(),
-                    Permasalahan.getText(), Terapi.getText(), Tindakan.getText(),
-                    Edukasi.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), Jk.getText(), KdDokter.getText(), NmDokter.getText(),
-                Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                getSelectedItem().toString().substring(11, 19),
-                Anamnesis.getSelectedItem().toString(), Hubungan.getText(),
-                KeluhanUtama.getText(), RPS.getText(), RPD.getText(), RPO.
-                getText(), RPK.getText(), Kesadaran.getSelectedItem().toString(),
-                StatusNutrisi.getSelectedItem().toString(), TD.getText(),
-                Nadi.getText(), Suhu.getText(), RR.getText(), BB.getText(),
-                Nyeri.getText(), GCS.getText(), Statusderma.getText(),
-                Pemeriksaan.getText(), Diagnosis.getText(), Diagnosis2.getText(),
-                Permasalahan.getText(), Terapi.getText(), Tindakan.getText(),
-                Edukasi.getText()
-            });
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 27,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), Anamnesis.getSelectedItem().toString(), Hubungan.getText(),
+                    KeluhanUtama.getText(), RPS.getText(), RPD.getText(), RPO.getText(), RPK.getText(),
+                    Kesadaran.getSelectedItem().toString(), StatusNutrisi.getSelectedItem().toString(),
+                    TD.getText(), Nadi.getText(), Suhu.getText(), RR.getText(), BB.getText(), Nyeri.getText(),
+                    GCS.getText(), Statusderma.getText(), Pemeriksaan.getText(), Diagnosis.getText(),
+                    Diagnosis2.getText(), Permasalahan.getText(), Terapi.getText(), Tindakan.getText(),
+                    Edukasi.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                Jk.getText(), KdDokter.getText(), NmDokter.getText(),
+                Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                Anamnesis.getSelectedItem().toString(), Hubungan.getText(), KeluhanUtama.getText(), RPS.getText(),
+                RPD.getText(), RPO.getText(), RPK.getText(), Kesadaran.getSelectedItem().toString(),
+                StatusNutrisi.getSelectedItem().toString(), TD.getText(), Nadi.getText(), Suhu.getText(),
+                RR.getText(), BB.getText(), Nyeri.getText(), GCS.getText(), Statusderma.getText(),
+                Pemeriksaan.getText(), Diagnosis.getText(), Diagnosis2.getText(), Permasalahan.getText(),
+                Terapi.getText(), Tindakan.getText(), Edukasi.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianAwalMedisRalanKulitDanKelamin.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianAwalMedisRalanKulitDanKelamin.class.getName());
+
 }

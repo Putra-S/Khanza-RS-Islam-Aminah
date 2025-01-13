@@ -25,25 +25,35 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgFeeVisitDokter extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private int i = 0, jmlvisit = 0, jmlbyphone = 0, ttljmlvisit = 0, ttljmlbyphone = 0;
-    private double visit = 0, ttlvisit = 0, byphone = 0, ttlbyphone = 0, bruto = 0, ttlbruto = 0,
-            jasa = 0, ttljasa = 0, uangrs = 0, ttluangrs = 0, tarifvisit = 0, tarifbyphone;
+
+    private double visit = 0, ttlvisit = 0, byphone = 0, ttlbyphone = 0, bruto = 0, ttlbruto = 0, jasa = 0, ttljasa = 0,
+            uangrs = 0, ttluangrs = 0, tarifvisit = 0, tarifbyphone;
+
     private PreparedStatement pskamar, psvisit, psbyphone;
+
     private ResultSet rskamar, rsvisit, rsbyphone;
-    private String sjmlvisit = "", sjmlbyphone = "", svisit = "", sbyphone = "", sbruto = "",
-            sjasa = "", suangrs = "", starifvisit = "", starifbyphone = "";
+
+    private String sjmlvisit = "", sjmlbyphone = "", svisit = "", sbyphone = "", sbruto = "", sjasa = "", suangrs = "",
+            starifvisit = "", starifbyphone = "";
 
     /**
      * Creates new form DlgProgramStudi
@@ -55,23 +65,15 @@ public class DlgFeeVisitDokter extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.", "Tgl.Masuk", "Tgl.Pulang", "Nama Pasien", "Ruang",
-            "Jenis Bayar",
-            "Jml.Lsg", "Jml.ByPhone", "Tarif Lsg", "Tarif ByPhone",
-            "Biaya Visit",
-            "Biaya ByPhone", "Total Bruto", "Uang Js Dokter", "Uang RS"};
+        Object[] row = {"No.", "Tgl.Masuk", "Tgl.Pulang", "Nama Pasien", "Ruang", "Jenis Bayar", "Jml.Lsg",
+            "Jml.ByPhone", "Tarif Lsg", "Tarif ByPhone", "Biaya Visit", "Biaya ByPhone", "Total Bruto",
+            "Uang Js Dokter", "Uang RS"};
 
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.Integer.class, java.lang.Integer.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class,
+                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -127,10 +129,8 @@ public class DlgFeeVisitDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     prosesCari();
                 }
                 kddokter.requestFocus();
@@ -161,23 +161,17 @@ public class DlgFeeVisitDokter extends javax.swing.JDialog {
                     + "from kamar_inap inner join kamar inner join bangsal inner join reg_periksa inner join pasien inner join penjab on kamar_inap.no_rawat=reg_periksa.no_rawat and "
                     + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.kd_pj=penjab.kd_pj and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal "
                     + "where kamar_inap.tgl_keluar between ? and ? and kamar_inap.tgl_keluar<>'0000-00-00' group by kamar_inap.kd_kamar, kamar_inap.no_rawat");
-            psvisit = koneksi.prepareStatement(
-                    "select count(rawat_inap_dr.kd_jenis_prw) as jml,"
-                    + "sum(rawat_inap_dr.bhp)as bhp,"
-                    + "sum(rawat_inap_dr.material)as material,"
-                    + "rawat_inap_dr.biaya_rawat as tarif,"
-                    + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter,"
+            psvisit = koneksi.prepareStatement("select count(rawat_inap_dr.kd_jenis_prw) as jml,"
+                    + "sum(rawat_inap_dr.bhp)as bhp," + "sum(rawat_inap_dr.material)as material,"
+                    + "rawat_inap_dr.biaya_rawat as tarif," + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter,"
                     + "sum(rawat_inap_dr.biaya_rawat) as totalbiaya  "
                     + "from rawat_inap_dr inner join jns_perawatan_inap "
                     + "on jns_perawatan_inap.kd_jenis_prw=rawat_inap_dr.kd_jenis_prw where "
                     + "rawat_inap_dr.tarif_tindakandr>0 and rawat_inap_dr.kd_dokter=? "
                     + "and rawat_inap_dr.no_rawat=? and jns_perawatan_inap.nm_perawatan like '%visit%' ");
-            psbyphone = koneksi.prepareStatement(
-                    "select count(rawat_inap_dr.kd_jenis_prw) as jml,"
-                    + "sum(rawat_inap_dr.bhp)as bhp,"
-                    + "sum(rawat_inap_dr.material)as material,"
-                    + "rawat_inap_dr.biaya_rawat as tarif,"
-                    + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter,"
+            psbyphone = koneksi.prepareStatement("select count(rawat_inap_dr.kd_jenis_prw) as jml,"
+                    + "sum(rawat_inap_dr.bhp)as bhp," + "sum(rawat_inap_dr.material)as material,"
+                    + "rawat_inap_dr.biaya_rawat as tarif," + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter,"
                     + "sum(rawat_inap_dr.biaya_rawat) as totalbiaya  "
                     + "from rawat_inap_dr inner join jns_perawatan_inap "
                     + "on jns_perawatan_inap.kd_jenis_prw=rawat_inap_dr.kd_jenis_prw where "
@@ -191,7 +185,9 @@ public class DlgFeeVisitDokter extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -382,14 +378,13 @@ public class DlgFeeVisitDokter extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         if (tabMode.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null,
                     "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
@@ -580,8 +575,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgFeeVisitDokter dialog = new DlgFeeVisitDokter(
-                    new javax.swing.JFrame(), true);
+            DlgFeeVisitDokter dialog = new DlgFeeVisitDokter(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -644,8 +638,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     tarifvisit = rsvisit.getDouble("tarif");
                     bruto = rsvisit.getDouble("totalbiaya");
                     jasa = rsvisit.getDouble("bayardokter");
-                    uangrs = rsvisit.getDouble("material") + rsvisit.getDouble(
-                            "bhp");
+                    uangrs = rsvisit.getDouble("material") + rsvisit.getDouble("bhp");
                 }
 
                 psbyphone.setString(1, kddokter.getText());
@@ -657,21 +650,15 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     tarifbyphone = rsbyphone.getDouble("tarif");
                     bruto += rsbyphone.getDouble("totalbiaya");
                     jasa += rsbyphone.getDouble("bayardokter");
-                    uangrs = uangrs + rsbyphone.getDouble("material") + rsbyphone.
-                            getDouble("bhp");
+                    uangrs = uangrs + rsbyphone.getDouble("material") + rsbyphone.getDouble("bhp");
                 }
 
                 if (bruto > 0) {
-                    tabMode.addRow(new Object[]{
-                        i, rskamar.getString("tgl_masuk"), rskamar.getString(
-                        "tgl_keluar"),
-                        rskamar.getString("nm_pasien"), rskamar.getString(
-                        "kd_kamar")
-                        + " " + rskamar.getString("nm_bangsal"), rskamar.
-                        getString("png_jawab"),
-                        jmlvisit, jmlbyphone, tarifvisit, tarifbyphone, visit,
-                        byphone, bruto, jasa, uangrs
-                    });
+                    tabMode.addRow(new Object[]{i, rskamar.getString("tgl_masuk"), rskamar.getString("tgl_keluar"),
+                        rskamar.getString("nm_pasien"),
+                        rskamar.getString("kd_kamar") + " " + rskamar.getString("nm_bangsal"),
+                        rskamar.getString("png_jawab"), jmlvisit, jmlbyphone, tarifvisit, tarifbyphone, visit,
+                        byphone, bruto, jasa, uangrs});
                 }
                 i++;
                 ttljmlvisit += jmlvisit;
@@ -684,10 +671,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             }
 
             if (ttlbruto > 0) {
-                tabMode.addRow(new Object[]{
-                    "", "", "", "Jumlah :", "", "", ttljmlvisit, ttljmlbyphone,
-                    0, 0, ttlvisit, ttlbyphone, ttlbruto, ttljasa, ttluangrs
-                });
+                tabMode.addRow(new Object[]{"", "", "", "Jumlah :", "", "", ttljmlvisit, ttljmlbyphone, 0, 0,
+                    ttlvisit, ttlbyphone, ttlbruto, ttljasa, ttluangrs});
             }
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -699,10 +684,9 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      *
      */
     public void isCek() {
-        //BtnPrint.setEnabled(var.getfee_visit_dokter());
+        // BtnPrint.setEnabled(var.getfee_visit_dokter());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgFeeVisitDokter.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgFeeVisitDokter.class.getName());
 
 }

@@ -30,21 +30,30 @@ import simrskhanza.DlgPangkatPolri;
 import simrskhanza.DlgSatuanPolri;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
 
     private final sekuel Sequel = new sekuel();
+
     private final validasi Valid = new validasi();
+
     private final Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgGolonganPolri golonganpolri = new DlgGolonganPolri(null, false);
+
     private DlgSatuanPolri satuanpolri = new DlgSatuanPolri(null, false);
+
     private DlgPangkatPolri pangkatpolri = new DlgPangkatPolri(null, false);
+
     private DlgJabatanPolri jabatanpolri = new DlgJabatanPolri(null, false);
+
     private final DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private final DlgCariDokter dokter = new DlgCariDokter(null, false);
 
     /**
@@ -69,9 +78,9 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golonganpolri.getTable().getSelectedRow() != -1) {
-                    Golongan.setText(golonganpolri.getTable().getValueAt(
-                            golonganpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Golongan.setText(golonganpolri.getTable()
+                            .getValueAt(golonganpolri.getTable().getSelectedRow(), 1)
+                            .toString());
                 }
                 Golongan.requestFocus();
             }
@@ -124,9 +133,8 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jabatanpolri.getTable().getSelectedRow() != -1) {
-                    Jabatan.setText(jabatanpolri.getTable().getValueAt(
-                            jabatanpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Jabatan.setText(
+                            jabatanpolri.getTable().getValueAt(jabatanpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Jabatan.requestFocus();
             }
@@ -179,9 +187,8 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (satuanpolri.getTable().getSelectedRow() != -1) {
-                    Satuan.setText(satuanpolri.getTable().getValueAt(
-                            satuanpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Satuan.setText(
+                            satuanpolri.getTable().getValueAt(satuanpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Satuan.requestFocus();
             }
@@ -234,9 +241,8 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pangkatpolri.getTable().getSelectedRow() != -1) {
-                    Pangkat.setText(pangkatpolri.getTable().getValueAt(
-                            pangkatpolri.getTable().getSelectedRow(), 1).
-                            toString());
+                    Pangkat.setText(
+                            pangkatpolri.getTable().getValueAt(pangkatpolri.getTable().getSelectedRow(), 1).toString());
                 }
                 Pangkat.requestFocus();
             }
@@ -289,8 +295,7 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    Poli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    Poli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -325,8 +330,7 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    Dokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    Dokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -377,8 +381,7 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
                 ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
                 + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
                 + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-        );
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
         LoadHTML.setDocument(doc);
@@ -390,7 +393,9 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
     private final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -762,14 +767,13 @@ public class DlgSOAPRalanAggotaPolri extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         try {
 
             File g = new File("file2.css");
@@ -924,8 +928,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSOAPRalanAggotaPolri dialog = new DlgSOAPRalanAggotaPolri(
-                    new javax.swing.JFrame(), true);
+            DlgSOAPRalanAggotaPolri dialog = new DlgSOAPRalanAggotaPolri(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -981,8 +984,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
             StringBuilder htmlContent = new StringBuilder();
-            htmlContent.append(
-                    "<tr class='isi'>"
+            htmlContent.append("<tr class='isi'>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='65px'>Registrasi</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='100px'>NRP/NIP</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='180px'>Nama Pasien</td>"
@@ -1000,13 +1002,10 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                     + "<td valign='middle' bgcolor='#FFFFF8' align='center' width='200px'>Asesmen</td>"
                     + "<td valign='middle' bgcolor='#FFFFF8' align='center' width='200px'>Plan</td>"
                     + "<td valign='middle' bgcolor='#FFFFF8' align='center' width='200px'>Instruksi</td>"
-                    + "<td valign='middle' bgcolor='#FFFFF8' align='center' width='200px'>Evaluasi</td>"
-                    + "</tr>"
-            );
-            if (Pangkat.getText().trim().isEmpty() && Satuan.getText().trim().
-                    isEmpty() && Golongan.getText().trim().isEmpty()
-                    && Jabatan.getText().trim().isEmpty() && Poli.getText().
-                    trim().isEmpty() && Dokter.getText().trim().isEmpty()
+                    + "<td valign='middle' bgcolor='#FFFFF8' align='center' width='200px'>Evaluasi</td>" + "</tr>");
+            if (Pangkat.getText().trim().isEmpty() && Satuan.getText().trim().isEmpty()
+                    && Golongan.getText().trim().isEmpty() && Jabatan.getText().trim().isEmpty()
+                    && Poli.getText().trim().isEmpty() && Dokter.getText().trim().isEmpty()
                     && TCari.getText().trim().isEmpty()) {
                 ps = koneksi.prepareStatement(
                         "select reg_periksa.tgl_registrasi,pasien.nm_pasien,pangkat_polri.nama_pangkat,pasien.nip as nrp,satuan_polri.nama_satuan,"
@@ -1049,10 +1048,9 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
             }
 
             try {
-                if (Pangkat.getText().trim().isEmpty() && Satuan.getText().
-                        trim().isEmpty() && Golongan.getText().trim().isEmpty()
-                        && Jabatan.getText().trim().isEmpty() && Poli.getText().
-                        trim().isEmpty() && Dokter.getText().trim().isEmpty()
+                if (Pangkat.getText().trim().isEmpty() && Satuan.getText().trim().isEmpty()
+                        && Golongan.getText().trim().isEmpty() && Jabatan.getText().trim().isEmpty()
+                        && Poli.getText().trim().isEmpty() && Dokter.getText().trim().isEmpty()
                         && TCari.getText().trim().isEmpty()) {
                     ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                     ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -1071,76 +1069,66 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    htmlContent.append(
-                            "<tr class='isi'><td valign='top' align='center'>").
-                            append(rs.getString("tgl_registrasi")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nrp")).append(
-                            "</td><td valign='top' align='left'>").append(rs.
-                                    getString("nm_pasien")).append(" / ").
-                            append(rs.getString("jk")).append(" / ").append(rs.
-                            getString("umur")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nama_golongan")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nama_pangkat")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nama_satuan")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nama_jabatan")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nm_dokter")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nm_poli")).append(
-                            "</td><td valign='top' align='center'>").append(
-                                    Sequel.cariIsi(
-                                            "select penyakit.nm_penyakit from penyakit inner join diagnosa_pasien on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit where diagnosa_pasien.no_rawat=?",
-                                            rs.getString("no_rawat"))).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("tgl_perawatan")).append("<br>").
-                            append(rs.getString("jam_rawat")).append(
-                            "</td><td valign='top' align='center'>").append(rs.
-                                    getString("nip")).append("<br>").append(rs.
-                            getString("nama")).append(
-                            "</td><td valign='top' align='left'>").append(rs.
-                                    getString("keluhan").replaceAll(
-                                    "(\r\n|\r|\n|\n\r)", "<br>")).append(
-                                    "</td><td valign='top' align='left'>").
-                            append(rs.getString("pemeriksaan").replaceAll(
-                                    "(\r\n|\r|\n|\n\r)", "<br>")).append(rs.
-                                    getString("alergi").isEmpty() ? "" : "<br>Alergi : " + rs.
-                                    getString("alergi")).append(rs.getString(
-                            "suhu_tubuh").isEmpty() ? "" : "<br>Suhu(C) : " + rs.
-                                            getString("suhu_tubuh")).append(rs.
-                            getString("tensi").isEmpty() ? "" : "<br>Tensi : " + rs.
-                            getString("tensi")).append(rs.getString("nadi").
-                            isEmpty() ? "" : "<br>Nadi(/menit) : " + rs.
-                                            getString("nadi")).append(rs.
-                            getString("respirasi").isEmpty() ? "" : "<br>Respirasi(/menit) : " + rs.
-                            getString("respirasi")).append(rs.
-                            getString("tinggi").isEmpty() ? "" : "<br>Tinggi(Cm) : " + rs.
-                            getString("tinggi")).append(rs.getString("berat").
-                            isEmpty() ? "" : "<br>Berat(Kg) : " + rs.getString(
-                                            "berat")).append(rs.
-                                    getString("spo2").isEmpty() ? "" : "<br>SpO2(%) : " + rs.
-                                    getString("spo2")).append(rs.
-                            getString("gcs").isEmpty() ? "" : "<br>GCS(E,V,M) : " + rs.
-                            getString("gcs")).append(rs.getString("kesadaran").
-                            isEmpty() ? "" : "<br>Kesadaran : " + rs.getString(
-                                            "kesadaran")).append(
-                                    "</td><td valign='top' align='left'>").
-                            append(rs.getString("penilaian").replaceAll(
-                                    "(\r\n|\r|\n|\n\r)", "<br>")).append(
-                                    "</td><td valign='top' align='left'>").
-                            append(rs.getString("rtl").replaceAll(
-                                    "(\r\n|\r|\n|\n\r)", "<br>")).append(
-                                    "</td><td valign='top' align='left'>").
-                            append(rs.getString("instruksi").replaceAll(
-                                    "(\r\n|\r|\n|\n\r)", "<br>")).append(
-                                    "</td><td valign='top' align='left'>").
-                            append(rs.getString("evaluasi").replaceAll(
-                                    "(\r\n|\r|\n|\n\r)", "<br>")).append(
-                                    "</td></tr>");
+                    htmlContent.append("<tr class='isi'><td valign='top' align='center'>")
+                            .append(rs.getString("tgl_registrasi"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nrp"))
+                            .append("</td><td valign='top' align='left'>")
+                            .append(rs.getString("nm_pasien"))
+                            .append(" / ")
+                            .append(rs.getString("jk"))
+                            .append(" / ")
+                            .append(rs.getString("umur"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nama_golongan"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nama_pangkat"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nama_satuan"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nama_jabatan"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nm_dokter"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nm_poli"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(Sequel.cariIsi(
+                                    "select penyakit.nm_penyakit from penyakit inner join diagnosa_pasien on diagnosa_pasien.kd_penyakit=penyakit.kd_penyakit where diagnosa_pasien.no_rawat=?",
+                                    rs.getString("no_rawat")))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("tgl_perawatan"))
+                            .append("<br>")
+                            .append(rs.getString("jam_rawat"))
+                            .append("</td><td valign='top' align='center'>")
+                            .append(rs.getString("nip"))
+                            .append("<br>")
+                            .append(rs.getString("nama"))
+                            .append("</td><td valign='top' align='left'>")
+                            .append(rs.getString("keluhan").replaceAll("(\r\n|\r|\n|\n\r)", "<br>"))
+                            .append("</td><td valign='top' align='left'>")
+                            .append(rs.getString("pemeriksaan").replaceAll("(\r\n|\r|\n|\n\r)", "<br>"))
+                            .append(rs.getString("alergi").isEmpty() ? "" : "<br>Alergi : " + rs.getString("alergi"))
+                            .append(rs.getString("suhu_tubuh").isEmpty() ? ""
+                                    : "<br>Suhu(C) : " + rs.getString("suhu_tubuh"))
+                            .append(rs.getString("tensi").isEmpty() ? "" : "<br>Tensi : " + rs.getString("tensi"))
+                            .append(rs.getString("nadi").isEmpty() ? "" : "<br>Nadi(/menit) : " + rs.getString("nadi"))
+                            .append(rs.getString("respirasi").isEmpty() ? ""
+                                    : "<br>Respirasi(/menit) : " + rs.getString("respirasi"))
+                            .append(rs.getString("tinggi").isEmpty() ? "" : "<br>Tinggi(Cm) : " + rs.getString("tinggi"))
+                            .append(rs.getString("berat").isEmpty() ? "" : "<br>Berat(Kg) : " + rs.getString("berat"))
+                            .append(rs.getString("spo2").isEmpty() ? "" : "<br>SpO2(%) : " + rs.getString("spo2"))
+                            .append(rs.getString("gcs").isEmpty() ? "" : "<br>GCS(E,V,M) : " + rs.getString("gcs"))
+                            .append(rs.getString("kesadaran").isEmpty() ? ""
+                                    : "<br>Kesadaran : " + rs.getString("kesadaran"))
+                            .append("</td><td valign='top' align='left'>")
+                            .append(rs.getString("penilaian").replaceAll("(\r\n|\r|\n|\n\r)", "<br>"))
+                            .append("</td><td valign='top' align='left'>")
+                            .append(rs.getString("rtl").replaceAll("(\r\n|\r|\n|\n\r)", "<br>"))
+                            .append("</td><td valign='top' align='left'>")
+                            .append(rs.getString("instruksi").replaceAll("(\r\n|\r|\n|\n\r)", "<br>"))
+                            .append("</td><td valign='top' align='left'>")
+                            .append(rs.getString("evaluasi").replaceAll("(\r\n|\r|\n|\n\r)", "<br>"))
+                            .append("</td></tr>");
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1153,12 +1141,9 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                 }
             }
 
-            LoadHTML.setText(
-                    "<html>"
+            LoadHTML.setText("<html>"
                     + "<table width='2000px' border='0' align='left' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>");
+                    + htmlContent.toString() + "</table>" + "</html>");
         } catch (Exception e) {
             System.out.println("laporan.DlgRL4A.prosesCari() 5 : " + e);
         }
@@ -1184,7 +1169,6 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgSOAPRalanAggotaPolri.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgSOAPRalanAggotaPolri.class.getName());
 
 }

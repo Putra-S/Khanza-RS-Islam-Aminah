@@ -41,21 +41,30 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 
 /**
- *
  * @author perpustakaan
  */
 public class SuratMasuk extends javax.swing.JDialog {
 
     private final JFXPanel jfxPanel = new JFXPanel();
+
     private final JFXPanel jfxPanelinput = new JFXPanel();
+
     private final JTextField txtURL = new JTextField();
+
     private final JTextField txtURLInput = new JTextField();
+
     private final JProgressBar progressBar = new JProgressBar();
+
     private final JLabel lblStatus = new JLabel();
+
     private WebEngine engine;
+
     private final validasi Valid = new validasi();
+
     private SuratRuang ruang = new SuratRuang(null, false);
+
     private SuratStatus status = new SuratStatus(null, false);
+
     private SuratBalas balas = new SuratBalas(null, false);
 
     /**
@@ -71,8 +80,7 @@ public class SuratMasuk extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -109,8 +117,7 @@ public class SuratMasuk extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    Ruang.setText(ruang.getTable().getValueAt(ruang.getTable().
-                            getSelectedRow(), 2).toString());
+                    Ruang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 2).toString());
                 }
                 Ruang.requestFocus();
             }
@@ -163,8 +170,7 @@ public class SuratMasuk extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (status.getTable().getSelectedRow() != -1) {
-                    StatusSurat.setText(status.getTable().getValueAt(status.
-                            getTable().getSelectedRow(), 2).toString());
+                    StatusSurat.setText(status.getTable().getValueAt(status.getTable().getSelectedRow(), 2).toString());
                 }
                 StatusSurat.requestFocus();
             }
@@ -217,8 +223,7 @@ public class SuratMasuk extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (balas.getTable().getSelectedRow() != -1) {
-                    StatusBalas.setText(balas.getTable().getValueAt(balas.
-                            getTable().getSelectedRow(), 2).toString());
+                    StatusBalas.setText(balas.getTable().getValueAt(balas.getTable().getSelectedRow(), 2).toString());
                 }
                 StatusBalas.requestFocus();
             }
@@ -285,8 +290,7 @@ public class SuratMasuk extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -295,12 +299,13 @@ public class SuratMasuk extends javax.swing.JDialog {
 
                 });
 
-                engine.titleProperty().addListener(
-                        (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
-                            SwingUtilities.invokeLater(() -> {
-                                SuratMasuk.this.setTitle(newValue);
-                            });
-                        });
+                engine.titleProperty()
+                        .addListener(
+                                (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
+                                    SwingUtilities.invokeLater(() -> {
+                                        SuratMasuk.this.setTitle(newValue);
+                                    });
+                                });
 
                 engine.setOnStatusChanged((final WebEvent<String> event) -> {
                     SwingUtilities.invokeLater(() -> {
@@ -308,62 +313,51 @@ public class SuratMasuk extends javax.swing.JDialog {
                     });
                 });
 
-                engine.getLoadWorker().workDoneProperty().addListener(
-                        (ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
+                engine.getLoadWorker()
+                        .workDoneProperty()
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 progressBar.setValue(newValue.intValue());
                             });
                         });
 
-                engine.getLoadWorker().exceptionProperty().addListener(
-                        (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                engine.getLoadWorker()
+                        .exceptionProperty()
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
                             if (engine.getLoadWorker().getState() == FAILED) {
                                 SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(
-                                            internalFrame3,
-                                            (value != null)
-                                                    ? engine.getLocation() + "\n" + value.
-                                                    getMessage()
+                                    JOptionPane.showMessageDialog(internalFrame3,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
                                                     : engine.getLocation() + "\nUnexpected Catatan.",
-                                            "Loading Catatan...",
-                                            JOptionPane.ERROR_MESSAGE);
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
                             }
                         });
 
-                engine.locationProperty().addListener(
-                        (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                engine.locationProperty()
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 txtURL.setText(newValue);
                             });
                         });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState,
-                            State newState) {
+                    public void changed(ObservableValue ov, State oldState, State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
                                 if (engine.getLocation().contains("surat/pages")) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
-                                    Valid.panggilUrl(engine.getLocation().
-                                            replaceAll("http://" + koneksiDB.
-                                                    HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                            PORTWEB() + "/" + koneksiDB.
-                                                            HYBRIDWEB() + "/",
-                                                    "").replaceAll(
-                                                    "http://" + koneksiDB.
-                                                            HOSTHYBRIDWEB() + "/" + koneksiDB.
-                                                            HYBRIDWEB() + "/",
-                                                    "").replaceAll(
-                                                    "pages/upload/pages/upload",
-                                                    "pages/upload"));
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    Valid.panggilUrl(engine.getLocation()
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB()
+                                                    + "/" + koneksiDB.HYBRIDWEB() + "/", "")
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + "/" + koneksiDB.HYBRIDWEB()
+                                                    + "/", "")
+                                            .replaceAll("pages/upload/pages/upload", "pages/upload"));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
-                                } else if (engine.getLocation().contains(
-                                        "Keluar")) {
+                                } else if (engine.getLocation().contains("Keluar")) {
                                     dispose();
                                 }
                             } catch (Exception ex) {
@@ -412,8 +406,7 @@ public class SuratMasuk extends javax.swing.JDialog {
                 engine = view.getEngine();
                 engine.setJavaScriptEnabled(true);
 
-                engine.setCreatePopupHandler(
-                        new Callback<PopupFeatures, WebEngine>() {
+                engine.setCreatePopupHandler(new Callback<PopupFeatures, WebEngine>() {
                     @Override
                     public WebEngine call(PopupFeatures p) {
                         Stage stage = new Stage(StageStyle.TRANSPARENT);
@@ -422,12 +415,13 @@ public class SuratMasuk extends javax.swing.JDialog {
 
                 });
 
-                engine.titleProperty().addListener(
-                        (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
-                            SwingUtilities.invokeLater(() -> {
-                                SuratMasuk.this.setTitle(newValue);
-                            });
-                        });
+                engine.titleProperty()
+                        .addListener(
+                                (ObservableValue<? extends String> observable, String oldValue, final String newValue) -> {
+                                    SwingUtilities.invokeLater(() -> {
+                                        SuratMasuk.this.setTitle(newValue);
+                                    });
+                                });
 
                 engine.setOnStatusChanged((final WebEvent<String> event) -> {
                     SwingUtilities.invokeLater(() -> {
@@ -435,62 +429,51 @@ public class SuratMasuk extends javax.swing.JDialog {
                     });
                 });
 
-                engine.getLoadWorker().workDoneProperty().addListener(
-                        (ObservableValue<? extends Number> observableValue, Number oldValue, final Number newValue) -> {
+                engine.getLoadWorker()
+                        .workDoneProperty()
+                        .addListener((ObservableValue<? extends Number> observableValue, Number oldValue,
+                                final Number newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 progressBar.setValue(newValue.intValue());
                             });
                         });
 
-                engine.getLoadWorker().exceptionProperty().addListener(
-                        (ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
+                engine.getLoadWorker()
+                        .exceptionProperty()
+                        .addListener((ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) -> {
                             if (engine.getLoadWorker().getState() == FAILED) {
                                 SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(
-                                            internalFrame2,
-                                            (value != null)
-                                                    ? engine.getLocation() + "\n" + value.
-                                                    getMessage()
+                                    JOptionPane.showMessageDialog(internalFrame2,
+                                            (value != null) ? engine.getLocation() + "\n" + value.getMessage()
                                                     : engine.getLocation() + "\nUnexpected Catatan.",
-                                            "Loading Catatan...",
-                                            JOptionPane.ERROR_MESSAGE);
+                                            "Loading Catatan...", JOptionPane.ERROR_MESSAGE);
                                 });
                             }
                         });
 
-                engine.locationProperty().addListener(
-                        (ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
+                engine.locationProperty()
+                        .addListener((ObservableValue<? extends String> ov, String oldValue, final String newValue) -> {
                             SwingUtilities.invokeLater(() -> {
                                 txtURL.setText(newValue);
                             });
                         });
 
-                engine.getLoadWorker().stateProperty().addListener(
-                        new ChangeListener<State>() {
+                engine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
                     @Override
-                    public void changed(ObservableValue ov, State oldState,
-                            State newState) {
+                    public void changed(ObservableValue ov, State oldState, State newState) {
                         if (newState == State.SUCCEEDED) {
                             try {
                                 if (engine.getLocation().contains("surat/pages")) {
-                                    setCursor(Cursor.getPredefinedCursor(
-                                            Cursor.WAIT_CURSOR));
-                                    Valid.panggilUrl(engine.getLocation().
-                                            replaceAll("http://" + koneksiDB.
-                                                    HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                                            PORTWEB() + "/" + koneksiDB.
-                                                            HYBRIDWEB() + "/",
-                                                    "").replaceAll(
-                                                    "http://" + koneksiDB.
-                                                            HOSTHYBRIDWEB() + "/" + koneksiDB.
-                                                            HYBRIDWEB() + "/",
-                                                    "").replaceAll(
-                                                    "pages/upload/pages/upload",
-                                                    "pages/upload"));
+                                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    Valid.panggilUrl(engine.getLocation()
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB()
+                                                    + "/" + koneksiDB.HYBRIDWEB() + "/", "")
+                                            .replaceAll("http://" + koneksiDB.HOSTHYBRIDWEB() + "/" + koneksiDB.HYBRIDWEB()
+                                                    + "/", "")
+                                            .replaceAll("pages/upload/pages/upload", "pages/upload"));
                                     engine.executeScript("history.back()");
                                     setCursor(Cursor.getDefaultCursor());
-                                } else if (engine.getLocation().contains(
-                                        "Keluar")) {
+                                } else if (engine.getLocation().contains("Keluar")) {
                                     dispose();
                                 }
                             } catch (Exception ex) {
@@ -508,7 +491,6 @@ public class SuratMasuk extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param url
      */
     public void loadURLInput(String url) {
@@ -535,12 +517,10 @@ public class SuratMasuk extends javax.swing.JDialog {
 
     public void printInput(final Node node) {
         Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER,
-                PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / node.
-                getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / node.
-                getBoundsInParent().getHeight();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT,
+                Printer.MarginType.DEFAULT);
+        double scaleX = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
         node.getTransforms().add(new Scale(scaleX, scaleY));
 
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -553,7 +533,9 @@ public class SuratMasuk extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -991,7 +973,6 @@ public class SuratMasuk extends javax.swing.JDialog {
 
     }
 
-    private static final Logger LOG = Logger.getLogger(SuratMasuk.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(SuratMasuk.class.getName());
 
 }

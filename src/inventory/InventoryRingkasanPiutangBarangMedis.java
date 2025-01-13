@@ -27,31 +27,40 @@ import kepegawaian.DlgCariPetugas;
 import simrskhanza.DlgCariPasien;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private Connection koneksi = koneksiDB.condb();
+
     private int i = 0;
+
     private double total = 0;
 
     /**
      *
      */
     public DlgCariPasien pasien = new DlgCariPasien(null, false);
+
     public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
 
     /**
      *
      */
     public DlgBarang barang = new DlgBarang(null, false);
-    private String nofak = "", mem = "", ptg = "", sat = "", bar = "", tanggal = "", order = "order by databarang.nama_brng";
+
+    private String nofak = "", mem = "", ptg = "", sat = "", bar = "", tanggal = "",
+            order = "order by databarang.nama_brng";
 
     /**
      * Creates new form DlgProgramStudi
@@ -59,29 +68,24 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public InventoryRingkasanPiutangBarangMedis(java.awt.Frame parent,
-            boolean modal) {
+    public InventoryRingkasanPiutangBarangMedis(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis",
-            "Jumlah", "Total", "Kode Sat"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Jumlah", "Total", "Kode Sat"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -123,8 +127,7 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -162,10 +165,8 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPenjualan")) {
                     if (pasien.getTable().getSelectedRow() != -1) {
-                        kdmem.setText(pasien.getTable().getValueAt(pasien.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmmem.setText(pasien.getTable().getValueAt(pasien.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdmem.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 0).toString());
+                        nmmem.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 1).toString());
                     }
                     kdmem.requestFocus();
                 }
@@ -222,10 +223,8 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPenjualan")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -262,10 +261,8 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPenjualan")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -322,12 +319,12 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPenjualan")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsat.requestFocus();
                 }
@@ -353,7 +350,9 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -957,14 +956,13 @@ public class InventoryRingkasanPiutangBarangMedis extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasienActionPerformed
-        akses.setform("DlgCariPenjualan");
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgCariPenjualan");//GEN-FIRST:event_btnPasienActionPerformed
         pasien.emptTeks();
         pasien.isCek();
         pasien.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1364,9 +1362,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        tanggal = "  piutang.tgl_piutang between '" + Valid.SetTgl(Tgl1.
-                getSelectedItem() + "") + "' and '" + Valid.SetTgl(Tgl2.
-                        getSelectedItem() + "") + "' ";
+        tanggal = "  piutang.tgl_piutang between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' ";
         nofak = "";
         mem = "";
         ptg = "";
@@ -1390,41 +1387,31 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select detailpiutang.kode_brng,databarang.nama_brng, detailpiutang.kode_sat,"
+            ps = koneksi.prepareStatement("select detailpiutang.kode_brng,databarang.nama_brng, detailpiutang.kode_sat,"
                     + " kodesatuan.satuan,jenis.nama as namajenis,sum(detailpiutang.jumlah) as jumlah,sum(detailpiutang.total) as total "
                     + " from piutang inner join petugas inner join bangsal inner join jenis  "
                     + " inner join detailpiutang inner join databarang inner join kodesatuan "
                     + " on detailpiutang.kode_brng=databarang.kode_brng "
-                    + " and databarang.kode_sat=kodesatuan.kode_sat "
-                    + " and piutang.kd_bangsal=bangsal.kd_bangsal "
+                    + " and databarang.kode_sat=kodesatuan.kode_sat " + " and piutang.kd_bangsal=bangsal.kd_bangsal "
                     + " and piutang.nota_piutang=detailpiutang.nota_piutang "
-                    + " and piutang.nip=petugas.nip and databarang.kdjns=jenis.kdjns "
-                    + " where " + tanggal + nofak + mem + ptg + sat + bar + " and "
-                    + "(piutang.nota_piutang like '%" + TCari.getText() + "%' or piutang.no_rkm_medis like '%" + TCari.
-                    getText() + "%' or "
-                    + "piutang.nm_pasien like '%" + TCari.getText() + "%' or  piutang.nip like '%" + TCari.
-                    getText() + "%' or "
-                    + "petugas.nama like '%" + TCari.getText() + "%' or piutang.catatan like '%" + TCari.
-                    getText() + "%' or "
-                    + "piutang.jns_jual like '%" + TCari.getText() + "%' or detailpiutang.kode_brng like '%" + TCari.
-                    getText() + "%' or "
-                    + "bangsal.nm_bangsal like '%" + TCari.getText() + "%' or databarang.nama_brng like '%" + TCari.
-                    getText() + "%' or "
-                    + "databarang.kode_sat like '%" + TCari.getText() + "%' or jenis.nama like '%" + TCari.
-                    getText() + "%') "
+                    + " and piutang.nip=petugas.nip and databarang.kdjns=jenis.kdjns " + " where " + tanggal + nofak
+                    + mem + ptg + sat + bar + " and " + "(piutang.nota_piutang like '%" + TCari.getText()
+                    + "%' or piutang.no_rkm_medis like '%" + TCari.getText() + "%' or " + "piutang.nm_pasien like '%"
+                    + TCari.getText() + "%' or  piutang.nip like '%" + TCari.getText() + "%' or "
+                    + "petugas.nama like '%" + TCari.getText() + "%' or piutang.catatan like '%" + TCari.getText()
+                    + "%' or " + "piutang.jns_jual like '%" + TCari.getText() + "%' or detailpiutang.kode_brng like '%"
+                    + TCari.getText() + "%' or " + "bangsal.nm_bangsal like '%" + TCari.getText()
+                    + "%' or databarang.nama_brng like '%" + TCari.getText() + "%' or " + "databarang.kode_sat like '%"
+                    + TCari.getText() + "%' or jenis.nama like '%" + TCari.getText() + "%') "
                     + " group by detailpiutang.kode_brng " + order);
             try {
                 rs = ps.executeQuery();
                 total = 0;
                 while (rs.next()) {
                     total += rs.getDouble("total");
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("satuan"), rs.getString("namajenis"), rs.
-                        getDouble("jumlah"), rs.getDouble("total"), rs.
-                        getString("kode_sat")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("satuan"), rs.getString("namajenis"), rs.getDouble("jumlah"),
+                        rs.getDouble("total"), rs.getString("kode_sat")});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1459,6 +1446,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         BtnPrint.setEnabled(akses.getringkasan_piutang_obat());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryRingkasanPiutangBarangMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryRingkasanPiutangBarangMedis.class.getName());
+
 }

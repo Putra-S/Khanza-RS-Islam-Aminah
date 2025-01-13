@@ -33,17 +33,30 @@ import simrskhanza.DlgKelurahan;
 public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
 
     private final validasi Valid = new validasi();
+
     private final Connection koneksi = koneksiDB.condb();
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+
     private DlgKecamatan kecamatan = new DlgKecamatan(null, false);
+
     private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private final sekuel Sequel = new sekuel();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
-    private String querydokter, querypoli, querycarabayar, querykabupaten, querykecamatan, querykelurahan, jan, feb, mar, apr, mei, jun, jul, agu, sep, okt, nov, des, queryalamat, querycari;
+
+    private String querydokter, querypoli, querycarabayar, querykabupaten, querykecamatan, querykelurahan, jan, feb,
+            mar, apr, mei, jun, jul, agu, sep, okt, nov, des, queryalamat, querycari;
+
     private StringBuilder htmlContent;
 
     /**
@@ -64,8 +77,7 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
                 ".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
                 + ".isi2 td{font: 8.5px tahoma;height:12px;background: #ffffff;color:#323232;}"
                 + ".isi3 td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}"
-        );
+                + ".isi4 td{font: 11px tahoma;height:12px;border-top: 1px solid #e2e7dd;background: #ffffff;color:#323232;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -81,10 +93,8 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    nmpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
                 kdpoli.requestFocus();
             }
@@ -120,10 +130,8 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -177,10 +185,8 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -234,10 +240,9 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
-                            kabupaten.getTable().getSelectedRow(), 0).toString());
-                    KdKab.setText(kabupaten.getTable().getValueAt(kabupaten.
-                            getTable().getSelectedRow(), 1).toString());
+                    nmkabupaten
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
+                    KdKab.setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 1).toString());
                 }
                 nmkabupaten.requestFocus();
             }
@@ -291,10 +296,9 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kecamatan.getTable().getSelectedRow() != -1) {
-                    nmkecamatan.setText(kecamatan.getTable().getValueAt(
-                            kecamatan.getTable().getSelectedRow(), 0).toString());
-                    KdKec.setText(kecamatan.getTable().getValueAt(kecamatan.
-                            getTable().getSelectedRow(), 1).toString());
+                    nmkecamatan
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 0).toString());
+                    KdKec.setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 1).toString());
                 }
                 nmkecamatan.requestFocus();
             }
@@ -348,10 +352,9 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kelurahan.getTable().getSelectedRow() != -1) {
-                    nmkelurahan.setText(kelurahan.getTable().getValueAt(
-                            kelurahan.getTable().getSelectedRow(), 0).toString());
-                    KdKel.setText(kelurahan.getTable().getValueAt(kelurahan.
-                            getTable().getSelectedRow(), 1).toString());
+                    nmkelurahan
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 0).toString());
+                    KdKel.setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 1).toString());
                 }
                 nmkelurahan.requestFocus();
             }
@@ -405,7 +408,9 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
     private int i = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -815,14 +820,13 @@ public class DlgDataSasaranUsiaProduktif extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         try {
             File g = new File("file2.css");
             try (BufferedWriter bg = new BufferedWriter(new FileWriter(g))) {
@@ -1066,8 +1070,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDataSasaranUsiaProduktif dialog = new DlgDataSasaranUsiaProduktif(
-                    new javax.swing.JFrame(), true);
+            DlgDataSasaranUsiaProduktif dialog = new DlgDataSasaranUsiaProduktif(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1129,8 +1132,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
             htmlContent = new StringBuilder();
-            htmlContent.append(
-                    "<tr class='isi'>"
+            htmlContent.append("<tr class='isi'>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='2'>No</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='9%' rowspan='2'>NIK</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='5%' rowspan='2'>No.RM</td>"
@@ -1138,9 +1140,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='2%' rowspan='2'>J.K.</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='6%' rowspan='2'>Tgl.Lahir</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center' width='54%' colspan='12'>Kunjungan Usia Produktif</td>"
-                    + "</tr>"
-                    + "<tr class='isi'>"
-                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Jan</td>"
+                    + "</tr>" + "<tr class='isi'>" + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Jan</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Feb</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Mar</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Apr</td>"
@@ -1151,13 +1151,10 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Sep</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Okt</td>"
                     + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Nov</td>"
-                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Des</td>"
-                    + "</tr>"
-            );
+                    + "<td valign='middle' bgcolor='#FFFAFA' align='center'>Des</td>" + "</tr>");
             querydokter = "";
             if (!nmdokter.getText().isEmpty()) {
-                querydokter = " and reg_periksa.kd_dokter='" + kddokter.
-                        getText() + "' ";
+                querydokter = " and reg_periksa.kd_dokter='" + kddokter.getText() + "' ";
             }
             querypoli = "";
             if (!nmpoli.getText().isEmpty()) {
@@ -1185,8 +1182,8 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
             }
             querycari = "";
             if (!TCari.getText().isEmpty()) {
-                querycari = " and (pasien.nm_pasien like '%" + TCari.getText() + "%' or pasien.no_ktp like '%" + TCari.
-                        getText() + "%') ";
+                querycari = " and (pasien.nm_pasien like '%" + TCari.getText() + "%' or pasien.no_ktp like '%"
+                        + TCari.getText() + "%') ";
             }
 
             i = 1;
@@ -1199,101 +1196,106 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                 while (rs.next()) {
                     jan = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-01' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-01' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         jan = "Ya";
                     }
                     feb = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-02' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-02' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         feb = "Ya";
                     }
                     mar = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-03' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-03' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         mar = "Ya";
                     }
                     apr = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-04' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-04' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         apr = "Ya";
                     }
                     mei = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-05' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-05' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         mei = "Ya";
                     }
                     jun = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-06' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-06' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         jun = "Ya";
                     }
                     jul = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-07' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-07' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         jul = "Ya";
                     }
                     agu = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-08' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-08' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         agu = "Ya";
                     }
                     sep = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-09' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-09' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         sep = "Ya";
                     }
                     okt = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-10' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-10' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         okt = "Ya";
                     }
                     nov = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-11' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-11' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         nov = "Ya";
                     }
                     des = "Tidak";
                     if (Sequel.cariInteger(
-                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='" + ThnCari.
-                                    getSelectedItem() + "-12' and reg_periksa.no_rkm_medis='" + rs.
-                                    getString("no_rkm_medis") + "' " + querydokter + querypoli + querycarabayar) > 0) {
+                            "select count(reg_periksa.no_rkm_medis) from reg_periksa where left(reg_periksa.tgl_registrasi,7)='"
+                            + ThnCari.getSelectedItem() + "-12' and reg_periksa.no_rkm_medis='"
+                            + rs.getString("no_rkm_medis") + "' " + querydokter + querypoli
+                            + querycarabayar) > 0) {
                         des = "Ya";
                     }
-                    htmlContent.append(
-                            "<tr class='isi'>"
-                            + "<td valign='middle' align='center'>" + i + "</td>"
-                            + "<td valign='middle' align='center'>" + rs.
-                                    getString("no_ktp") + "</td>"
-                            + "<td valign='middle' align='center'>" + rs.
-                                    getString("no_rkm_medis") + "</td>"
-                            + "<td valign='middle' align='left'>" + rs.
-                                    getString("nm_pasien") + "</td>"
-                            + "<td valign='middle' align='center'>" + rs.
-                                    getString("jk") + "</td>"
-                            + "<td valign='middle' align='center'>" + rs.
-                                    getString("tgl_lahir") + "</td>"
+                    htmlContent.append("<tr class='isi'>" + "<td valign='middle' align='center'>" + i + "</td>"
+                            + "<td valign='middle' align='center'>" + rs.getString("no_ktp") + "</td>"
+                            + "<td valign='middle' align='center'>" + rs.getString("no_rkm_medis") + "</td>"
+                            + "<td valign='middle' align='left'>" + rs.getString("nm_pasien") + "</td>"
+                            + "<td valign='middle' align='center'>" + rs.getString("jk") + "</td>"
+                            + "<td valign='middle' align='center'>" + rs.getString("tgl_lahir") + "</td>"
                             + "<td valign='middle' align='center'>" + jan + "</td>"
                             + "<td valign='middle' align='center'>" + feb + "</td>"
                             + "<td valign='middle' align='center'>" + mar + "</td>"
@@ -1305,9 +1307,7 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                             + "<td valign='middle' align='center'>" + sep + "</td>"
                             + "<td valign='middle' align='center'>" + okt + "</td>"
                             + "<td valign='middle' align='center'>" + nov + "</td>"
-                            + "<td valign='middle' align='center'>" + des + "</td>"
-                            + "</tr>"
-                    );
+                            + "<td valign='middle' align='center'>" + des + "</td>" + "</tr>");
                     i++;
                 }
             } catch (Exception e) {
@@ -1321,12 +1321,9 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
                 }
             }
 
-            LoadHTML.setText(
-                    "<html>"
+            LoadHTML.setText("<html>"
                     + "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>"
-                    + htmlContent.toString()
-                    + "</table>"
-                    + "</html>");
+                    + htmlContent.toString() + "</table>" + "</html>");
         } catch (Exception e) {
             System.out.println("Notif : " + e);
         }
@@ -1351,6 +1348,6 @@ private void btnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_b
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgDataSasaranUsiaProduktif.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgDataSasaranUsiaProduktif.class.getName());
+
 }

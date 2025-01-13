@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -40,22 +40,32 @@ import simrskhanza.DlgKecamatan;
 import simrskhanza.DlgKelurahan;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgDosisRadiologi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgKabupaten kabupaten = new DlgKabupaten(null, false);
+
     private DlgKecamatan kecamatan = new DlgKecamatan(null, false);
+
     private DlgKelurahan kelurahan = new DlgKelurahan(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private int i = 0;
 
     /**
@@ -70,12 +80,9 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {
-            "Tanggal & Jam", "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur",
-            "Alamat", "Pemeriksaan", "Dokter Perujuk/Pengirim",
-            "Status", "Proyeksi", "kV", "mAS", "FFD", "BSF", "Inak",
-            "Jml.Penyinaran", "Dosis"
-        };
+        Object[] rowRwJlDr = {"Tanggal & Jam", "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "Alamat",
+            "Pemeriksaan", "Dokter Perujuk/Pengirim", "Status", "Proyeksi", "kV", "mAS", "FFD", "BSF", "Inak",
+            "Jml.Penyinaran", "Dosis"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -84,7 +91,8 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -132,8 +140,7 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput(90).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -170,10 +177,8 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -227,8 +232,8 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kabupaten.getTable().getSelectedRow() != -1) {
-                    nmkabupaten.setText(kabupaten.getTable().getValueAt(
-                            kabupaten.getTable().getSelectedRow(), 0).toString());
+                    nmkabupaten
+                            .setText(kabupaten.getTable().getValueAt(kabupaten.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkabupaten.requestFocus();
             }
@@ -282,8 +287,8 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kecamatan.getTable().getSelectedRow() != -1) {
-                    nmkecamatan.setText(kecamatan.getTable().getValueAt(
-                            kecamatan.getTable().getSelectedRow(), 0).toString());
+                    nmkecamatan
+                            .setText(kecamatan.getTable().getValueAt(kecamatan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkecamatan.requestFocus();
             }
@@ -337,8 +342,8 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kelurahan.getTable().getSelectedRow() != -1) {
-                    nmkelurahan.setText(kelurahan.getTable().getValueAt(
-                            kelurahan.getTable().getSelectedRow(), 0).toString());
+                    nmkelurahan
+                            .setText(kelurahan.getTable().getValueAt(kelurahan.getTable().getSelectedRow(), 0).toString());
                 }
                 nmkelurahan.requestFocus();
             }
@@ -392,10 +397,8 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -443,7 +446,9 @@ public class DlgDosisRadiologi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1089,8 +1094,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgDosisRadiologi dialog = new DlgDosisRadiologi(
-                    new javax.swing.JFrame(), true);
+            DlgDosisRadiologi dialog = new DlgDosisRadiologi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1170,10 +1174,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
-                ps.setString(3, "%" + Status.getSelectedItem().toString().
-                        replaceAll("Semua Status", "").replaceAll(
-                        "Pemeriksaan Radiologi Rawat Jalan", "Ralan").
-                        replaceAll("Pemeriksaan Radiologi Rawat Inap", "Ranap") + "%");
+                ps.setString(3,
+                        "%" + Status.getSelectedItem()
+                                .toString()
+                                .replaceAll("Semua Status", "")
+                                .replaceAll("Pemeriksaan Radiologi Rawat Jalan", "Ralan")
+                                .replaceAll("Pemeriksaan Radiologi Rawat Inap", "Ranap") + "%");
                 ps.setString(4, "%" + nmdokter.getText().trim() + "%");
                 ps.setString(5, "%" + nmpenjab.getText().trim() + "%");
                 ps.setString(6, "%" + nmkabupaten.getText().trim() + "%");
@@ -1185,19 +1191,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 ps.setString(12, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tgl_periksa") + " " + rs.getString("jam"),
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("jk"), rs.
-                        getString("umur"), rs.getString("almt_pj"), rs.
-                        getString("nm_perawatan"),
-                        rs.getString("nm_dokter"), rs.getString("status"), rs.
-                        getString("proyeksi"), rs.getString("kV"), rs.getString(
-                        "mAS"),
-                        rs.getString("FFD"), rs.getString("BSF"), rs.getString(
-                        "inak"), rs.getString("jml_penyinaran"), rs.getString(
-                        "dosis")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("tgl_periksa") + " " + rs.getString("jam"),
+                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("jk"), rs.getString("umur"), rs.getString("almt_pj"),
+                        rs.getString("nm_perawatan"), rs.getString("nm_dokter"), rs.getString("status"),
+                        rs.getString("proyeksi"), rs.getString("kV"), rs.getString("mAS"), rs.getString("FFD"),
+                        rs.getString("BSF"), rs.getString("inak"), rs.getString("jml_penyinaran"),
+                        rs.getString("dosis")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1236,7 +1236,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgDosisRadiologi.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgDosisRadiologi.class.getName());
 
 }

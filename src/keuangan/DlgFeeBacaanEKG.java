@@ -25,22 +25,32 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgFeeBacaanEKG extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private int i = 0, jmlbacaan = 0, ttljmlbacaan = 0;
+
     private double feebacaan = 0, jasa = 0, ttljasa = 0;
+
     private PreparedStatement pskamar, psbacaanranap, psbacaanralan;
+
     private ResultSet rskamar, rsbacaanranap, rsbacaanralan;
+
     private String sjmlbacaan = "", sfeebacaan = "", sjasa = "";
 
     /**
@@ -53,18 +63,13 @@ public class DlgFeeBacaanEKG extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.", "Tgl.Masuk", "Tgl.Keluar", "Nama Pasien", "Ruang",
-            "Jenis Bayar",
-            "Jml.Bacaan", "Fee(Rp)", "Total Fee(Rp)"};
+        Object[] row = {"No.", "Tgl.Masuk", "Tgl.Keluar", "Nama Pasien", "Ruang", "Jenis Bayar", "Jml.Bacaan",
+            "Fee(Rp)", "Total Fee(Rp)"};
 
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.Integer.class, java.lang.Double.class,
-                java.lang.Double.class,};
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class,
+                java.lang.Double.class, java.lang.Double.class,};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -118,10 +123,8 @@ public class DlgFeeBacaanEKG extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     prosesCari();
                 }
                 kddokter.requestFocus();
@@ -152,37 +155,32 @@ public class DlgFeeBacaanEKG extends javax.swing.JDialog {
                     + "from kamar_inap inner join kamar inner join bangsal inner join reg_periksa inner join pasien inner join penjab on kamar_inap.no_rawat=reg_periksa.no_rawat and "
                     + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.kd_pj=penjab.kd_pj and kamar_inap.kd_kamar=kamar.kd_kamar and kamar.kd_bangsal=bangsal.kd_bangsal "
                     + "where kamar_inap.tgl_keluar between ? and ? and kamar_inap.tgl_keluar<>'0000-00-00' group by kamar_inap.no_rawat");
-            psbacaanranap = koneksi.prepareStatement(
-                    "select count(rawat_inap_dr.kd_jenis_prw) as jml,"
-                    + "rawat_inap_dr.tarif_tindakandr as tarif,"
-                    + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter "
+            psbacaanranap = koneksi.prepareStatement("select count(rawat_inap_dr.kd_jenis_prw) as jml,"
+                    + "rawat_inap_dr.tarif_tindakandr as tarif," + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter "
                     + "from rawat_inap_dr inner join jns_perawatan_inap "
                     + "on jns_perawatan_inap.kd_jenis_prw=rawat_inap_dr.kd_jenis_prw where "
                     + "rawat_inap_dr.tarif_tindakandr>0 and rawat_inap_dr.kd_dokter=? "
                     + "and rawat_inap_dr.no_rawat=? and jns_perawatan_inap.nm_perawatan like '%bacaan%' "
                     + "and jns_perawatan_inap.nm_perawatan like '%ekg%' ");
-            psbacaanralan = koneksi.prepareStatement(
-                    "select count(rawat_inap_dr.kd_jenis_prw) as jml,"
-                    + "rawat_inap_dr.tarif_tindakandr as tarif,"
-                    + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter "
+            psbacaanralan = koneksi.prepareStatement("select count(rawat_inap_dr.kd_jenis_prw) as jml,"
+                    + "rawat_inap_dr.tarif_tindakandr as tarif," + "sum(rawat_inap_dr.tarif_tindakandr)as bayardokter "
                     + "from rawat_inap_dr inner join jns_perawatan_inap "
                     + "on jns_perawatan_inap.kd_jenis_prw=rawat_inap_dr.kd_jenis_prw where "
                     + "rawat_inap_dr.tarif_tindakandr>0 and rawat_inap_dr.kd_dokter=? "
                     + "and rawat_inap_dr.no_rawat=? and jns_perawatan_inap.nm_perawatan like '%bacaan%' "
                     + "and jns_perawatan_inap.nm_perawatan like '%ekg%' ");
-            psbacaanralan = koneksi.prepareStatement(
-                    "select reg_periksa.tgl_registrasi,pasien.nm_pasien,penjab.png_jawab,"
-                    + "count(rawat_jl_dr.kd_jenis_prw) as jml,rawat_jl_dr.tarif_tindakandr as tarif,"
-                    + "sum(rawat_jl_dr.tarif_tindakandr) as bayardokter "
-                    + "from rawat_jl_dr inner join reg_periksa inner join pasien "
-                    + "inner join penjab inner join jns_perawatan  "
-                    + "on rawat_jl_dr.no_rawat=reg_periksa.no_rawat "
-                    + "and jns_perawatan.kd_jenis_prw=rawat_jl_dr.kd_jenis_prw "
-                    + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                    + "and reg_periksa.kd_pj=penjab.kd_pj "
-                    + "where rawat_jl_dr.kd_dokter=? and reg_periksa.tgl_registrasi between ? and ? "
-                    + "and rawat_jl_dr.tarif_tindakandr>0 and jns_perawatan.nm_perawatan like '%bacaan%' "
-                    + "and jns_perawatan.nm_perawatan like '%ekg%' group by rawat_jl_dr.no_rawat");
+            psbacaanralan = koneksi
+                    .prepareStatement("select reg_periksa.tgl_registrasi,pasien.nm_pasien,penjab.png_jawab,"
+                            + "count(rawat_jl_dr.kd_jenis_prw) as jml,rawat_jl_dr.tarif_tindakandr as tarif,"
+                            + "sum(rawat_jl_dr.tarif_tindakandr) as bayardokter "
+                            + "from rawat_jl_dr inner join reg_periksa inner join pasien "
+                            + "inner join penjab inner join jns_perawatan  "
+                            + "on rawat_jl_dr.no_rawat=reg_periksa.no_rawat "
+                            + "and jns_perawatan.kd_jenis_prw=rawat_jl_dr.kd_jenis_prw "
+                            + "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis " + "and reg_periksa.kd_pj=penjab.kd_pj "
+                            + "where rawat_jl_dr.kd_dokter=? and reg_periksa.tgl_registrasi between ? and ? "
+                            + "and rawat_jl_dr.tarif_tindakandr>0 and jns_perawatan.nm_perawatan like '%bacaan%' "
+                            + "and jns_perawatan.nm_perawatan like '%ekg%' group by rawat_jl_dr.no_rawat");
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -190,7 +188,9 @@ public class DlgFeeBacaanEKG extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -381,14 +381,13 @@ public class DlgFeeBacaanEKG extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         if (tabMode.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null,
                     "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
@@ -538,8 +537,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgFeeBacaanEKG dialog = new DlgFeeBacaanEKG(
-                    new javax.swing.JFrame(), true);
+            DlgFeeBacaanEKG dialog = new DlgFeeBacaanEKG(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -594,15 +592,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 if (jasa > 0) {
-                    tabMode.addRow(new Object[]{
-                        i, rskamar.getString("tgl_masuk"), rskamar.getString(
-                        "tgl_keluar"),
-                        rskamar.getString("nm_pasien"), rskamar.getString(
-                        "kd_kamar")
-                        + " " + rskamar.getString("nm_bangsal"), rskamar.
-                        getString("png_jawab"),
-                        jmlbacaan, feebacaan, jasa
-                    });
+                    tabMode.addRow(new Object[]{i, rskamar.getString("tgl_masuk"), rskamar.getString("tgl_keluar"),
+                        rskamar.getString("nm_pasien"),
+                        rskamar.getString("kd_kamar") + " " + rskamar.getString("nm_bangsal"),
+                        rskamar.getString("png_jawab"), jmlbacaan, feebacaan, jasa});
                 }
                 i++;
                 ttljmlbacaan += jmlbacaan;
@@ -610,10 +603,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             }
 
             psbacaanralan.setString(1, kddokter.getText());
-            psbacaanralan.
-                    setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
-            psbacaanralan.
-                    setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+            psbacaanralan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+            psbacaanralan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
             rsbacaanralan = psbacaanralan.executeQuery();
             while (rsbacaanralan.next()) {
                 jmlbacaan = rsbacaanralan.getInt("jml");
@@ -622,18 +613,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 ttljmlbacaan += jmlbacaan;
                 ttljasa += jasa;
 
-                tabMode.addRow(new Object[]{
-                    i, rsbacaanralan.getString("tgl_registrasi"), "",
-                    rsbacaanralan.getString("nm_pasien"), "Poli",
-                    rsbacaanralan.getString("png_jawab"),
-                    jmlbacaan, feebacaan, jasa
-                });
+                tabMode.addRow(new Object[]{i, rsbacaanralan.getString("tgl_registrasi"), "",
+                    rsbacaanralan.getString("nm_pasien"), "Poli", rsbacaanralan.getString("png_jawab"), jmlbacaan,
+                    feebacaan, jasa});
             }
 
             if (ttljasa > 0) {
-                tabMode.addRow(new Object[]{
-                    "", "", "", "Jumlah :", "", "", ttljmlbacaan, 0, ttljasa
-                });
+                tabMode.addRow(new Object[]{"", "", "", "Jumlah :", "", "", ttljmlbacaan, 0, ttljasa});
             }
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -648,7 +634,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         // BtnPrint.setEnabled(var.getfee_bacaan_ekg());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgFeeBacaanEKG.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgFeeBacaanEKG.class.getName());
 
 }

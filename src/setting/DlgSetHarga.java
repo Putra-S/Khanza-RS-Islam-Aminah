@@ -35,18 +35,25 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgSetHarga extends javax.swing.JDialog {
 
-    private final DefaultTableModel tabMode, tabModePengaturanUmum, tabModePengaturanHargaUmum, tabModePengaturanHargaPerBarang;
+    private final DefaultTableModel tabMode, tabModePengaturanUmum, tabModePengaturanHargaUmum,
+            tabModePengaturanHargaPerBarang;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     public DlgCariJenis jenis = new DlgCariJenis(null, false);
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgBarang barang = new DlgBarang(null, false);
 
     /**
@@ -58,13 +65,10 @@ public class DlgSetHarga extends javax.swing.JDialog {
     public DlgSetHarga(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)",
-            "Kelas Utama(%)",
-            "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)", "Jual Bebas(%)",
-            "Karyawan(%)",
-            "Kode Jenis", "Nama Jenis"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)", "Kelas Utama(%)",
+                    "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)", "Jual Bebas(%)", "Karyawan(%)", "Kode Jenis",
+                    "Nama Jenis"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -87,10 +91,8 @@ public class DlgSetHarga extends javax.swing.JDialog {
 
         tbAdmin.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModePengaturanUmum = new DefaultTableModel(null, new Object[]{
-            "Harga obat yang digunakan", "Asal harga jual obat",
-            "Sertakan PPN Pembelian"
-        }) {
+        tabModePengaturanUmum = new DefaultTableModel(null,
+                new Object[]{"Harga obat yang digunakan", "Asal harga jual obat", "Sertakan PPN Pembelian"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -99,8 +101,7 @@ public class DlgSetHarga extends javax.swing.JDialog {
         };
 
         tbPengaturanUmum.setModel(tabModePengaturanUmum);
-        tbPengaturanUmum.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        tbPengaturanUmum.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPengaturanUmum.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 3; i++) {
@@ -116,11 +117,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
 
         tbPengaturanUmum.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModePengaturanHargaUmum = new DefaultTableModel(null, new Object[]{
-            "Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)",
-            "Kelas Utama(%)",
-            "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)", "Jual Bebas(%)",
-            "Karyawan(%)",}) {
+        tabModePengaturanHargaUmum = new DefaultTableModel(null,
+                new Object[]{"Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)", "Kelas Utama(%)",
+                    "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)", "Jual Bebas(%)", "Karyawan(%)",}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -129,13 +128,11 @@ public class DlgSetHarga extends javax.swing.JDialog {
         };
 
         tbPengaturanHargaUmum.setModel(tabModePengaturanHargaUmum);
-        tbPengaturanHargaUmum.setPreferredScrollableViewportSize(new Dimension(
-                500, 500));
+        tbPengaturanHargaUmum.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPengaturanHargaUmum.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 10; i++) {
-            TableColumn column = tbPengaturanHargaUmum.getColumnModel().
-                    getColumn(i);
+            TableColumn column = tbPengaturanHargaUmum.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(70);
             } else {
@@ -146,13 +143,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
         tbPengaturanHargaUmum.setDefaultRenderer(Object.class, new WarnaTable());
 
         tabModePengaturanHargaPerBarang = new DefaultTableModel(null,
-                new Object[]{
-                    "Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)",
-                    "Kelas Utama(%)",
-                    "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)",
-                    "Jual Bebas(%)", "Karyawan(%)",
-                    "Kode Barang", "Nama Barang"
-                }) {
+                new Object[]{"Ralan(%)", "Ranap K1(%)", "Ranap K2(%)", "Ranap K3(%)", "Kelas Utama(%)",
+                    "Ranap VIP(%)", "Ranap VVIP(%)", "Beli Luar(%)", "Jual Bebas(%)", "Karyawan(%)", "Kode Barang",
+                    "Nama Barang"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -161,13 +154,11 @@ public class DlgSetHarga extends javax.swing.JDialog {
         };
 
         tbPengaturanHargaPerBarang.setModel(tabModePengaturanHargaPerBarang);
-        tbPengaturanHargaPerBarang.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        tbPengaturanHargaPerBarang.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbPengaturanHargaPerBarang.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 12; i++) {
-            TableColumn column = tbPengaturanHargaPerBarang.getColumnModel().
-                    getColumn(i);
+            TableColumn column = tbPengaturanHargaPerBarang.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(70);
             } else if (i == 10) {
@@ -179,8 +170,7 @@ public class DlgSetHarga extends javax.swing.JDialog {
             }
         }
 
-        tbPengaturanHargaPerBarang.setDefaultRenderer(Object.class,
-                new WarnaTable());
+        tbPengaturanHargaPerBarang.setDefaultRenderer(Object.class, new WarnaTable());
         ralan.setDocument(new batasInput((byte) 10).getKata(ralan));
         ranapk1.setDocument(new batasInput((byte) 10).getKata(ranapk1));
         ranapk2.setDocument(new batasInput((byte) 10).getKata(ranapk2));
@@ -198,34 +188,20 @@ public class DlgSetHarga extends javax.swing.JDialog {
         ranapk1umum.setDocument(new batasInput((byte) 10).getKata(ranapk1umum));
         ranapk2umum.setDocument(new batasInput((byte) 10).getKata(ranapk2umum));
         ranapk3umum.setDocument(new batasInput((byte) 10).getKata(ranapk3umum));
-        ranaputamaumum.setDocument(new batasInput((byte) 10).getKata(
-                ranaputamaumum));
-        ranapvipumum.
-                setDocument(new batasInput((byte) 10).getKata(ranapvipumum));
-        ranapvvipumum.setDocument(new batasInput((byte) 10).getKata(
-                ranapvvipumum));
-        beliluarumum.
-                setDocument(new batasInput((byte) 10).getKata(beliluarumum));
-        jualbebasumum.setDocument(new batasInput((byte) 10).getKata(
-                jualbebasumum));
-        ralanperbarang.setDocument(new batasInput((byte) 10).getKata(
-                ralanperbarang));
-        ranapk1perbarang.setDocument(new batasInput((byte) 10).getKata(
-                ranapk1perbarang));
-        ranapk2perbarang.setDocument(new batasInput((byte) 10).getKata(
-                ranapk2perbarang));
-        ranapk3perbarang.setDocument(new batasInput((byte) 10).getKata(
-                ranapk3perbarang));
-        ranaputamaperbarang.setDocument(new batasInput((byte) 10).getKata(
-                ranaputamaperbarang));
-        ranapvipperbarang.setDocument(new batasInput((byte) 10).getKata(
-                ranapvipperbarang));
-        ranapvvipperbarang.setDocument(new batasInput((byte) 10).getKata(
-                ranapvvipperbarang));
-        beliluarperbarang.setDocument(new batasInput((byte) 10).getKata(
-                beliluarperbarang));
-        jualbebasperbarang.setDocument(new batasInput((byte) 10).getKata(
-                jualbebasperbarang));
+        ranaputamaumum.setDocument(new batasInput((byte) 10).getKata(ranaputamaumum));
+        ranapvipumum.setDocument(new batasInput((byte) 10).getKata(ranapvipumum));
+        ranapvvipumum.setDocument(new batasInput((byte) 10).getKata(ranapvvipumum));
+        beliluarumum.setDocument(new batasInput((byte) 10).getKata(beliluarumum));
+        jualbebasumum.setDocument(new batasInput((byte) 10).getKata(jualbebasumum));
+        ralanperbarang.setDocument(new batasInput((byte) 10).getKata(ralanperbarang));
+        ranapk1perbarang.setDocument(new batasInput((byte) 10).getKata(ranapk1perbarang));
+        ranapk2perbarang.setDocument(new batasInput((byte) 10).getKata(ranapk2perbarang));
+        ranapk3perbarang.setDocument(new batasInput((byte) 10).getKata(ranapk3perbarang));
+        ranaputamaperbarang.setDocument(new batasInput((byte) 10).getKata(ranaputamaperbarang));
+        ranapvipperbarang.setDocument(new batasInput((byte) 10).getKata(ranapvipperbarang));
+        ranapvvipperbarang.setDocument(new batasInput((byte) 10).getKata(ranapvvipperbarang));
+        beliluarperbarang.setDocument(new batasInput((byte) 10).getKata(beliluarperbarang));
+        jualbebasperbarang.setDocument(new batasInput((byte) 10).getKata(jualbebasperbarang));
 
         jenis.addWindowListener(new WindowListener() {
             @Override
@@ -239,10 +215,8 @@ public class DlgSetHarga extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 kdjns.requestFocus();
             }
@@ -277,10 +251,8 @@ public class DlgSetHarga extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kdbarang.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmbarang.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdbarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                    nmbarang.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                 }
                 kdbarang.requestFocus();
             }
@@ -323,7 +295,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -3172,8 +3146,7 @@ public class DlgSetHarga extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select setpenjualan.ralan, setpenjualan.kelas1, setpenjualan.kelas2, "
+            ps = koneksi.prepareStatement("select setpenjualan.ralan, setpenjualan.kelas1, setpenjualan.kelas2, "
                     + "setpenjualan.kelas3, setpenjualan.utama, setpenjualan.vip, setpenjualan.vvip, "
                     + "setpenjualan.beliluar, setpenjualan.jualbebas, setpenjualan.karyawan, "
                     + "setpenjualan.kdjns,jenis.nama from setpenjualan inner join jenis on "
@@ -3182,13 +3155,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getString(4), rs.getString(5),
-                        rs.getString(6), rs.getString(7), rs.getString(8), rs.
-                        getString(9), rs.getString(10),
-                        rs.getString(11), rs.getString(12)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11), rs.getString(12)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -3209,14 +3178,11 @@ public class DlgSetHarga extends javax.swing.JDialog {
     private void tampilpengaturanumum() {
         Valid.tabelKosong(tabModePengaturanUmum);
         try {
-            ps = koneksi.prepareStatement(
-                    "select * from set_harga_obat");
+            ps = koneksi.prepareStatement("select * from set_harga_obat");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModePengaturanUmum.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3)
-                    });
+                    tabModePengaturanUmum.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -3236,18 +3202,16 @@ public class DlgSetHarga extends javax.swing.JDialog {
     private void tampilpengaturanhargaumum() {
         Valid.tabelKosong(tabModePengaturanHargaUmum);
         try {
-            ps = koneksi.prepareStatement(
-                    "select setpenjualanumum.ralan, setpenjualanumum.kelas1, setpenjualanumum.kelas2, "
-                    + "setpenjualanumum.kelas3, setpenjualanumum.utama, setpenjualanumum.vip, setpenjualanumum.vvip, "
-                    + "setpenjualanumum.beliluar, setpenjualanumum.jualbebas, setpenjualanumum.karyawan from setpenjualanumum");
+            ps = koneksi
+                    .prepareStatement("select setpenjualanumum.ralan, setpenjualanumum.kelas1, setpenjualanumum.kelas2, "
+                            + "setpenjualanumum.kelas3, setpenjualanumum.utama, setpenjualanumum.vip, setpenjualanumum.vvip, "
+                            + "setpenjualanumum.beliluar, setpenjualanumum.jualbebas, setpenjualanumum.karyawan from setpenjualanumum");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModePengaturanHargaUmum.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getString(4), rs.getString(5),
-                        rs.getString(6), rs.getString(7), rs.getString(8), rs.
-                        getString(9), rs.getString(10),});
+                    tabModePengaturanHargaUmum.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
+                        rs.getString(9), rs.getString(10),});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -3277,13 +3241,9 @@ public class DlgSetHarga extends javax.swing.JDialog {
                 ps.setString(1, "%" + TCari1.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModePengaturanHargaPerBarang.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getString(4), rs.getString(5),
-                        rs.getString(6), rs.getString(7), rs.getString(8), rs.
-                        getString(9), rs.getString(10),
-                        rs.getString(11), rs.getString(12)
-                    });
+                    tabModePengaturanHargaPerBarang.addRow(new Object[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -3322,68 +3282,42 @@ public class DlgSetHarga extends javax.swing.JDialog {
     private void getDataPengaturanHargaUmum() {
         int row = tbPengaturanHargaUmum.getSelectedRow();
         if (row != -1) {
-            ralanumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 0).
-                    toString());
-            ranapk1umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 1).
-                    toString());
-            ranapk2umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 2).
-                    toString());
-            ranapk3umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 3).
-                    toString());
-            ranaputamaumum.setText(
-                    tabModePengaturanHargaUmum.getValueAt(row, 4).toString());
-            ranapvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 5).
-                    toString());
-            ranapvvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 6).
-                    toString());
-            beliluarumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 7).
-                    toString());
-            jualbebasumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 8).
-                    toString());
-            karyawanumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 9).
-                    toString());
+            ralanumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 0).toString());
+            ranapk1umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 1).toString());
+            ranapk2umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 2).toString());
+            ranapk3umum.setText(tabModePengaturanHargaUmum.getValueAt(row, 3).toString());
+            ranaputamaumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 4).toString());
+            ranapvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 5).toString());
+            ranapvvipumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 6).toString());
+            beliluarumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 7).toString());
+            jualbebasumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 8).toString());
+            karyawanumum.setText(tabModePengaturanHargaUmum.getValueAt(row, 9).toString());
         }
     }
 
     private void getDataPengaturanUmum() {
         int row = tbPengaturanUmum.getSelectedRow();
         if (row != -1) {
-            cmbPengaturan.setSelectedItem(tabModePengaturanUmum.getValueAt(row,
-                    0).toString());
-            cmbHargaDasar.setSelectedItem(tabModePengaturanUmum.getValueAt(row,
-                    1).toString());
+            cmbPengaturan.setSelectedItem(tabModePengaturanUmum.getValueAt(row, 0).toString());
+            cmbHargaDasar.setSelectedItem(tabModePengaturanUmum.getValueAt(row, 1).toString());
         }
     }
 
     private void getDataPengaturanHargaPerBarang() {
         int row = tbPengaturanHargaPerBarang.getSelectedRow();
         if (row != -1) {
-            ralanperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
-                    row, 0).toString());
-            ranapk1perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
-                    row, 1).toString());
-            ranapk2perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
-                    row, 2).toString());
-            ranapk3perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(
-                    row, 3).toString());
-            ranaputamaperbarang.setText(tabModePengaturanHargaPerBarang.
-                    getValueAt(row, 4).toString());
-            ranapvipperbarang.setText(tabModePengaturanHargaPerBarang.
-                    getValueAt(row, 5).toString());
-            ranapvvipperbarang.setText(tabModePengaturanHargaPerBarang.
-                    getValueAt(row, 6).toString());
-            beliluarperbarang.setText(tabModePengaturanHargaPerBarang.
-                    getValueAt(row, 7).toString());
-            jualbebasperbarang.setText(tabModePengaturanHargaPerBarang.
-                    getValueAt(row, 8).toString());
-            karyawanperbarang.setText(tabModePengaturanHargaPerBarang.
-                    getValueAt(row, 9).toString());
-            kdbarang.setText(
-                    tabModePengaturanHargaPerBarang.getValueAt(row, 10).
-                            toString());
-            nmbarang.setText(
-                    tabModePengaturanHargaPerBarang.getValueAt(row, 11).
-                            toString());
+            ralanperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 0).toString());
+            ranapk1perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 1).toString());
+            ranapk2perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 2).toString());
+            ranapk3perbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 3).toString());
+            ranaputamaperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 4).toString());
+            ranapvipperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 5).toString());
+            ranapvvipperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 6).toString());
+            beliluarperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 7).toString());
+            jualbebasperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 8).toString());
+            karyawanperbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 9).toString());
+            kdbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 10).toString());
+            nmbarang.setText(tabModePengaturanHargaPerBarang.getValueAt(row, 11).toString());
         }
     }
 
@@ -3436,6 +3370,6 @@ public class DlgSetHarga extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgSetHarga.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgSetHarga.class.getName());
+
 }

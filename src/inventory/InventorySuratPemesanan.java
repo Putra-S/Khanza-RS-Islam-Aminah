@@ -32,36 +32,58 @@ import kepegawaian.DlgCariPegawai;
 import keuangan.Jurnal;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class InventorySuratPemesanan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private InventoryCariSuplier suplier = new InventoryCariSuplier(null, false);
+
     private DlgCariSuratPemesanan form = new DlgCariSuratPemesanan(null, false);
+
     private double meterai = 0, ttl = 0, y = 0, w = 0, ttldisk = 0, sbttl = 0, ppn = 0;
+
     private int jml = 0, i = 0, row = 0, index = 0, pilihan = 1;
+
     private String[] kodebarang, namabarang, satuan, satuanbeli;
+
     private double[] harga, jumlah, subtotal, diskon, besardiskon, jmltotal, jmlstok, isi, isibesar;
+
     public boolean tampilkan = true;
+
     private boolean sukses = true;
-    private DlgCariDataKonversi datakonversi = new DlgCariDataKonversi(null,
-            false);
+
+    private DlgCariDataKonversi datakonversi = new DlgCariDataKonversi(null, false);
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -74,21 +96,14 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Jml", "Satuan Beli", "Kode Barang", "Nama Barang", "Satuan",
-            "Harga(Rp)", "Subtotal(Rp)",
-            "Disk(%)", "Diskon(Rp)", "Total", "Jml.Stok", "Isi", "Isi Besar"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Jml", "Satuan Beli", "Kode Barang", "Nama Barang", "Satuan", "Harga(Rp)",
+                    "Subtotal(Rp)", "Disk(%)", "Diskon(Rp)", "Total", "Jml.Stok", "Isi", "Isi Besar"}) {
 
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -145,8 +160,7 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
         kdptg.setDocument(new batasInput((byte) 20).getKata(kdptg));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -183,10 +197,8 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (suplier.getTable().getSelectedRow() != -1) {
-                    kdsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                    nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                 }
                 kdsup.requestFocus();
             }
@@ -240,19 +252,14 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        kdptg.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 0).toString());
-                        nmptg.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
-                        Departemen.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 5).toString());
+                        kdptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                        nmptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        Departemen.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 5).toString());
                         kdptg.requestFocus();
                     } else if (pilihan == 2) {
-                        Apoteker.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        Apoteker.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                     } else if (pilihan == 3) {
-                        KabidKeu.setText(pegawai.tbKamar.getValueAt(
-                                pegawai.tbKamar.getSelectedRow(), 1).toString());
+                        KabidKeu.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                     }
                 }
             }
@@ -305,24 +312,22 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (datakonversi.getTable().getSelectedRow() != -1) {
-                    tbDokter.setValueAt(datakonversi.getTable().getValueAt(
-                            datakonversi.getTable().getSelectedRow(), 1).
-                            toString(), tbDokter.getSelectedRow(), 1);
+                    tbDokter.setValueAt(
+                            datakonversi.getTable().getValueAt(datakonversi.getTable().getSelectedRow(), 1).toString(),
+                            tbDokter.getSelectedRow(), 1);
                     try {
-                        tbDokter.setValueAt(Double.valueOf(datakonversi.
-                                getTable().getValueAt(datakonversi.getTable().
-                                        getSelectedRow(), 3).toString()),
-                                tbDokter.getSelectedRow(), 11);
+                        tbDokter.setValueAt(Double.valueOf(datakonversi.getTable()
+                                .getValueAt(datakonversi.getTable().getSelectedRow(), 3)
+                                .toString()), tbDokter.getSelectedRow(), 11);
                     } catch (Exception er) {
                         JOptionPane.showMessageDialog(null,
                                 "Gagal mengambil nilai konversi, nilai barang satuan kecil dianggap bernilai 1..!!");
                         tbDokter.setValueAt(1, tbDokter.getSelectedRow(), 11);
                     }
                     try {
-                        tbDokter.setValueAt(Double.valueOf(datakonversi.
-                                getTable().getValueAt(datakonversi.getTable().
-                                        getSelectedRow(), 0).toString()),
-                                tbDokter.getSelectedRow(), 12);
+                        tbDokter.setValueAt(Double.valueOf(datakonversi.getTable()
+                                .getValueAt(datakonversi.getTable().getSelectedRow(), 0)
+                                .toString()), tbDokter.getSelectedRow(), 12);
                     } catch (Exception er) {
                         JOptionPane.showMessageDialog(null,
                                 "Gagal mengambil nilai konversi, nilai barang satuan besar dianggap bernilai 1..!!");
@@ -372,7 +377,9 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -877,7 +884,7 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
         panelisi1.add(label17);
         label17.setBounds(340, 0, 40, 30);
 
-        tppn.setText("11");
+        tppn.setText("12");
         tppn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tppn.setName("tppn"); // NOI18N
         tppn.setPreferredSize(new java.awt.Dimension(80, 23));
@@ -993,14 +1000,13 @@ public class InventorySuratPemesanan extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-    for (i = 0; i < tbDokter.getRowCount(); i++) {
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+    for (i = 0; i < tbDokter.getRowCount(); i++) {//GEN-FIRST:event_ppBersihkanActionPerformed
         tbDokter.setValueAt("", i, 0);
         tbDokter.setValueAt(0, i, 6);
         tbDokter.setValueAt(0, i, 7);
@@ -1547,8 +1553,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventorySuratPemesanan dialog = new InventorySuratPemesanan(
-                    new javax.swing.JFrame(), true);
+            InventorySuratPemesanan dialog = new InventorySuratPemesanan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1625,27 +1630,21 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select databarang.kode_brng, databarang.nama_brng,databarang.kode_satbesar, "
+            ps = koneksi.prepareStatement("select databarang.kode_brng, databarang.nama_brng,databarang.kode_satbesar, "
                     + " (databarang.h_beli*databarang.isi) as harga,databarang.kode_sat,databarang.isi "
                     + " from databarang inner join jenis on databarang.kdjns=jenis.kdjns "
                     + " where databarang.status='1' order by databarang.nama_brng");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        "", rs.getString("kode_satbesar"), rs.getString(
-                        "kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("kode_sat"), rs.getDouble("harga"), 0, 0, 0,
-                        0, 0, rs.getDouble("isi"), 1
-                    });
-                    iyem = iyem + "{\"SatuanBeli\":\"" + rs.getString(
-                            "kode_satbesar") + "\",\"KodeBarang\":\"" + rs.
-                                    getString("kode_brng") + "\",\"NamaBarang\":\"" + rs.
-                            getString("nama_brng").replaceAll("\"", "") + "\",\"Satuan\":\"" + rs.
-                            getString("kode_sat") + "\",\"Harga\":\"" + rs.
-                            getString("harga") + "\",\"Isi\":\"" + rs.getString(
-                            "isi") + "\"},";
+                    tabMode.addRow(new Object[]{"", rs.getString("kode_satbesar"), rs.getString("kode_brng"),
+                        rs.getString("nama_brng"), rs.getString("kode_sat"), rs.getDouble("harga"), 0, 0, 0, 0, 0,
+                        rs.getDouble("isi"), 1});
+                    iyem = iyem + "{\"SatuanBeli\":\"" + rs.getString("kode_satbesar") + "\",\"KodeBarang\":\""
+                            + rs.getString("kode_brng") + "\",\"NamaBarang\":\""
+                            + rs.getString("nama_brng").replaceAll("\"", "") + "\",\"Satuan\":\""
+                            + rs.getString("kode_sat") + "\",\"Harga\":\"" + rs.getString("harga") + "\",\"Isi\":\""
+                            + rs.getString("isi") + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1657,8 +1656,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     ps.close();
                 }
             }
-            fileWriter.write("{\"suratpemesananobat\":[" + iyem.substring(0,
-                    iyem.length() - 1) + "]}");
+            fileWriter.write("{\"suratpemesananobat\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1712,28 +1710,19 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             for (i = 0; i < row; i++) {
                 try {
                     if (Double.parseDouble(tbDokter.getValueAt(i, 0).toString()) > 0) {
-                        jumlah[index] = Double.parseDouble(tbDokter.
-                                getValueAt(i, 0).toString());
+                        jumlah[index] = Double.parseDouble(tbDokter.getValueAt(i, 0).toString());
                         satuanbeli[index] = tbDokter.getValueAt(i, 1).toString();
                         kodebarang[index] = tbDokter.getValueAt(i, 2).toString();
                         namabarang[index] = tbDokter.getValueAt(i, 3).toString();
                         satuan[index] = tbDokter.getValueAt(i, 4).toString();
-                        harga[index] = Double.parseDouble(tbDokter.getValueAt(i,
-                                5).toString());
-                        subtotal[index] = Double.parseDouble(tbDokter.
-                                getValueAt(i, 6).toString());
-                        diskon[index] = Double.parseDouble(tbDokter.
-                                getValueAt(i, 7).toString());
-                        besardiskon[index] = Double.parseDouble(tbDokter.
-                                getValueAt(i, 8).toString());
-                        jmltotal[index] = Double.parseDouble(tbDokter.
-                                getValueAt(i, 9).toString());
-                        jmlstok[index] = Double.parseDouble(tbDokter.getValueAt(
-                                i, 10).toString());
-                        isi[index] = Double.parseDouble(tbDokter.getValueAt(i,
-                                11).toString());
-                        isibesar[index] = Double.parseDouble(tbDokter.
-                                getValueAt(i, 12).toString());
+                        harga[index] = Double.parseDouble(tbDokter.getValueAt(i, 5).toString());
+                        subtotal[index] = Double.parseDouble(tbDokter.getValueAt(i, 6).toString());
+                        diskon[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).toString());
+                        besardiskon[index] = Double.parseDouble(tbDokter.getValueAt(i, 8).toString());
+                        jmltotal[index] = Double.parseDouble(tbDokter.getValueAt(i, 9).toString());
+                        jmlstok[index] = Double.parseDouble(tbDokter.getValueAt(i, 10).toString());
+                        isi[index] = Double.parseDouble(tbDokter.getValueAt(i, 11).toString());
+                        isibesar[index] = Double.parseDouble(tbDokter.getValueAt(i, 12).toString());
                         index++;
                     }
                 } catch (Exception e) {
@@ -1741,10 +1730,9 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             }
             Valid.tabelKosong(tabMode);
             for (i = 0; i < jml; i++) {
-                tabMode.addRow(new Object[]{jumlah[i], satuanbeli[i],
-                    kodebarang[i], namabarang[i], satuan[i], harga[i],
-                    subtotal[i], diskon[i], besardiskon[i], jmltotal[i],
-                    jmlstok[i], isi[i], isibesar[i]});
+                tabMode
+                        .addRow(new Object[]{jumlah[i], satuanbeli[i], kodebarang[i], namabarang[i], satuan[i], harga[i],
+                    subtotal[i], diskon[i], besardiskon[i], jmltotal[i], jmlstok[i], isi[i], isibesar[i]});
             }
 
             myObj = new FileReader("./cache/suratpemesananobat.iyem");
@@ -1752,17 +1740,12 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             response = root.path("suratpemesananobat");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    if (list.path("KodeBarang").asText().toLowerCase().contains(
-                            TCari.getText().toLowerCase()) || list.path(
-                            "NamaBarang").asText().toLowerCase().contains(TCari.
-                                    getText().toLowerCase())) {
-                        tabMode.addRow(new Object[]{
-                            "", list.path("SatuanBeli").asText(), list.path(
-                            "KodeBarang").asText(), list.path("NamaBarang").
-                            asText(), list.path("Satuan").asText(), list.path(
-                            "Harga").asDouble(), 0, 0, 0, 0, 0,
-                            list.path("Isi").asDouble(), 1
-                        });
+                    if (list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())
+                            || list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())) {
+                        tabMode.addRow(
+                                new Object[]{"", list.path("SatuanBeli").asText(), list.path("KodeBarang").asText(),
+                                    list.path("NamaBarang").asText(), list.path("Satuan").asText(),
+                                    list.path("Harga").asDouble(), 0, 0, 0, 0, 0, list.path("Isi").asDouble(), 1});
                     }
                 }
             }
@@ -1778,21 +1761,15 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         if (row != -1) {
             if (!tbDokter.getValueAt(row, 0).toString().isEmpty()) {
                 try {
-                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).
-                            toString()) > 0) {
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 0).toString()) * Double.
-                                parseDouble(tbDokter.getValueAt(row, 5).
-                                        toString()), row, 6);
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 6).toString()) - Double.
-                                parseDouble(tbDokter.getValueAt(row, 8).
-                                        toString()), row, 9);
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 0).toString()) * (Double.
-                                parseDouble(tbDokter.getValueAt(row, 11).
-                                        toString()) / Double.parseDouble(
-                                        tbDokter.getValueAt(row, 12).toString())),
+                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).toString()) > 0) {
+                        tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                * Double.parseDouble(tbDokter.getValueAt(row, 5).toString()), row, 6);
+                        tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 6).toString())
+                                - Double.parseDouble(tbDokter.getValueAt(row, 8).toString()), row, 9);
+                        tbDokter.setValueAt(
+                                Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                * (Double.parseDouble(tbDokter.getValueAt(row, 11).toString())
+                                / Double.parseDouble(tbDokter.getValueAt(row, 12).toString())),
                                 row, 10);
                     }
                 } catch (Exception e) {
@@ -1874,15 +1851,15 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(surat_pemesanan_medis.no_pemesanan,3),signed)),0) from surat_pemesanan_medis where surat_pemesanan_medis.tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "SPM" + Tanggal.getSelectedItem().toString().substring(8, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPemesanan);
+                "select ifnull(MAX(CONVERT(RIGHT(surat_pemesanan_medis.no_pemesanan,3),signed)),0) from surat_pemesanan_medis where surat_pemesanan_medis.tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "SPM" + Tanggal.getSelectedItem().toString().substring(8, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPemesanan);
     }
 
     /**
-     *
      * @return
      */
     public DefaultTableModel tabMode() {
@@ -1905,16 +1882,11 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 ps.setString(1, nopengajuan);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("jumlah"), rs.getString("satbesar"), rs.
-                        getString("kode_brng"),
-                        rs.getString("nama_brng"), rs.getString("kode_sat"), rs.
-                        getDouble("h_pengajuan"),
-                        rs.getDouble("total"), 0, 0, rs.getDouble("total"), rs.
-                        getDouble("jumlah2"), rs.getDouble("isi"),
-                        (rs.getDouble("isi") / (rs.getDouble("jumlah2") / rs.
-                        getDouble("jumlah")))
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("jumlah"), rs.getString("satbesar"),
+                        rs.getString("kode_brng"), rs.getString("nama_brng"), rs.getString("kode_sat"),
+                        rs.getDouble("h_pengajuan"), rs.getDouble("total"), 0, 0, rs.getDouble("total"),
+                        rs.getDouble("jumlah2"), rs.getDouble("isi"),
+                        (rs.getDouble("isi") / (rs.getDouble("jumlah2") / rs.getDouble("jumlah")))});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1932,6 +1904,6 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         getData();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventorySuratPemesanan.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventorySuratPemesanan.class.getName());
+
 }

@@ -37,20 +37,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
 
     /**
@@ -63,31 +71,19 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Tgl.Lahir", "Tanggal",
-            "Diagnosa Terapi Wicara", "Diagnosa Medis", "Anamnesa", "Suhu(°C)",
-            "RR(x/menit)", "Nadi(x/menit)",
-            "TD(mmHg)", "Kontak Mata", "Atensi", "Perilaku", "Bicara Spontan",
-            "Pemahaman Bahasa", "Pengujaran", "Membaca", "Penamaan",
-            "Anatomis Lip", "Anatomis Tongue",
-            "Anatomis Hard Palate", "Anatomis Soft Palate", "Anatomis Uvula",
-            "Anatomis Mandibula", "Anatomis Maxila", "Anatomis Dental",
-            "Anatomis Faring",
-            "Fisiologis Lip", "Fisiologis Tongue", "Fisiologis Hard Palate",
-            "Fisiologis Soft Palate", "Fisiologis Uvula", "Fisiologis Mandibula",
-            "Fisiologis Maxilla",
-            "Fisiologis Dental", "Fisiologis Faring", "Menghisap", "Mengunyah",
-            "Meniup", "Subtitusi", "Omisi", "Distorsi", "Adisi", "Resonasi",
-            "Nada Suara",
-            "Kualitas Suara", "Kenyaringan Suara", "Kemampuan Irama Kelancaran",
-            "Kemampuan Menelan", "Pernapasan", "Dekoding Pendengaran",
-            "Dekoding Penglihatan",
-            "Dekoding Kinesik", "Enkoding Bicara", "Enkoding Tulisan",
-            "Enkoding Mimik", "Enkoding Gesture", "Penunjang Medis",
-            "Tujuan Terapi Wicara",
-            "Program Terapi Wicara", "Edukasi", "Tindak Lanjut", "NIP",
-            "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Tgl.Lahir",
+            "Tanggal", "Diagnosa Terapi Wicara", "Diagnosa Medis", "Anamnesa", "Suhu(°C)", "RR(x/menit)",
+            "Nadi(x/menit)", "TD(mmHg)", "Kontak Mata", "Atensi", "Perilaku", "Bicara Spontan", "Pemahaman Bahasa",
+            "Pengujaran", "Membaca", "Penamaan", "Anatomis Lip", "Anatomis Tongue", "Anatomis Hard Palate",
+            "Anatomis Soft Palate", "Anatomis Uvula", "Anatomis Mandibula", "Anatomis Maxila", "Anatomis Dental",
+            "Anatomis Faring", "Fisiologis Lip", "Fisiologis Tongue", "Fisiologis Hard Palate",
+            "Fisiologis Soft Palate", "Fisiologis Uvula", "Fisiologis Mandibula", "Fisiologis Maxilla",
+            "Fisiologis Dental", "Fisiologis Faring", "Menghisap", "Mengunyah", "Meniup", "Subtitusi", "Omisi",
+            "Distorsi", "Adisi", "Resonasi", "Nada Suara", "Kualitas Suara", "Kenyaringan Suara",
+            "Kemampuan Irama Kelancaran", "Kemampuan Menelan", "Pernapasan", "Dekoding Pendengaran",
+            "Dekoding Penglihatan", "Dekoding Kinesik", "Enkoding Bicara", "Enkoding Tulisan", "Enkoding Mimik",
+            "Enkoding Gesture", "Penunjang Medis", "Tujuan Terapi Wicara", "Program Terapi Wicara", "Edukasi",
+            "Tindak Lanjut", "NIP", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -96,7 +92,8 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -241,8 +238,7 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
-        DiagnosaTerapiWicara.setDocument(new batasInput(100).getKata(
-                DiagnosaTerapiWicara));
+        DiagnosaTerapiWicara.setDocument(new batasInput(100).getKata(DiagnosaTerapiWicara));
         DiagnosaMedis.setDocument(new batasInput(100).getKata(DiagnosaMedis));
         Anamnesa.setDocument(new batasInput(300).getKata(Anamnesa));
         Suhu.setDocument(new batasInput(5).getKata(Suhu));
@@ -259,32 +255,22 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
         Penamaan.setDocument(new batasInput(50).getKata(Penamaan));
         LipAnatomis.setDocument(new batasInput(30).getKata(LipAnatomis));
         TongueAnatomis.setDocument(new batasInput(30).getKata(TongueAnatomis));
-        HardPalateAnatomis.setDocument(new batasInput(30).getKata(
-                HardPalateAnatomis));
-        SoftPalateAnatomis.setDocument(new batasInput(30).getKata(
-                SoftPalateAnatomis));
+        HardPalateAnatomis.setDocument(new batasInput(30).getKata(HardPalateAnatomis));
+        SoftPalateAnatomis.setDocument(new batasInput(30).getKata(SoftPalateAnatomis));
         UvulaAnatomis.setDocument(new batasInput(30).getKata(UvulaAnatomis));
-        MandibulaAnatomis.setDocument(new batasInput(30).getKata(
-                MandibulaAnatomis));
+        MandibulaAnatomis.setDocument(new batasInput(30).getKata(MandibulaAnatomis));
         MaxillaAnatomis.setDocument(new batasInput(30).getKata(MaxillaAnatomis));
         DentalAnatomis.setDocument(new batasInput(30).getKata(DentalAnatomis));
         FaringAnatomis.setDocument(new batasInput(30).getKata(FaringAnatomis));
         LipFisiologis.setDocument(new batasInput(30).getKata(LipFisiologis));
-        TongueFisiologis.setDocument(new batasInput(30).
-                getKata(TongueFisiologis));
-        HardPalateFisiologis.setDocument(new batasInput(30).getKata(
-                HardPalateFisiologis));
-        SoftPalateFisiologis.setDocument(new batasInput(30).getKata(
-                SoftPalateFisiologis));
+        TongueFisiologis.setDocument(new batasInput(30).getKata(TongueFisiologis));
+        HardPalateFisiologis.setDocument(new batasInput(30).getKata(HardPalateFisiologis));
+        SoftPalateFisiologis.setDocument(new batasInput(30).getKata(SoftPalateFisiologis));
         UvulaFisiologis.setDocument(new batasInput(30).getKata(UvulaFisiologis));
-        MandibulaFisiologis.setDocument(new batasInput(30).getKata(
-                MandibulaFisiologis));
-        MaxillaFisiologis.setDocument(new batasInput(30).getKata(
-                MaxillaFisiologis));
-        DentalFisiologis.setDocument(new batasInput(30).
-                getKata(DentalFisiologis));
-        FaringFisiologis.setDocument(new batasInput(30).
-                getKata(FaringFisiologis));
+        MandibulaFisiologis.setDocument(new batasInput(30).getKata(MandibulaFisiologis));
+        MaxillaFisiologis.setDocument(new batasInput(30).getKata(MaxillaFisiologis));
+        DentalFisiologis.setDocument(new batasInput(30).getKata(DentalFisiologis));
+        FaringFisiologis.setDocument(new batasInput(30).getKata(FaringFisiologis));
         Menghisap.setDocument(new batasInput(150).getKata(Menghisap));
         Mengunyah.setDocument(new batasInput(150).getKata(Mengunyah));
         Meniup.setDocument(new batasInput(150).getKata(Meniup));
@@ -292,8 +278,7 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
         Omisi.setDocument(new batasInput(150).getKata(Omisi));
         Distorsi.setDocument(new batasInput(150).getKata(Distorsi));
         Adisi.setDocument(new batasInput(150).getKata(Adisi));
-        KemampuanMenelan.setDocument(new batasInput(150).getKata(
-                KemampuanMenelan));
+        KemampuanMenelan.setDocument(new batasInput(150).getKata(KemampuanMenelan));
         Pernapasan.setDocument(new batasInput(150).getKata(Pernapasan));
         Pendengaran.setDocument(new batasInput(30).getKata(Pendengaran));
         Penglihatan.setDocument(new batasInput(30).getKata(Penglihatan));
@@ -303,18 +288,15 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
         Mimik.setDocument(new batasInput(30).getKata(Mimik));
         Gesture.setDocument(new batasInput(30).getKata(Gesture));
         PenunjangMedis.setDocument(new batasInput(150).getKata(PenunjangMedis));
-        TujuanTerapiWicara.setDocument(new batasInput(150).getKata(
-                TujuanTerapiWicara));
-        ProgramTerapiWicara.setDocument(new batasInput(150).getKata(
-                ProgramTerapiWicara));
+        TujuanTerapiWicara.setDocument(new batasInput(150).getKata(TujuanTerapiWicara));
+        ProgramTerapiWicara.setDocument(new batasInput(150).getKata(ProgramTerapiWicara));
         Edukasi.setDocument(new batasInput(150).getKata(Edukasi));
         TindakLanjut.setDocument(new batasInput(150).getKata(TindakLanjut));
 
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -351,10 +333,8 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugas.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -389,14 +369,15 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2997,8 +2978,7 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPenilaianTerapiWicara dialog = new RMPenilaianTerapiWicara(
-                    new javax.swing.JFrame(), true);
+            RMPenilaianTerapiWicara dialog = new RMPenilaianTerapiWicara(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -3255,15 +3235,11 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -3272,67 +3248,47 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("jk"), rs.
-                        getString("tgl_lahir"),
-                        rs.getString("tanggal"), rs.getString(
-                        "diagnosa_terapi_wicara"), rs.
-                        getString("diagnosa_medis"), rs.getString("anamnesa"),
-                        rs.getString("suhu"),
-                        rs.getString("rr"), rs.getString("nadi"), rs.getString(
-                        "td"), rs.getString("perilaku_adaptif_kontak_mata"), rs.
-                        getString("perilaku_adaptif_atensi"),
-                        rs.getString("perilaku_adaptif_perilaku"), rs.getString(
-                        "kemampuan_bahasa_bicara_spontan"), rs.getString(
-                        "kemampuan_bahasa_pemahaman_bahasa"),
-                        rs.getString("kemampuan_bahasa_pengujaran"), rs.
-                        getString("kemampuan_bahasa_membaca"), rs.getString(
-                        "kemampuan_bahasa_penamaan"),
-                        rs.getString("organ_wicara_anatomis_lip"), rs.getString(
-                        "organ_wicara_anatomis_tongue"), rs.getString(
-                        "organ_wicara_anatomis_hard_palate"),
-                        rs.getString("organ_wicara_anatomis_soft_palate"), rs.
-                        getString("organ_wicara_anatomis_uvula"), rs.getString(
-                        "organ_wicara_anatomis_mandibula"),
-                        rs.getString("organ_wicara_anatomis_maxila"), rs.
-                        getString("organ_wicara_anatomis_dental"), rs.getString(
-                        "organ_wicara_anatomis_faring"),
-                        rs.getString("organ_wicara_fisiologis_lip"), rs.
-                        getString("organ_wicara_fisiologis_tongue"), rs.
-                        getString("organ_wicara_fisiologis_hard_palate"),
-                        rs.getString("organ_wicara_fisiologis_soft_palate"), rs.
-                        getString("organ_wicara_fisiologis_uvula"), rs.
-                        getString("organ_wicara_fisiologis_mandibula"),
-                        rs.getString("organ_wicara_fisiologis_maxilla"), rs.
-                        getString("organ_wicara_fisiologis_dental"), rs.
-                        getString("organ_wicara_fisiologis_faring"),
-                        rs.getString("aktifitas_oral_menghisap"), rs.getString(
-                        "aktifitas_oral_mengunyah"), rs.getString(
-                        "aktifitas_oral_meniup"),
-                        rs.getString("kemampuan_artikulasi_subtitusi"), rs.
-                        getString("kemampuan_artikulasi_omisi"), rs.getString(
-                        "kemampuan_artikulasi_distorsi"),
-                        rs.getString("kemampuan_artikulasi_adisi"), rs.
-                        getString("resonasi"), rs.getString(
-                        "kemampuan_suara_nada"), rs.getString(
-                        "kemampuan_suara_kualitas"),
-                        rs.getString("kemampuan_suara_kenyaringan"), rs.
-                        getString("kemampuan_irama_kelancaran"), rs.getString(
-                        "kemampuan_menelan"), rs.getString("pernafasan"),
-                        rs.getString("tingkat_komunikasi_dekoding_pendengaran"),
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("jk"), rs.getString("tgl_lahir"),
+                        rs.getString("tanggal"), rs.getString("diagnosa_terapi_wicara"),
+                        rs.getString("diagnosa_medis"), rs.getString("anamnesa"), rs.getString("suhu"),
+                        rs.getString("rr"), rs.getString("nadi"), rs.getString("td"),
+                        rs.getString("perilaku_adaptif_kontak_mata"), rs.getString("perilaku_adaptif_atensi"),
+                        rs.getString("perilaku_adaptif_perilaku"), rs.getString("kemampuan_bahasa_bicara_spontan"),
+                        rs.getString("kemampuan_bahasa_pemahaman_bahasa"),
+                        rs.getString("kemampuan_bahasa_pengujaran"), rs.getString("kemampuan_bahasa_membaca"),
+                        rs.getString("kemampuan_bahasa_penamaan"), rs.getString("organ_wicara_anatomis_lip"),
+                        rs.getString("organ_wicara_anatomis_tongue"),
+                        rs.getString("organ_wicara_anatomis_hard_palate"),
+                        rs.getString("organ_wicara_anatomis_soft_palate"),
+                        rs.getString("organ_wicara_anatomis_uvula"),
+                        rs.getString("organ_wicara_anatomis_mandibula"),
+                        rs.getString("organ_wicara_anatomis_maxila"), rs.getString("organ_wicara_anatomis_dental"),
+                        rs.getString("organ_wicara_anatomis_faring"), rs.getString("organ_wicara_fisiologis_lip"),
+                        rs.getString("organ_wicara_fisiologis_tongue"),
+                        rs.getString("organ_wicara_fisiologis_hard_palate"),
+                        rs.getString("organ_wicara_fisiologis_soft_palate"),
+                        rs.getString("organ_wicara_fisiologis_uvula"),
+                        rs.getString("organ_wicara_fisiologis_mandibula"),
+                        rs.getString("organ_wicara_fisiologis_maxilla"),
+                        rs.getString("organ_wicara_fisiologis_dental"),
+                        rs.getString("organ_wicara_fisiologis_faring"), rs.getString("aktifitas_oral_menghisap"),
+                        rs.getString("aktifitas_oral_mengunyah"), rs.getString("aktifitas_oral_meniup"),
+                        rs.getString("kemampuan_artikulasi_subtitusi"), rs.getString("kemampuan_artikulasi_omisi"),
+                        rs.getString("kemampuan_artikulasi_distorsi"), rs.getString("kemampuan_artikulasi_adisi"),
+                        rs.getString("resonasi"), rs.getString("kemampuan_suara_nada"),
+                        rs.getString("kemampuan_suara_kualitas"), rs.getString("kemampuan_suara_kenyaringan"),
+                        rs.getString("kemampuan_irama_kelancaran"), rs.getString("kemampuan_menelan"),
+                        rs.getString("pernafasan"), rs.getString("tingkat_komunikasi_dekoding_pendengaran"),
                         rs.getString("tingkat_komunikasi_dekoding_penglihatan"),
                         rs.getString("tingkat_komunikasi_dekoding_kinesik"),
-                        rs.getString("tingkat_komunikasi_enkoding_bicara"), rs.
-                        getString("tingkat_komunikasi_enkoding_tulisan"), rs.
-                        getString("tingkat_komunikasi_enkoding_mimik"),
-                        rs.getString("tingkat_komunikasi_enkoding_gesture"), rs.
-                        getString("penunjang_medis"), rs.getString(
-                        "perencanaan_terapi_tujuan"),
-                        rs.getString("perencanaan_terapi_program"), rs.
-                        getString("edukasi"), rs.getString("tindak_lanjut"), rs.
-                        getString("nip"), rs.getString("nama")
-                    });
+                        rs.getString("tingkat_komunikasi_enkoding_bicara"),
+                        rs.getString("tingkat_komunikasi_enkoding_tulisan"),
+                        rs.getString("tingkat_komunikasi_enkoding_mimik"),
+                        rs.getString("tingkat_komunikasi_enkoding_gesture"), rs.getString("penunjang_medis"),
+                        rs.getString("perencanaan_terapi_tujuan"), rs.getString("perencanaan_terapi_program"),
+                        rs.getString("edukasi"), rs.getString("tindak_lanjut"), rs.getString("nip"),
+                        rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -3420,137 +3376,71 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            DiagnosaTerapiWicara.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString());
-            DiagnosaMedis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            Anamnesa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            RR.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                            toString());
-            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            TD.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                            toString());
-            KontakMata.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            Atensi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            Perilaku.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            BicaraSpontan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
-            PemahamanBahasa.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    17).toString());
-            Pengujaran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            Membaca.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            Penamaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            LipAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            TongueAnatomis.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 22).toString());
-            HardPalateAnatomis.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 23).toString());
-            SoftPalateAnatomis.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 24).toString());
-            UvulaAnatomis.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
-            MandibulaAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    26).toString());
-            MaxillaAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    27).toString());
-            DentalAnatomis.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 28).toString());
-            FaringAnatomis.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 29).toString());
-            LipFisiologis.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
-            TongueFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    31).toString());
-            HardPalateFisiologis.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 32).toString());
-            SoftPalateFisiologis.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 33).toString());
-            UvulaFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    34).toString());
-            MandibulaFisiologis.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 35).toString());
-            MaxillaFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    36).toString());
-            DentalFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    37).toString());
-            FaringFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    38).toString());
-            Menghisap.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 39).
-                    toString());
-            Mengunyah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).
-                    toString());
-            Meniup.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).
-                    toString());
-            Subtitusi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).
-                    toString());
-            Omisi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).
-                    toString());
-            Distorsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).
-                    toString());
-            Adisi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).
-                    toString());
-            Resonasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    46).toString());
-            Nada.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 47).
-                    toString());
-            Kualitas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    48).toString());
-            Kenyaringan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 49).toString());
-            KemampuanIramaKelancaran.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 50).toString());
-            KemampuanMenelan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    51).toString());
-            Pernapasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 52).
-                    toString());
-            Pendengaran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 53).
-                    toString());
-            Penglihatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 54).
-                    toString());
-            Kinesek.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 55).
-                    toString());
-            Bicara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 56).
-                    toString());
-            Tulisan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 57).
-                    toString());
-            Mimik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 58).
-                    toString());
-            Gesture.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 59).
-                    toString());
-            PenunjangMedis.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 60).toString());
-            TujuanTerapiWicara.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 61).toString());
-            ProgramTerapiWicara.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 62).toString());
-            Edukasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 63).
-                    toString());
-            TindakLanjut.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 64).
-                    toString());
-            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    5).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            DiagnosaTerapiWicara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            DiagnosaMedis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Anamnesa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            RR.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Nadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            KontakMata.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Atensi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Perilaku.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            BicaraSpontan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            PemahamanBahasa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Pengujaran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Membaca.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            Penamaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            LipAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            TongueAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            HardPalateAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            SoftPalateAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            UvulaAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            MandibulaAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            MaxillaAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            DentalAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            FaringAnatomis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            LipFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            TongueFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            HardPalateFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            SoftPalateFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            UvulaFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            MandibulaFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            MaxillaFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
+            DentalFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            FaringFisiologis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
+            Menghisap.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            Mengunyah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            Meniup.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            Subtitusi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            Omisi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
+            Distorsi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
+            Adisi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 45).toString());
+            Resonasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 46).toString());
+            Nada.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 47).toString());
+            Kualitas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 48).toString());
+            Kenyaringan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 49).toString());
+            KemampuanIramaKelancaran.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 50).toString());
+            KemampuanMenelan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 51).toString());
+            Pernapasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 52).toString());
+            Pendengaran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 53).toString());
+            Penglihatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 54).toString());
+            Kinesek.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 55).toString());
+            Bicara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 56).toString());
+            Tulisan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 57).toString());
+            Mimik.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 58).toString());
+            Gesture.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 59).toString());
+            PenunjangMedis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 60).toString());
+            TujuanTerapiWicara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 61).toString());
+            ProgramTerapiWicara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 62).toString());
+            Edukasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 63).toString());
+            TindakLanjut.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 64).toString());
+            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
@@ -3606,8 +3496,7 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
             NmPetugas.setText(petugas.tampil3(KdPetugas.getText()));
             if (NmPetugas.getText().isEmpty()) {
                 KdPetugas.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
@@ -3617,11 +3506,8 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_terapi_wicara where no_rawat=?", 1,
-                new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_terapi_wicara where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
         } else {
@@ -3640,55 +3526,38 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
                 + "kemampuan_suara_kualitas=?,kemampuan_suara_kenyaringan=?,kemampuan_irama_kelancaran=?,kemampuan_menelan=?,pernafasan=?,tingkat_komunikasi_dekoding_pendengaran=?,tingkat_komunikasi_dekoding_penglihatan=?,"
                 + "tingkat_komunikasi_dekoding_kinesik=?,tingkat_komunikasi_enkoding_bicara=?,tingkat_komunikasi_enkoding_tulisan=?,tingkat_komunikasi_enkoding_mimik=?,tingkat_komunikasi_enkoding_gesture=?,penunjang_medis=?,"
                 + "perencanaan_terapi_tujuan=?,perencanaan_terapi_program=?,edukasi=?,tindak_lanjut=?,nip=?",
-                63, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19),
-                    DiagnosaTerapiWicara.getText(), DiagnosaMedis.getText(),
-                    Anamnesa.getText(),
-                    Suhu.getText(), RR.getText(), Nadi.getText(), TD.getText(),
-                    KontakMata.getText(), Atensi.getText(), Perilaku.getText(),
-                    BicaraSpontan.getText(), PemahamanBahasa.getText(),
-                    Pengujaran.getText(), Membaca.getText(),
-                    Penamaan.getText(), LipAnatomis.getText(), TongueAnatomis.
-                    getText(), HardPalateAnatomis.getText(), SoftPalateAnatomis.
-                    getText(), UvulaAnatomis.getText(), MandibulaAnatomis.
-                    getText(), MaxillaAnatomis.getText(),
-                    DentalAnatomis.getText(), FaringAnatomis.getText(),
-                    LipFisiologis.getText(), TongueFisiologis.getText(),
-                    HardPalateFisiologis.getText(), SoftPalateFisiologis.
-                    getText(), UvulaFisiologis.getText(),
-                    MandibulaFisiologis.getText(), MaxillaFisiologis.getText(),
-                    DentalFisiologis.getText(), FaringFisiologis.getText(),
-                    Menghisap.getText(), Mengunyah.getText(), Meniup.getText(),
-                    Subtitusi.getText(), Omisi.getText(),
-                    Distorsi.getText(), Adisi.getText(), Resonasi.
-                    getSelectedItem().toString(), Nada.getSelectedItem().
-                            toString(), Kualitas.getSelectedItem().toString(),
-                    Kenyaringan.getSelectedItem().toString(),
-                    KemampuanIramaKelancaran.getSelectedItem().toString(),
-                    KemampuanMenelan.getText(), Pernapasan.getText(),
-                    Pendengaran.getText(), Penglihatan.getText(), Kinesek.
-                    getText(), Bicara.getText(), Tulisan.getText(),
-                    Mimik.getText(), Gesture.getText(), PenunjangMedis.getText(),
-                    TujuanTerapiWicara.getText(), ProgramTerapiWicara.getText(),
-                    Edukasi.getText(), TindakLanjut.getText(), KdPetugas.
-                    getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                            toString()
-                }) == true) {
+                63,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    DiagnosaTerapiWicara.getText(), DiagnosaMedis.getText(), Anamnesa.getText(), Suhu.getText(),
+                    RR.getText(), Nadi.getText(), TD.getText(), KontakMata.getText(), Atensi.getText(),
+                    Perilaku.getText(), BicaraSpontan.getText(), PemahamanBahasa.getText(), Pengujaran.getText(),
+                    Membaca.getText(), Penamaan.getText(), LipAnatomis.getText(), TongueAnatomis.getText(),
+                    HardPalateAnatomis.getText(), SoftPalateAnatomis.getText(), UvulaAnatomis.getText(),
+                    MandibulaAnatomis.getText(), MaxillaAnatomis.getText(), DentalAnatomis.getText(),
+                    FaringAnatomis.getText(), LipFisiologis.getText(), TongueFisiologis.getText(),
+                    HardPalateFisiologis.getText(), SoftPalateFisiologis.getText(), UvulaFisiologis.getText(),
+                    MandibulaFisiologis.getText(), MaxillaFisiologis.getText(), DentalFisiologis.getText(),
+                    FaringFisiologis.getText(), Menghisap.getText(), Mengunyah.getText(), Meniup.getText(),
+                    Subtitusi.getText(), Omisi.getText(), Distorsi.getText(), Adisi.getText(),
+                    Resonasi.getSelectedItem().toString(), Nada.getSelectedItem().toString(),
+                    Kualitas.getSelectedItem().toString(), Kenyaringan.getSelectedItem().toString(),
+                    KemampuanIramaKelancaran.getSelectedItem().toString(), KemampuanMenelan.getText(),
+                    Pernapasan.getText(), Pendengaran.getText(), Penglihatan.getText(), Kinesek.getText(),
+                    Bicara.getText(), Tulisan.getText(), Mimik.getText(), Gesture.getText(),
+                    PenunjangMedis.getText(), TujuanTerapiWicara.getText(), ProgramTerapiWicara.getText(),
+                    Edukasi.getText(), TindakLanjut.getText(), KdPetugas.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 5);
-            tbObat.setValueAt(DiagnosaTerapiWicara.getText(), tbObat.
-                    getSelectedRow(), 6);
-            tbObat.setValueAt(DiagnosaMedis.getText(), tbObat.getSelectedRow(),
-                    7);
+            tbObat.setValueAt(Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(DiagnosaTerapiWicara.getText(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(DiagnosaMedis.getText(), tbObat.getSelectedRow(), 7);
             tbObat.setValueAt(Anamnesa.getText(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(Suhu.getText(), tbObat.getSelectedRow(), 9);
             tbObat.setValueAt(RR.getText(), tbObat.getSelectedRow(), 10);
@@ -3697,53 +3566,29 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
             tbObat.setValueAt(KontakMata.getText(), tbObat.getSelectedRow(), 13);
             tbObat.setValueAt(Atensi.getText(), tbObat.getSelectedRow(), 14);
             tbObat.setValueAt(Perilaku.getText(), tbObat.getSelectedRow(), 15);
-            tbObat.setValueAt(BicaraSpontan.getText(), tbObat.getSelectedRow(),
-                    16);
-            tbObat.
-                    setValueAt(PemahamanBahasa.getText(), tbObat.
-                            getSelectedRow(), 17);
+            tbObat.setValueAt(BicaraSpontan.getText(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(PemahamanBahasa.getText(), tbObat.getSelectedRow(), 17);
             tbObat.setValueAt(Pengujaran.getText(), tbObat.getSelectedRow(), 18);
             tbObat.setValueAt(Membaca.getText(), tbObat.getSelectedRow(), 19);
             tbObat.setValueAt(Penamaan.getText(), tbObat.getSelectedRow(), 20);
-            tbObat.
-                    setValueAt(LipAnatomis.getText(), tbObat.getSelectedRow(),
-                            21);
-            tbObat.setValueAt(TongueAnatomis.getText(), tbObat.getSelectedRow(),
-                    22);
-            tbObat.setValueAt(HardPalateAnatomis.getText(), tbObat.
-                    getSelectedRow(), 23);
-            tbObat.setValueAt(SoftPalateAnatomis.getText(), tbObat.
-                    getSelectedRow(), 24);
-            tbObat.setValueAt(UvulaAnatomis.getText(), tbObat.getSelectedRow(),
-                    25);
-            tbObat.setValueAt(MandibulaAnatomis.getText(), tbObat.
-                    getSelectedRow(), 26);
-            tbObat.
-                    setValueAt(MaxillaAnatomis.getText(), tbObat.
-                            getSelectedRow(), 27);
-            tbObat.setValueAt(DentalAnatomis.getText(), tbObat.getSelectedRow(),
-                    28);
-            tbObat.setValueAt(FaringAnatomis.getText(), tbObat.getSelectedRow(),
-                    29);
-            tbObat.setValueAt(LipFisiologis.getText(), tbObat.getSelectedRow(),
-                    30);
-            tbObat.setValueAt(TongueFisiologis.getText(), tbObat.
-                    getSelectedRow(), 31);
-            tbObat.setValueAt(HardPalateFisiologis.getText(), tbObat.
-                    getSelectedRow(), 32);
-            tbObat.setValueAt(SoftPalateFisiologis.getText(), tbObat.
-                    getSelectedRow(), 33);
-            tbObat.
-                    setValueAt(UvulaFisiologis.getText(), tbObat.
-                            getSelectedRow(), 34);
-            tbObat.setValueAt(MandibulaFisiologis.getText(), tbObat.
-                    getSelectedRow(), 35);
-            tbObat.setValueAt(MaxillaFisiologis.getText(), tbObat.
-                    getSelectedRow(), 36);
-            tbObat.setValueAt(DentalFisiologis.getText(), tbObat.
-                    getSelectedRow(), 37);
-            tbObat.setValueAt(FaringFisiologis.getText(), tbObat.
-                    getSelectedRow(), 38);
+            tbObat.setValueAt(LipAnatomis.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(TongueAnatomis.getText(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(HardPalateAnatomis.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(SoftPalateAnatomis.getText(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(UvulaAnatomis.getText(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(MandibulaAnatomis.getText(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(MaxillaAnatomis.getText(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(DentalAnatomis.getText(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(FaringAnatomis.getText(), tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(LipFisiologis.getText(), tbObat.getSelectedRow(), 30);
+            tbObat.setValueAt(TongueFisiologis.getText(), tbObat.getSelectedRow(), 31);
+            tbObat.setValueAt(HardPalateFisiologis.getText(), tbObat.getSelectedRow(), 32);
+            tbObat.setValueAt(SoftPalateFisiologis.getText(), tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(UvulaFisiologis.getText(), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(MandibulaFisiologis.getText(), tbObat.getSelectedRow(), 35);
+            tbObat.setValueAt(MaxillaFisiologis.getText(), tbObat.getSelectedRow(), 36);
+            tbObat.setValueAt(DentalFisiologis.getText(), tbObat.getSelectedRow(), 37);
+            tbObat.setValueAt(FaringFisiologis.getText(), tbObat.getSelectedRow(), 38);
             tbObat.setValueAt(Menghisap.getText(), tbObat.getSelectedRow(), 39);
             tbObat.setValueAt(Mengunyah.getText(), tbObat.getSelectedRow(), 40);
             tbObat.setValueAt(Meniup.getText(), tbObat.getSelectedRow(), 41);
@@ -3751,39 +3596,25 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
             tbObat.setValueAt(Omisi.getText(), tbObat.getSelectedRow(), 43);
             tbObat.setValueAt(Distorsi.getText(), tbObat.getSelectedRow(), 44);
             tbObat.setValueAt(Adisi.getText(), tbObat.getSelectedRow(), 45);
-            tbObat.setValueAt(Resonasi.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 46);
-            tbObat.setValueAt(Nada.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 47);
-            tbObat.setValueAt(Kualitas.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 48);
-            tbObat.setValueAt(Kenyaringan.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 49);
-            tbObat.setValueAt(KemampuanIramaKelancaran.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 50);
-            tbObat.setValueAt(KemampuanMenelan.getText(), tbObat.
-                    getSelectedRow(), 51);
+            tbObat.setValueAt(Resonasi.getSelectedItem().toString(), tbObat.getSelectedRow(), 46);
+            tbObat.setValueAt(Nada.getSelectedItem().toString(), tbObat.getSelectedRow(), 47);
+            tbObat.setValueAt(Kualitas.getSelectedItem().toString(), tbObat.getSelectedRow(), 48);
+            tbObat.setValueAt(Kenyaringan.getSelectedItem().toString(), tbObat.getSelectedRow(), 49);
+            tbObat.setValueAt(KemampuanIramaKelancaran.getSelectedItem().toString(), tbObat.getSelectedRow(), 50);
+            tbObat.setValueAt(KemampuanMenelan.getText(), tbObat.getSelectedRow(), 51);
             tbObat.setValueAt(Pernapasan.getText(), tbObat.getSelectedRow(), 52);
-            tbObat.
-                    setValueAt(Pendengaran.getText(), tbObat.getSelectedRow(),
-                            53);
-            tbObat.
-                    setValueAt(Penglihatan.getText(), tbObat.getSelectedRow(),
-                            54);
+            tbObat.setValueAt(Pendengaran.getText(), tbObat.getSelectedRow(), 53);
+            tbObat.setValueAt(Penglihatan.getText(), tbObat.getSelectedRow(), 54);
             tbObat.setValueAt(Kinesek.getText(), tbObat.getSelectedRow(), 55);
             tbObat.setValueAt(Bicara.getText(), tbObat.getSelectedRow(), 56);
             tbObat.setValueAt(Tulisan.getText(), tbObat.getSelectedRow(), 57);
             tbObat.setValueAt(Mimik.getText(), tbObat.getSelectedRow(), 58);
             tbObat.setValueAt(Gesture.getText(), tbObat.getSelectedRow(), 59);
-            tbObat.setValueAt(PenunjangMedis.getText(), tbObat.getSelectedRow(),
-                    60);
-            tbObat.setValueAt(TujuanTerapiWicara.getText(), tbObat.
-                    getSelectedRow(), 61);
-            tbObat.setValueAt(ProgramTerapiWicara.getText(), tbObat.
-                    getSelectedRow(), 62);
+            tbObat.setValueAt(PenunjangMedis.getText(), tbObat.getSelectedRow(), 60);
+            tbObat.setValueAt(TujuanTerapiWicara.getText(), tbObat.getSelectedRow(), 61);
+            tbObat.setValueAt(ProgramTerapiWicara.getText(), tbObat.getSelectedRow(), 62);
             tbObat.setValueAt(Edukasi.getText(), tbObat.getSelectedRow(), 63);
-            tbObat.setValueAt(TindakLanjut.getText(), tbObat.getSelectedRow(),
-                    64);
+            tbObat.setValueAt(TindakLanjut.getText(), tbObat.getSelectedRow(), 64);
             tbObat.setValueAt(KdPetugas.getText(), tbObat.getSelectedRow(), 65);
             tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 66);
             emptTeks();
@@ -3791,6 +3622,6 @@ public class RMPenilaianTerapiWicara extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianTerapiWicara.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianTerapiWicara.class.getName());
+
 }

@@ -67,8 +67,7 @@ public class AplicareKetersediaanKamar extends javax.swing.JDialog {
 
     private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
 
-    private AplicareCekReferensiKamar referensi = new AplicareCekReferensiKamar(
-            null, false);
+    private AplicareCekReferensiKamar referensi = new AplicareCekReferensiKamar(null, false);
 
     private String requestJson, URL = "", kodeppk = akses.getkodeppkbpjs(), CONSIDAPIAPLICARE = "", utc = "";
 
@@ -97,16 +96,12 @@ public class AplicareKetersediaanKamar extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"P", "Kode Kelas Aplicare", "Kode Ruang", "Kamar/Ruang",
-            "Kelas", "Kapasitas", "Tersedia",
+        Object[] row = {"P", "Kode Kelas Aplicare", "Kode Ruang", "Kamar/Ruang", "Kelas", "Kapasitas", "Tersedia",
             "Tersedia Pria & Wanita", "Tersedia Pria", "Tersedia Wanita"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{java.lang.Boolean.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class};
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -127,8 +122,7 @@ public class AplicareKetersediaanKamar extends javax.swing.JDialog {
 
         // tbObat.setDefaultRenderer(Object.class, new
         // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 10; i++) {
@@ -159,19 +153,15 @@ public class AplicareKetersediaanKamar extends javax.swing.JDialog {
 
         Tersedia.setDocument(new batasInput((byte) 4).getOnlyAngka(Tersedia));
         Kapasitas.setDocument(new batasInput((byte) 4).getOnlyAngka(Kapasitas));
-        TersediaPW.
-                setDocument(new batasInput((byte) 4).getOnlyAngka(TersediaPW));
-        TersediaPria.setDocument(new batasInput((byte) 4).getOnlyAngka(
-                TersediaPria));
-        TersediaWanita.setDocument(new batasInput((byte) 4).getOnlyAngka(
-                TersediaWanita));
+        TersediaPW.setDocument(new batasInput((byte) 4).getOnlyAngka(TersediaPW));
+        TersediaPria.setDocument(new batasInput((byte) 4).getOnlyAngka(TersediaPria));
+        TersediaWanita.setDocument(new batasInput((byte) 4).getOnlyAngka(TersediaWanita));
         KdKelas.setDocument(new batasInput((byte) 15).getKata(KdKelas));
         KdKamar.setDocument(new batasInput((byte) 5).getKata(KdKamar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -210,10 +200,8 @@ public class AplicareKetersediaanKamar extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (bangsal.getTable().getSelectedRow() != -1) {
-                    KdKamar.setText(bangsal.getTable().getValueAt(bangsal.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmKamar.setText(bangsal.getTable().getValueAt(bangsal.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdKamar.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                    NmKamar.setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                 }
                 isCariKetersediaan();
                 KdKamar.requestFocus();
@@ -250,11 +238,9 @@ public class AplicareKetersediaanKamar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (referensi.getTable().getSelectedRow() != -1) {
                     KdKelas
-                            .setText(referensi.getTable().getValueAt(referensi.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(referensi.getTable().getValueAt(referensi.getTable().getSelectedRow(), 1).toString());
                     NmKelas
-                            .setText(referensi.getTable().getValueAt(referensi.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(referensi.getTable().getValueAt(referensi.getTable().getSelectedRow(), 2).toString());
                 }
                 KdKamar.requestFocus();
             }
@@ -305,7 +291,9 @@ public class AplicareKetersediaanKamar extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1227,8 +1215,7 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            AplicareKetersediaanKamar dialog = new AplicareKetersediaanKamar(
-                    new javax.swing.JFrame(), true);
+            AplicareKetersediaanKamar dialog = new AplicareKetersediaanKamar(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1303,14 +1290,10 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 ps.setString(4, "%" + TCari.getText() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{false, rs.getString(
-                        "kode_kelas_aplicare"),
-                        rs.getString("kd_bangsal"), rs.getString("nm_bangsal"),
-                        rs.getString("kelas"),
-                        rs.getString("kapasitas"), rs.getString("tersedia"), rs.
-                        getString("tersediapriawanita"),
-                        rs.getString("tersediapria"), rs.getString(
-                        "tersediawanita"),});
+                    tabMode.addRow(new Object[]{false, rs.getString("kode_kelas_aplicare"),
+                        rs.getString("kd_bangsal"), rs.getString("nm_bangsal"), rs.getString("kelas"),
+                        rs.getString("kapasitas"), rs.getString("tersedia"), rs.getString("tersediapriawanita"),
+                        rs.getString("tersediapria"), rs.getString("tersediawanita"),});
                 }
             } catch (Exception e) {
                 System.out.println("Notif Ketersediaan : " + e);
@@ -1346,24 +1329,15 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            KdKelas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            KdKamar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            NmKamar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            Kelas.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            Kapasitas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 5).toString());
-            Tersedia.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 6).toString());
-            TersediaPW.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
-            TersediaPria.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 8).toString());
-            TersediaWanita.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 9).toString());
+            KdKelas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            KdKamar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            NmKamar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            Kelas.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            Kapasitas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString());
+            Tersedia.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString());
+            TersediaPW.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            TersediaPria.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            TersediaWanita.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
         }
     }
 
@@ -1397,19 +1371,14 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void isCariKetersediaan() {
         if (!KdKamar.getText().isEmpty()) {
-            Kapasitas.setText(Sequel.cariIsi(
-                    "select count(kd_kamar) from kamar where statusdata='1' and kelas='"
-                    + Kelas.getSelectedItem() + "' and kd_bangsal=?", KdKamar.
-                    getText()));
-            Tersedia.setText(Sequel.cariIsi(
-                    "select count(kd_kamar) from kamar where statusdata='1' and kelas='"
-                    + Kelas.getSelectedItem() + "' and status='KOSONG' and kd_bangsal=?",
-                    KdKamar.getText()));
+            Kapasitas.setText(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"
+                    + Kelas.getSelectedItem() + "' and kd_bangsal=?", KdKamar.getText()));
+            Tersedia.setText(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"
+                    + Kelas.getSelectedItem() + "' and status='KOSONG' and kd_bangsal=?", KdKamar.getText()));
             TersediaPW.setText(Tersedia.getText());
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            AplicareKetersediaanKamar.class.getName());
+    private static final Logger LOG = Logger.getLogger(AplicareKetersediaanKamar.class.getName());
 
 }

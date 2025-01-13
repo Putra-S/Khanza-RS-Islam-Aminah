@@ -115,15 +115,11 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{"Edu Id", "Club Id",
-            "Nama Club", "Pelayanan", "Kegiatan",
+        tabMode = new DefaultTableModel(null, new Object[]{"Edu Id", "Club Id", "Nama Club", "Pelayanan", "Kegiatan",
             "Kelompok", "Materi", "Pembicara", "Lokasi", "Keterangan", "Biaya"}) {
-            Class[] types = new Class[]{java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class};
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -138,8 +134,7 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 11; i++) {
@@ -178,8 +173,7 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
         Biaya.setDocument(new batasInput((byte) 15).getKata(Biaya));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -216,17 +210,11 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kdClub.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 1).toString());
-                    NmClub.setText(barang.getTable().getValueAt(barang.
-                            getTable().getSelectedRow(), 7).toString());
+                    kdClub.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                    NmClub.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 7).toString());
                     Kelompok
-                            .setSelectedItem(barang.getTable().getValueAt(
-                                    barang.getTable().getSelectedRow(), 2).
-                                    toString()
-                                    + " " + barang.getTable().getValueAt(barang.
-                                            getTable().getSelectedRow(), 3).
-                                            toString());
+                            .setSelectedItem(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString()
+                                    + " " + barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 3).toString());
                 }
                 Kegiatan.requestFocus();
             }
@@ -279,57 +267,36 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pasien.getTable().getSelectedRow() != -1) {
-                    if (pasien.getTable().getValueAt(pasien.getTable().
-                            getSelectedRow(), 20).toString().isEmpty()) {
-                        JOptionPane.showMessageDialog(rootPane,
-                                "Maaf pasien tidak punya Nomor Kartu...!");
+                    if (pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 20).toString().isEmpty()) {
+                        JOptionPane.showMessageDialog(rootPane, "Maaf pasien tidak punya Nomor Kartu...!");
                     } else {
                         NoKartu
-                                .setText(pasien.getTable().getValueAt(pasien.
-                                        getTable().getSelectedRow(), 20).
-                                        toString());
-                        NoRM.setText(pasien.getTable().getValueAt(pasien.
-                                getTable().getSelectedRow(), 1).toString());
+                                .setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 20).toString());
+                        NoRM.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 1).toString());
                         NmPasien
-                                .setText(pasien.getTable().getValueAt(pasien.
-                                        getTable().getSelectedRow(), 2).
-                                        toString());
+                                .setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 2).toString());
                     }
                 }
                 if (pasien.getTable2().getSelectedRow() != -1) {
-                    if (pasien.getTable2().getValueAt(pasien.getTable2().
-                            getSelectedRow(), 20).toString().isEmpty()) {
-                        JOptionPane.showMessageDialog(rootPane,
-                                "Maaf pasien tidak punya Nomor Kartu...!");
+                    if (pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 20).toString().isEmpty()) {
+                        JOptionPane.showMessageDialog(rootPane, "Maaf pasien tidak punya Nomor Kartu...!");
                     } else {
                         NoKartu
-                                .setText(pasien.getTable2().getValueAt(pasien.
-                                        getTable2().getSelectedRow(), 20).
-                                        toString());
-                        NoRM.setText(pasien.getTable2().getValueAt(pasien.
-                                getTable2().getSelectedRow(), 1).toString());
+                                .setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 20).toString());
+                        NoRM.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 1).toString());
                         NmPasien
-                                .setText(pasien.getTable2().getValueAt(pasien.
-                                        getTable2().getSelectedRow(), 2).
-                                        toString());
+                                .setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 2).toString());
                     }
                 }
                 if (pasien.getTable3().getSelectedRow() != -1) {
-                    if (pasien.getTable3().getValueAt(pasien.getTable3().
-                            getSelectedRow(), 20).toString().isEmpty()) {
-                        JOptionPane.showMessageDialog(rootPane,
-                                "Maaf pasien tidak punya Nomor Kartu...!");
+                    if (pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 20).toString().isEmpty()) {
+                        JOptionPane.showMessageDialog(rootPane, "Maaf pasien tidak punya Nomor Kartu...!");
                     } else {
                         NoKartu
-                                .setText(pasien.getTable3().getValueAt(pasien.
-                                        getTable3().getSelectedRow(), 20).
-                                        toString());
-                        NoRM.setText(pasien.getTable3().getValueAt(pasien.
-                                getTable3().getSelectedRow(), 1).toString());
+                                .setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 20).toString());
+                        NoRM.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 1).toString());
                         NmPasien
-                                .setText(pasien.getTable3().getValueAt(pasien.
-                                        getTable3().getSelectedRow(), 2).
-                                        toString());
+                                .setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 2).toString());
                     }
                 }
             }
@@ -419,7 +386,9 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1623,8 +1592,7 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PCareKegiatanKelompok dialog = new PCareKegiatanKelompok(
-                    new javax.swing.JFrame(), true);
+            PCareKegiatanKelompok dialog = new PCareKegiatanKelompok(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1701,8 +1669,7 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select eduId,clubId,namaClub,tglPelayanan,nmKegiatan,nmKelompok,materi, "
+            ps = koneksi.prepareStatement("select eduId,clubId,namaClub,tglPelayanan,nmKegiatan,nmKelompok,materi, "
                     + "pembicara,lokasi,keterangan,biaya from pcare_kegiatan_kelompok where "
                     + "tglPelayanan between ? and ? and eduId like ? or "
                     + "tglPelayanan between ? and ? and clubId like ? or "
@@ -1740,19 +1707,13 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
                 rs = ps.executeQuery();
                 total = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{rs.getString("eduId"), rs.
-                        getString("clubId"),
-                        rs.getString("namaClub"), rs.getString("tglPelayanan"),
-                        rs.getString("nmKegiatan"),
-                        rs.getString("nmKelompok"), rs.getString("materi"), rs.
-                        getString("pembicara"),
-                        rs.getString("lokasi"), rs.getString("keterangan"), rs.
-                        getDouble("biaya")});
+                    tabMode.addRow(new Object[]{rs.getString("eduId"), rs.getString("clubId"),
+                        rs.getString("namaClub"), rs.getString("tglPelayanan"), rs.getString("nmKegiatan"),
+                        rs.getString("nmKelompok"), rs.getString("materi"), rs.getString("pembicara"),
+                        rs.getString("lokasi"), rs.getString("keterangan"), rs.getDouble("biaya")});
                     total += rs.getDouble("biaya");
                 }
-                tabMode.addRow(
-                        new Object[]{"", "", "Total", ":", "", "", "", "",
-                            "", "", total});
+                tabMode.addRow(new Object[]{"", "", "Total", ":", "", "", "", "", "", "", total});
             } catch (Exception e) {
                 System.out.println("Notif Ketersediaan : " + e);
             } finally {
@@ -1783,26 +1744,16 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            kdClub.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            NmClub.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            Kegiatan.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            Kelompok.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 5).toString());
-            Materi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 6).toString());
-            Pembicara.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
-            Lokasi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 8).toString());
-            Keterangan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 9).toString());
-            Biaya.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 10).toString());
-            Valid.SetTgl(Tanggal, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
+            kdClub.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            NmClub.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            Kegiatan.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            Kelompok.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString());
+            Materi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString());
+            Pembicara.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            Lokasi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            Keterangan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            Biaya.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString());
+            Valid.SetTgl(Tanggal, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
         }
     }
 
@@ -1869,25 +1820,21 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             @Override
-            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws
-                    CertificateException {
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
         }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        SSLSocketFactory sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         Scheme scheme = new Scheme("https", 443, sslFactory);
 
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() {
             @Override
-            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod,
-                    URI uri) {
+            protected HttpUriRequest createHttpUriRequest(HttpMethod httpMethod, URI uri) {
                 if (HttpMethod.DELETE == httpMethod) {
                     return new HttpEntityEnclosingDeleteRequest(uri);
                 }
@@ -1895,74 +1842,60 @@ public class PCareKegiatanKelompok extends javax.swing.JDialog {
             }
 
         };
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         restTemplate.setRequestFactory(factory);
 
         try {
             URL = link + "/kelompok/kegiatan/"
-                    + tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),
-                            0).toString();
+                    + tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.add("X-cons-id", koneksiDB.CONSIDAPIPCARE());
             utc = String.valueOf(api.GetUTCdatetimeAsString());
             headers.add("X-timestamp", utc);
             headers.add("X-signature", api.getHmac());
-            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(
-                    otorisasi.getBytes()));
+            headers.add("X-authorization", "Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
             headers.add("user_key", koneksiDB.USERKEYAPIPCARE());
             requestEntity = new HttpEntity(headers);
             System.out.println("X-cons-id : " + koneksiDB.CONSIDAPIPCARE());
             System.out.println("X-timestamp : " + utc);
             System.out.println("X-signature : " + api.getHmac());
-            System.out.println("X-authorization : Basic " + Base64.
-                    encodeBase64String(otorisasi.getBytes()));
+            System.out.println("X-authorization : Basic " + Base64.encodeBase64String(otorisasi.getBytes()));
             System.out.println("user_key : " + koneksiDB.USERKEYAPIPCARE());
             System.out.println("URL : " + URL);
             root = mapper
-                    .readTree(restTemplate.exchange(URL, HttpMethod.DELETE,
-                            requestEntity, String.class).getBody());
+                    .readTree(restTemplate.exchange(URL, HttpMethod.DELETE, requestEntity, String.class).getBody());
             nameNode = root.path("metaData");
             System.out.println("code : " + nameNode.path("code").asText());
             System.out.println("message : " + nameNode.path("message").asText());
             if (nameNode.path("code").asText().equals("200")) {
                 Sequel.meghapus("pcare_kegiatan_kelompok", "eduId",
-                        tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                                getSelectedRow(), 0).toString());
+                        tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
                 emptTeks();
                 tampil();
             } else {
-                JOptionPane.showMessageDialog(null, nameNode.path("message").
-                        asText());
+                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
             }
         } catch (Exception ex) {
             System.out.println("Notifikasi Bridging : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server PCare terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server PCare terputus...!");
             } else if (ex.toString().contains("500")) {
-                JOptionPane.showMessageDialog(null,
-                        "Server PCare baru ngambek broooh...!");
+                JOptionPane.showMessageDialog(null, "Server PCare baru ngambek broooh...!");
             } else if (ex.toString().contains("401")) {
-                JOptionPane.showMessageDialog(null,
-                        "Username/Password salah. Lupa password? Wani piro...!");
+                JOptionPane.showMessageDialog(null, "Username/Password salah. Lupa password? Wani piro...!");
             } else if (ex.toString().contains("408")) {
-                JOptionPane.showMessageDialog(null,
-                        "Time out, hayati lelah baaaang...!");
+                JOptionPane.showMessageDialog(null, "Time out, hayati lelah baaaang...!");
             } else if (ex.toString().contains("424")) {
-                JOptionPane.showMessageDialog(null,
-                        "Ambil data masternya yang bener dong coy...!");
+                JOptionPane.showMessageDialog(null, "Ambil data masternya yang bener dong coy...!");
             } else if (ex.toString().contains("412")) {
-                JOptionPane.showMessageDialog(null,
-                        "Tidak sesuai kondisi. Aku, kamu end...!");
+                JOptionPane.showMessageDialog(null, "Tidak sesuai kondisi. Aku, kamu end...!");
             } else if (ex.toString().contains("204")) {
                 JOptionPane.showMessageDialog(null, "Data tidak ditemukan...!");
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PCareKegiatanKelompok.class.getName());
+    private static final Logger LOG = Logger.getLogger(PCareKegiatanKelompok.class.getName());
 
 }

@@ -1,6 +1,6 @@
 /*
 Kontribusi dari Mas Dhiaz Shahab Dari RS Islam Bontang
-*/
+ */
 package bridging;
 
 import java.util.logging.Logger;
@@ -9,34 +9,34 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class ApiBPJSAesKeySpec {
 
-  private SecretKeySpec key;
+    private static final Logger LOG = Logger.getLogger(ApiBPJSAesKeySpec.class.getName());
 
-  private IvParameterSpec iv;
+    private SecretKeySpec key;
 
-  public SecretKeySpec getKey() {
-    return key;
-  }
+    private IvParameterSpec iv;
 
-  /**
-   * @param key
-   */
-  public void setKey(SecretKeySpec key) {
-    this.key = key;
-  }
+    public SecretKeySpec getKey() {
+        return key;
+    }
 
-  /**
-   * @return
-   */
-  public IvParameterSpec getIv() {
-    return iv;
-  }
+    /**
+     * @param key
+     */
+    public void setKey(SecretKeySpec key) {
+        this.key = key;
+    }
 
-  /**
-   * @param iv
-   */
-  public void setIv(IvParameterSpec iv) {
-    this.iv = iv;
-  }
+    /**
+     * @return
+     */
+    public IvParameterSpec getIv() {
+        return iv;
+    }
 
-  private static final Logger LOG = Logger.getLogger(ApiBPJSAesKeySpec.class.getName());
+    /**
+     * @param iv
+     */
+    public void setIv(IvParameterSpec iv) {
+        this.iv = iv;
+    }
 }

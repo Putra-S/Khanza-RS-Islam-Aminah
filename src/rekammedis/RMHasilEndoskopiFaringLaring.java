@@ -42,22 +42,32 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabModeDicom;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "";
+
     private JsonNode root;
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -70,15 +80,11 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "Kode Dokter",
-            "Nama Dokter", "Tanggal", "Kiriman Dari", "Diagnosa Klinis", "Uvula",
-            "Arkus Faring",
-            "Dinding Posterior", "Tonsil", "Tonsil Lingual", "Valekula",
-            "Sinus Piriformis", "Epiglotis", "Arytenoid", "Ventrikularis",
-            "Pita Suara",
-            "Rima Vocalis", "Lain-lain", "Kesan", "Saran"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "Kode Dokter", "Nama Dokter", "Tanggal",
+                    "Kiriman Dari", "Diagnosa Klinis", "Uvula", "Arkus Faring", "Dinding Posterior", "Tonsil",
+                    "Tonsil Lingual", "Valekula", "Sinus Piriformis", "Epiglotis", "Arytenoid", "Ventrikularis",
+                    "Pita Suara", "Rima Vocalis", "Lain-lain", "Kesan", "Saran"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -122,8 +128,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeDicom = new DefaultTableModel(null, new Object[]{
-            "UUID Pasien", "ID Studies", "ID Series"}) {
+        tabModeDicom = new DefaultTableModel(null, new Object[]{"UUID Pasien", "ID Studies", "ID Series"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -149,8 +154,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         KirimanDari.setDocument(new batasInput(50).getKata(KirimanDari));
         DiagnosaKlinis.setDocument(new batasInput(50).getKata(DiagnosaKlinis));
-        DindingPosterior.setDocument(new batasInput(50).
-                getKata(DindingPosterior));
+        DindingPosterior.setDocument(new batasInput(50).getKata(DindingPosterior));
         Uvula.setDocument(new batasInput(50).getKata(Uvula));
         ArkusFaring.setDocument(new batasInput(50).getKata(ArkusFaring));
         Tonsil.setDocument(new batasInput(50).getKata(Tonsil));
@@ -158,8 +162,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         Valekula.setDocument(new batasInput(50).getKata(Valekula));
         SinusPiriformis.setDocument(new batasInput(50).getKata(SinusPiriformis));
         Epiglitos.setDocument(new batasInput(50).getKata(Epiglitos));
-        PlikaVentrikulais.setDocument(new batasInput(50).getKata(
-                PlikaVentrikulais));
+        PlikaVentrikulais.setDocument(new batasInput(50).getKata(PlikaVentrikulais));
         Arytenoid.setDocument(new batasInput(50).getKata(Arytenoid));
         RimaVocalis.setDocument(new batasInput(50).getKata(RimaVocalis));
         PitaSuara.setDocument(new batasInput(50).getKata(PitaSuara));
@@ -169,8 +172,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -207,10 +209,8 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
@@ -261,8 +261,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
         LoadHTML2.setDocument(doc);
@@ -275,7 +274,9 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1776,8 +1777,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMHasilEndoskopiFaringLaring dialog = new RMHasilEndoskopiFaringLaring(
-                    new javax.swing.JFrame(), true);
+            RMHasilEndoskopiFaringLaring dialog = new RMHasilEndoskopiFaringLaring(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1923,15 +1923,11 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1940,25 +1936,17 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("kd_dokter"), rs.getString("nm_dokter"),
-                        rs.getString("tanggal"),
-                        rs.getString("kiriman_dari"), rs.getString(
-                        "diagnosa_klinis"), rs.getString("faring_uvula"), rs.
-                        getString("faring_arkus_faring"), rs.getString(
-                        "faring_dinding_posterior"), rs.getString(
-                        "faring_tonsil"),
-                        rs.getString("laring_tonsil_lingual"), rs.getString(
-                        "laring_valekula"), rs.getString(
-                        "laring_sinus_piriformis"), rs.getString(
-                        "laring_epiglotis"), rs.getString("laring_arytenoid"),
-                        rs.getString("laring_plika_ventrikularis"), rs.
-                        getString("laring_pita_suara"), rs.getString(
-                        "laring_rima_vocalis"), rs.getString("laring_lainlain"),
-                        rs.getString("kesan"), rs.getString("saran")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("kd_dokter"),
+                        rs.getString("nm_dokter"), rs.getString("tanggal"), rs.getString("kiriman_dari"),
+                        rs.getString("diagnosa_klinis"), rs.getString("faring_uvula"),
+                        rs.getString("faring_arkus_faring"), rs.getString("faring_dinding_posterior"),
+                        rs.getString("faring_tonsil"), rs.getString("laring_tonsil_lingual"),
+                        rs.getString("laring_valekula"), rs.getString("laring_sinus_piriformis"),
+                        rs.getString("laring_epiglotis"), rs.getString("laring_arytenoid"),
+                        rs.getString("laring_plika_ventrikularis"), rs.getString("laring_pita_suara"),
+                        rs.getString("laring_rima_vocalis"), rs.getString("laring_lainlain"), rs.getString("kesan"),
+                        rs.getString("saran")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2005,50 +1993,28 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            KirimanDari.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            DiagnosaKlinis.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
-            Uvula.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            ArkusFaring.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            DindingPosterior.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    11).toString());
-            Tonsil.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            TonsilLingual.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
-            Valekula.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            SinusPiriformis.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    15).toString());
-            Epiglitos.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            Arytenoid.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            PlikaVentrikulais.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    18).toString());
-            PitaSuara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            RimaVocalis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            Lainlain.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).
-                    toString());
-            Kesan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            Saran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            Valid.SetTgl2(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            KirimanDari.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            DiagnosaKlinis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Uvula.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            ArkusFaring.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            DindingPosterior.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Tonsil.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            TonsilLingual.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Valekula.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            SinusPiriformis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Epiglitos.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Arytenoid.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            PlikaVentrikulais.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            PitaSuara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            RimaVocalis.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Lainlain.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Kesan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Saran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
         }
     }
 
@@ -2066,9 +2032,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2104,8 +2068,7 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
             NmDokter.setText(dokter.tampil3(KdDokter.getText()));
             if (NmDokter.getText().isEmpty()) {
                 KdDokter.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan Dokter...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan Dokter...!!");
             }
         }
 
@@ -2125,11 +2088,8 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from hasil_endoskopi_faring_laring where no_rawat=?", 1,
-                new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from hasil_endoskopi_faring_laring where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -2142,55 +2102,39 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
         if (Sequel.mengedittf("hasil_endoskopi_faring_laring", "no_rawat=?",
                 "no_rawat=?,tanggal=?,kd_dokter=?,diagnosa_klinis=?,kiriman_dari=?,faring_uvula=?,faring_arkus_faring=?,faring_dinding_posterior=?,faring_tonsil=?,"
                 + "laring_tonsil_lingual=?,laring_valekula=?,laring_sinus_piriformis=?,laring_epiglotis=?,laring_arytenoid=?,laring_plika_ventrikularis=?,laring_pita_suara=?,laring_rima_vocalis=?,laring_lainlain=?,kesan=?,"
-                + "saran=?", 21, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), KdDokter.
-                    getText(),
-                    DiagnosaKlinis.getText(), KirimanDari.getText(), Uvula.
-                    getText(), ArkusFaring.getText(), DindingPosterior.getText(),
-                    Tonsil.getText(),
-                    TonsilLingual.getText(), Valekula.getText(),
-                    SinusPiriformis.getText(), Epiglitos.getText(), Arytenoid.
-                    getText(), PlikaVentrikulais.getText(),
-                    PitaSuara.getText(), RimaVocalis.getText(), Lainlain.
-                    getText(), Kesan.getText(), Saran.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                + "saran=?",
+                21,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), DiagnosaKlinis.getText(), KirimanDari.getText(), Uvula.getText(),
+                    ArkusFaring.getText(), DindingPosterior.getText(), Tonsil.getText(), TonsilLingual.getText(),
+                    Valekula.getText(), SinusPiriformis.getText(), Epiglitos.getText(), Arytenoid.getText(),
+                    PlikaVentrikulais.getText(), PitaSuara.getText(), RimaVocalis.getText(), Lainlain.getText(),
+                    Kesan.getText(), Saran.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(KdDokter.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(NmDokter.getText(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 6);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 6);
             tbObat.setValueAt(KirimanDari.getText(), tbObat.getSelectedRow(), 7);
-            tbObat.setValueAt(DiagnosaKlinis.getText(), tbObat.getSelectedRow(),
-                    8);
+            tbObat.setValueAt(DiagnosaKlinis.getText(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(Uvula.getText(), tbObat.getSelectedRow(), 9);
-            tbObat.
-                    setValueAt(ArkusFaring.getText(), tbObat.getSelectedRow(),
-                            10);
-            tbObat.setValueAt(DindingPosterior.getText(), tbObat.
-                    getSelectedRow(), 11);
+            tbObat.setValueAt(ArkusFaring.getText(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(DindingPosterior.getText(), tbObat.getSelectedRow(), 11);
             tbObat.setValueAt(Tonsil.getText(), tbObat.getSelectedRow(), 12);
-            tbObat.setValueAt(TonsilLingual.getText(), tbObat.getSelectedRow(),
-                    13);
+            tbObat.setValueAt(TonsilLingual.getText(), tbObat.getSelectedRow(), 13);
             tbObat.setValueAt(Valekula.getText(), tbObat.getSelectedRow(), 14);
-            tbObat.
-                    setValueAt(SinusPiriformis.getText(), tbObat.
-                            getSelectedRow(), 15);
+            tbObat.setValueAt(SinusPiriformis.getText(), tbObat.getSelectedRow(), 15);
             tbObat.setValueAt(Epiglitos.getText(), tbObat.getSelectedRow(), 16);
             tbObat.setValueAt(Arytenoid.getText(), tbObat.getSelectedRow(), 17);
-            tbObat.setValueAt(PlikaVentrikulais.getText(), tbObat.
-                    getSelectedRow(), 18);
+            tbObat.setValueAt(PlikaVentrikulais.getText(), tbObat.getSelectedRow(), 18);
             tbObat.setValueAt(PitaSuara.getText(), tbObat.getSelectedRow(), 19);
-            tbObat.
-                    setValueAt(RimaVocalis.getText(), tbObat.getSelectedRow(),
-                            20);
+            tbObat.setValueAt(RimaVocalis.getText(), tbObat.getSelectedRow(), 20);
             tbObat.setValueAt(Lainlain.getText(), tbObat.getSelectedRow(), 21);
             tbObat.setValueAt(Kesan.getText(), tbObat.getSelectedRow(), 22);
             tbObat.setValueAt(Saran.getText(), tbObat.getSelectedRow(), 23);
@@ -2219,24 +2163,20 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
                 ps = koneksi.prepareStatement(
                         "select hasil_endoskopi_faring_laring_gambar.photo from hasil_endoskopi_faring_laring_gambar where hasil_endoskopi_faring_laring_gambar.no_rawat=?");
                 try {
-                    ps.setString(1, tbObat.
-                            getValueAt(tbObat.getSelectedRow(), 0).toString());
+                    ps.setString(1, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             LoadHTML2.setText(
                                     "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                         } else {
-                            LoadHTML2.setText(
-                                    "<html><body><center><a href='http://" + koneksiDB.
-                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                            PORTWEB() + "/" + koneksiDB.
-                                            HYBRIDWEB() + "/hasilpemeriksaanendoskopifaringlaring/" + rs.
-                                            getString("photo") + "'><img src='http://" + koneksiDB.
-                                    HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.
-                                    HYBRIDWEB() + "/hasilpemeriksaanendoskopifaringlaring/" + rs.
-                                            getString("photo") + "' alt='photo' width='550' height='550'/></a></center></body></html>");
+                            LoadHTML2.setText("<html><body><center><a href='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB()
+                                    + "/hasilpemeriksaanendoskopifaringlaring/" + rs.getString("photo")
+                                    + "'><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB()
+                                    + "/" + koneksiDB.HYBRIDWEB() + "/hasilpemeriksaanendoskopifaringlaring/"
+                                    + rs.getString("photo")
+                                    + "' alt='photo' width='550' height='550'/></a></center></body></html>");
                         }
                     } else {
                         LoadHTML2.setText(
@@ -2265,19 +2205,14 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
                     try {
                         Valid.tabelKosong(tabModeDicom);
                         ApiOrthanc orthanc = new ApiOrthanc();
-                        root = orthanc.AmbilSeries(tbObat.getValueAt(tbObat.
-                                getSelectedRow(), 1).toString(), Valid.SetTgl(
-                                        DTPCari1.getSelectedItem() + "").
-                                        replaceAll("-", ""), Valid.SetTgl(
-                                DTPCari2.getSelectedItem() + "").replaceAll("-",
-                                ""));
+                        root = orthanc.AmbilSeries(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString(),
+                                Valid.SetTgl(DTPCari1.getSelectedItem() + "").replaceAll("-", ""),
+                                Valid.SetTgl(DTPCari2.getSelectedItem() + "").replaceAll("-", ""));
                         for (JsonNode list : root) {
                             for (JsonNode sublist : list.path("Series")) {
-                                tabModeDicom.addRow(new Object[]{
-                                    list.path("PatientMainDicomTags").path(
-                                    "PatientID").asText(), list.path("ID").
-                                    asText(), sublist.asText()
-                                });
+                                tabModeDicom
+                                        .addRow(new Object[]{list.path("PatientMainDicomTags").path("PatientID").asText(),
+                                    list.path("ID").asText(), sublist.asText()});
                             }
                         }
                     } catch (Exception e) {
@@ -2289,40 +2224,29 @@ public class RMHasilEndoskopiFaringLaring extends javax.swing.JDialog {
     }
 
     private void simpan() {
-        if (Sequel.menyimpantf("hasil_endoskopi_faring_laring",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 20,
-                new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), KdDokter.
-                    getText(),
-                    DiagnosaKlinis.getText(), KirimanDari.getText(), Uvula.
-                    getText(), ArkusFaring.getText(), DindingPosterior.getText(),
-                    Tonsil.getText(),
-                    TonsilLingual.getText(), Valekula.getText(),
-                    SinusPiriformis.getText(), Epiglitos.getText(), Arytenoid.
-                    getText(), PlikaVentrikulais.getText(),
-                    PitaSuara.getText(), RimaVocalis.getText(), Lainlain.
-                    getText(), Kesan.getText(), Saran.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), KdDokter.getText(), NmDokter.getText(), Valid.SetTgl(
-                Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                getSelectedItem().toString().substring(11, 19),
-                KirimanDari.getText(), DiagnosaKlinis.getText(), Uvula.getText(),
-                ArkusFaring.getText(), DindingPosterior.getText(), Tonsil.
-                getText(), TonsilLingual.getText(), Valekula.getText(),
-                SinusPiriformis.getText(),
-                Epiglitos.getText(), Arytenoid.getText(), PlikaVentrikulais.
-                getText(), PitaSuara.getText(), RimaVocalis.getText(), Lainlain.
-                getText(), Kesan.getText(), Saran.getText()
-            });
+        if (Sequel.menyimpantf("hasil_endoskopi_faring_laring", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat",
+                20,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    KdDokter.getText(), DiagnosaKlinis.getText(), KirimanDari.getText(), Uvula.getText(),
+                    ArkusFaring.getText(), DindingPosterior.getText(), Tonsil.getText(), TonsilLingual.getText(),
+                    Valekula.getText(), SinusPiriformis.getText(), Epiglitos.getText(), Arytenoid.getText(),
+                    PlikaVentrikulais.getText(), PitaSuara.getText(), RimaVocalis.getText(), Lainlain.getText(),
+                    Kesan.getText(), Saran.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                KdDokter.getText(), NmDokter.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                + Tanggal.getSelectedItem().toString().substring(11, 19),
+                KirimanDari.getText(), DiagnosaKlinis.getText(), Uvula.getText(), ArkusFaring.getText(),
+                DindingPosterior.getText(), Tonsil.getText(), TonsilLingual.getText(), Valekula.getText(),
+                SinusPiriformis.getText(), Epiglitos.getText(), Arytenoid.getText(), PlikaVentrikulais.getText(),
+                PitaSuara.getText(), RimaVocalis.getText(), Lainlain.getText(), Kesan.getText(), Saran.getText()});
             emptTeks();
             LCount.setText("" + tabMode.getRowCount());
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMHasilEndoskopiFaringLaring.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMHasilEndoskopiFaringLaring.class.getName());
+
 }

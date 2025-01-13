@@ -32,25 +32,45 @@ import simrskhanza.DlgCariBangsal;
 public class DlgPermintaan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int jml = 0, i = 0, row = 0, index = 0;
+
     private String[] jumlah, kodebarang, namabarang, satuan, jenis, kategori, golongan, keterangan;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private DlgCariBangsal caribangsal = new DlgCariBangsal(null, false);
+
     private DlgCariPermintaan form = new DlgCariPermintaan(null, false);
+
     private DlgBarang barang = new DlgBarang(null, false);
+
     private boolean sukses = true;
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem, DEPOAKTIFOBAT = "";
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -63,8 +83,8 @@ public class DlgPermintaan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Satuan",
-            "Jenis Obat", "Kategori", "Golongan", "Keterangan"};
+        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Satuan", "Jenis Obat", "Kategori", "Golongan",
+            "Keterangan"};
         tabMode = new DefaultTableModel(null, judul) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -104,15 +124,12 @@ public class DlgPermintaan extends javax.swing.JDialog {
         warna.kolom = 0;
         tbDokter.setDefaultRenderer(Object.class, warna);
 
-        NoPermintaan.
-                setDocument(new batasInput((byte) 15).getKata(NoPermintaan));
-        kdgudangTujuan.setDocument(new batasInput((byte) 5).getKata(
-                kdgudangTujuan));
+        NoPermintaan.setDocument(new batasInput((byte) 15).getKata(NoPermintaan));
+        kdgudangTujuan.setDocument(new batasInput((byte) 5).getKata(kdgudangTujuan));
         kdptg.setDocument(new batasInput((byte) 25).getKata(kdptg));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -150,20 +167,20 @@ public class DlgPermintaan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (caribangsal.getTable().getSelectedRow() != -1) {
                     if (i == 1) {
-                        kdgudangTujuan.setText(caribangsal.getTable().
-                                getValueAt(caribangsal.getTable().
-                                        getSelectedRow(), 0).toString());
-                        nmgudangTujuan.setText(caribangsal.getTable().
-                                getValueAt(caribangsal.getTable().
-                                        getSelectedRow(), 1).toString());
+                        kdgudangTujuan.setText(caribangsal.getTable()
+                                .getValueAt(caribangsal.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmgudangTujuan.setText(caribangsal.getTable()
+                                .getValueAt(caribangsal.getTable().getSelectedRow(), 1)
+                                .toString());
                         kdgudangTujuan.requestFocus();
                     } else if (i == 2) {
-                        kdgudangasal.setText(caribangsal.getTable().getValueAt(
-                                caribangsal.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmgudangasal.setText(caribangsal.getTable().getValueAt(
-                                caribangsal.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdgudangasal.setText(caribangsal.getTable()
+                                .getValueAt(caribangsal.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmgudangasal.setText(caribangsal.getTable()
+                                .getValueAt(caribangsal.getTable().getSelectedRow(), 1)
+                                .toString());
                         kdgudangasal.requestFocus();
                     }
                 }
@@ -199,10 +216,8 @@ public class DlgPermintaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    kdptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 0).toString());
-                    nmptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.
-                            getSelectedRow(), 1).toString());
+                    kdptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 0).toString());
+                    nmptg.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(), 1).toString());
                 }
                 kdptg.requestFocus();
             }
@@ -252,7 +267,9 @@ public class DlgPermintaan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -670,13 +687,12 @@ public class DlgPermintaan extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        jml = 0;
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        jml = 0;//GEN-FIRST:event_BtnSimpanActionPerformed
         for (i = 0; i < tbDokter.getRowCount(); i++) {
             if (!tbDokter.getValueAt(i, 0).toString().isEmpty()) {
                 jml++;
@@ -963,8 +979,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPermintaan dialog = new DlgPermintaan(new javax.swing.JFrame(),
-                    true);
+            DlgPermintaan dialog = new DlgPermintaan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1017,21 +1032,20 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select databarang.kode_brng,databarang.nama_brng,databarang.kode_sat,jenis.nama,"
-                    + "kategori_barang.nama as kategori,golongan_barang.nama as golongan "
-                    + " from databarang inner join jenis on databarang.kdjns=jenis.kdjns "
-                    + " inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode "
-                    + " inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode "
-                    + " where databarang.status='1' order by databarang.nama_brng");
+            ps = koneksi
+                    .prepareStatement("select databarang.kode_brng,databarang.nama_brng,databarang.kode_sat,jenis.nama,"
+                            + "kategori_barang.nama as kategori,golongan_barang.nama as golongan "
+                            + " from databarang inner join jenis on databarang.kdjns=jenis.kdjns "
+                            + " inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode "
+                            + " inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode "
+                            + " where databarang.status='1' order by databarang.nama_brng");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    iyem = iyem + "{\"KodeBarang\":\"" + rs.getString(1) + "\",\"NamaBarang\":\"" + rs.
-                            getString(2).replaceAll("\"", "") + "\",\"Satuan\":\"" + rs.
-                            getString(3) + "\",\"JenisObat\":\"" + rs.getString(
-                            4) + "\",\"Kategori\":\"" + rs.getString(5) + "\",\"Golongan\":\"" + rs.
-                            getString(6) + "\"},";
+                    iyem = iyem + "{\"KodeBarang\":\"" + rs.getString(1) + "\",\"NamaBarang\":\""
+                            + rs.getString(2).replaceAll("\"", "") + "\",\"Satuan\":\"" + rs.getString(3)
+                            + "\",\"JenisObat\":\"" + rs.getString(4) + "\",\"Kategori\":\"" + rs.getString(5)
+                            + "\",\"Golongan\":\"" + rs.getString(6) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1043,8 +1057,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     ps.close();
                 }
             }
-            fileWriter.write("{\"permintaanobat\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"permintaanobat\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1096,9 +1109,8 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             }
             Valid.tabelKosong(tabMode);
             for (i = 0; i < jml; i++) {
-                tabMode.addRow(new Object[]{jumlah[i], kodebarang[i],
-                    namabarang[i], satuan[i], jenis[i], kategori[i], golongan[i],
-                    keterangan[i]});
+                tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], satuan[i], jenis[i], kategori[i],
+                    golongan[i], keterangan[i]});
             }
 
             myObj = new FileReader("./cache/permintaanobat.iyem");
@@ -1107,33 +1119,28 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             if (response.isArray()) {
                 if (TCari.getText().trim().isEmpty()) {
                     for (JsonNode list : response) {
-                        tabMode.addRow(new Object[]{
-                            "", list.path("KodeBarang").asText(), list.path(
-                            "NamaBarang").asText(), list.path("Satuan").asText(),
-                            list.path("JenisObat").asText(), list.path(
-                            "Kategori").asText(), list.path("Golongan").asText(),
-                            ""
-                        });
+                        tabMode.addRow(
+                                new Object[]{"", list.path("KodeBarang").asText(), list.path("NamaBarang").asText(),
+                                    list.path("Satuan").asText(), list.path("JenisObat").asText(),
+                                    list.path("Kategori").asText(), list.path("Golongan").asText(), ""});
                     }
                 } else {
                     for (JsonNode list : response) {
-                        if (list.path("KodeBarang").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase()) || list.
-                                path("NamaBarang").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase()) || list.
-                                path("JenisObat").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase()) || list.
-                                path("Kategori").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase()) || list.
-                                path("Golongan").asText().toLowerCase().
-                                contains(TCari.getText().toLowerCase())) {
-                            tabMode.addRow(new Object[]{
-                                "", list.path("KodeBarang").asText(), list.path(
-                                "NamaBarang").asText(), list.path("Satuan").
-                                asText(), list.path("JenisObat").asText(), list.
-                                path("Kategori").asText(),
-                                list.path("Golongan").asText(), ""
-                            });
+                        if (list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())
+                                || list.path("NamaBarang")
+                                        .asText()
+                                        .toLowerCase()
+                                        .contains(TCari.getText().toLowerCase())
+                                || list.path("JenisObat").asText().toLowerCase().contains(TCari.getText().toLowerCase())
+                                || list.path("Kategori").asText().toLowerCase().contains(TCari.getText().toLowerCase())
+                                || list.path("Golongan")
+                                        .asText()
+                                        .toLowerCase()
+                                        .contains(TCari.getText().toLowerCase())) {
+                            tabMode.addRow(new Object[]{"", list.path("KodeBarang").asText(),
+                                list.path("NamaBarang").asText(), list.path("Satuan").asText(),
+                                list.path("JenisObat").asText(), list.path("Kategori").asText(),
+                                list.path("Golongan").asText(), ""});
                         }
                     }
                 }
@@ -1164,14 +1171,14 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(permintaan_medis.no_permintaan,3),signed)),0) from permintaan_medis where permintaan_medis.tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "PM" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPermintaan);
+                "select ifnull(MAX(CONVERT(RIGHT(permintaan_medis.no_permintaan,3),signed)),0) from permintaan_medis where permintaan_medis.tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "PM" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPermintaan);
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgPermintaan.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgPermintaan.class.getName());
 
 }

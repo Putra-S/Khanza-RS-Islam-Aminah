@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="935" pageHeight="609" orientation="Landscape" columnWidth="931" leftMargin="2" rightMargin="2" topMargin="2" bottomMargin="2" uuid="3c80a3ce-0b0f-4a4b-96e2-d807fd204657">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="nama" class="java.lang.String"/>
-	<parameter name="namars" class="java.lang.String"/>
-	<parameter name="alamatrs" class="java.lang.String"/>
-	<parameter name="kotars" class="java.lang.String"/>
-	<parameter name="propinsirs" class="java.lang.String"/>
-	<parameter name="kontakrs" class="java.lang.String"/>
-	<parameter name="alamat" class="java.lang.String"/>
-	<parameter name="norm" class="java.lang.String"/>
-	<parameter name="no_rawat" class="java.lang.String"/>
-	<parameter name="dpjp" class="java.lang.String"/>
-	<queryString>
+    <property name="ireport.zoom" value="3.0"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <parameter name="nama" class="java.lang.String"/>
+    <parameter name="namars" class="java.lang.String"/>
+    <parameter name="alamatrs" class="java.lang.String"/>
+    <parameter name="kotars" class="java.lang.String"/>
+    <parameter name="propinsirs" class="java.lang.String"/>
+    <parameter name="kontakrs" class="java.lang.String"/>
+    <parameter name="alamat" class="java.lang.String"/>
+    <parameter name="norm" class="java.lang.String"/>
+    <parameter name="no_rawat" class="java.lang.String"/>
+    <parameter name="dpjp" class="java.lang.String"/>
+    <queryString>
 		<![CDATA[select no_rawat from reg_periksa where no_rawat= $P{no_rawat}]]>
-	</queryString>
-	<field name="no_rawat" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<detail>
-		<band height="605" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="mm"/>
-			<textField>
-				<reportElement x="220" y="90" width="550" height="160" uuid="277042cb-3a19-4bd4-a8b4-15b9da9beb57">
-					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
-				</reportElement>
-				<textElement markup="none">
-					<font fontName="Tahoma" size="45"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{nama}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="220" y="260" width="550" height="196" uuid="ab8cbd9e-9176-429b-b1f1-a418aee857f7">
-					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
-				</reportElement>
-				<textElement markup="none">
-					<font fontName="Tahoma" size="45"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{dpjp}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="90" width="198" height="99" uuid="e013931d-a7eb-48fd-a45e-b1fd057526e8">
-					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Tahoma" size="35"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Nama]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="200" y="90" width="19" height="99" uuid="7ff09409-6ac8-4487-80f8-e871acab5976"/>
-				<textElement>
-					<font fontName="Tahoma" size="35"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="260" width="198" height="99" uuid="50f616aa-1588-4f4a-b752-d13a0307ea7e">
-					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Tahoma" size="35"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[DPJP]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="200" y="261" width="19" height="99" uuid="a62435e1-d450-4f9f-b3c9-02dc10e1f2e4"/>
-				<textElement>
-					<font fontName="Tahoma" size="35"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-		</band>
-	</detail>
+    </queryString>
+    <field name="no_rawat" class="java.lang.String">
+        <fieldDescription><![CDATA[]]></fieldDescription>
+    </field>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <detail>
+        <band height="605" splitType="Stretch">
+            <property name="com.jaspersoft.studio.unit.height" value="mm"/>
+            <textField>
+                <reportElement x="220" y="90" width="550" height="160" uuid="277042cb-3a19-4bd4-a8b4-15b9da9beb57">
+                    <property name="com.jaspersoft.studio.unit.width" value="mm"/>
+                </reportElement>
+                <textElement markup="none">
+                    <font fontName="Tahoma" size="45"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{nama}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="220" y="260" width="550" height="196" uuid="ab8cbd9e-9176-429b-b1f1-a418aee857f7">
+                    <property name="com.jaspersoft.studio.unit.width" value="mm"/>
+                </reportElement>
+                <textElement markup="none">
+                    <font fontName="Tahoma" size="45"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{dpjp}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="90" width="198" height="99" uuid="e013931d-a7eb-48fd-a45e-b1fd057526e8">
+                    <property name="com.jaspersoft.studio.unit.width" value="mm"/>
+                </reportElement>
+                <textElement>
+                    <font fontName="Tahoma" size="35"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <text><![CDATA[Nama]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="200" y="90" width="19" height="99" uuid="7ff09409-6ac8-4487-80f8-e871acab5976"/>
+                <textElement>
+                    <font fontName="Tahoma" size="35"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <text><![CDATA[:]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="260" width="198" height="99" uuid="50f616aa-1588-4f4a-b752-d13a0307ea7e">
+                    <property name="com.jaspersoft.studio.unit.width" value="mm"/>
+                </reportElement>
+                <textElement>
+                    <font fontName="Tahoma" size="35"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <text><![CDATA[DPJP]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="200" y="261" width="19" height="99" uuid="a62435e1-d450-4f9f-b3c9-02dc10e1f2e4"/>
+                <textElement>
+                    <font fontName="Tahoma" size="35"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <text><![CDATA[:]]></text>
+            </staticText>
+        </band>
+    </detail>
 </jasperReport>

@@ -27,24 +27,31 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class TokoCariSuratPemesanan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     public TokoSuplier suplier = new TokoSuplier(null, false);
 
     /**
      *
      */
     public DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     public TokoBarang barang = new TokoBarang(null, false);
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private double tagihan = 0;
 
     /**
@@ -57,10 +64,8 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Pemesanan", "Barang", "Satuan", "Jml", "Harga(Rp)",
-            "SubTotal(Rp)", "Disk(%)", "Bsr.Disk(Rp)", "Total(Rp)"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Pemesanan", "Barang", "Satuan", "Jml", "Harga(Rp)",
+            "SubTotal(Rp)", "Disk(%)", "Bsr.Disk(Rp)", "Total(Rp)"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -104,8 +109,7 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -143,10 +147,8 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPemesanan")) {
                     if (suplier.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                        nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -203,12 +205,12 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPemesanan")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsat.requestFocus();
                 }
@@ -245,10 +247,8 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPemesanan")) {
                     if (pegawai.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(pegawai.getTable().getValueAt(pegawai.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(pegawai.getTable().getValueAt(pegawai.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -285,10 +285,8 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPemesanan")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -335,7 +333,9 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -802,13 +802,12 @@ public class TokoCariSuratPemesanan extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        akses.setform("DlgCariPemesanan");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgCariPemesanan");//GEN-FIRST:event_btnSuplierActionPerformed
         suplier.emptTeks();
         suplier.isCek();
         suplier.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1118,8 +1117,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoCariSuratPemesanan dialog = new TokoCariSuratPemesanan(
-                    new javax.swing.JFrame(), true);
+            TokoCariSuratPemesanan dialog = new TokoCariSuratPemesanan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1178,8 +1176,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select toko_surat_pemesanan.tanggal,toko_surat_pemesanan.no_pemesanan, "
+            ps = koneksi.prepareStatement("select toko_surat_pemesanan.tanggal,toko_surat_pemesanan.no_pemesanan, "
                     + "toko_surat_pemesanan.kode_suplier,ipsrssuplier.nama_suplier, "
                     + "toko_surat_pemesanan.nip,pegawai.nama,"
                     + "toko_surat_pemesanan.status,toko_surat_pemesanan.total,"
@@ -1279,14 +1276,11 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 rs = ps.executeQuery();
                 tagihan = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_pemesanan"), "Tanggal : " + rs.
-                        getString("tanggal") + ", Status : " + rs.getString(
-                        "status"), "", "", "", "", "", "", ""
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_pemesanan"),
+                        "Tanggal : " + rs.getString("tanggal") + ", Status : " + rs.getString("status"), "", "", "",
+                        "", "", "", ""});
 
-                    ps2 = koneksi.prepareStatement(
-                            "select toko_detail_surat_pemesanan.kode_brng,tokobarang.nama_brng, "
+                    ps2 = koneksi.prepareStatement("select toko_detail_surat_pemesanan.kode_brng,tokobarang.nama_brng, "
                             + "toko_detail_surat_pemesanan.kode_sat,kodesatuan.satuan,toko_detail_surat_pemesanan.jumlah,toko_detail_surat_pemesanan.h_pesan, "
                             + "toko_detail_surat_pemesanan.subtotal,toko_detail_surat_pemesanan.dis,toko_detail_surat_pemesanan.besardis,toko_detail_surat_pemesanan.total "
                             + "from toko_detail_surat_pemesanan inner join tokobarang inner join kodesatuan inner join tokojenisbarang "
@@ -1316,16 +1310,11 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         rs2 = ps2.executeQuery();
                         int no = 1;
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{"",
-                                no + ". " + rs2.getString(1) + ", " + rs2.
-                                getString(2), rs2.getString(3) + ", " + rs2.
-                                getString(4),
-                                rs2.getString(5), Valid.SetAngka(rs2.
-                                getDouble(6)), Valid.SetAngka(rs2.getDouble(7)),
-                                Valid.SetAngka(rs2.getDouble(8)), Valid.
-                                SetAngka(rs2.getDouble(9)), Valid.SetAngka(rs2.
-                                getDouble(10))
-                            });
+                            tabMode.addRow(new Object[]{"", no + ". " + rs2.getString(1) + ", " + rs2.getString(2),
+                                rs2.getString(3) + ", " + rs2.getString(4), rs2.getString(5),
+                                Valid.SetAngka(rs2.getDouble(6)), Valid.SetAngka(rs2.getDouble(7)),
+                                Valid.SetAngka(rs2.getDouble(8)), Valid.SetAngka(rs2.getDouble(9)),
+                                Valid.SetAngka(rs2.getDouble(10))});
                             no++;
                         }
                     } catch (SQLException e) {
@@ -1338,21 +1327,17 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             ps2.close();
                         }
                     }
-                    tabMode.addRow(new Object[]{"Supplier", ": " + rs.getString(
-                        "kode_suplier") + ", " + rs.getString("nama_suplier"),
-                        "", "", "", "", "Total", ":", Valid.SetAngka(rs.
-                        getDouble("total"))});
-                    tabMode.addRow(new Object[]{"Petugas", ": " + rs.getString(
-                        "nip") + ", " + rs.getString("nama"), "", "", "", "",
-                        "Meterai", ":", Valid.SetAngka(rs.getDouble("meterai"))});
-                    tabMode.addRow(new Object[]{"", "", "", "", "", "", "PPN",
-                        ":", Valid.SetAngka(rs.getDouble("ppn"))});
-                    tabMode.addRow(new Object[]{"", "", "", "", "", "",
-                        "Tagihan", ":", Valid.SetAngka(rs.getDouble("tagihan"))});
+                    tabMode.addRow(new Object[]{"Supplier",
+                        ": " + rs.getString("kode_suplier") + ", " + rs.getString("nama_suplier"), "", "", "", "",
+                        "Total", ":", Valid.SetAngka(rs.getDouble("total"))});
+                    tabMode.addRow(new Object[]{"Petugas", ": " + rs.getString("nip") + ", " + rs.getString("nama"),
+                        "", "", "", "", "Meterai", ":", Valid.SetAngka(rs.getDouble("meterai"))});
+                    tabMode.addRow(
+                            new Object[]{"", "", "", "", "", "", "PPN", ":", Valid.SetAngka(rs.getDouble("ppn"))});
+                    tabMode.addRow(new Object[]{"", "", "", "", "", "", "Tagihan", ":",
+                        Valid.SetAngka(rs.getDouble("tagihan"))});
                     tagihan += rs.getDouble("tagihan");
-                    tabMode.addRow(new Object[]{
-                        "", "", "", "", "", "", "", "", ""
-                    });
+                    tabMode.addRow(new Object[]{"", "", "", "", "", "", "", "", ""});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1387,7 +1372,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         ppProses.setEnabled(akses.gettoko_surat_pemesanan());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            TokoCariSuratPemesanan.class.getName());
+    private static final Logger LOG = Logger.getLogger(TokoCariSuratPemesanan.class.getName());
 
 }

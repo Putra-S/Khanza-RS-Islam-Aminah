@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPasienMati.java
- *
- * Created on Aug 30, 2010, 7:46:01 AM
+* DlgPasienMati.java
+*
+* Created on Aug 30, 2010, 7:46:01 AM
  */
 package simrskhanza;
 
@@ -38,19 +38,26 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariDokter;
 
 /**
- *
  * @author dosen3
  */
 public class DlgPasienMati extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private DlgPasien pasien = new DlgPasien(null, false);
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private String finger = "";
 
     /**
@@ -63,12 +70,9 @@ public class DlgPasienMati extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Tanggal", "Jam", "No.R.Medik", "Nama Pasien", "J.K.",
-            "Tmp.Lahir",
-            "Tgl.Lahir", "G.D.", "Stts.Nikah", "Agama", "Keterangan",
-            "Tempat Meninggal",
-            "ICD-X", "Antara 1", "Antara 2", "Langsung", "Kode DPJP",
-            "Nama DPJP"};
+        Object[] row = {"Tanggal", "Jam", "No.R.Medik", "Nama Pasien", "J.K.", "Tmp.Lahir", "Tgl.Lahir", "G.D.",
+            "Stts.Nikah", "Agama", "Keterangan", "Tempat Meninggal", "ICD-X", "Antara 1", "Antara 2", "Langsung",
+            "Kode DPJP", "Nama DPJP"};
 
         tabMode = new DefaultTableModel(null, row) {
             @Override
@@ -79,7 +83,8 @@ public class DlgPasienMati extends javax.swing.JDialog {
         };
         tbMati.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbMati.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbMati.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -129,8 +134,7 @@ public class DlgPasienMati extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TKtg.setDocument(new batasInput((byte) 100).getKata(TKtg));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -168,22 +172,18 @@ public class DlgPasienMati extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgPasienMati")) {
                     if (pasien.getTable().getSelectedRow() != -1) {
-                        TNoRM.setText(pasien.getTable().getValueAt(pasien.
-                                getTable().getSelectedRow(), 1).toString());
-                        TPasien.setText(pasien.getTable().getValueAt(pasien.
-                                getTable().getSelectedRow(), 2).toString());
+                        TNoRM.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 1).toString());
+                        TPasien.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 2).toString());
                     }
                     if (pasien.getTable2().getSelectedRow() != -1) {
-                        TNoRM.setText(pasien.getTable2().getValueAt(pasien.
-                                getTable2().getSelectedRow(), 1).toString());
-                        TPasien.setText(pasien.getTable2().getValueAt(pasien.
-                                getTable2().getSelectedRow(), 2).toString());
+                        TNoRM.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 1).toString());
+                        TPasien
+                                .setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 2).toString());
                     }
                     if (pasien.getTable3().getSelectedRow() != -1) {
-                        TNoRM.setText(pasien.getTable3().getValueAt(pasien.
-                                getTable3().getSelectedRow(), 1).toString());
-                        TPasien.setText(pasien.getTable3().getValueAt(pasien.
-                                getTable3().getSelectedRow(), 2).toString());
+                        TNoRM.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 1).toString());
+                        TPasien
+                                .setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 2).toString());
                     }
                     TNoRM.requestFocus();
                 }
@@ -279,10 +279,8 @@ public class DlgPasienMati extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -309,7 +307,9 @@ public class DlgPasienMati extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1251,8 +1251,7 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPasienMati dialog = new DlgPasienMati(new javax.swing.JFrame(),
-                    true);
+            DlgPasienMati dialog = new DlgPasienMati(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1329,10 +1328,8 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
                     + "from pasien_mati inner join pasien on pasien_mati.no_rkm_medis=pasien.no_rkm_medis "
                     + "inner join dokter on pasien_mati.kd_dokter=dokter.kd_dokter "
                     + (TCari.getText().trim().isEmpty() ? ""
-                    : "where pasien_mati.tanggal like '%" + TCari.getText().
-                            trim() + "%' or "
-                    + "pasien_mati.no_rkm_medis like '%" + TCari.getText().
-                            trim() + "%' or "
+                    : "where pasien_mati.tanggal like '%" + TCari.getText().trim() + "%' or "
+                    + "pasien_mati.no_rkm_medis like '%" + TCari.getText().trim() + "%' or "
                     + "pasien.nm_pasien like '%" + TCari.getText().trim() + "%' or "
                     + "pasien.stts_nikah like '%" + TCari.getText().trim() + "%' or "
                     + "pasien.agama like '%" + TCari.getText().trim() + "%' or "
@@ -1344,17 +1341,10 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getString(4),
-                        rs.getString(5), rs.getString(6), rs.getString(7), rs.
-                        getString(8),
-                        rs.getString(9), rs.getString(10), rs.getString(11), rs.
-                        getString(12),
-                        rs.getString(13), rs.getString(14), rs.getString(15),
-                        rs.getString(16),
-                        rs.getString(17), rs.getString(18)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13), rs.getString(14),
+                        rs.getString(15), rs.getString(16), rs.getString(17), rs.getString(18)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1393,37 +1383,20 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
 
     private void getData() {
         if (tbMati.getSelectedRow() != -1) {
-            cmbJam.setSelectedItem(
-                    tbMati.getValueAt(tbMati.getSelectedRow(), 1).toString().
-                            substring(0, 2));
-            cmbMnt.setSelectedItem(
-                    tbMati.getValueAt(tbMati.getSelectedRow(), 1).toString().
-                            substring(3, 5));
-            cmbDtk.setSelectedItem(
-                    tbMati.getValueAt(tbMati.getSelectedRow(), 1).toString().
-                            substring(6, 8));
-            TNoRM.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 2).
-                    toString());
-            TPasien.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 3).
-                    toString());
-            TKtg.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 10).
-                    toString());
-            Valid.SetTgl(DTPTgl, tbMati.getValueAt(tbMati.getSelectedRow(), 0).
-                    toString());
-            tmptmeninggal.setSelectedItem(tbMati.getValueAt(tbMati.
-                    getSelectedRow(), 11).toString());
-            icd1.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 12).
-                    toString());
-            icd2.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 13).
-                    toString());
-            icd3.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 14).
-                    toString());
-            icd4.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 15).
-                    toString());
-            KdDokter.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 16).
-                    toString());
-            NmDokter.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 17).
-                    toString());
+            cmbJam.setSelectedItem(tbMati.getValueAt(tbMati.getSelectedRow(), 1).toString().substring(0, 2));
+            cmbMnt.setSelectedItem(tbMati.getValueAt(tbMati.getSelectedRow(), 1).toString().substring(3, 5));
+            cmbDtk.setSelectedItem(tbMati.getValueAt(tbMati.getSelectedRow(), 1).toString().substring(6, 8));
+            TNoRM.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 2).toString());
+            TPasien.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 3).toString());
+            TKtg.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 10).toString());
+            Valid.SetTgl(DTPTgl, tbMati.getValueAt(tbMati.getSelectedRow(), 0).toString());
+            tmptmeninggal.setSelectedItem(tbMati.getValueAt(tbMati.getSelectedRow(), 11).toString());
+            icd1.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 12).toString());
+            icd2.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 13).toString());
+            icd3.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 14).toString());
+            icd4.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 15).toString());
+            KdDokter.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 16).toString());
+            NmDokter.setText(tbMati.getValueAt(tbMati.getSelectedRow(), 17).toString());
         }
     }
 
@@ -1459,6 +1432,6 @@ private void MnCetakSuratMatiActionPerformed(java.awt.event.ActionEvent evt) {//
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgPasienMati.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgPasienMati.class.getName());
+
 }

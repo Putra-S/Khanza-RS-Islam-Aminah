@@ -28,29 +28,45 @@ import simrskhanza.DlgCariPoli;
 import simrskhanza.DlgCariPoli2;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgRujukanPoliInternal extends javax.swing.JDialog {
 
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariDokter2 dokter2 = new DlgCariDokter2(null, false);
+
     private DlgCariDokter2 dokter3 = new DlgCariDokter2(null, false);
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariPoli2 poli2 = new DlgCariPoli2(null, false);
+
     private String aktifjadwal = "";
+
     private Properties prop = new Properties();
+
     private int lebar = 0, tinggi = 0;
+
     private int i = 0, jml = 0, index = 0;
+
     private widget.ComboBox cmbJam;
+
     private widget.Tanggal DTPTgl;
+
     private widget.ComboBox cmbMnt;
+
     private widget.ComboBox cmbDtk;
-//    private final DefaultTableModel TabModeCatatan;
+
+    // private final DefaultTableModel TabModeCatatan;
     private widget.Label LCount;
 
     /**
@@ -74,10 +90,8 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    TDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    TDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     kddokter.requestFocus();
                 }
             }
@@ -112,10 +126,8 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter2.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 0).toString());
-                    TDokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 0).toString());
+                    TDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 1).toString());
                     kddokter.requestFocus();
                 }
             }
@@ -150,10 +162,8 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter3.getTable().getSelectedRow() != -1) {
-                    kddokter2.setText(dokter3.getTable().getValueAt(dokter3.
-                            getTable().getSelectedRow(), 0).toString());
-                    TDokter2.setText(dokter3.getTable().getValueAt(dokter3.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter2.setText(dokter3.getTable().getValueAt(dokter3.getTable().getSelectedRow(), 0).toString());
+                    TDokter2.setText(dokter3.getTable().getValueAt(dokter3.getTable().getSelectedRow(), 1).toString());
                     kddokter2.requestFocus();
                 }
             }
@@ -188,10 +198,8 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    TPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    TPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                     kdpoli.requestFocus();
                 }
             }
@@ -226,10 +234,8 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli2.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli2.getTable().getValueAt(poli2.getTable().
-                            getSelectedRow(), 0).toString());
-                    TPoli.setText(poli2.getTable().getValueAt(poli2.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdpoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(), 0).toString());
+                    TPoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(), 1).toString());
                     kdpoli.requestFocus();
                 }
             }
@@ -263,7 +269,9 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -708,8 +716,7 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRujukanPoliInternal dialog = new DlgRujukanPoliInternal(
-                    new javax.swing.JFrame(), true);
+            DlgRujukanPoliInternal dialog = new DlgRujukanPoliInternal(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -751,8 +758,7 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
     private widget.ScrollPane scrollPane4;
     // End of variables declaration//GEN-END:variables
 
-    public void setNoRm(String norw, String norm, String namapasien, int lebar,
-            int tinggi) {
+    public void setNoRm(String norw, String norm, String namapasien, int lebar, int tinggi) {
         TNoRw.setText(norw);
         TNoRM.setText(norm);
         TPasien.setText(namapasien);
@@ -767,7 +773,6 @@ public class DlgRujukanPoliInternal extends javax.swing.JDialog {
         BtnSimpan.setEnabled(true);
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgRujukanPoliInternal.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgRujukanPoliInternal.class.getName());
 
 }

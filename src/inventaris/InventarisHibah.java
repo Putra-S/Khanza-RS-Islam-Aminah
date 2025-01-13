@@ -31,27 +31,47 @@ import keuangan.Jurnal;
 public class InventarisHibah extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private double w = 0, sbttl = 0;
+
     private int jml = 0, i = 0, row = 0, index = 0;
+
     private String[] kodebarang, namabarang, produsen, merk, kategori, jenis;
+
     private double[] harga, jumlah, subtotal;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private boolean sukses = true;
+
     private String akunaset = "";
+
     private File file;
+
     private FileWriter fileWriter;
-    private String iyem, Kontra_Hibah_Aset = Sequel.cariIsi(
-            "select Kontra_Hibah_Aset from set_akun");
+
+    private String iyem, Kontra_Hibah_Aset = Sequel.cariIsi("select Kontra_Hibah_Aset from set_akun");
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
+
     private InventarisCariHibah form = new InventarisCariHibah(null, false);
 
     /**
@@ -64,16 +84,12 @@ public class InventarisHibah extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Produsen",
-            "Merk", "Kategori", "Jenis", "Harga(Rp)", "Subtotal(Rp)"};
+        Object[] judul = {"Jml", "Kode Barang", "Nama Barang", "Produsen", "Merk", "Kategori", "Jenis", "Harga(Rp)",
+            "Subtotal(Rp)"};
         tabMode = new DefaultTableModel(null, judul) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -125,8 +141,7 @@ public class InventarisHibah extends javax.swing.JDialog {
         kdptg.setDocument(new batasInput((byte) 25).getKata(kdptg));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -196,12 +211,12 @@ public class InventarisHibah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("InventarisHibah")) {
                     if (form.asalhibah.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(form.asalhibah.getTable().getValueAt(
-                                form.asalhibah.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsup.setText(form.asalhibah.getTable().getValueAt(
-                                form.asalhibah.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsup.setText(form.asalhibah.getTable()
+                                .getValueAt(form.asalhibah.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsup.setText(form.asalhibah.getTable()
+                                .getValueAt(form.asalhibah.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -258,12 +273,12 @@ public class InventarisHibah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("InventarisHibah")) {
                     if (form.petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(form.petugas.getTable().getValueAt(
-                                form.petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmptg.setText(form.petugas.getTable().getValueAt(
-                                form.petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdptg.setText(form.petugas.getTable()
+                                .getValueAt(form.petugas.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmptg.setText(form.petugas.getTable()
+                                .getValueAt(form.petugas.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -289,7 +304,9 @@ public class InventarisHibah extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -632,14 +649,13 @@ public class InventarisHibah extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-    for (i = 0; i < tbDokter.getRowCount(); i++) {
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+    for (i = 0; i < tbDokter.getRowCount(); i++) {//GEN-FIRST:event_ppBersihkanActionPerformed
         tbDokter.setValueAt("", i, 0);
         tbDokter.setValueAt(0, i, 7);
         tbDokter.setValueAt(0, i, 8);
@@ -919,8 +935,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventarisHibah dialog = new InventarisHibah(
-                    new javax.swing.JFrame(), true);
+            InventarisHibah dialog = new InventarisHibah(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -992,18 +1007,15 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         for (i = 0; i < row; i++) {
             try {
                 if (Double.parseDouble(tbDokter.getValueAt(i, 0).toString()) > 0) {
-                    jumlah[index] = Double.parseDouble(
-                            tbDokter.getValueAt(i, 0).toString());
+                    jumlah[index] = Double.parseDouble(tbDokter.getValueAt(i, 0).toString());
                     kodebarang[index] = tbDokter.getValueAt(i, 1).toString();
                     namabarang[index] = tbDokter.getValueAt(i, 2).toString();
                     produsen[index] = tbDokter.getValueAt(i, 3).toString();
                     merk[index] = tbDokter.getValueAt(i, 4).toString();
                     kategori[index] = tbDokter.getValueAt(i, 5).toString();
                     jenis[index] = tbDokter.getValueAt(i, 6).toString();
-                    harga[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).
-                            toString());
-                    subtotal[index] = Double.parseDouble(tbDokter.getValueAt(i,
-                            8).toString());
+                    harga[index] = Double.parseDouble(tbDokter.getValueAt(i, 7).toString());
+                    subtotal[index] = Double.parseDouble(tbDokter.getValueAt(i, 8).toString());
                     index++;
                 }
             } catch (Exception e) {
@@ -1012,9 +1024,8 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
         Valid.tabelKosong(tabMode);
         for (i = 0; i < jml; i++) {
-            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i],
-                produsen[i], merk[i], kategori[i], jenis[i], harga[i],
-                subtotal[i]});
+            tabMode.addRow(new Object[]{jumlah[i], kodebarang[i], namabarang[i], produsen[i], merk[i], kategori[i],
+                jenis[i], harga[i], subtotal[i]});
         }
 
         try {
@@ -1024,8 +1035,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 response = root.path("akunaset");
                 if (response.isArray()) {
                     for (JsonNode list : response) {
-                        if (list.path("NamaAkun").asText().equals(AkunAset.
-                                getSelectedItem().toString())) {
+                        if (list.path("NamaAkun").asText().equals(AkunAset.getSelectedItem().toString())) {
                             ps = koneksi.prepareStatement(
                                     "select inventaris_barang.kode_barang,inventaris_barang.nama_barang,inventaris_produsen.nama_produsen,"
                                     + "inventaris_merk.nama_merk,inventaris_kategori.nama_kategori,inventaris_jenis.nama_jenis "
@@ -1034,32 +1044,29 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                                     + "inner join inventaris_kategori on inventaris_barang.id_kategori=inventaris_kategori.id_kategori "
                                     + "inner join inventaris_merk on inventaris_barang.id_merk=inventaris_merk.id_merk "
                                     + "inner join akun_aset_inventaris on akun_aset_inventaris.id_jenis=inventaris_jenis.id_jenis "
-                                    + "where akun_aset_inventaris.kd_rek='" + list.
-                                            path("KodeRek").asText() + "' "
-                                    + (TCari.getText().trim().isEmpty() ? "" : " and (inventaris_barang.kode_barang like '%" + TCari.
-                                    getText().trim() + "%' "
-                                    + "or inventaris_barang.nama_barang like '%" + TCari.
-                                            getText().trim() + "%' "
-                                    + "or inventaris_produsen.nama_produsen like '%" + TCari.
-                                            getText().trim() + "%' "
-                                    + "or inventaris_merk.nama_merk like '%" + TCari.
-                                            getText().trim() + "%' "
-                                    + "or inventaris_kategori.nama_kategori like '%" + TCari.
-                                            getText().trim() + "%' "
-                                    + "or inventaris_jenis.nama_jenis like '%" + TCari.
-                                            getText().trim() + "%') ")
+                                    + "where akun_aset_inventaris.kd_rek='" + list.path("KodeRek").asText()
+                                    + "' "
+                                    + (TCari.getText().trim().isEmpty() ? ""
+                                    : " and (inventaris_barang.kode_barang like '%"
+                                    + TCari.getText().trim() + "%' "
+                                    + "or inventaris_barang.nama_barang like '%"
+                                    + TCari.getText().trim() + "%' "
+                                    + "or inventaris_produsen.nama_produsen like '%"
+                                    + TCari.getText().trim() + "%' "
+                                    + "or inventaris_merk.nama_merk like '%"
+                                    + TCari.getText().trim() + "%' "
+                                    + "or inventaris_kategori.nama_kategori like '%"
+                                    + TCari.getText().trim() + "%' "
+                                    + "or inventaris_jenis.nama_jenis like '%"
+                                    + TCari.getText().trim() + "%') ")
                                     + "order by inventaris_barang.kode_barang");
                             try {
                                 rs = ps.executeQuery();
                                 while (rs.next()) {
-                                    tabMode.addRow(new Object[]{
-                                        "", rs.getString("kode_barang"), rs.
-                                        getString("nama_barang"), rs.getString(
-                                        "nama_produsen"),
-                                        rs.getString("nama_merk"), rs.getString(
-                                        "nama_kategori"), rs.getString(
-                                        "nama_jenis"), 0, 0
-                                    });
+                                    tabMode.addRow(
+                                            new Object[]{"", rs.getString("kode_barang"), rs.getString("nama_barang"),
+                                                rs.getString("nama_produsen"), rs.getString("nama_merk"),
+                                                rs.getString("nama_kategori"), rs.getString("nama_jenis"), 0, 0});
                                 }
                             } catch (Exception e) {
                                 System.out.println(e);
@@ -1088,12 +1095,9 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         if (row != -1) {
             if (!tbDokter.getValueAt(row, 0).toString().isEmpty()) {
                 try {
-                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).
-                            toString()) > 0) {
-                        tbDokter.setValueAt(Double.parseDouble(tbDokter.
-                                getValueAt(row, 0).toString()) * Double.
-                                parseDouble(tbDokter.getValueAt(row, 7).
-                                        toString()), row, 8);
+                    if (Double.parseDouble(tbDokter.getValueAt(row, 0).toString()) > 0) {
+                        tbDokter.setValueAt(Double.parseDouble(tbDokter.getValueAt(row, 0).toString())
+                                * Double.parseDouble(tbDokter.getValueAt(row, 7).toString()), row, 8);
                     }
                 } catch (Exception e) {
                     tbDokter.setValueAt("", row, 0);
@@ -1134,11 +1138,12 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_hibah,3),signed)),0) from inventaris_hibah where tgl_hibah='" + Valid.
-                        SetTgl(TglBeli.getSelectedItem() + "") + "' ",
-                "HA" + TglBeli.getSelectedItem().toString().substring(6, 10) + TglBeli.
-                getSelectedItem().toString().substring(3, 5) + TglBeli.
-                getSelectedItem().toString().substring(0, 2), 3, NoFaktur);
+                "select ifnull(MAX(CONVERT(RIGHT(no_hibah,3),signed)),0) from inventaris_hibah where tgl_hibah='"
+                + Valid.SetTgl(TglBeli.getSelectedItem() + "") + "' ",
+                "HA" + TglBeli.getSelectedItem().toString().substring(6, 10)
+                + TglBeli.getSelectedItem().toString().substring(3, 5)
+                + TglBeli.getSelectedItem().toString().substring(0, 2),
+                3, NoFaktur);
     }
 
     private void tampilAkun() {
@@ -1154,9 +1159,8 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 AkunAset.removeAllItems();
                 while (rs.next()) {
                     AkunAset.addItem(rs.getString(1).replaceAll("\"", ""));
-                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).
-                            replaceAll("\"", "") + "\",\"KodeRek\":\"" + rs.
-                            getString(2) + "\"},";
+                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).replaceAll("\"", "") + "\",\"KodeRek\":\""
+                            + rs.getString(2) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1169,22 +1173,19 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 }
             }
 
-            fileWriter.write("{\"akunaset\":[" + iyem.substring(0,
-                    iyem.length() - 1) + "]}");
+            fileWriter.write("{\"akunaset\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
         } catch (Exception e) {
             if (e.toString().contains("begin")) {
-                System.out.println(
-                        "Notifikasi Akun Aset : Data tidak ditemukan..!!");
+                System.out.println("Notifikasi Akun Aset : Data tidak ditemukan..!!");
             } else {
                 System.out.println("Notifikasi Akun Aset : " + e);
             }
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(InventarisHibah.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(InventarisHibah.class.getName());
 
 }

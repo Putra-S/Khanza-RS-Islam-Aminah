@@ -9,14 +9,19 @@ import fungsi.koneksiDB;
 import fungsi.sekuel;
 import fungsi.validasi;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -26,23 +31,34 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author dosen
  */
 public class RMDataAlergiPasien extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0, nilai_detik, bookingbaru = 0;
+
     private String alarm = "", nol_detik, detik, sql = "", mode = "";
+
     private boolean aktif = false;
+
     private BackgroundMusic music;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private StringBuilder htmlContent;
+
     private SatuSehatCariAllergy allergycode = new SatuSehatCariAllergy(null, false);
 
     /**
@@ -55,9 +71,9 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp", "Cara Bayar", "TANGGAL", "KODE", "ALERGI", "KATEGORI", "REAKSI KODE", "SEVERITY", "NOTE", "NIP", "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp", "Cara Bayar", "TANGGAL",
+                    "KODE", "ALERGI", "KATEGORI", "REAKSI KODE", "SEVERITY", "NOTE", "NIP", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -65,7 +81,8 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -146,19 +163,27 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (allergycode.getTable().getSelectedRow() != -1) {
-//                    if (allergycode.getMode().equals("alergi")) {
-                    AlergiCode.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 0).toString());
-                    AlergySystem.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 2).toString());
-                    AlergyDisplay.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 1).toString());
-//                    } else if (allergycode.getMode().equals("reaksialergi")) {
-//                        ReaksiCode.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 0).toString());
-//                        ReaksiSystem.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 2).toString());
-//                        ReaksiDisplay.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 1).toString());
-//                    } else if (allergycode.getMode().equals("alergiobat")) {
-//                        AlergiCode.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 0).toString());
-//                        AlergySystem.setText("http://sys-ids.kemkes.go.id/kfa");
-//                        AlergyDisplay.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 1).toString());
-//                    }
+                    // if (allergycode.getMode().equals("alergi")) {
+                    AlergiCode.setText(
+                            allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 0).toString());
+                    AlergySystem.setText(
+                            allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 2).toString());
+                    AlergyDisplay.setText(
+                            allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(), 1).toString());
+                    // } else if (allergycode.getMode().equals("reaksialergi")) {
+                    // ReaksiCode.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(),
+                    // 0).toString());
+                    // ReaksiSystem.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(),
+                    // 2).toString());
+                    // ReaksiDisplay.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(),
+                    // 1).toString());
+                    // } else if (allergycode.getMode().equals("alergiobat")) {
+                    // AlergiCode.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(),
+                    // 0).toString());
+                    // AlergySystem.setText("http://sys-ids.kemkes.go.id/kfa");
+                    // AlergyDisplay.setText(allergycode.getTable().getValueAt(allergycode.getTable().getSelectedRow(),
+                    // 1).toString());
+                    // }
                 }
                 btnAllergy.requestFocus();
             }
@@ -193,14 +218,15 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -212,12 +238,6 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         Scroll = new widget.ScrollPane();
         tbObat = new widget.Table();
         jPanel3 = new javax.swing.JPanel();
-        panelGlass8 = new widget.panelisi();
-        BtnSimpan = new widget.Button();
-        BtnBatal = new widget.Button();
-        BtnHapus = new widget.Button();
-        BtnEdit = new widget.Button();
-        BtnKeluar = new widget.Button();
         panelCari = new widget.panelisi();
         DTPCari1 = new widget.Tanggal();
         jLabel25 = new widget.Label();
@@ -228,6 +248,12 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         BtnAll = new widget.Button();
         jLabel7 = new widget.Label();
         LCount = new widget.Label();
+        panelGlass8 = new widget.panelisi();
+        BtnSimpan = new widget.Button();
+        BtnBatal = new widget.Button();
+        BtnHapus = new widget.Button();
+        BtnEdit = new widget.Button();
+        BtnKeluar = new widget.Button();
         PanelInput = new javax.swing.JPanel();
         FormInput = new widget.PanelBiasa();
         NoRw = new widget.TextBox();
@@ -254,6 +280,12 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         jLabel15 = new widget.Label();
         cmbSeverity = new widget.ComboBox();
         btnAllergyObat = new widget.Button();
+        label11 = new widget.Label();
+        TglAsuhan = new widget.Tanggal();
+        Jam = new widget.ComboBox();
+        Menit = new widget.ComboBox();
+        Detik = new widget.ComboBox();
+        ChkKejadian = new widget.CekBox();
 
         LoadHTML.setBorder(null);
         LoadHTML.setName("LoadHTML"); // NOI18N
@@ -295,8 +327,102 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
 
         jPanel3.setName("jPanel3"); // NOI18N
         jPanel3.setOpaque(false);
-        jPanel3.setPreferredSize(new java.awt.Dimension(44, 88));
+        jPanel3.setPreferredSize(new java.awt.Dimension(44, 100));
         jPanel3.setLayout(new java.awt.BorderLayout(1, 1));
+
+        panelCari.setName("panelCari"); // NOI18N
+        panelCari.setPreferredSize(new java.awt.Dimension(44, 45));
+        panelCari.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 2, 9));
+
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-12-2024" }));
+        DTPCari1.setDisplayFormat("dd-MM-yyyy");
+        DTPCari1.setName("DTPCari1"); // NOI18N
+        DTPCari1.setOpaque(false);
+        DTPCari1.setPreferredSize(new java.awt.Dimension(90, 23));
+        DTPCari1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                DTPCari1ItemStateChanged(evt);
+            }
+        });
+        panelCari.add(DTPCari1);
+
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel25.setText("s.d");
+        jLabel25.setName("jLabel25"); // NOI18N
+        jLabel25.setPreferredSize(new java.awt.Dimension(30, 23));
+        panelCari.add(jLabel25);
+
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-12-2024" }));
+        DTPCari2.setDisplayFormat("dd-MM-yyyy");
+        DTPCari2.setName("DTPCari2"); // NOI18N
+        DTPCari2.setOpaque(false);
+        DTPCari2.setPreferredSize(new java.awt.Dimension(90, 23));
+        DTPCari2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                DTPCari2ItemStateChanged(evt);
+            }
+        });
+        panelCari.add(DTPCari2);
+
+        jLabel6.setText("Key Word :");
+        jLabel6.setName("jLabel6"); // NOI18N
+        jLabel6.setPreferredSize(new java.awt.Dimension(68, 23));
+        panelCari.add(jLabel6);
+
+        TCari.setName("TCari"); // NOI18N
+        TCari.setPreferredSize(new java.awt.Dimension(370, 23));
+        TCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TCariKeyPressed(evt);
+            }
+        });
+        panelCari.add(TCari);
+
+        BtnCari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/accept.png"))); // NOI18N
+        BtnCari.setMnemonic('2');
+        BtnCari.setName("BtnCari"); // NOI18N
+        BtnCari.setPreferredSize(new java.awt.Dimension(28, 23));
+        BtnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCariActionPerformed(evt);
+            }
+        });
+        BtnCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnCariKeyPressed(evt);
+            }
+        });
+        panelCari.add(BtnCari);
+
+        BtnAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Search-16x16.png"))); // NOI18N
+        BtnAll.setMnemonic('M');
+        BtnAll.setToolTipText("Alt+M");
+        BtnAll.setName("BtnAll"); // NOI18N
+        BtnAll.setPreferredSize(new java.awt.Dimension(28, 23));
+        BtnAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAllActionPerformed(evt);
+            }
+        });
+        BtnAll.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnAllKeyPressed(evt);
+            }
+        });
+        panelCari.add(BtnAll);
+
+        jLabel7.setText("Record :");
+        jLabel7.setName("jLabel7"); // NOI18N
+        jLabel7.setPreferredSize(new java.awt.Dimension(60, 23));
+        panelCari.add(jLabel7);
+
+        LCount.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        LCount.setText("0");
+        LCount.setName("LCount"); // NOI18N
+        LCount.setPreferredSize(new java.awt.Dimension(50, 23));
+        panelCari.add(LCount);
+
+        jPanel3.add(panelCari, java.awt.BorderLayout.PAGE_START);
 
         panelGlass8.setName("panelGlass8"); // NOI18N
         panelGlass8.setPreferredSize(new java.awt.Dimension(55, 55));
@@ -393,100 +519,6 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         panelGlass8.add(BtnKeluar);
 
         jPanel3.add(panelGlass8, java.awt.BorderLayout.PAGE_END);
-
-        panelCari.setName("panelCari"); // NOI18N
-        panelCari.setPreferredSize(new java.awt.Dimension(44, 43));
-        panelCari.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 2, 9));
-
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-08-2024" }));
-        DTPCari1.setDisplayFormat("dd-MM-yyyy");
-        DTPCari1.setName("DTPCari1"); // NOI18N
-        DTPCari1.setOpaque(false);
-        DTPCari1.setPreferredSize(new java.awt.Dimension(90, 23));
-        DTPCari1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                DTPCari1ItemStateChanged(evt);
-            }
-        });
-        panelCari.add(DTPCari1);
-
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel25.setText("s.d");
-        jLabel25.setName("jLabel25"); // NOI18N
-        jLabel25.setPreferredSize(new java.awt.Dimension(30, 23));
-        panelCari.add(jLabel25);
-
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-08-2024" }));
-        DTPCari2.setDisplayFormat("dd-MM-yyyy");
-        DTPCari2.setName("DTPCari2"); // NOI18N
-        DTPCari2.setOpaque(false);
-        DTPCari2.setPreferredSize(new java.awt.Dimension(90, 23));
-        DTPCari2.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                DTPCari2ItemStateChanged(evt);
-            }
-        });
-        panelCari.add(DTPCari2);
-
-        jLabel6.setText("Key Word :");
-        jLabel6.setName("jLabel6"); // NOI18N
-        jLabel6.setPreferredSize(new java.awt.Dimension(68, 23));
-        panelCari.add(jLabel6);
-
-        TCari.setName("TCari"); // NOI18N
-        TCari.setPreferredSize(new java.awt.Dimension(370, 23));
-        TCari.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                TCariKeyPressed(evt);
-            }
-        });
-        panelCari.add(TCari);
-
-        BtnCari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/accept.png"))); // NOI18N
-        BtnCari.setMnemonic('2');
-        BtnCari.setName("BtnCari"); // NOI18N
-        BtnCari.setPreferredSize(new java.awt.Dimension(28, 23));
-        BtnCari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnCariActionPerformed(evt);
-            }
-        });
-        BtnCari.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BtnCariKeyPressed(evt);
-            }
-        });
-        panelCari.add(BtnCari);
-
-        BtnAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Search-16x16.png"))); // NOI18N
-        BtnAll.setMnemonic('M');
-        BtnAll.setToolTipText("Alt+M");
-        BtnAll.setName("BtnAll"); // NOI18N
-        BtnAll.setPreferredSize(new java.awt.Dimension(28, 23));
-        BtnAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnAllActionPerformed(evt);
-            }
-        });
-        BtnAll.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BtnAllKeyPressed(evt);
-            }
-        });
-        panelCari.add(BtnAll);
-
-        jLabel7.setText("Record :");
-        jLabel7.setName("jLabel7"); // NOI18N
-        jLabel7.setPreferredSize(new java.awt.Dimension(60, 23));
-        panelCari.add(jLabel7);
-
-        LCount.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        LCount.setText("0");
-        LCount.setName("LCount"); // NOI18N
-        LCount.setPreferredSize(new java.awt.Dimension(50, 23));
-        panelCari.add(LCount);
-
-        jPanel3.add(panelCari, java.awt.BorderLayout.PAGE_START);
 
         internalFrame1.add(jPanel3, java.awt.BorderLayout.PAGE_END);
 
@@ -588,7 +620,7 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         FormInput.add(AlergiCode);
         AlergiCode.setBounds(70, 40, 80, 23);
 
-        jLabel13.setText("Note / Keterangan :");
+        jLabel13.setText("Detail alergi :");
         jLabel13.setName("jLabel13"); // NOI18N
         FormInput.add(jLabel13);
         jLabel13.setBounds(210, 110, 120, 23);
@@ -721,6 +753,62 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         FormInput.add(btnAllergyObat);
         btnAllergyObat.setBounds(870, 40, 150, 23);
 
+        label11.setText("Tanggal :");
+        label11.setName("label11"); // NOI18N
+        label11.setPreferredSize(new java.awt.Dimension(70, 23));
+        FormInput.add(label11);
+        label11.setBounds(700, 10, 60, 23);
+
+        TglAsuhan.setDisplayFormat("dd-MM-yyyy");
+        TglAsuhan.setName("TglAsuhan"); // NOI18N
+        TglAsuhan.setPreferredSize(new java.awt.Dimension(95, 23));
+        TglAsuhan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TglAsuhanKeyPressed(evt);
+            }
+        });
+        FormInput.add(TglAsuhan);
+        TglAsuhan.setBounds(770, 10, 90, 23);
+
+        Jam.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        Jam.setName("Jam"); // NOI18N
+        Jam.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                JamKeyPressed(evt);
+            }
+        });
+        FormInput.add(Jam);
+        Jam.setBounds(860, 10, 62, 23);
+
+        Menit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        Menit.setName("Menit"); // NOI18N
+        Menit.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                MenitKeyPressed(evt);
+            }
+        });
+        FormInput.add(Menit);
+        Menit.setBounds(930, 10, 62, 23);
+
+        Detik.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        Detik.setName("Detik"); // NOI18N
+        Detik.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                DetikKeyPressed(evt);
+            }
+        });
+        FormInput.add(Detik);
+        Detik.setBounds(990, 10, 62, 23);
+
+        ChkKejadian.setBorder(null);
+        ChkKejadian.setSelected(true);
+        ChkKejadian.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        ChkKejadian.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ChkKejadian.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ChkKejadian.setName("ChkKejadian"); // NOI18N
+        FormInput.add(ChkKejadian);
+        ChkKejadian.setBounds(1060, 10, 23, 23);
+
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
         internalFrame1.add(PanelInput, java.awt.BorderLayout.PAGE_START);
@@ -739,7 +827,7 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         if (NoRw.getText().trim().isEmpty() || NoRM.getText().trim().isEmpty() || NmPasien.getText().trim().isEmpty()) {
             Valid.textKosong(TCari, "Pasien");
         } else if (AlergiCode.getText().trim().isEmpty()) {
-            Valid.textKosong(AlergiCode, "Kode Vaksin");
+            Valid.textKosong(AlergiCode, "Kode Alergi");
         } else if (ReaksiCode.getText().trim().isEmpty()) {
             Valid.textKosong(ReaksiCode, "Reaksi");
         } else if (TKeterangan.getText().trim().isEmpty()) {
@@ -991,6 +1079,22 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAllergyObatKeyPressed
 
+    private void TglAsuhanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TglAsuhanKeyPressed
+
+    }//GEN-LAST:event_TglAsuhanKeyPressed
+
+    private void JamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JamKeyPressed
+
+    }//GEN-LAST:event_JamKeyPressed
+
+    private void MenitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MenitKeyPressed
+
+    }//GEN-LAST:event_MenitKeyPressed
+
+    private void DetikKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DetikKeyPressed
+
+    }//GEN-LAST:event_DetikKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -1018,11 +1122,15 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
     private widget.Button BtnHapus;
     private widget.Button BtnKeluar;
     private widget.Button BtnSimpan;
+    private widget.CekBox ChkKejadian;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
+    private widget.ComboBox Detik;
     private widget.PanelBiasa FormInput;
+    private widget.ComboBox Jam;
     private widget.Label LCount;
     private widget.editorpane LoadHTML;
+    private widget.ComboBox Menit;
     private widget.TextBox NmPasien;
     private widget.TextBox NoRM;
     private widget.TextBox NoRw;
@@ -1033,6 +1141,7 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
     private widget.TextArea TKeterangan;
+    private widget.Tanggal TglAsuhan;
     private widget.Button btnAllergy;
     private widget.Button btnAllergyObat;
     private widget.Button btnReaksiAllergy;
@@ -1052,6 +1161,7 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
     private widget.Label jLabel6;
     private widget.Label jLabel7;
     private javax.swing.JPanel jPanel3;
+    private widget.Label label11;
     private widget.panelisi panelCari;
     private widget.panelisi panelGlass8;
     private widget.ScrollPane scrollPane1;
@@ -1061,53 +1171,28 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
     public void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            //"No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp", "Cara Bayar", "TANGGAL", "KODE", "ALERGI", "KATEGORI", "REAKSI KODE", "SEVERITY", "NOTE", "NIP", "Nama Petugas"
-            ps = koneksi.prepareStatement(
-                    "SELECT\n"
-                    + "	alergi_pasien.no_rawat, \n"
-                    + "	reg_periksa.no_rkm_medis, \n"
-                    + "	pasien.nm_pasien, \n"
-                    + "	pasien.jk, \n"
-                    + "	TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) AS umur, \n"
-                    + "	pasien.no_tlp, \n"
-                    + "	penjab.png_jawab, \n"
-                    + "	alergi_pasien.tgl_perawatan, \n"
-                    + "	alergi_pasien.allergy_code, \n"
-                    + "	satu_sehat_allergy_reference.display, \n"
-                    + "	alergi_pasien.category, \n"
-                    + "	alergi_pasien.reactioncode, \n"
-                    + "	alergi_pasien.severity, \n"
-                    + "	alergi_pasien.note, \n"
-                    + "	alergi_pasien.nippetugas, \n"
-                    + "	pegawai.nama\n"
-                    + "FROM\n"
-                    + "	reg_periksa\n"
-                    + "	INNER JOIN\n"
-                    + "	pasien\n"
-                    + "	ON \n"
-                    + "		reg_periksa.no_rkm_medis = pasien.no_rkm_medis\n"
-                    + "	INNER JOIN\n"
-                    + "	penjab\n"
-                    + "	ON \n"
-                    + "		reg_periksa.kd_pj = penjab.kd_pj\n"
-                    + "	INNER JOIN\n"
-                    + "	alergi_pasien\n"
-                    + "	ON \n"
-                    + "		reg_periksa.no_rawat = alergi_pasien.no_rawat\n"
-                    + "	INNER JOIN\n"
-                    + "	pegawai\n"
-                    + "	ON \n"
-                    + "		alergi_pasien.nippetugas = pegawai.nik\n"
-                    + "	INNER JOIN\n"
-                    + "	satu_sehat_allergy_reference\n"
-                    + "	ON \n"
-                    + "		alergi_pasien.allergy_code = satu_sehat_allergy_reference.code\n"
-                    + "	INNER JOIN\n"
-                    + "	satu_sehat_allergy_reaction\n"
-                    + "	ON \n"
+            // "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp", "Cara
+            // Bayar", "TANGGAL", "KODE", "ALERGI", "KATEGORI", "REAKSI KODE", "SEVERITY",
+            // "NOTE", "NIP", "Nama Petugas"
+            ps = koneksi.prepareStatement("SELECT\n" + "	alergi_pasien.no_rawat, \n"
+                    + "	reg_periksa.no_rkm_medis, \n" + "	pasien.nm_pasien, \n" + "	pasien.jk, \n"
+                    + "	TIMESTAMPDIFF(YEAR, pasien.tgl_lahir, CURDATE()) AS umur, \n" + "	pasien.no_tlp, \n"
+                    + "	penjab.png_jawab, \n" + "	alergi_pasien.tgl_perawatan, \n"
+                    + "	alergi_pasien.allergy_code, \n" + "	satu_sehat_allergy_reference.display, \n"
+                    + "	alergi_pasien.category, \n" + "	alergi_pasien.reactioncode, \n" + "	alergi_pasien.severity, \n"
+                    + "	alergi_pasien.note, \n" + "	alergi_pasien.nippetugas, \n" + "	pegawai.nama\n" + "FROM\n"
+                    + "	reg_periksa\n" + "	INNER JOIN\n" + "	pasien\n" + "	ON \n"
+                    + "		reg_periksa.no_rkm_medis = pasien.no_rkm_medis\n" + "	INNER JOIN\n" + "	penjab\n"
+                    + "	ON \n" + "		reg_periksa.kd_pj = penjab.kd_pj\n" + "	INNER JOIN\n" + "	alergi_pasien\n"
+                    + "	ON \n" + "		reg_periksa.no_rawat = alergi_pasien.no_rawat\n" + "	INNER JOIN\n"
+                    + "	pegawai\n" + "	ON \n" + "		alergi_pasien.nippetugas = pegawai.nik\n" + "	INNER JOIN\n"
+                    + "	satu_sehat_allergy_reference\n" + "	ON \n"
+                    + "		alergi_pasien.allergy_code = satu_sehat_allergy_reference.code\n" + "	INNER JOIN\n"
+                    + "	satu_sehat_allergy_reaction\n" + "	ON \n"
                     + "		alergi_pasien.reactioncode = satu_sehat_allergy_reaction.code "
                     + "where alergi_pasien.tgl_perawatan between ? and ? "
-                    + (TCari.getText().isEmpty() ? "" : " and alergi_pasien.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? ")
+                    + (TCari.getText().isEmpty() ? ""
+                    : " and alergi_pasien.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? ")
                     + " order by alergi_pasien.no_rawat");
             try {
                 ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
@@ -1119,15 +1204,18 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
                     ps.setString(4, "%" + TCari.getText().trim() + "%");
                     ps.setString(5, "%" + TCari.getText().trim() + "%");
                 }
-//                System.out.println(ps.toString());
+                // System.out.println(ps.toString());
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    //"No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp", "Cara Bayar", "TANGGAL", "KODE", "ALERGI", "KATEGORI", "REAKSI KODE", "SEVERITY", "NOTE", "NIP", "Nama Petugas"
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), rs.getString("jk"), rs.getString("umur"), rs.getString("no_tlp"),
-                        rs.getString("png_jawab"), rs.getString("tgl_perawatan"), rs.getString("allergy_code"), rs.getString("display"), rs.getString("category"), rs.getString("reactioncode"),
-                        rs.getString("severity"), rs.getString("note"), rs.getString("nippetugas"), rs.getString("nama")
-                    });
+                    // "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp",
+                    // "Cara Bayar", "TANGGAL", "KODE", "ALERGI", "KATEGORI", "REAKSI
+                    // KODE", "SEVERITY", "NOTE", "NIP", "Nama Petugas"
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("jk"), rs.getString("umur"), rs.getString("no_tlp"),
+                        rs.getString("png_jawab"), rs.getString("tgl_perawatan"), rs.getString("allergy_code"),
+                        rs.getString("display"), rs.getString("category"), rs.getString("reactioncode"),
+                        rs.getString("severity"), rs.getString("note"), rs.getString("nippetugas"),
+                        rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif Vaksin : " + e);
@@ -1162,17 +1250,23 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
     }
 
     private void getData() {
-        // "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp", "Cara Bayar", "TANGGAL", "KODE", "ALERGI", "KATEGORI", "REAKSI KODE", "SEVERITY", "NOTE", "NIP", "Nama Petugas"
+        // "No.Rawat", "No.RM", "Nama Pasien", "J.K.", "Umur", "No.Telp", "Cara Bayar",
+        // "TANGGAL", "KODE", "ALERGI", "KATEGORI", "REAKSI KODE", "SEVERITY", "NOTE",
+        // "NIP", "Nama Petugas"
         if (tbObat.getSelectedRow() != -1) {
             NoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
             NoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
             NmPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
             ReaksiCode.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
             AlergiCode.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
-            AlergySystem.setText(Sequel.cariIsi("select system from satu_sehat_allergy_reference where code='" + AlergiCode.getText() + "'"));
-            AlergyDisplay.setText(Sequel.cariIsi("select display from satu_sehat_allergy_reference where code='" + AlergiCode.getText() + "'"));
-            ReaksiDisplay.setText(Sequel.cariIsi("select display from satu_sehat_allergy_reaction where code='" + ReaksiCode.getText() + "'"));
-            ReaksiSystem.setText(Sequel.cariIsi("select system from satu_sehat_allergy_reaction where code='" + ReaksiCode.getText() + "'"));
+            AlergySystem.setText(Sequel
+                    .cariIsi("select system from satu_sehat_allergy_reference where code='" + AlergiCode.getText() + "'"));
+            AlergyDisplay.setText(Sequel
+                    .cariIsi("select display from satu_sehat_allergy_reference where code='" + AlergiCode.getText() + "'"));
+            ReaksiDisplay.setText(Sequel
+                    .cariIsi("select display from satu_sehat_allergy_reaction where code='" + ReaksiCode.getText() + "'"));
+            ReaksiSystem.setText(Sequel
+                    .cariIsi("select system from satu_sehat_allergy_reaction where code='" + ReaksiCode.getText() + "'"));
             TKeterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
             cmbKategory.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
             cmbSeverity.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
@@ -1195,9 +1289,12 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
 
     private void ganti() {
 
-        if (Sequel.mengedittf("alergi_pasien", "no_rawat=?", "no_rawat=?,tgl_perawatan=?,allergy_code=?,category=?,nippetugas=?,note=?,reactioncode=?,severity=?", 9, new String[]{
-            NoRw.getText(), Sequel.cariIsi("select CURRENT_TIMESTAMP()"), AlergiCode.getText(), cmbKategory.getSelectedItem().toString(), akses.getkode(), TKeterangan.getText(), ReaksiCode.getText(), cmbSeverity.getSelectedItem().toString(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-        }) == true) {
+        if (Sequel.mengedittf("alergi_pasien", "no_rawat=?",
+                "no_rawat=?,tgl_perawatan=?,allergy_code=?,category=?,nippetugas=?,note=?,reactioncode=?,severity=?", 9,
+                new String[]{NoRw.getText(), Sequel.cariIsi("select CURRENT_TIMESTAMP()"), AlergiCode.getText(),
+                    cmbKategory.getSelectedItem().toString(), akses.getkode(), TKeterangan.getText(),
+                    ReaksiCode.getText(), cmbSeverity.getSelectedItem().toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tampil();
             emptTeks();
         }
@@ -1207,4 +1304,61 @@ public class RMDataAlergiPasien extends javax.swing.JDialog {
         return tbObat;
     }
 
+    private void jam() {
+        ActionListener taskPerformer = new ActionListener() {
+            private int nilai_jam;
+
+            private int nilai_menit;
+
+            private int nilai_detik;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nol_jam = "";
+                String nol_menit = "";
+                String nol_detik = "";
+
+                Date now = Calendar.getInstance().getTime();
+
+                // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
+                if (ChkKejadian.isSelected() == true) {
+                    nilai_jam = now.getHours();
+                    nilai_menit = now.getMinutes();
+                    nilai_detik = now.getSeconds();
+                } else if (ChkKejadian.isSelected() == false) {
+                    nilai_jam = Jam.getSelectedIndex();
+                    nilai_menit = Menit.getSelectedIndex();
+                    nilai_detik = Detik.getSelectedIndex();
+                }
+
+                // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_jam <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_jam = "0";
+                }
+                // Jika nilai MENIT lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_menit <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_menit = "0";
+                }
+                // Jika nilai DETIK lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_detik <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_detik = "0";
+                }
+                // Membuat String JAM, MENIT, DETIK
+                String jam = nol_jam + Integer.toString(nilai_jam);
+                String menit = nol_menit + Integer.toString(nilai_menit);
+                String detik = nol_detik + Integer.toString(nilai_detik);
+                // Menampilkan pada Layar
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
+                Jam.setSelectedItem(jam);
+                Menit.setSelectedItem(menit);
+                Detik.setSelectedItem(detik);
+            }
+
+        };
+        // Timer
+        new Timer(1000, taskPerformer).start();
+    }
 }

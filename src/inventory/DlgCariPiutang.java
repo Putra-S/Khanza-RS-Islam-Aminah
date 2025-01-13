@@ -33,13 +33,21 @@ import simrskhanza.DlgPasien;
 public class DlgCariPiutang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private Jurnal jur = new Jurnal();
+
     private riwayatobat Trackobat = new riwayatobat();
+
     private Connection koneksi = koneksiDB.condb();
+
     public DlgPasien member = new DlgPasien(null, false);
 
     /**
@@ -51,11 +59,17 @@ public class DlgCariPiutang extends javax.swing.JDialog {
      *
      */
     public DlgBarang barang = new DlgBarang(null, false);
+
     private DecimalFormat df2 = new DecimalFormat("###,###,###,###,###,###,###");
-    private double ttljual = 0, subttljual = 0, ttldisc = 0, subttldisc = 0, ttlall = 0,
-            subttlall = 0, sisapiutang = 0, cicilan = 0, telat = 0;
-    private String status = "", aktifkanbatch = "no", nofak = "", mem = "", ptg = "", sat = "", bar = "", tanggal = "", kodedokter = "", namadokter = "", nomorrm = "", finger = "";
+
+    private double ttljual = 0, subttljual = 0, ttldisc = 0, subttldisc = 0, ttlall = 0, subttlall = 0, sisapiutang = 0,
+            cicilan = 0, telat = 0;
+
+    private String status = "", aktifkanbatch = "no", nofak = "", mem = "", ptg = "", sat = "", bar = "", tanggal = "",
+            kodedokter = "", namadokter = "", nomorrm = "", finger = "";
+
     private int no = 0, i = 0;
+
     private boolean sukses = true;
 
     /**
@@ -75,10 +89,8 @@ public class DlgCariPiutang extends javax.swing.JDialog {
             aktifkanbatch = "no";
         }
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Nota", "Tanggal", "Petugas", "Pasien", "Catatan", "Jenis",
-            "OngKir", "Uang Muka", "Piutang", "", ""
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Nota", "Tanggal", "Petugas", "Pasien", "Catatan",
+            "Jenis", "OngKir", "Uang Muka", "Piutang", "", ""}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -126,8 +138,7 @@ public class DlgCariPiutang extends javax.swing.JDialog {
         kdsat.setDocument(new batasInput((byte) 3).getKata(kdsat));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -165,22 +176,16 @@ public class DlgCariPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPiutang")) {
                     if (member.getTable().getSelectedRow() != -1) {
-                        kdmem.setText(member.getTable().getValueAt(member.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmmem.setText(member.getTable().getValueAt(member.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdmem.setText(member.getTable().getValueAt(member.getTable().getSelectedRow(), 1).toString());
+                        nmmem.setText(member.getTable().getValueAt(member.getTable().getSelectedRow(), 2).toString());
                     }
                     if (member.getTable2().getSelectedRow() != -1) {
-                        kdmem.setText(member.getTable2().getValueAt(member.
-                                getTable2().getSelectedRow(), 1).toString());
-                        nmmem.setText(member.getTable2().getValueAt(member.
-                                getTable2().getSelectedRow(), 2).toString());
+                        kdmem.setText(member.getTable2().getValueAt(member.getTable2().getSelectedRow(), 1).toString());
+                        nmmem.setText(member.getTable2().getValueAt(member.getTable2().getSelectedRow(), 2).toString());
                     }
                     if (member.getTable3().getSelectedRow() != -1) {
-                        kdmem.setText(member.getTable3().getValueAt(member.
-                                getTable3().getSelectedRow(), 1).toString());
-                        nmmem.setText(member.getTable3().getValueAt(member.
-                                getTable3().getSelectedRow(), 2).toString());
+                        kdmem.setText(member.getTable3().getValueAt(member.getTable3().getSelectedRow(), 1).toString());
+                        nmmem.setText(member.getTable3().getValueAt(member.getTable3().getSelectedRow(), 2).toString());
                     }
                     kdmem.requestFocus();
                 }
@@ -277,10 +282,8 @@ public class DlgCariPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPiutang")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -317,10 +320,8 @@ public class DlgCariPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPiutang")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -377,12 +378,12 @@ public class DlgCariPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPiutang")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsat.requestFocus();
                 }
@@ -409,7 +410,9 @@ public class DlgCariPiutang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -945,14 +948,13 @@ public class DlgCariPiutang extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasienActionPerformed
-        akses.setform("DlgCariPiutang");
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgCariPiutang");//GEN-FIRST:event_btnPasienActionPerformed
         member.emptTeks();
         member.isCek();
         member.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1728,8 +1730,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPiutang dialog = new DlgCariPiutang(new javax.swing.JFrame(),
-                    true);
+            DlgCariPiutang dialog = new DlgCariPiutang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1791,9 +1792,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        tanggal = "  piutang.tgl_piutang between '" + Valid.SetTgl(Tgl1.
-                getSelectedItem() + "") + "' and '" + Valid.SetTgl(Tgl2.
-                        getSelectedItem() + "") + "' ";
+        tanggal = "  piutang.tgl_piutang between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' ";
         nofak = "";
         mem = "";
         ptg = "";
@@ -1820,10 +1820,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             ttljual = 0;
             ttldisc = 0;
             ttlall = 0;
-            ps = koneksi.prepareStatement(
-                    "select piutang.nota_piutang, piutang.tgl_piutang, "
-                    + "piutang.nip,petugas.nama, "
-                    + "piutang.no_rkm_medis,piutang.nm_pasien, "
+            ps = koneksi.prepareStatement("select piutang.nota_piutang, piutang.tgl_piutang, "
+                    + "piutang.nip,petugas.nama, " + "piutang.no_rkm_medis,piutang.nm_pasien, "
                     + "piutang.catatan,piutang.jns_jual,piutang.ongkir,"
                     + "piutang.uangmuka,piutang.sisapiutang,piutang.tgltempo,bangsal.nm_bangsal  "
                     + "from piutang inner join petugas on piutang.nip=petugas.nip "
@@ -1831,36 +1829,26 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     + "inner join detailpiutang on piutang.nota_piutang=detailpiutang.nota_piutang "
                     + "inner join databarang on detailpiutang.kode_brng=databarang.kode_brng "
                     + "inner join jenis on databarang.kdjns=jenis.kdjns "
-                    + "inner join kodesatuan on detailpiutang.kode_sat=kodesatuan.kode_sat "
-                    + "where " + tanggal + nofak + mem + ptg + sat + bar + " and "
-                    + "(piutang.nota_piutang like '%" + TCari.getText() + "%' or piutang.no_rkm_medis like '%" + TCari.
-                    getText() + "%' or "
-                    + "piutang.nm_pasien like '%" + TCari.getText() + "%' or piutang.nip like '%" + TCari.
-                    getText() + "%' or "
-                    + "petugas.nama like '%" + TCari.getText() + "%' or piutang.catatan like '%" + TCari.
-                    getText() + "%' or "
-                    + "bangsal.nm_bangsal like '%" + TCari.getText() + "%' or piutang.jns_jual like '%" + TCari.
-                    getText() + "%' or "
-                    + "detailpiutang.kode_brng like '%" + TCari.getText() + "%' or databarang.nama_brng like '%" + TCari.
-                    getText() + "%' or "
-                    + "detailpiutang.kode_sat like '%" + TCari.getText() + "%' or jenis.nama like '%" + TCari.
-                    getText() + "%') "
-                    + " group by piutang.nota_piutang order by piutang.tgl_piutang,piutang.nota_piutang ");
+                    + "inner join kodesatuan on detailpiutang.kode_sat=kodesatuan.kode_sat " + "where " + tanggal
+                    + nofak + mem + ptg + sat + bar + " and " + "(piutang.nota_piutang like '%" + TCari.getText()
+                    + "%' or piutang.no_rkm_medis like '%" + TCari.getText() + "%' or " + "piutang.nm_pasien like '%"
+                    + TCari.getText() + "%' or piutang.nip like '%" + TCari.getText() + "%' or "
+                    + "petugas.nama like '%" + TCari.getText() + "%' or piutang.catatan like '%" + TCari.getText()
+                    + "%' or " + "bangsal.nm_bangsal like '%" + TCari.getText() + "%' or piutang.jns_jual like '%"
+                    + TCari.getText() + "%' or " + "detailpiutang.kode_brng like '%" + TCari.getText()
+                    + "%' or databarang.nama_brng like '%" + TCari.getText() + "%' or "
+                    + "detailpiutang.kode_sat like '%" + TCari.getText() + "%' or jenis.nama like '%" + TCari.getText()
+                    + "%') " + " group by piutang.nota_piutang order by piutang.tgl_piutang,piutang.nota_piutang ");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString(1), rs.getString(2),
-                        rs.getString(3) + ", " + rs.getString(4), rs.
-                        getString(5) + ", " + rs.getString(6), rs.getString(7),
-                        rs.getString(8), df2.format(rs.getDouble(9)), df2.
-                        format(rs.getDouble(10)), df2.format(rs.getDouble(11)),
-                        "", ""
-                    });
+                    tabMode.addRow(new String[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3) + ", " + rs.getString(4), rs.getString(5) + ", " + rs.getString(6),
+                        rs.getString(7), rs.getString(8), df2.format(rs.getDouble(9)), df2.format(rs.getDouble(10)),
+                        df2.format(rs.getDouble(11)), "", ""});
 
-                    tabMode.addRow(new String[]{"", "No.Batch", "No.Faktur",
-                        "Piutang di " + rs.getString(13), "Satuan", "Harga",
-                        "Jml", "Subtotal", "Disk(%)", "Diskon(Rp)", "Total"});
+                    tabMode.addRow(new String[]{"", "No.Batch", "No.Faktur", "Piutang di " + rs.getString(13),
+                        "Satuan", "Harga", "Jml", "Subtotal", "Disk(%)", "Diskon(Rp)", "Total"});
 
                     subttlall = 0;
                     subttldisc = 0;
@@ -1868,22 +1856,18 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     sisapiutang = 0;
                     cicilan = 0;
                     no = 1;
-                    ps2 = koneksi.prepareStatement(
-                            "select detailpiutang.kode_brng,databarang.nama_brng, detailpiutang.kode_sat,"
-                            + " kodesatuan.satuan,detailpiutang.h_jual, detailpiutang.jumlah,detailpiutang.subtotal,detailpiutang.dis, "
-                            + " detailpiutang.bsr_dis, detailpiutang.total,detailpiutang.no_batch,detailpiutang.no_faktur,detailpiutang.aturan_pakai  "
-                            + " from detailpiutang inner join databarang on detailpiutang.kode_brng=databarang.kode_brng "
-                            + " inner join kodesatuan on detailpiutang.kode_sat=kodesatuan.kode_sat "
-                            + " inner join jenis on databarang.kdjns=jenis.kdjns "
-                            + " where detailpiutang.nota_piutang='" + rs.
-                                    getString(1) + "' " + sat + bar + " and "
-                            + " (detailpiutang.kode_brng like '%" + TCari.
-                                    getText() + "%' or databarang.nama_brng like '%" + TCari.
-                                    getText() + "%' or "
-                            + " detailpiutang.kode_sat like '%" + TCari.
-                                    getText() + "%' or jenis.nama like '%" + TCari.
-                                    getText() + "%') "
-                            + " order by detailpiutang.kode_brng  ");
+                    ps2 = koneksi
+                            .prepareStatement("select detailpiutang.kode_brng,databarang.nama_brng, detailpiutang.kode_sat,"
+                                    + " kodesatuan.satuan,detailpiutang.h_jual, detailpiutang.jumlah,detailpiutang.subtotal,detailpiutang.dis, "
+                                    + " detailpiutang.bsr_dis, detailpiutang.total,detailpiutang.no_batch,detailpiutang.no_faktur,detailpiutang.aturan_pakai  "
+                                    + " from detailpiutang inner join databarang on detailpiutang.kode_brng=databarang.kode_brng "
+                                    + " inner join kodesatuan on detailpiutang.kode_sat=kodesatuan.kode_sat "
+                                    + " inner join jenis on databarang.kdjns=jenis.kdjns "
+                                    + " where detailpiutang.nota_piutang='" + rs.getString(1) + "' " + sat + bar + " and "
+                                    + " (detailpiutang.kode_brng like '%" + TCari.getText()
+                                    + "%' or databarang.nama_brng like '%" + TCari.getText() + "%' or "
+                                    + " detailpiutang.kode_sat like '%" + TCari.getText() + "%' or jenis.nama like '%"
+                                    + TCari.getText() + "%') " + " order by detailpiutang.kode_brng  ");
                     try {
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
@@ -1893,17 +1877,14 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             subttldisc += rs2.getDouble(9);
                             ttljual += rs2.getDouble(10);
                             subttljual += rs2.getDouble(10);
-                            tabMode.addRow(new String[]{
-                                "", no + ". " + rs2.getString("no_batch"), rs2.
-                                getString("no_faktur"), rs2.getString(
-                                "kode_brng") + " " + rs2.getString("nama_brng") + " " + rs2.
-                                getString("aturan_pakai"),
-                                rs2.getString("satuan"), df2.format(rs2.
-                                getDouble("h_jual")), rs2.getString("jumlah"),
-                                df2.format(rs2.getDouble("subtotal")),
-                                rs2.getString("dis"), df2.format(rs2.getDouble(
-                                "bsr_dis")), df2.format(rs2.getDouble("total"))
-                            });
+                            tabMode.addRow(new String[]{"", no + ". " + rs2.getString("no_batch"),
+                                rs2.getString("no_faktur"),
+                                rs2.getString("kode_brng") + " " + rs2.getString("nama_brng") + " "
+                                + rs2.getString("aturan_pakai"),
+                                rs2.getString("satuan"), df2.format(rs2.getDouble("h_jual")),
+                                rs2.getString("jumlah"), df2.format(rs2.getDouble("subtotal")),
+                                rs2.getString("dis"), df2.format(rs2.getDouble("bsr_dis")),
+                                df2.format(rs2.getDouble("total"))});
                             no++;
                         }
                     } catch (Exception e) {
@@ -1918,25 +1899,22 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     }
 
                     cicilan = Sequel.cariIsiAngka(
-                            "select (sum(bayar_piutang.besar_cicilan)+sum(bayar_piutang.diskon_piutang)+sum(bayar_piutang.tidak_terbayar)) from bayar_piutang where bayar_piutang.no_rawat='" + rs.
-                                    getString(1) + "' ");
+                            "select (sum(bayar_piutang.besar_cicilan)+sum(bayar_piutang.diskon_piutang)+sum(bayar_piutang.tidak_terbayar)) from bayar_piutang where bayar_piutang.no_rawat='"
+                            + rs.getString(1) + "' ");
                     sisapiutang = rs.getDouble(11) - cicilan;
                     if (sisapiutang < 1) {
                         status = "Lunas";
                     } else if (sisapiutang > 1) {
-                        telat = Sequel.cariIsiAngka("select TO_DAYS('" + rs.
-                                getString(12) + "')-TO_DAYS(current_date()) as day");
+                        telat = Sequel
+                                .cariIsiAngka("select TO_DAYS('" + rs.getString(12) + "')-TO_DAYS(current_date()) as day");
                         status = "Belum Lunas" + (telat < 0 ? ", Telat Bayar" : "");
                     }
-                    tabMode.addRow(new String[]{"", "Total", ":", "", "", "",
-                        " ", df2.format(subttlall), "", df2.format(subttldisc),
-                        df2.format(subttljual)});
-                    tabMode.addRow(new String[]{"", "Jatuh Tempo", ": " + rs.
-                        getString(12), "Cicilan+Diskon Bayar+Tidak Terbayar",
-                        ":", "", "", "", "", "", df2.format(cicilan)});
-                    tabMode.addRow(new String[]{"", "Status", ": " + status,
-                        "Sisa Piutang", ":", "", "", "", "", "", df2.format(
-                        sisapiutang)});
+                    tabMode.addRow(new String[]{"", "Total", ":", "", "", "", " ", df2.format(subttlall), "",
+                        df2.format(subttldisc), df2.format(subttljual)});
+                    tabMode.addRow(new String[]{"", "Jatuh Tempo", ": " + rs.getString(12),
+                        "Cicilan+Diskon Bayar+Tidak Terbayar", ":", "", "", "", "", "", df2.format(cicilan)});
+                    tabMode.addRow(new String[]{"", "Status", ": " + status, "Sisa Piutang", ":", "", "", "", "", "",
+                        df2.format(sisapiutang)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1980,7 +1958,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgCariPiutang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPiutang.class.getName());
 
 }

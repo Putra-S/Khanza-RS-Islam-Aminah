@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package ipsrs;
 
@@ -36,22 +36,27 @@ import javax.swing.table.TableColumn;
 import restore.DlgRestoreIPSRSBarang;
 
 /**
- *
  * @author dosen
  */
 public class IPSRSBarang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
      *
      */
     public DlgCariSatuan satuan = new DlgCariSatuan(null, false);
+
     public IPSRSCariJenis jenis = new IPSRSCariJenis(null, false);
 
     /**
@@ -67,15 +72,10 @@ public class IPSRSBarang extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Stok",
-            "Harga"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Stok", "Harga"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -90,9 +90,9 @@ public class IPSRSBarang extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 6; i++) {
@@ -121,8 +121,7 @@ public class IPSRSBarang extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TCari.requestFocus();
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -162,10 +161,10 @@ public class IPSRSBarang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgBarangIPSRS")) {
                     if (satuan.getTable().getSelectedRow() != -1) {
-                        kode_sat.setText(satuan.getTable().getValueAt(satuan.
-                                getTable().getSelectedRow(), 0).toString());
-                        nama_sat.setText(satuan.getTable().getValueAt(satuan.
-                                getTable().getSelectedRow(), 1).toString());
+                        kode_sat
+                                .setText(satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 0).toString());
+                        nama_sat
+                                .setText(satuan.getTable().getValueAt(satuan.getTable().getSelectedRow(), 1).toString());
                     }
                     kode_sat.requestFocus();
                 }
@@ -202,10 +201,8 @@ public class IPSRSBarang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgBarangIPSRS")) {
                     if (jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(jenis.getTable().getValueAt(jenis.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmjenis.setText(jenis.getTable().getValueAt(jenis.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                        nmjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -232,7 +229,9 @@ public class IPSRSBarang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1063,11 +1062,9 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                 ps.setString(4, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("satuan"), rs.getString("nm_jenis"), rs.
-                        getDouble("stok"), rs.getDouble("harga")
-                    });
+                    tabMode.addRow(
+                            new Object[]{rs.getString("kode_brng"), rs.getString("nama_brng"), rs.getString("satuan"),
+                                rs.getString("nm_jenis"), rs.getDouble("stok"), rs.getDouble("harga")});
                 }
             } catch (Exception e) {
                 System.out.println("Data : " + e);
@@ -1099,10 +1096,9 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         nmjenis.setText("");
         TCari.setText("");
         kode_brng.requestFocus();
-        //Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(ipsrsbarang.kode_brng,4),signed)),0) from ipsrsbarang  ",
-                "B", 5, kode_brng);
+        // Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(ipsrsbarang.kode_brng,4),signed)),0) from ipsrsbarang  ", "B",
+                5, kode_brng);
         kode_brng.requestFocus();
     }
 
@@ -1115,29 +1111,21 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            kode_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 0).toString());
-            nama_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            nama_sat.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            nmjenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 3).toString());
-            stok.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            harga.setText(Valid.SetAngka6(Double.parseDouble(tbJnsPerawatan.
-                    getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString())));
+            kode_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            nama_brng.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            nama_sat.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            nmjenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            stok.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            harga.setText(Valid.SetAngka6(
+                    Double.parseDouble(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString())));
             kode_sat.setText(Sequel.cariIsi(
-                    "select ipsrsbarang.kode_sat from ipsrsbarang where ipsrsbarang.kode_brng=?",
-                    kode_brng.getText()));
-            kdjenis.setText(Sequel.cariIsi(
-                    "select ipsrsbarang.jenis from ipsrsbarang where ipsrsbarang.kode_brng=?",
+                    "select ipsrsbarang.kode_sat from ipsrsbarang where ipsrsbarang.kode_brng=?", kode_brng.getText()));
+            kdjenis.setText(Sequel.cariIsi("select ipsrsbarang.jenis from ipsrsbarang where ipsrsbarang.kode_brng=?",
                     kode_brng.getText()));
         }
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1174,7 +1162,6 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         TCari.requestFocus();
     }
 
-    private static final Logger LOG = Logger.getLogger(IPSRSBarang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(IPSRSBarang.class.getName());
 
 }

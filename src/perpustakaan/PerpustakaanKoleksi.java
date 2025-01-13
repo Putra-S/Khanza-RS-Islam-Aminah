@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package perpustakaan;
 
@@ -35,16 +35,20 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class PerpustakaanKoleksi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -60,10 +64,8 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Kode Koleksi", "Nama/Judul", "Halaman", "Penerbit", "Pengarang",
-            "Terbit", "ISBN", "Kategori", "Jenis"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"Kode Koleksi", "Nama/Judul", "Halaman", "Penerbit",
+            "Pengarang", "Terbit", "ISBN", "Kategori", "Jenis"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -72,9 +74,9 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 9; i++) {
@@ -104,10 +106,8 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
         KodeBuku.setDocument(new batasInput((byte) 10).getKata(KodeBuku));
         Judul.setDocument(new batasInput(200).getKata(Judul));
         Halaman.setDocument(new batasInput((byte) 5).getOnlyAngka(Halaman));
-        KodePenerbit.
-                setDocument(new batasInput((byte) 10).getKata(KodePenerbit));
-        KodePengarang.setDocument(new batasInput((byte) 7).
-                getKata(KodePengarang));
+        KodePenerbit.setDocument(new batasInput((byte) 10).getKata(KodePenerbit));
+        KodePengarang.setDocument(new batasInput((byte) 7).getKata(KodePengarang));
         ISBN.setDocument(new batasInput((byte) 20).getKata(ISBN));
         KodeKategori.setDocument(new batasInput((byte) 5).getKata(KodeKategori));
         IdJenis.setDocument(new batasInput((byte) 5).getKata(IdJenis));
@@ -130,10 +130,10 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penerbit.getTable().getSelectedRow() != -1) {
-                    KodePenerbit.setText(penerbit.getTable().getValueAt(
-                            penerbit.getTable().getSelectedRow(), 0).toString());
-                    NamaPenerbit.setText(penerbit.getTable().getValueAt(
-                            penerbit.getTable().getSelectedRow(), 1).toString());
+                    KodePenerbit
+                            .setText(penerbit.getTable().getValueAt(penerbit.getTable().getSelectedRow(), 0).toString());
+                    NamaPenerbit
+                            .setText(penerbit.getTable().getValueAt(penerbit.getTable().getSelectedRow(), 1).toString());
                 }
                 KodePenerbit.requestFocus();
             }
@@ -186,10 +186,10 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pengarang.getTable().getSelectedRow() != -1) {
-                    KodePengarang.setText(pengarang.getTable().getValueAt(
-                            pengarang.getTable().getSelectedRow(), 0).toString());
-                    NamaPengarang.setText(pengarang.getTable().getValueAt(
-                            pengarang.getTable().getSelectedRow(), 1).toString());
+                    KodePengarang
+                            .setText(pengarang.getTable().getValueAt(pengarang.getTable().getSelectedRow(), 0).toString());
+                    NamaPengarang
+                            .setText(pengarang.getTable().getValueAt(pengarang.getTable().getSelectedRow(), 1).toString());
                 }
                 KodePengarang.requestFocus();
             }
@@ -242,10 +242,10 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    KodeKategori.setText(kategori.getTable().getValueAt(
-                            kategori.getTable().getSelectedRow(), 0).toString());
-                    NamaKategori.setText(kategori.getTable().getValueAt(
-                            kategori.getTable().getSelectedRow(), 1).toString());
+                    KodeKategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                    NamaKategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
                 KodeKategori.requestFocus();
             }
@@ -298,10 +298,8 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    IdJenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 0).toString());
-                    nm_jenis.setText(jenis.getTable().getValueAt(jenis.
-                            getTable().getSelectedRow(), 1).toString());
+                    IdJenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nm_jenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
                 IdJenis.requestFocus();
             }
@@ -343,8 +341,7 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -371,13 +368,17 @@ public class PerpustakaanKoleksi extends javax.swing.JDialog {
     }
 
     private PerpustakaanPenerbit penerbit = new PerpustakaanPenerbit(null, false);
-    private PerpustakaanPengarang pengarang = new PerpustakaanPengarang(null,
-            false);
+
+    private PerpustakaanPengarang pengarang = new PerpustakaanPengarang(null, false);
+
     private PerpustakaanKategori kategori = new PerpustakaanKategori(null, false);
+
     private PerpustakaanJenis jenis = new PerpustakaanJenis(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1312,8 +1313,7 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PerpustakaanKoleksi dialog = new PerpustakaanKoleksi(
-                    new javax.swing.JFrame(), true);
+            PerpustakaanKoleksi dialog = new PerpustakaanKoleksi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1385,13 +1385,11 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     + "inner join perpustakaan_jenis_buku inner join perpustakaan_kategori inner join perpustakaan_pengarang "
                     + "on perpustakaan_buku.kode_penerbit=perpustakaan_penerbit.kode_penerbit and perpustakaan_buku.kode_pengarang=perpustakaan_pengarang.kode_pengarang "
                     + "and perpustakaan_buku.id_kategori=perpustakaan_kategori.id_kategori and perpustakaan_buku.id_jenis=perpustakaan_jenis_buku.id_jenis "
-                    + "where perpustakaan_buku.kode_buku like ? "
-                    + "or perpustakaan_buku.judul_buku like ? "
+                    + "where perpustakaan_buku.kode_buku like ? " + "or perpustakaan_buku.judul_buku like ? "
                     + "or perpustakaan_buku.jml_halaman like ? "
                     + "or perpustakaan_penerbit.nama_penerbit like ? "
                     + "or perpustakaan_pengarang.nama_pengarang like ? "
-                    + "or perpustakaan_buku.thn_terbit like ? "
-                    + "or perpustakaan_buku.isbn like ? "
+                    + "or perpustakaan_buku.thn_terbit like ? " + "or perpustakaan_buku.isbn like ? "
                     + "or perpustakaan_kategori.nama_kategori like ? "
                     + "or perpustakaan_jenis_buku.nama_jenis like ? order by perpustakaan_buku.kode_buku");
             try {
@@ -1406,15 +1404,10 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 ps.setString(9, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_buku"), rs.getString("judul_buku"),
-                        rs.getString("jml_halaman"), rs.getString(
-                        "nama_penerbit"),
-                        rs.getString("nama_pengarang"), rs.getString(
-                        "thn_terbit").substring(0, 4), rs.getString("isbn"),
-                        rs.getString("nama_kategori"), rs.
-                        getString("nama_jenis")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_buku"), rs.getString("judul_buku"),
+                        rs.getString("jml_halaman"), rs.getString("nama_penerbit"), rs.getString("nama_pengarang"),
+                        rs.getString("thn_terbit").substring(0, 4), rs.getString("isbn"),
+                        rs.getString("nama_kategori"), rs.getString("nama_jenis")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1451,36 +1444,28 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         nm_jenis.setText("");
         TCari.setText("");
         KodeBuku.requestFocus();
-        //Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(kode_buku,8),signed)),0) from perpustakaan_buku  ",
-                "KP", 8, KodeBuku);
+        // Valid.autoNomer(" jns_perawatan ","JP",6,TKd);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(kode_buku,8),signed)),0) from perpustakaan_buku  ", "KP", 8,
+                KodeBuku);
         KodeBuku.requestFocus();
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
             try {
-                NamaPenerbit.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 3).toString());
-                NamaPengarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 4).toString());
-                NamaPenerbit.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 3).toString());
-                NamaKategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 7).toString());
-                nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                        getSelectedRow(), 8).toString());
-                ThnTerbit.setSelectedItem(tbJnsPerawatan.getValueAt(
-                        tbJnsPerawatan.getSelectedRow(), 5).toString());
+                NamaPenerbit.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+                NamaPengarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+                NamaPenerbit.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+                NamaKategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+                nm_jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+                ThnTerbit.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString());
 
                 ps = koneksi.prepareStatement(
                         "select perpustakaan_buku.kode_buku, perpustakaan_buku.judul_buku, perpustakaan_buku.jml_halaman, "
                         + "perpustakaan_buku.kode_penerbit, perpustakaan_buku.kode_pengarang, perpustakaan_buku.thn_terbit, perpustakaan_buku.isbn,"
                         + "perpustakaan_buku.id_kategori, perpustakaan_buku.id_jenis from perpustakaan_buku where perpustakaan_buku.kode_buku=? ");
                 try {
-                    ps.setString(1, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                            getSelectedRow(), 0).toString());
+                    ps.setString(1, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
                         KodeBuku.setText(rs.getString("kode_buku"));
@@ -1509,7 +1494,6 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1540,7 +1524,6 @@ private void btnJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         TCari.requestFocus();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            PerpustakaanKoleksi.class.getName());
+    private static final Logger LOG = Logger.getLogger(PerpustakaanKoleksi.class.getName());
 
 }

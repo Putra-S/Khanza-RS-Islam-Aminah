@@ -30,8 +30,11 @@ import keuangan.Jurnal;
 public class IPSRSCariHibah extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -43,13 +46,21 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
      *
      */
     public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     public IPSRSBarang barang = new IPSRSBarang(null, false);
+
     private PreparedStatement ps, ps2, pscaribeli;
+
     private ResultSet rs, rs2;
+
     private double totalhibah = 0;
+
     private Jurnal jur = new Jurnal();
+
     private boolean sukses = false;
+
     private riwayatnonmedis Trackbarang = new riwayatnonmedis();
+
     private int i = 0;
 
     /**
@@ -62,8 +73,7 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Tgl.Hibah", "No.Hibah", "Asal Hibah", "Petugas", "Jml",
-            "Harga(Rp)", "SubTotal Hibah(Rp)"};
+        Object[] row = {"Tgl.Hibah", "No.Hibah", "Asal Hibah", "Petugas", "Jml", "Harga(Rp)", "SubTotal Hibah(Rp)"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -102,8 +112,7 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -140,10 +149,10 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("IPSRSCariHibah")) {
                     if (asalhibah.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(asalhibah.getTable().getValueAt(asalhibah.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmsup.setText(asalhibah.getTable().getValueAt(asalhibah.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdsup.setText(
+                                asalhibah.getTable().getValueAt(asalhibah.getTable().getSelectedRow(), 0).toString());
+                        nmsup.setText(
+                                asalhibah.getTable().getValueAt(asalhibah.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -200,10 +209,8 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("IPSRSCariHibah")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -240,10 +247,8 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("IPSRSCariHibah")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -300,12 +305,12 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("IPSRSCariHibah")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmjenis.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmjenis.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdjenis.requestFocus();
                 }
@@ -332,7 +337,9 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -740,13 +747,12 @@ public class IPSRSCariHibah extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        akses.setform("IPSRSCariHibah");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("IPSRSCariHibah");//GEN-FIRST:event_btnSuplierActionPerformed
         asalhibah.emptTeks();
         asalhibah.isCek();
         asalhibah.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1003,8 +1009,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            IPSRSCariHibah dialog = new IPSRSCariHibah(new javax.swing.JFrame(),
-                    true);
+            IPSRSCariHibah dialog = new IPSRSCariHibah(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1061,19 +1066,19 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select ipsrs_hibah.tgl_hibah,ipsrs_hibah.no_hibah, "
+            ps = koneksi.prepareStatement("select ipsrs_hibah.tgl_hibah,ipsrs_hibah.no_hibah, "
                     + "ipsrs_hibah.kode_pemberi,pemberihibah.nama_pemberi, "
-                    + "ipsrs_hibah.nip,petugas.nama,ipsrs_hibah.totalhibah,"
-                    + "ipsrs_hibah.keterangan from "
+                    + "ipsrs_hibah.nip,petugas.nama,ipsrs_hibah.totalhibah," + "ipsrs_hibah.keterangan from "
                     + "ipsrs_hibah inner join pemberihibah on ipsrs_hibah.kode_pemberi=pemberihibah.kode_pemberi "
                     + "inner join petugas on ipsrs_hibah.nip=petugas.nip "
                     + "inner join ipsrs_detail_hibah on ipsrs_hibah.no_hibah=ipsrs_detail_hibah.no_hibah "
                     + "inner join ipsrsbarang on ipsrs_detail_hibah.kode_brng=ipsrsbarang.kode_brng "
                     + "inner join ipsrsjenisbarang on ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis "
                     + "where ipsrs_hibah.tgl_hibah between ? and ? and ipsrs_hibah.no_hibah like ? and pemberihibah.nama_pemberi like ? and petugas.nama like ?  and ipsrsjenisbarang.nm_jenis like ? and ipsrsbarang.nama_brng like ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (ipsrs_hibah.no_hibah like ? or ipsrs_hibah.kode_pemberi like ? or pemberihibah.nama_pemberi like ? or ipsrs_hibah.nip like ? or petugas.nama like ? or "
-                    + "ipsrsjenisbarang.nm_jenis like ? or ipsrs_detail_hibah.kode_brng like ? or ipsrsbarang.nama_brng like ?)") + " group by ipsrs_hibah.no_hibah order by ipsrs_hibah.tgl_hibah,ipsrs_hibah.no_hibah ");
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (ipsrs_hibah.no_hibah like ? or ipsrs_hibah.kode_pemberi like ? or pemberihibah.nama_pemberi like ? or ipsrs_hibah.nip like ? or petugas.nama like ? or "
+                    + "ipsrsjenisbarang.nm_jenis like ? or ipsrs_detail_hibah.kode_brng like ? or ipsrsbarang.nama_brng like ?)")
+                    + " group by ipsrs_hibah.no_hibah order by ipsrs_hibah.tgl_hibah,ipsrs_hibah.no_hibah ");
             try {
                 ps.setString(1, Valid.SetTgl(TglBeli1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(TglBeli2.getSelectedItem() + ""));
@@ -1096,20 +1101,18 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 totalhibah = 0;
                 while (rs.next()) {
                     tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3) + ", " + rs.getString(4),
-                                rs.getString(5) + ", " + rs.getString(6), "",
-                                "", ""
-                            });
-                    ps2 = koneksi.prepareStatement(
-                            "select ipsrs_detail_hibah.kode_brng,ipsrsbarang.nama_brng, "
+                            new Object[]{rs.getString(1), rs.getString(2), rs.getString(3) + ", " + rs.getString(4),
+                                rs.getString(5) + ", " + rs.getString(6), "", "", ""});
+                    ps2 = koneksi.prepareStatement("select ipsrs_detail_hibah.kode_brng,ipsrsbarang.nama_brng, "
                             + "ipsrsbarang.jenis,ipsrsjenisbarang.nm_jenis,ipsrs_detail_hibah.jumlah,ipsrs_detail_hibah.h_hibah, "
                             + "ipsrs_detail_hibah.subtotalhibah,ipsrs_detail_hibah.kode_sat "
                             + "from ipsrs_detail_hibah inner join ipsrsbarang on ipsrs_detail_hibah.kode_brng=ipsrsbarang.kode_brng "
                             + "inner join ipsrsjenisbarang on ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis where "
                             + " ipsrs_detail_hibah.no_hibah=? and ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? "
-                            + (TCari.getText().trim().isEmpty() ? "" : "and (ipsrs_detail_hibah.kode_brng like ? or ipsrsbarang.nama_brng like ? or "
-                            + "ipsrsjenisbarang.nm_jenis like ?)") + " order by ipsrs_detail_hibah.kode_brng  ");
+                            + (TCari.getText().trim().isEmpty() ? ""
+                            : "and (ipsrs_detail_hibah.kode_brng like ? or ipsrsbarang.nama_brng like ? or "
+                            + "ipsrsjenisbarang.nm_jenis like ?)")
+                            + " order by ipsrs_detail_hibah.kode_brng  ");
                     try {
                         ps2.setString(1, rs.getString(2));
                         ps2.setString(2, "%" + nmbar.getText() + "%");
@@ -1122,16 +1125,13 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         rs2 = ps2.executeQuery();
                         int no = 1;
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{"", no + ". " + rs2.
-                                getString(1), rs2.getString(2), rs2.getString(4),
-                                rs2.getString(5) + " " + rs2.getString(8),
-                                Valid.SetAngka(rs2.getDouble(6)), Valid.
-                                SetAngka(rs2.getDouble(7))});
+                            tabMode.addRow(new Object[]{"", no + ". " + rs2.getString(1), rs2.getString(2),
+                                rs2.getString(4), rs2.getString(5) + " " + rs2.getString(8),
+                                Valid.SetAngka(rs2.getDouble(6)), Valid.SetAngka(rs2.getDouble(7))});
                             no++;
                         }
-                        tabMode.addRow(new Object[]{"", "Keterangan :", rs.
-                            getString("keterangan"), "Total :", "", "", Valid.
-                            SetAngka(rs.getDouble("totalhibah"))});
+                        tabMode.addRow(new Object[]{"", "Keterangan :", rs.getString("keterangan"), "Total :", "", "",
+                            Valid.SetAngka(rs.getDouble("totalhibah"))});
                         totalhibah += rs.getDouble("totalhibah");
                     } catch (Exception e) {
                         System.out.println("Notif : " + e);
@@ -1188,7 +1188,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(IPSRSCariHibah.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(IPSRSCariHibah.class.getName());
 
 }

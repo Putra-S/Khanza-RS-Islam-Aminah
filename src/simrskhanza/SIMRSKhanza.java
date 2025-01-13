@@ -8,7 +8,7 @@
  sampai umur 50 tahun sampai 200 turunan. Ya Alloh maafkan kami
  karena telah berdoa buruk, semua ini kami lakukan karena kami ti
  dak pernah rela karya kami dibajak tanpa ijin.
-*/
+ */
 package simrskhanza;
 
 import java.util.logging.Logger;
@@ -19,18 +19,17 @@ import usu.widget.util.WidgetUtilities;
  */
 public class SIMRSKhanza {
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String[] args) {
-    WidgetUtilities.invokeLater(
-        () -> {
-          frmUtama utama = frmUtama.getInstance();
-          utama.isWall();
-          //            new splashscreen.SplashScreen(null, true).setVisible(true);
-          utama.setVisible(true);
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        WidgetUtilities.invokeLater(() -> {
+            frmUtama utama = frmUtama.getInstance();
+            utama.isWall();
+            utama.setVisible(true);
         });
-  }
+    }
 
-  private static final Logger LOG = Logger.getLogger(SIMRSKhanza.class.getName());
+    private static final Logger LOG = Logger.getLogger(SIMRSKhanza.class.getName());
+
 }

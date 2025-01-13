@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatanRalan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatanRalan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package restore;
 
@@ -28,17 +28,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
 
     /**
@@ -51,36 +56,21 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"P", "Kode Paket", "Nama Operasi", "Kategori",
-            "Operator 1", "Operator 2", "Operator 3",
-            "Asisten Op 1", "Asisten Op 2", "Asisten Op 3", "Instrumen",
-            "dr Anestesi", "Asisten Anes 1", "Asisten Anes 2", "dr Anak",
-            "Perawat Resus", "Bidan 1", "Bidan 2", "Bidan 3", "Perawat Luar",
-            "Alat", "Sewa OK/VK",
-            "Akomodasi", "N.M.S.", "Onloop 1", "Onloop 2", "Onloop 3",
-            "Onloop 4", "Onloop 5", "Sarpras", "dr Pj Anak", "dr Umum",
-            "Total", "Jenis Bayar", "Kelas"};
+        Object[] row = {"P", "Kode Paket", "Nama Operasi", "Kategori", "Operator 1", "Operator 2", "Operator 3",
+            "Asisten Op 1", "Asisten Op 2", "Asisten Op 3", "Instrumen", "dr Anestesi", "Asisten Anes 1",
+            "Asisten Anes 2", "dr Anak", "Perawat Resus", "Bidan 1", "Bidan 2", "Bidan 3", "Perawat Luar", "Alat",
+            "Sewa OK/VK", "Akomodasi", "N.M.S.", "Onloop 1", "Onloop 2", "Onloop 3", "Onloop 4", "Onloop 5",
+            "Sarpras", "dr Pj Anak", "dr Umum", "Total", "Jenis Bayar", "Kelas"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.String.class, java.lang.String.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -99,9 +89,9 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 35; i++) {
@@ -126,8 +116,7 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -155,7 +144,9 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -416,8 +407,7 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRestoreTarifOperasi dialog = new DlgRestoreTarifOperasi(
-                    new javax.swing.JFrame(), true);
+            DlgRestoreTarifOperasi dialog = new DlgRestoreTarifOperasi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -448,29 +438,29 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select paket_operasi.kode_paket, paket_operasi.nm_perawatan,paket_operasi.kategori,"
-                    + "paket_operasi.operator1, paket_operasi.operator2, paket_operasi.operator3, "
-                    + "paket_operasi.asisten_operator1, paket_operasi.asisten_operator2,paket_operasi.asisten_operator3,"
-                    + "paket_operasi.instrumen, paket_operasi.dokter_anestesi,paket_operasi.asisten_anestesi,paket_operasi.asisten_anestesi2,"
-                    + "paket_operasi.dokter_anak,paket_operasi.perawaat_resusitas, paket_operasi.bidan, "
-                    + "paket_operasi.bidan2, paket_operasi.bidan3, paket_operasi.perawat_luar, paket_operasi.alat,"
-                    + "paket_operasi.sewa_ok,paket_operasi.akomodasi,paket_operasi.bagian_rs,"
-                    + "paket_operasi.omloop,paket_operasi.omloop2,paket_operasi.omloop3,paket_operasi.omloop4,paket_operasi.omloop5,"
-                    + "paket_operasi.sarpras,paket_operasi.dokter_pjanak,paket_operasi.dokter_umum, "
-                    + "(paket_operasi.operator1+paket_operasi.operator2+paket_operasi.operator3+"
-                    + "paket_operasi.asisten_operator1+paket_operasi.asisten_operator2+paket_operasi.asisten_operator3+paket_operasi.instrumen+"
-                    + "paket_operasi.dokter_anak+paket_operasi.perawaat_resusitas+"
-                    + "paket_operasi.alat+paket_operasi.dokter_anestesi+paket_operasi.asisten_anestesi+paket_operasi.asisten_anestesi2+"
-                    + "paket_operasi.bidan+paket_operasi.bidan2+paket_operasi.bidan3+paket_operasi.perawat_luar+"
-                    + "paket_operasi.sewa_ok+paket_operasi.akomodasi+paket_operasi.bagian_rs+"
-                    + "paket_operasi.omloop+paket_operasi.omloop2+paket_operasi.omloop3+paket_operasi.omloop4+paket_operasi.omloop5+"
-                    + "paket_operasi.sarpras+paket_operasi.dokter_pjanak+paket_operasi.dokter_umum) as jumlah, "
-                    + "penjab.png_jawab,paket_operasi.kelas from paket_operasi inner join penjab on penjab.kd_pj=paket_operasi.kd_pj "
-                    + "where paket_operasi.status='0' and paket_operasi.kode_paket like ? or "
-                    + "paket_operasi.status='0' and paket_operasi.nm_perawatan like ? or "
-                    + "paket_operasi.status='0' and paket_operasi.kelas like ? or "
-                    + "paket_operasi.status='0' and penjab.png_jawab like ? order by paket_operasi.kode_paket ");
+            ps = koneksi
+                    .prepareStatement("select paket_operasi.kode_paket, paket_operasi.nm_perawatan,paket_operasi.kategori,"
+                            + "paket_operasi.operator1, paket_operasi.operator2, paket_operasi.operator3, "
+                            + "paket_operasi.asisten_operator1, paket_operasi.asisten_operator2,paket_operasi.asisten_operator3,"
+                            + "paket_operasi.instrumen, paket_operasi.dokter_anestesi,paket_operasi.asisten_anestesi,paket_operasi.asisten_anestesi2,"
+                            + "paket_operasi.dokter_anak,paket_operasi.perawaat_resusitas, paket_operasi.bidan, "
+                            + "paket_operasi.bidan2, paket_operasi.bidan3, paket_operasi.perawat_luar, paket_operasi.alat,"
+                            + "paket_operasi.sewa_ok,paket_operasi.akomodasi,paket_operasi.bagian_rs,"
+                            + "paket_operasi.omloop,paket_operasi.omloop2,paket_operasi.omloop3,paket_operasi.omloop4,paket_operasi.omloop5,"
+                            + "paket_operasi.sarpras,paket_operasi.dokter_pjanak,paket_operasi.dokter_umum, "
+                            + "(paket_operasi.operator1+paket_operasi.operator2+paket_operasi.operator3+"
+                            + "paket_operasi.asisten_operator1+paket_operasi.asisten_operator2+paket_operasi.asisten_operator3+paket_operasi.instrumen+"
+                            + "paket_operasi.dokter_anak+paket_operasi.perawaat_resusitas+"
+                            + "paket_operasi.alat+paket_operasi.dokter_anestesi+paket_operasi.asisten_anestesi+paket_operasi.asisten_anestesi2+"
+                            + "paket_operasi.bidan+paket_operasi.bidan2+paket_operasi.bidan3+paket_operasi.perawat_luar+"
+                            + "paket_operasi.sewa_ok+paket_operasi.akomodasi+paket_operasi.bagian_rs+"
+                            + "paket_operasi.omloop+paket_operasi.omloop2+paket_operasi.omloop3+paket_operasi.omloop4+paket_operasi.omloop5+"
+                            + "paket_operasi.sarpras+paket_operasi.dokter_pjanak+paket_operasi.dokter_umum) as jumlah, "
+                            + "penjab.png_jawab,paket_operasi.kelas from paket_operasi inner join penjab on penjab.kd_pj=paket_operasi.kd_pj "
+                            + "where paket_operasi.status='0' and paket_operasi.kode_paket like ? or "
+                            + "paket_operasi.status='0' and paket_operasi.nm_perawatan like ? or "
+                            + "paket_operasi.status='0' and paket_operasi.kelas like ? or "
+                            + "paket_operasi.status='0' and penjab.png_jawab like ? order by paket_operasi.kode_paket ");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
@@ -478,42 +468,19 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
                 ps.setString(4, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{false, rs.
-                        getString("kode_paket"),
-                        rs.getString("nm_perawatan"),
-                        rs.getString("kategori"),
-                        rs.getDouble("operator1"),
-                        rs.getDouble("operator2"),
-                        rs.getDouble("operator3"),
-                        rs.getDouble("asisten_operator1"),
-                        rs.getDouble("asisten_operator2"),
-                        rs.getDouble("asisten_operator3"),
-                        rs.getDouble("instrumen"),
-                        rs.getDouble("dokter_anestesi"),
-                        rs.getDouble("asisten_anestesi"),
-                        rs.getDouble("asisten_anestesi2"),
-                        rs.getDouble("dokter_anak"),
-                        rs.getDouble("perawaat_resusitas"),
-                        rs.getDouble("bidan"),
-                        rs.getDouble("bidan2"),
-                        rs.getDouble("bidan3"),
-                        rs.getDouble("perawat_luar"),
-                        rs.getDouble("alat"),
-                        rs.getDouble("sewa_ok"),
-                        rs.getDouble("akomodasi"),
-                        rs.getDouble("bagian_rs"),
-                        rs.getDouble("omloop"),
-                        rs.getDouble("omloop2"),
-                        rs.getDouble("omloop3"),
-                        rs.getDouble("omloop4"),
-                        rs.getDouble("omloop5"),
-                        rs.getDouble("sarpras"),
-                        rs.getDouble("dokter_pjanak"),
-                        rs.getDouble("dokter_umum"),
-                        rs.getDouble("jumlah"),
-                        rs.getString("png_jawab"),
-                        rs.getString("kelas")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("kode_paket"), rs.getString("nm_perawatan"),
+                        rs.getString("kategori"), rs.getDouble("operator1"), rs.getDouble("operator2"),
+                        rs.getDouble("operator3"), rs.getDouble("asisten_operator1"),
+                        rs.getDouble("asisten_operator2"), rs.getDouble("asisten_operator3"),
+                        rs.getDouble("instrumen"), rs.getDouble("dokter_anestesi"),
+                        rs.getDouble("asisten_anestesi"), rs.getDouble("asisten_anestesi2"),
+                        rs.getDouble("dokter_anak"), rs.getDouble("perawaat_resusitas"), rs.getDouble("bidan"),
+                        rs.getDouble("bidan2"), rs.getDouble("bidan3"), rs.getDouble("perawat_luar"),
+                        rs.getDouble("alat"), rs.getDouble("sewa_ok"), rs.getDouble("akomodasi"),
+                        rs.getDouble("bagian_rs"), rs.getDouble("omloop"), rs.getDouble("omloop2"),
+                        rs.getDouble("omloop3"), rs.getDouble("omloop4"), rs.getDouble("omloop5"),
+                        rs.getDouble("sarpras"), rs.getDouble("dokter_pjanak"), rs.getDouble("dokter_umum"),
+                        rs.getDouble("jumlah"), rs.getString("png_jawab"), rs.getString("kelas")});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -531,7 +498,6 @@ public class DlgRestoreTarifOperasi extends javax.swing.JDialog {
         LCount.setText("" + tabMode.getRowCount());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgRestoreTarifOperasi.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgRestoreTarifOperasi.class.getName());
 
 }

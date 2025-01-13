@@ -33,24 +33,34 @@ import kepegawaian.DlgCariDokter;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgKepatuhanKelengkapanKeselamatanBedah extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
-    private String pilihan = "", CheckListPreOperasi = "", SignInSebelumAnestesi = "", TimeOutSebelumInsisi = "", SignOutSebelumMenutupLuka = "", CheckListPostOperasi = "",
-            StatusLengkap = "";
-    private int i = 0, adaCheckListPreOperasi = 0, tidakadaCheckListPreOperasi = 0, adaSignInSebelumAnestesi = 0, tidakadaSignInSebelumAnestesi = 0,
-            adaTimeOutSebelumInsisi = 0, tidakadaTimeOutSebelumInsisi = 0, adaSignOutSebelumMenutupLuka = 0, tidakadaSignOutSebelumMenutupLuka = 0,
-            adaCheckListPostOperasi = 0, tidakadaCheckListPostOperasi = 0, jumlahlengkap = 0, kelengkapan = 0, ketidaklengkapan = 0;
+
+    private String pilihan = "", CheckListPreOperasi = "", SignInSebelumAnestesi = "", TimeOutSebelumInsisi = "",
+            SignOutSebelumMenutupLuka = "", CheckListPostOperasi = "", StatusLengkap = "";
+
+    private int i = 0, adaCheckListPreOperasi = 0, tidakadaCheckListPreOperasi = 0, adaSignInSebelumAnestesi = 0,
+            tidakadaSignInSebelumAnestesi = 0, adaTimeOutSebelumInsisi = 0, tidakadaTimeOutSebelumInsisi = 0,
+            adaSignOutSebelumMenutupLuka = 0, tidakadaSignOutSebelumMenutupLuka = 0, adaCheckListPostOperasi = 0,
+            tidakadaCheckListPostOperasi = 0, jumlahlengkap = 0, kelengkapan = 0, ketidaklengkapan = 0;
+
     private StringBuilder htmlContent;
 
     /**
@@ -59,20 +69,16 @@ public class DlgKepatuhanKelengkapanKeselamatanBedah extends javax.swing.JDialog
      * @param parent
      * @param modal
      */
-    public DlgKepatuhanKelengkapanKeselamatanBedah(java.awt.Frame parent,
-            boolean modal) {
+    public DlgKepatuhanKelengkapanKeselamatanBedah(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "Tanggal", "Operator", "Nomer RM", "Pasien",
-            "Tindakan/Operasi", "Status", "Check List Pre Operasi",
-            "Sign-In Sebelum Anestesi", "Time-Out Sebelum Insisi",
-            "Sign-Out Sebelum Menutup Luka", "Check List Post Operasi",
-            "Kelengkapan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "Tanggal", "Operator", "Nomer RM", "Pasien", "Tindakan/Operasi", "Status",
+                    "Check List Pre Operasi", "Sign-In Sebelum Anestesi", "Time-Out Sebelum Insisi",
+                    "Sign-Out Sebelum Menutup Luka", "Check List Post Operasi", "Kelengkapan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -114,13 +120,11 @@ public class DlgKepatuhanKelengkapanKeselamatanBedah extends javax.swing.JDialog
                 column.setPreferredWidth(86);
             }
         }
-        tbBangsal.setDefaultRenderer(Object.class,
-                new WarnaTableKelengkapanOperasi());
+        tbBangsal.setDefaultRenderer(Object.class, new WarnaTableKelengkapanOperasi());
 
         TCari.setDocument(new batasInput(90).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -157,10 +161,8 @@ public class DlgKepatuhanKelengkapanKeselamatanBedah extends javax.swing.JDialog
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -196,10 +198,8 @@ public class DlgKepatuhanKelengkapanKeselamatanBedah extends javax.swing.JDialog
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -246,7 +246,9 @@ public class DlgKepatuhanKelengkapanKeselamatanBedah extends javax.swing.JDialog
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -973,8 +975,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "inner join paket_operasi on paket_operasi.kode_paket=operasi.kode_paket where operasi.operator1<>'-' and paket_operasi.kategori='Operasi' and "
                     + "concat(operasi.operator1,dokter.nm_dokter) like ? and concat(reg_periksa.kd_pj,penjab.png_jawab) like ? "
                     + "and operasi.tgl_operasi between ? and ? and operasi.status like ? "
-                    + (TCari.getText().isEmpty() ? "" : "and (reg_periksa.no_rawat like ? or dokter.nm_dokter like ? or reg_periksa.no_rkm_medis like ? or "
-                    + "pasien.nm_pasien like ? or dokter.nm_dokter like ? or penjab.png_jawab like ?) ") + "order by operasi.tgl_operasi");
+                    + (TCari.getText().isEmpty() ? ""
+                    : "and (reg_periksa.no_rawat like ? or dokter.nm_dokter like ? or reg_periksa.no_rkm_medis like ? or "
+                    + "pasien.nm_pasien like ? or dokter.nm_dokter like ? or penjab.png_jawab like ?) ")
+                    + "order by operasi.tgl_operasi");
             try {
                 adaCheckListPreOperasi = 0;
                 tidakadaCheckListPreOperasi = 0;
@@ -988,14 +992,11 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 adaCheckListPostOperasi = 0;
                 tidakadaCheckListPostOperasi = 0;
                 ketidaklengkapan = 0;
-                ps.setString(1,
-                        "%" + kddokter.getText() + nmdokter.getText() + "%");
-                ps.setString(2,
-                        "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
+                ps.setString(1, "%" + kddokter.getText() + nmdokter.getText() + "%");
+                ps.setString(2, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                 ps.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
-                ps.setString(5, "%" + Status.getSelectedItem().toString().
-                        replaceAll("Semua", "") + "%");
+                ps.setString(5, "%" + Status.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 if (!TCari.getText().trim().isEmpty()) {
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
                     ps.setString(7, "%" + TCari.getText().trim() + "%");
@@ -1063,42 +1064,31 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         StatusLengkap = "Tidak Lengkap";
                         ketidaklengkapan++;
                     }
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_rawat"), rs.getString("tgl_operasi"),
-                        rs.getString("nm_dokter"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("nm_perawatan"),
-                        rs.getString("status"),
-                        CheckListPreOperasi, SignInSebelumAnestesi,
-                        TimeOutSebelumInsisi, SignOutSebelumMenutupLuka,
-                        CheckListPostOperasi, StatusLengkap
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_rawat"), rs.getString("tgl_operasi"),
+                        rs.getString("nm_dokter"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("nm_perawatan"), rs.getString("status"), CheckListPreOperasi,
+                        SignInSebelumAnestesi, TimeOutSebelumInsisi, SignOutSebelumMenutupLuka,
+                        CheckListPostOperasi, StatusLengkap});
                 }
                 if (tabMode.getRowCount() > 0) {
-                    tabMode.addRow(new Object[]{
-                        "", "", "", "", "", "Status Data Ada/Lengkap", ":",
-                        adaCheckListPreOperasi, adaSignInSebelumAnestesi,
-                        adaTimeOutSebelumInsisi, adaSignOutSebelumMenutupLuka,
-                        adaCheckListPostOperasi, kelengkapan
-                    });
-                    tabMode.addRow(new Object[]{
-                        "", "", "", "", "",
-                        "Status Data Tidak Ada/Tidak Lengkap", ":",
-                        tidakadaCheckListPreOperasi,
-                        tidakadaSignInSebelumAnestesi,
-                        tidakadaTimeOutSebelumInsisi,
-                        tidakadaSignOutSebelumMenutupLuka,
-                        tidakadaCheckListPostOperasi, ketidaklengkapan
-                    });
-                    tabMode.addRow(new Object[]{
-                        "", "", "", "", "", "Persentase Status Data Ada/Lengkap",
-                        ":",
-                        ((adaCheckListPreOperasi / (adaCheckListPreOperasi + tidakadaCheckListPreOperasi)) * 100) + " %",
-                        ((adaSignInSebelumAnestesi / (adaSignInSebelumAnestesi + tidakadaSignInSebelumAnestesi)) * 100) + " %",
-                        ((adaTimeOutSebelumInsisi / (adaTimeOutSebelumInsisi + tidakadaTimeOutSebelumInsisi)) * 100) + " %",
-                        ((adaSignOutSebelumMenutupLuka / (adaSignOutSebelumMenutupLuka + tidakadaSignOutSebelumMenutupLuka)) * 100) + " %",
-                        ((adaCheckListPostOperasi / (adaCheckListPostOperasi + tidakadaCheckListPostOperasi)) * 100) + " %",
-                        ((kelengkapan / (kelengkapan + ketidaklengkapan)) * 100) + " %"
-                    });
+                    tabMode.addRow(new Object[]{"", "", "", "", "", "Status Data Ada/Lengkap", ":",
+                        adaCheckListPreOperasi, adaSignInSebelumAnestesi, adaTimeOutSebelumInsisi,
+                        adaSignOutSebelumMenutupLuka, adaCheckListPostOperasi, kelengkapan});
+                    tabMode.addRow(new Object[]{"", "", "", "", "", "Status Data Tidak Ada/Tidak Lengkap", ":",
+                        tidakadaCheckListPreOperasi, tidakadaSignInSebelumAnestesi, tidakadaTimeOutSebelumInsisi,
+                        tidakadaSignOutSebelumMenutupLuka, tidakadaCheckListPostOperasi, ketidaklengkapan});
+                    tabMode.addRow(new Object[]{"", "", "", "", "", "Persentase Status Data Ada/Lengkap", ":",
+                        ((adaCheckListPreOperasi / (adaCheckListPreOperasi + tidakadaCheckListPreOperasi)) * 100)
+                        + " %",
+                        ((adaSignInSebelumAnestesi / (adaSignInSebelumAnestesi + tidakadaSignInSebelumAnestesi))
+                        * 100) + " %",
+                        ((adaTimeOutSebelumInsisi / (adaTimeOutSebelumInsisi + tidakadaTimeOutSebelumInsisi)) * 100)
+                        + " %",
+                        ((adaSignOutSebelumMenutupLuka
+                        / (adaSignOutSebelumMenutupLuka + tidakadaSignOutSebelumMenutupLuka)) * 100) + " %",
+                        ((adaCheckListPostOperasi / (adaCheckListPostOperasi + tidakadaCheckListPostOperasi)) * 100)
+                        + " %",
+                        ((kelengkapan / (kelengkapan + ketidaklengkapan)) * 100) + " %"});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1137,7 +1127,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgKepatuhanKelengkapanKeselamatanBedah.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgKepatuhanKelengkapanKeselamatanBedah.class.getName());
 
 }

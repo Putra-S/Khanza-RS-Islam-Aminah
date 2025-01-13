@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package inventaris;
 
@@ -37,21 +37,30 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author dosen
  */
 public class InventarisPemeliharaan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private InventarisKoleksi inventaris = new InventarisKoleksi(null, false);
+
     private InventarisRuang ruang = new InventarisRuang(null, false);
+
     private boolean semua;
+
     private double total;
 
     /**
@@ -67,11 +76,8 @@ public class InventarisPemeliharaan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Inventaris", "Kode Barang", "Nama Barang", "Ruang", "NIP",
-            "Penanggung Jawab", "Kegiatan", "Tanggal", "Pelaksana", "Biaya",
-            "Jenis Pemeliharaan"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Inventaris", "Kode Barang", "Nama Barang", "Ruang",
+            "NIP", "Penanggung Jawab", "Kegiatan", "Tanggal", "Pelaksana", "Biaya", "Jenis Pemeliharaan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -80,9 +86,9 @@ public class InventarisPemeliharaan extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 11; i++) {
@@ -133,15 +139,12 @@ public class InventarisPemeliharaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (inventaris.getTable().getSelectedRow() != -1) {
-                    NoInventaris.setText(inventaris.getTable().getValueAt(
-                            inventaris.getTable().getSelectedRow(), 0).
-                            toString());
-                    KodeBarang.setText(inventaris.getTable().getValueAt(
-                            inventaris.getTable().getSelectedRow(), 1).
-                            toString());
-                    NamaBarang.setText(inventaris.getTable().getValueAt(
-                            inventaris.getTable().getSelectedRow(), 2).
-                            toString());
+                    NoInventaris.setText(
+                            inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 0).toString());
+                    KodeBarang.setText(
+                            inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 1).toString());
+                    NamaBarang.setText(
+                            inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 2).toString());
                     UraianKegiatan.requestFocus();
                 }
             }
@@ -194,8 +197,7 @@ public class InventarisPemeliharaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.
-                            getTable().getSelectedRow(), 1).toString());
+                    nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                     TCari.requestFocus();
                 }
             }
@@ -237,8 +239,7 @@ public class InventarisPemeliharaan extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -275,10 +276,9 @@ public class InventarisPemeliharaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 Biaya.requestFocus();
             }
@@ -303,7 +303,9 @@ public class InventarisPemeliharaan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1149,8 +1151,7 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventarisPemeliharaan dialog = new InventarisPemeliharaan(
-                    new javax.swing.JFrame(), true);
+            InventarisPemeliharaan dialog = new InventarisPemeliharaan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1215,8 +1216,7 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
     public void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            semua = nm_ruangcari.getText().isEmpty() && TCari.getText().
-                    isEmpty();
+            semua = nm_ruangcari.getText().isEmpty() && TCari.getText().isEmpty();
             ps = koneksi.prepareStatement(
                     "select pemeliharaan_inventaris.no_inventaris,inventaris.kode_barang,inventaris_barang.nama_barang,"
                     + "inventaris_ruang.nama_ruang,pemeliharaan_inventaris.nip,petugas.nama,pemeliharaan_inventaris.uraian_kegiatan,"
@@ -1226,18 +1226,16 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
                     + "inner join inventaris_barang on inventaris.kode_barang=inventaris_barang.kode_barang "
                     + "inner join inventaris_ruang on inventaris.id_ruang=inventaris_ruang.id_ruang "
                     + "inner join petugas on pemeliharaan_inventaris.nip=petugas.nip where "
-                    + "pemeliharaan_inventaris.tanggal between ? and ? " + (semua ? "" : "and inventaris_ruang.nama_ruang like ? and "
+                    + "pemeliharaan_inventaris.tanggal between ? and ? "
+                    + (semua ? "" : "and inventaris_ruang.nama_ruang like ? and "
                             + "(pemeliharaan_inventaris.no_inventaris like ? or inventaris.kode_barang like ? or inventaris_barang.nama_barang like ? "
                             + "or pemeliharaan_inventaris.pelaksana like ? or pemeliharaan_inventaris.jenis_pemeliharaan like ? "
                             + "or petugas.nama like ?)")
-                    + "order by pemeliharaan_inventaris.no_inventaris"
-            );
+                    + "order by pemeliharaan_inventaris.no_inventaris");
 
             try {
-                ps.setString(1,
-                        Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                ps.setString(2,
-                        Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 if (!semua) {
                     ps.setString(3, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(4, "%" + TCari.getText().trim() + "%");
@@ -1251,21 +1249,15 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
                 total = 0;
                 while (rs.next()) {
                     total += rs.getDouble("biaya");
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_inventaris"), rs.getString(
-                        "kode_barang"), rs.getString("nama_barang"),
-                        rs.getString("nama_ruang"), rs.getString("nip"), rs.
-                        getString("nama"), rs.getString("uraian_kegiatan"), rs.
-                        getString("tanggal"),
-                        rs.getString("pelaksana"), Valid.SetAngka(rs.getDouble(
-                        "biaya")), rs.getString("jenis_pemeliharaan")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_inventaris"), rs.getString("kode_barang"),
+                        rs.getString("nama_barang"), rs.getString("nama_ruang"), rs.getString("nip"),
+                        rs.getString("nama"), rs.getString("uraian_kegiatan"), rs.getString("tanggal"),
+                        rs.getString("pelaksana"), Valid.SetAngka(rs.getDouble("biaya")),
+                        rs.getString("jenis_pemeliharaan")});
                 }
                 if (total > 0) {
-                    tabMode.addRow(new String[]{
-                        "", "", "", "", "", "", "Total Biaya : ", "", "", Valid.
-                        SetAngka(total), ""
-                    });
+                    tabMode.addRow(new String[]{"", "", "", "", "", "", "Total Biaya : ", "", "",
+                        Valid.SetAngka(total), ""});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1302,26 +1294,16 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            NoInventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 0).toString());
-            KodeBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            NamaBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString());
-            NIP.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            NamaPetugas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 5).toString());
-            UraianKegiatan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 6).toString());
-            Pelaksana.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 8).toString());
-            Biaya.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 9).toString());
-            Status.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 10).toString());
-            Valid.SetTgl2(Tanggal, tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
+            NoInventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            KodeBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            NamaBarang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString());
+            NIP.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            NamaPetugas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 5).toString());
+            UraianKegiatan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString());
+            Pelaksana.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 8).toString());
+            Biaya.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            Status.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString());
+            Valid.SetTgl2(Tanggal, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
         }
     }
 
@@ -1357,7 +1339,6 @@ private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_T
         TCari.requestFocus();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventarisPemeliharaan.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventarisPemeliharaan.class.getName());
 
 }

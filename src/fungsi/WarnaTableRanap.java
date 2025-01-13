@@ -18,48 +18,57 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class WarnaTableRanap extends DefaultTableCellRenderer {
 
-  /** */
-  public int kolom = 25;
+    /**
+     *
+     */
+    public int kolom = 25;
 
-  public int bayar = 6;
+    public int bayar = 6;
 
-  /**
-   * @param table
-   * @param value
-   * @param isSelected
-   * @param hasFocus
-   * @param row
-   * @param column
-   * @return
-   */
-  @Override
-  public Component getTableCellRendererComponent(
-      JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component component =
-        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (row % 2 == 1) {
-      component.setBackground(new Color(255, 246, 244));
-    } else {
-      component.setBackground(new Color(255, 255, 255));
+    /**
+     * @param table
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return
+     */
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+            int row, int column) {
+        Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        if (isSelected) {
+            // component.setBackground(new Color(93, 156, 236));
+            component.setForeground(Color.RED);
+        } else {
+            component.setForeground(Color.BLACK);
+            if (row % 2 == 1) {
+                component.setBackground(new Color(255, 246, 244));
+            } else {
+                component.setBackground(new Color(255, 255, 255));
+            }
+            try {
+                String dateString = table.getValueAt(row, kolom).toString();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate dateToCompare = LocalDate.parse(dateString, formatter);
+                LocalDate currentDate = LocalDate.now();
+                long daysBetween = Math.abs(ChronoUnit.DAYS.between(currentDate, dateToCompare));
+
+                if (daysBetween >= 2 && table.getValueAt(row, bayar).toString().equals("BPJS Kesehatan")) {
+                    component.setBackground(new Color(255, 255, 204));
+                }
+                if (daysBetween >= 6 && table.getValueAt(row, bayar).toString().equals("BPJS Kesehatan")) {
+                    component.setBackground(new Color(255, 153, 153));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return component;
     }
-    try {
-      String dateString = table.getValueAt(row, kolom).toString();
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      LocalDate dateToCompare = LocalDate.parse(dateString, formatter);
-      LocalDate currentDate = LocalDate.now();
-      long daysBetween = Math.abs(ChronoUnit.DAYS.between(currentDate, dateToCompare));
 
-      if (daysBetween >= 2 && table.getValueAt(row, bayar).toString().equals("BPJS Kesehatan")) {
-        component.setBackground(new Color(255, 255, 204));
-      }
-      if (daysBetween >= 6 && table.getValueAt(row, bayar).toString().equals("BPJS Kesehatan")) {
-        component.setBackground(new Color(255, 153, 153));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return component;
-  }
+    private static final Logger LOG = Logger.getLogger(WarnaTableRanap.class.getName());
 
-  private static final Logger LOG = Logger.getLogger(WarnaTableRanap.class.getName());
 }

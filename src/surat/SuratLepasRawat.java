@@ -4,7 +4,7 @@
  */
 
  /*
- * kontribusi dari dokter Salim Mulyana
+* kontribusi dari dokter Salim Mulyana
  */
 package surat;
 
@@ -40,24 +40,37 @@ import simrskhanza.DlgCariPoli;
 import simrskhanza.DlgCariPoli2;
 
 /**
- *
  * @author salimmulyana
  */
 public class SuratLepasRawat extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private int i = 0, kuota = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariDokter2 dokter2 = new DlgCariDokter2(null, false);
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariPoli2 poli2 = new DlgCariPoli2(null, false);
-    private String URUTNOREG = "", kddokter = "", nmdokter = "", kdpoli = "", finger = "", nmpoli = "", aktifjadwal = "";
+
+    private String URUTNOREG = "", kddokter = "", nmdokter = "", kdpoli = "", finger = "", nmpoli = "",
+            aktifjadwal = "";
+
     private DlgCariPenyakit penyakit = new DlgCariPenyakit(null, false);
 
     public SuratLepasRawat(java.awt.Frame parent, boolean modal) {
@@ -66,13 +79,10 @@ public class SuratLepasRawat extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Kode Dokter", "Nama Dokter",
-            "Umur", "Tgl.Lahir", "Alamat", "Pekerjaan", "Tgl.Rawat",
-            "Tgl.Pulang",
-            "Tgl.Control", "Tempat", "Kode Poli", "Nama Poli", "Diagnosa Akhir",
-            "Terapi", "NIP", "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Kode Dokter", "Nama Dokter", "Umur", "Tgl.Lahir",
+                    "Alamat", "Pekerjaan", "Tgl.Rawat", "Tgl.Pulang", "Tgl.Control", "Tempat", "Kode Poli",
+                    "Nama Poli", "Diagnosa Akhir", "Terapi", "NIP", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -81,7 +91,8 @@ public class SuratLepasRawat extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -139,8 +150,7 @@ public class SuratLepasRawat extends javax.swing.JDialog {
         NIP.setDocument(new batasInput((byte) 20).getKata(NIP));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -177,10 +187,9 @@ public class SuratLepasRawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 NIP.requestFocus();
             }
@@ -215,23 +224,23 @@ public class SuratLepasRawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penyakit.getTable().getSelectedRow() != -1) {
-                    if ((penyakit.getTable().getValueAt(penyakit.getTable().
-                            getSelectedRow(), 0).toString() + " - " + penyakit.
-                                    getTable().getValueAt(penyakit.getTable().
-                                            getSelectedRow(), 1).toString()).
-                            length() < 50) {
-                        Diagnosa.setText(penyakit.getTable().getValueAt(
-                                penyakit.getTable().getSelectedRow(), 0).
-                                toString() + " - " + penyakit.getTable().
-                                        getValueAt(penyakit.getTable().
-                                                getSelectedRow(), 1).toString());
+                    if ((penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString() + " - "
+                            + penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString())
+                            .length() < 50) {
+                        Diagnosa
+                                .setText(penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString()
+                                        + " - "
+                                        + penyakit.getTable()
+                                                .getValueAt(penyakit.getTable().getSelectedRow(), 1)
+                                                .toString());
                     } else {
-                        Diagnosa.setText((penyakit.getTable().getValueAt(
-                                penyakit.getTable().getSelectedRow(), 0).
-                                toString() + " - " + penyakit.getTable().
-                                        getValueAt(penyakit.getTable().
-                                                getSelectedRow(), 1).toString()).
-                                substring(0, 50));
+                        Diagnosa
+                                .setText((penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString()
+                                        + " - "
+                                        + penyakit.getTable()
+                                                .getValueAt(penyakit.getTable().getSelectedRow(), 1)
+                                                .toString())
+                                        .substring(0, 50));
                     }
                 }
                 Diagnosa.requestFocus();
@@ -267,10 +276,8 @@ public class SuratLepasRawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -304,14 +311,11 @@ public class SuratLepasRawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter2.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 1).toString());
                     if (aktifjadwal.equals("aktif")) {
-                        kuota = Integer.parseInt(dokter2.getTable().getValueAt(
-                                dokter2.getTable().getSelectedRow(), 13).
-                                toString());
+                        kuota = Integer.parseInt(
+                                dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 13).toString());
                     }
                 }
             }
@@ -346,10 +350,8 @@ public class SuratLepasRawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -383,10 +385,8 @@ public class SuratLepasRawat extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli2.getTable().getSelectedRow() != -1) {
-                    KdPoli.setText(poli2.getTable().getValueAt(poli2.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmPoli.setText(poli2.getTable().getValueAt(poli2.getTable().
-                            getSelectedRow(), 1).toString());
+                    KdPoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(), 0).toString());
+                    NmPoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -422,7 +422,9 @@ public class SuratLepasRawat extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1575,8 +1577,7 @@ public class SuratLepasRawat extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            SuratLepasRawat dialog = new SuratLepasRawat(
-                    new javax.swing.JFrame(), true);
+            SuratLepasRawat dialog = new SuratLepasRawat(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1683,15 +1684,11 @@ public class SuratLepasRawat extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1710,21 +1707,13 @@ public class SuratLepasRawat extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("kd_dokter"), rs.getString("nm_dokter"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"),
-                        rs.getString("tgl_lahir"), rs.getString("alamat"), rs.
-                        getString("pekerjaan"),
-                        rs.getString("tanggal_rawat"), rs.getString(
-                        "tanggal_pulang"), rs.getString("tanggal_control"), rs.
-                        getString("tempat"),
-                        rs.getString("kd_poli"), rs.getString("nm_poli"), rs.
-                        getString("diagnosa"), rs.getString("terapi"), rs.
-                        getString("nip"), rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("kd_dokter"), rs.getString("nm_dokter"),
+                        rs.getString("umurdaftar") + " " + rs.getString("sttsumur"), rs.getString("tgl_lahir"),
+                        rs.getString("alamat"), rs.getString("pekerjaan"), rs.getString("tanggal_rawat"),
+                        rs.getString("tanggal_pulang"), rs.getString("tanggal_control"), rs.getString("tempat"),
+                        rs.getString("kd_poli"), rs.getString("nm_poli"), rs.getString("diagnosa"),
+                        rs.getString("terapi"), rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1757,53 +1746,37 @@ public class SuratLepasRawat extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Tempat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            KdPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            Terapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
-            Valid.SetTgl(TanggalRawat, tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 9).toString());
-            Valid.SetTgl(TanggalPulang, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            Valid.SetTgl(TanggalControl, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 11).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Tempat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            KdPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Terapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Valid.SetTgl(TanggalRawat, tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Valid.SetTgl(TanggalPulang, tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Valid.SetTgl(TanggalControl, tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.getText()
+                + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
-        Sequel.cariIsi(
-                "select date_format(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.getText() + "' ",
+                TPasien);
+        Sequel.cariIsi("select date_format(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
                 TglLahir, TNoRM.getText());
     }
 
     public void setNoRm(String norwt, String tempat, Date tgl1, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -1838,13 +1811,10 @@ public class SuratLepasRawat extends javax.swing.JDialog {
             NIP.setEditable(false);
             btnPetugas.setEnabled(false);
             NIP.setText(akses.getkode());
-            Sequel.cariIsi(
-                    "select petugas.nama from petugas where petugas.nip=?",
-                    NamaPetugas, NIP.getText());
+            Sequel.cariIsi("select petugas.nama from petugas where petugas.nip=?", NamaPetugas, NIP.getText());
             if (NamaPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
     }
@@ -1852,16 +1822,13 @@ public class SuratLepasRawat extends javax.swing.JDialog {
     private void ganti() {
         Sequel.mengedit("surat_lepas_rawat", "tanggal_rawat=? and no_rawat=?",
                 "no_rawat=?,tanggal_rawat=?,kd_dokter=?,tanggal_pulang=?,tanggal_control=?,tempat=?,kd_poli=?,diagnosa=?,terapi=?,nip=?",
-                12, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TanggalRawat.getSelectedItem() + ""), KdDokter.getText(),
-                    Valid.SetTgl(TanggalPulang.getSelectedItem() + ""), Valid.
-                    SetTgl(TanggalControl.getSelectedItem() + ""), Tempat.
-                    getText(), KdPoli.getText(),
-                    Diagnosa.getText(), Terapi.getText(), NIP.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 9).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                });
+                12,
+                new String[]{TNoRw.getText(), Valid.SetTgl(TanggalRawat.getSelectedItem() + ""), KdDokter.getText(),
+                    Valid.SetTgl(TanggalPulang.getSelectedItem() + ""),
+                    Valid.SetTgl(TanggalControl.getSelectedItem() + ""), Tempat.getText(), KdPoli.getText(),
+                    Diagnosa.getText(), Terapi.getText(), NIP.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()});
         if (tabMode.getRowCount() != 0) {
             tampil();
         }
@@ -1869,12 +1836,9 @@ public class SuratLepasRawat extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from surat_lepas_rawat where tanggal_rawat=? and no_rawat=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from surat_lepas_rawat where tanggal_rawat=? and no_rawat=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tampil();
             emptTeks();
         } else {
@@ -1882,7 +1846,6 @@ public class SuratLepasRawat extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(SuratLepasRawat.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(SuratLepasRawat.class.getName());
 
 }

@@ -21,6 +21,8 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,32 +39,59 @@ import kepegawaian.DlgCariDokter;
 import simrskhanza.DlgCariBangsal;
 import simrskhanza.DlgCariPoli;
 import simrskhanza.DlgPeriksaRadiologi;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.LocalDate;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2, tabMode3, tabMode4;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private Connection koneksifuji;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private DlgCariBangsal ruang = new DlgCariBangsal(null, false);
+
     private int i, nilai_detik, permintaanbaru = 0;
+
     private PreparedStatement ps, ps2;
+
     private final Properties prop = new Properties();
+
     private BackgroundMusic music;
+
     private ResultSet rs, rs2;
+
     private Date now;
+
     private ApiCareStream carestream = new ApiCareStream();
+
     private boolean aktif = false, semua;
-    private String alarm = "", formalarm = "", nol_detik, detik, tglsampel = "", tglhasil = "", norm = "", kamar = "", namakamar = "",
-            NoPermintaan = "", NoRawat = "", Pasien = "", Permintaan = "", JamPermintaan = "", Sampel = "", JamSampel = "", Hasil = "", JamHasil = "", KodeDokter = "", DokterPerujuk = "", Ruang = "",
-            InformasiTambahan = "", Klinis = "", finger = "";
+
+    private String alarm = "", formalarm = "", nol_detik, detik, tglsampel = "", tglhasil = "", norm = "", kamar = "",
+            namakamar = "", NoPermintaan = "", NoRawat = "", Pasien = "", Permintaan = "", JamPermintaan = "",
+            Sampel = "", JamSampel = "", Hasil = "", JamHasil = "", KodeDokter = "", DokterPerujuk = "", Ruang = "",
+            InformasiTambahan = "", Klinis = "", finger = "", usia = "";
+
+    private Date lahir;
+
+    private LocalDate today = LocalDate.now();
+
+    private LocalDate birthday;
+
+    private Period p;
 
     /**
      * Creates new form DlgProgramStudi
@@ -75,12 +104,10 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         initComponents();
 
         WindowAmbilSampel.setSize(530, 80);
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel",
-            "Jam", "Hasil", "Jam", "Kode Dokter", "Dokter Perujuk",
-            "Poli Registrasi", "Informasi Tambahan", "Diagnosis Klinis",
-            "Kode Bayar", "Jenis Bayar"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel", "Jam", "Hasil",
+                    "Jam", "Kode Dokter", "Dokter Perujuk", "Poli Registrasi", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -89,8 +116,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         };
         tbRadiologiRalan.setModel(tabMode);
 
-        tbRadiologiRalan.setPreferredScrollableViewportSize(new Dimension(800,
-                800));
+        tbRadiologiRalan.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbRadiologiRalan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
@@ -131,15 +157,12 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
                 column.setPreferredWidth(110);
             }
         }
-        tbRadiologiRalan.setDefaultRenderer(Object.class,
-                new WarnaTablePermintaanRad());
+        tbRadiologiRalan.setDefaultRenderer(Object.class, new WarnaTablePermintaanRad());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan",
-            "Jam", "Sampel", "Jam", "Hasil", "Jam", "Kode Dokter",
-            "Dokter Perujuk", "Poli Registrasi", "Informasi Tambahan",
-            "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar"
-        }) {
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan", "Jam", "Sampel",
+                    "Jam", "Hasil", "Jam", "Kode Dokter", "Dokter Perujuk", "Poli Registrasi", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -148,8 +171,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         };
         tbRadiologiRalan2.setModel(tabMode2);
 
-        tbRadiologiRalan2.setPreferredScrollableViewportSize(new Dimension(800,
-                800));
+        tbRadiologiRalan2.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbRadiologiRalan2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 17; i++) {
@@ -194,12 +216,10 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         }
         tbRadiologiRalan2.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode3 = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel",
-            "Jam", "Hasil", "Jam", "Kode Dokter", "Dokter Perujuk",
-            "Kamar Terakhir", "Informasi Tambahan", "Diagnosis Klinis",
-            "Kode Bayar", "Jenis Bayar"
-        }) {
+        tabMode3 = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Permintaan", "Jam", "Sampel", "Jam", "Hasil",
+                    "Jam", "Kode Dokter", "Dokter Perujuk", "Kamar Terakhir", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -208,8 +228,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         };
         tbRadiologiRanap.setModel(tabMode3);
 
-        tbRadiologiRanap.setPreferredScrollableViewportSize(new Dimension(800,
-                800));
+        tbRadiologiRanap.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbRadiologiRanap.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 16; i++) {
@@ -250,15 +269,12 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
                 column.setPreferredWidth(110);
             }
         }
-        tbRadiologiRanap.setDefaultRenderer(Object.class,
-                new WarnaTablePermintaanRad());
+        tbRadiologiRanap.setDefaultRenderer(Object.class, new WarnaTablePermintaanRad());
 
-        tabMode4 = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan",
-            "Jam", "Sampel", "Jam", "Hasil", "Jam", "Kode Dokter",
-            "Dokter Perujuk", "Kamar Terakhir", "Informasi Tambahan",
-            "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar"
-        }) {
+        tabMode4 = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Rawat", "Pasien", "Pemeriksaan", "Permintaan", "Jam", "Sampel",
+                    "Jam", "Hasil", "Jam", "Kode Dokter", "Dokter Perujuk", "Kamar Terakhir", "Informasi Tambahan",
+                    "Diagnosis Klinis", "Kode Bayar", "Jenis Bayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -267,8 +283,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         };
         tbRadiologiRanap2.setModel(tabMode4);
 
-        tbRadiologiRanap2.setPreferredScrollableViewportSize(new Dimension(800,
-                800));
+        tbRadiologiRanap2.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbRadiologiRanap2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 17; i++) {
@@ -315,8 +330,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -354,12 +368,12 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
                     if (TabPilihRawat.getSelectedIndex() == 0) {
-                        CrDokter.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 1).toString());
+                        CrDokter
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         CrDokter.requestFocus();
                     } else if (TabPilihRawat.getSelectedIndex() == 1) {
-                        CrDokter2.setText(dokter.getTable().getValueAt(dokter.
-                                getTable().getSelectedRow(), 1).toString());
+                        CrDokter2
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         CrDokter2.requestFocus();
                     }
                 }
@@ -395,8 +409,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    CrPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    CrPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                     CrPoli.requestFocus();
                 }
             }
@@ -431,8 +444,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    Kamar.setText(ruang.getTable().getValueAt(ruang.getTable().
-                            getSelectedRow(), 1).toString());
+                    Kamar.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                     Kamar.requestFocus();
                 }
             }
@@ -473,7 +485,9 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1255,14 +1269,13 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void Tgl1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tgl1KeyPressed
-        Valid.pindah(evt, BtnKeluar, Tgl2);
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void Tgl1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        Valid.pindah(evt, BtnKeluar, Tgl2);//GEN-FIRST:event_Tgl1KeyPressed
     }//GEN-LAST:event_Tgl1KeyPressed
 
     private void Tgl2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tgl2KeyPressed
@@ -2718,8 +2731,7 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPermintaanRadiologi dialog = new DlgCariPermintaanRadiologi(
-                    new javax.swing.JFrame(), true);
+            DlgCariPermintaanRadiologi dialog = new DlgCariPermintaanRadiologi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2802,8 +2814,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             ps = koneksi.prepareStatement(
                     "select permintaan_radiologi.noorder,permintaan_radiologi.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,permintaan_radiologi.tgl_permintaan,"
                     + "if(permintaan_radiologi.jam_permintaan='00:00:00','',permintaan_radiologi.jam_permintaan) as jam_permintaan,reg_periksa.kd_pj,penjab.png_jawab,"
@@ -2837,21 +2849,28 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + ", "
-                        + rs.getString("nm_pasien") + ", " + rs.getString(
-                        "tgl_lahir") + ", " + rs.getString("umur"), rs.
-                        getString("tgl_permintaan"), rs.getString(
-                        "jam_permintaan"),
-                        rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
-                        rs.getString("tgl_hasil"),
-                        rs.getString("jam_hasil"), rs.
-                        getString("dokter_perujuk"), rs.getString("nm_dokter"),
-                        rs.getString("nm_poli"), rs.getString(
-                        "informasi_tambahan"), rs.getString("diagnosa_klinis"),
-                        rs.getString("kd_pj"), rs.getString("png_jawab")
-                    });
+                    usia = Sequel.cariIsi(
+                            "select pasien.tgl_lahir from pasien inner join reg_periksa on pasien.no_rkm_medis=reg_periksa.no_rkm_medis where reg_periksa.no_rawat='"
+                            + rs.getString("no_rawat") + "'");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        lahir = dateFormat.parse(usia);
+                    } catch (ParseException ex) {
+                        System.out.println(ex);
+                    }
+                    birthday = lahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    p = Period.between(birthday, today);
+
+                    tabMode
+                            .addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + ", " + rs.getString("nm_pasien") + ", "
+                        + rs.getString("tgl_lahir") + ", " + String.valueOf(p.getYears()) + "Th "
+                        + String.valueOf(p.getMonths()) + "Bl " + String.valueOf(p.getDays()) + "Hr",
+                        rs.getString("tgl_permintaan"), rs.getString("jam_permintaan"),
+                        rs.getString("tgl_sampel"), rs.getString("jam_sampel"), rs.getString("tgl_hasil"),
+                        rs.getString("jam_hasil"), rs.getString("dokter_perujuk"), rs.getString("nm_dokter"),
+                        rs.getString("nm_poli"), rs.getString("informasi_tambahan"),
+                        rs.getString("diagnosa_klinis"), rs.getString("kd_pj"), rs.getString("png_jawab")});
                     ps2 = koneksi.prepareStatement(
                             "select permintaan_pemeriksaan_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan "
                             + "from permintaan_pemeriksaan_radiologi inner join jns_perawatan_radiologi on "
@@ -2861,10 +2880,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                         ps2.setString(1, rs.getString("noorder"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{
-                                "", "", rs2.getString("nm_perawatan"), "", "",
-                                "", "", "", "", "", "", "", "", "", "", ""
-                            });
+                            tabMode.addRow(new Object[]{"", "", rs2.getString("nm_perawatan"), "", "", "", "", "", "",
+                                "", "", "", "", "", "", ""});
                         }
                     } catch (Exception e) {
                         System.out.println("Notif 2 : " + e);
@@ -2897,8 +2914,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
     private void tampil2() {
         Valid.tabelKosong(tabMode2);
         try {
-            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter.getText().trim().isEmpty() && CrPoli.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             ps = koneksi.prepareStatement(
                     "select permintaan_radiologi.noorder,permintaan_radiologi.no_rawat,reg_periksa.no_rkm_medis,"
                     + "pasien.nm_pasien,jns_perawatan_radiologi.nm_perawatan,permintaan_radiologi.tgl_permintaan,reg_periksa.kd_pj,penjab.png_jawab,"
@@ -2916,7 +2933,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                             + "(permintaan_radiologi.noorder like ? or permintaan_radiologi.no_rawat like ? or "
                             + "reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or "
                             + "permintaan_radiologi.diagnosa_klinis like ? or jns_perawatan_radiologi.nm_perawatan like ? "
-                            + "or dokter.nm_dokter like ? or penjab.png_jawab like ?)") + " order by permintaan_radiologi.tgl_permintaan,permintaan_radiologi.jam_permintaan desc");
+                            + "or dokter.nm_dokter like ? or penjab.png_jawab like ?)")
+                    + " order by permintaan_radiologi.tgl_permintaan,permintaan_radiologi.jam_permintaan desc");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -2935,21 +2953,28 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode2.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + ", " + rs.getString(
-                        "nm_pasien") + ", " + rs.getString("tgl_lahir") + ", " + rs.
-                        getString("umur"),
-                        rs.getString("nm_perawatan"), rs.getString(
-                        "tgl_permintaan"), rs.getString("jam_permintaan"),
-                        rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
-                        rs.getString("tgl_hasil"),
-                        rs.getString("jam_hasil"), rs.
-                        getString("dokter_perujuk"), rs.getString("nm_dokter"),
-                        rs.getString("nm_poli"), rs.getString(
-                        "informasi_tambahan"), rs.getString("diagnosa_klinis"),
-                        rs.getString("kd_pj"), rs.getString("png_jawab")
-                    });
+                    usia = Sequel.cariIsi(
+                            "select pasien.tgl_lahir from pasien inner join reg_periksa on pasien.no_rkm_medis=reg_periksa.no_rkm_medis where reg_periksa.no_rawat='"
+                            + rs.getString("no_rawat") + "'");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        lahir = dateFormat.parse(usia);
+                    } catch (ParseException ex) {
+                        System.out.println(ex);
+                    }
+                    birthday = lahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    p = Period.between(birthday, today);
+
+                    tabMode2
+                            .addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + ", " + rs.getString("nm_pasien") + ", "
+                        + rs.getString("tgl_lahir") + ", " + String.valueOf(p.getYears()) + "Th "
+                        + String.valueOf(p.getMonths()) + "Bl " + String.valueOf(p.getDays()) + "Hr",
+                        rs.getString("nm_perawatan"), rs.getString("tgl_permintaan"),
+                        rs.getString("jam_permintaan"), rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
+                        rs.getString("tgl_hasil"), rs.getString("jam_hasil"), rs.getString("dokter_perujuk"),
+                        rs.getString("nm_dokter"), rs.getString("nm_poli"), rs.getString("informasi_tambahan"),
+                        rs.getString("diagnosa_klinis"), rs.getString("kd_pj"), rs.getString("png_jawab")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2969,67 +2994,39 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbRadiologiRalan.getSelectedRow() != -1) {
-            NoPermintaan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 0).toString();
-            NoRawat = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 1).toString();
-            Pasien = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 2).toString();
-            Permintaan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 3).toString();
-            JamPermintaan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 4).toString();
-            Sampel = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 5).toString();
-            JamSampel = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 6).toString();
-            Hasil = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 7).toString();
-            JamHasil = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 8).toString();
-            KodeDokter = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 9).toString();
-            DokterPerujuk = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 10).toString();
-            Ruang = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 11).toString();
-            InformasiTambahan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 12).toString();
-            Klinis = tbRadiologiRalan.getValueAt(tbRadiologiRalan.
-                    getSelectedRow(), 13).toString();
+            NoPermintaan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 0).toString();
+            NoRawat = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 1).toString();
+            Pasien = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 2).toString();
+            Permintaan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 3).toString();
+            JamPermintaan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 4).toString();
+            Sampel = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 5).toString();
+            JamSampel = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 6).toString();
+            Hasil = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 7).toString();
+            JamHasil = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 8).toString();
+            KodeDokter = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 9).toString();
+            DokterPerujuk = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 10).toString();
+            Ruang = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 11).toString();
+            InformasiTambahan = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 12).toString();
+            Klinis = tbRadiologiRalan.getValueAt(tbRadiologiRalan.getSelectedRow(), 13).toString();
         }
     }
 
     private void getData2() {
         if (tbRadiologiRanap.getSelectedRow() != -1) {
-            NoPermintaan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 0).toString();
-            NoRawat = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 1).toString();
-            Pasien = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 2).toString();
-            Permintaan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 3).toString();
-            JamPermintaan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 4).toString();
-            Sampel = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 5).toString();
-            JamSampel = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 6).toString();
-            Hasil = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 7).toString();
-            JamHasil = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 8).toString();
-            KodeDokter = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 9).toString();
-            DokterPerujuk = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 10).toString();
-            Ruang = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 11).toString();
-            InformasiTambahan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 12).toString();
-            Klinis = tbRadiologiRanap.getValueAt(tbRadiologiRanap.
-                    getSelectedRow(), 13).toString();
+            NoPermintaan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 0).toString();
+            NoRawat = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 1).toString();
+            Pasien = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 2).toString();
+            Permintaan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 3).toString();
+            JamPermintaan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 4).toString();
+            Sampel = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 5).toString();
+            JamSampel = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 6).toString();
+            Hasil = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 7).toString();
+            JamHasil = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 8).toString();
+            KodeDokter = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 9).toString();
+            DokterPerujuk = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 10).toString();
+            Ruang = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 11).toString();
+            InformasiTambahan = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 12).toString();
+            Klinis = tbRadiologiRanap.getValueAt(tbRadiologiRanap.getSelectedRow(), 13).toString();
         }
     }
 
@@ -3045,7 +3042,6 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @param pasien
      */
     public void setPasien(String pasien) {
@@ -3085,8 +3081,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
     private void tampil3() {
         Valid.tabelKosong(tabMode3);
         try {
-            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             if (cmbStatus.getSelectedIndex() == 0) {
                 ps = koneksi.prepareStatement(
                         "select permintaan_radiologi.noorder,permintaan_radiologi.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,permintaan_radiologi.tgl_permintaan,"
@@ -3146,21 +3142,14 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode3.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + ", "
-                        + rs.getString("nm_pasien") + ", " + rs.getString(
-                        "tgl_lahir") + ", " + rs.getString("umur"), rs.
-                        getString("tgl_permintaan"), rs.getString(
-                        "jam_permintaan"),
-                        rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
-                        rs.getString("tgl_hasil"),
-                        rs.getString("jam_hasil"), rs.
-                        getString("dokter_perujuk"), rs.getString("nm_dokter"),
-                        rs.getString("nm_bangsal"), rs.getString(
-                        "informasi_tambahan"), rs.getString("diagnosa_klinis"),
-                        rs.getString("kd_pj"), rs.getString("png_jawab")
-                    });
+                    tabMode3.addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + ", " + rs.getString("nm_pasien") + ", "
+                        + rs.getString("tgl_lahir") + ", " + rs.getString("umur"),
+                        rs.getString("tgl_permintaan"), rs.getString("jam_permintaan"), rs.getString("tgl_sampel"),
+                        rs.getString("jam_sampel"), rs.getString("tgl_hasil"), rs.getString("jam_hasil"),
+                        rs.getString("dokter_perujuk"), rs.getString("nm_dokter"), rs.getString("nm_bangsal"),
+                        rs.getString("informasi_tambahan"), rs.getString("diagnosa_klinis"), rs.getString("kd_pj"),
+                        rs.getString("png_jawab")});
                     ps2 = koneksi.prepareStatement(
                             "select permintaan_pemeriksaan_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan "
                             + "from permintaan_pemeriksaan_radiologi inner join jns_perawatan_radiologi on "
@@ -3170,10 +3159,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                         ps2.setString(1, rs.getString("noorder"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            tabMode3.addRow(new Object[]{
-                                "", "", rs2.getString("nm_perawatan"), "", "",
-                                "", "", "", "", "", "", "", "", "", "", ""
-                            });
+                            tabMode3.addRow(new Object[]{"", "", rs2.getString("nm_perawatan"), "", "", "", "", "",
+                                "", "", "", "", "", "", "", ""});
                         }
                     } catch (Exception e) {
                         System.out.println("Notif 2 : " + e);
@@ -3206,8 +3193,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
     private void tampil4() {
         Valid.tabelKosong(tabMode4);
         try {
-            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().
-                    trim().isEmpty() && TCari.getText().trim().isEmpty();
+            semua = CrDokter2.getText().trim().isEmpty() && Kamar.getText().trim().isEmpty()
+                    && TCari.getText().trim().isEmpty();
             if (cmbStatus.getSelectedIndex() == 0) {
                 ps = koneksi.prepareStatement(
                         "select permintaan_radiologi.noorder,permintaan_radiologi.no_rawat,reg_periksa.no_rkm_medis,"
@@ -3230,7 +3217,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                                 + "(permintaan_radiologi.noorder like ? or permintaan_radiologi.no_rawat like ? or "
                                 + "reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or "
                                 + "permintaan_radiologi.diagnosa_klinis like ? or jns_perawatan_radiologi.nm_perawatan like ? or "
-                                + "dokter.nm_dokter like ? or penjab.png_jawab like ?)") + " group by permintaan_radiologi.noorder,jns_perawatan_radiologi.kd_jenis_prw order by permintaan_radiologi.tgl_permintaan desc,permintaan_radiologi.jam_permintaan desc,kamar_inap.tgl_masuk desc");
+                                + "dokter.nm_dokter like ? or penjab.png_jawab like ?)")
+                        + " group by permintaan_radiologi.noorder,jns_perawatan_radiologi.kd_jenis_prw order by permintaan_radiologi.tgl_permintaan desc,permintaan_radiologi.jam_permintaan desc,kamar_inap.tgl_masuk desc");
             } else {
                 ps = koneksi.prepareStatement(
                         "select permintaan_radiologi.noorder,permintaan_radiologi.no_rawat,reg_periksa.no_rkm_medis,"
@@ -3253,7 +3241,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                                 + "(permintaan_radiologi.noorder like ? or permintaan_radiologi.no_rawat like ? or "
                                 + "reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or "
                                 + "permintaan_radiologi.diagnosa_klinis like ? or jns_perawatan_radiologi.nm_perawatan like ? or "
-                                + "dokter.nm_dokter like ? or penjab.png_jawab like ?)") + " group by permintaan_radiologi.noorder,jns_perawatan_radiologi.kd_jenis_prw order by permintaan_radiologi.tgl_permintaan desc,permintaan_radiologi.jam_permintaan desc,kamar_inap.tgl_masuk desc");
+                                + "dokter.nm_dokter like ? or penjab.png_jawab like ?)")
+                        + " group by permintaan_radiologi.noorder,jns_perawatan_radiologi.kd_jenis_prw order by permintaan_radiologi.tgl_permintaan desc,permintaan_radiologi.jam_permintaan desc,kamar_inap.tgl_masuk desc");
             }
 
             try {
@@ -3274,21 +3263,14 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode4.addRow(new String[]{
-                        rs.getString("noorder"), rs.getString("no_rawat"), rs.
-                        getString("no_rkm_medis") + ", " + rs.getString(
-                        "nm_pasien") + ", " + rs.getString("tgl_lahir") + ", " + rs.
-                        getString("umur"),
-                        rs.getString("nm_perawatan"), rs.getString(
-                        "tgl_permintaan"), rs.getString("jam_permintaan"),
-                        rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
-                        rs.getString("tgl_hasil"),
-                        rs.getString("jam_hasil"), rs.
-                        getString("dokter_perujuk"), rs.getString("nm_dokter"),
-                        rs.getString("nm_bangsal"), rs.getString(
-                        "informasi_tambahan"), rs.getString("diagnosa_klinis"),
-                        rs.getString("kd_pj"), rs.getString("png_jawab")
-                    });
+                    tabMode4.addRow(new String[]{rs.getString("noorder"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis") + ", " + rs.getString("nm_pasien") + ", "
+                        + rs.getString("tgl_lahir") + ", " + rs.getString("umur"),
+                        rs.getString("nm_perawatan"), rs.getString("tgl_permintaan"),
+                        rs.getString("jam_permintaan"), rs.getString("tgl_sampel"), rs.getString("jam_sampel"),
+                        rs.getString("tgl_hasil"), rs.getString("jam_hasil"), rs.getString("dokter_perujuk"),
+                        rs.getString("nm_dokter"), rs.getString("nm_bangsal"), rs.getString("informasi_tambahan"),
+                        rs.getString("diagnosa_klinis"), rs.getString("kd_pj"), rs.getString("png_jawab")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -3322,9 +3304,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                     if (formalarm.contains("ralan")) {
                         tampil();
                         for (i = 0; i < tbRadiologiRalan.getRowCount(); i++) {
-                            if ((!tbRadiologiRalan.getValueAt(i, 0).toString().
-                                    isEmpty()) && tbRadiologiRalan.getValueAt(i,
-                                            5).toString().isEmpty()) {
+                            if ((!tbRadiologiRalan.getValueAt(i, 0).toString().isEmpty())
+                                    && tbRadiologiRalan.getValueAt(i, 5).toString().isEmpty()) {
                                 permintaanbaru++;
                             }
                         }
@@ -3333,9 +3314,8 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                     if (formalarm.contains("ranap")) {
                         tampil3();
                         for (i = 0; i < tbRadiologiRanap.getRowCount(); i++) {
-                            if ((!tbRadiologiRanap.getValueAt(i, 0).toString().
-                                    isEmpty()) && tbRadiologiRanap.getValueAt(i,
-                                            5).toString().isEmpty()) {
+                            if ((!tbRadiologiRanap.getValueAt(i, 0).toString().isEmpty())
+                                    && tbRadiologiRanap.getValueAt(i, 5).toString().isEmpty()) {
                                 permintaanbaru++;
                             }
                         }
@@ -3387,6 +3367,6 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgCariPermintaanRadiologi.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPermintaanRadiologi.class.getName());
+
 }

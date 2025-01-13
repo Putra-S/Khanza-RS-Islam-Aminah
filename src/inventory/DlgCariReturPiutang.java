@@ -29,23 +29,36 @@ import keuangan.Jurnal;
 public class DlgCariReturPiutang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private riwayatobat Trackobat = new riwayatobat();
+
     public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
 
     /**
      *
      */
     public DlgBarang barang = new DlgBarang(null, false);
+
     private double ttlretur = 0, subtotal = 0;
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private String tanggal = "", noret = "", ptg = "", sat = "", bar = "", nonot = "";
+
     private String aktifkanbatch = "no";
+
     private boolean sukses = true;
+
     private int i = 0;
 
     /**
@@ -65,9 +78,8 @@ public class DlgCariReturPiutang extends javax.swing.JDialog {
             aktifkanbatch = "no";
         }
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Retur", "Tgl.Retur", "Petugas", "Pasien", "No.Nota", "Barang",
-            "Satuan", "Harga Retur(Rp)", "Jml", "SubTotal(Rp)"}) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Retur", "Tgl.Retur", "Petugas", "Pasien", "No.Nota",
+            "Barang", "Satuan", "Harga Retur(Rp)", "Jml", "SubTotal(Rp)"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -110,8 +122,7 @@ public class DlgCariReturPiutang extends javax.swing.JDialog {
         Kdptg.setDocument(new batasInput((byte) 25).getKata(Kdptg));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -148,10 +159,8 @@ public class DlgCariReturPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariReturPiutang")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        Kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        Nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        Kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        Nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     Kdptg.requestFocus();
                 }
@@ -188,10 +197,8 @@ public class DlgCariReturPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariReturPiutang")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -248,12 +255,12 @@ public class DlgCariReturPiutang extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariReturPiutang")) {
                     if (barang.satuan.getTable().getSelectedRow() != -1) {
-                        kdsat.setText(barang.satuan.getTable().getValueAt(
-                                barang.satuan.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsat.setText(barang.satuan.getTable().getValueAt(
-                                barang.satuan.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsat.setText(barang.satuan.getTable()
+                                .getValueAt(barang.satuan.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsat.setText(barang.satuan.getTable()
+                                .getValueAt(barang.satuan.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsat.requestFocus();
                 }
@@ -279,7 +286,9 @@ public class DlgCariReturPiutang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1042,8 +1051,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariReturPiutang dialog = new DlgCariReturPiutang(
-                    new javax.swing.JFrame(), true);
+            DlgCariReturPiutang dialog = new DlgCariReturPiutang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1096,9 +1104,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        tanggal = " returpiutang.tgl_retur between '" + Valid.SetTgl(TglRetur1.
-                getSelectedItem() + "") + "' and '" + Valid.SetTgl(TglRetur2.
-                        getSelectedItem() + "") + "' ";
+        tanggal = " returpiutang.tgl_retur between '" + Valid.SetTgl(TglRetur1.getSelectedItem() + "") + "' and '"
+                + Valid.SetTgl(TglRetur2.getSelectedItem() + "") + "' ";
         noret = "";
         ptg = "";
         sat = "";
@@ -1121,8 +1128,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select returpiutang.no_retur_piutang,returpiutang.tgl_retur, "
+            ps = koneksi.prepareStatement("select returpiutang.no_retur_piutang,returpiutang.tgl_retur, "
                     + "returpiutang.nip,petugas.nama,pasien.no_rkm_medis,pasien.nm_pasien,bangsal.nm_bangsal "
                     + " from returpiutang inner join petugas inner join pasien inner join bangsal "
                     + " inner join detreturpiutang inner join databarang inner join kodesatuan "
@@ -1131,65 +1137,46 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     + " and returpiutang.no_rkm_medis=pasien.no_rkm_medis "
                     + " and detreturpiutang.kode_sat=kodesatuan.kode_sat "
                     + " and returpiutang.no_retur_piutang=detreturpiutang.no_retur_piutang "
-                    + " and returpiutang.nip=petugas.nip "
-                    + " where " + tanggal + noret + ptg + sat + bar + " and returpiutang.no_retur_piutang like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and returpiutang.nip like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and petugas.nama like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and detreturpiutang.kode_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and databarang.nama_brng like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and bangsal.nm_bangsal like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and pasien.no_rkm_medis like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and pasien.nm_pasien like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and detreturpiutang.nota_piutang like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and kodesatuan.satuan like '%" + TCari.
-                            getText() + "%' or "
-                    + tanggal + noret + ptg + sat + bar + " and detreturpiutang.kode_sat like '%" + TCari.
-                            getText() + "%' "
+                    + " and returpiutang.nip=petugas.nip " + " where " + tanggal + noret + ptg + sat + bar
+                    + " and returpiutang.no_retur_piutang like '%" + TCari.getText() + "%' or " + tanggal + noret + ptg
+                    + sat + bar + " and returpiutang.nip like '%" + TCari.getText() + "%' or " + tanggal + noret + ptg
+                    + sat + bar + " and petugas.nama like '%" + TCari.getText() + "%' or " + tanggal + noret + ptg + sat
+                    + bar + " and detreturpiutang.kode_brng like '%" + TCari.getText() + "%' or " + tanggal + noret
+                    + ptg + sat + bar + " and databarang.nama_brng like '%" + TCari.getText() + "%' or " + tanggal
+                    + noret + ptg + sat + bar + " and bangsal.nm_bangsal like '%" + TCari.getText() + "%' or " + tanggal
+                    + noret + ptg + sat + bar + " and pasien.no_rkm_medis like '%" + TCari.getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + " and pasien.nm_pasien like '%" + TCari.getText() + "%' or "
+                    + tanggal + noret + ptg + sat + bar + " and detreturpiutang.nota_piutang like '%" + TCari.getText()
+                    + "%' or " + tanggal + noret + ptg + sat + bar + " and kodesatuan.satuan like '%" + TCari.getText()
+                    + "%' or " + tanggal + noret + ptg + sat + bar + " and detreturpiutang.kode_sat like '%"
+                    + TCari.getText() + "%' "
                     + " group by returpiutang.no_retur_piutang order by returpiutang.tgl_retur,returpiutang.no_retur_piutang ");
             try {
                 ttlretur = 0;
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2),
-                        rs.getString(3) + ", " + rs.getString(4),
-                        rs.getString(5) + ", " + rs.getString(6),
-                        "Retur Piutang Ke " + rs.getString(7), "", "", "", "",
-                        ""
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3) + ", " + rs.getString(4), rs.getString(5) + ", " + rs.getString(6),
+                        "Retur Piutang Ke " + rs.getString(7), "", "", "", "", ""});
                     ps2 = koneksi.prepareStatement(
                             "select detreturpiutang.nota_piutang,detreturpiutang.kode_brng,databarang.nama_brng, "
                             + "detreturpiutang.kode_sat,kodesatuan.satuan,detreturpiutang.h_retur,detreturpiutang.jml_retur, "
                             + "detreturpiutang.subtotal,detreturpiutang.no_batch,detreturpiutang.no_faktur from detreturpiutang inner join databarang inner join kodesatuan "
                             + " on detreturpiutang.kode_brng=databarang.kode_brng "
                             + " and detreturpiutang.kode_sat=kodesatuan.kode_sat where "
-                            + " detreturpiutang.no_retur_piutang='" + rs.
-                                    getString(1) + "' " + sat + bar + nonot + " and detreturpiutang.kode_brng like '%" + TCari.
-                            getText() + "%' or "
-                            + " detreturpiutang.no_retur_piutang='" + rs.
-                                    getString(1) + "' " + sat + bar + nonot + " and databarang.nama_brng like '%" + TCari.
-                            getText() + "%' or "
-                            + " detreturpiutang.no_retur_piutang='" + rs.
-                                    getString(1) + "' " + sat + bar + nonot + " and detreturpiutang.nota_piutang like '%" + TCari.
-                            getText() + "%' or "
-                            + " detreturpiutang.no_retur_piutang='" + rs.
-                                    getString(1) + "' " + sat + bar + nonot + " and detreturpiutang.kode_sat like '%" + TCari.
-                            getText() + "%' or "
-                            + " detreturpiutang.no_retur_piutang='" + rs.
-                                    getString(1) + "' " + sat + bar + nonot + " and detreturpiutang.nota_piutang like '%" + TCari.
-                            getText() + "%' or "
-                            + " detreturpiutang.no_retur_piutang='" + rs.
-                                    getString(1) + "' " + sat + bar + nonot + " and kodesatuan.satuan like '%" + TCari.
-                            getText() + "%' order by detreturpiutang.kode_brng  ");
+                            + " detreturpiutang.no_retur_piutang='" + rs.getString(1) + "' " + sat + bar + nonot
+                            + " and detreturpiutang.kode_brng like '%" + TCari.getText() + "%' or "
+                            + " detreturpiutang.no_retur_piutang='" + rs.getString(1) + "' " + sat + bar + nonot
+                            + " and databarang.nama_brng like '%" + TCari.getText() + "%' or "
+                            + " detreturpiutang.no_retur_piutang='" + rs.getString(1) + "' " + sat + bar + nonot
+                            + " and detreturpiutang.nota_piutang like '%" + TCari.getText() + "%' or "
+                            + " detreturpiutang.no_retur_piutang='" + rs.getString(1) + "' " + sat + bar + nonot
+                            + " and detreturpiutang.kode_sat like '%" + TCari.getText() + "%' or "
+                            + " detreturpiutang.no_retur_piutang='" + rs.getString(1) + "' " + sat + bar + nonot
+                            + " and detreturpiutang.nota_piutang like '%" + TCari.getText() + "%' or "
+                            + " detreturpiutang.no_retur_piutang='" + rs.getString(1) + "' " + sat + bar + nonot
+                            + " and kodesatuan.satuan like '%" + TCari.getText()
+                            + "%' order by detreturpiutang.kode_brng  ");
                     try {
                         rs2 = ps2.executeQuery();
                         subtotal = 0;
@@ -1197,19 +1184,15 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         while (rs2.next()) {
                             ttlretur += rs2.getDouble(8);
                             subtotal += rs2.getDouble(8);
-                            tabMode.addRow(new Object[]{
-                                "", "", no + ". Batch : " + rs2.getString(
-                                "no_batch"), "Faktur : " + rs2.getString(
-                                "no_faktur"), "Nota : " + rs2.getString(1), rs2.
-                                getString(2) + ", " + rs2.getString(3),
-                                rs2.getString(4) + ", " + rs2.getString(5),
-                                Valid.SetAngka(rs2.getDouble(6)), rs2.getString(
-                                7), Valid.SetAngka(rs2.getDouble(8))
-                            });
+                            tabMode.addRow(new Object[]{"", "", no + ". Batch : " + rs2.getString("no_batch"),
+                                "Faktur : " + rs2.getString("no_faktur"), "Nota : " + rs2.getString(1),
+                                rs2.getString(2) + ", " + rs2.getString(3),
+                                rs2.getString(4) + ", " + rs2.getString(5), Valid.SetAngka(rs2.getDouble(6)),
+                                rs2.getString(7), Valid.SetAngka(rs2.getDouble(8))});
                             no++;
                         }
-                        tabMode.addRow(new Object[]{"", "", "Total Retur", "",
-                            "", "", "", "", ":", Valid.SetAngka(subtotal)});
+                        tabMode.addRow(new Object[]{"", "", "Total Retur", "", "", "", "", "", ":",
+                            Valid.SetAngka(subtotal)});
                     } catch (Exception e) {
                         System.out.println("Notif Detail Retur " + e);
                     } finally {
@@ -1247,6 +1230,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgCariReturPiutang.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariReturPiutang.class.getName());
+
 }

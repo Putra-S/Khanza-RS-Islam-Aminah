@@ -30,22 +30,30 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
-    private RMCariPemeriksaanTTV caripemeriksaanTTV = new RMCariPemeriksaanTTV(
-            null, false);
+
+    private RMCariPemeriksaanTTV caripemeriksaanTTV = new RMCariPemeriksaanTTV(null, false);
+
     private String dpjp = "";
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -60,12 +68,10 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "JK", "Tgl.Lahir",
-            "Tgl.Obser", "Jam Obser", "GCS (E,V,M)",
-            "TD(mmHg)", "HR(x/menit)", "RR(x/menit)", "Suhu(°C)", "SpO2(%)",
-            "Intext", "Outtext", "NIP", "Nama Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Umur", "JK", "Tgl.Lahir", "Tgl.Obser",
+                    "Jam Obser", "GCS (E,V,M)", "TD(mmHg)", "HR(x/menit)", "RR(x/menit)", "Suhu(°C)", "SpO2(%)",
+                    "Intext", "Outtext", "NIP", "Nama Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -74,7 +80,8 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -131,8 +138,7 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -169,10 +175,9 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 NIP.requestFocus();
             }
@@ -207,20 +212,13 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 for (i = 0; i < caripemeriksaanTTV.getTable().getRowCount(); i++) {
-                    if (caripemeriksaanTTV.getTable().getValueAt(i, 0).
-                            toString().equals("true")) {
-                        Suhu.setText(caripemeriksaanTTV.getTable().getValueAt(i,
-                                3).toString());
-                        TD.setText(caripemeriksaanTTV.getTable().
-                                getValueAt(i, 4).toString());
-                        HR.setText(caripemeriksaanTTV.getTable().
-                                getValueAt(i, 5).toString());
-                        RR.setText(caripemeriksaanTTV.getTable().
-                                getValueAt(i, 6).toString());
-                        SPO.setText(caripemeriksaanTTV.getTable().getValueAt(i,
-                                7).toString());
-                        GCS.setText(caripemeriksaanTTV.getTable().getValueAt(i,
-                                8).toString());
+                    if (caripemeriksaanTTV.getTable().getValueAt(i, 0).toString().equals("true")) {
+                        Suhu.setText(caripemeriksaanTTV.getTable().getValueAt(i, 3).toString());
+                        TD.setText(caripemeriksaanTTV.getTable().getValueAt(i, 4).toString());
+                        HR.setText(caripemeriksaanTTV.getTable().getValueAt(i, 5).toString());
+                        RR.setText(caripemeriksaanTTV.getTable().getValueAt(i, 6).toString());
+                        SPO.setText(caripemeriksaanTTV.getTable().getValueAt(i, 7).toString());
+                        GCS.setText(caripemeriksaanTTV.getTable().getValueAt(i, 8).toString());
                         Suhu.requestFocus();
                         TD.requestFocus();
                         HR.requestFocus();
@@ -261,12 +259,14 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
-
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    private void initComponents() {
+//GEN-BEGIN:initComponents
     jPopupMenu1 = new javax.swing.JPopupMenu();
     MnCatatanObservasiIGD = new javax.swing.JMenuItem();
     JK = new widget.TextBox();
@@ -1338,17 +1338,17 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
         Valid.pindah(evt, intext, BtnSimpan);
     }//GEN-LAST:event_outtextKeyPressed
 
-  private void BtnDokter5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokter5ActionPerformed
-      if (TNoRw.getText().isEmpty() && TNoRM.getText().isEmpty()) {
-          JOptionPane.showMessageDialog(null, "Pasien masih kosong...!!!");
-      } else {
-          caripemeriksaanTTV.setNoRawat(TNoRw.getText());
-          caripemeriksaanTTV.tampil();
-          caripemeriksaanTTV.setSize(internalFrame1.getWidth() - 20,
-                  internalFrame1.getHeight() - 20);
-          caripemeriksaanTTV.setLocationRelativeTo(internalFrame1);
-          caripemeriksaanTTV.setVisible(true);
-      }
+    private void BtnDokter5ActionPerformed(java.awt.event.ActionEvent evt) {
+        if (TNoRw.getText().isEmpty() && TNoRM.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Pasien masih kosong...!!!");
+        } else {
+          caripemeriksaanTTV.setNoRawat(TNoRw.getText());//GEN-FIRST:event_BtnDokter5ActionPerformed
+            caripemeriksaanTTV.tampil();
+            caripemeriksaanTTV.setSize(internalFrame1.getWidth() - 20,
+                    internalFrame1.getHeight() - 20);
+            caripemeriksaanTTV.setLocationRelativeTo(internalFrame1);
+            caripemeriksaanTTV.setVisible(true);
+        }
   }//GEN-LAST:event_BtnDokter5ActionPerformed
 
     /**
@@ -1356,8 +1356,7 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMDataCatatanObservasiRanap dialog = new RMDataCatatanObservasiRanap(
-                    new javax.swing.JFrame(), true);
+            RMDataCatatanObservasiRanap dialog = new RMDataCatatanObservasiRanap(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1369,11 +1368,13 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
         });
     }
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private widget.Button BtnAll;
-  private widget.Button BtnBatal;
-  private widget.Button BtnCari;
-  private widget.Button BtnDokter5;
+    // Variables declaration - do not modify
+    private widget.Button BtnAll;
+
+    private widget.Button BtnBatal;
+
+    private widget.Button BtnCari;
+  private widget.Button BtnDokter5;//GEN-BEGIN:variables
   private widget.Button BtnEdit;
   private widget.Button BtnHapus;
   private widget.Button BtnKeluar;
@@ -1468,15 +1469,11 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1486,19 +1483,12 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),
-                        rs.getString("umurdaftar") + " " + rs.getString(
-                        "sttsumur"), rs.getString("jk"), rs.getString(
-                        "tgl_lahir"),
-                        rs.getString("tgl_perawatan"), rs.getString("jam_rawat"),
-                        rs.getString("gcs"), rs.getString("td"),
-                        rs.getString("hr"), rs.getString("rr"), rs.getString(
-                        "suhu"), rs.getString("spo2"), rs.getString("intext"),
-                        rs.getString("outtext"), rs.getString("nip"),
-                        rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("umurdaftar") + " " + rs.getString("sttsumur"),
+                        rs.getString("jk"), rs.getString("tgl_lahir"), rs.getString("tgl_perawatan"),
+                        rs.getString("jam_rawat"), rs.getString("gcs"), rs.getString("td"), rs.getString("hr"),
+                        rs.getString("rr"), rs.getString("suhu"), rs.getString("spo2"), rs.getString("intext"),
+                        rs.getString("outtext"), rs.getString("nip"), rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1531,43 +1521,24 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Umur.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(0, 2));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(3, 5));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString().substring(6, 8));
-            GCS.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                            toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(0, 2));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(3, 5));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().substring(6, 8));
+            GCS.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
             TD.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
-            HR.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                            toString());
-            RR.
-                    setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                            toString());
-            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            SPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            intext.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            outtext.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
+            HR.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            RR.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Suhu.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            SPO.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            intext.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            outtext.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
         }
     }
 
@@ -1584,12 +1555,9 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
-                    Umur.setText(rs.getString("umurdaftar") + " " + rs.
-                            getString("sttsumur"));
+                    Umur.setText(rs.getString("umurdaftar") + " " + rs.getString("sttsumur"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1644,8 +1612,7 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(NIP.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
 
@@ -1664,7 +1631,9 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1706,7 +1675,7 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -1718,32 +1687,25 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("catatan_observasi_ranap",
-                "tgl_perawatan=? and jam_rawat=? and no_rawat=?",
+        if (Sequel.mengedittf("catatan_observasi_ranap", "tgl_perawatan=? and jam_rawat=? and no_rawat=?",
                 "no_rawat=?,tgl_perawatan=?,jam_rawat=?,gcs=?,td=?,hr=?,rr=?,suhu=?,spo2=?,intext=?,outtext=?,nip=?",
-                15, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + ""), Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    GCS.getText(), TD.getText(), HR.getText(), RR.getText(),
-                    Suhu.getText(), SPO.getText(), intext.getText(), outtext.
-                    getText(), NIP.getText(), tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString(),
+                15,
+                new String[]{TNoRw.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""),
+                    Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    GCS.getText(), TD.getText(), HR.getText(), RR.getText(), Suhu.getText(), SPO.getText(),
+                    intext.getText(), outtext.getText(), NIP.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString(),
                     tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(Umur.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + ""),
-                    tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(Jam.getSelectedItem() + ":" + Menit.
-                    getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.
-                    getSelectedRow(), 7);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + ""), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    tbObat.getSelectedRow(), 7);
             tbObat.setValueAt(GCS.getText(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(TD.getText(), tbObat.getSelectedRow(), 9);
             tbObat.setValueAt(HR.getText(), tbObat.getSelectedRow(), 10);
@@ -1753,21 +1715,17 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
             tbObat.setValueAt(intext.getText(), tbObat.getSelectedRow(), 14);
             tbObat.setValueAt(outtext.getText(), tbObat.getSelectedRow(), 15);
             tbObat.setValueAt(NIP.getText(), tbObat.getSelectedRow(), 16);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            17);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 17);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from catatan_observasi_ranap where tgl_perawatan=? and jam_rawat=? and no_rawat=?",
-                3, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString(),
+        if (Sequel.queryu2tf("delete from catatan_observasi_ranap where tgl_perawatan=? and jam_rawat=? and no_rawat=?",
+                3,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString(),
                     tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -1777,32 +1735,21 @@ public class RMDataCatatanObservasiRanap extends javax.swing.JDialog {
     }
 
     private void simpan() {
-        if (Sequel.menyimpantf("catatan_observasi_ranap",
-                "?,?,?,?,?,?,?,?,?,?,?,?", "Data", 12, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + ""), Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    GCS.getText(), TD.getText(), HR.getText(), RR.getText(),
-                    Suhu.getText(), SPO.getText(), intext.getText(), outtext.
-                    getText(), NIP.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), Umur.
-                getText(), JK.getText(), TglLahir.getText(),
-                Valid.SetTgl(Tanggal.getSelectedItem() + ""), Jam.
-                getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                getSelectedItem(),
-                GCS.getText(), TD.getText(), HR.getText(), RR.getText(), Suhu.
-                getText(), SPO.getText(), intext.getText(), outtext.getText(),
-                NIP.getText(), NamaPetugas.getText()
-            });
+        if (Sequel.menyimpantf("catatan_observasi_ranap", "?,?,?,?,?,?,?,?,?,?,?,?", "Data", 12,
+                new String[]{TNoRw.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""),
+                    Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    GCS.getText(), TD.getText(), HR.getText(), RR.getText(), Suhu.getText(), SPO.getText(),
+                    intext.getText(), outtext.getText(), NIP.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), Umur.getText(),
+                JK.getText(), TglLahir.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""),
+                Jam.getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                GCS.getText(), TD.getText(), HR.getText(), RR.getText(), Suhu.getText(), SPO.getText(),
+                intext.getText(), outtext.getText(), NIP.getText(), NamaPetugas.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMDataCatatanObservasiRanap.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMDataCatatanObservasiRanap.class.getName());
 
 }

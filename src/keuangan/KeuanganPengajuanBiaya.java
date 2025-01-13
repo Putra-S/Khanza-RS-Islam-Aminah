@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgRujuk.java
- *
- * Created on 31 Mei 10, 20:19:56
+* DlgRujuk.java
+*
+* Created on 31 Mei 10, 20:19:56
  */
 package keuangan;
 
@@ -37,18 +37,24 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author perpustakaan
  */
 public class KeuanganPengajuanBiaya extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0, pilihan = 0;
+
     private double total = 0;
 
     /**
@@ -63,25 +69,15 @@ public class KeuanganPengajuanBiaya extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Pengajuan", "Tanggal", "NIP", "Diajukan Oleh", "Bidang",
-            "Departemen", "Urgensi", "Uraian", "Tujuan",
-            "Target Sasaran", "Lokasi", "Jml", "Harga", "Total", "Keterangan",
-            "NIP P.J.", "P.J. Terkait", "Status"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.String.class,
-                java.lang.String.class, java.lang.String.class,
-                java.lang.String.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Pengajuan", "Tanggal", "NIP", "Diajukan Oleh", "Bidang", "Departemen", "Urgensi",
+                    "Uraian", "Tujuan", "Target Sasaran", "Lokasi", "Jml", "Harga", "Total", "Keterangan",
+                    "NIP P.J.", "P.J. Terkait", "Status"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -96,7 +92,8 @@ public class KeuanganPengajuanBiaya extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -152,8 +149,7 @@ public class KeuanganPengajuanBiaya extends javax.swing.JDialog {
         Harga.setDocument(new batasInput((byte) 20).getOnlyAngka(Harga));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -191,23 +187,20 @@ public class KeuanganPengajuanBiaya extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
-                        Bidang.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 6).toString());
-                        Departemen.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 5).
-                                toString());
+                        KdPetugas
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        NmPetugas
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
+                        Bidang
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 6).toString());
+                        Departemen
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 5).toString());
                         btnPetugas.requestFocus();
                     } else if (pilihan == 2) {
-                        KdPetugasPJ.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        NmPetugasPJ.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        KdPetugasPJ
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        NmPetugasPJ
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         btnPetugasPJ.requestFocus();
                     }
                 }
@@ -274,7 +267,9 @@ public class KeuanganPengajuanBiaya extends javax.swing.JDialog {
     private DlgCariPegawai petugas = new DlgCariPegawai(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1288,8 +1283,7 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganPengajuanBiaya dialog = new KeuanganPengajuanBiaya(
-                    new javax.swing.JFrame(), true);
+            KeuanganPengajuanBiaya dialog = new KeuanganPengajuanBiaya(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1377,10 +1371,12 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                     + "pengajuan_biaya.total,pengajuan_biaya.keterangan,pengajuan_biaya.nik_pj,peg2.nama as namapj,pengajuan_biaya.status "
                     + "from pengajuan_biaya inner join pegawai as peg1 on pengajuan_biaya.nik=peg1.nik "
                     + "inner join pegawai as peg2 on pengajuan_biaya.nik_pj=peg2.nik where pengajuan_biaya.tanggal between ? and ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (pengajuan_biaya.no_pengajuan like ? or pengajuan_biaya.nik like ? or peg1.nama like ? or "
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (pengajuan_biaya.no_pengajuan like ? or pengajuan_biaya.nik like ? or peg1.nama like ? or "
                     + "peg1.bidang like ? or peg1.departemen like ? or pengajuan_biaya.urgensi like ? or pengajuan_biaya.uraian_latar_belakang like ? or "
                     + "pengajuan_biaya.tujuan_pengajuan like ? or pengajuan_biaya.lokasi_kegiatan like ? or pengajuan_biaya.keterangan like ? or "
-                    + "pengajuan_biaya.nik_pj like ? or peg2.nama like ? or pengajuan_biaya.status like ?)") + " order by pengajuan_biaya.tanggal");
+                    + "pengajuan_biaya.nik_pj like ? or peg2.nama like ? or pengajuan_biaya.status like ?)")
+                    + " order by pengajuan_biaya.tanggal");
             try {
                 ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
@@ -1402,19 +1398,13 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                 rs = ps.executeQuery();
                 i = 1;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("no_pengajuan"), rs.getString("tanggal"),
-                        rs.getString("nik"), rs.getString("namapengaju"), rs.
-                        getString("bidang"),
-                        rs.getString("departemen"), rs.getString("urgensi"), rs.
-                        getString("uraian_latar_belakang"), rs.getString(
-                        "tujuan_pengajuan"), rs.getString("target_sasaran"),
-                        rs.getString("lokasi_kegiatan"), rs.getDouble("jumlah"),
-                        rs.getDouble("harga"), rs.getDouble("total"), rs.
-                        getString("keterangan"),
-                        rs.getString("nik_pj"), rs.getString("namapj"), rs.
-                        getString("status")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("no_pengajuan"), rs.getString("tanggal"),
+                        rs.getString("nik"), rs.getString("namapengaju"), rs.getString("bidang"),
+                        rs.getString("departemen"), rs.getString("urgensi"), rs.getString("uraian_latar_belakang"),
+                        rs.getString("tujuan_pengajuan"), rs.getString("target_sasaran"),
+                        rs.getString("lokasi_kegiatan"), rs.getDouble("jumlah"), rs.getDouble("harga"),
+                        rs.getDouble("total"), rs.getString("keterangan"), rs.getString("nik_pj"),
+                        rs.getString("namapj"), rs.getString("status")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1450,40 +1440,23 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            NoPengajuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            KdPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            NmPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            Bidang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            Departemen.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Urgensi.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 6).toString());
-            Uraian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            Tujuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
-            TargetSasaran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            Lokasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            Jumlah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            Harga.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            Total.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).
-                    toString());
-            KdPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).
-                    toString());
-            NmPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).
-                    toString());
+            NoPengajuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            KdPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            NmPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            Bidang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Departemen.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Urgensi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Uraian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Tujuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            TargetSasaran.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Lokasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Jumlah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Harga.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Total.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            KdPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            NmPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
         }
     }
 
@@ -1518,18 +1491,17 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(pengajuan_biaya.no_pengajuan,3),signed)),0) from pengajuan_biaya where pengajuan_biaya.tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "PK" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPengajuan);
+                "select ifnull(MAX(CONVERT(RIGHT(pengajuan_biaya.no_pengajuan,3),signed)),0) from pengajuan_biaya where pengajuan_biaya.tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "PK" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPengajuan);
     }
 
     private void isHitung() {
         if ((!Harga.getText().isEmpty()) && (!Jumlah.getText().isEmpty())) {
-            Total.setText(Valid.SetAngka(
-                    Double.parseDouble(Harga.getText()) * Double.parseDouble(
-                    Jumlah.getText())));
+            Total.setText(Valid.SetAngka(Double.parseDouble(Harga.getText()) * Double.parseDouble(Jumlah.getText())));
         }
     }
 
@@ -1537,45 +1509,31 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         if (Sequel.mengedittf("pengajuan_biaya", "no_pengajuan=?",
                 "no_pengajuan=?,tanggal=?,nik=?,urgensi=?,uraian_latar_belakang=?,tujuan_pengajuan=?,"
                 + "target_sasaran=?,lokasi_kegiatan=?,jumlah=?,harga=?,total=?,keterangan=?,nik_pj=?",
-                14, new String[]{
-                    NoPengajuan.getText(), Valid.SetTgl(Tanggal.
-                    getSelectedItem() + ""), KdPetugas.getText(), Urgensi.
-                    getSelectedItem().toString(),
-                    Uraian.getText(), Tujuan.getText(), TargetSasaran.getText(),
-                    Lokasi.getText(), Jumlah.getText(), Harga.getText(),
-                    Double.toString(
-                            Double.parseDouble(Harga.getText()) * Double.
-                            parseDouble(Jumlah.getText())), Keterangan.getText(),
-                    KdPetugasPJ.getText(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                14,
+                new String[]{NoPengajuan.getText(), Valid.SetTgl(Tanggal.getSelectedItem() + ""), KdPetugas.getText(),
+                    Urgensi.getSelectedItem().toString(), Uraian.getText(), Tujuan.getText(),
+                    TargetSasaran.getText(), Lokasi.getText(), Jumlah.getText(), Harga.getText(),
+                    Double.toString(Double.parseDouble(Harga.getText()) * Double.parseDouble(Jumlah.getText())),
+                    Keterangan.getText(), KdPetugasPJ.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(NoPengajuan.getText(), tbObat.getSelectedRow(), 0);
-            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + ""),
-                    tbObat.getSelectedRow(), 1);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + ""), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(KdPetugas.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(NmPetugas.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(Bidang.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(Departemen.getText(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(Urgensi.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 6);
+            tbObat.setValueAt(Urgensi.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
             tbObat.setValueAt(Uraian.getText(), tbObat.getSelectedRow(), 7);
             tbObat.setValueAt(Tujuan.getText(), tbObat.getSelectedRow(), 8);
-            tbObat.setValueAt(TargetSasaran.getText(), tbObat.getSelectedRow(),
-                    9);
+            tbObat.setValueAt(TargetSasaran.getText(), tbObat.getSelectedRow(), 9);
             tbObat.setValueAt(Lokasi.getText(), tbObat.getSelectedRow(), 10);
-            tbObat.setValueAt(Double.valueOf(Jumlah.getText()), tbObat.
-                    getSelectedRow(), 11);
-            tbObat.setValueAt(Double.valueOf(Harga.getText()), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt((Double.parseDouble(Harga.getText()) * Double.
-                    parseDouble(Jumlah.getText())), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(Double.valueOf(Jumlah.getText()), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(Double.valueOf(Harga.getText()), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt((Double.parseDouble(Harga.getText()) * Double.parseDouble(Jumlah.getText())),
+                    tbObat.getSelectedRow(), 13);
             tbObat.setValueAt(Keterangan.getText(), tbObat.getSelectedRow(), 14);
-            tbObat.
-                    setValueAt(KdPetugasPJ.getText(), tbObat.getSelectedRow(),
-                            15);
-            tbObat.
-                    setValueAt(NmPetugasPJ.getText(), tbObat.getSelectedRow(),
-                            16);
+            tbObat.setValueAt(KdPetugasPJ.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(NmPetugasPJ.getText(), tbObat.getSelectedRow(), 16);
             emptTeks();
             hitung();
         }
@@ -1591,8 +1549,8 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }
 
     private void hapus() {
-        if (Sequel.meghapustf("pengajuan_biaya", "no_pengajuan", tbObat.
-                getValueAt(tbObat.getSelectedRow(), 0).toString()) == true) {
+        if (Sequel.meghapustf("pengajuan_biaya", "no_pengajuan",
+                tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -1602,6 +1560,6 @@ private void NmPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganPengajuanBiaya.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganPengajuanBiaya.class.getName());
+
 }

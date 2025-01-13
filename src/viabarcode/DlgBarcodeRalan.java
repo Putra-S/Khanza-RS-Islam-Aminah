@@ -37,36 +37,59 @@ import keuangan.Jurnal;
 import simrskhanza.DlgRawatJalan;
 
 /**
- *
  * @author dosen
  */
 public class DlgBarcodeRalan extends javax.swing.JDialog {
 
     private final DefaultTableModel TabModeTindakan, tabModeObat;
+
     private int jml = 0, i = 0, index = 0, z = 0;
-    private PreparedStatement pstindakan, pstindakan2, pstindakan3, pstindakan4, psobat, psrekening, psset_tarif, pscarikapasitas;
+
+    private PreparedStatement pstindakan, pstindakan2, pstindakan3, pstindakan4, psobat, psrekening, psset_tarif,
+            pscarikapasitas;
+
     private ResultSet rstindakan, rsset_tarif, rsobat, carikapasitas, rsrekening;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private boolean[] pilih;
+
     private String[] kode, nama, kategori;
+
     private double[] totaltnd, bagianrs, bhp, jmdokter, jmperawat, kso, menejemen;
+
     private String kd_pj = "", kd_poli = "", kd_dokter = "", poli_ralan = "Yes", cara_bayar_ralan = "Yes", norm = "";
+
     private double[] jumlah, harga, stok, eb, tsl, beli;
+
     private String[] kodebarang, namabarang, kodesatuan, letakbarang, namajenis, nobatch, nofaktur;
-    private String bangsal = "", Suspen_Piutang_Obat_Ralan = "", Obat_Ralan = "", HPP_Obat_Rawat_Jalan = "", Persediaan_Obat_Rawat_Jalan = "",
-            Suspen_Piutang_Tindakan_Ralan = "", Tindakan_Ralan = "", Beban_Jasa_Medik_Dokter_Tindakan_Ralan = "", Utang_Jasa_Medik_Dokter_Tindakan_Ralan = "",
-            Beban_Jasa_Medik_Paramedis_Tindakan_Ralan = "", Utang_Jasa_Medik_Paramedis_Tindakan_Ralan = "", Beban_KSO_Tindakan_Ralan = "", Utang_KSO_Tindakan_Ralan = "",
-            Beban_Jasa_Sarana_Tindakan_Ralan = "", Utang_Jasa_Sarana_Tindakan_Ralan = "", HPP_BHP_Tindakan_Ralan = "", Persediaan_BHP_Tindakan_Ralan = "",
+
+    private String bangsal = "", Suspen_Piutang_Obat_Ralan = "", Obat_Ralan = "", HPP_Obat_Rawat_Jalan = "",
+            Persediaan_Obat_Rawat_Jalan = "", Suspen_Piutang_Tindakan_Ralan = "", Tindakan_Ralan = "",
+            Beban_Jasa_Medik_Dokter_Tindakan_Ralan = "", Utang_Jasa_Medik_Dokter_Tindakan_Ralan = "",
+            Beban_Jasa_Medik_Paramedis_Tindakan_Ralan = "", Utang_Jasa_Medik_Paramedis_Tindakan_Ralan = "",
+            Beban_KSO_Tindakan_Ralan = "", Utang_KSO_Tindakan_Ralan = "", Beban_Jasa_Sarana_Tindakan_Ralan = "",
+            Utang_Jasa_Sarana_Tindakan_Ralan = "", HPP_BHP_Tindakan_Ralan = "", Persediaan_BHP_Tindakan_Ralan = "",
             Beban_Jasa_Menejemen_Tindakan_Ralan = "", Utang_Jasa_Menejemen_Tindakan_Ralan = "", hppfarmasi = "";
+
     private double embalase = 0, tuslah = 0, kenaikan = 0, stokbarang = 0, j = 0;
+
     private WarnaTable2 warna = new WarnaTable2();
+
     private riwayatobat Trackobat = new riwayatobat();
+
     private String aktifkanbatch = "no";
+
     private boolean sukses = true;
+
     private Jurnal jur = new Jurnal();
-    private double ttljmdokter = 0, ttlkso = 0, ttlpendapatan = 0, ttlhpp = 0, ttljual = 0, ttljasasarana = 0, ttlbhp = 0, ttlmenejemen = 0;
+
+    private double ttljmdokter = 0, ttlkso = 0, ttlpendapatan = 0, ttlhpp = 0, ttljual = 0, ttljasasarana = 0,
+            ttlbhp = 0, ttlmenejemen = 0;
 
     /**
      * Creates new form DlgPenyakit
@@ -79,18 +102,12 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         initComponents();
         this.setLocation(10, 2);
         setSize(656, 250);
-        TabModeTindakan = new DefaultTableModel(null, new Object[]{
-            "P", "Kode", "Nama Perawatan", "Kategori Perawatan", "Tarif/Biaya",
-            "Bagian RS", "BHP", "JM Dokter", "JM Perawat", "KSO", "Menejemen"}) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class
-            };
+        TabModeTindakan = new DefaultTableModel(null,
+                new Object[]{"P", "Kode", "Nama Perawatan", "Kategori Perawatan", "Tarif/Biaya", "Bagian RS", "BHP",
+                    "JM Dokter", "JM Perawat", "KSO", "Menejemen"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -145,36 +162,30 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         }
 
         tbTindakan.setDefaultRenderer(Object.class, new WarnaTable());
-        TCariTindakan.setDocument(new batasInput((byte) 100).getKata(
-                TCariTindakan));
+        TCariTindakan.setDocument(new batasInput((byte) 100).getKata(TCariTindakan));
 
-        tabModeObat = new DefaultTableModel(null, new Object[]{
-            "K", "Jml", "Kode Barang", "Nama Barang", "Satuan", "Kandungan",
-            "Harga(Rp)", "Stok", "Jenis Obat", "Embalase", "Tuslah", "H.Beli",
-            "No.Batch", "No.Faktur"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+        tabModeObat = new DefaultTableModel(null,
+                new Object[]{"K", "Jml", "Kode Barang", "Nama Barang", "Satuan", "Kandungan", "Harga(Rp)", "Stok",
+                    "Jenis Obat", "Embalase", "Tuslah", "H.Beli", "No.Batch", "No.Faktur"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
-                if ((colIndex == 0) || (colIndex == 1) || (colIndex == 9) || (colIndex == 10) || (colIndex == 12) || (colIndex == 13)) {
+                if ((colIndex == 0) || (colIndex == 1) || (colIndex == 9) || (colIndex == 10) || (colIndex == 12)
+                        || (colIndex == 13)) {
                     a = true;
                 }
                 return a;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -182,7 +193,8 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
 
         };
         tbObat.setModel(tabModeObat);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (i = 0; i < 14; i++) {
@@ -222,8 +234,7 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         tbObat.setDefaultRenderer(Object.class, warna);
         TCariObat.setDocument(new batasInput((byte) 100).getKata(TCariObat));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCariTindakan.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCariTindakan.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCariTindakan.getText().length() > 2) {
@@ -246,8 +257,7 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                 }
 
             });
-            TCariObat.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCariObat.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCariObat.getText().length() > 2) {
@@ -283,47 +293,32 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         }
 
         try {
-            psrekening = koneksi.
-                    prepareStatement("select * from set_akun_ralan");
+            psrekening = koneksi.prepareStatement("select * from set_akun_ralan");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Tindakan_Ralan = rsrekening.getString(
-                            "Suspen_Piutang_Tindakan_Ralan");
+                    Suspen_Piutang_Tindakan_Ralan = rsrekening.getString("Suspen_Piutang_Tindakan_Ralan");
                     Tindakan_Ralan = rsrekening.getString("Tindakan_Ralan");
-                    Beban_Jasa_Medik_Dokter_Tindakan_Ralan = rsrekening.
-                            getString("Beban_Jasa_Medik_Dokter_Tindakan_Ralan");
-                    Utang_Jasa_Medik_Dokter_Tindakan_Ralan = rsrekening.
-                            getString("Utang_Jasa_Medik_Dokter_Tindakan_Ralan");
-                    Beban_Jasa_Medik_Paramedis_Tindakan_Ralan = rsrekening.
-                            getString(
-                                    "Beban_Jasa_Medik_Paramedis_Tindakan_Ralan");
-                    Utang_Jasa_Medik_Paramedis_Tindakan_Ralan = rsrekening.
-                            getString(
-                                    "Utang_Jasa_Medik_Paramedis_Tindakan_Ralan");
-                    Beban_KSO_Tindakan_Ralan = rsrekening.getString(
-                            "Beban_KSO_Tindakan_Ralan");
-                    Utang_KSO_Tindakan_Ralan = rsrekening.getString(
-                            "Utang_KSO_Tindakan_Ralan");
-                    Beban_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString(
-                            "Beban_Jasa_Sarana_Tindakan_Ralan");
-                    Utang_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString(
-                            "Utang_Jasa_Sarana_Tindakan_Ralan");
-                    Beban_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString(
-                            "Beban_Jasa_Menejemen_Tindakan_Ralan");
-                    Utang_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString(
-                            "Utang_Jasa_Menejemen_Tindakan_Ralan");
-                    HPP_BHP_Tindakan_Ralan = rsrekening.getString(
-                            "HPP_BHP_Tindakan_Ralan");
-                    Persediaan_BHP_Tindakan_Ralan = rsrekening.getString(
-                            "Persediaan_BHP_Tindakan_Ralan");
-                    Suspen_Piutang_Obat_Ralan = rsrekening.getString(
-                            "Suspen_Piutang_Obat_Ralan");
+                    Beban_Jasa_Medik_Dokter_Tindakan_Ralan = rsrekening
+                            .getString("Beban_Jasa_Medik_Dokter_Tindakan_Ralan");
+                    Utang_Jasa_Medik_Dokter_Tindakan_Ralan = rsrekening
+                            .getString("Utang_Jasa_Medik_Dokter_Tindakan_Ralan");
+                    Beban_Jasa_Medik_Paramedis_Tindakan_Ralan = rsrekening
+                            .getString("Beban_Jasa_Medik_Paramedis_Tindakan_Ralan");
+                    Utang_Jasa_Medik_Paramedis_Tindakan_Ralan = rsrekening
+                            .getString("Utang_Jasa_Medik_Paramedis_Tindakan_Ralan");
+                    Beban_KSO_Tindakan_Ralan = rsrekening.getString("Beban_KSO_Tindakan_Ralan");
+                    Utang_KSO_Tindakan_Ralan = rsrekening.getString("Utang_KSO_Tindakan_Ralan");
+                    Beban_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString("Beban_Jasa_Sarana_Tindakan_Ralan");
+                    Utang_Jasa_Sarana_Tindakan_Ralan = rsrekening.getString("Utang_Jasa_Sarana_Tindakan_Ralan");
+                    Beban_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString("Beban_Jasa_Menejemen_Tindakan_Ralan");
+                    Utang_Jasa_Menejemen_Tindakan_Ralan = rsrekening.getString("Utang_Jasa_Menejemen_Tindakan_Ralan");
+                    HPP_BHP_Tindakan_Ralan = rsrekening.getString("HPP_BHP_Tindakan_Ralan");
+                    Persediaan_BHP_Tindakan_Ralan = rsrekening.getString("Persediaan_BHP_Tindakan_Ralan");
+                    Suspen_Piutang_Obat_Ralan = rsrekening.getString("Suspen_Piutang_Obat_Ralan");
                     Obat_Ralan = rsrekening.getString("Obat_Ralan");
-                    HPP_Obat_Rawat_Jalan = rsrekening.getString(
-                            "HPP_Obat_Rawat_Jalan");
-                    Persediaan_Obat_Rawat_Jalan = rsrekening.getString(
-                            "Persediaan_Obat_Rawat_Jalan");
+                    HPP_Obat_Rawat_Jalan = rsrekening.getString("HPP_Obat_Rawat_Jalan");
+                    Persediaan_Obat_Rawat_Jalan = rsrekening.getString("Persediaan_Obat_Rawat_Jalan");
                 }
             } catch (SQLException e) {
                 System.out.println("Notif Rekening : " + e);
@@ -347,7 +342,9 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1629,8 +1626,7 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgBarcodeRalan dialog = new DlgBarcodeRalan(
-                    new javax.swing.JFrame(), true);
+            DlgBarcodeRalan dialog = new DlgBarcodeRalan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1711,20 +1707,13 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                     kode[index] = tbTindakan.getValueAt(i, 1).toString();
                     nama[index] = tbTindakan.getValueAt(i, 2).toString();
                     kategori[index] = tbTindakan.getValueAt(i, 3).toString();
-                    totaltnd[index] = Double.parseDouble(tbTindakan.
-                            getValueAt(i, 4).toString());
-                    bagianrs[index] = Double.parseDouble(tbTindakan.
-                            getValueAt(i, 5).toString());
-                    bhp[index] = Double.parseDouble(tbTindakan.getValueAt(i, 6).
-                            toString());
-                    jmdokter[index] = Double.parseDouble(tbTindakan.
-                            getValueAt(i, 7).toString());
-                    jmperawat[index] = Double.parseDouble(tbTindakan.getValueAt(
-                            i, 8).toString());
-                    kso[index] = Double.parseDouble(tbTindakan.getValueAt(i, 9).
-                            toString());
-                    menejemen[index] = Double.parseDouble(tbTindakan.getValueAt(
-                            i, 10).toString());
+                    totaltnd[index] = Double.parseDouble(tbTindakan.getValueAt(i, 4).toString());
+                    bagianrs[index] = Double.parseDouble(tbTindakan.getValueAt(i, 5).toString());
+                    bhp[index] = Double.parseDouble(tbTindakan.getValueAt(i, 6).toString());
+                    jmdokter[index] = Double.parseDouble(tbTindakan.getValueAt(i, 7).toString());
+                    jmperawat[index] = Double.parseDouble(tbTindakan.getValueAt(i, 8).toString());
+                    kso[index] = Double.parseDouble(tbTindakan.getValueAt(i, 9).toString());
+                    menejemen[index] = Double.parseDouble(tbTindakan.getValueAt(i, 10).toString());
                     index++;
                 }
             }
@@ -1732,11 +1721,8 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
             Valid.tabelKosong(TabModeTindakan);
 
             for (i = 0; i < jml; i++) {
-                TabModeTindakan.addRow(new Object[]{
-                    pilih[i], kode[i], nama[i], kategori[i], totaltnd[i],
-                    bagianrs[i], bhp[i], jmdokter[i], jmperawat[i], kso[i],
-                    menejemen[i]
-                });
+                TabModeTindakan.addRow(new Object[]{pilih[i], kode[i], nama[i], kategori[i], totaltnd[i], bagianrs[i],
+                    bhp[i], jmdokter[i], jmperawat[i], kso[i], menejemen[i]});
             }
 
             pstindakan = koneksi.prepareStatement(
@@ -1775,65 +1761,44 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                 if (poli_ralan.equals("Yes") && cara_bayar_ralan.equals("Yes")) {
                     pstindakan.setString(1, kd_pj.trim());
                     pstindakan.setString(2, kd_poli.trim());
-                    pstindakan.setString(3,
-                            "%" + TCariTindakan.getText().trim() + "%");
+                    pstindakan.setString(3, "%" + TCariTindakan.getText().trim() + "%");
                     pstindakan.setString(4, kd_pj.trim());
                     pstindakan.setString(5, kd_poli.trim());
-                    pstindakan.setString(6,
-                            "%" + TCariTindakan.getText().trim() + "%");
+                    pstindakan.setString(6, "%" + TCariTindakan.getText().trim() + "%");
                     pstindakan.setString(7, kd_pj.trim());
                     pstindakan.setString(8, kd_poli.trim());
-                    pstindakan.setString(9,
-                            "%" + TCariTindakan.getText().trim() + "%");
+                    pstindakan.setString(9, "%" + TCariTindakan.getText().trim() + "%");
                     rstindakan = pstindakan.executeQuery();
-                } else if (poli_ralan.equals("No") && cara_bayar_ralan.equals(
-                        "Yes")) {
+                } else if (poli_ralan.equals("No") && cara_bayar_ralan.equals("Yes")) {
                     pstindakan2.setString(1, kd_pj.trim());
-                    pstindakan2.setString(2, "%" + TCariTindakan.getText().
-                            trim() + "%");
+                    pstindakan2.setString(2, "%" + TCariTindakan.getText().trim() + "%");
                     pstindakan2.setString(3, kd_pj.trim());
-                    pstindakan2.setString(4, "%" + TCariTindakan.getText().
-                            trim() + "%");
+                    pstindakan2.setString(4, "%" + TCariTindakan.getText().trim() + "%");
                     pstindakan2.setString(5, kd_pj.trim());
-                    pstindakan2.setString(6, "%" + TCariTindakan.getText().
-                            trim() + "%");
+                    pstindakan2.setString(6, "%" + TCariTindakan.getText().trim() + "%");
                     rstindakan = pstindakan2.executeQuery();
-                } else if (poli_ralan.equals("Yes") && cara_bayar_ralan.equals(
-                        "No")) {
+                } else if (poli_ralan.equals("Yes") && cara_bayar_ralan.equals("No")) {
                     pstindakan3.setString(1, kd_poli.trim());
-                    pstindakan3.setString(2, "%" + TCariTindakan.getText().
-                            trim() + "%");
+                    pstindakan3.setString(2, "%" + TCariTindakan.getText().trim() + "%");
                     pstindakan3.setString(3, kd_poli.trim());
-                    pstindakan3.setString(4, "%" + TCariTindakan.getText().
-                            trim() + "%");
+                    pstindakan3.setString(4, "%" + TCariTindakan.getText().trim() + "%");
                     pstindakan3.setString(5, kd_poli.trim());
-                    pstindakan3.setString(6, "%" + TCariTindakan.getText().
-                            trim() + "%");
+                    pstindakan3.setString(6, "%" + TCariTindakan.getText().trim() + "%");
                     rstindakan = pstindakan3.executeQuery();
-                } else if (poli_ralan.equals("No") && cara_bayar_ralan.equals(
-                        "No")) {
-                    pstindakan4.setString(1, "%" + TCariTindakan.getText().
-                            trim() + "%");
-                    pstindakan4.setString(2, "%" + TCariTindakan.getText().
-                            trim() + "%");
-                    pstindakan4.setString(3, "%" + TCariTindakan.getText().
-                            trim() + "%");
+                } else if (poli_ralan.equals("No") && cara_bayar_ralan.equals("No")) {
+                    pstindakan4.setString(1, "%" + TCariTindakan.getText().trim() + "%");
+                    pstindakan4.setString(2, "%" + TCariTindakan.getText().trim() + "%");
+                    pstindakan4.setString(3, "%" + TCariTindakan.getText().trim() + "%");
                     rstindakan = pstindakan4.executeQuery();
                 }
 
                 while (rstindakan.next()) {
                     if (rstindakan.getDouble("total_byrdr") > 0) {
-                        TabModeTindakan.addRow(new Object[]{
-                            false, rstindakan.getString(1), rstindakan.
-                            getString(2), rstindakan.getString(3),
-                            rstindakan.getDouble("total_byrdr"), rstindakan.
-                            getDouble("material"),
-                            rstindakan.getDouble("bhp"), rstindakan.getDouble(
-                            "tarif_tindakandr"),
-                            rstindakan.getDouble("tarif_tindakanpr"),
-                            rstindakan.getDouble("kso"),
-                            rstindakan.getDouble("menejemen")
-                        });
+                        TabModeTindakan.addRow(new Object[]{false, rstindakan.getString(1), rstindakan.getString(2),
+                            rstindakan.getString(3), rstindakan.getDouble("total_byrdr"),
+                            rstindakan.getDouble("material"), rstindakan.getDouble("bhp"),
+                            rstindakan.getDouble("tarif_tindakandr"), rstindakan.getDouble("tarif_tindakanpr"),
+                            rstindakan.getDouble("kso"), rstindakan.getDouble("menejemen")});
                     }
                 }
             } catch (SQLException e) {
@@ -1865,25 +1830,17 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      */
     public void setNoRm(String norwt) {
-        this.kd_pj = Sequel.cariIsi(
-                "select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=?",
+        this.kd_pj = Sequel.cariIsi("select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=?", norwt);
+        this.kd_poli = Sequel.cariIsi("select reg_periksa.kd_poli from reg_periksa where reg_periksa.no_rawat=?",
                 norwt);
-        this.kd_poli = Sequel.cariIsi(
-                "select reg_periksa.kd_poli from reg_periksa where reg_periksa.no_rawat=?",
+        this.kd_dokter = Sequel.cariIsi("select reg_periksa.kd_dokter from reg_periksa where reg_periksa.no_rawat=?",
                 norwt);
-        this.kd_dokter = Sequel.cariIsi(
-                "select reg_periksa.kd_dokter from reg_periksa where reg_periksa.no_rawat=?",
+        this.norm = Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=?",
                 norwt);
-        this.norm = Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=?",
-                norwt);
-        kenaikan = Sequel.cariIsiAngka(
-                "select (hargajual/100) from set_harga_obat_ralan where kd_pj=?",
-                this.kd_pj);
+        kenaikan = Sequel.cariIsiAngka("select (hargajual/100) from set_harga_obat_ralan where kd_pj=?", this.kd_pj);
         TCariTindakan.requestFocus();
         try {
             psset_tarif = koneksi.prepareStatement("select * from set_tarif");
@@ -1909,13 +1866,10 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        bangsal = Sequel.cariIsi(
-                "select kd_bangsal from set_depo_ralan where kd_poli=?", Sequel.
-                        cariIsi("select reg_periksa.kd_poli from reg_periksa where reg_periksa.no_rawat=?",
-                                norwt));
+        bangsal = Sequel.cariIsi("select kd_bangsal from set_depo_ralan where kd_poli=?",
+                Sequel.cariIsi("select reg_periksa.kd_poli from reg_periksa where reg_periksa.no_rawat=?", norwt));
         if (bangsal.isEmpty()) {
-            bangsal = Sequel.cariIsi(
-                    "select set_lokasi.kd_bangsal from set_lokasi limit 1");
+            bangsal = Sequel.cariIsi("select set_lokasi.kd_bangsal from set_lokasi limit 1");
         }
     }
 
@@ -1959,33 +1913,27 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         z = 0;
         for (i = 0; i < tbObat.getRowCount(); i++) {
             if (!tbObat.getValueAt(i, 1).toString().isEmpty()) {
-                pilih[z] = Boolean.parseBoolean(tbObat.getValueAt(i, 0).
-                        toString());
-                jumlah[z] = Double.parseDouble(tbObat.getValueAt(i, 1).
-                        toString());
+                pilih[z] = Boolean.parseBoolean(tbObat.getValueAt(i, 0).toString());
+                jumlah[z] = Double.parseDouble(tbObat.getValueAt(i, 1).toString());
                 kodebarang[z] = tbObat.getValueAt(i, 2).toString();
                 namabarang[z] = tbObat.getValueAt(i, 3).toString();
                 kodesatuan[z] = tbObat.getValueAt(i, 4).toString();
                 letakbarang[z] = tbObat.getValueAt(i, 5).toString();
-                harga[z] = Double.
-                        parseDouble(tbObat.getValueAt(i, 6).toString());
+                harga[z] = Double.parseDouble(tbObat.getValueAt(i, 6).toString());
                 stok[z] = Double.parseDouble(tbObat.getValueAt(i, 7).toString());
                 namajenis[z] = tbObat.getValueAt(i, 8).toString();
                 try {
-                    eb[z] = Double.parseDouble(tbObat.getValueAt(i, 9).
-                            toString());
+                    eb[z] = Double.parseDouble(tbObat.getValueAt(i, 9).toString());
                 } catch (Exception e) {
                     eb[z] = 0;
                 }
                 try {
-                    tsl[z] = Double.parseDouble(tbObat.getValueAt(i, 10).
-                            toString());
+                    tsl[z] = Double.parseDouble(tbObat.getValueAt(i, 10).toString());
                 } catch (Exception e) {
                     tsl[z] = 0;
                 }
                 try {
-                    beli[z] = Double.parseDouble(tbObat.getValueAt(i, 11).
-                            toString());
+                    beli[z] = Double.parseDouble(tbObat.getValueAt(i, 11).toString());
                 } catch (Exception e) {
                     beli[z] = 0;
                 }
@@ -1998,18 +1946,17 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         Valid.tabelKosong(tabModeObat);
 
         for (i = 0; i < z; i++) {
-            tabModeObat.addRow(new Object[]{
-                pilih[i], jumlah[i], kodebarang[i], namabarang[i], kodesatuan[i],
-                letakbarang[i], harga[i], stok[i], namajenis[i], eb[i], tsl[i],
-                beli[i], nobatch[i], nofaktur[i]
-            });
+            tabModeObat.addRow(new Object[]{pilih[i], jumlah[i], kodebarang[i], namabarang[i], kodesatuan[i],
+                letakbarang[i], harga[i], stok[i], namajenis[i], eb[i], tsl[i], beli[i], nobatch[i], nofaktur[i]});
         }
         try {
             if (aktifkanbatch.equals("yes")) {
                 if (kenaikan > 0) {
                     psobat = koneksi.prepareStatement(
                             " select data_batch.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,(data_batch.h_beli+(data_batch.h_beli*?)) as ralan,gudangbarang.stok,"
-                            + " databarang.letak_barang,data_batch.no_batch,data_batch.no_faktur,data_batch." + hppfarmasi + " as dasar from data_batch inner join databarang on data_batch.kode_brng=databarang.kode_brng inner join jenis on databarang.kdjns=jenis.kdjns "
+                            + " databarang.letak_barang,data_batch.no_batch,data_batch.no_faktur,data_batch."
+                            + hppfarmasi
+                            + " as dasar from data_batch inner join databarang on data_batch.kode_brng=databarang.kode_brng inner join jenis on databarang.kdjns=jenis.kdjns "
                             + " inner join gudangbarang on gudangbarang.kode_brng=data_batch.kode_brng and gudangbarang.no_batch=data_batch.no_batch and gudangbarang.no_faktur=data_batch.no_faktur "
                             + " where gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.kode_brng like ? or "
                             + " gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.nama_brng like ? or "
@@ -2017,26 +1964,18 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                     try {
                         psobat.setDouble(1, kenaikan);
                         psobat.setString(2, bangsal);
-                        psobat.setString(3,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(3, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(4, bangsal);
-                        psobat.setString(5,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(5, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(6, bangsal);
-                        psobat.setString(7,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(7, "%" + TCariObat.getText().trim() + "%");
                         rsobat = psobat.executeQuery();
                         while (rsobat.next()) {
-                            tabModeObat.addRow(new Object[]{
-                                false, "", rsobat.getString("kode_brng"),
-                                rsobat.getString("nama_brng"),
-                                rsobat.getString("kode_sat"), rsobat.getString(
-                                "letak_barang"),
-                                rsobat.getDouble("ralan"), rsobat.getDouble(
-                                "stok"), rsobat.getString("nama"), 0, 0,
-                                rsobat.getDouble("dasar"), rsobat.getString(
-                                "no_batch"), rsobat.getString("no_faktur")
-                            });
+                            tabModeObat.addRow(new Object[]{false, "", rsobat.getString("kode_brng"),
+                                rsobat.getString("nama_brng"), rsobat.getString("kode_sat"),
+                                rsobat.getString("letak_barang"), rsobat.getDouble("ralan"),
+                                rsobat.getDouble("stok"), rsobat.getString("nama"), 0, 0, rsobat.getDouble("dasar"),
+                                rsobat.getString("no_batch"), rsobat.getString("no_faktur")});
                         }
                     } catch (SQLException e) {
                         System.out.println("Notifikasi : " + e);
@@ -2051,7 +1990,9 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
 
                 } else {
                     psobat = koneksi.prepareStatement(
-                            " select data_batch.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,data_batch.ralan,data_batch." + hppfarmasi + " as dasar,databarang.letak_barang,gudangbarang.stok,data_batch.no_batch,data_batch.no_faktur "
+                            " select data_batch.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,data_batch.ralan,data_batch."
+                            + hppfarmasi
+                            + " as dasar,databarang.letak_barang,gudangbarang.stok,data_batch.no_batch,data_batch.no_faktur "
                             + " from data_batch inner join databarang on data_batch.kode_brng=databarang.kode_brng inner join jenis on databarang.kdjns=jenis.kdjns "
                             + " inner join gudangbarang on gudangbarang.kode_brng=data_batch.kode_brng and gudangbarang.no_batch=data_batch.no_batch and gudangbarang.no_faktur=data_batch.no_faktur "
                             + " where gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.kode_brng like ? or "
@@ -2059,26 +2000,18 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                             + " gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and jenis.nama like ? order by databarang.nama_brng");
                     try {
                         psobat.setString(1, bangsal);
-                        psobat.setString(2,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(2, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(3, bangsal);
-                        psobat.setString(4,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(4, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(5, bangsal);
-                        psobat.setString(6,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(6, "%" + TCariObat.getText().trim() + "%");
                         rsobat = psobat.executeQuery();
                         while (rsobat.next()) {
-                            tabModeObat.addRow(new Object[]{
-                                false, "", rsobat.getString("kode_brng"),
-                                rsobat.getString("nama_brng"),
-                                rsobat.getString("kode_sat"), rsobat.getString(
-                                "letak_barang"),
-                                rsobat.getDouble("ralan"), rsobat.getDouble(
-                                "stok"), rsobat.getString("nama"), 0, 0,
-                                rsobat.getDouble("dasar"), rsobat.getString(
-                                "no_batch"), rsobat.getString("no_faktur")
-                            });
+                            tabModeObat.addRow(new Object[]{false, "", rsobat.getString("kode_brng"),
+                                rsobat.getString("nama_brng"), rsobat.getString("kode_sat"),
+                                rsobat.getString("letak_barang"), rsobat.getDouble("ralan"),
+                                rsobat.getDouble("stok"), rsobat.getString("nama"), 0, 0, rsobat.getDouble("dasar"),
+                                rsobat.getString("no_batch"), rsobat.getString("no_faktur")});
                         }
                     } catch (SQLException e) {
                         System.out.println("Notifikasi : " + e);
@@ -2095,32 +2028,26 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                 if (kenaikan > 0) {
                     psobat = koneksi.prepareStatement(
                             " select databarang.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,(databarang.h_beli+(databarang.h_beli*?)) as ralan,gudangbarang.stok,"
-                            + " databarang.letak_barang,databarang." + hppfarmasi + " as dasar from databarang inner join jenis on databarang.kdjns=jenis.kdjns inner join gudangbarang on databarang.kode_brng=gudangbarang.kode_brng "
+                            + " databarang.letak_barang,databarang." + hppfarmasi
+                            + " as dasar from databarang inner join jenis on databarang.kdjns=jenis.kdjns inner join gudangbarang on databarang.kode_brng=gudangbarang.kode_brng "
                             + " where gudangbarang.no_batch='' and gudangbarang.no_faktur='' and gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.status='1' and databarang.kode_brng like ? or "
                             + " gudangbarang.no_batch='' and gudangbarang.no_faktur='' and gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.status='1' and databarang.nama_brng like ? or "
                             + " gudangbarang.no_batch='' and gudangbarang.no_faktur='' and gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.status='1' and jenis.nama like ? order by databarang.nama_brng");
                     try {
                         psobat.setDouble(1, kenaikan);
                         psobat.setString(2, bangsal);
-                        psobat.setString(3,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(3, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(4, bangsal);
-                        psobat.setString(5,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(5, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(6, bangsal);
-                        psobat.setString(7,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(7, "%" + TCariObat.getText().trim() + "%");
                         rsobat = psobat.executeQuery();
                         while (rsobat.next()) {
-                            tabModeObat.addRow(new Object[]{
-                                false, "", rsobat.getString("kode_brng"),
-                                rsobat.getString("nama_brng"),
-                                rsobat.getString("kode_sat"), rsobat.getString(
-                                "letak_barang"),
-                                rsobat.getDouble("ralan"), rsobat.getDouble(
-                                "stok"), rsobat.getString("nama"), 0, 0, rsobat.
-                                getDouble("dasar"), "", ""
-                            });
+                            tabModeObat.addRow(new Object[]{false, "", rsobat.getString("kode_brng"),
+                                rsobat.getString("nama_brng"), rsobat.getString("kode_sat"),
+                                rsobat.getString("letak_barang"), rsobat.getDouble("ralan"),
+                                rsobat.getDouble("stok"), rsobat.getString("nama"), 0, 0, rsobat.getDouble("dasar"),
+                                "", ""});
                         }
                     } catch (SQLException e) {
                         System.out.println("Notifikasi : " + e);
@@ -2134,32 +2061,26 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                     }
                 } else {
                     psobat = koneksi.prepareStatement(
-                            " select databarang.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,databarang.ralan,databarang." + hppfarmasi + " as dasar,databarang.letak_barang,gudangbarang.stok "
+                            " select databarang.kode_brng, databarang.nama_brng,jenis.nama, databarang.kode_sat,databarang.ralan,databarang."
+                            + hppfarmasi + " as dasar,databarang.letak_barang,gudangbarang.stok "
                             + " from databarang inner join jenis on databarang.kdjns=jenis.kdjns inner join gudangbarang on databarang.kode_brng=gudangbarang.kode_brng "
                             + " where gudangbarang.no_batch='' and gudangbarang.no_faktur='' and gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.status='1' and databarang.kode_brng like ? or "
                             + " gudangbarang.no_batch='' and gudangbarang.no_faktur='' and gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.status='1' and databarang.nama_brng like ? or "
                             + " gudangbarang.no_batch='' and gudangbarang.no_faktur='' and gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.status='1' and jenis.nama like ? order by databarang.nama_brng");
                     try {
                         psobat.setString(1, bangsal);
-                        psobat.setString(2,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(2, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(3, bangsal);
-                        psobat.setString(4,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(4, "%" + TCariObat.getText().trim() + "%");
                         psobat.setString(5, bangsal);
-                        psobat.setString(6,
-                                "%" + TCariObat.getText().trim() + "%");
+                        psobat.setString(6, "%" + TCariObat.getText().trim() + "%");
                         rsobat = psobat.executeQuery();
                         while (rsobat.next()) {
-                            tabModeObat.addRow(new Object[]{
-                                false, "", rsobat.getString("kode_brng"),
-                                rsobat.getString("nama_brng"),
-                                rsobat.getString("kode_sat"), rsobat.getString(
-                                "letak_barang"),
-                                rsobat.getDouble("ralan"), rsobat.getDouble(
-                                "stok"), rsobat.getString("nama"), 0, 0, rsobat.
-                                getDouble("dasar"), "", ""
-                            });
+                            tabModeObat.addRow(new Object[]{false, "", rsobat.getString("kode_brng"),
+                                rsobat.getString("nama_brng"), rsobat.getString("kode_sat"),
+                                rsobat.getString("letak_barang"), rsobat.getDouble("ralan"),
+                                rsobat.getDouble("stok"), rsobat.getString("nama"), 0, 0, rsobat.getDouble("dasar"),
+                                "", ""});
                         }
                     } catch (SQLException e) {
                         System.out.println("Notifikasi : " + e);
@@ -2185,20 +2106,16 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         } else if (row != -1) {
             if (!tabModeObat.getValueAt(row, 1).toString().isEmpty()) {
                 try {
-                    if (Double.parseDouble(tabModeObat.getValueAt(row, 1).
-                            toString()) > 0) {
+                    if (Double.parseDouble(tabModeObat.getValueAt(row, 1).toString()) > 0) {
                         stokbarang = 0;
                         if (aktifkanbatch.equals("yes")) {
                             psobat = koneksi.prepareStatement(
                                     "select ifnull(gudangbarang.stok,'0') from gudangbarang where gudangbarang.kd_bangsal=? and gudangbarang.kode_brng=? and gudangbarang.no_batch=? and gudangbarang.no_faktur=?");
                             try {
                                 psobat.setString(1, bangsal);
-                                psobat.setString(2, tbObat.getValueAt(row, 2).
-                                        toString());
-                                psobat.setString(3, tbObat.getValueAt(row, 12).
-                                        toString());
-                                psobat.setString(4, tbObat.getValueAt(row, 13).
-                                        toString());
+                                psobat.setString(2, tbObat.getValueAt(row, 2).toString());
+                                psobat.setString(3, tbObat.getValueAt(row, 12).toString());
+                                psobat.setString(4, tbObat.getValueAt(row, 13).toString());
                                 rsobat = psobat.executeQuery();
                                 if (rsobat.next()) {
                                     stokbarang = rsobat.getDouble(1);
@@ -2218,8 +2135,7 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                                     "select ifnull(gudangbarang.stok,'0') from gudangbarang where gudangbarang.kd_bangsal=? and gudangbarang.kode_brng=? and gudangbarang.no_batch='' and gudangbarang.no_faktur=''");
                             try {
                                 psobat.setString(1, bangsal);
-                                psobat.setString(2, tbObat.getValueAt(row, 2).
-                                        toString());
+                                psobat.setString(2, tbObat.getValueAt(row, 2).toString());
                                 rsobat = psobat.executeQuery();
                                 if (rsobat.next()) {
                                     stokbarang = rsobat.getDouble(1);
@@ -2240,28 +2156,21 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
 
                         j = 0;
                         try {
-                            if (tbObat.getValueAt(row, 0).toString().equals(
-                                    "true")) {
-                                pscarikapasitas = koneksi.prepareStatement(
-                                        "select IFNULL(kapasitas,1) from databarang where kode_brng=?");
+                            if (tbObat.getValueAt(row, 0).toString().equals("true")) {
+                                pscarikapasitas = koneksi
+                                        .prepareStatement("select IFNULL(kapasitas,1) from databarang where kode_brng=?");
                                 try {
-                                    pscarikapasitas.setString(1, tbObat.
-                                            getValueAt(row, 2).toString());
-                                    carikapasitas = pscarikapasitas.
-                                            executeQuery();
+                                    pscarikapasitas.setString(1, tbObat.getValueAt(row, 2).toString());
+                                    carikapasitas = pscarikapasitas.executeQuery();
                                     if (carikapasitas.next()) {
-                                        j = Double.parseDouble(tbObat.
-                                                getValueAt(row, 1).toString()) / carikapasitas.
-                                                getDouble(1);
+                                        j = Double.parseDouble(tbObat.getValueAt(row, 1).toString())
+                                                / carikapasitas.getDouble(1);
                                     } else {
-                                        j = Double.parseDouble(tbObat.
-                                                getValueAt(row, 1).toString());
+                                        j = Double.parseDouble(tbObat.getValueAt(row, 1).toString());
                                     }
                                 } catch (NumberFormatException | SQLException e) {
-                                    j = Double.parseDouble(tbObat.
-                                            getValueAt(row, 1).toString());
-                                    System.out.println(
-                                            "Kapasitasmu masih kosong broooh : " + e);
+                                    j = Double.parseDouble(tbObat.getValueAt(row, 1).toString());
+                                    System.out.println("Kapasitasmu masih kosong broooh : " + e);
                                 } finally {
                                     if (carikapasitas != null) {
                                         carikapasitas.close();
@@ -2271,16 +2180,14 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
                                     }
                                 }
                             } else {
-                                j = Double.parseDouble(
-                                        tbObat.getValueAt(row, 1).toString());
+                                j = Double.parseDouble(tbObat.getValueAt(row, 1).toString());
                             }
                         } catch (NumberFormatException | SQLException e) {
                             j = 0;
                         }
 
                         if (stokbarang < j) {
-                            JOptionPane.showMessageDialog(null,
-                                    "Maaf, Stok tidak cukup....!!!");
+                            JOptionPane.showMessageDialog(null, "Maaf, Stok tidak cukup....!!!");
                             TCariObat.requestFocus();
                             tbObat.setValueAt("", row, 1);
                         }
@@ -2292,7 +2199,6 @@ public class DlgBarcodeRalan extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgBarcodeRalan.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgBarcodeRalan.class.getName());
 
 }

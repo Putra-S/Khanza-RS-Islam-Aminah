@@ -28,8 +28,11 @@ import kepegawaian.DlgCariPetugas;
 public class DapurRingkasanPengadaan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -46,10 +49,15 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
      *
      */
     public DapurBarang barang = new DapurBarang(null, false);
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private double tagihan = 0;
+
     private int i;
+
     private String order = "order by dapurbarang.nama_brng";
 
     /**
@@ -62,24 +70,20 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis",
-            "Jumlah", "Total", "Kode Sat"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Jumlah", "Total", "Kode Sat"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -118,8 +122,7 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
         kdbar.setDocument(new batasInput((byte) 15).getKata(kdbar));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -155,10 +158,8 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (suplier.getTable().getSelectedRow() != -1) {
-                    kdsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                    nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                 }
                 kdsup.requestFocus();
             }
@@ -213,10 +214,8 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    kdptg.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmptg.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 kdptg.requestFocus();
             }
@@ -251,10 +250,8 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (barang.getTable().getSelectedRow() != -1) {
-                    kdbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 0).toString());
-                    nmbar.setText(barang.getTable().getValueAt(
-                            barang.getTable().getSelectedRow(), 1).toString());
+                    kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 0).toString());
+                    nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
                 }
                 kdbar.requestFocus();
             }
@@ -299,7 +296,9 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -880,13 +879,12 @@ public class DapurRingkasanPengadaan extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        suplier.emptTeks();
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        suplier.emptTeks();//GEN-FIRST:event_btnSuplierActionPerformed
         suplier.isCek();
         suplier.setSize(internalFrame1.getWidth() - 20, internalFrame1.
                 getHeight() - 20);
@@ -1122,8 +1120,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DapurRingkasanPengadaan dialog = new DapurRingkasanPengadaan(
-                    new javax.swing.JFrame(), true);
+            DapurRingkasanPengadaan dialog = new DapurRingkasanPengadaan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1200,15 +1197,15 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     + "inner join kodesatuan on dapurbarang.kode_sat=kodesatuan.kode_sat "
                     + "where dapurpembelian.tgl_beli between ? and ? and dapurpembelian.no_faktur like ? and dapursuplier.nama_suplier like ? and petugas.nama like ?  and dapurbarang.jenis like ? and dapurbarang.nama_brng like ? and "
                     + "(dapurpembelian.no_faktur like ? or dapurpembelian.kode_suplier like ? or dapursuplier.nama_suplier like ? or dapurpembelian.nip like ? or petugas.nama like ? or dapurbarang.jenis like ? or dapurdetailbeli.kode_brng like ? or "
-                    + "dapurbarang.nama_brng like ? or kodesatuan.satuan like ?) group by dapurdetailbeli.kode_brng " + order);
+                    + "dapurbarang.nama_brng like ? or kodesatuan.satuan like ?) group by dapurdetailbeli.kode_brng "
+                    + order);
             try {
                 ps.setString(1, Valid.SetTgl(TglBeli1.getSelectedItem() + ""));
                 ps.setString(2, Valid.SetTgl(TglBeli2.getSelectedItem() + ""));
                 ps.setString(3, "%" + NoFaktur.getText() + "%");
                 ps.setString(4, "%" + nmsup.getText() + "%");
                 ps.setString(5, "%" + nmptg.getText() + "%");
-                ps.setString(6, "%" + Jenis.getSelectedItem().toString().
-                        replaceAll("Semua", "") + "%");
+                ps.setString(6, "%" + Jenis.getSelectedItem().toString().replaceAll("Semua", "") + "%");
                 ps.setString(7, "%" + nmbar.getText() + "%");
                 ps.setString(8, "%" + TCari.getText() + "%");
                 ps.setString(9, "%" + TCari.getText() + "%");
@@ -1222,12 +1219,9 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     tagihan += rs.getDouble("total");
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("satuan"), rs.getString("namajenis"), rs.
-                        getDouble("jumlah"), rs.getDouble("total"), rs.
-                        getString("kode_sat")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("satuan"), rs.getString("namajenis"), rs.getDouble("jumlah"),
+                        rs.getDouble("total"), rs.getString("kode_sat")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1258,7 +1252,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         BtnPrint.setEnabled(akses.getdapur_ringkasan_pembelian());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DapurRingkasanPengadaan.class.getName());
+    private static final Logger LOG = Logger.getLogger(DapurRingkasanPengadaan.class.getName());
 
 }

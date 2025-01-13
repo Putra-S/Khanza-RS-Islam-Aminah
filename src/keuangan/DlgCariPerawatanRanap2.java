@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package keuangan;
 
@@ -37,37 +37,57 @@ import kepegawaian.DlgCariPetugas;
 import simrskhanza.DlgKtgPerawatan;
 
 /**
- *
  * @author dosen
  */
 public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
-    private PreparedStatement psinputrawatdr, psinputrawatpr, psinputrawatdrpr, pstarif, pscari, pscari2, pscari3, pscari4, pscari5, pscari6, pscari7, pscari8,
-            pstindakan, pstindakan2, pstindakan3, pshapustindakan, pshapustindakan2, pshapustindakan3, psrekening;
+
+    private PreparedStatement psinputrawatdr, psinputrawatpr, psinputrawatdrpr, pstarif, pscari, pscari2, pscari3,
+            pscari4, pscari5, pscari6, pscari7, pscari8, pstindakan, pstindakan2, pstindakan3, pshapustindakan,
+            pshapustindakan2, pshapustindakan3, psrekening;
+
     private ResultSet rs, rstindakan, rstarif, rsrekening;
-    private String pilihtable = "", kd_pj = "", kd_bangsal = "", ruang_ranap = "Yes", cara_bayar_ranap = "Yes", kelas = "", kelas_ranap = "Yes";
+
+    private String pilihtable = "", kd_pj = "", kd_bangsal = "", ruang_ranap = "Yes", cara_bayar_ranap = "Yes",
+            kelas = "", kelas_ranap = "Yes";
+
     private boolean[] pagi, siang, sore, malam;
+
     private boolean pg = false, sg = false, sr = false, mlm = false;
+
     private boolean sukses = false;
+
     private String[] kode, nama, kategori, kelastarif;
+
     private double[] totaltnd, bagianrs, bhp, jmdokter, jmperawat, kso, menejemen;
+
     private int jml = 0, i = 0, index = 0;
 
     /**
      *
      */
     public DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
-    private double ttljmdokter = 0, ttljmperawat = 0, ttlkso = 0, ttlpendapatan = 0, ttljasasarana = 0, ttlbhp = 0, ttlmenejemen = 0,
-            hapusttljasasarana = 0, hapusttlbhp = 0, hapusttlmenejemen = 0, hapusttljmdokter = 0, hapusttljmperawat = 0, hapusttlkso = 0, hapusttlpendapatan = 0;
+
+    private double ttljmdokter = 0, ttljmperawat = 0, ttlkso = 0, ttlpendapatan = 0, ttljasasarana = 0, ttlbhp = 0,
+            ttlmenejemen = 0, hapusttljasasarana = 0, hapusttlbhp = 0, hapusttlmenejemen = 0, hapusttljmdokter = 0,
+            hapusttljmperawat = 0, hapusttlkso = 0, hapusttlpendapatan = 0;
+
     private Jurnal jur = new Jurnal();
-    private String Suspen_Piutang_Tindakan_Ranap = "", Tindakan_Ranap = "", Beban_Jasa_Medik_Dokter_Tindakan_Ranap = "", Utang_Jasa_Medik_Dokter_Tindakan_Ranap = "",
-            Beban_Jasa_Medik_Paramedis_Tindakan_Ranap = "", Utang_Jasa_Medik_Paramedis_Tindakan_Ranap = "", Beban_KSO_Tindakan_Ranap = "", Utang_KSO_Tindakan_Ranap = "",
-            Beban_Jasa_Sarana_Tindakan_Ranap = "", Utang_Jasa_Sarana_Tindakan_Ranap = "", Beban_Jasa_Menejemen_Tindakan_Ranap = "", Utang_Jasa_Menejemen_Tindakan_Ranap = "",
+
+    private String Suspen_Piutang_Tindakan_Ranap = "", Tindakan_Ranap = "", Beban_Jasa_Medik_Dokter_Tindakan_Ranap = "",
+            Utang_Jasa_Medik_Dokter_Tindakan_Ranap = "", Beban_Jasa_Medik_Paramedis_Tindakan_Ranap = "",
+            Utang_Jasa_Medik_Paramedis_Tindakan_Ranap = "", Beban_KSO_Tindakan_Ranap = "",
+            Utang_KSO_Tindakan_Ranap = "", Beban_Jasa_Sarana_Tindakan_Ranap = "", Utang_Jasa_Sarana_Tindakan_Ranap = "",
+            Beban_Jasa_Menejemen_Tindakan_Ranap = "", Utang_Jasa_Menejemen_Tindakan_Ranap = "",
             HPP_BHP_Tindakan_Ranap = "", Persediaan_BHP_Tindakan_Ranap = "";
 
     /**
@@ -87,21 +107,13 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(656, 250);
 
-        Object[] row = {"Pagi", "Siang", "Sore", "Malam", "Kode",
-            "Nama Perawatan", "Kategori Perawatan",
-            "Tarif/Biaya", "Bagian RS", "BHP", "JM Dokter", "JM Perawat", "KSO",
-            "Menejemen", "Kelas"};
+        Object[] row = {"Pagi", "Siang", "Sore", "Malam", "Kode", "Nama Perawatan", "Kategori Perawatan",
+            "Tarif/Biaya", "Bagian RS", "BHP", "JM Dokter", "JM Perawat", "KSO", "Menejemen", "Kelas"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Boolean.class,
-                java.lang.Boolean.class, java.lang.Boolean.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Double.class,
-                java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class,
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class,
+                java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -112,9 +124,10 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
                 return a;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -122,7 +135,8 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
 
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (i = 0; i < 15; i++) {
@@ -153,8 +167,7 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -191,10 +204,8 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
                 kddokter.requestFocus();
             }
@@ -231,21 +242,17 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     switch (pilihtable) {
                         case "rawat_inap_pr":
-                            kddokter.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 0).
-                                    toString());
-                            nmdokter.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 1).
-                                    toString());
+                            kddokter.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            nmdokter.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             kddokter.requestFocus();
                             break;
                         case "rawat_inap_drpr":
-                            KdPtg2.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 0).
-                                    toString());
-                            NmPtg2.setText(petugas.getTable().getValueAt(
-                                    petugas.getTable().getSelectedRow(), 1).
-                                    toString());
+                            KdPtg2.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                            NmPtg2.setText(
+                                    petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                             KdPtg2.requestFocus();
                             break;
                     }
@@ -282,10 +289,8 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ktg.getTable().getSelectedRow() != -1) {
-                    KdKtg.setText(ktg.getTable().getValueAt(ktg.getTable().
-                            getSelectedRow(), 1).toString());
-                    NmKtg.setText(ktg.getTable().getValueAt(ktg.getTable().
-                            getSelectedRow(), 2).toString());
+                    KdKtg.setText(ktg.getTable().getValueAt(ktg.getTable().getSelectedRow(), 1).toString());
+                    NmKtg.setText(ktg.getTable().getValueAt(ktg.getTable().getSelectedRow(), 2).toString());
                 }
                 KdKtg.requestFocus();
             }
@@ -328,40 +333,28 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
 
         TCari.requestFocus();
         try {
-            psrekening = koneksi.
-                    prepareStatement("select * from set_akun_ranap");
+            psrekening = koneksi.prepareStatement("select * from set_akun_ranap");
             try {
                 rsrekening = psrekening.executeQuery();
                 while (rsrekening.next()) {
-                    Suspen_Piutang_Tindakan_Ranap = rsrekening.getString(
-                            "Suspen_Piutang_Tindakan_Ranap");
+                    Suspen_Piutang_Tindakan_Ranap = rsrekening.getString("Suspen_Piutang_Tindakan_Ranap");
                     Tindakan_Ranap = rsrekening.getString("Tindakan_Ranap");
-                    Beban_Jasa_Medik_Dokter_Tindakan_Ranap = rsrekening.
-                            getString("Beban_Jasa_Medik_Dokter_Tindakan_Ranap");
-                    Utang_Jasa_Medik_Dokter_Tindakan_Ranap = rsrekening.
-                            getString("Utang_Jasa_Medik_Dokter_Tindakan_Ranap");
-                    Beban_Jasa_Medik_Paramedis_Tindakan_Ranap = rsrekening.
-                            getString(
-                                    "Beban_Jasa_Medik_Paramedis_Tindakan_Ranap");
-                    Utang_Jasa_Medik_Paramedis_Tindakan_Ranap = rsrekening.
-                            getString(
-                                    "Utang_Jasa_Medik_Paramedis_Tindakan_Ranap");
-                    Beban_KSO_Tindakan_Ranap = rsrekening.getString(
-                            "Beban_KSO_Tindakan_Ranap");
-                    Utang_KSO_Tindakan_Ranap = rsrekening.getString(
-                            "Utang_KSO_Tindakan_Ranap");
-                    Beban_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString(
-                            "Beban_Jasa_Sarana_Tindakan_Ranap");
-                    Utang_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString(
-                            "Utang_Jasa_Sarana_Tindakan_Ranap");
-                    Beban_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString(
-                            "Beban_Jasa_Menejemen_Tindakan_Ranap");
-                    Utang_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString(
-                            "Utang_Jasa_Menejemen_Tindakan_Ranap");
-                    HPP_BHP_Tindakan_Ranap = rsrekening.getString(
-                            "HPP_BHP_Tindakan_Ranap");
-                    Persediaan_BHP_Tindakan_Ranap = rsrekening.getString(
-                            "Persediaan_BHP_Tindakan_Ranap");
+                    Beban_Jasa_Medik_Dokter_Tindakan_Ranap = rsrekening
+                            .getString("Beban_Jasa_Medik_Dokter_Tindakan_Ranap");
+                    Utang_Jasa_Medik_Dokter_Tindakan_Ranap = rsrekening
+                            .getString("Utang_Jasa_Medik_Dokter_Tindakan_Ranap");
+                    Beban_Jasa_Medik_Paramedis_Tindakan_Ranap = rsrekening
+                            .getString("Beban_Jasa_Medik_Paramedis_Tindakan_Ranap");
+                    Utang_Jasa_Medik_Paramedis_Tindakan_Ranap = rsrekening
+                            .getString("Utang_Jasa_Medik_Paramedis_Tindakan_Ranap");
+                    Beban_KSO_Tindakan_Ranap = rsrekening.getString("Beban_KSO_Tindakan_Ranap");
+                    Utang_KSO_Tindakan_Ranap = rsrekening.getString("Utang_KSO_Tindakan_Ranap");
+                    Beban_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString("Beban_Jasa_Sarana_Tindakan_Ranap");
+                    Utang_Jasa_Sarana_Tindakan_Ranap = rsrekening.getString("Utang_Jasa_Sarana_Tindakan_Ranap");
+                    Beban_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString("Beban_Jasa_Menejemen_Tindakan_Ranap");
+                    Utang_Jasa_Menejemen_Tindakan_Ranap = rsrekening.getString("Utang_Jasa_Menejemen_Tindakan_Ranap");
+                    HPP_BHP_Tindakan_Ranap = rsrekening.getString("HPP_BHP_Tindakan_Ranap");
+                    Persediaan_BHP_Tindakan_Ranap = rsrekening.getString("Persediaan_BHP_Tindakan_Ranap");
                 }
             } catch (Exception e) {
                 System.out.println("Notif Rekening : " + e);
@@ -405,7 +398,9 @@ public class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2699,8 +2694,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPerawatanRanap2 dialog = new DlgCariPerawatanRanap2(
-                    new javax.swing.JFrame(), true);
+            DlgCariPerawatanRanap2 dialog = new DlgCariPerawatanRanap2(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2754,10 +2748,10 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         try {
             jml = 0;
             for (i = 0; i < tbKamar.getRowCount(); i++) {
-                if (tbKamar.getValueAt(i, 0).toString().equals("true") || tbKamar.
-                        getValueAt(i, 1).toString().equals("true")
-                        || tbKamar.getValueAt(i, 2).toString().equals("true") || tbKamar.
-                        getValueAt(i, 3).toString().equals("true")) {
+                if (tbKamar.getValueAt(i, 0).toString().equals("true")
+                        || tbKamar.getValueAt(i, 1).toString().equals("true")
+                        || tbKamar.getValueAt(i, 2).toString().equals("true")
+                        || tbKamar.getValueAt(i, 3).toString().equals("true")) {
                     jml++;
                 }
             }
@@ -2795,35 +2789,24 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
             index = 0;
             for (i = 0; i < tbKamar.getRowCount(); i++) {
-                if (tbKamar.getValueAt(i, 0).toString().equals("true") || tbKamar.
-                        getValueAt(i, 1).toString().equals("true") || tbKamar.
-                        getValueAt(i, 2).toString().equals("true") || tbKamar.
-                        getValueAt(i, 3).toString().equals("true")) {
-                    pagi[index] = Boolean.parseBoolean(tbKamar.getValueAt(i, 0).
-                            toString());
-                    siang[index] = Boolean.parseBoolean(
-                            tbKamar.getValueAt(i, 1).toString());
-                    sore[index] = Boolean.parseBoolean(tbKamar.getValueAt(i, 2).
-                            toString());
-                    malam[index] = Boolean.parseBoolean(
-                            tbKamar.getValueAt(i, 3).toString());
+                if (tbKamar.getValueAt(i, 0).toString().equals("true")
+                        || tbKamar.getValueAt(i, 1).toString().equals("true")
+                        || tbKamar.getValueAt(i, 2).toString().equals("true")
+                        || tbKamar.getValueAt(i, 3).toString().equals("true")) {
+                    pagi[index] = Boolean.parseBoolean(tbKamar.getValueAt(i, 0).toString());
+                    siang[index] = Boolean.parseBoolean(tbKamar.getValueAt(i, 1).toString());
+                    sore[index] = Boolean.parseBoolean(tbKamar.getValueAt(i, 2).toString());
+                    malam[index] = Boolean.parseBoolean(tbKamar.getValueAt(i, 3).toString());
                     kode[index] = tbKamar.getValueAt(i, 4).toString();
                     nama[index] = tbKamar.getValueAt(i, 5).toString();
                     kategori[index] = tbKamar.getValueAt(i, 6).toString();
-                    totaltnd[index] = Double.parseDouble(tbKamar.
-                            getValueAt(i, 7).toString());
-                    bagianrs[index] = Double.parseDouble(tbKamar.
-                            getValueAt(i, 8).toString());
-                    bhp[index] = Double.parseDouble(tbKamar.getValueAt(i, 9).
-                            toString());
-                    jmdokter[index] = Double.parseDouble(tbKamar.getValueAt(i,
-                            10).toString());
-                    jmperawat[index] = Double.parseDouble(tbKamar.getValueAt(i,
-                            11).toString());
-                    kso[index] = Double.parseDouble(tbKamar.getValueAt(i, 12).
-                            toString());
-                    menejemen[index] = Double.parseDouble(tbKamar.getValueAt(i,
-                            13).toString());
+                    totaltnd[index] = Double.parseDouble(tbKamar.getValueAt(i, 7).toString());
+                    bagianrs[index] = Double.parseDouble(tbKamar.getValueAt(i, 8).toString());
+                    bhp[index] = Double.parseDouble(tbKamar.getValueAt(i, 9).toString());
+                    jmdokter[index] = Double.parseDouble(tbKamar.getValueAt(i, 10).toString());
+                    jmperawat[index] = Double.parseDouble(tbKamar.getValueAt(i, 11).toString());
+                    kso[index] = Double.parseDouble(tbKamar.getValueAt(i, 12).toString());
+                    menejemen[index] = Double.parseDouble(tbKamar.getValueAt(i, 13).toString());
                     kelastarif[index] = tbKamar.getValueAt(i, 14).toString();
                     index++;
                 }
@@ -2833,15 +2816,12 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
             for (i = 0; i < jml; i++) {
                 tabMode.addRow(
-                        new Object[]{pagi[i], siang[i], sore[i], malam[i],
-                            kode[i], nama[i], kategori[i], totaltnd[i],
-                            bagianrs[i], bhp[i], jmdokter[i], jmperawat[i],
-                            kso[i], menejemen[i], kelastarif[i]});
+                        new Object[]{pagi[i], siang[i], sore[i], malam[i], kode[i], nama[i], kategori[i], totaltnd[i],
+                            bagianrs[i], bhp[i], jmdokter[i], jmperawat[i], kso[i], menejemen[i], kelastarif[i]});
             }
 
             try {
-                if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("Yes") && kelas_ranap.
-                        equals("No")) {
+                if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("No")) {
                     pscari = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2856,8 +2836,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari.setString(5, "%" + TCari.getText().trim() + "%");
                     pscari.setString(6, "%" + TCari.getText().trim() + "%");
                     rs = pscari.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "Yes") && kelas_ranap.equals("No")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("No")) {
                     pscari2 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2871,8 +2850,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari2.setString(4, "%" + TCari.getText().trim() + "%");
                     pscari2.setString(5, "%" + TCari.getText().trim() + "%");
                     rs = pscari2.executeQuery();
-                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("No")) {
+                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("No")) {
                     pscari3 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2886,8 +2864,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari3.setString(4, "%" + TCari.getText().trim() + "%");
                     pscari3.setString(5, "%" + TCari.getText().trim() + "%");
                     rs = pscari3.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("No")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("No")) {
                     pscari4 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2900,8 +2877,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari4.setString(3, "%" + TCari.getText().trim() + "%");
                     pscari4.setString(4, "%" + TCari.getText().trim() + "%");
                     rs = pscari4.executeQuery();
-                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals(
-                        "Yes") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("Yes")) {
                     pscari5 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2917,8 +2893,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari5.setString(6, "%" + TCari.getText().trim() + "%");
                     pscari5.setString(7, "%" + TCari.getText().trim() + "%");
                     rs = pscari5.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "Yes") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("Yes")) {
                     pscari6 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2933,8 +2908,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari6.setString(5, "%" + TCari.getText().trim() + "%");
                     pscari6.setString(6, "%" + TCari.getText().trim() + "%");
                     rs = pscari6.executeQuery();
-                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("Yes")) {
                     pscari7 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2949,8 +2923,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari7.setString(5, "%" + TCari.getText().trim() + "%");
                     pscari7.setString(6, "%" + TCari.getText().trim() + "%");
                     rs = pscari7.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("Yes")) {
                     pscari8 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -2978,8 +2951,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_dr.tgl_perawatan=? and rawat_inap_dr.kd_jenis_prw=? and rawat_inap_dr.jam_rawat between ? and ?");
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "00:00:01");
                                 pstindakan.setString(5, "10:00:00");
@@ -3003,8 +2975,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_dr.tgl_perawatan=? and rawat_inap_dr.kd_jenis_prw=? and rawat_inap_dr.jam_rawat between ? and ?");
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "10:00:01");
                                 pstindakan.setString(5, "15:00:00");
@@ -3028,8 +2999,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_dr.tgl_perawatan=? and rawat_inap_dr.kd_jenis_prw=? and rawat_inap_dr.jam_rawat between ? and ?");
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "15:00:01");
                                 pstindakan.setString(5, "19:00:00");
@@ -3053,8 +3023,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_dr.tgl_perawatan=? and rawat_inap_dr.kd_jenis_prw=? and rawat_inap_dr.jam_rawat between ? and ?");
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "19:00:01");
                                 pstindakan.setString(5, "23:59:59");
@@ -3080,8 +3049,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "00:00:01");
                                 pstindakan2.setString(5, "10:00:00");
@@ -3105,8 +3073,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "10:00:01");
                                 pstindakan2.setString(5, "15:00:00");
@@ -3130,8 +3097,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "15:00:01");
                                 pstindakan2.setString(5, "19:00:00");
@@ -3155,8 +3121,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "19:00:01");
                                 pstindakan2.setString(5, "23:59:59");
@@ -3182,8 +3147,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "00:00:01");
                                 pstindakan3.setString(5, "10:00:00");
@@ -3207,8 +3171,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "10:00:01");
                                 pstindakan3.setString(5, "15:00:00");
@@ -3232,8 +3195,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "15:00:01");
                                 pstindakan3.setString(5, "19:00:00");
@@ -3257,8 +3219,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "19:00:01");
                                 pstindakan3.setString(5, "23:59:59");
@@ -3288,50 +3249,29 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                         switch (pilihtable) {
                             case "rawat_inap_dr":
                                 if (rs.getDouble("total_byrdr") > 0) {
-                                    tabMode.addRow(new Object[]{
-                                        pg, sg, sr, mlm, rs.getString(1), rs.
-                                        getString(2), rs.getString(3),
-                                        rs.getDouble("total_byrdr"), rs.
-                                        getDouble("material"),
-                                        rs.getDouble("bhp"), rs.getDouble(
-                                        "tarif_tindakandr"),
-                                        rs.getDouble("tarif_tindakanpr"), rs.
-                                        getDouble("kso"),
-                                        rs.getDouble("menejemen"), rs.getString(
-                                        "kelas")
-                                    });
+                                    tabMode.addRow(new Object[]{pg, sg, sr, mlm, rs.getString(1), rs.getString(2),
+                                        rs.getString(3), rs.getDouble("total_byrdr"), rs.getDouble("material"),
+                                        rs.getDouble("bhp"), rs.getDouble("tarif_tindakandr"),
+                                        rs.getDouble("tarif_tindakanpr"), rs.getDouble("kso"),
+                                        rs.getDouble("menejemen"), rs.getString("kelas")});
                                 }
                                 break;
                             case "rawat_inap_pr":
                                 if (rs.getDouble("total_byrpr") > 0) {
-                                    tabMode.addRow(new Object[]{
-                                        pg, sg, sr, mlm, rs.getString(1), rs.
-                                        getString(2), rs.getString(3),
-                                        rs.getDouble("total_byrpr"), rs.
-                                        getDouble("material"),
-                                        rs.getDouble("bhp"), rs.getDouble(
-                                        "tarif_tindakandr"),
-                                        rs.getDouble("tarif_tindakanpr"), rs.
-                                        getDouble("kso"),
-                                        rs.getDouble("menejemen"), rs.getString(
-                                        "kelas")
-                                    });
+                                    tabMode.addRow(new Object[]{pg, sg, sr, mlm, rs.getString(1), rs.getString(2),
+                                        rs.getString(3), rs.getDouble("total_byrpr"), rs.getDouble("material"),
+                                        rs.getDouble("bhp"), rs.getDouble("tarif_tindakandr"),
+                                        rs.getDouble("tarif_tindakanpr"), rs.getDouble("kso"),
+                                        rs.getDouble("menejemen"), rs.getString("kelas")});
                                 }
                                 break;
                             case "rawat_inap_drpr":
                                 if (rs.getDouble("total_byrdrpr") > 0) {
-                                    tabMode.addRow(new Object[]{
-                                        pg, sg, sr, mlm, rs.getString(1), rs.
-                                        getString(2), rs.getString(3),
-                                        rs.getDouble("total_byrdrpr"), rs.
-                                        getDouble("material"),
-                                        rs.getDouble("bhp"), rs.getDouble(
-                                        "tarif_tindakandr"),
-                                        rs.getDouble("tarif_tindakanpr"), rs.
-                                        getDouble("kso"),
-                                        rs.getDouble("menejemen"), rs.getString(
-                                        "kelas")
-                                    });
+                                    tabMode.addRow(new Object[]{pg, sg, sr, mlm, rs.getString(1), rs.getString(2),
+                                        rs.getString(3), rs.getDouble("total_byrdrpr"), rs.getDouble("material"),
+                                        rs.getDouble("bhp"), rs.getDouble("tarif_tindakandr"),
+                                        rs.getDouble("tarif_tindakanpr"), rs.getDouble("kso"),
+                                        rs.getDouble("menejemen"), rs.getString("kelas")});
                                 }
                                 break;
                         }
@@ -3369,8 +3309,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         try {
             Valid.tabelKosong(tabMode);
             try {
-                if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("Yes") && kelas_ranap.
-                        equals("No")) {
+                if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("No")) {
                     pscari = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3386,8 +3325,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari.setString(5, "%" + TCari.getText().trim() + "%");
                     pscari.setString(6, "%" + TCari.getText().trim() + "%");
                     rs = pscari.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "Yes") && kelas_ranap.equals("No")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("No")) {
                     pscari2 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3402,8 +3340,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari2.setString(4, "%" + TCari.getText().trim() + "%");
                     pscari2.setString(5, "%" + TCari.getText().trim() + "%");
                     rs = pscari2.executeQuery();
-                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("No")) {
+                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("No")) {
                     pscari3 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3418,8 +3355,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari3.setString(4, "%" + TCari.getText().trim() + "%");
                     pscari3.setString(5, "%" + TCari.getText().trim() + "%");
                     rs = pscari3.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("No")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("No")) {
                     pscari4 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3432,8 +3368,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari4.setString(3, "%" + TCari.getText().trim() + "%");
                     pscari4.setString(4, "%" + TCari.getText().trim() + "%");
                     rs = pscari4.executeQuery();
-                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals(
-                        "Yes") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("Yes")) {
                     pscari5 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3449,8 +3384,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari5.setString(6, "%" + TCari.getText().trim() + "%");
                     pscari5.setString(7, "%" + TCari.getText().trim() + "%");
                     rs = pscari5.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "Yes") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("Yes") && kelas_ranap.equals("Yes")) {
                     pscari6 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3465,8 +3399,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari6.setString(5, "%" + TCari.getText().trim() + "%");
                     pscari6.setString(6, "%" + TCari.getText().trim() + "%");
                     rs = pscari6.executeQuery();
-                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("Yes") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("Yes")) {
                     pscari7 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3481,8 +3414,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     pscari7.setString(5, "%" + TCari.getText().trim() + "%");
                     pscari7.setString(6, "%" + TCari.getText().trim() + "%");
                     rs = pscari7.executeQuery();
-                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals(
-                        "No") && kelas_ranap.equals("Yes")) {
+                } else if (ruang_ranap.equals("No") && cara_bayar_ranap.equals("No") && kelas_ranap.equals("Yes")) {
                     pscari8 = koneksi.prepareStatement(
                             "select jns_perawatan_inap.kd_jenis_prw,jns_perawatan_inap.nm_perawatan,kategori_perawatan.nm_kategori,"
                             + "jns_perawatan_inap.total_byrdr,jns_perawatan_inap.total_byrpr,jns_perawatan_inap.total_byrdrpr,jns_perawatan_inap.bhp,jns_perawatan_inap.material,jns_perawatan_inap.kso,jns_perawatan_inap.menejemen,"
@@ -3512,8 +3444,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "00:00:01");
                                 pstindakan.setString(5, "10:00:00");
@@ -3537,8 +3468,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_dr.tgl_perawatan=? and rawat_inap_dr.kd_jenis_prw=? and rawat_inap_dr.jam_rawat between ? and ?");
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "10:00:01");
                                 pstindakan.setString(5, "15:00:00");
@@ -3563,8 +3493,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "15:00:01");
                                 pstindakan.setString(5, "19:00:00");
@@ -3589,8 +3518,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
                             try {
                                 pstindakan.setString(1, TNoRw.getText());
-                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan.setString(3, rs.getString(1));
                                 pstindakan.setString(4, "19:00:01");
                                 pstindakan.setString(5, "23:59:59");
@@ -3616,8 +3544,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "00:00:01");
                                 pstindakan2.setString(5, "10:00:00");
@@ -3641,8 +3568,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "10:00:01");
                                 pstindakan2.setString(5, "15:00:00");
@@ -3666,8 +3592,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "15:00:01");
                                 pstindakan2.setString(5, "19:00:00");
@@ -3691,8 +3616,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_pr.tgl_perawatan=? and rawat_inap_pr.kd_jenis_prw=? and rawat_inap_pr.jam_rawat between ? and ?");
                             try {
                                 pstindakan2.setString(1, TNoRw.getText());
-                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan2.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan2.setString(3, rs.getString(1));
                                 pstindakan2.setString(4, "19:00:01");
                                 pstindakan2.setString(5, "23:59:59");
@@ -3718,8 +3642,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "00:00:01");
                                 pstindakan3.setString(5, "10:00:00");
@@ -3743,8 +3666,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "10:00:01");
                                 pstindakan3.setString(5, "15:00:00");
@@ -3768,8 +3690,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "15:00:01");
                                 pstindakan3.setString(5, "19:00:00");
@@ -3793,8 +3714,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     + "and rawat_inap_drpr.tgl_perawatan=? and rawat_inap_drpr.kd_jenis_prw=? and rawat_inap_drpr.jam_rawat between ? and ?");
                             try {
                                 pstindakan3.setString(1, TNoRw.getText());
-                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.
-                                        getSelectedItem() + ""));
+                                pstindakan3.setString(2, Valid.SetTgl(DTPTgl.getSelectedItem() + ""));
                                 pstindakan3.setString(3, rs.getString(1));
                                 pstindakan3.setString(4, "19:00:01");
                                 pstindakan3.setString(5, "23:59:59");
@@ -3817,50 +3737,29 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     switch (pilihtable) {
                         case "rawat_inap_dr":
                             if (rs.getDouble("total_byrdr") > 0) {
-                                tabMode.addRow(new Object[]{
-                                    pg, sg, sr, mlm, rs.getString(1), rs.
-                                    getString(2), rs.getString(3),
-                                    rs.getDouble("total_byrdr"), rs.getDouble(
-                                    "material"),
-                                    rs.getDouble("bhp"), rs.getDouble(
-                                    "tarif_tindakandr"),
-                                    rs.getDouble("tarif_tindakanpr"), rs.
-                                    getDouble("kso"),
-                                    rs.getDouble("menejemen"), rs.getString(
-                                    "kelas")
-                                });
+                                tabMode.addRow(new Object[]{pg, sg, sr, mlm, rs.getString(1), rs.getString(2),
+                                    rs.getString(3), rs.getDouble("total_byrdr"), rs.getDouble("material"),
+                                    rs.getDouble("bhp"), rs.getDouble("tarif_tindakandr"),
+                                    rs.getDouble("tarif_tindakanpr"), rs.getDouble("kso"),
+                                    rs.getDouble("menejemen"), rs.getString("kelas")});
                             }
                             break;
                         case "rawat_inap_pr":
                             if (rs.getDouble("total_byrpr") > 0) {
-                                tabMode.addRow(new Object[]{
-                                    pg, sg, sr, mlm, rs.getString(1), rs.
-                                    getString(2), rs.getString(3),
-                                    rs.getDouble("total_byrpr"), rs.getDouble(
-                                    "material"),
-                                    rs.getDouble("bhp"), rs.getDouble(
-                                    "tarif_tindakandr"),
-                                    rs.getDouble("tarif_tindakanpr"), rs.
-                                    getDouble("kso"),
-                                    rs.getDouble("menejemen"), rs.getString(
-                                    "kelas")
-                                });
+                                tabMode.addRow(new Object[]{pg, sg, sr, mlm, rs.getString(1), rs.getString(2),
+                                    rs.getString(3), rs.getDouble("total_byrpr"), rs.getDouble("material"),
+                                    rs.getDouble("bhp"), rs.getDouble("tarif_tindakandr"),
+                                    rs.getDouble("tarif_tindakanpr"), rs.getDouble("kso"),
+                                    rs.getDouble("menejemen"), rs.getString("kelas")});
                             }
                             break;
                         case "rawat_inap_drpr":
                             if (rs.getDouble("total_byrdrpr") > 0) {
-                                tabMode.addRow(new Object[]{
-                                    pg, sg, sr, mlm, rs.getString(1), rs.
-                                    getString(2), rs.getString(3),
-                                    rs.getDouble("total_byrdrpr"), rs.getDouble(
-                                    "material"),
-                                    rs.getDouble("bhp"), rs.getDouble(
-                                    "tarif_tindakandr"),
-                                    rs.getDouble("tarif_tindakanpr"), rs.
-                                    getDouble("kso"),
-                                    rs.getDouble("menejemen"), rs.getString(
-                                    "kelas")
-                                });
+                                tabMode.addRow(new Object[]{pg, sg, sr, mlm, rs.getString(1), rs.getString(2),
+                                    rs.getString(3), rs.getDouble("total_byrdrpr"), rs.getDouble("material"),
+                                    rs.getDouble("bhp"), rs.getDouble("tarif_tindakandr"),
+                                    rs.getDouble("tarif_tindakanpr"), rs.getDouble("kso"),
+                                    rs.getDouble("menejemen"), rs.getString("kelas")});
                             }
                             break;
                     }
@@ -3903,8 +3802,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private void getData() {
         if (tbKamar.getSelectedRow() != -1) {
-            if (TNoRw.getText().trim().isEmpty() || kddokter.getText().trim().
-                    isEmpty()) {
+            if (TNoRw.getText().trim().isEmpty() || kddokter.getText().trim().isEmpty()) {
                 Valid.textKosong(TCari, "Dokter/Paramedis");
                 for (i = 0; i < tbKamar.getRowCount(); i++) {
                     tbKamar.setValueAt(false, i, 0);
@@ -3917,7 +3815,6 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -3929,23 +3826,20 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         TCari.requestFocus();
     }
 
-    public void setNoRm(String norwt, String pilihtable, Date tanggal,
-            String jam, String menit, String detik, boolean status,
-            String pasien) {
+    public void setNoRm(String norwt, String pilihtable, Date tanggal, String jam, String menit, String detik,
+            boolean status, String pasien) {
         TNoRw.setText(norwt);
         kddokter.setText("");
         TPasien.setText(pasien);
-        this.kd_pj = Sequel.cariIsi(
-                "select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=?",
+        this.kd_pj = Sequel.cariIsi("select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=?",
                 TNoRw.getText());
-        this.kd_bangsal = Sequel.cariIsi(
-                "select bangsal.kd_bangsal from bangsal inner join kamar inner join kamar_inap "
-                + "on bangsal.kd_bangsal=kamar.kd_bangsal and kamar.kd_kamar=kamar_inap.kd_kamar "
-                + "where kamar_inap.no_rawat=? and kamar_inap.stts_pulang='-' order by STR_TO_DATE(concat(kamar_inap.tgl_masuk,' ',kamar_inap.jam_masuk),'%Y-%m-%d %H:%i:%s') desc limit 1",
-                TNoRw.getText());
+        this.kd_bangsal = Sequel
+                .cariIsi("select bangsal.kd_bangsal from bangsal inner join kamar inner join kamar_inap "
+                        + "on bangsal.kd_bangsal=kamar.kd_bangsal and kamar.kd_kamar=kamar_inap.kd_kamar "
+                        + "where kamar_inap.no_rawat=? and kamar_inap.stts_pulang='-' order by STR_TO_DATE(concat(kamar_inap.tgl_masuk,' ',kamar_inap.jam_masuk),'%Y-%m-%d %H:%i:%s') desc limit 1",
+                        TNoRw.getText());
         this.pilihtable = pilihtable;
-        this.kelas = Sequel.cariIsi(
-                "select kamar.kelas from kamar inner join kamar_inap "
+        this.kelas = Sequel.cariIsi("select kamar.kelas from kamar inner join kamar_inap "
                 + "on kamar.kd_kamar=kamar_inap.kd_kamar where kamar_inap.no_rawat=? "
                 + "and kamar_inap.stts_pulang='-' order by STR_TO_DATE(concat(kamar_inap.tgl_masuk,' ',kamar_inap.jam_masuk),'%Y-%m-%d %H:%i:%s') desc limit 1",
                 TNoRw.getText());
@@ -3987,7 +3881,6 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
 
     /**
-     *
      * @param kode
      * @param nama
      * @param suhu
@@ -4003,10 +3896,8 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
      * @param gcs
      * @param alergi
      */
-    public void setPetugas(String kode, String nama, String suhu, String tensi,
-            String Hasil,
-            String perkembangan, String kode2, String nama2, String berat,
-            String tinggi, String nadi, String respirasi, String gcs,
+    public void setPetugas(String kode, String nama, String suhu, String tensi, String Hasil, String perkembangan,
+            String kode2, String nama2, String berat, String tinggi, String nadi, String respirasi, String gcs,
             String alergi) {
         kddokter.setText(kode);
         nmdokter.setText(nama);
@@ -4020,6 +3911,6 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                 NmKtg, KdKtg.getText());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgCariPerawatanRanap2.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPerawatanRanap2.class.getName());
+
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgObatPenyakit.java
- *
- * Created on May 23, 2010, 12:40:35 AM
+* DlgObatPenyakit.java
+*
+* Created on May 23, 2010, 12:40:35 AM
  */
 package setting;
 
@@ -36,20 +36,25 @@ import javax.swing.table.TableColumn;
 import keuangan.DlgJnsPerawatanLab;
 
 /**
- *
  * @author dosen
  */
 public class DlgSetOtoLab extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
-    private sekuel Sequel = new sekuel();
-    private PreparedStatement ps;
-    private ResultSet rs;
-    private validasi Valid = new validasi();
-    private Connection koneksi = koneksiDB.condb();
-    private DlgJnsPerawatanLab datatindakan = new DlgJnsPerawatanLab(null, false);
-//    private DlgTemplateLaboratorium template=new DlgTemplateLaboratorium(null,false);
 
+    private sekuel Sequel = new sekuel();
+
+    private PreparedStatement ps;
+
+    private ResultSet rs;
+
+    private validasi Valid = new validasi();
+
+    private Connection koneksi = koneksiDB.condb();
+
+    private DlgJnsPerawatanLab datatindakan = new DlgJnsPerawatanLab(null, false);
+
+    // private DlgTemplateLaboratorium template=new DlgTemplateLaboratorium(null,false);
     /**
      * Creates new form DlgObatPenyakit
      *
@@ -63,9 +68,8 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabMode = new DefaultTableModel(null, new String[]{
-            "Kode Pemeriksaan", "Nama Pemeriksaan", "Template Pemeriksaan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new String[]{"Kode Pemeriksaan", "Nama Pemeriksaan", "Template Pemeriksaan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -74,7 +78,8 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
         };
         Table1.setModel(tabMode);
 
-        //tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
+        // tbObatPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
         Table1.setPreferredScrollableViewportSize(new Dimension(800, 800));
         Table1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -106,12 +111,12 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (datatindakan.getTable().getSelectedRow() != -1) {
                     if (TabRawat.getSelectedIndex() == 0) {
-                        kdtindakan.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 1).
-                                toString());
-                        nmtindakan.setText(datatindakan.getTable().getValueAt(
-                                datatindakan.getTable().getSelectedRow(), 2).
-                                toString());
+                        kdtindakan.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 1)
+                                .toString());
+                        nmtindakan.setText(datatindakan.getTable()
+                                .getValueAt(datatindakan.getTable().getSelectedRow(), 2)
+                                .toString());
                         kdtindakan.requestFocus();
                     }
                 }
@@ -153,48 +158,50 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
 
         });
 
-//        template.addWindowListener(new WindowListener() {
-//            @Override
-//            public void windowOpened(WindowEvent e) {}
-//            @Override
-//            public void windowClosing(WindowEvent e) {}
-//            @Override
-//            public void windowClosed(WindowEvent e) {
-//                if(template.getTable().getSelectedRow()!= -1){    
-//                    if(TabRawat.getSelectedIndex()==0){   
-//                        nmdetailtindakan.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),0).toString()); 
-//                        nmdetailtindakan.requestFocus();
-//                    }                       
-//                }                        
-//            }
-//            @Override
-//            public void windowIconified(WindowEvent e) {}
-//            @Override
-//            public void windowDeiconified(WindowEvent e) {}
-//            @Override
-//            public void windowActivated(WindowEvent e) {}
-//            @Override
-//            public void windowDeactivated(WindowEvent e) {}
-//        });
-//        
-//        template.getTable().addKeyListener(new KeyListener() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {}
-//            
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-//                    template.dispose();
-//                }
-//            }
-//
-//            @Override
-//            public void keyReleased(KeyEvent e) {}
-//        });
+        // template.addWindowListener(new WindowListener() {
+        // @Override
+        // public void windowOpened(WindowEvent e) {}
+        // @Override
+        // public void windowClosing(WindowEvent e) {}
+        // @Override
+        // public void windowClosed(WindowEvent e) {
+        // if(template.getTable().getSelectedRow()!= -1){
+        // if(TabRawat.getSelectedIndex()==0){
+        // nmdetailtindakan.setText(template.getTable().getValueAt(template.getTable().getSelectedRow(),0).toString());
+        // nmdetailtindakan.requestFocus();
+        // }
+        // }
+        // }
+        // @Override
+        // public void windowIconified(WindowEvent e) {}
+        // @Override
+        // public void windowDeiconified(WindowEvent e) {}
+        // @Override
+        // public void windowActivated(WindowEvent e) {}
+        // @Override
+        // public void windowDeactivated(WindowEvent e) {}
+        // });
+        //
+        // template.getTable().addKeyListener(new KeyListener() {
+        // @Override
+        // public void keyTyped(KeyEvent e) {}
+        //
+        // @Override
+        // public void keyPressed(KeyEvent e) {
+        // if(e.getKeyCode()==KeyEvent.VK_SPACE){
+        // template.dispose();
+        // }
+        // }
+        //
+        // @Override
+        // public void keyReleased(KeyEvent e) {}
+        // });
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -772,8 +779,7 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetOtoLab dialog = new DlgSetOtoLab(new javax.swing.JFrame(),
-                    true);
+            DlgSetOtoLab dialog = new DlgSetOtoLab(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -829,9 +835,7 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3)
-                    });
+                    tabMode.addRow(new String[]{rs.getString(1), rs.getString(2), rs.getString(3)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -867,7 +871,6 @@ public class DlgSetOtoLab extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgSetOtoLab.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgSetOtoLab.class.getName());
 
 }

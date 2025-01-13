@@ -11,87 +11,93 @@ import java.util.logging.Logger;
  */
 public class Status {
 
-  private String manufacture;
-  private String model;
-  private String serialNo;
-  private String simImsi;
-  private int signal;
-  private int baterai;
+    private String manufacture;
 
-  /**
-   * @return
-   */
-  public int getBaterai() {
-    return baterai;
-  }
+    private String model;
 
-  /**
-   * @param baterai
-   */
-  public void setBaterai(int baterai) {
-    this.baterai = baterai;
-  }
+    private String serialNo;
 
-  public String getManufacture() {
-    return manufacture;
-  }
+    private String simImsi;
 
-  public void setManufacture(String manufacture) {
-    this.manufacture = manufacture;
-  }
+    private int signal;
 
-  /**
-   * @return
-   */
-  public String getModel() {
-    return model;
-  }
+    private int baterai;
 
-  /**
-   * @param model
-   */
-  public void setModel(String model) {
-    this.model = model;
-  }
+    /**
+     * @return
+     */
+    public int getBaterai() {
+        return baterai;
+    }
 
-  /**
-   * @return
-   */
-  public String getSerialNo() {
-    return serialNo;
-  }
+    /**
+     * @param baterai
+     */
+    public void setBaterai(int baterai) {
+        this.baterai = baterai;
+    }
 
-  /**
-   * @param serialNo
-   */
-  public void setSerialNo(String serialNo) {
-    this.serialNo = serialNo;
-  }
+    public String getManufacture() {
+        return manufacture;
+    }
 
-  /**
-   * @return
-   */
-  public int getSignal() {
-    return signal;
-  }
+    public void setManufacture(String manufacture) {
+        this.manufacture = manufacture;
+    }
 
-  /**
-   * @param signal
-   */
-  public void setSignal(int signal) {
-    this.signal = signal;
-  }
+    /**
+     * @return
+     */
+    public String getModel() {
+        return model;
+    }
 
-  /**
-   * @return
-   */
-  public String getSimImsi() {
-    return simImsi;
-  }
+    /**
+     * @param model
+     */
+    public void setModel(String model) {
+        this.model = model;
+    }
 
-  public void setSimImsi(String simImsi) {
-    this.simImsi = simImsi;
-  }
+    /**
+     * @return
+     */
+    public String getSerialNo() {
+        return serialNo;
+    }
 
-  private static final Logger LOG = Logger.getLogger(Status.class.getName());
+    /**
+     * @param serialNo
+     */
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
+
+    /**
+     * @return
+     */
+    public int getSignal() {
+        return signal;
+    }
+
+    /**
+     * @param signal
+     */
+    public void setSignal(int signal) {
+        this.signal = signal;
+    }
+
+    /**
+     * @return
+     */
+    public String getSimImsi() {
+        return simImsi;
+    }
+
+    public void setSimImsi(String simImsi) {
+        this.simImsi = simImsi;
+    }
+
+    private static final Logger LOG = Logger.getLogger(Status.class.getName());
+
 }

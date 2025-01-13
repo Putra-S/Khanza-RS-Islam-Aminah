@@ -18,39 +18,42 @@ import javax.swing.JOptionPane;
  */
 public class koneksiDBFUJI {
 
-  private static Connection connection = null;
+    private static Connection connection = null;
 
-  private static final Properties prop = new Properties();
+    private static final Properties prop = new Properties();
 
-  private static final MysqlDataSource dataSource = new MysqlDataSource();
+    private static final MysqlDataSource dataSource = new MysqlDataSource();
 
-  // private static final MariaDbDataSource dataSource=new MariaDbDataSource();
-  public static Connection condb() {
-    if (connection == null) {
-      try {
-        prop.loadFromXML(new FileInputStream("setting/database.xml"));
-        dataSource.setURL(
-            "jdbc:mysql://"
-                + EnkripsiAES.decrypt(prop.getProperty("HOSTFUJI"))
-                + ":"
-                + EnkripsiAES.decrypt(prop.getProperty("PORTFUJI"))
-                + "/"
-                + EnkripsiAES.decrypt(prop.getProperty("DATABASEFUJI"))
-                + "?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
-        dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERFUJI")));
-        dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASFUJI")));
-        connection = dataSource.getConnection();
-        System.out.println(
-            "  Koneksi Berhasil. Menyambungkan ke database bridging radiologi...!!!");
-      } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Koneksi ke server bridging radiologi terputus : " + e);
-      }
+    private static final Logger LOG = Logger.getLogger(koneksiDBFUJI.class.getName());
+
+    // private static final MariaDbDataSource dataSource=new MariaDbDataSource();
+    public static Connection condb() {
+        if (connection == null) {
+            try {
+                prop.loadFromXML(new FileInputStream("setting/database.xml"));
+                dataSource.setURL(
+                        "jdbc:mysql://"
+                        + EnkripsiAES.decrypt(prop.getProperty("HOSTFUJI"))
+                        + ":"
+                        + EnkripsiAES.decrypt(prop.getProperty("PORTFUJI"))
+                        + "/"
+                        + EnkripsiAES.decrypt(prop.getProperty("DATABASEFUJI"))
+                        + "?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true");
+                dataSource.setUser(EnkripsiAES.decrypt(prop.getProperty("USERFUJI")));
+                dataSource.setPassword(EnkripsiAES.decrypt(prop.getProperty("PASFUJI")));
+                connection = dataSource.getConnection();
+                System.out.println(
+                        "  Koneksi Berhasil. Menyambungkan ke database bridging radiologi...!!!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Koneksi ke server bridging radiologi terputus : " + e);
+            }
+        }
+        return connection;
     }
-    return connection;
-  }
 
-  /** */
-  public koneksiDBFUJI() {}
-
-  private static final Logger LOG = Logger.getLogger(koneksiDBFUJI.class.getName());
+    /**
+     *
+     */
+    public koneksiDBFUJI() {
+    }
 }

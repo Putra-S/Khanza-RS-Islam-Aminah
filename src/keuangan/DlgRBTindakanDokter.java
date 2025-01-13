@@ -29,23 +29,39 @@ import simrskhanza.DlgCariCaraBayar;
 public class DlgRBTindakanDokter extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private Jurnal jur = new Jurnal();
-    private PreparedStatement psdokter, pstindakan, pstindakan2, pspasien, psobat, psobatlangsung, pslaborat, psdetailobat, psregistrasi, psdetailregistrasi,
-            psdetaillaborat, psdetailtindakan, psdetailtindakan2, psdetailobatlangsung, pstambahan, pspotongan, psdetailtambahan, psdetailpotongan, pscarabayar,
+
+    private PreparedStatement psdokter, pstindakan, pstindakan2, pspasien, psobat, psobatlangsung, pslaborat,
+            psdetailobat, psregistrasi, psdetailregistrasi, psdetaillaborat, psdetailtindakan, psdetailtindakan2,
+            psdetailobatlangsung, pstambahan, pspotongan, psdetailtambahan, psdetailpotongan, pscarabayar,
             psitemlaborat, psdetailitemlaborat, psradiologi, psdetailradiologi;
-    private ResultSet rsdokter, rstindakan, rsobat, rsobatlangsung, rspasien, rslaborat, rsdetailobat, rsregistrasi, rsdetailregistrasi, rscarabayar,
-            rsdetailtindakan, rsdetaillaborat, rsdetailobatlangsung, rstambahan, rspotongan, rsdetailtambahan, rsdetailpotongan, rsitemlaborat,
-            rsdetailitemlaborat, rsradiologi, rsdetailradiologi;
+
+    private ResultSet rsdokter, rstindakan, rsobat, rsobatlangsung, rspasien, rslaborat, rsdetailobat, rsregistrasi,
+            rsdetailregistrasi, rscarabayar, rsdetailtindakan, rsdetaillaborat, rsdetailobatlangsung, rstambahan,
+            rspotongan, rsdetailtambahan, rsdetailpotongan, rsitemlaborat, rsdetailitemlaborat, rsradiologi,
+            rsdetailradiologi;
+
     private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private int i = 0, a = 0;
-    private double obat = 0, obatlangsung = 0, laborat = 0, radiologi = 0, jm = 0, jm2 = 0, ttlbiaya = 0, detailobat = 0, detailobatlangsung = 0, ttlobat = 0, ttlobatlangsung = 0, ttllaborat = 0, ttljm = 0,
-            detailtindakan = 0, detailtindakan2 = 0, detaillaborat = 0, tambahan, potongan, detailtambahan, detailpotongan, registrasi = 0, detailregistrasi, ttlpotongan = 0, ttltambahan = 0,
-            ttlregistrasi = 0, itemlaborat = 0, detailitemlaborat = 0, detailradiologi = 0, ttlradiologi = 0;
+
+    private double obat = 0, obatlangsung = 0, laborat = 0, radiologi = 0, jm = 0, jm2 = 0, ttlbiaya = 0,
+            detailobat = 0, detailobatlangsung = 0, ttlobat = 0, ttlobatlangsung = 0, ttllaborat = 0, ttljm = 0,
+            detailtindakan = 0, detailtindakan2 = 0, detaillaborat = 0, tambahan, potongan, detailtambahan,
+            detailpotongan, registrasi = 0, detailregistrasi, ttlpotongan = 0, ttltambahan = 0, ttlregistrasi = 0,
+            itemlaborat = 0, detailitemlaborat = 0, detailradiologi = 0, ttlradiologi = 0;
+
     private String carabayar = "", pilihancarabayar = "";
 
     /**
@@ -58,9 +74,8 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"No.", "Dokter", "Jml.Pas", "Obt+Emb+Tsl", "Laborat",
-            "Paket Tindakan", "Tambahan", "Potongan", "Registrasi", "Radiologi",
-            "Total"};
+        Object[] row = {"No.", "Dokter", "Jml.Pas", "Obt+Emb+Tsl", "Laborat", "Paket Tindakan", "Tambahan", "Potongan",
+            "Registrasi", "Radiologi", "Total"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -101,10 +116,8 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    nmdokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     prosesCari();
                 }
                 kddokter.requestFocus();
@@ -141,8 +154,7 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    pilihancarabayar = (penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
+                    pilihancarabayar = (penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
                 }
                 prosesCari3();
             }
@@ -189,14 +201,14 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
                     "select dokter.kd_dokter,dokter.nm_dokter,count(dokter.kd_dokter) as jumlah from dokter inner join reg_periksa "
                     + "on reg_periksa.kd_dokter=dokter.kd_dokter where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
                     + "reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? group by dokter.kd_dokter");
-            pstindakan = koneksi.prepareStatement(
-                    "select sum(rawat_jl_dr.biaya_rawat) from rawat_jl_dr inner join reg_periksa "
-                    + "on reg_periksa.no_rawat=rawat_jl_dr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
-                    + "rawat_jl_dr.kd_dokter=? and reg_periksa.tgl_registrasi between ? and ?");
-            pstindakan2 = koneksi.prepareStatement(
-                    "select sum(rawat_jl_drpr.biaya_rawat) from rawat_jl_drpr inner join reg_periksa "
-                    + "on reg_periksa.no_rawat=rawat_jl_drpr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
-                    + "rawat_jl_drpr.kd_dokter=? and reg_periksa.tgl_registrasi between ? and ?");
+            pstindakan = koneksi
+                    .prepareStatement("select sum(rawat_jl_dr.biaya_rawat) from rawat_jl_dr inner join reg_periksa "
+                            + "on reg_periksa.no_rawat=rawat_jl_dr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
+                            + "rawat_jl_dr.kd_dokter=? and reg_periksa.tgl_registrasi between ? and ?");
+            pstindakan2 = koneksi
+                    .prepareStatement("select sum(rawat_jl_drpr.biaya_rawat) from rawat_jl_drpr inner join reg_periksa "
+                            + "on reg_periksa.no_rawat=rawat_jl_drpr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
+                            + "rawat_jl_drpr.kd_dokter=? and reg_periksa.tgl_registrasi between ? and ?");
             psobat = koneksi.prepareStatement(
                     "select sum(detail_pemberian_obat.total) from detail_pemberian_obat inner join reg_periksa "
                     + "on detail_pemberian_obat.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
@@ -205,10 +217,10 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
                     "select sum(tagihan_obat_langsung.besar_tagihan) from tagihan_obat_langsung inner join reg_periksa "
                     + "on tagihan_obat_langsung.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
                     + "reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
-            pstambahan = koneksi.prepareStatement(
-                    "select sum(tambahan_biaya.besar_biaya) from tambahan_biaya inner join reg_periksa "
-                    + "on tambahan_biaya.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
-                    + "reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
+            pstambahan = koneksi
+                    .prepareStatement("select sum(tambahan_biaya.besar_biaya) from tambahan_biaya inner join reg_periksa "
+                            + "on tambahan_biaya.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
+                            + "reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
             pspotongan = koneksi.prepareStatement(
                     "select sum(pengurangan_biaya.besar_pengurangan) from pengurangan_biaya inner join reg_periksa "
                     + "on pengurangan_biaya.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
@@ -216,16 +228,16 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
             pslaborat = koneksi.prepareStatement(
                     "select sum(periksa_lab.biaya) from periksa_lab inner join reg_periksa on periksa_lab.no_rawat=reg_periksa.no_rawat "
                     + "where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
-            psitemlaborat = koneksi.prepareStatement(
-                    "select sum(detail_periksa_lab.biaya_item) as total from detail_periksa_lab "
-                    + "inner join periksa_lab inner join reg_periksa on periksa_lab.no_rawat=reg_periksa.no_rawat  "
-                    + "and detail_periksa_lab.no_rawat=periksa_lab.no_rawat and detail_periksa_lab.kd_jenis_prw=periksa_lab.kd_jenis_prw "
-                    + "and detail_periksa_lab.tgl_periksa=periksa_lab.tgl_periksa and detail_periksa_lab.jam=periksa_lab.jam "
-                    + "where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
-            psradiologi = koneksi.prepareStatement(
-                    "select sum(periksa_radiologi.biaya) from periksa_radiologi inner join reg_periksa "
-                    + "on periksa_radiologi.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
-                    + "reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
+            psitemlaborat = koneksi
+                    .prepareStatement("select sum(detail_periksa_lab.biaya_item) as total from detail_periksa_lab "
+                            + "inner join periksa_lab inner join reg_periksa on periksa_lab.no_rawat=reg_periksa.no_rawat  "
+                            + "and detail_periksa_lab.no_rawat=periksa_lab.no_rawat and detail_periksa_lab.kd_jenis_prw=periksa_lab.kd_jenis_prw "
+                            + "and detail_periksa_lab.tgl_periksa=periksa_lab.tgl_periksa and detail_periksa_lab.jam=periksa_lab.jam "
+                            + "where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
+            psradiologi = koneksi
+                    .prepareStatement("select sum(periksa_radiologi.biaya) from periksa_radiologi inner join reg_periksa "
+                            + "on periksa_radiologi.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
+                            + "reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
             psdetaillaborat = koneksi.prepareStatement(
                     "select sum(periksa_lab.biaya) from periksa_lab inner join reg_periksa on periksa_lab.no_rawat=reg_periksa.no_rawat "
                     + "where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and periksa_lab.no_rawat=? and reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ?  ");
@@ -241,14 +253,14 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
                     "select reg_periksa.tgl_registrasi,reg_periksa.no_rkm_medis,pasien.nm_pasien,reg_periksa.no_rawat,reg_periksa.kd_pj "
                     + "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
                     + "where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.tgl_registrasi between ? and ? and reg_periksa.kd_dokter like ?  order by reg_periksa.kd_pj,reg_periksa.tgl_registrasi");
-            psdetailtindakan = koneksi.prepareStatement(
-                    "select sum(rawat_jl_dr.biaya_rawat) from rawat_jl_dr inner join reg_periksa "
-                    + "on reg_periksa.no_rawat=rawat_jl_dr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.no_rawat=? and reg_periksa.kd_dokter like ? "
-                    + "and reg_periksa.tgl_registrasi between ? and ? ");
-            psdetailtindakan2 = koneksi.prepareStatement(
-                    "select sum(rawat_jl_drpr.biaya_rawat) from rawat_jl_drpr inner join reg_periksa "
-                    + "on reg_periksa.no_rawat=rawat_jl_drpr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.no_rawat=? and reg_periksa.kd_dokter like ? "
-                    + "and reg_periksa.tgl_registrasi between ? and ? ");
+            psdetailtindakan = koneksi
+                    .prepareStatement("select sum(rawat_jl_dr.biaya_rawat) from rawat_jl_dr inner join reg_periksa "
+                            + "on reg_periksa.no_rawat=rawat_jl_dr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.no_rawat=? and reg_periksa.kd_dokter like ? "
+                            + "and reg_periksa.tgl_registrasi between ? and ? ");
+            psdetailtindakan2 = koneksi
+                    .prepareStatement("select sum(rawat_jl_drpr.biaya_rawat) from rawat_jl_drpr inner join reg_periksa "
+                            + "on reg_periksa.no_rawat=rawat_jl_drpr.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.no_rawat=? and reg_periksa.kd_dokter like ? "
+                            + "and reg_periksa.tgl_registrasi between ? and ? ");
             psdetailobat = koneksi.prepareStatement(
                     "select sum(detail_pemberian_obat.total) from detail_pemberian_obat inner join reg_periksa "
                     + "on detail_pemberian_obat.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) "
@@ -258,10 +270,10 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
                     "select sum(tagihan_obat_langsung.besar_tagihan) from tagihan_obat_langsung inner join reg_periksa "
                     + "on tagihan_obat_langsung.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
                     + "tagihan_obat_langsung.no_rawat=? and reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ?  ");
-            psdetailtambahan = koneksi.prepareStatement(
-                    "select sum(tambahan_biaya.besar_biaya) from tambahan_biaya inner join reg_periksa "
-                    + "on tambahan_biaya.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
-                    + "tambahan_biaya.no_rawat=? and reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
+            psdetailtambahan = koneksi
+                    .prepareStatement("select sum(tambahan_biaya.besar_biaya) from tambahan_biaya inner join reg_periksa "
+                            + "on tambahan_biaya.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
+                            + "tambahan_biaya.no_rawat=? and reg_periksa.kd_dokter like ? and reg_periksa.tgl_registrasi between ? and ? ");
             psdetailpotongan = koneksi.prepareStatement(
                     "select sum(pengurangan_biaya.besar_pengurangan) from pengurangan_biaya inner join reg_periksa "
                     + "on pengurangan_biaya.no_rawat=reg_periksa.no_rawat where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and "
@@ -272,15 +284,16 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
             psdetailregistrasi = koneksi.prepareStatement(
                     "select sum(reg_periksa.biaya_reg) from reg_periksa where reg_periksa.no_rawat not in(select no_rawat from kamar_inap) and reg_periksa.no_rawat=? and reg_periksa.kd_dokter like ? "
                     + "and reg_periksa.tgl_registrasi between ? and ? ");
-            pscarabayar = koneksi.prepareStatement(
-                    "select penjab.png_jawab from penjab where penjab.kd_pj=?");
+            pscarabayar = koneksi.prepareStatement("select penjab.png_jawab from penjab where penjab.kd_pj=?");
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -535,14 +548,13 @@ public class DlgRBTindakanDokter extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPrintActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));//GEN-FIRST:event_BtnPrintActionPerformed
         if (tabMode.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null,
                     "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
@@ -700,8 +712,7 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgRBTindakanDokter dialog = new DlgRBTindakanDokter(
-                    new javax.swing.JFrame(), true);
+            DlgRBTindakanDokter dialog = new DlgRBTindakanDokter(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -760,20 +771,16 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
             while (rsdokter.next()) {
                 jm = 0;
                 pstindakan.setString(1, rsdokter.getString(1));
-                pstindakan.setString(2, Valid.
-                        SetTgl(Tgl1.getSelectedItem() + ""));
-                pstindakan.setString(3, Valid.
-                        SetTgl(Tgl2.getSelectedItem() + ""));
+                pstindakan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstindakan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rstindakan = pstindakan.executeQuery();
                 if (rstindakan.next()) {
                     jm = rstindakan.getDouble(1);
                 }
                 jm2 = 0;
                 pstindakan2.setString(1, rsdokter.getString(1));
-                pstindakan2.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pstindakan2.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                pstindakan2.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstindakan2.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rstindakan = pstindakan2.executeQuery();
                 if (rstindakan.next()) {
                     jm2 = rstindakan.getDouble(1);
@@ -793,10 +800,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 obatlangsung = 0;
                 psobatlangsung.setString(1, rsdokter.getString(1));
-                psobatlangsung.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psobatlangsung.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psobatlangsung.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psobatlangsung.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsobatlangsung = psobatlangsung.executeQuery();
                 if (rsobatlangsung.next()) {
                     obatlangsung = rsobatlangsung.getDouble(1);
@@ -805,10 +810,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 laborat = 0;
                 pslaborat.setString(1, rsdokter.getString(1));
-                pslaborat.
-                        setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
-                pslaborat.
-                        setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pslaborat.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pslaborat.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rslaborat = pslaborat.executeQuery();
                 if (rslaborat.next()) {
                     laborat = rslaborat.getDouble(1);
@@ -816,10 +819,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 itemlaborat = 0;
                 psitemlaborat.setString(1, rsdokter.getString(1));
-                psitemlaborat.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psitemlaborat.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psitemlaborat.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psitemlaborat.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsitemlaborat = psitemlaborat.executeQuery();
                 if (rsitemlaborat.next()) {
                     itemlaborat = rsitemlaborat.getDouble(1);
@@ -828,10 +829,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 tambahan = 0;
                 pstambahan.setString(1, rsdokter.getString(1));
-                pstambahan.setString(2, Valid.
-                        SetTgl(Tgl1.getSelectedItem() + ""));
-                pstambahan.setString(3, Valid.
-                        SetTgl(Tgl2.getSelectedItem() + ""));
+                pstambahan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstambahan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rstambahan = pstambahan.executeQuery();
                 if (rstambahan.next()) {
                     tambahan = rstambahan.getDouble(1);
@@ -840,10 +839,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 potongan = 0;
                 pspotongan.setString(1, rsdokter.getString(1));
-                pspotongan.setString(2, Valid.
-                        SetTgl(Tgl1.getSelectedItem() + ""));
-                pspotongan.setString(3, Valid.
-                        SetTgl(Tgl2.getSelectedItem() + ""));
+                pspotongan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspotongan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rspotongan = pspotongan.executeQuery();
                 if (rspotongan.next()) {
                     potongan = rspotongan.getDouble(1);
@@ -852,10 +849,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 registrasi = 0;
                 psregistrasi.setString(1, rsdokter.getString(1));
-                psregistrasi.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psregistrasi.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psregistrasi.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psregistrasi.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsregistrasi = psregistrasi.executeQuery();
                 if (rsregistrasi.next()) {
                     registrasi = rsregistrasi.getDouble(1);
@@ -864,32 +859,29 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 radiologi = 0;
                 psradiologi.setString(1, rsdokter.getString(1));
-                psradiologi.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psradiologi.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psradiologi.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psradiologi.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsradiologi = psradiologi.executeQuery();
                 if (rsradiologi.next()) {
                     radiologi = rsradiologi.getDouble(1);
                 }
                 ttlradiologi += radiologi;
 
-                ttlbiaya = ttlbiaya + jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan + registrasi - potongan;
-                tabMode.addRow(new Object[]{a, rsdokter.getString(2), rsdokter.
-                    getString(3), Valid.SetAngka(obat + obatlangsung), Valid.
-                    SetAngka(laborat + itemlaborat), Valid.SetAngka(jm + jm2),
-                    Valid.SetAngka(tambahan), Valid.SetAngka(potongan), Valid.
-                    SetAngka(registrasi), Valid.SetAngka(radiologi), Valid.
-                    SetAngka(
-                    jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan + registrasi - potongan)});
+                ttlbiaya = ttlbiaya + jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan
+                        + registrasi - potongan;
+                tabMode.addRow(new Object[]{a, rsdokter.getString(2), rsdokter.getString(3),
+                    Valid.SetAngka(obat + obatlangsung), Valid.SetAngka(laborat + itemlaborat),
+                    Valid.SetAngka(jm + jm2), Valid.SetAngka(tambahan), Valid.SetAngka(potongan),
+                    Valid.SetAngka(registrasi), Valid.SetAngka(radiologi),
+                    Valid.SetAngka(jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan
+                    + registrasi - potongan)});
                 a++;
             }
 
-            tabMode.addRow(new Object[]{">>", "Total :", "", Valid.SetAngka(
-                ttlobat + ttlobatlangsung), Valid.SetAngka(ttllaborat), Valid.
-                SetAngka(ttljm), Valid.SetAngka(ttltambahan), Valid.SetAngka(
-                ttlpotongan), Valid.SetAngka(ttlregistrasi), Valid.SetAngka(
-                ttlradiologi), Valid.SetAngka(ttlbiaya)});
+            tabMode.addRow(new Object[]{">>", "Total :", "", Valid.SetAngka(ttlobat + ttlobatlangsung),
+                Valid.SetAngka(ttllaborat), Valid.SetAngka(ttljm), Valid.SetAngka(ttltambahan),
+                Valid.SetAngka(ttlpotongan), Valid.SetAngka(ttlregistrasi), Valid.SetAngka(ttlradiologi),
+                Valid.SetAngka(ttlbiaya)});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -920,20 +912,16 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
             while (rsdokter.next()) {
                 jm = 0;
                 pstindakan.setString(1, rsdokter.getString(1));
-                pstindakan.setString(2, Valid.
-                        SetTgl(Tgl1.getSelectedItem() + ""));
-                pstindakan.setString(3, Valid.
-                        SetTgl(Tgl2.getSelectedItem() + ""));
+                pstindakan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstindakan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rstindakan = pstindakan.executeQuery();
                 if (rstindakan.next()) {
                     jm = rstindakan.getDouble(1);
                 }
                 jm2 = 0;
                 pstindakan2.setString(1, rsdokter.getString(1));
-                pstindakan2.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                pstindakan2.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                pstindakan2.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstindakan2.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rstindakan = pstindakan2.executeQuery();
                 if (rstindakan.next()) {
                     jm2 = rstindakan.getDouble(1);
@@ -952,10 +940,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 obatlangsung = 0;
                 psobatlangsung.setString(1, rsdokter.getString(1));
-                psobatlangsung.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psobatlangsung.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psobatlangsung.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psobatlangsung.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsobatlangsung = psobatlangsung.executeQuery();
                 if (rsobatlangsung.next()) {
                     obatlangsung = rsobatlangsung.getDouble(1);
@@ -964,20 +950,16 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 laborat = 0;
                 pslaborat.setString(1, rsdokter.getString(1));
-                pslaborat.
-                        setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
-                pslaborat.
-                        setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                pslaborat.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pslaborat.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rslaborat = pslaborat.executeQuery();
                 if (rslaborat.next()) {
                     laborat = rslaborat.getDouble(1);
                 }
                 itemlaborat = 0;
                 psitemlaborat.setString(1, rsdokter.getString(1));
-                psitemlaborat.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psitemlaborat.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psitemlaborat.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psitemlaborat.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsitemlaborat = psitemlaborat.executeQuery();
                 if (rsitemlaborat.next()) {
                     itemlaborat = rsitemlaborat.getDouble(1);
@@ -986,10 +968,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 tambahan = 0;
                 pstambahan.setString(1, rsdokter.getString(1));
-                pstambahan.setString(2, Valid.
-                        SetTgl(Tgl1.getSelectedItem() + ""));
-                pstambahan.setString(3, Valid.
-                        SetTgl(Tgl2.getSelectedItem() + ""));
+                pstambahan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pstambahan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rstambahan = pstambahan.executeQuery();
                 if (rstambahan.next()) {
                     tambahan = rstambahan.getDouble(1);
@@ -998,10 +978,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 potongan = 0;
                 pspotongan.setString(1, rsdokter.getString(1));
-                pspotongan.setString(2, Valid.
-                        SetTgl(Tgl1.getSelectedItem() + ""));
-                pspotongan.setString(3, Valid.
-                        SetTgl(Tgl2.getSelectedItem() + ""));
+                pspotongan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                pspotongan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rspotongan = pspotongan.executeQuery();
                 if (rspotongan.next()) {
                     potongan = rspotongan.getDouble(1);
@@ -1010,10 +988,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 registrasi = 0;
                 psregistrasi.setString(1, rsdokter.getString(1));
-                psregistrasi.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psregistrasi.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psregistrasi.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psregistrasi.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsregistrasi = psregistrasi.executeQuery();
                 if (rsregistrasi.next()) {
                     registrasi = rsregistrasi.getDouble(1);
@@ -1022,24 +998,22 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
                 radiologi = 0;
                 psradiologi.setString(1, rsdokter.getString(1));
-                psradiologi.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + ""));
-                psradiologi.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + ""));
+                psradiologi.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                psradiologi.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 rsradiologi = psradiologi.executeQuery();
                 if (rsradiologi.next()) {
                     radiologi = rsradiologi.getDouble(1);
                 }
                 ttlradiologi += radiologi;
 
-                ttlbiaya = ttlbiaya + jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan + registrasi - potongan;
-                tabMode.addRow(new Object[]{a, rsdokter.getString(2), rsdokter.
-                    getString(3), Valid.SetAngka(obat + obatlangsung), Valid.
-                    SetAngka(laborat + itemlaborat), Valid.SetAngka(jm + jm2),
-                    Valid.SetAngka(tambahan), Valid.SetAngka(potongan), Valid.
-                    SetAngka(registrasi), Valid.SetAngka(radiologi), Valid.
-                    SetAngka(
-                    jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan + registrasi - potongan)});
+                ttlbiaya = ttlbiaya + jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan
+                        + registrasi - potongan;
+                tabMode.addRow(new Object[]{a, rsdokter.getString(2), rsdokter.getString(3),
+                    Valid.SetAngka(obat + obatlangsung), Valid.SetAngka(laborat + itemlaborat),
+                    Valid.SetAngka(jm + jm2), Valid.SetAngka(tambahan), Valid.SetAngka(potongan),
+                    Valid.SetAngka(registrasi), Valid.SetAngka(radiologi),
+                    Valid.SetAngka(jm + jm2 + obat + obatlangsung + laborat + radiologi + itemlaborat + tambahan
+                    + registrasi - potongan)});
 
                 pspasien.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 pspasien.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
@@ -1049,10 +1023,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailtindakan = 0;
                     psdetailtindakan.setString(1, rspasien.getString(4));
                     psdetailtindakan.setString(2, rsdokter.getString(1));
-                    psdetailtindakan.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailtindakan.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailtindakan.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailtindakan.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailtindakan = psdetailtindakan.executeQuery();
                     if (rsdetailtindakan.next()) {
                         detailtindakan = rsdetailtindakan.getDouble(1);
@@ -1060,10 +1032,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailtindakan2 = 0;
                     psdetailtindakan2.setString(1, rspasien.getString(4));
                     psdetailtindakan2.setString(2, rsdokter.getString(1));
-                    psdetailtindakan2.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailtindakan2.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailtindakan2.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailtindakan2.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailtindakan = psdetailtindakan2.executeQuery();
                     if (rsdetailtindakan.next()) {
                         detailtindakan2 = rsdetailtindakan.getDouble(1);
@@ -1072,10 +1042,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailobat = 0;
                     psdetailobat.setString(1, rspasien.getString(4));
                     psdetailobat.setString(2, rsdokter.getString(1));
-                    psdetailobat.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailobat.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailobat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailobat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailobat = psdetailobat.executeQuery();
                     if (rsdetailobat.next()) {
                         detailobat = rsdetailobat.getDouble(1);
@@ -1084,10 +1052,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailobatlangsung = 0;
                     psdetailobatlangsung.setString(1, rspasien.getString(4));
                     psdetailobatlangsung.setString(2, rsdokter.getString(1));
-                    psdetailobatlangsung.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailobatlangsung.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailobatlangsung.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailobatlangsung.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailobatlangsung = psdetailobatlangsung.executeQuery();
                     if (rsdetailobatlangsung.next()) {
                         detailobatlangsung = rsdetailobatlangsung.getDouble(1);
@@ -1096,19 +1062,15 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detaillaborat = 0;
                     psdetaillaborat.setString(1, rspasien.getString(4));
                     psdetaillaborat.setString(2, rsdokter.getString(1));
-                    psdetaillaborat.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetaillaborat.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetaillaborat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetaillaborat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetaillaborat = psdetaillaborat.executeQuery();
                     if (rsdetaillaborat.next()) {
                         detailitemlaborat = 0;
                         psdetailitemlaborat.setString(1, rspasien.getString(4));
                         psdetailitemlaborat.setString(2, rsdokter.getString(1));
-                        psdetailitemlaborat.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailitemlaborat.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailitemlaborat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailitemlaborat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailitemlaborat = psdetailitemlaborat.executeQuery();
                         if (rsdetailitemlaborat.next()) {
                             detailitemlaborat = rsdetailitemlaborat.getDouble(1);
@@ -1119,10 +1081,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailtambahan = 0;
                     psdetailtambahan.setString(1, rspasien.getString(4));
                     psdetailtambahan.setString(2, rsdokter.getString(1));
-                    psdetailtambahan.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailtambahan.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailtambahan.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailtambahan.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailtambahan = psdetailtambahan.executeQuery();
                     if (rsdetailtambahan.next()) {
                         detailtambahan = rsdetailtambahan.getDouble(1);
@@ -1131,10 +1091,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailpotongan = 0;
                     psdetailpotongan.setString(1, rspasien.getString(4));
                     psdetailpotongan.setString(2, rsdokter.getString(1));
-                    psdetailpotongan.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailpotongan.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailpotongan.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailpotongan.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailpotongan = psdetailpotongan.executeQuery();
                     if (rsdetailpotongan.next()) {
                         detailpotongan = rsdetailpotongan.getDouble(1);
@@ -1143,10 +1101,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailregistrasi = 0;
                     psdetailregistrasi.setString(1, rspasien.getString(4));
                     psdetailregistrasi.setString(2, rsdokter.getString(1));
-                    psdetailregistrasi.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailregistrasi.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailregistrasi.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailregistrasi.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailregistrasi = psdetailregistrasi.executeQuery();
                     if (rsdetailregistrasi.next()) {
                         detailregistrasi = rsdetailregistrasi.getDouble(1);
@@ -1155,10 +1111,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                     detailradiologi = 0;
                     psdetailradiologi.setString(1, rspasien.getString(4));
                     psdetailradiologi.setString(2, rsdokter.getString(1));
-                    psdetailradiologi.setString(3, Valid.SetTgl(Tgl1.
-                            getSelectedItem() + ""));
-                    psdetailradiologi.setString(4, Valid.SetTgl(Tgl2.
-                            getSelectedItem() + ""));
+                    psdetailradiologi.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                    psdetailradiologi.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                     rsdetailradiologi = psdetailradiologi.executeQuery();
                     if (rsdetailradiologi.next()) {
                         detailradiologi = rsdetailradiologi.getDouble(1);
@@ -1171,24 +1125,24 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         carabayar = rscarabayar.getString(1);
                     }
 
-                    tabMode.addRow(new Object[]{"",
-                        rspasien.getString(1) + " " + rspasien.getString(3) + " (" + carabayar + ")",
-                        "", Valid.SetAngka(detailobat + detailobatlangsung),
-                        Valid.SetAngka(detaillaborat), Valid.SetAngka(
-                        detailtindakan + detailtindakan2),
-                        Valid.SetAngka(detailtambahan), Valid.SetAngka(
-                        detailpotongan), Valid.SetAngka(detailregistrasi),
-                        Valid.SetAngka(detailradiologi), Valid.SetAngka(
-                        detailtindakan + detailtindakan2 + detailobat + detailobatlangsung + detaillaborat + detailtambahan + detailregistrasi - detailpotongan + detailradiologi)});
+                    tabMode
+                            .addRow(new Object[]{"",
+                        rspasien.getString(1) + " " + rspasien.getString(3) + " (" + carabayar + ")", "",
+                        Valid.SetAngka(detailobat + detailobatlangsung), Valid.SetAngka(detaillaborat),
+                        Valid.SetAngka(detailtindakan + detailtindakan2), Valid.SetAngka(detailtambahan),
+                        Valid.SetAngka(detailpotongan), Valid.SetAngka(detailregistrasi),
+                        Valid.SetAngka(detailradiologi),
+                        Valid.SetAngka(detailtindakan + detailtindakan2 + detailobat + detailobatlangsung
+                        + detaillaborat + detailtambahan + detailregistrasi - detailpotongan
+                        + detailradiologi)});
                 }
                 a++;
             }
 
-            tabMode.addRow(new Object[]{">>", "Total :", "", Valid.SetAngka(
-                ttlobat + ttlobatlangsung), Valid.SetAngka(ttllaborat), Valid.
-                SetAngka(ttljm), Valid.SetAngka(ttltambahan), Valid.SetAngka(
-                ttlpotongan), Valid.SetAngka(ttlregistrasi), Valid.SetAngka(
-                ttlradiologi), Valid.SetAngka(ttlbiaya)});
+            tabMode.addRow(new Object[]{">>", "Total :", "", Valid.SetAngka(ttlobat + ttlobatlangsung),
+                Valid.SetAngka(ttllaborat), Valid.SetAngka(ttljm), Valid.SetAngka(ttltambahan),
+                Valid.SetAngka(ttlpotongan), Valid.SetAngka(ttlregistrasi), Valid.SetAngka(ttlradiologi),
+                Valid.SetAngka(ttlbiaya)});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -1217,8 +1171,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
             rsdokter = psdokter.executeQuery();
             a = 1;
             while (rsdokter.next()) {
-                tabMode.addRow(new Object[]{a, rsdokter.getString(2), rsdokter.
-                    getString(3), "", "", "", "", "", "", "", ""});
+                tabMode.addRow(new Object[]{a, rsdokter.getString(2), rsdokter.getString(3), "", "", "", "", "", "",
+                    "", ""});
                 pspasien.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
                 pspasien.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                 pspasien.setString(3, rsdokter.getString(1));
@@ -1228,10 +1182,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailtindakan = 0;
                         psdetailtindakan.setString(1, rspasien.getString(4));
                         psdetailtindakan.setString(2, rsdokter.getString(1));
-                        psdetailtindakan.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailtindakan.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailtindakan.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailtindakan.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailtindakan = psdetailtindakan.executeQuery();
                         if (rsdetailtindakan.next()) {
                             detailtindakan = rsdetailtindakan.getDouble(1);
@@ -1239,10 +1191,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailtindakan2 = 0;
                         psdetailtindakan2.setString(1, rspasien.getString(4));
                         psdetailtindakan2.setString(2, rsdokter.getString(1));
-                        psdetailtindakan2.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailtindakan2.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailtindakan2.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailtindakan2.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailtindakan = psdetailtindakan2.executeQuery();
                         if (rsdetailtindakan.next()) {
                             detailtindakan2 = rsdetailtindakan.getDouble(1);
@@ -1252,10 +1202,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailobat = 0;
                         psdetailobat.setString(1, rspasien.getString(4));
                         psdetailobat.setString(2, rsdokter.getString(1));
-                        psdetailobat.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailobat.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailobat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailobat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailobat = psdetailobat.executeQuery();
                         if (rsdetailobat.next()) {
                             detailobat = rsdetailobat.getDouble(1);
@@ -1265,41 +1213,29 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailobatlangsung = 0;
                         psdetailobatlangsung.setString(1, rspasien.getString(4));
                         psdetailobatlangsung.setString(2, rsdokter.getString(1));
-                        psdetailobatlangsung.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailobatlangsung.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
-                        rsdetailobatlangsung = psdetailobatlangsung.
-                                executeQuery();
+                        psdetailobatlangsung.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailobatlangsung.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                        rsdetailobatlangsung = psdetailobatlangsung.executeQuery();
                         if (rsdetailobatlangsung.next()) {
-                            detailobatlangsung = rsdetailobatlangsung.getDouble(
-                                    1);
+                            detailobatlangsung = rsdetailobatlangsung.getDouble(1);
                         }
                         ttlobatlangsung += detailobatlangsung;
 
                         detaillaborat = 0;
                         psdetaillaborat.setString(1, rspasien.getString(4));
                         psdetaillaborat.setString(2, rsdokter.getString(1));
-                        psdetaillaborat.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetaillaborat.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetaillaborat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetaillaborat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetaillaborat = psdetaillaborat.executeQuery();
                         if (rsdetaillaborat.next()) {
                             detailitemlaborat = 0;
-                            psdetailitemlaborat.setString(1, rspasien.getString(
-                                    4));
-                            psdetailitemlaborat.setString(2, rsdokter.getString(
-                                    1));
-                            psdetailitemlaborat.setString(3, Valid.SetTgl(Tgl1.
-                                    getSelectedItem() + ""));
-                            psdetailitemlaborat.setString(4, Valid.SetTgl(Tgl2.
-                                    getSelectedItem() + ""));
-                            rsdetailitemlaborat = psdetailitemlaborat.
-                                    executeQuery();
+                            psdetailitemlaborat.setString(1, rspasien.getString(4));
+                            psdetailitemlaborat.setString(2, rsdokter.getString(1));
+                            psdetailitemlaborat.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                            psdetailitemlaborat.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+                            rsdetailitemlaborat = psdetailitemlaborat.executeQuery();
                             if (rsdetailitemlaborat.next()) {
-                                detailitemlaborat = rsdetailitemlaborat.
-                                        getDouble(1);
+                                detailitemlaborat = rsdetailitemlaborat.getDouble(1);
                             }
                             detaillaborat = rsdetaillaborat.getDouble(1) + detailitemlaborat;
                         }
@@ -1308,10 +1244,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailtambahan = 0;
                         psdetailtambahan.setString(1, rspasien.getString(4));
                         psdetailtambahan.setString(2, rsdokter.getString(1));
-                        psdetailtambahan.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailtambahan.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailtambahan.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailtambahan.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailtambahan = psdetailtambahan.executeQuery();
                         if (rsdetailtambahan.next()) {
                             detailtambahan = rsdetailtambahan.getDouble(1);
@@ -1321,10 +1255,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailpotongan = 0;
                         psdetailpotongan.setString(1, rspasien.getString(4));
                         psdetailpotongan.setString(2, rsdokter.getString(1));
-                        psdetailpotongan.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailpotongan.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailpotongan.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailpotongan.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailpotongan = psdetailpotongan.executeQuery();
                         if (rsdetailpotongan.next()) {
                             detailpotongan = rsdetailpotongan.getDouble(1);
@@ -1334,10 +1266,8 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailregistrasi = 0;
                         psdetailregistrasi.setString(1, rspasien.getString(4));
                         psdetailregistrasi.setString(2, rsdokter.getString(1));
-                        psdetailregistrasi.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailregistrasi.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailregistrasi.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailregistrasi.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailregistrasi = psdetailregistrasi.executeQuery();
                         if (rsdetailregistrasi.next()) {
                             detailregistrasi = rsdetailregistrasi.getDouble(1);
@@ -1347,17 +1277,16 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                         detailradiologi = 0;
                         psdetailradiologi.setString(1, rspasien.getString(4));
                         psdetailradiologi.setString(2, rsdokter.getString(1));
-                        psdetailradiologi.setString(3, Valid.SetTgl(Tgl1.
-                                getSelectedItem() + ""));
-                        psdetailradiologi.setString(4, Valid.SetTgl(Tgl2.
-                                getSelectedItem() + ""));
+                        psdetailradiologi.setString(3, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+                        psdetailradiologi.setString(4, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
                         rsdetailradiologi = psdetailradiologi.executeQuery();
                         if (rsdetailradiologi.next()) {
                             detailradiologi = rsdetailradiologi.getDouble(1);
                         }
                         ttlradiologi += detailradiologi;
 
-                        ttlbiaya = ttlbiaya + detaillaborat + detailradiologi + detailobat + detailobatlangsung - detailpotongan + detailregistrasi + detailtambahan + detailtindakan + detailtindakan2;
+                        ttlbiaya = ttlbiaya + detaillaborat + detailradiologi + detailobat + detailobatlangsung
+                                - detailpotongan + detailregistrasi + detailtambahan + detailtindakan + detailtindakan2;
 
                         carabayar = "";
                         pscarabayar.setString(1, rspasien.getString(5));
@@ -1366,23 +1295,22 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
                             carabayar = rscarabayar.getString(1);
                         }
                         tabMode.addRow(new Object[]{"",
-                            rspasien.getString(1) + " " + rspasien.getString(3) + " (" + carabayar + ")",
-                            "", Valid.SetAngka(detailobat + detailobatlangsung),
-                            Valid.SetAngka(detaillaborat), Valid.SetAngka(
-                            detailtindakan + detailtindakan2),
-                            Valid.SetAngka(detailtambahan), Valid.SetAngka(
-                            detailpotongan), Valid.SetAngka(detailregistrasi),
-                            Valid.SetAngka(detailradiologi), Valid.SetAngka(
-                            detailtindakan + detailtindakan2 + detailobat + detailobatlangsung + detaillaborat + detailradiologi + detailtambahan + detailregistrasi - detailpotongan)});
+                            rspasien.getString(1) + " " + rspasien.getString(3) + " (" + carabayar + ")", "",
+                            Valid.SetAngka(detailobat + detailobatlangsung), Valid.SetAngka(detaillaborat),
+                            Valid.SetAngka(detailtindakan + detailtindakan2), Valid.SetAngka(detailtambahan),
+                            Valid.SetAngka(detailpotongan), Valid.SetAngka(detailregistrasi),
+                            Valid.SetAngka(detailradiologi),
+                            Valid.SetAngka(detailtindakan + detailtindakan2 + detailobat + detailobatlangsung
+                            + detaillaborat + detailradiologi + detailtambahan + detailregistrasi
+                            - detailpotongan)});
                     }
                 }
                 a++;
             }
-            tabMode.addRow(new Object[]{">>", "Total ", ":", Valid.SetAngka(
-                ttlobat + ttlobatlangsung), Valid.SetAngka(ttllaborat), Valid.
-                SetAngka(ttljm), Valid.SetAngka(ttltambahan), Valid.SetAngka(
-                ttlpotongan), Valid.SetAngka(ttlregistrasi), Valid.SetAngka(
-                ttlradiologi), Valid.SetAngka(ttlbiaya)});
+            tabMode.addRow(new Object[]{">>", "Total ", ":", Valid.SetAngka(ttlobat + ttlobatlangsung),
+                Valid.SetAngka(ttllaborat), Valid.SetAngka(ttljm), Valid.SetAngka(ttltambahan),
+                Valid.SetAngka(ttlpotongan), Valid.SetAngka(ttlregistrasi), Valid.SetAngka(ttlradiologi),
+                Valid.SetAngka(ttlbiaya)});
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             System.out.println("Catatan  " + e);
@@ -1390,7 +1318,6 @@ private void ppTampilkanPasienBtnPrintActionPerformed(java.awt.event.ActionEvent
 
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgRBTindakanDokter.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgRBTindakanDokter.class.getName());
 
 }

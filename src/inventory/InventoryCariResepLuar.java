@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgResepObat.java
- *
- * Created on 31 Mei 10, 11:27:40
+* DlgResepObat.java
+*
+* Created on 31 Mei 10, 11:27:40
  */
 package inventory;
 
@@ -37,22 +37,32 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class InventoryCariResepLuar extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabmodeUbahRacikan, tabmodeUbahRacikan2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps2, psracikan;
+
     private ResultSet rs, rs2, rsracikan;
+
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private Date date = new Date();
+
     private String now = dateFormat.format(date), rincianobat = "", finger = "";
+
     private DlgCariAturanPakai aturanpakai = new DlgCariAturanPakai(null, false);
+
     private int i = 0, pilihan = 0;
+
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
@@ -77,7 +87,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
         };
         tbResep.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbResep.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbResep.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -95,9 +106,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
         }
         tbResep.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabmodeUbahRacikan = new DefaultTableModel(null, new Object[]{
-            "Kode Barang", "Nama Barang", "Jumlah", "Aturan Pakai"
-        }) {
+        tabmodeUbahRacikan = new DefaultTableModel(null,
+                new Object[]{"Kode Barang", "Nama Barang", "Jumlah", "Aturan Pakai"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -110,7 +120,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
         };
         tbTambahan.setModel(tabmodeUbahRacikan);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbTambahan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTambahan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -128,9 +139,7 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
         }
         tbTambahan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabmodeUbahRacikan2 = new DefaultTableModel(null, new Object[]{
-            "No.Racik", "Nama Racik", "Aturan Pakai"
-        }) {
+        tabmodeUbahRacikan2 = new DefaultTableModel(null, new Object[]{"No.Racik", "Nama Racik", "Aturan Pakai"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 boolean a = false;
@@ -143,7 +152,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
         };
         tbTambahan1.setModel(tabmodeUbahRacikan2);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbTambahan1.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbTambahan1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -161,8 +171,7 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -200,15 +209,14 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (aturanpakai.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        tbTambahan.setValueAt(aturanpakai.getTable().getValueAt(
-                                aturanpakai.getTable().getSelectedRow(), 0).
-                                toString(), tbTambahan.getSelectedRow(), 5);
+                        tbTambahan.setValueAt(aturanpakai.getTable()
+                                .getValueAt(aturanpakai.getTable().getSelectedRow(), 0)
+                                .toString(), tbTambahan.getSelectedRow(), 5);
                         tbTambahan.requestFocus();
                     } else if (pilihan == 2) {
-                        tbTambahan1.setValueAt(aturanpakai.getTable().
-                                getValueAt(aturanpakai.getTable().
-                                        getSelectedRow(), 0).toString(),
-                                tbTambahan1.getSelectedRow(), 5);
+                        tbTambahan1.setValueAt(aturanpakai.getTable()
+                                .getValueAt(aturanpakai.getTable().getSelectedRow(), 0)
+                                .toString(), tbTambahan1.getSelectedRow(), 5);
                         tbTambahan1.requestFocus();
                     }
                 }
@@ -237,7 +245,9 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1120,8 +1130,7 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryCariResepLuar dialog = new InventoryCariResepLuar(
-                    new javax.swing.JFrame(), true);
+            InventoryCariResepLuar dialog = new InventoryCariResepLuar(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1180,8 +1189,7 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select resep_luar.no_resep,resep_luar.tgl_perawatan,resep_luar.jam,"
+            ps = koneksi.prepareStatement("select resep_luar.no_resep,resep_luar.tgl_perawatan,resep_luar.jam,"
                     + " resep_luar.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,resep_luar.kd_dokter,dokter.nm_dokter "
                     + " from resep_luar inner join reg_periksa on resep_luar.no_rawat=reg_periksa.no_rawat "
                     + " inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
@@ -1190,12 +1198,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
                     + " (resep_luar.no_resep like ? or resep_luar.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or dokter.nm_dokter like ?) "
                     + " order by resep_luar.tgl_perawatan,resep_luar.jam");
             try {
-                ps.
-                        setString(1, Valid.SetTglJam(
-                                DTPCari1.getSelectedItem() + ""));
-                ps.
-                        setString(2, Valid.SetTglJam(
-                                DTPCari2.getSelectedItem() + ""));
+                ps.setString(1, Valid.SetTglJam(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTglJam(DTPCari2.getSelectedItem() + ""));
                 ps.setString(3, "%" + TCari.getText().trim() + "%");
                 ps.setString(4, "%" + TCari.getText().trim() + "%");
                 ps.setString(5, "%" + TCari.getText().trim() + "%");
@@ -1203,16 +1207,11 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
                 ps.setString(7, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_resep"),
-                        rs.getString("tgl_perawatan") + " " + rs.
-                        getString("jam"),
-                        rs.getString("no_rawat") + " " + rs.getString(
-                        "no_rkm_medis") + " " + rs.getString("nm_pasien"),
-                        rs.getString("nm_dokter")
-                    });
-                    tabMode.addRow(new String[]{"", "Jumlah", "Nama Obat",
-                        "Aturan Pakai"});
+                    tabMode.addRow(new String[]{rs.getString("no_resep"),
+                        rs.getString("tgl_perawatan") + " " + rs.getString("jam"), rs.getString("no_rawat") + " "
+                        + rs.getString("no_rkm_medis") + " " + rs.getString("nm_pasien"),
+                        rs.getString("nm_dokter")});
+                    tabMode.addRow(new String[]{"", "Jumlah", "Nama Obat", "Aturan Pakai"});
                     ps2 = koneksi.prepareStatement(
                             "select databarang.kode_brng,databarang.nama_brng,resep_luar_obat.jml,kodesatuan.satuan,"
                             + "resep_luar_obat.aturan_pakai from resep_luar_obat inner join databarang on resep_luar_obat.kode_brng=databarang.kode_brng "
@@ -1221,11 +1220,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
                         ps2.setString(1, rs.getString("no_resep"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            tabMode.addRow(new String[]{
-                                "", rs2.getString("jml") + " " + rs2.getString(
-                                "satuan"), rs2.getString("nama_brng"), rs2.
-                                getString("aturan_pakai")
-                            });
+                            tabMode.addRow(new String[]{"", rs2.getString("jml") + " " + rs2.getString("satuan"),
+                                rs2.getString("nama_brng"), rs2.getString("aturan_pakai")});
                         }
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
@@ -1238,26 +1234,22 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
                         }
                     }
 
-                    psracikan = koneksi.prepareStatement(
-                            "select resep_luar_racikan.no_racik,resep_luar_racikan.nama_racik,"
-                            + "resep_luar_racikan.kd_racik,metode_racik.nm_racik as metode,"
-                            + "resep_luar_racikan.jml_dr,resep_luar_racikan.aturan_pakai,"
-                            + "resep_luar_racikan.keterangan from resep_luar_racikan inner join metode_racik "
-                            + "on resep_luar_racikan.kd_racik=metode_racik.kd_racik where "
-                            + "resep_luar_racikan.no_resep=? ");
+                    psracikan = koneksi
+                            .prepareStatement("select resep_luar_racikan.no_racik,resep_luar_racikan.nama_racik,"
+                                    + "resep_luar_racikan.kd_racik,metode_racik.nm_racik as metode,"
+                                    + "resep_luar_racikan.jml_dr,resep_luar_racikan.aturan_pakai,"
+                                    + "resep_luar_racikan.keterangan from resep_luar_racikan inner join metode_racik "
+                                    + "on resep_luar_racikan.kd_racik=metode_racik.kd_racik where "
+                                    + "resep_luar_racikan.no_resep=? ");
                     try {
                         psracikan.setString(1, rs.getString("no_resep"));
                         rsracikan = psracikan.executeQuery();
                         while (rsracikan.next()) {
-                            tabMode.addRow(new String[]{
-                                "",
-                                rsracikan.getString("jml_dr") + " " + rsracikan.
-                                getString("metode"), rsracikan.getString(
-                                "no_racik") + ". " + rsracikan.getString(
-                                "nama_racik") + ", Keterangan : " + rsracikan.
-                                getString("keterangan"), rsracikan.getString(
-                                "aturan_pakai")
-                            });
+                            tabMode.addRow(new String[]{"",
+                                rsracikan.getString("jml_dr") + " " + rsracikan.getString("metode"),
+                                rsracikan.getString("no_racik") + ". " + rsracikan.getString("nama_racik")
+                                + ", Keterangan : " + rsracikan.getString("keterangan"),
+                                rsracikan.getString("aturan_pakai")});
 
                             ps2 = koneksi.prepareStatement(
                                     "select databarang.kode_brng,databarang.nama_brng,resep_luar_racikan_detail.jml,kodesatuan.satuan from "
@@ -1266,21 +1258,15 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
                                     + "resep_luar_racikan_detail.no_racik=? order by databarang.kode_brng");
                             try {
                                 ps2.setString(1, rs.getString("no_resep"));
-                                ps2.
-                                        setString(2, rsracikan.getString(
-                                                "no_racik"));
+                                ps2.setString(2, rsracikan.getString("no_racik"));
                                 rs2 = ps2.executeQuery();
                                 while (rs2.next()) {
-                                    tabMode.addRow(new String[]{
-                                        "",
-                                        "   " + rs2.getString("jml") + " " + rs2.
-                                        getString("satuan"), "   " + rs2.
-                                        getString("nama_brng"), ""
-                                    });
+                                    tabMode.addRow(new String[]{"",
+                                        "   " + rs2.getString("jml") + " " + rs2.getString("satuan"),
+                                        "   " + rs2.getString("nama_brng"), ""});
                                 }
                             } catch (Exception e) {
-                                System.out.println(
-                                        "Notifikasi Detail Racikan : " + e);
+                                System.out.println("Notifikasi Detail Racikan : " + e);
                             } finally {
                                 if (rs2 != null) {
                                     rs2.close();
@@ -1328,10 +1314,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
                 ps2.setString(1, NoResepUbah3.getText());
                 rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    tabmodeUbahRacikan.addRow(new String[]{
-                        rs2.getString("kode_brng"), rs2.getString("nama_brng"),
-                        rs2.getString("jml"), rs2.getString("aturan_pakai")
-                    });
+                    tabmodeUbahRacikan.addRow(new String[]{rs2.getString("kode_brng"), rs2.getString("nama_brng"),
+                        rs2.getString("jml"), rs2.getString("aturan_pakai")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1357,10 +1341,8 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
                 ps2.setString(1, NoResepUbah4.getText());
                 rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    tabmodeUbahRacikan2.addRow(new String[]{
-                        rs2.getString("no_racik"), rs2.getString("nama_racik"),
-                        rs2.getString("aturan_pakai")
-                    });
+                    tabmodeUbahRacikan2.addRow(new String[]{rs2.getString("no_racik"), rs2.getString("nama_racik"),
+                        rs2.getString("aturan_pakai")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1392,6 +1374,6 @@ public class InventoryCariResepLuar extends javax.swing.JDialog {
         BtnPrint.setEnabled(akses.getresep_luar());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryCariResepLuar.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryCariResepLuar.class.getName());
+
 }

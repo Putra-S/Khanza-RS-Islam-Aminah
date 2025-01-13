@@ -29,21 +29,32 @@ import simrskhanza.DlgCariBangsal;
 public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private Connection koneksi = koneksiDB.condb();
+
     private int i = 0;
+
     private double total = 0;
+
     private DlgCariBangsal asalstok = new DlgCariBangsal(null, false);
+
     public DlgCariPetugas petugas = new DlgCariPetugas(null, false);
 
     /**
      *
      */
     public DlgBarang barang = new DlgBarang(null, false);
-    private String nofak = "", mem = "", ptg = "", sat = "", bar = "", tanggal = "", order = "order by databarang.nama_brng";
+
+    private String nofak = "", mem = "", ptg = "", sat = "", bar = "", tanggal = "",
+            order = "order by databarang.nama_brng";
 
     /**
      * Creates new form DlgProgramStudi
@@ -51,29 +62,24 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
      * @param parent
      * @param modal
      */
-    public InventoryRingkasanStokKeluarBarangMedis(java.awt.Frame parent,
-            boolean modal) {
+    public InventoryRingkasanStokKeluarBarangMedis(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis",
-            "Jumlah", "Total", "Kode Sat"};
+        Object[] row = {"Kode Barang", "Nama Barang", "Satuan", "Jenis", "Jumlah", "Total", "Kode Sat"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Double.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
 
-            /*Class[] types = new Class[] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-             };*/
+            /*
+			 * Class[] types = new Class[] { java.lang.Boolean.class,
+			 * java.lang.Object.class, java.lang.Object.class, java.lang.Object.class };
+             */
             @Override
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -115,8 +121,7 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -153,10 +158,8 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
             @Override
             public void windowClosed(WindowEvent e) {
                 if (asalstok.getTable().getSelectedRow() != -1) {
-                    kddepo.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmdepo.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddepo.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 0).toString());
+                    nmdepo.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 1).toString());
                 }
                 kddepo.requestFocus();
             }
@@ -210,10 +213,8 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPenjualan")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -250,10 +251,8 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPenjualan")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -310,12 +309,12 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgCariPenjualan")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsat.requestFocus();
                 }
@@ -341,7 +340,9 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -945,14 +946,13 @@ public class InventoryRingkasanStokKeluarBarangMedis extends javax.swing.JDialog
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasienActionPerformed
-        akses.setform("DlgCariPenjualan");
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("DlgCariPenjualan");//GEN-FIRST:event_btnPasienActionPerformed
         asalstok.isCek();
         asalstok.setSize(internalFrame1.getWidth() - 20, internalFrame1.
                 getHeight() - 20);
@@ -1350,9 +1350,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        tanggal = "  pengeluaran_obat_bhp.tanggal between '" + Valid.SetTgl(
-                Tgl1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(Tgl2.
-                getSelectedItem() + "") + "' ";
+        tanggal = "  pengeluaran_obat_bhp.tanggal between '" + Valid.SetTgl(Tgl1.getSelectedItem() + "") + "' and '"
+                + Valid.SetTgl(Tgl2.getSelectedItem() + "") + "' ";
         nofak = "";
         mem = "";
         ptg = "";
@@ -1384,30 +1383,23 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     + " inner join bangsal on pengeluaran_obat_bhp.kd_bangsal=bangsal.kd_bangsal "
                     + " inner join databarang on detail_pengeluaran_obat_bhp.kode_brng=databarang.kode_brng "
                     + " inner join jenis on databarang.kdjns=jenis.kdjns "
-                    + " inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat "
-                    + " where " + tanggal + nofak + mem + ptg + sat + bar + " and "
-                    + "(pengeluaran_obat_bhp.no_keluar like '%" + TCari.
-                            getText() + "%' or pengeluaran_obat_bhp.nip like '%" + TCari.
-                            getText() + "%' or "
-                    + "petugas.nama like '%" + TCari.getText() + "%' or pengeluaran_obat_bhp.keterangan like '%" + TCari.
-                    getText() + "%' or "
-                    + "detail_pengeluaran_obat_bhp.kode_brng like '%" + TCari.
-                            getText() + "%' or bangsal.nm_bangsal like '%" + TCari.
-                            getText() + "%' or "
-                    + "databarang.nama_brng like '%" + TCari.getText() + "%' or databarang.kode_sat like '%" + TCari.
-                    getText() + "%' or jenis.nama like '%" + TCari.getText() + "%') "
+                    + " inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat " + " where " + tanggal
+                    + nofak + mem + ptg + sat + bar + " and " + "(pengeluaran_obat_bhp.no_keluar like '%"
+                    + TCari.getText() + "%' or pengeluaran_obat_bhp.nip like '%" + TCari.getText() + "%' or "
+                    + "petugas.nama like '%" + TCari.getText() + "%' or pengeluaran_obat_bhp.keterangan like '%"
+                    + TCari.getText() + "%' or " + "detail_pengeluaran_obat_bhp.kode_brng like '%"
+                    + TCari.getText() + "%' or bangsal.nm_bangsal like '%" + TCari.getText() + "%' or "
+                    + "databarang.nama_brng like '%" + TCari.getText() + "%' or databarang.kode_sat like '%"
+                    + TCari.getText() + "%' or jenis.nama like '%" + TCari.getText() + "%') "
                     + " group by detail_pengeluaran_obat_bhp.kode_brng " + order);
             try {
                 rs = ps.executeQuery();
                 total = 0;
                 while (rs.next()) {
                     total += rs.getDouble("total");
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"), rs.getString("nama_brng"),
-                        rs.getString("satuan"), rs.getString("namajenis"), rs.
-                        getDouble("jumlah"), rs.getDouble("total"), rs.
-                        getString("kode_sat")
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("kode_brng"), rs.getString("nama_brng"),
+                        rs.getString("satuan"), rs.getString("namajenis"), rs.getDouble("jumlah"),
+                        rs.getDouble("total"), rs.getString("kode_sat")});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1442,6 +1434,6 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         BtnPrint.setEnabled(akses.getringkasan_stok_keluar_obat());
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryRingkasanStokKeluarBarangMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryRingkasanStokKeluarBarangMedis.class.getName());
+
 }

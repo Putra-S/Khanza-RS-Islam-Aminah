@@ -33,41 +33,49 @@ import simrskhanza.DlgCariCaraBayar;
 public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
+
     private DlgCariJenis jenis = new DlgCariJenis(null, false);
+
     private DlgCariKategori kategori = new DlgCariKategori(null, false);
+
     private DlgCariGolongan golongan = new DlgCariGolongan(null, false);
+
     private DlgCariBangsal asalstok = new DlgCariBangsal(null, false);
+
     private int i = 0;
+
     private double total = 0;
-    private String statusobat = "", carabayar = "", bangsal = "", jenisbarang = "", kategoribarang = "", golonganbarang = "", unit = "", pilihan = "";
+
+    private String statusobat = "", carabayar = "", bangsal = "", jenisbarang = "", kategoribarang = "",
+            golonganbarang = "", unit = "", pilihan = "";
+
     private StringBuilder htmlContent;
 
     /**
      * @param parent
      * @param modal
      */
-    public InventoryRingkasanBiayaObatPasienPerTanggal(java.awt.Frame parent,
-            boolean modal) {
+    public InventoryRingkasanBiayaObatPasienPerTanggal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.", "Tanggal", "No.Rawat", "No.RM", "Nama Pasien", "Alamat",
-            "Cara Bayar", "Unit/Layanan", "Total"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class
-            };
+        tabMode = new DefaultTableModel(null, new Object[]{"No.", "Tanggal", "No.Rawat", "No.RM", "Nama Pasien",
+            "Alamat", "Cara Bayar", "Unit/Layanan", "Total"}) {
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -121,10 +129,8 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -178,10 +184,8 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
             @Override
             public void windowClosed(WindowEvent e) {
                 if (asalstok.getTable().getSelectedRow() != -1) {
-                    kdasal.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmasal.setText(asalstok.getTable().getValueAt(asalstok.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdasal.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 0).toString());
+                    nmasal.setText(asalstok.getTable().getValueAt(asalstok.getTable().getSelectedRow(), 1).toString());
                 }
                 kdasal.requestFocus();
             }
@@ -234,10 +238,8 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
             @Override
             public void windowClosed(WindowEvent e) {
                 if (jenis.getTable().getSelectedRow() != -1) {
-                    kdjenis.setText(jenis.getTable().getValueAt(
-                            jenis.getTable().getSelectedRow(), 0).toString());
-                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().
-                            getSelectedRow(), 1).toString());
+                    kdjenis.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 0).toString());
+                    nmjns.setText(jenis.getTable().getValueAt(jenis.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -271,10 +273,10 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
             @Override
             public void windowClosed(WindowEvent e) {
                 if (golongan.getTable().getSelectedRow() != -1) {
-                    kdgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmgolongan.setText(golongan.getTable().getValueAt(golongan.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 0).toString());
+                    nmgolongan
+                            .setText(golongan.getTable().getValueAt(golongan.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -309,10 +311,10 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kategori.getTable().getSelectedRow() != -1) {
-                    kdkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmkategori.setText(kategori.getTable().getValueAt(kategori.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 0).toString());
+                    nmkategori
+                            .setText(kategori.getTable().getValueAt(kategori.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -337,8 +339,7 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -369,7 +370,9 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -781,14 +784,13 @@ public class InventoryRingkasanBiayaObatPasienPerTanggal extends javax.swing.JDi
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-        dispose();
+	/*
+	 * private void KdKeyPressed(java.awt.event.KeyEvent evt) {
+	 * Valid.pindah(evt,BtnCari,Nm); }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        dispose();//GEN-FIRST:event_BtnKeluarActionPerformed
     }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
@@ -1250,8 +1252,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             }
             bangsal = "";
             if (!kdasal.getText().trim().isEmpty()) {
-                bangsal = " and detail_pemberian_obat.kd_bangsal='" + kdasal.
-                        getText() + "' ";
+                bangsal = " and detail_pemberian_obat.kd_bangsal='" + kdasal.getText() + "' ";
             }
             jenisbarang = "";
             if (!kdjenis.getText().trim().isEmpty()) {
@@ -1259,13 +1260,11 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             }
             kategoribarang = "";
             if (!kdkategori.getText().trim().isEmpty()) {
-                kategoribarang = " and databarang.kode_kategori='" + kdkategori.
-                        getText() + "' ";
+                kategoribarang = " and databarang.kode_kategori='" + kdkategori.getText() + "' ";
             }
             golonganbarang = "";
             if (!kdgolongan.getText().trim().isEmpty()) {
-                golonganbarang = " and databarang.kode_golongan='" + kdgolongan.
-                        getText() + "' ";
+                golonganbarang = " and databarang.kode_golongan='" + kdgolongan.getText() + "' ";
             }
             ps = koneksi.prepareStatement(
                     "select detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"
@@ -1276,11 +1275,11 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
                     + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join propinsi on pasien.kd_prop=propinsi.kd_prop "
                     + "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj inner join poliklinik on poliklinik.kd_poli=reg_periksa.kd_poli "
-                    + "where detail_pemberian_obat.tgl_perawatan between ? and ? "
-                    + statusobat + carabayar + bangsal + jenisbarang + kategoribarang + golonganbarang + (TCari.
-                            getText().trim().isEmpty() ? ""
-                            : "and (detail_pemberian_obat.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or "
-                            + "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab,', ',propinsi.nm_prop) like ?) ")
+                    + "where detail_pemberian_obat.tgl_perawatan between ? and ? " + statusobat + carabayar
+                    + bangsal + jenisbarang + kategoribarang + golonganbarang
+                    + (TCari.getText().trim().isEmpty() ? ""
+                    : "and (detail_pemberian_obat.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or "
+                    + "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab,', ',propinsi.nm_prop) like ?) ")
                     + "group by detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.no_rawat order by detail_pemberian_obat.tgl_perawatan");
             try {
                 ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
@@ -1302,19 +1301,13 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                 "select concat(kamar_inap.kd_kamar,' ',bangsal.nm_bangsal) from kamar_inap inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal where kamar_inap.no_rawat=? order by kamar_inap.tgl_keluar desc limit 1  ",
                                 rs.getString("no_rawat"));
                     }
-                    tabMode.addRow(new Object[]{
-                        i + ".", rs.getString("tgl_perawatan"), rs.getString(
-                        "no_rawat"), rs.getString("no_rkm_medis"), rs.getString(
-                        "nm_pasien"),
-                        rs.getString("alamat"), rs.getString("png_jawab"), unit,
-                        rs.getDouble("total")
-                    });
+                    tabMode.addRow(new Object[]{i + ".", rs.getString("tgl_perawatan"), rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), rs.getString("alamat"),
+                        rs.getString("png_jawab"), unit, rs.getDouble("total")});
                     i++;
                 }
                 if (total > 0) {
-                    tabMode.addRow(new Object[]{
-                        "", "Total", ":", "", "", "", "", "", total
-                    });
+                    tabMode.addRow(new Object[]{"", "Total", ":", "", "", "", "", "", total});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1347,7 +1340,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryRingkasanBiayaObatPasienPerTanggal.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryRingkasanBiayaObatPasienPerTanggal.class.getName());
 
 }

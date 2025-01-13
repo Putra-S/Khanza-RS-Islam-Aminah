@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgAdmin.java
- *
- * Created on 21 Jun 10, 20:53:44
+* DlgAdmin.java
+*
+* Created on 21 Jun 10, 20:53:44
  */
 package setting;
 
@@ -32,19 +32,26 @@ import simrskhanza.DlgCariBangsal;
 import simrskhanza.DlgCariPoli;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgSetOtoLokasi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabModeRalan, tabModeRanap;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariBangsal bangsal = new DlgCariBangsal(null, false);
+
     private DlgCariPoli poli = new DlgCariPoli(null, false);
+
     private int i, pilihan = 0;
 
     /**
@@ -58,8 +65,7 @@ public class DlgSetOtoLokasi extends javax.swing.JDialog {
         initComponents();
         this.setLocation(10, 10);
         setSize(457, 249);
-        tabMode = new DefaultTableModel(null, new Object[]{"Kode Lokasi",
-            "Nama Lokasi", "Penggunaan Stok Ranap"}) {
+        tabMode = new DefaultTableModel(null, new Object[]{"Kode Lokasi", "Nama Lokasi", "Penggunaan Stok Ranap"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -84,8 +90,8 @@ public class DlgSetOtoLokasi extends javax.swing.JDialog {
 
         tbAdmin.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRalan = new DefaultTableModel(null, new Object[]{"Kode Poli",
-            "Poliklinik", "Kode Depo", "Depo Obat"}) {
+        tabModeRalan = new DefaultTableModel(null,
+                new Object[]{"Kode Poli", "Poliklinik", "Kode Depo", "Depo Obat"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -112,8 +118,7 @@ public class DlgSetOtoLokasi extends javax.swing.JDialog {
 
         tbRalan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabModeRanap = new DefaultTableModel(null, new Object[]{"Kode",
-            "Bangsal/Kamar", "Kode Depo", "Depo Obat"}) {
+        tabModeRanap = new DefaultTableModel(null, new Object[]{"Kode", "Bangsal/Kamar", "Kode Depo", "Depo Obat"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -142,12 +147,9 @@ public class DlgSetOtoLokasi extends javax.swing.JDialog {
 
         kdbangsal.setDocument(new batasInput((byte) 5).getKata(kdbangsal));
         KodePoli.setDocument(new batasInput((byte) 5).getKata(KodePoli));
-        KodeDepoRalan.setDocument(new batasInput((byte) 5).
-                getKata(KodeDepoRalan));
-        KodeDepoRanap.setDocument(new batasInput((byte) 5).
-                getKata(KodeDepoRanap));
-        KodeBangsalRanap.setDocument(new batasInput((byte) 5).getKata(
-                KodeBangsalRanap));
+        KodeDepoRalan.setDocument(new batasInput((byte) 5).getKata(KodeDepoRalan));
+        KodeDepoRanap.setDocument(new batasInput((byte) 5).getKata(KodeDepoRanap));
+        KodeBangsalRanap.setDocument(new batasInput((byte) 5).getKata(KodeBangsalRanap));
 
         bangsal.addWindowListener(new WindowListener() {
             @Override
@@ -162,34 +164,28 @@ public class DlgSetOtoLokasi extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (bangsal.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        kdbangsal.setText(bangsal.getTable().getValueAt(bangsal.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmbangsal.setText(bangsal.getTable().getValueAt(bangsal.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdbangsal
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                        nmbangsal
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                         kdbangsal.requestFocus();
                     } else if (pilihan == 2) {
-                        KodeDepoRalan.setText(bangsal.getTable().getValueAt(
-                                bangsal.getTable().getSelectedRow(), 0).
-                                toString());
-                        NmDepoRalan.setText(bangsal.getTable().getValueAt(
-                                bangsal.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodeDepoRalan
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                        NmDepoRalan
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                         KodeDepoRalan.requestFocus();
                     } else if (pilihan == 3) {
-                        KodeBangsalRanap.setText(bangsal.getTable().getValueAt(
-                                bangsal.getTable().getSelectedRow(), 0).
-                                toString());
-                        NamaBangsalRanap.setText(bangsal.getTable().getValueAt(
-                                bangsal.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodeBangsalRanap
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                        NamaBangsalRanap
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                         KodeBangsalRanap.requestFocus();
                     } else if (pilihan == 4) {
-                        KodeDepoRanap.setText(bangsal.getTable().getValueAt(
-                                bangsal.getTable().getSelectedRow(), 0).
-                                toString());
-                        NamaDepoRanap.setText(bangsal.getTable().getValueAt(
-                                bangsal.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodeDepoRanap
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 0).toString());
+                        NamaDepoRanap
+                                .setText(bangsal.getTable().getValueAt(bangsal.getTable().getSelectedRow(), 1).toString());
                         KodeDepoRanap.requestFocus();
                     }
                 }
@@ -225,10 +221,8 @@ public class DlgSetOtoLokasi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    KodePoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
+                    KodePoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
                     KodePoli.requestFocus();
                 }
             }
@@ -254,7 +248,9 @@ public class DlgSetOtoLokasi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1171,8 +1167,7 @@ private void btnBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgSetOtoLokasi dialog = new DlgSetOtoLokasi(
-                    new javax.swing.JFrame(), true);
+            DlgSetOtoLokasi dialog = new DlgSetOtoLokasi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1232,15 +1227,12 @@ private void btnBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_lokasi.kd_bangsal,nm_bangsal,asal_stok from set_lokasi "
+            ps = koneksi.prepareStatement("select set_lokasi.kd_bangsal,nm_bangsal,asal_stok from set_lokasi "
                     + "inner join bangsal on set_lokasi.kd_bangsal=bangsal.kd_bangsal");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3)});
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3)});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -1298,8 +1290,8 @@ private void btnBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModeRalan.addRow(new Object[]{rs.getString(1), rs.
-                        getString(2), rs.getString(3), rs.getString(4)});
+                    tabModeRalan
+                            .addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -1319,19 +1311,15 @@ private void btnBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private void tampilranap() {
         Valid.tabelKosong(tabModeRanap);
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_depo_ranap.kd_bangsal,bangsal.nm_bangsal,set_depo_ranap.kd_depo "
+            ps = koneksi.prepareStatement("select set_depo_ranap.kd_bangsal,bangsal.nm_bangsal,set_depo_ranap.kd_depo "
                     + "from set_depo_ranap inner join bangsal on set_depo_ranap.kd_bangsal=bangsal.kd_bangsal "
                     + "order by set_depo_ranap.kd_bangsal");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabModeRanap.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3),
-                        Sequel.cariIsi(
-                        "select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
-                        rs.getString(3))
-                    });
+                    tabModeRanap.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3),
+                        Sequel.cariIsi("select bangsal.nm_bangsal from bangsal where bangsal.kd_bangsal=?",
+                        rs.getString(3))});
                 }
             } catch (SQLException e) {
                 System.out.println(e);
@@ -1368,6 +1356,6 @@ private void btnBangsalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgSetOtoLokasi.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgSetOtoLokasi.class.getName());
+
 }

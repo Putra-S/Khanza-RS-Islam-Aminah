@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgLhtBiaya.java
- *
- * Created on 12 Jul 10, 16:21:34
+* DlgLhtBiaya.java
+*
+* Created on 12 Jul 10, 16:21:34
  */
 package laporan;
 
@@ -31,23 +31,26 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgRl34 extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
-    private PreparedStatement ps, psrujukanrs, psrujukanbidan, psrujukanpuskesmas,
-            psrujukansemua, psrujukanmati, psnonrujukhidup, psnonrujukmati,
-            psnonrujuktotal, psdirujuk;
-    private ResultSet rs, rsrujukanrs, rsrujukanbidan, rsrujukanpuskesmas,
-            rsrujukansemua, rsrujukanmati, rsnonrujukhidup, rsnonrujukmati,
-            rsnonrujuktotal, rsdirujuk;
-    private int i = 0, rujukrs = 0, rujukbidan = 0, rujukpuskesmas = 0, rujuksemua = 0,
-            rujukmati, nonrujukhidup, nonrujukmati, nonrujuktotal, dirujuk;
+
+    private PreparedStatement ps, psrujukanrs, psrujukanbidan, psrujukanpuskesmas, psrujukansemua, psrujukanmati,
+            psnonrujukhidup, psnonrujukmati, psnonrujuktotal, psdirujuk;
+
+    private ResultSet rs, rsrujukanrs, rsrujukanbidan, rsrujukanpuskesmas, rsrujukansemua, rsrujukanmati,
+            rsnonrujukhidup, rsnonrujukmati, rsnonrujuktotal, rsdirujuk;
+
+    private int i = 0, rujukrs = 0, rujukbidan = 0, rujukpuskesmas = 0, rujuksemua = 0, rujukmati, nonrujukhidup,
+            nonrujukmati, nonrujuktotal, dirujuk;
 
     /**
      * Creates new form DlgLhtBiaya
@@ -61,12 +64,9 @@ public class DlgRl34 extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {"No.", "Jenis Kegiatan", "Rujukan RS",
-            "Rujukan Bidan", "Rujukan Puskesmas",
-            "Rujukan Faskes Lain", "Rujukan Jml Hidup", "Rujukan Jml Mati",
-            "Rujukan Jml Total",
-            "Non Rjk Jml Hidup", "Non Rjk Jml Mati", "Non Rjk Jml Ttl",
-            "Dirujuk"};
+        Object[] rowRwJlDr = {"No.", "Jenis Kegiatan", "Rujukan RS", "Rujukan Bidan", "Rujukan Puskesmas",
+            "Rujukan Faskes Lain", "Rujukan Jml Hidup", "Rujukan Jml Mati", "Rujukan Jml Total",
+            "Non Rjk Jml Hidup", "Non Rjk Jml Mati", "Non Rjk Jml Ttl", "Dirujuk"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -75,7 +75,8 @@ public class DlgRl34 extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -110,19 +111,19 @@ public class DlgRl34 extends javax.swing.JDialog {
             psrujukansemua = koneksi.prepareStatement(
                     "select count(operasi.kode_paket) from operasi inner join rujuk_masuk on rujuk_masuk.no_rawat=operasi.no_rawat "
                     + "where operasi.kode_paket=? and operasi.tgl_operasi between ? and ? ");
-            psrujukanmati = koneksi.prepareStatement(
-                    "select count(operasi.kode_paket) from operasi inner join rujuk_masuk "
-                    + "inner join reg_periksa inner join pasien_mati on rujuk_masuk.no_rawat=operasi.no_rawat "
-                    + "and rujuk_masuk.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien_mati.no_rkm_medis "
-                    + "where operasi.kode_paket=? and operasi.tgl_operasi between ? and ?");
+            psrujukanmati = koneksi
+                    .prepareStatement("select count(operasi.kode_paket) from operasi inner join rujuk_masuk "
+                            + "inner join reg_periksa inner join pasien_mati on rujuk_masuk.no_rawat=operasi.no_rawat "
+                            + "and rujuk_masuk.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien_mati.no_rkm_medis "
+                            + "where operasi.kode_paket=? and operasi.tgl_operasi between ? and ?");
             psnonrujuktotal = koneksi.prepareStatement(
                     "select count(operasi.kode_paket) from operasi where operasi.no_rawat not in(select rujuk_masuk.no_rawat from rujuk_masuk) "
                     + "and operasi.kode_paket=? and operasi.tgl_operasi between ? and ? ");
-            psnonrujukmati = koneksi.prepareStatement(
-                    "select count(operasi.kode_paket) from operasi,reg_periksa,pasien_mati "
-                    + "where operasi.no_rawat not in(select rujuk_masuk.no_rawat from rujuk_masuk) "
-                    + "and reg_periksa.no_rkm_medis=pasien_mati.no_rkm_medis "
-                    + "and operasi.kode_paket=? and operasi.tgl_operasi between ? and ? ");
+            psnonrujukmati = koneksi
+                    .prepareStatement("select count(operasi.kode_paket) from operasi,reg_periksa,pasien_mati "
+                            + "where operasi.no_rawat not in(select rujuk_masuk.no_rawat from rujuk_masuk) "
+                            + "and reg_periksa.no_rkm_medis=pasien_mati.no_rkm_medis "
+                            + "and operasi.kode_paket=? and operasi.tgl_operasi between ? and ? ");
             psdirujuk = koneksi.prepareStatement(
                     "select count(operasi.kode_paket) from operasi inner join rujuk on rujuk.no_rawat=operasi.no_rawat "
                     + "where operasi.kode_paket=? and operasi.tgl_operasi between ? and ? ");
@@ -132,7 +133,9 @@ public class DlgRl34 extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -461,15 +464,11 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             i = 1;
             while (rs.next()) {
                 psrujukanrs.setString(1, rs.getString("kode_paket"));
-                psrujukanrs.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psrujukanrs.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psrujukanrs.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psrujukanrs.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 psrujukanrs.setString(4, rs.getString("kode_paket"));
-                psrujukanrs.setString(5, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psrujukanrs.setString(6, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psrujukanrs.setString(5, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psrujukanrs.setString(6, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsrujukanrs = psrujukanrs.executeQuery();
                 rujukrs = 0;
                 if (rsrujukanrs.next()) {
@@ -477,15 +476,11 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 psrujukanbidan.setString(1, rs.getString("kode_paket"));
-                psrujukanbidan.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psrujukanbidan.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psrujukanbidan.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psrujukanbidan.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 psrujukanbidan.setString(4, rs.getString("kode_paket"));
-                psrujukanbidan.setString(5, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psrujukanbidan.setString(6, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psrujukanbidan.setString(5, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psrujukanbidan.setString(6, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsrujukanbidan = psrujukanbidan.executeQuery();
                 rujukbidan = 0;
                 if (rsrujukanbidan.next()) {
@@ -493,10 +488,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 psrujukanpuskesmas.setString(1, rs.getString("kode_paket"));
-                psrujukanpuskesmas.setString(2, Valid.SetTgl(Tgl1.
-                        getSelectedItem() + "") + " 00:00:00.0");
-                psrujukanpuskesmas.setString(3, Valid.SetTgl(Tgl2.
-                        getSelectedItem() + "") + " 23:59:59.0");
+                psrujukanpuskesmas.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psrujukanpuskesmas.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsrujukanpuskesmas = psrujukanpuskesmas.executeQuery();
                 rujukpuskesmas = 0;
                 if (rsrujukanpuskesmas.next()) {
@@ -504,10 +497,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 psrujukansemua.setString(1, rs.getString("kode_paket"));
-                psrujukansemua.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psrujukansemua.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psrujukansemua.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psrujukansemua.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsrujukansemua = psrujukansemua.executeQuery();
                 rujuksemua = 0;
                 if (rsrujukansemua.next()) {
@@ -515,10 +506,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 psrujukanmati.setString(1, rs.getString("kode_paket"));
-                psrujukanmati.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psrujukanmati.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psrujukanmati.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psrujukanmati.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsrujukanmati = psrujukanmati.executeQuery();
                 rujukmati = 0;
                 if (rsrujukanmati.next()) {
@@ -526,10 +515,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 psnonrujuktotal.setString(1, rs.getString("kode_paket"));
-                psnonrujuktotal.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psnonrujuktotal.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psnonrujuktotal.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psnonrujuktotal.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsnonrujuktotal = psnonrujuktotal.executeQuery();
                 nonrujuktotal = 0;
                 if (rsnonrujuktotal.next()) {
@@ -537,10 +524,8 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 psnonrujukmati.setString(1, rs.getString("kode_paket"));
-                psnonrujukmati.setString(2, Valid.SetTgl(
-                        Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psnonrujukmati.setString(3, Valid.SetTgl(
-                        Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psnonrujukmati.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psnonrujukmati.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsnonrujukmati = psnonrujukmati.executeQuery();
                 nonrujukmati = 0;
                 if (rsnonrujukmati.next()) {
@@ -548,24 +533,17 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 }
 
                 psdirujuk.setString(1, rs.getString("kode_paket"));
-                psdirujuk.setString(2,
-                        Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
-                psdirujuk.setString(3,
-                        Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
+                psdirujuk.setString(2, Valid.SetTgl(Tgl1.getSelectedItem() + "") + " 00:00:00.0");
+                psdirujuk.setString(3, Valid.SetTgl(Tgl2.getSelectedItem() + "") + " 23:59:59.0");
                 rsdirujuk = psdirujuk.executeQuery();
                 dirujuk = 0;
                 if (rsdirujuk.next()) {
                     dirujuk = rsdirujuk.getInt(1);
                 }
 
-                tabMode.addRow(new Object[]{
-                    i, rs.getString("nm_perawatan"), rujukrs, rujukbidan,
-                    rujukpuskesmas,
-                    (rujuksemua - rujukrs - rujukbidan - rujukpuskesmas),
-                    (rujuksemua - rujukmati), rujukmati,
-                    rujuksemua, (nonrujuktotal - nonrujukmati), nonrujukmati,
-                    nonrujuktotal, dirujuk
-                });
+                tabMode.addRow(new Object[]{i, rs.getString("nm_perawatan"), rujukrs, rujukbidan, rujukpuskesmas,
+                    (rujuksemua - rujukrs - rujukbidan - rujukpuskesmas), (rujuksemua - rujukmati), rujukmati,
+                    rujuksemua, (nonrujuktotal - nonrujukmati), nonrujukmati, nonrujuktotal, dirujuk});
                 i++;
             }
             this.setCursor(Cursor.getDefaultCursor());

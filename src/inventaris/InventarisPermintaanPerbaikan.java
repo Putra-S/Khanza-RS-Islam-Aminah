@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgJnsPerawatan.java
- *
- * Created on May 22, 2010, 11:58:21 PM
+* DlgJnsPerawatan.java
+*
+* Created on May 22, 2010, 11:58:21 PM
  */
 package inventaris;
 
@@ -37,19 +37,26 @@ import javax.swing.table.TableColumn;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author dosen
  */
 public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariPegawai petugas = new DlgCariPegawai(null, false);
+
     private InventarisKoleksi inventaris = new InventarisKoleksi(null, false);
+
     private InventarisRuang ruang = new InventarisRuang(null, false);
 
     /**
@@ -65,12 +72,10 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Permintaan", "No.Inventaris", "Kode Barang", "Nama Barang",
-            "Merk", "Thn.Produksi", "Kategori",
-            "Jenis", "Ruang", "NIK", "Yang Meminta", "Departemen",
-            "Tgl.Permintaan", "Deskripsi Kerusakan"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Permintaan", "No.Inventaris", "Kode Barang", "Nama Barang", "Merk", "Thn.Produksi",
+                    "Kategori", "Jenis", "Ruang", "NIK", "Yang Meminta", "Departemen", "Tgl.Permintaan",
+                    "Deskripsi Kerusakan"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -79,9 +84,9 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
         };
         tbJnsPerawatan.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
-        tbJnsPerawatan.setPreferredScrollableViewportSize(
-                new Dimension(500, 500));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (int i = 0; i < 14; i++) {
@@ -118,8 +123,7 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        nopermintaan.
-                setDocument(new batasInput((byte) 15).getKata(nopermintaan));
+        nopermintaan.setDocument(new batasInput((byte) 15).getKata(nopermintaan));
         deskripsi.setDocument(new batasInput(300).getKata(deskripsi));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         TCari.requestFocus();
@@ -139,21 +143,20 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (inventaris.getTable().getSelectedRow() != -1) {
-                    no_inventaris.setText(inventaris.getTable().getValueAt(
-                            inventaris.getTable().getSelectedRow(), 0).
-                            toString());
-                    nama_barang.setText(inventaris.getTable().getValueAt(
-                            inventaris.getTable().getSelectedRow(), 1).
-                            toString() + ", " + inventaris.getTable().
-                                    getValueAt(inventaris.getTable().
-                                            getSelectedRow(), 2).toString());
-                    merk.setText(inventaris.getTable().getValueAt(inventaris.
-                            getTable().getSelectedRow(), 4).toString());
-                    jenis.setText(inventaris.getTable().getValueAt(inventaris.
-                            getTable().getSelectedRow(), 8).toString());
-                    kategori.setText(inventaris.getTable().getValueAt(
-                            inventaris.getTable().getSelectedRow(), 7).
-                            toString());
+                    no_inventaris.setText(
+                            inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 0).toString());
+                    nama_barang
+                            .setText(inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 1).toString()
+                                    + ", "
+                                    + inventaris.getTable()
+                                            .getValueAt(inventaris.getTable().getSelectedRow(), 2)
+                                            .toString());
+                    merk.setText(
+                            inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 4).toString());
+                    jenis.setText(
+                            inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 8).toString());
+                    kategori.setText(
+                            inventaris.getTable().getValueAt(inventaris.getTable().getSelectedRow(), 7).toString());
                     no_inventaris.requestFocus();
                 }
             }
@@ -206,8 +209,7 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.
-                            getTable().getSelectedRow(), 1).toString());
+                    nm_ruangcari.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                     TCari.requestFocus();
                 }
             }
@@ -249,8 +251,7 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -287,12 +288,11 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    nip.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    nama_petugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
-                    departemen.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 5).toString());
+                    nip.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    nama_petugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
+                    departemen
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 5).toString());
                 }
                 nip.requestFocus();
             }
@@ -317,7 +317,9 @@ public class InventarisPermintaanPerbaikan extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1249,8 +1251,7 @@ private void tgl_permintaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventarisPermintaanPerbaikan dialog = new InventarisPermintaanPerbaikan(
-                    new javax.swing.JFrame(), true);
+            InventarisPermintaanPerbaikan dialog = new InventarisPermintaanPerbaikan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1334,8 +1335,7 @@ private void tgl_permintaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:
                         + "inner join inventaris_jenis on inventaris_barang.id_jenis=inventaris_jenis.id_jenis "
                         + "inner join inventaris_ruang on inventaris.id_ruang=inventaris_ruang.id_ruang "
                         + "inner join pegawai on permintaan_perbaikan_inventaris.nik=pegawai.nik where "
-                        + "permintaan_perbaikan_inventaris.tanggal between ? and ? order by permintaan_perbaikan_inventaris.no_permintaan"
-                );
+                        + "permintaan_perbaikan_inventaris.tanggal between ? and ? order by permintaan_perbaikan_inventaris.no_permintaan");
             } else {
                 ps = koneksi.prepareStatement(
                         "select permintaan_perbaikan_inventaris.no_permintaan,permintaan_perbaikan_inventaris.no_inventaris,"
@@ -1361,99 +1361,66 @@ private void tgl_permintaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:
                         + "permintaan_perbaikan_inventaris.tanggal between ? and ? and inventaris_ruang.nama_ruang like ? and permintaan_perbaikan_inventaris.nik like ? or "
                         + "permintaan_perbaikan_inventaris.tanggal between ? and ? and inventaris_ruang.nama_ruang like ? and pegawai.nama like ? or "
                         + "permintaan_perbaikan_inventaris.tanggal between ? and ? and inventaris_ruang.nama_ruang like ? and permintaan_perbaikan_inventaris.deskripsi_kerusakan like ? "
-                        + "order by permintaan_perbaikan_inventaris.no_permintaan"
-                );
+                        + "order by permintaan_perbaikan_inventaris.no_permintaan");
             }
 
             try {
-                if (nm_ruangcari.getText().isEmpty() && TCari.getText().
-                        isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                if (nm_ruangcari.getText().isEmpty() && TCari.getText().isEmpty()) {
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(4, "%" + TCari.getText().trim() + "%");
-                    ps.setString(5, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(6, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(5, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(6, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(7, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(8, "%" + TCari.getText().trim() + "%");
-                    ps.setString(9, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(10, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(9, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(10, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(11, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(12, "%" + TCari.getText().trim() + "%");
-                    ps.setString(13, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(14, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(15, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(16, "%" + TCari.getText().trim() + "%");
-                    ps.setString(17, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(18, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(17, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(18, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(19, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(20, "%" + TCari.getText().trim() + "%");
-                    ps.setString(21, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(22, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(21, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(22, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(23, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(24, "%" + TCari.getText().trim() + "%");
-                    ps.setString(25, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(26, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(25, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(26, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(27, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(28, "%" + TCari.getText().trim() + "%");
-                    ps.setString(29, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(30, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(29, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(30, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(31, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(32, "%" + TCari.getText().trim() + "%");
-                    ps.setString(33, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(34, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(33, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(34, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(35, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(36, "%" + TCari.getText().trim() + "%");
-                    ps.setString(37, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(38, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(37, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(38, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(39, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(40, "%" + TCari.getText().trim() + "%");
-                    ps.setString(41, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(42, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(41, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(42, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(43, "%" + nm_ruangcari.getText().trim() + "%");
                     ps.setString(44, "%" + TCari.getText().trim() + "%");
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_permintaan"), rs.getString(
-                        "no_inventaris"), rs.getString("kode_barang"), rs.
-                        getString("nama_barang"),
-                        rs.getString("nama_merk"), rs.getString("thn_produksi"),
-                        rs.getString("nama_kategori"), rs.
-                        getString("nama_jenis"),
-                        rs.getString("nama_ruang"), rs.getString("nik"), rs.
-                        getString("nama"), rs.getString("departemen"),
-                        rs.getString("tanggal"), rs.getString(
-                        "deskripsi_kerusakan")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_permintaan"), rs.getString("no_inventaris"),
+                        rs.getString("kode_barang"), rs.getString("nama_barang"), rs.getString("nama_merk"),
+                        rs.getString("thn_produksi"), rs.getString("nama_kategori"), rs.getString("nama_jenis"),
+                        rs.getString("nama_ruang"), rs.getString("nik"), rs.getString("nama"),
+                        rs.getString("departemen"), rs.getString("tanggal"), rs.getString("deskripsi_kerusakan")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1487,46 +1454,33 @@ private void tgl_permintaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:
         tgl_permintaan.setDate(new Date());
         TCari.setText("");
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_permintaan,3),signed)),0) from permintaan_perbaikan_inventaris where date_format(tanggal,'%Y-%m-%d')='" + Valid.
-                        SetTgl(tgl_permintaan.getSelectedItem() + "") + "' ",
-                "PPI" + tgl_permintaan.getSelectedItem().toString().substring(6,
-                        10) + tgl_permintaan.getSelectedItem().toString().
-                        substring(3, 5) + tgl_permintaan.getSelectedItem().
-                toString().substring(0, 2), 3, nopermintaan);
+                "select ifnull(MAX(CONVERT(RIGHT(no_permintaan,3),signed)),0) from permintaan_perbaikan_inventaris where date_format(tanggal,'%Y-%m-%d')='"
+                + Valid.SetTgl(tgl_permintaan.getSelectedItem() + "") + "' ",
+                "PPI" + tgl_permintaan.getSelectedItem().toString().substring(6, 10)
+                + tgl_permintaan.getSelectedItem().toString().substring(3, 5)
+                + tgl_permintaan.getSelectedItem().toString().substring(0, 2),
+                3, nopermintaan);
         nopermintaan.requestFocus();
     }
 
     private void getData() {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
-            nopermintaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 0).toString());
-            no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 1).toString());
-            nama_barang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 2).toString() + " " + tbJnsPerawatan.
-                            getValueAt(tbJnsPerawatan.getSelectedRow(), 3).
-                            toString());
-            merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 4).toString());
-            kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 6).toString());
-            jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 7).toString());
-            nip.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 9).toString());
-            nama_petugas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 10).toString());
-            departemen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 11).toString());
-            Valid.SetTgl2(tgl_permintaan, tbJnsPerawatan.getValueAt(
-                    tbJnsPerawatan.getSelectedRow(), 12).toString());
-            deskripsi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.
-                    getSelectedRow(), 13).toString());
+            nopermintaan.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString());
+            no_inventaris.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 1).toString());
+            nama_barang.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 2).toString() + " "
+                    + tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 3).toString());
+            merk.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 4).toString());
+            kategori.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 6).toString());
+            jenis.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString());
+            nip.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 9).toString());
+            nama_petugas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString());
+            departemen.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString());
+            Valid.SetTgl2(tgl_permintaan, tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 12).toString());
+            deskripsi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 13).toString());
         }
     }
 
     /**
-     *
      * @return
      */
     public JTable getTable() {
@@ -1581,8 +1535,7 @@ private void tgl_permintaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:
                 ps.setString(1, no_inventaris.getText());
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    nama_barang.setText(rs.getString("kode_barang") + ", " + rs.
-                            getString("nama_barang"));
+                    nama_barang.setText(rs.getString("kode_barang") + ", " + rs.getString("nama_barang"));
                     merk.setText(rs.getString("nama_merk"));
                     jenis.setText(rs.getString("nama_jenis"));
                     kategori.setText(rs.getString("nama_kategori"));
@@ -1602,7 +1555,6 @@ private void tgl_permintaanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventarisPermintaanPerbaikan.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventarisPermintaanPerbaikan.class.getName());
 
 }

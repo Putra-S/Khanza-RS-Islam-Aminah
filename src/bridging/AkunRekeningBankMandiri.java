@@ -61,22 +61,18 @@ public class AkunRekeningBankMandiri extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Kode Akun", "Akun Rekening", "Kode Biaya",
-            "Akun Biaya Transaksi", "Username", "Password",
-            "Client ID", "Client Secret", "Kode Faskes", "Kode MCM",
-            "No.Rekening"};
+        Object[] row = {"Kode Akun", "Akun Rekening", "Kode Biaya", "Akun Biaya Transaksi", "Username", "Password",
+            "Client ID", "Client Secret", "Kode Faskes", "Kode MCM", "No.Rekening"};
         tabMode = new DefaultTableModel(null, row) {
+
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
+
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
-
-            Class[] types = new Class[]{java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -125,12 +121,10 @@ public class AkunRekeningBankMandiri extends javax.swing.JDialog {
         Username.setDocument(new batasInput((byte) 32).getKata(Username));
         Password.setDocument(new batasInput((byte) 32).getKata(Password));
         ClientID.setDocument(new batasInput((byte) 32).getKata(ClientID));
-        ClientSecret.
-                setDocument(new batasInput((byte) 32).getKata(ClientSecret));
+        ClientSecret.setDocument(new batasInput((byte) 32).getKata(ClientSecret));
         KodeMCM.setDocument(new batasInput((byte) 8).getKata(KodeMCM));
         KodeFaskes.setDocument(new batasInput((byte) 5).getKata(KodeFaskes));
-        NoRekening.setDocument(new batasInput((byte) 30).
-                getOnlyAngka(NoRekening));
+        NoRekening.setDocument(new batasInput((byte) 30).getOnlyAngka(NoRekening));
 
         rekening.addWindowListener(new WindowListener() {
             @Override
@@ -146,51 +140,37 @@ public class AkunRekeningBankMandiri extends javax.swing.JDialog {
                 if (rekening.getTabel().getSelectedRow() != -1) {
                     if (i == 1) {
                         if (rekening.getTabel()
-                                .getValueAt(rekening.getTabel().getSelectedRow(),
-                                        3)
+                                .getValueAt(rekening.getTabel().getSelectedRow(), 3)
                                 .toString()
                                 .equals("N")
                                 && rekening.getTabel()
-                                        .getValueAt(rekening.getTabel().
-                                                getSelectedRow(), 4)
+                                        .getValueAt(rekening.getTabel().getSelectedRow(), 4)
                                         .toString()
                                         .equals("D")) {
                             kdrek.setText(
-                                    rekening.getTabel().getValueAt(rekening.
-                                            getTabel().getSelectedRow(), 1).
-                                            toString());
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString());
                             nmrek.setText(
-                                    rekening.getTabel().getValueAt(rekening.
-                                            getTabel().getSelectedRow(), 2).
-                                            toString());
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString());
                         } else {
-                            JOptionPane.showMessageDialog(rootPane,
-                                    "Rekening harus Tipe N dan Balance D..!!");
+                            JOptionPane.showMessageDialog(rootPane, "Rekening harus Tipe N dan Balance D..!!");
                         }
 
                         kdrek.requestFocus();
                     } else if (i == 2) {
                         if (rekening.getTabel()
-                                .getValueAt(rekening.getTabel().getSelectedRow(),
-                                        3)
+                                .getValueAt(rekening.getTabel().getSelectedRow(), 3)
                                 .toString()
                                 .equals("R")
                                 && rekening.getTabel()
-                                        .getValueAt(rekening.getTabel().
-                                                getSelectedRow(), 4)
+                                        .getValueAt(rekening.getTabel().getSelectedRow(), 4)
                                         .toString()
                                         .equals("D")) {
                             KdRekBiaya.setText(
-                                    rekening.getTabel().getValueAt(rekening.
-                                            getTabel().getSelectedRow(), 1).
-                                            toString());
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 1).toString());
                             NmRekBiaya.setText(
-                                    rekening.getTabel().getValueAt(rekening.
-                                            getTabel().getSelectedRow(), 2).
-                                            toString());
+                                    rekening.getTabel().getValueAt(rekening.getTabel().getSelectedRow(), 2).toString());
                         } else {
-                            JOptionPane.showMessageDialog(rootPane,
-                                    "Rekening harus Tipe R dan Balance D..!!");
+                            JOptionPane.showMessageDialog(rootPane, "Rekening harus Tipe R dan Balance D..!!");
                         }
 
                         KdRekBiaya.requestFocus();
@@ -237,7 +217,9 @@ public class AkunRekeningBankMandiri extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -807,8 +789,7 @@ public class AkunRekeningBankMandiri extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            AkunRekeningBankMandiri dialog = new AkunRekeningBankMandiri(
-                    new javax.swing.JFrame(), true);
+            AkunRekeningBankMandiri dialog = new AkunRekeningBankMandiri(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -866,13 +847,9 @@ public class AkunRekeningBankMandiri extends javax.swing.JDialog {
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(
-                            new Object[]{rs.getString(1), rs.getString(2),
-                                rs.getString(3), rs.getString(4),
-                                rs.getString(5), rs.getString(6), rs.
-                                getString(7), rs.getString(8), rs.getString(
-                                9),
-                                rs.getString(10), rs.getString(11)});
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(11)});
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -921,7 +898,6 @@ public class AkunRekeningBankMandiri extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            AkunRekeningBankMandiri.class.getName());
+    private static final Logger LOG = Logger.getLogger(AkunRekeningBankMandiri.class.getName());
 
 }

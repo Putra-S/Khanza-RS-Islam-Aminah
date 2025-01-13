@@ -27,27 +27,40 @@ import kepegawaian.DlgCariPegawai;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author perpustakaan
  */
 public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode, tabMode2;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
-    private DlgAkunPenagihanPiutang akuntagih = new DlgAkunPenagihanPiutang(null,
-            false);
+
+    private DlgAkunPenagihanPiutang akuntagih = new DlgAkunPenagihanPiutang(null, false);
+
     private int jml = 0, i = 0, index = 0;
+
     private String status = "";
+
     private double total = 0;
+
     private boolean sukses = true;
+
     private double[] piutang;
+
     private String[] norawat, tglpiutang, norm, pasien, statusrawat, carabayar, nokartu, asalperusahaan, nip, nonota;
+
     private boolean[] pilih;
+
     private DlgCariPegawai petugas = new DlgCariPegawai(null, false);
 
     /**
@@ -62,20 +75,13 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "P", "No.Rawat/No.Tagihan", "Tgl.Piutang", "No.RM", "Nama Pasien",
-            "Status", "Piutang", "Penjamin", "No.Peserta", "Asal Perusahaan",
-            "NIP/NRP", "No.Nota"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"P", "No.Rawat/No.Tagihan", "Tgl.Piutang", "No.RM", "Nama Pasien", "Status", "Piutang",
+                    "Penjamin", "No.Peserta", "Asal Perusahaan", "NIP/NRP", "No.Nota"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -93,7 +99,8 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
 
         };
         tbBelumLunas.setModel(tabMode);
-        //tbBelumLunas.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBelumLunas.getBackground()));
+        // tbBelumLunas.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBelumLunas.getBackground()));
         tbBelumLunas.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBelumLunas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -127,20 +134,13 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
         }
         tbBelumLunas.setDefaultRenderer(Object.class, new WarnaTable());
 
-        tabMode2 = new DefaultTableModel(null, new Object[]{
-            "P", "No.Rawat/No.Tagihan", "Tgl.Piutang", "No.RM", "Nama Pasien",
-            "Status", "Piutang", "Penjamin", "No.Peserta", "Asal Perusahaan",
-            "NIP/NRP", "No.Nota"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+        tabMode2 = new DefaultTableModel(null,
+                new Object[]{"P", "No.Rawat/No.Tagihan", "Tgl.Piutang", "No.RM", "Nama Pasien", "Status", "Piutang",
+                    "Penjamin", "No.Peserta", "Asal Perusahaan", "NIP/NRP", "No.Nota"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -158,9 +158,9 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
 
         };
         tbBelumDitagihkan.setModel(tabMode2);
-        //tbBelumLunas.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBelumLunas.getBackground()));
-        tbBelumDitagihkan.setPreferredScrollableViewportSize(new Dimension(500,
-                500));
+        // tbBelumLunas.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBelumLunas.getBackground()));
+        tbBelumDitagihkan.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBelumDitagihkan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
@@ -199,8 +199,7 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -237,18 +236,13 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
-                    Perusahaan.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 3).toString());
-                    AlamatAsuransi.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 4).toString());
-                    NoTelp.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 5).toString());
-                    Ditujukan.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 6).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
+                    Perusahaan.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 3).toString());
+                    AlamatAsuransi
+                            .setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 4).toString());
+                    NoTelp.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 5).toString());
+                    Ditujukan.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 6).toString());
                     TabRawatMouseClicked(null);
                 }
                 kdpenjab.requestFocus();
@@ -303,14 +297,13 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (akuntagih.getTable().getSelectedRow() != -1) {
-                    KdAkun.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 1).toString());
-                    NamaBank.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 3).toString());
-                    AtasNama.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 4).toString());
-                    NoRek.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 5).toString());
+                    KdAkun
+                            .setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 1).toString());
+                    NamaBank
+                            .setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 3).toString());
+                    AtasNama
+                            .setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 4).toString());
+                    NoRek.setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 5).toString());
                 }
                 KdAkun.requestFocus();
             }
@@ -364,18 +357,14 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     if (index == 1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         btnPetugas.requestFocus();
                     } else if (index == 2) {
-                        kdmenyetujui.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmmenyetujui.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdmenyetujui
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmmenyetujui
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         btnMenyetujui.requestFocus();
                     }
                 }
@@ -404,7 +393,9 @@ public class KeuanganPenagihanPiutangPasien extends javax.swing.JDialog {
     double sisapiutang = 0, cicilan = 0;
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1769,8 +1760,7 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganPenagihanPiutangPasien dialog = new KeuanganPenagihanPiutangPasien(
-                    new javax.swing.JFrame(), true);
+            KeuanganPenagihanPiutangPasien dialog = new KeuanganPenagihanPiutangPasien(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1893,14 +1883,11 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                     tglpiutang[index] = tbBelumLunas.getValueAt(i, 2).toString();
                     norm[index] = tbBelumLunas.getValueAt(i, 3).toString();
                     pasien[index] = tbBelumLunas.getValueAt(i, 4).toString();
-                    statusrawat[index] = tbBelumLunas.getValueAt(i, 5).
-                            toString();
-                    piutang[index] = Double.parseDouble(tbBelumLunas.getValueAt(
-                            i, 6).toString());
+                    statusrawat[index] = tbBelumLunas.getValueAt(i, 5).toString();
+                    piutang[index] = Double.parseDouble(tbBelumLunas.getValueAt(i, 6).toString());
                     carabayar[index] = tbBelumLunas.getValueAt(i, 7).toString();
                     nokartu[index] = tbBelumLunas.getValueAt(i, 8).toString();
-                    asalperusahaan[index] = tbBelumLunas.getValueAt(i, 9).
-                            toString();
+                    asalperusahaan[index] = tbBelumLunas.getValueAt(i, 9).toString();
                     nip[index] = tbBelumLunas.getValueAt(i, 10).toString();
                     nonota[index] = tbBelumLunas.getValueAt(i, 11).toString();
                     index++;
@@ -1910,11 +1897,8 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
             Valid.tabelKosong(tabMode);
 
             for (i = 0; i < jml; i++) {
-                tabMode.addRow(new Object[]{
-                    pilih[i], norawat[i], tglpiutang[i], norm[i], pasien[i],
-                    statusrawat[i], piutang[i], carabayar[i], nokartu[i],
-                    asalperusahaan[i], nip[i], nonota[i]
-                });
+                tabMode.addRow(new Object[]{pilih[i], norawat[i], tglpiutang[i], norm[i], pasien[i], statusrawat[i],
+                    piutang[i], carabayar[i], nokartu[i], asalperusahaan[i], nip[i], nonota[i]});
             }
 
             sisapiutang = 0;
@@ -1932,23 +1916,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_jalan.no_nota like ?) "
                         + " order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ralan", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ralan",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -1975,23 +1953,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_inap.no_nota like ?) "
                         + " order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ranap", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ranap",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -2018,23 +1990,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_jalan.no_nota like ?) "
                         + " order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ralan", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ralan",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -2061,23 +2027,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_inap.no_nota like ?) "
                         + " order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ranap", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ranap",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -2137,26 +2097,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
             for (i = 0; i < tbBelumDitagihkan.getRowCount(); i++) {
                 if (tbBelumDitagihkan.getValueAt(i, 0).toString().equals("true")) {
                     pilih[index] = true;
-                    norawat[index] = tbBelumDitagihkan.getValueAt(i, 1).
-                            toString();
-                    tglpiutang[index] = tbBelumDitagihkan.getValueAt(i, 2).
-                            toString();
+                    norawat[index] = tbBelumDitagihkan.getValueAt(i, 1).toString();
+                    tglpiutang[index] = tbBelumDitagihkan.getValueAt(i, 2).toString();
                     norm[index] = tbBelumDitagihkan.getValueAt(i, 3).toString();
-                    pasien[index] = tbBelumDitagihkan.getValueAt(i, 4).
-                            toString();
-                    statusrawat[index] = tbBelumDitagihkan.getValueAt(i, 5).
-                            toString();
-                    piutang[index] = Double.parseDouble(tbBelumDitagihkan.
-                            getValueAt(i, 6).toString());
-                    carabayar[index] = tbBelumDitagihkan.getValueAt(i, 7).
-                            toString();
-                    nokartu[index] = tbBelumDitagihkan.getValueAt(i, 8).
-                            toString();
-                    asalperusahaan[index] = tbBelumDitagihkan.getValueAt(i, 9).
-                            toString();
+                    pasien[index] = tbBelumDitagihkan.getValueAt(i, 4).toString();
+                    statusrawat[index] = tbBelumDitagihkan.getValueAt(i, 5).toString();
+                    piutang[index] = Double.parseDouble(tbBelumDitagihkan.getValueAt(i, 6).toString());
+                    carabayar[index] = tbBelumDitagihkan.getValueAt(i, 7).toString();
+                    nokartu[index] = tbBelumDitagihkan.getValueAt(i, 8).toString();
+                    asalperusahaan[index] = tbBelumDitagihkan.getValueAt(i, 9).toString();
                     nip[index] = tbBelumDitagihkan.getValueAt(i, 10).toString();
-                    nonota[index] = tbBelumDitagihkan.getValueAt(i, 11).
-                            toString();
+                    nonota[index] = tbBelumDitagihkan.getValueAt(i, 11).toString();
                     index++;
                 }
             }
@@ -2164,11 +2115,8 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
             Valid.tabelKosong(tabMode2);
 
             for (i = 0; i < jml; i++) {
-                tabMode2.addRow(new Object[]{
-                    pilih[i], norawat[i], tglpiutang[i], norm[i], pasien[i],
-                    statusrawat[i], piutang[i], carabayar[i], nokartu[i],
-                    asalperusahaan[i], nip[i], nonota[i]
-                });
+                tabMode2.addRow(new Object[]{pilih[i], norawat[i], tglpiutang[i], norm[i], pasien[i], statusrawat[i],
+                    piutang[i], carabayar[i], nokartu[i], asalperusahaan[i], nip[i], nonota[i]});
             }
 
             sisapiutang = 0;
@@ -2185,23 +2133,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "where piutang_pasien.no_rawat not in(select detail_penagihan_piutang.no_rawat from detail_penagihan_piutang) and detail_piutang_pasien.sisapiutang>=1 and concat(detail_piutang_pasien.kd_pj,penjab.png_jawab) like ? and "
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_jalan.no_nota like ?) order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode2.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ralan", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode2.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ralan",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -2227,23 +2169,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "where piutang_pasien.no_rawat not in(select detail_penagihan_piutang.no_rawat from detail_penagihan_piutang) and detail_piutang_pasien.sisapiutang>=1 and concat(detail_piutang_pasien.kd_pj,penjab.png_jawab) like ? and "
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_inap.no_nota like ?) order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode2.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ranap", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode2.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ranap",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -2269,23 +2205,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "where piutang_pasien.no_rawat not in(select detail_penagihan_piutang.no_rawat from detail_penagihan_piutang) and detail_piutang_pasien.sisapiutang>=1 and concat(detail_piutang_pasien.kd_pj,penjab.png_jawab) like ? and "
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_jalan.no_nota like ?) order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode2.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ralan", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode2.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ralan",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -2311,23 +2241,17 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + "where piutang_pasien.no_rawat not in(select detail_penagihan_piutang.no_rawat from detail_penagihan_piutang) and detail_piutang_pasien.sisapiutang>=1 and concat(detail_piutang_pasien.kd_pj,penjab.png_jawab) like ? and "
                         + "(piutang_pasien.no_rawat like ? or piutang_pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or nota_inap.no_nota like ?) order by piutang_pasien.tgl_piutang");
                 try {
-                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.
-                            getText() + "%");
+                    ps.setString(1, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
                     ps.setString(2, "%" + TCari.getText() + "%");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        tabMode2.addRow(new Object[]{
-                            false, rs.getString("no_rawat"), rs.getString(
-                            "tgl_piutang"), rs.getString("no_rkm_medis"), rs.
-                            getString("nm_pasien"),
-                            "Ranap", rs.getDouble("sisapiutang"), rs.getString(
-                            "png_jawab"), rs.getString("no_peserta"), rs.
-                            getString("nama_perusahaan"),
-                            rs.getString("nip"), rs.getString("no_nota")
-                        });
+                        tabMode2.addRow(new Object[]{false, rs.getString("no_rawat"), rs.getString("tgl_piutang"),
+                            rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), "Ranap",
+                            rs.getDouble("sisapiutang"), rs.getString("png_jawab"), rs.getString("no_peserta"),
+                            rs.getString("nama_perusahaan"), rs.getString("nip"), rs.getString("no_nota")});
                         sisapiutang += rs.getDouble("sisapiutang");
                     }
                 } catch (Exception e) {
@@ -2352,15 +2276,13 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
     private void getdata() {
         if (kdpenjab.getText().isEmpty() || nmpenjab.getText().isEmpty()) {
             tbBelumLunas.setValueAt(false, tbBelumLunas.getSelectedRow(), 0);
-            JOptionPane.showMessageDialog(null,
-                    "Silahkan pilih penjamin terlebih dahulu");
+            JOptionPane.showMessageDialog(null, "Silahkan pilih penjamin terlebih dahulu");
         } else {
             total = 0;
             jml = 0;
             for (i = 0; i < tbBelumLunas.getRowCount(); i++) {
                 if (tbBelumLunas.getValueAt(i, 0).toString().equals("true")) {
-                    total += (Double.parseDouble(tbBelumLunas.getValueAt(i, 6).
-                            toString()));
+                    total += (Double.parseDouble(tbBelumLunas.getValueAt(i, 6).toString()));
                     jml++;
                 }
             }
@@ -2371,17 +2293,14 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void getdata2() {
         if (kdpenjab.getText().isEmpty() || nmpenjab.getText().isEmpty()) {
-            tbBelumDitagihkan.setValueAt(false, tbBelumDitagihkan.
-                    getSelectedRow(), 0);
-            JOptionPane.showMessageDialog(null,
-                    "Silahkan pilih penjamin terlebih dahulu");
+            tbBelumDitagihkan.setValueAt(false, tbBelumDitagihkan.getSelectedRow(), 0);
+            JOptionPane.showMessageDialog(null, "Silahkan pilih penjamin terlebih dahulu");
         } else {
             total = 0;
             jml = 0;
             for (i = 0; i < tbBelumDitagihkan.getRowCount(); i++) {
                 if (tbBelumDitagihkan.getValueAt(i, 0).toString().equals("true")) {
-                    total += (Double.parseDouble(tbBelumDitagihkan.getValueAt(i,
-                            6).toString()));
+                    total += (Double.parseDouble(tbBelumDitagihkan.getValueAt(i, 6).toString()));
                     jml++;
                 }
             }
@@ -2404,13 +2323,14 @@ private void MnDetailPiutangActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(penagihan_piutang.no_tagihan,3),signed)),0) from penagihan_piutang where penagihan_piutang.tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "PP" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPenagihan);
+                "select ifnull(MAX(CONVERT(RIGHT(penagihan_piutang.no_tagihan,3),signed)),0) from penagihan_piutang where penagihan_piutang.tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "PP" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPenagihan);
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganPenagihanPiutangPasien.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganPenagihanPiutangPasien.class.getName());
+
 }

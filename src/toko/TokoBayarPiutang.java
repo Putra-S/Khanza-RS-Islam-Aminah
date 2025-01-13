@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package toko;
 
@@ -46,29 +46,44 @@ import javax.swing.table.TableColumn;
 import keuangan.Jurnal;
 
 /**
- *
  * @author dosen
  */
 public class TokoBayarPiutang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private TokoMember tokomember = new TokoMember(null, false);
+
     private double total = 0, sisapiutang = 0;
+
     private PreparedStatement ps;
+
     private ResultSet rs;
-    private String koderekening = "", kontraakun = Sequel.cariIsi(
-            "select Piutang_Toko from set_akun");
+
+    private String koderekening = "", kontraakun = Sequel.cariIsi("select Piutang_Toko from set_akun");
+
     private boolean sukses = true;
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
 
     /**
@@ -83,19 +98,12 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(628, 674);
 
-        Object[] row = {"Tgl.Bayar",
-            "No.Member",
-            "Nama Member",
-            "Cicilan(Rp)",
-            "Keterangan",
-            "No.Tagihan", "Kode Akun", "Kontra AKun"};
+        Object[] row = {"Tgl.Bayar", "No.Member", "Nama Member", "Cicilan(Rp)", "Keterangan", "No.Tagihan",
+            "Kode Akun", "Kontra AKun"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -109,7 +117,8 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
 
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -144,8 +153,7 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -169,14 +177,12 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
 
             });
 
-            Cicilan.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            Cicilan.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     Sisa.setText(Valid.SetAngka(sisapiutang));
                     if (!Cicilan.getText().isEmpty()) {
-                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                                parseDouble(Cicilan.getText())));
+                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())));
                     }
                 }
 
@@ -184,8 +190,7 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
                 public void removeUpdate(DocumentEvent e) {
                     Sisa.setText(Valid.SetAngka(sisapiutang));
                     if (!Cicilan.getText().isEmpty()) {
-                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                                parseDouble(Cicilan.getText())));
+                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())));
                     }
                 }
 
@@ -193,8 +198,7 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
                 public void changedUpdate(DocumentEvent e) {
                     Sisa.setText(Valid.SetAngka(sisapiutang));
                     if (!Cicilan.getText().isEmpty()) {
-                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                                parseDouble(Cicilan.getText())));
+                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())));
                     }
                 }
 
@@ -213,10 +217,10 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (tokomember.getTable().getSelectedRow() != -1) {
-                    Kdmem.setText(tokomember.getTable().getValueAt(tokomember.
-                            getTable().getSelectedRow(), 1).toString());
-                    Nmmem.setText(tokomember.getTable().getValueAt(tokomember.
-                            getTable().getSelectedRow(), 2).toString());
+                    Kdmem.setText(
+                            tokomember.getTable().getValueAt(tokomember.getTable().getSelectedRow(), 1).toString());
+                    Nmmem.setText(
+                            tokomember.getTable().getValueAt(tokomember.getTable().getSelectedRow(), 2).toString());
                     sisapiutang = Sequel.cariIsiAngka(
                             "SELECT ifnull(SUM(tokopiutang.sisapiutang),0) FROM tokopiutang where tokopiutang.no_member=?",
                             Kdmem.getText())
@@ -225,8 +229,7 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
                                     Kdmem.getText());
                     Sisa.setText(Valid.SetAngka(sisapiutang));
                     if (!Cicilan.getText().isEmpty()) {
-                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                                parseDouble(Cicilan.getText())));
+                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())));
                     }
                     Sequel.cariIsi(
                             "select nota_piutang from tokopiutang where no_member=? order by tgl_piutang desc limit 1",
@@ -275,7 +278,9 @@ public class TokoBayarPiutang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1233,8 +1238,7 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            TokoBayarPiutang dialog = new TokoBayarPiutang(
-                    new javax.swing.JFrame(), true);
+            TokoBayarPiutang dialog = new TokoBayarPiutang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1323,11 +1327,8 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 total = 0;
                 while (rs.next()) {
                     total += rs.getDouble(4);
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getDouble(4), rs.getString(5), rs.getString(6), rs.
-                        getString(7), rs.getString(8)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif :" + e);
@@ -1362,7 +1363,6 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     /**
-     *
      * @param norawat
      * @param norm
      * @param nama
@@ -1396,7 +1396,6 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     /**
-     *
      * @return
      */
     public JTextField getTextField() {
@@ -1436,16 +1435,14 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select * from akun_bayar order by nama_bayar");
+            ps = koneksi.prepareStatement("select * from akun_bayar order by nama_bayar");
             try {
                 rs = ps.executeQuery();
                 AkunBayar.removeAllItems();
                 while (rs.next()) {
                     AkunBayar.addItem(rs.getString(1).replaceAll("\"", ""));
-                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).
-                            replaceAll("\"", "") + "\",\"KodeRek\":\"" + rs.
-                            getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
+                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).replaceAll("\"", "") + "\",\"KodeRek\":\""
+                            + rs.getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
                 }
             } catch (SQLException e) {
                 System.out.println("Notifikasi : " + e);
@@ -1458,8 +1455,7 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 }
             }
 
-            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1468,6 +1464,6 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(TokoBayarPiutang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(TokoBayarPiutang.class.getName());
+
 }

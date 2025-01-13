@@ -21,111 +21,117 @@ import javax.swing.JPanel;
  */
 public class PanelWT extends JPanel {
 
-  private static final long serialVersionUID = -1;
-  private BufferedImage gradientImage;
-  private Color warnaAtas = new Color(255, 255, 255);
-  private Color warnaBawah = new Color(0, 0, 0);
+    private BufferedImage gradientImage;
 
-  /** */
-  public PanelWT() {
-    super();
-    this.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
-  }
+    private Color warnaAtas = new Color(255, 255, 255);
 
-  /**
-   * @param layout
-   */
-  public PanelWT(LayoutManager layout) {
-    super(layout);
-    addComponentListener(new GradientCacheManager());
-  }
+    private Color warnaBawah = new Color(0, 0, 0);
 
-  /**
-   * @return
-   */
-  public Color getWarnaAtas() {
-    return warnaAtas;
-  }
-
-  public void setWarnaAtas(Color warnaAtas) {
-    this.warnaAtas = warnaAtas;
-  }
-
-  /**
-   * @return
-   */
-  public Color getWarnaBawah() {
-    return warnaBawah;
-  }
-
-  public void setWarnaBawah(Color warnaBawah) {
-    this.warnaBawah = warnaBawah;
-  }
-
-  /**
-   * @param g
-   */
-  @Override
-  protected void paintComponent(Graphics g) {
-    createImageCache();
-    if (gradientImage != null) {
-      g.drawImage(gradientImage, 0, 0, getWidth(), getHeight(), null);
-    }
-  }
-
-  protected void createImageCache() {
-    int width = 2;
-    int height = getHeight();
-
-    if (width == 0 || height == 0) {
-      return;
+    /**
+     *
+     */
+    public PanelWT() {
+        super();
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
     }
 
-    if (gradientImage == null
-        || width != gradientImage.getWidth()
-        || height != gradientImage.getHeight()) {
-      gradientImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-      Graphics2D g2 = gradientImage.createGraphics();
-      GradientPaint painter = new GradientPaint(0, 0, warnaBawah, 0, height / 2, warnaAtas);
-      g2.setPaint(painter);
-
-      Rectangle2D rect = new Rectangle2D.Double(0, 0, width, height / 2.0);
-      g2.fill(rect);
-
-      painter = new GradientPaint(0, height / 2, warnaAtas, 0, height, warnaBawah);
-      g2.setPaint(painter);
-
-      rect = new Rectangle2D.Double(0, (height / 2.0) - 1.0, width, height);
-      g2.fill(rect);
-
-      g2.dispose();
+    /**
+     * @param layout
+     */
+    public PanelWT(LayoutManager layout) {
+        super(layout);
+        addComponentListener(new GradientCacheManager());
     }
-  }
 
-  private void disposeImageCache() {
-    synchronized (gradientImage) {
-      gradientImage.flush();
-      gradientImage = null;
+    /**
+     * @return
+     */
+    public Color getWarnaAtas() {
+        return warnaAtas;
     }
-  }
 
-  private class GradientCacheManager implements ComponentListener {
+    public void setWarnaAtas(Color warnaAtas) {
+        this.warnaAtas = warnaAtas;
+    }
 
+    /**
+     * @return
+     */
+    public Color getWarnaBawah() {
+        return warnaBawah;
+    }
+
+    public void setWarnaBawah(Color warnaBawah) {
+        this.warnaBawah = warnaBawah;
+    }
+
+    /**
+     * @param g
+     */
     @Override
-    public void componentResized(ComponentEvent e) {}
-
-    @Override
-    public void componentMoved(ComponentEvent e) {}
-
-    @Override
-    public void componentShown(ComponentEvent e) {}
-
-    @Override
-    public void componentHidden(ComponentEvent e) {
-      disposeImageCache();
+    protected void paintComponent(Graphics g) {
+        createImageCache();
+        if (gradientImage != null) {
+            g.drawImage(gradientImage, 0, 0, getWidth(), getHeight(), null);
+        }
     }
-  }
 
-  private static final Logger LOG = Logger.getLogger(PanelWT.class.getName());
+    protected void createImageCache() {
+        int width = 2;
+        int height = getHeight();
+
+        if (width == 0 || height == 0) {
+            return;
+        }
+
+        if (gradientImage == null || width != gradientImage.getWidth() || height != gradientImage.getHeight()) {
+            gradientImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+            Graphics2D g2 = gradientImage.createGraphics();
+            GradientPaint painter = new GradientPaint(0, 0, warnaBawah, 0, height / 2, warnaAtas);
+            g2.setPaint(painter);
+
+            Rectangle2D rect = new Rectangle2D.Double(0, 0, width, height / 2.0);
+            g2.fill(rect);
+
+            painter = new GradientPaint(0, height / 2, warnaAtas, 0, height, warnaBawah);
+            g2.setPaint(painter);
+
+            rect = new Rectangle2D.Double(0, (height / 2.0) - 1.0, width, height);
+            g2.fill(rect);
+
+            g2.dispose();
+        }
+    }
+
+    private void disposeImageCache() {
+        synchronized (gradientImage) {
+            gradientImage.flush();
+            gradientImage = null;
+        }
+    }
+
+    private class GradientCacheManager implements ComponentListener {
+
+        @Override
+        public void componentResized(ComponentEvent e) {
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent e) {
+        }
+
+        @Override
+        public void componentShown(ComponentEvent e) {
+        }
+
+        @Override
+        public void componentHidden(ComponentEvent e) {
+            disposeImageCache();
+        }
+
+    }
+
+    private static final Logger LOG = Logger.getLogger(PanelWT.class.getName());
+
 }

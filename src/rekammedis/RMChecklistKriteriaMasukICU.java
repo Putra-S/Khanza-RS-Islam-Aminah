@@ -37,21 +37,30 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -66,34 +75,21 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Tanggal",
-            "Pasca Operasi Dengan Gangguan Nafas Atau Hipotensi", "Gagal Nafas",
-            "Gagal Jantung Dengan Tanda Bendungan Paru",
-            "Gangguan Asam Basa / Elektrolit",
-            "Gagal Ginjal Dengan Tanda Bendungan Paru",
-            "Syok Karena Perdarahan Anafilaksis", "Pasca Operasi Besar",
-            "Kejang Berulang", "Gangguan Kesadaran",
-            "Dehidrasi Berat", "Gangguan Jalan Nafas", "Arimia Jantung",
-            "Asma Akut Berat",
-            "Diabetes Yang Memerlukan Terapi Insulin Kontinyu",
-            "Penyakit Keganasan Dengan Metastasis",
-            "Pasien Geriatrik Dengan Fungsi Hidup Sebelumnya Minimal",
-            "Pasien Dengan GCS 3",
-            "Pasien Jantung, Penyakit Paru Terminal Disertai Komplikasi Penyakit Akut Berat",
-            "Nadi < 40 atau >150 (x/menit)",
-            "SBP < 80 mmHg Atau 20 mmHg Di Bawah SBP Pasien", "MAP < 60 mmHg",
-            "DBP > 120 mmHg", "R > 35 x/menit",
-            "Na < 110 meq/L Atau > 170 meq/L", "Ca > 15 mg/dl",
-            "GDS > 800 mg/dl",
-            "K < 2 meq/L Atau 7meq/L", "PaO2 < 50 mmHg", "PH < 7,1 Atau 7,7",
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
+            "Tanggal", "Pasca Operasi Dengan Gangguan Nafas Atau Hipotensi", "Gagal Nafas",
+            "Gagal Jantung Dengan Tanda Bendungan Paru", "Gangguan Asam Basa / Elektrolit",
+            "Gagal Ginjal Dengan Tanda Bendungan Paru", "Syok Karena Perdarahan Anafilaksis", "Pasca Operasi Besar",
+            "Kejang Berulang", "Gangguan Kesadaran", "Dehidrasi Berat", "Gangguan Jalan Nafas", "Arimia Jantung",
+            "Asma Akut Berat", "Diabetes Yang Memerlukan Terapi Insulin Kontinyu",
+            "Penyakit Keganasan Dengan Metastasis", "Pasien Geriatrik Dengan Fungsi Hidup Sebelumnya Minimal",
+            "Pasien Dengan GCS 3", "Pasien Jantung, Penyakit Paru Terminal Disertai Komplikasi Penyakit Akut Berat",
+            "Nadi < 40 atau >150 (x/menit)", "SBP < 80 mmHg Atau 20 mmHg Di Bawah SBP Pasien", "MAP < 60 mmHg",
+            "DBP > 120 mmHg", "R > 35 x/menit", "Na < 110 meq/L Atau > 170 meq/L", "Ca > 15 mg/dl",
+            "GDS > 800 mg/dl", "K < 2 meq/L Atau 7meq/L", "PaO2 < 50 mmHg", "PH < 7,1 Atau 7,7",
             "Perbedaan Cerebrovaskuler, SAH, Atau Contusion Dengan Gangguan Kesadaran Atau Neorologi",
             "Ruptor Organ Dalam, Kandung Kemih, Hati, Varices Esophagus Atau Uterus Dengan Gangguan Hemodinamik",
-            "Pupil Anisokor", "Obstruksi Jalan Nafas", "Anuria",
-            "Kejang Berulang",
-            "Tamponade Jantung", "Coma", "Sianosis", "Luka Bakar > 10 % BSA",
-            "NIP/Kode Dokter", "DPJP/Dokter Jaga/IGD"
-        }) {
+            "Pupil Anisokor", "Obstruksi Jalan Nafas", "Anuria", "Kejang Berulang", "Tamponade Jantung", "Coma",
+            "Sianosis", "Luka Bakar > 10 % BSA", "NIP/Kode Dokter", "DPJP/Dokter Jaga/IGD"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -102,7 +98,8 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -134,8 +131,7 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -172,10 +168,10 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    KodePetugas.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodePetugas
+                            .setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                     btnPetugas.requestFocus();
                 }
 
@@ -215,8 +211,7 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -228,7 +223,9 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2346,8 +2343,7 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMChecklistKriteriaMasukICU dialog = new RMChecklistKriteriaMasukICU(
-                    new javax.swing.JFrame(), true);
+            RMChecklistKriteriaMasukICU dialog = new RMChecklistKriteriaMasukICU(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2581,15 +2577,11 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2599,45 +2591,32 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"),
-                        rs.getString("tanggal"), rs.getString("prioritas1_1"),
-                        rs.getString("prioritas1_2"), rs.getString(
-                        "prioritas1_3"), rs.getString("prioritas1_4"),
-                        rs.getString("prioritas1_5"), rs.getString(
-                        "prioritas1_6"), rs.getString("prioritas2_1"), rs.
-                        getString("prioritas2_2"), rs.getString("prioritas2_3"),
-                        rs.getString("prioritas2_4"), rs.getString(
-                        "prioritas2_5"), rs.getString("prioritas2_6"), rs.
-                        getString("prioritas2_7"), rs.getString("prioritas2_8"),
-                        rs.getString("prioritas3_1"), rs.getString(
-                        "prioritas3_2"), rs.getString("prioritas3_3"), rs.
-                        getString("prioritas3_4"), rs.getString(
-                        "kriteria_fisiologis_tanda_vital_1"),
-                        rs.getString("kriteria_fisiologis_tanda_vital_2"), rs.
-                        getString("kriteria_fisiologis_tanda_vital_3"), rs.
-                        getString("kriteria_fisiologis_tanda_vital_4"),
-                        rs.getString("kriteria_fisiologis_tanda_vital_5"), rs.
-                        getString("kriteria_fisiologis_laborat_1"), rs.
-                        getString("kriteria_fisiologis_laborat_2"),
-                        rs.getString("kriteria_fisiologis_laborat_3"), rs.
-                        getString("kriteria_fisiologis_laborat_4"), rs.
-                        getString("kriteria_fisiologis_laborat_5"),
-                        rs.getString("kriteria_fisiologis_laborat_6"), rs.
-                        getString("kriteria_fisiologis_radiologi_1"), rs.
-                        getString("kriteria_fisiologis_radiologi_2"),
-                        rs.getString("kriteria_fisiologis_klinis_1"), rs.
-                        getString("kriteria_fisiologis_klinis_2"), rs.getString(
-                        "kriteria_fisiologis_klinis_3"),
-                        rs.getString("kriteria_fisiologis_klinis_4"), rs.
-                        getString("kriteria_fisiologis_klinis_5"), rs.getString(
-                        "kriteria_fisiologis_klinis_6"),
-                        rs.getString("kriteria_fisiologis_klinis_7"), rs.
-                        getString("kriteria_fisiologis_klinis_8"), rs.getString(
-                        "nik"), rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("prioritas1_1"), rs.getString("prioritas1_2"),
+                        rs.getString("prioritas1_3"), rs.getString("prioritas1_4"), rs.getString("prioritas1_5"),
+                        rs.getString("prioritas1_6"), rs.getString("prioritas2_1"), rs.getString("prioritas2_2"),
+                        rs.getString("prioritas2_3"), rs.getString("prioritas2_4"), rs.getString("prioritas2_5"),
+                        rs.getString("prioritas2_6"), rs.getString("prioritas2_7"), rs.getString("prioritas2_8"),
+                        rs.getString("prioritas3_1"), rs.getString("prioritas3_2"), rs.getString("prioritas3_3"),
+                        rs.getString("prioritas3_4"), rs.getString("kriteria_fisiologis_tanda_vital_1"),
+                        rs.getString("kriteria_fisiologis_tanda_vital_2"),
+                        rs.getString("kriteria_fisiologis_tanda_vital_3"),
+                        rs.getString("kriteria_fisiologis_tanda_vital_4"),
+                        rs.getString("kriteria_fisiologis_tanda_vital_5"),
+                        rs.getString("kriteria_fisiologis_laborat_1"),
+                        rs.getString("kriteria_fisiologis_laborat_2"),
+                        rs.getString("kriteria_fisiologis_laborat_3"),
+                        rs.getString("kriteria_fisiologis_laborat_4"),
+                        rs.getString("kriteria_fisiologis_laborat_5"),
+                        rs.getString("kriteria_fisiologis_laborat_6"),
+                        rs.getString("kriteria_fisiologis_radiologi_1"),
+                        rs.getString("kriteria_fisiologis_radiologi_2"),
+                        rs.getString("kriteria_fisiologis_klinis_1"), rs.getString("kriteria_fisiologis_klinis_2"),
+                        rs.getString("kriteria_fisiologis_klinis_3"), rs.getString("kriteria_fisiologis_klinis_4"),
+                        rs.getString("kriteria_fisiologis_klinis_5"), rs.getString("kriteria_fisiologis_klinis_6"),
+                        rs.getString("kriteria_fisiologis_klinis_7"), rs.getString("kriteria_fisiologis_klinis_8"),
+                        rs.getString("nik"), rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2701,95 +2680,51 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Prioritas1_1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString());
-            Prioritas1_2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 7).toString());
-            Prioritas1_3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            Prioritas1_4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 9).toString());
-            Prioritas1_5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            Prioritas1_6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 11).toString());
-            Prioritas2_1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            Prioritas2_2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            Prioritas2_3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            Prioritas2_4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 15).toString());
-            Prioritas2_5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            Prioritas2_6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 17).toString());
-            Prioritas2_7.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 18).toString());
-            Prioritas2_8.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            Prioritas3_1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            Prioritas3_2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            Prioritas3_3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            Prioritas3_4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 23).toString());
-            TandaVital1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            TandaVital2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 25).toString());
-            TandaVital3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
-            TandaVital4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 27).toString());
-            TandaVital5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 28).toString());
-            Laborat1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    29).toString());
-            Laborat2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    30).toString());
-            Laborat3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    31).toString());
-            Laborat4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    32).toString());
-            Laborat5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    33).toString());
-            Laborat6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    34).toString());
-            Radiologi1.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 35).toString());
-            Radiologi2.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 36).toString());
-            Kinis1.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 37).toString());
-            Kinis2.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 38).toString());
-            Kinis3.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 39).toString());
-            Kinis4.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 40).toString());
-            Kinis5.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 41).toString());
-            Kinis6.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 42).toString());
-            Kinis7.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 43).toString());
-            Kinis8.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 44).toString());
-            Valid.SetTgl2(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Prioritas1_1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Prioritas1_2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Prioritas1_3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Prioritas1_4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Prioritas1_5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Prioritas1_6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Prioritas2_1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Prioritas2_2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Prioritas2_3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Prioritas2_4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Prioritas2_5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Prioritas2_6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Prioritas2_7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Prioritas2_8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            Prioritas3_1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Prioritas3_2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Prioritas3_3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Prioritas3_4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            TandaVital1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            TandaVital2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            TandaVital3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            TandaVital4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            TandaVital5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            Laborat1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            Laborat2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            Laborat3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            Laborat4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 32).toString());
+            Laborat5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 33).toString());
+            Laborat6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 34).toString());
+            Radiologi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 35).toString());
+            Radiologi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 36).toString());
+            Kinis1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 37).toString());
+            Kinis2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 38).toString());
+            Kinis3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 39).toString());
+            Kinis4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 40).toString());
+            Kinis5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 41).toString());
+            Kinis6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 42).toString());
+            Kinis7.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 43).toString());
+            Kinis8.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 44).toString());
+            Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
@@ -2808,9 +2743,7 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2828,7 +2761,6 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
@@ -2844,8 +2776,7 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                    getHeight() - 182));
+            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 182));
             FormInput.setVisible(true);
             ChkInput.setVisible(true);
         } else if (ChkInput.isSelected() == false) {
@@ -2878,159 +2809,95 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("checklist_kriteria_masuk_icu",
-                "no_rawat=? and tanggal=?",
+        if (Sequel.mengedittf("checklist_kriteria_masuk_icu", "no_rawat=? and tanggal=?",
                 "no_rawat=?,tanggal=?,prioritas1_1=?,prioritas1_2=?,prioritas1_3=?,prioritas1_4=?,prioritas1_5=?,prioritas1_6=?,"
                 + "prioritas2_1=?,prioritas2_2=?,prioritas2_3=?,prioritas2_4=?,prioritas2_5=?,prioritas2_6=?,prioritas2_7=?,prioritas2_8=?,prioritas3_1=?,prioritas3_2=?,prioritas3_3=?,prioritas3_4=?,"
                 + "kriteria_fisiologis_tanda_vital_1=?,kriteria_fisiologis_tanda_vital_2=?,kriteria_fisiologis_tanda_vital_3=?,kriteria_fisiologis_tanda_vital_4=?,kriteria_fisiologis_tanda_vital_5=?,"
                 + "kriteria_fisiologis_laborat_1=?,kriteria_fisiologis_laborat_2=?,kriteria_fisiologis_laborat_3=?,kriteria_fisiologis_laborat_4=?,kriteria_fisiologis_laborat_5=?,kriteria_fisiologis_laborat_6=?,"
                 + "kriteria_fisiologis_radiologi_1=?,kriteria_fisiologis_radiologi_2=?,kriteria_fisiologis_klinis_1=?,kriteria_fisiologis_klinis_2=?,kriteria_fisiologis_klinis_3=?,kriteria_fisiologis_klinis_4=?,"
                 + "kriteria_fisiologis_klinis_5=?,kriteria_fisiologis_klinis_6=?,kriteria_fisiologis_klinis_7=?,kriteria_fisiologis_klinis_8=?,nik=?",
-                44, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19),
-                    Prioritas1_1.getSelectedItem().toString(),
-                    Prioritas1_2.getSelectedItem().toString(), Prioritas1_3.
-                    getSelectedItem().toString(),
-                    Prioritas1_4.getSelectedItem().toString(), Prioritas1_5.
-                    getSelectedItem().toString(),
-                    Prioritas1_6.getSelectedItem().toString(), Prioritas2_1.
-                    getSelectedItem().toString(),
-                    Prioritas2_2.getSelectedItem().toString(), Prioritas2_3.
-                    getSelectedItem().toString(),
-                    Prioritas2_4.getSelectedItem().toString(), Prioritas2_5.
-                    getSelectedItem().toString(),
-                    Prioritas2_6.getSelectedItem().toString(), Prioritas2_7.
-                    getSelectedItem().toString(),
-                    Prioritas2_8.getSelectedItem().toString(), Prioritas3_1.
-                    getSelectedItem().toString(),
-                    Prioritas3_2.getSelectedItem().toString(), Prioritas3_3.
-                    getSelectedItem().toString(),
-                    Prioritas3_4.getSelectedItem().toString(), TandaVital1.
-                    getSelectedItem().toString(), TandaVital2.getSelectedItem().
-                            toString(), TandaVital3.getSelectedItem().toString(),
-                    TandaVital4.getSelectedItem().toString(), TandaVital5.
-                    getSelectedItem().toString(), Laborat1.getSelectedItem().
-                            toString(), Laborat2.getSelectedItem().toString(),
-                    Laborat3.getSelectedItem().toString(), Laborat4.
-                    getSelectedItem().toString(), Laborat5.getSelectedItem().
-                            toString(), Laborat6.getSelectedItem().toString(),
-                    Radiologi1.getSelectedItem().toString(), Radiologi2.
-                    getSelectedItem().toString(), Kinis1.getSelectedItem().
-                            toString(), Kinis2.getSelectedItem().toString(),
-                    Kinis3.getSelectedItem().toString(), Kinis4.
-                    getSelectedItem().toString(), Kinis5.getSelectedItem().
-                            toString(), Kinis6.getSelectedItem().toString(),
-                    Kinis7.getSelectedItem().toString(),
+                44,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    Prioritas1_1.getSelectedItem().toString(), Prioritas1_2.getSelectedItem().toString(),
+                    Prioritas1_3.getSelectedItem().toString(), Prioritas1_4.getSelectedItem().toString(),
+                    Prioritas1_5.getSelectedItem().toString(), Prioritas1_6.getSelectedItem().toString(),
+                    Prioritas2_1.getSelectedItem().toString(), Prioritas2_2.getSelectedItem().toString(),
+                    Prioritas2_3.getSelectedItem().toString(), Prioritas2_4.getSelectedItem().toString(),
+                    Prioritas2_5.getSelectedItem().toString(), Prioritas2_6.getSelectedItem().toString(),
+                    Prioritas2_7.getSelectedItem().toString(), Prioritas2_8.getSelectedItem().toString(),
+                    Prioritas3_1.getSelectedItem().toString(), Prioritas3_2.getSelectedItem().toString(),
+                    Prioritas3_3.getSelectedItem().toString(), Prioritas3_4.getSelectedItem().toString(),
+                    TandaVital1.getSelectedItem().toString(), TandaVital2.getSelectedItem().toString(),
+                    TandaVital3.getSelectedItem().toString(), TandaVital4.getSelectedItem().toString(),
+                    TandaVital5.getSelectedItem().toString(), Laborat1.getSelectedItem().toString(),
+                    Laborat2.getSelectedItem().toString(), Laborat3.getSelectedItem().toString(),
+                    Laborat4.getSelectedItem().toString(), Laborat5.getSelectedItem().toString(),
+                    Laborat6.getSelectedItem().toString(), Radiologi1.getSelectedItem().toString(),
+                    Radiologi2.getSelectedItem().toString(), Kinis1.getSelectedItem().toString(),
+                    Kinis2.getSelectedItem().toString(), Kinis3.getSelectedItem().toString(),
+                    Kinis4.getSelectedItem().toString(), Kinis5.getSelectedItem().toString(),
+                    Kinis6.getSelectedItem().toString(), Kinis7.getSelectedItem().toString(),
                     Kinis8.getSelectedItem().toString(), KodePetugas.getText(),
                     tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 5);
-            tbObat.setValueAt(Prioritas1_1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 6);
-            tbObat.setValueAt(Prioritas1_2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(Prioritas1_3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
-            tbObat.setValueAt(Prioritas1_4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 9);
-            tbObat.setValueAt(Prioritas1_5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 10);
-            tbObat.setValueAt(Prioritas1_6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 11);
-            tbObat.setValueAt(Prioritas2_1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(Prioritas2_2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 13);
-            tbObat.setValueAt(Prioritas2_3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(Prioritas2_4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(Prioritas2_5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(Prioritas2_6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.setValueAt(Prioritas2_7.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 18);
-            tbObat.setValueAt(Prioritas2_8.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.setValueAt(Prioritas3_1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 20);
-            tbObat.setValueAt(Prioritas3_2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 21);
-            tbObat.setValueAt(Prioritas3_3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 22);
-            tbObat.setValueAt(Prioritas3_4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 23);
-            tbObat.setValueAt(TandaVital1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 24);
-            tbObat.setValueAt(TandaVital2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 25);
-            tbObat.setValueAt(TandaVital3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 26);
-            tbObat.setValueAt(TandaVital4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 27);
-            tbObat.setValueAt(TandaVital5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 28);
-            tbObat.setValueAt(Laborat1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 29);
-            tbObat.setValueAt(Laborat2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 30);
-            tbObat.setValueAt(Laborat3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 31);
-            tbObat.setValueAt(Laborat4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 32);
-            tbObat.setValueAt(Laborat5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 33);
-            tbObat.setValueAt(Laborat6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 34);
-            tbObat.setValueAt(Radiologi1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 35);
-            tbObat.setValueAt(Radiologi2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 36);
-            tbObat.setValueAt(Kinis1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 37);
-            tbObat.setValueAt(Kinis2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 38);
-            tbObat.setValueAt(Kinis3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 39);
-            tbObat.setValueAt(Kinis4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 40);
-            tbObat.setValueAt(Kinis5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 41);
-            tbObat.setValueAt(Kinis6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 42);
-            tbObat.setValueAt(Kinis7.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 43);
-            tbObat.setValueAt(Kinis8.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 44);
-            tbObat.
-                    setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(),
-                            45);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            46);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(Prioritas1_1.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(Prioritas1_2.getSelectedItem().toString(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Prioritas1_3.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(Prioritas1_4.getSelectedItem().toString(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(Prioritas1_5.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(Prioritas1_6.getSelectedItem().toString(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(Prioritas2_1.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(Prioritas2_2.getSelectedItem().toString(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(Prioritas2_3.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(Prioritas2_4.getSelectedItem().toString(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(Prioritas2_5.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(Prioritas2_6.getSelectedItem().toString(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(Prioritas2_7.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(Prioritas2_8.getSelectedItem().toString(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(Prioritas3_1.getSelectedItem().toString(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(Prioritas3_2.getSelectedItem().toString(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(Prioritas3_3.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(Prioritas3_4.getSelectedItem().toString(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(TandaVital1.getSelectedItem().toString(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(TandaVital2.getSelectedItem().toString(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(TandaVital3.getSelectedItem().toString(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(TandaVital4.getSelectedItem().toString(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(TandaVital5.getSelectedItem().toString(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(Laborat1.getSelectedItem().toString(), tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(Laborat2.getSelectedItem().toString(), tbObat.getSelectedRow(), 30);
+            tbObat.setValueAt(Laborat3.getSelectedItem().toString(), tbObat.getSelectedRow(), 31);
+            tbObat.setValueAt(Laborat4.getSelectedItem().toString(), tbObat.getSelectedRow(), 32);
+            tbObat.setValueAt(Laborat5.getSelectedItem().toString(), tbObat.getSelectedRow(), 33);
+            tbObat.setValueAt(Laborat6.getSelectedItem().toString(), tbObat.getSelectedRow(), 34);
+            tbObat.setValueAt(Radiologi1.getSelectedItem().toString(), tbObat.getSelectedRow(), 35);
+            tbObat.setValueAt(Radiologi2.getSelectedItem().toString(), tbObat.getSelectedRow(), 36);
+            tbObat.setValueAt(Kinis1.getSelectedItem().toString(), tbObat.getSelectedRow(), 37);
+            tbObat.setValueAt(Kinis2.getSelectedItem().toString(), tbObat.getSelectedRow(), 38);
+            tbObat.setValueAt(Kinis3.getSelectedItem().toString(), tbObat.getSelectedRow(), 39);
+            tbObat.setValueAt(Kinis4.getSelectedItem().toString(), tbObat.getSelectedRow(), 40);
+            tbObat.setValueAt(Kinis5.getSelectedItem().toString(), tbObat.getSelectedRow(), 41);
+            tbObat.setValueAt(Kinis6.getSelectedItem().toString(), tbObat.getSelectedRow(), 42);
+            tbObat.setValueAt(Kinis7.getSelectedItem().toString(), tbObat.getSelectedRow(), 43);
+            tbObat.setValueAt(Kinis8.getSelectedItem().toString(), tbObat.getSelectedRow(), 44);
+            tbObat.setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(), 45);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 46);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from checklist_kriteria_masuk_icu where no_rawat=? and tanggal=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from checklist_kriteria_masuk_icu where no_rawat=? and tanggal=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -3041,89 +2908,59 @@ public class RMChecklistKriteriaMasukICU extends javax.swing.JDialog {
 
     private void simpan() {
         if (Sequel.menyimpantf("checklist_kriteria_masuk_icu",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                "Data", 42, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19),
-                    Prioritas1_1.getSelectedItem().toString(),
-                    Prioritas1_2.getSelectedItem().toString(), Prioritas1_3.
-                    getSelectedItem().toString(),
-                    Prioritas1_4.getSelectedItem().toString(), Prioritas1_5.
-                    getSelectedItem().toString(),
-                    Prioritas1_6.getSelectedItem().toString(), Prioritas2_1.
-                    getSelectedItem().toString(),
-                    Prioritas2_2.getSelectedItem().toString(), Prioritas2_3.
-                    getSelectedItem().toString(),
-                    Prioritas2_4.getSelectedItem().toString(), Prioritas2_5.
-                    getSelectedItem().toString(),
-                    Prioritas2_6.getSelectedItem().toString(), Prioritas2_7.
-                    getSelectedItem().toString(),
-                    Prioritas2_8.getSelectedItem().toString(), Prioritas3_1.
-                    getSelectedItem().toString(),
-                    Prioritas3_2.getSelectedItem().toString(), Prioritas3_3.
-                    getSelectedItem().toString(),
-                    Prioritas3_4.getSelectedItem().toString(), TandaVital1.
-                    getSelectedItem().toString(), TandaVital2.getSelectedItem().
-                            toString(), TandaVital3.getSelectedItem().toString(),
-                    TandaVital4.getSelectedItem().toString(), TandaVital5.
-                    getSelectedItem().toString(), Laborat1.getSelectedItem().
-                            toString(), Laborat2.getSelectedItem().toString(),
-                    Laborat3.getSelectedItem().toString(), Laborat4.
-                    getSelectedItem().toString(), Laborat5.getSelectedItem().
-                            toString(), Laborat6.getSelectedItem().toString(),
-                    Radiologi1.getSelectedItem().toString(), Radiologi2.
-                    getSelectedItem().toString(), Kinis1.getSelectedItem().
-                            toString(), Kinis2.getSelectedItem().toString(),
-                    Kinis3.getSelectedItem().toString(), Kinis4.
-                    getSelectedItem().toString(), Kinis5.getSelectedItem().
-                            toString(), Kinis6.getSelectedItem().toString(),
-                    Kinis7.getSelectedItem().toString(),
-                    Kinis8.getSelectedItem().toString(), KodePetugas.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), JK.getText(), Valid.SetTgl(
-                Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                getSelectedItem().toString().substring(11, 19),
-                Prioritas1_1.getSelectedItem().toString(), Prioritas1_2.
-                getSelectedItem().toString(), Prioritas1_3.getSelectedItem().
-                toString(), Prioritas1_4.getSelectedItem().toString(),
-                Prioritas1_5.getSelectedItem().toString(),
-                Prioritas1_6.getSelectedItem().toString(), Prioritas2_1.
-                getSelectedItem().toString(), Prioritas2_2.getSelectedItem().
-                toString(), Prioritas2_3.getSelectedItem().toString(),
-                Prioritas2_4.getSelectedItem().toString(),
-                Prioritas2_5.getSelectedItem().toString(), Prioritas2_6.
-                getSelectedItem().toString(), Prioritas2_7.getSelectedItem().
-                toString(), Prioritas2_8.getSelectedItem().toString(),
-                Prioritas3_1.getSelectedItem().toString(),
-                Prioritas3_2.getSelectedItem().toString(), Prioritas3_3.
-                getSelectedItem().toString(), Prioritas3_4.getSelectedItem().
-                toString(), TandaVital1.getSelectedItem().toString(),
-                TandaVital2.getSelectedItem().toString(),
-                TandaVital3.getSelectedItem().toString(), TandaVital4.
-                getSelectedItem().toString(), TandaVital5.getSelectedItem().
-                toString(), Laborat1.getSelectedItem().toString(), Laborat2.
-                getSelectedItem().toString(),
-                Laborat3.getSelectedItem().toString(), Laborat4.
-                getSelectedItem().toString(), Laborat5.getSelectedItem().
-                toString(), Laborat6.getSelectedItem().toString(), Radiologi1.
-                getSelectedItem().toString(),
-                Radiologi2.getSelectedItem().toString(), Kinis1.
-                getSelectedItem().toString(), Kinis2.getSelectedItem().
-                toString(), Kinis3.getSelectedItem().toString(), Kinis4.
-                getSelectedItem().toString(), Kinis5.getSelectedItem().
-                toString(),
-                Kinis6.getSelectedItem().toString(), Kinis7.getSelectedItem().
-                toString(), Kinis8.getSelectedItem().toString(), KodePetugas.
-                getText(), NamaPetugas.getText()
-            });
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 42,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    Prioritas1_1.getSelectedItem().toString(), Prioritas1_2.getSelectedItem().toString(),
+                    Prioritas1_3.getSelectedItem().toString(), Prioritas1_4.getSelectedItem().toString(),
+                    Prioritas1_5.getSelectedItem().toString(), Prioritas1_6.getSelectedItem().toString(),
+                    Prioritas2_1.getSelectedItem().toString(), Prioritas2_2.getSelectedItem().toString(),
+                    Prioritas2_3.getSelectedItem().toString(), Prioritas2_4.getSelectedItem().toString(),
+                    Prioritas2_5.getSelectedItem().toString(), Prioritas2_6.getSelectedItem().toString(),
+                    Prioritas2_7.getSelectedItem().toString(), Prioritas2_8.getSelectedItem().toString(),
+                    Prioritas3_1.getSelectedItem().toString(), Prioritas3_2.getSelectedItem().toString(),
+                    Prioritas3_3.getSelectedItem().toString(), Prioritas3_4.getSelectedItem().toString(),
+                    TandaVital1.getSelectedItem().toString(), TandaVital2.getSelectedItem().toString(),
+                    TandaVital3.getSelectedItem().toString(), TandaVital4.getSelectedItem().toString(),
+                    TandaVital5.getSelectedItem().toString(), Laborat1.getSelectedItem().toString(),
+                    Laborat2.getSelectedItem().toString(), Laborat3.getSelectedItem().toString(),
+                    Laborat4.getSelectedItem().toString(), Laborat5.getSelectedItem().toString(),
+                    Laborat6.getSelectedItem().toString(), Radiologi1.getSelectedItem().toString(),
+                    Radiologi2.getSelectedItem().toString(), Kinis1.getSelectedItem().toString(),
+                    Kinis2.getSelectedItem().toString(), Kinis3.getSelectedItem().toString(),
+                    Kinis4.getSelectedItem().toString(), Kinis5.getSelectedItem().toString(),
+                    Kinis6.getSelectedItem().toString(), Kinis7.getSelectedItem().toString(),
+                    Kinis8.getSelectedItem().toString(), KodePetugas.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                JK.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                + Tanggal.getSelectedItem().toString().substring(11, 19),
+                Prioritas1_1.getSelectedItem().toString(), Prioritas1_2.getSelectedItem().toString(),
+                Prioritas1_3.getSelectedItem().toString(), Prioritas1_4.getSelectedItem().toString(),
+                Prioritas1_5.getSelectedItem().toString(), Prioritas1_6.getSelectedItem().toString(),
+                Prioritas2_1.getSelectedItem().toString(), Prioritas2_2.getSelectedItem().toString(),
+                Prioritas2_3.getSelectedItem().toString(), Prioritas2_4.getSelectedItem().toString(),
+                Prioritas2_5.getSelectedItem().toString(), Prioritas2_6.getSelectedItem().toString(),
+                Prioritas2_7.getSelectedItem().toString(), Prioritas2_8.getSelectedItem().toString(),
+                Prioritas3_1.getSelectedItem().toString(), Prioritas3_2.getSelectedItem().toString(),
+                Prioritas3_3.getSelectedItem().toString(), Prioritas3_4.getSelectedItem().toString(),
+                TandaVital1.getSelectedItem().toString(), TandaVital2.getSelectedItem().toString(),
+                TandaVital3.getSelectedItem().toString(), TandaVital4.getSelectedItem().toString(),
+                TandaVital5.getSelectedItem().toString(), Laborat1.getSelectedItem().toString(),
+                Laborat2.getSelectedItem().toString(), Laborat3.getSelectedItem().toString(),
+                Laborat4.getSelectedItem().toString(), Laborat5.getSelectedItem().toString(),
+                Laborat6.getSelectedItem().toString(), Radiologi1.getSelectedItem().toString(),
+                Radiologi2.getSelectedItem().toString(), Kinis1.getSelectedItem().toString(),
+                Kinis2.getSelectedItem().toString(), Kinis3.getSelectedItem().toString(),
+                Kinis4.getSelectedItem().toString(), Kinis5.getSelectedItem().toString(),
+                Kinis6.getSelectedItem().toString(), Kinis7.getSelectedItem().toString(),
+                Kinis8.getSelectedItem().toString(), KodePetugas.getText(), NamaPetugas.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMChecklistKriteriaMasukICU.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMChecklistKriteriaMasukICU.class.getName());
+
 }

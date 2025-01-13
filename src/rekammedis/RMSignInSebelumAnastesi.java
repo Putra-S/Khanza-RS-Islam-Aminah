@@ -40,21 +40,30 @@ import kepegawaian.DlgCariDokter;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0, pilihan = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private String finger = "", finger2 = "";
+
     private StringBuilder htmlContent;
 
     /**
@@ -69,16 +78,12 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Tanggal",
-            "SN/CN", "Tindakan", "Kode Dokter Bedah", "Nama Dokter Bedah",
-            "Kode Dokter Anest", "Nama Dokter Anestesi", "Identitas", "Alergi",
-            "Area Operasi", "Resiko Aspirasi", "Antisipasi Resiko Aspirasi",
-            "Kehilangan Darah", "Jalur IV Line",
-            "Antisipasi Resiko Kehilangan Darah", "Alat & Obat",
-            "Rencana Antisipasi Ketidaklengkapan Alat & Obat",
-            "NIP OK", "Petugas Ruang OK"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Tanggal", "SN/CN", "Tindakan",
+                    "Kode Dokter Bedah", "Nama Dokter Bedah", "Kode Dokter Anest", "Nama Dokter Anestesi",
+                    "Identitas", "Alergi", "Area Operasi", "Resiko Aspirasi", "Antisipasi Resiko Aspirasi",
+                    "Kehilangan Darah", "Jalur IV Line", "Antisipasi Resiko Kehilangan Darah", "Alat & Obat",
+                    "Rencana Antisipasi Ketidaklengkapan Alat & Obat", "NIP OK", "Petugas Ruang OK"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -87,7 +92,8 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -149,19 +155,16 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
         SNCN.setDocument(new batasInput((byte) 25).getKata(SNCN));
         Tindakan.setDocument(new batasInput((byte) 50).getKata(Tindakan));
         Alergi.setDocument(new batasInput((byte) 30).getKata(Alergi));
-        AntisipasiResikoAspirasi.setDocument(new batasInput((byte) 50).getKata(
-                AntisipasiResikoAspirasi));
+        AntisipasiResikoAspirasi.setDocument(new batasInput((byte) 50).getKata(AntisipasiResikoAspirasi));
         JalurIVLine.setDocument(new batasInput((byte) 30).getKata(JalurIVLine));
-        RencanaAntisipasiKehilanganDarah.setDocument(new batasInput((byte) 50).
-                getKata(RencanaAntisipasiKehilanganDarah));
-        RencanaAntisipasiKesiapanAlat.setDocument(new batasInput((byte) 50).
-                getKata(RencanaAntisipasiKesiapanAlat));
+        RencanaAntisipasiKehilanganDarah
+                .setDocument(new batasInput((byte) 50).getKata(RencanaAntisipasiKehilanganDarah));
+        RencanaAntisipasiKesiapanAlat.setDocument(new batasInput((byte) 50).getKata(RencanaAntisipasiKesiapanAlat));
 
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -198,10 +201,10 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    KdPetugasOK.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPetugasOK.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPetugasOK
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NmPetugasOK
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     btnPetugasOK.requestFocus();
                 }
             }
@@ -237,20 +240,16 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        KodeDokterBedah.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 0).
-                                toString());
-                        NamaDokterBedah.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodeDokterBedah
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                        NamaDokterBedah
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         btnDokterBedah.requestFocus();
                     } else if (pilihan == 2) {
-                        KodeDokterAnestesi.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 0).
-                                toString());
-                        NamaDokterAnestesi.setText(dokter.getTable().getValueAt(
-                                dokter.getTable().getSelectedRow(), 1).
-                                toString());
+                        KodeDokterAnestesi
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                        NamaDokterAnestesi
+                                .setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                         btnDokterAnestesi.requestFocus();
                     }
                 }
@@ -291,14 +290,15 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1712,8 +1712,7 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMSignInSebelumAnastesi dialog = new RMSignInSebelumAnastesi(
-                    new javax.swing.JFrame(), true);
+            RMSignInSebelumAnastesi dialog = new RMSignInSebelumAnastesi(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1850,15 +1849,11 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1869,27 +1864,18 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"),
-                        rs.getString("tanggal"), rs.getString("sncn"), rs.
-                        getString("tindakan"), rs.getString("kd_dokter_bedah"),
-                        rs.getString("dokterbedah"),
-                        rs.getString("kd_dokter_anestesi"), rs.getString(
-                        "dokteranestesi"), rs.getString("identitas"), rs.
-                        getString("alergi"), rs.getString(
-                        "penandaan_area_operasi"),
-                        rs.getString("resiko_aspirasi"), rs.getString(
-                        "resiko_aspirasi_rencana_antisipasi"), rs.getString(
-                        "resiko_kehilangan_darah"), rs.getString(
-                        "resiko_kehilangan_darah_line"),
-                        rs.getString(
-                        "resiko_kehilangan_darah_rencana_antisipasi"), rs.
-                        getString("kesiapan_alat_obat_anestesi"), rs.getString(
-                        "kesiapan_alat_obat_anestesi_rencana_antisipasi"),
-                        rs.getString("nip_perawat_ok"), rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("sncn"), rs.getString("tindakan"),
+                        rs.getString("kd_dokter_bedah"), rs.getString("dokterbedah"),
+                        rs.getString("kd_dokter_anestesi"), rs.getString("dokteranestesi"),
+                        rs.getString("identitas"), rs.getString("alergi"), rs.getString("penandaan_area_operasi"),
+                        rs.getString("resiko_aspirasi"), rs.getString("resiko_aspirasi_rencana_antisipasi"),
+                        rs.getString("resiko_kehilangan_darah"), rs.getString("resiko_kehilangan_darah_line"),
+                        rs.getString("resiko_kehilangan_darah_rencana_antisipasi"),
+                        rs.getString("kesiapan_alat_obat_anestesi"),
+                        rs.getString("kesiapan_alat_obat_anestesi_rencana_antisipasi"),
+                        rs.getString("nip_perawat_ok"), rs.getString("nama")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -1933,80 +1919,52 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            SNCN.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            KodeDokterBedah.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 8).toString());
-            NamaDokterBedah.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 9).toString());
-            KodeDokterAnestesi.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 10).toString());
-            NamaDokterAnestesi.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 11).toString());
-            Identitas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    12).toString());
-            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
-            AreaOperasi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            ResikoAspirasi.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 15).toString());
-            AntisipasiResikoAspirasi.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            ResikoKehilanganDarah.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 17).toString());
-            JalurIVLine.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            RencanaAntisipasiKehilanganDarah.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            KesiapanAlatAnes.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            RencanaAntisipasiKesiapanAlat.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            KdPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).
-                    toString());
-            NmPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).
-                    toString());
-            Valid.SetTgl2(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            SNCN.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Tindakan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            KodeDokterBedah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            NamaDokterBedah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            KodeDokterAnestesi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            NamaDokterAnestesi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Identitas.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Alergi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            AreaOperasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            ResikoAspirasi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            AntisipasiResikoAspirasi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            ResikoKehilanganDarah.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            JalurIVLine.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            RencanaAntisipasiKehilanganDarah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            KesiapanAlatAnes.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            RencanaAntisipasiKesiapanAlat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            KdPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            NmPetugasOK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
     private void isRawat() {
-        Sequel.cariIsi(
-                "select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.
-                        getText() + "' ", TNoRM);
+        Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='" + TNoRw.getText()
+                + "' ", TNoRM);
     }
 
     private void isPsien() {
-        Sequel.cariIsi(
-                "select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.
-                        getText() + "' ", TPasien);
-        Sequel.cariIsi(
-                "select DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
+        Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis='" + TNoRM.getText() + "' ",
+                TPasien);
+        Sequel.cariIsi("select DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y') from pasien where pasien.no_rkm_medis=? ",
                 TglLahir, TNoRM.getText());
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
     public void setNoRm(String norwt, Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -2015,12 +1973,10 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
         isForm();
     }
 
-    public void setNoRm(String norwt, Date tgl2, String KodeDokter,
-            String NamaDokter, String Operasi) {
+    public void setNoRm(String norwt, Date tgl2, String KodeDokter, String NamaDokter, String Operasi) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
-        Sequel.cariIsi(
-                "select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
+        Sequel.cariIsi("select reg_periksa.tgl_registrasi from reg_periksa where reg_periksa.no_rawat='" + norwt + "'",
                 DTPCari1);
         DTPCari2.setDate(tgl2);
         isRawat();
@@ -2041,8 +1997,7 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 172));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2066,24 +2021,18 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
                 "no_rawat=?,tanggal=?,sncn=?,tindakan=?,kd_dokter_bedah=?,kd_dokter_anestesi=?,identitas=?,"
                 + "penandaan_area_operasi=?,alergi=?,resiko_aspirasi=?,resiko_aspirasi_rencana_antisipasi=?,resiko_kehilangan_darah=?,resiko_kehilangan_darah_line=?,"
                 + "resiko_kehilangan_darah_rencana_antisipasi=?,kesiapan_alat_obat_anestesi=?,kesiapan_alat_obat_anestesi_rencana_antisipasi=?,nip_perawat_ok=?",
-                19, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), SNCN.
-                    getText(), Tindakan.getText(),
-                    KodeDokterBedah.getText(), KodeDokterAnestesi.getText(),
-                    Identitas.getSelectedItem().toString(), AreaOperasi.
-                    getSelectedItem().toString(), Alergi.getText(),
-                    ResikoAspirasi.getSelectedItem().toString(),
-                    AntisipasiResikoAspirasi.getText(), ResikoKehilanganDarah.
-                    getSelectedItem().toString(), JalurIVLine.getText(),
-                    RencanaAntisipasiKehilanganDarah.getText(),
-                    KesiapanAlatAnes.getSelectedItem().toString(),
-                    RencanaAntisipasiKesiapanAlat.getText(), KdPetugasOK.
-                    getText(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                });
+                19,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    SNCN.getText(), Tindakan.getText(), KodeDokterBedah.getText(), KodeDokterAnestesi.getText(),
+                    Identitas.getSelectedItem().toString(), AreaOperasi.getSelectedItem().toString(),
+                    Alergi.getText(), ResikoAspirasi.getSelectedItem().toString(),
+                    AntisipasiResikoAspirasi.getText(), ResikoKehilanganDarah.getSelectedItem().toString(),
+                    JalurIVLine.getText(), RencanaAntisipasiKehilanganDarah.getText(),
+                    KesiapanAlatAnes.getSelectedItem().toString(), RencanaAntisipasiKesiapanAlat.getText(),
+                    KdPetugasOK.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()});
 
         if (tabMode.getRowCount() != 0) {
             tampil();
@@ -2092,12 +2041,9 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from signin_sebelum_anestesi where no_rawat=? and tanggal=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from signin_sebelum_anestesi where no_rawat=? and tanggal=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2106,6 +2052,6 @@ public class RMSignInSebelumAnastesi extends javax.swing.JDialog {
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMSignInSebelumAnastesi.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMSignInSebelumAnastesi.class.getName());
+
 }

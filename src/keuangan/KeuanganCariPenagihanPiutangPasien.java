@@ -30,27 +30,35 @@ import kepegawaian.DlgCariPegawai;
 import simrskhanza.DlgCariCaraBayar;
 
 /**
- *
  * @author Kanit SIRS
  */
 public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
      *
      */
     public DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
-    private DlgAkunPenagihanPiutang akuntagih = new DlgAkunPenagihanPiutang(null,
-            false);
+
+    private DlgAkunPenagihanPiutang akuntagih = new DlgAkunPenagihanPiutang(null, false);
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     private String nopenagihan = "", tanggal = "", status = "", penjamin = "", bagianpenagihan = "", transfer = "";
+
     private double nilaitagihan = 0, totaltagihan = 0;
+
     private int i = 0;
 
     /**
@@ -59,14 +67,12 @@ public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public KeuanganCariPenagihanPiutangPasien(java.awt.Frame parent,
-            boolean modal) {
+    public KeuanganCariPenagihanPiutangPasien(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        Object[] row = {"Tgl.Penagihan", "Tempo", "Tgl.Tempo", "No.Penagihan",
-            "Bagian Penagihan", "Menyetujui", "Penjamin", "Catatan",
-            "Transfer Ke", "Status Penagihan"};
+        Object[] row = {"Tgl.Penagihan", "Tempo", "Tgl.Tempo", "No.Penagihan", "Bagian Penagihan", "Menyetujui",
+            "Penjamin", "Catatan", "Transfer Ke", "Status Penagihan"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -111,8 +117,7 @@ public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
         NamaBank.setDocument(new batasInput((byte) 15).getKata(NamaBank));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -149,10 +154,8 @@ public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    NmPeg.setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                 }
                 KdPeg.requestFocus();
             }
@@ -187,16 +190,12 @@ public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 1).toString());
-                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 2).toString());
-                    Perusahaan.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 3).toString());
-                    AlamatAsuransi.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 4).toString());
-                    NoTelp.setText(penjab.getTable().getValueAt(penjab.
-                            getTable().getSelectedRow(), 5).toString());
+                    kdpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpenjab.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
+                    Perusahaan.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 3).toString());
+                    AlamatAsuransi
+                            .setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 4).toString());
+                    NoTelp.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 5).toString());
                 }
                 kdpenjab.requestFocus();
             }
@@ -250,14 +249,13 @@ public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (akuntagih.getTable().getSelectedRow() != -1) {
-                    KdAkun.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 1).toString());
-                    NamaBank.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 3).toString());
-                    AtasNama.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 4).toString());
-                    NoRek.setText(akuntagih.getTable().getValueAt(akuntagih.
-                            getTable().getSelectedRow(), 5).toString());
+                    KdAkun
+                            .setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 1).toString());
+                    NamaBank
+                            .setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 3).toString());
+                    AtasNama
+                            .setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 4).toString());
+                    NoRek.setText(akuntagih.getTable().getValueAt(akuntagih.getTable().getSelectedRow(), 5).toString());
                 }
                 KdAkun.requestFocus();
             }
@@ -315,15 +313,16 @@ public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
 
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -895,13 +894,12 @@ public class KeuanganCariPenagihanPiutangPasien extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        penjab.isCek();
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        penjab.isCek();//GEN-FIRST:event_btnSuplierActionPerformed
         penjab.setSize(internalFrame1.getWidth() - 20, internalFrame1.
                 getHeight() - 20);
         penjab.setLocationRelativeTo(internalFrame1);
@@ -1186,8 +1184,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganCariPenagihanPiutangPasien dialog = new KeuanganCariPenagihanPiutangPasien(
-                    new javax.swing.JFrame(), true);
+            KeuanganCariPenagihanPiutangPasien dialog = new KeuanganCariPenagihanPiutangPasien(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1264,31 +1262,28 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             bagianpenagihan = "";
             transfer = "";
             if (!NoPenagihan.getText().trim().isEmpty()) {
-                nopenagihan = " and penagihan_piutang.no_tagihan like '%" + NoPenagihan.
-                        getText() + "%' ";
+                nopenagihan = " and penagihan_piutang.no_tagihan like '%" + NoPenagihan.getText() + "%' ";
             }
 
-            tanggal = " penagihan_piutang.tanggal between '" + Valid.SetTgl(
-                    Tanggal1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(
-                    Tanggal2.getSelectedItem() + "") + "' ";
+            tanggal = " penagihan_piutang.tanggal between '" + Valid.SetTgl(Tanggal1.getSelectedItem() + "") + "' and '"
+                    + Valid.SetTgl(Tanggal2.getSelectedItem() + "") + "' ";
             if (!Status.getSelectedItem().toString().equals("Semua")) {
-                status = " and penagihan_piutang.status like '%" + Status.
-                        getSelectedItem().toString() + "%' ";
+                status = " and penagihan_piutang.status like '%" + Status.getSelectedItem().toString() + "%' ";
             }
 
             if (!nmpenjab.getText().trim().isEmpty()) {
-                penjamin = " and concat(penagihan_piutang.kd_pj,penjab.nama_perusahaan) like '%" + kdpenjab.
-                        getText() + Perusahaan.getText() + "%' ";
+                penjamin = " and concat(penagihan_piutang.kd_pj,penjab.nama_perusahaan) like '%" + kdpenjab.getText()
+                        + Perusahaan.getText() + "%' ";
             }
 
             if (!NmPeg.getText().trim().isEmpty()) {
-                bagianpenagihan = " and concat(penagihan_piutang.nip,bagianpenagihan.nama) like '%" + KdPeg.
-                        getText() + NmPeg.getText() + "%' ";
+                bagianpenagihan = " and concat(penagihan_piutang.nip,bagianpenagihan.nama) like '%" + KdPeg.getText()
+                        + NmPeg.getText() + "%' ";
             }
 
             if (!NamaBank.getText().trim().isEmpty()) {
-                transfer = " and concat(akun_penagihan_piutang.nama_bank,akun_penagihan_piutang.no_rek) like '%" + NamaBank.
-                        getText() + NoRek.getText() + "%' ";
+                transfer = " and concat(akun_penagihan_piutang.nama_bank,akun_penagihan_piutang.no_rek) like '%"
+                        + NamaBank.getText() + NoRek.getText() + "%' ";
             }
 
             ps = koneksi.prepareStatement(
@@ -1300,13 +1295,15 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     + "inner join pegawai as menyetujui on menyetujui.nik=penagihan_piutang.nip_menyetujui "
                     + "inner join penjab on penagihan_piutang.kd_pj=penjab.kd_pj "
                     + "inner join akun_penagihan_piutang on akun_penagihan_piutang.kd_rek=penagihan_piutang.kd_rek where "
-                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer + " and penagihan_piutang.no_tagihan like ? or "
-                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer + " and bagianpenagihan.nama like ? or "
-                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer + " and menyetujui.nama like ? or "
-                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer + " and penjab.nama_perusahaan like ? or "
-                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer + " and akun_penagihan_piutang.nama_bank like ? or "
-                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer + " and akun_penagihan_piutang.no_rek like ? "
-                    + "order by penagihan_piutang.tanggal");
+                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer
+                    + " and penagihan_piutang.no_tagihan like ? or " + tanggal + status + nopenagihan + penjamin
+                    + bagianpenagihan + transfer + " and bagianpenagihan.nama like ? or " + tanggal + status
+                    + nopenagihan + penjamin + bagianpenagihan + transfer + " and menyetujui.nama like ? or "
+                    + tanggal + status + nopenagihan + penjamin + bagianpenagihan + transfer
+                    + " and penjab.nama_perusahaan like ? or " + tanggal + status + nopenagihan + penjamin
+                    + bagianpenagihan + transfer + " and akun_penagihan_piutang.nama_bank like ? or " + tanggal
+                    + status + nopenagihan + penjamin + bagianpenagihan + transfer
+                    + " and akun_penagihan_piutang.no_rek like ? " + "order by penagihan_piutang.tanggal");
             try {
                 ps.setString(1, "%" + TCari.getText() + "%");
                 ps.setString(2, "%" + TCari.getText() + "%");
@@ -1317,22 +1314,14 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 rs = ps.executeQuery();
                 totaltagihan = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tanggal"), rs.getString("tempo"), rs.
-                        getString("tanggaltempo"), rs.getString("no_tagihan"),
-                        rs.getString("nip") + " " + rs.getString(
-                        "bagianpenagihan"),
-                        rs.getString("nip_menyetujui") + " " + rs.getString(
-                        "menyetujui"), rs.getString("kd_pj") + " " + rs.
-                        getString("nama_perusahaan"), rs.getString("catatan"),
-                        rs.getString("nama_bank") + " No.Rek. " + rs.getString(
-                        "no_rek"), rs.getString("status")
-                    });
-                    tabMode.addRow(new Object[]{
-                        "", "", "Tgl.Piutang", "NIP", "Asal Perusahaan",
-                        "No.Rawat/No.Tagihan", "No.Peserta", "Piutang",
-                        "No.Rm & Nama Pasien", "Status"
-                    });
+                    tabMode.addRow(new Object[]{rs.getString("tanggal"), rs.getString("tempo"),
+                        rs.getString("tanggaltempo"), rs.getString("no_tagihan"),
+                        rs.getString("nip") + " " + rs.getString("bagianpenagihan"),
+                        rs.getString("nip_menyetujui") + " " + rs.getString("menyetujui"),
+                        rs.getString("kd_pj") + " " + rs.getString("nama_perusahaan"), rs.getString("catatan"),
+                        rs.getString("nama_bank") + " No.Rek. " + rs.getString("no_rek"), rs.getString("status")});
+                    tabMode.addRow(new Object[]{"", "", "Tgl.Piutang", "NIP", "Asal Perusahaan",
+                        "No.Rawat/No.Tagihan", "No.Peserta", "Piutang", "No.Rm & Nama Pasien", "Status"});
                     nilaitagihan = 0;
                     ps2 = koneksi.prepareStatement(
                             "select piutang_pasien.tgl_piutang,pasien.nip,perusahaan_pasien.nama_perusahaan,piutang_pasien.no_rkm_medis,pasien.nm_pasien,"
@@ -1346,15 +1335,11 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         ps2.setString(1, rs.getString("no_tagihan"));
                         rs2 = ps2.executeQuery();
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{
-                                "", "", rs2.getString("tgl_piutang"), rs2.
-                                getString("nip"), rs2.getString(
-                                "nama_perusahaan"), rs2.getString("no_rawat"),
-                                rs2.getString("no_peserta"), Valid.SetAngka(rs2.
-                                getDouble("sisapiutang")), rs2.getString(
-                                "no_rkm_medis") + " " + rs2.getString(
-                                "nm_pasien"), rs2.getString("status_lanjut")
-                            });
+                            tabMode.addRow(new Object[]{"", "", rs2.getString("tgl_piutang"), rs2.getString("nip"),
+                                rs2.getString("nama_perusahaan"), rs2.getString("no_rawat"),
+                                rs2.getString("no_peserta"), Valid.SetAngka(rs2.getDouble("sisapiutang")),
+                                rs2.getString("no_rkm_medis") + " " + rs2.getString("nm_pasien"),
+                                rs2.getString("status_lanjut")});
                             nilaitagihan += rs2.getDouble("sisapiutang");
                             totaltagihan += rs2.getDouble("sisapiutang");
                         }
@@ -1368,10 +1353,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             ps2.close();
                         }
                     }
-                    tabMode.addRow(new Object[]{
-                        "", "", "", "Nilai Tagihan :", "", "", "", Valid.
-                        SetAngka(nilaitagihan), "", ""
-                    });
+                    tabMode.addRow(new Object[]{"", "", "", "Nilai Tagihan :", "", "", "",
+                        Valid.SetAngka(nilaitagihan), "", ""});
                 }
                 LTotal.setText(Valid.SetAngka(totaltagihan));
             } catch (Exception e) {
@@ -1437,8 +1420,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void isPhoto() {
         if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(
-                    internalFrame1.getWidth() - 300, HEIGHT));
+            PanelAccor.setPreferredSize(new Dimension(internalFrame1.getWidth() - 300, HEIGHT));
             FormPhoto.setVisible(true);
             ChkAccor.setVisible(true);
         } else if (ChkAccor.isSelected() == false) {
@@ -1452,26 +1434,20 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void panggilPhoto() {
         if (FormPhoto.isVisible() == true) {
             try {
-                ps = koneksi.prepareStatement(
-                        "select photo from bukti_penagihan_piutang where no_tagihan=?");
+                ps = koneksi.prepareStatement("select photo from bukti_penagihan_piutang where no_tagihan=?");
                 try {
-                    ps.setString(1, tbDokter.getValueAt(tbDokter.
-                            getSelectedRow(), 3).toString());
+                    ps.setString(1, tbDokter.getValueAt(tbDokter.getSelectedRow(), 3).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             LoadHTML.setText(
                                     "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                         } else {
-                            LoadHTML.setText(
-                                    "<html><body><center><img src='http://" + koneksiDB.
-                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                            PORTWEB() + "/" + koneksiDB.
-                                            HYBRIDWEB() + "/penagihanpiutang/" + rs.
-                                            getString("photo") + "' alt='photo' width='" + (internalFrame1.
-                                    getWidth() - 330) + "' height='" + (internalFrame1.
-                                            getHeight() - 315) + "'/></center></body></html>");
+                            LoadHTML.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/penagihanpiutang/"
+                                    + rs.getString("photo") + "' alt='photo' width='"
+                                    + (internalFrame1.getWidth() - 330) + "' height='"
+                                    + (internalFrame1.getHeight() - 315) + "'/></center></body></html>");
                         }
                     } else {
                         LoadHTML.setText(
@@ -1493,6 +1469,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganCariPenagihanPiutangPasien.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganCariPenagihanPiutangPasien.class.getName());
+
 }

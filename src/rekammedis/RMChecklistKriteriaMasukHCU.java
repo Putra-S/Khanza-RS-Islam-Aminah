@@ -37,21 +37,30 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPegawai pegawai = new DlgCariPegawai(null, false);
+
     private String finger = "";
+
     private StringBuilder htmlContent;
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -66,28 +75,21 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Tanggal",
-            "Gangguan Sirkulasi Atau Pre Dan Pasca Operasi (Syok Hypovolemic)",
-            "Hypertensi Emergency",
-            "HR 60x/menit (Tiidak Stabil Hasil EKG Gambaran Mengancam Nyawa)",
-            "Gagal Jantung Acute", "Menggunakan Inotropik / Vasoaktif Gent",
-            "MAP < 60 mmHg", "R <8 x/ menit > 25 x/menit",
-            "Trauma Thorax / Peumothorax",
-            "Oxigenisasi Tidak Cukup Dari Hasil AGD",
-            "Kesadaran Dengan GCS >= 7",
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
+            "Tanggal", "Gangguan Sirkulasi Atau Pre Dan Pasca Operasi (Syok Hypovolemic)", "Hypertensi Emergency",
+            "HR 60x/menit (Tiidak Stabil Hasil EKG Gambaran Mengancam Nyawa)", "Gagal Jantung Acute",
+            "Menggunakan Inotropik / Vasoaktif Gent", "MAP < 60 mmHg", "R <8 x/ menit > 25 x/menit",
+            "Trauma Thorax / Peumothorax", "Oxigenisasi Tidak Cukup Dari Hasil AGD", "Kesadaran Dengan GCS >= 7",
             "Temperatur <35 C / >38 C", "Trauma Kepala Sedang - Berat",
             "Kejang Yang Tidak Memerlukan Ventilator / Cerebro Vasculer / Neoromusculer / Infeksi Syaraf",
             "Gangguan Elektrolit (Na, Ca,CI, Mg, Cal) & Asam Basa",
             "Hypeglikemia & Hypoglikemia, Ketoasidosis Metabolic",
-            "Pendarahan Saluran Pencernaan Tanpa Hypotensi & Repon Dengan Cairan",
-            "Pengobatan Keracunan", "Penyulit Pasca Pembedahan",
-            "Pasca Pembedahan Hemodinamik Stabil Tetapi Masih Perlu Resusitasi Cairan",
+            "Pendarahan Saluran Pencernaan Tanpa Hypotensi & Repon Dengan Cairan", "Pengobatan Keracunan",
+            "Penyulit Pasca Pembedahan", "Pasca Pembedahan Hemodinamik Stabil Tetapi Masih Perlu Resusitasi Cairan",
             "Gangguan Imunologi (Reaksi Alergi, Steven Jhonson) dll",
             "DIC, Anemia Berat, Reaksi Penolakan Transfusi Darah",
-            "Semua Infeksi Yang Menyebabkan Penurunan Kesadaran & Tidak Memerlukan Ventilator",
-            "NIP/Kode Dokter", "DPJP/Dokter Jaga/IGD"
-        }) {
+            "Semua Infeksi Yang Menyebabkan Penurunan Kesadaran & Tidak Memerlukan Ventilator", "NIP/Kode Dokter",
+            "DPJP/Dokter Jaga/IGD"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -96,7 +98,8 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -128,8 +131,7 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -166,10 +168,10 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pegawai.getTable().getSelectedRow() != -1) {
-                    KodePetugas.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(pegawai.getTable().getValueAt(pegawai.
-                            getTable().getSelectedRow(), 1).toString());
+                    KodePetugas
+                            .setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(pegawai.getTable().getValueAt(pegawai.getTable().getSelectedRow(), 1).toString());
                     btnPetugas.requestFocus();
                 }
 
@@ -209,8 +211,7 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
 
@@ -222,7 +223,9 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1878,8 +1881,7 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMChecklistKriteriaMasukHCU dialog = new RMChecklistKriteriaMasukHCU(
-                    new javax.swing.JFrame(), true);
+            RMChecklistKriteriaMasukHCU dialog = new RMChecklistKriteriaMasukHCU(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -2057,15 +2059,11 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -2075,26 +2073,17 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"),
-                        rs.getString("tanggal"), rs.getString("kardiologi1"),
-                        rs.getString("kardiologi2"), rs.getString("kardiologi3"),
-                        rs.getString("kardiologi4"),
-                        rs.getString("kardiologi5"), rs.getString("kardiologi6"),
-                        rs.getString("pernapasan1"), rs.getString("pernapasan2"),
-                        rs.getString("pernapasan3"),
-                        rs.getString("syaraf1"), rs.getString("syaraf2"), rs.
-                        getString("syaraf3"), rs.getString("syaraf4"), rs.
-                        getString("pencernaan1"),
-                        rs.getString("pencernaan2"), rs.getString("pencernaan3"),
-                        rs.getString("pencernaan4"), rs.getString("pembedahan1"),
-                        rs.getString("pembedahan2"),
-                        rs.getString("hematologi1"), rs.getString("hematologi2"),
-                        rs.getString("infeksi"), rs.getString("nik"), rs.
-                        getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("kardiologi1"), rs.getString("kardiologi2"),
+                        rs.getString("kardiologi3"), rs.getString("kardiologi4"), rs.getString("kardiologi5"),
+                        rs.getString("kardiologi6"), rs.getString("pernapasan1"), rs.getString("pernapasan2"),
+                        rs.getString("pernapasan3"), rs.getString("syaraf1"), rs.getString("syaraf2"),
+                        rs.getString("syaraf3"), rs.getString("syaraf4"), rs.getString("pencernaan1"),
+                        rs.getString("pencernaan2"), rs.getString("pencernaan3"), rs.getString("pencernaan4"),
+                        rs.getString("pembedahan1"), rs.getString("pembedahan2"), rs.getString("hematologi1"),
+                        rs.getString("hematologi2"), rs.getString("infeksi"), rs.getString("nik"),
+                        rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2144,61 +2133,34 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Kardiologi1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString());
-            Kardiologi2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 7).toString());
-            Kardiologi3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            Kardiologi4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 9).toString());
-            Kardiologi5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            Kardiologi6.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 11).toString());
-            Pernapasan1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            Pernapasan2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            Pernapasan3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            Syaraf1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    15).toString());
-            Syaraf2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    16).toString());
-            Syaraf3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    17).toString());
-            Syaraf4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    18).toString());
-            Pencernaan1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            Pencernaan2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 20).toString());
-            Pencernaan3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            Pencernaan4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            Pembedahan1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 23).toString());
-            Pembedahan2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 24).toString());
-            Hematologi1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 25).toString());
-            Hematologi2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 26).toString());
-            Infeksi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    27).toString());
-            Valid.SetTgl2(Tanggal,
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Kardiologi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Kardiologi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Kardiologi3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Kardiologi4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Kardiologi5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Kardiologi6.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            Pernapasan1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            Pernapasan2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            Pernapasan3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            Syaraf1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            Syaraf2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Syaraf3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Syaraf4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            Pencernaan1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            Pencernaan2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Pencernaan3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            Pencernaan4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            Pembedahan1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            Pembedahan2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            Hematologi1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            Hematologi2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            Infeksi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            Valid.SetTgl2(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
@@ -2217,9 +2179,7 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -2248,8 +2208,7 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
     private void isForm() {
         if (ChkInput.isSelected() == true) {
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                    getHeight() - 182));
+            PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 182));
             FormInput.setVisible(true);
             ChkInput.setVisible(true);
         } else if (ChkInput.isSelected() == false) {
@@ -2279,104 +2238,65 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("checklist_kriteria_masuk_hcu",
-                "no_rawat=? and tanggal=?",
+        if (Sequel.mengedittf("checklist_kriteria_masuk_hcu", "no_rawat=? and tanggal=?",
                 "no_rawat=?,tanggal=?,kardiologi1=?,kardiologi2=?,kardiologi3=?,kardiologi4=?,kardiologi5=?,kardiologi6=?,pernapasan1=?,pernapasan2=?,"
                 + "pernapasan3=?,syaraf1=?,syaraf2=?,syaraf3=?,syaraf4=?,pencernaan1=?,pencernaan2=?,pencernaan3=?,pencernaan4=?,pembedahan1=?,pembedahan2=?,hematologi1=?,hematologi2=?,infeksi=?,nik=?",
-                27, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), Kardiologi1.
-                    getSelectedItem().toString(),
-                    Kardiologi2.getSelectedItem().toString(), Kardiologi3.
-                    getSelectedItem().toString(), Kardiologi4.getSelectedItem().
-                            toString(), Kardiologi5.getSelectedItem().toString(),
-                    Kardiologi6.getSelectedItem().toString(), Pernapasan1.
-                    getSelectedItem().toString(), Pernapasan2.getSelectedItem().
-                            toString(), Pernapasan3.getSelectedItem().toString(),
-                    Syaraf1.getSelectedItem().toString(), Syaraf2.
-                    getSelectedItem().toString(), Syaraf3.getSelectedItem().
-                            toString(), Syaraf4.getSelectedItem().toString(),
-                    Pencernaan1.getSelectedItem().toString(), Pencernaan2.
-                    getSelectedItem().toString(), Pencernaan3.getSelectedItem().
-                            toString(), Pencernaan4.getSelectedItem().toString(),
-                    Pembedahan1.getSelectedItem().toString(), Pembedahan2.
-                    getSelectedItem().toString(), Hematologi1.getSelectedItem().
-                            toString(), Hematologi2.getSelectedItem().toString(),
-                    Infeksi.getSelectedItem().toString(), KodePetugas.getText(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+                27,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    Kardiologi1.getSelectedItem().toString(), Kardiologi2.getSelectedItem().toString(),
+                    Kardiologi3.getSelectedItem().toString(), Kardiologi4.getSelectedItem().toString(),
+                    Kardiologi5.getSelectedItem().toString(), Kardiologi6.getSelectedItem().toString(),
+                    Pernapasan1.getSelectedItem().toString(), Pernapasan2.getSelectedItem().toString(),
+                    Pernapasan3.getSelectedItem().toString(), Syaraf1.getSelectedItem().toString(),
+                    Syaraf2.getSelectedItem().toString(), Syaraf3.getSelectedItem().toString(),
+                    Syaraf4.getSelectedItem().toString(), Pencernaan1.getSelectedItem().toString(),
+                    Pencernaan2.getSelectedItem().toString(), Pencernaan3.getSelectedItem().toString(),
+                    Pencernaan4.getSelectedItem().toString(), Pembedahan1.getSelectedItem().toString(),
+                    Pembedahan2.getSelectedItem().toString(), Hematologi1.getSelectedItem().toString(),
+                    Hematologi2.getSelectedItem().toString(), Infeksi.getSelectedItem().toString(),
+                    KodePetugas.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 5);
-            tbObat.setValueAt(Kardiologi1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 6);
-            tbObat.setValueAt(Kardiologi2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(Kardiologi3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
-            tbObat.setValueAt(Kardiologi4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 9);
-            tbObat.setValueAt(Kardiologi5.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 10);
-            tbObat.setValueAt(Kardiologi6.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 11);
-            tbObat.setValueAt(Pernapasan1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 12);
-            tbObat.setValueAt(Pernapasan2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 13);
-            tbObat.setValueAt(Pernapasan3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 14);
-            tbObat.setValueAt(Syaraf1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 15);
-            tbObat.setValueAt(Syaraf2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 16);
-            tbObat.setValueAt(Syaraf3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.setValueAt(Syaraf4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 18);
-            tbObat.setValueAt(Pencernaan1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.setValueAt(Pencernaan2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 20);
-            tbObat.setValueAt(Pencernaan3.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 21);
-            tbObat.setValueAt(Pencernaan4.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 22);
-            tbObat.setValueAt(Pembedahan1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 23);
-            tbObat.setValueAt(Pembedahan2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 24);
-            tbObat.setValueAt(Hematologi1.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 25);
-            tbObat.setValueAt(Hematologi2.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 26);
-            tbObat.setValueAt(Infeksi.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 27);
-            tbObat.
-                    setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(),
-                            28);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            29);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(Kardiologi1.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(Kardiologi2.getSelectedItem().toString(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Kardiologi3.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(Kardiologi4.getSelectedItem().toString(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(Kardiologi5.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(Kardiologi6.getSelectedItem().toString(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(Pernapasan1.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(Pernapasan2.getSelectedItem().toString(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(Pernapasan3.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(Syaraf1.getSelectedItem().toString(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(Syaraf2.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(Syaraf3.getSelectedItem().toString(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(Syaraf4.getSelectedItem().toString(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(Pencernaan1.getSelectedItem().toString(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(Pencernaan2.getSelectedItem().toString(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(Pencernaan3.getSelectedItem().toString(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(Pencernaan4.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(Pembedahan1.getSelectedItem().toString(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(Pembedahan2.getSelectedItem().toString(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(Hematologi1.getSelectedItem().toString(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(Hematologi2.getSelectedItem().toString(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(Infeksi.getSelectedItem().toString(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(KodePetugas.getText(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 29);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from checklist_kriteria_masuk_hcu where no_rawat=? and tanggal=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from checklist_kriteria_masuk_hcu where no_rawat=? and tanggal=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
@@ -2386,59 +2306,44 @@ public class RMChecklistKriteriaMasukHCU extends javax.swing.JDialog {
     }
 
     private void simpan() {
-        if (Sequel.menyimpantf("checklist_kriteria_masuk_hcu",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 25,
-                new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                    getSelectedItem().toString().substring(11, 19), Kardiologi1.
-                    getSelectedItem().toString(),
-                    Kardiologi2.getSelectedItem().toString(), Kardiologi3.
-                    getSelectedItem().toString(), Kardiologi4.getSelectedItem().
-                            toString(), Kardiologi5.getSelectedItem().toString(),
-                    Kardiologi6.getSelectedItem().toString(), Pernapasan1.
-                    getSelectedItem().toString(), Pernapasan2.getSelectedItem().
-                            toString(), Pernapasan3.getSelectedItem().toString(),
-                    Syaraf1.getSelectedItem().toString(), Syaraf2.
-                    getSelectedItem().toString(), Syaraf3.getSelectedItem().
-                            toString(), Syaraf4.getSelectedItem().toString(),
-                    Pencernaan1.getSelectedItem().toString(), Pencernaan2.
-                    getSelectedItem().toString(), Pencernaan3.getSelectedItem().
-                            toString(), Pencernaan4.getSelectedItem().toString(),
-                    Pembedahan1.getSelectedItem().toString(), Pembedahan2.
-                    getSelectedItem().toString(), Hematologi1.getSelectedItem().
-                            toString(), Hematologi2.getSelectedItem().toString(),
-                    Infeksi.getSelectedItem().toString(), KodePetugas.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), JK.getText(), Valid.SetTgl(
-                Tanggal.getSelectedItem() + "") + " " + Tanggal.
-                getSelectedItem().toString().substring(11, 19),
-                Kardiologi1.getSelectedItem().toString(), Kardiologi2.
-                getSelectedItem().toString(), Kardiologi3.getSelectedItem().
-                toString(), Kardiologi4.getSelectedItem().toString(),
-                Kardiologi5.getSelectedItem().toString(), Kardiologi6.
-                getSelectedItem().toString(), Pernapasan1.getSelectedItem().
-                toString(), Pernapasan2.getSelectedItem().toString(),
-                Pernapasan3.getSelectedItem().toString(), Syaraf1.
-                getSelectedItem().toString(), Syaraf2.getSelectedItem().
-                toString(), Syaraf3.getSelectedItem().toString(), Syaraf4.
-                getSelectedItem().toString(),
-                Pencernaan1.getSelectedItem().toString(), Pencernaan2.
-                getSelectedItem().toString(), Pencernaan3.getSelectedItem().
-                toString(), Pencernaan4.getSelectedItem().toString(),
-                Pembedahan1.getSelectedItem().toString(), Pembedahan2.
-                getSelectedItem().toString(), Hematologi1.getSelectedItem().
-                toString(), Hematologi2.getSelectedItem().toString(),
-                Infeksi.getSelectedItem().toString(), KodePetugas.getText(),
-                NamaPetugas.getText()
-            });
+        if (Sequel.menyimpantf("checklist_kriteria_masuk_hcu", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+                "Data", 25,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                    + Tanggal.getSelectedItem().toString().substring(11, 19),
+                    Kardiologi1.getSelectedItem().toString(), Kardiologi2.getSelectedItem().toString(),
+                    Kardiologi3.getSelectedItem().toString(), Kardiologi4.getSelectedItem().toString(),
+                    Kardiologi5.getSelectedItem().toString(), Kardiologi6.getSelectedItem().toString(),
+                    Pernapasan1.getSelectedItem().toString(), Pernapasan2.getSelectedItem().toString(),
+                    Pernapasan3.getSelectedItem().toString(), Syaraf1.getSelectedItem().toString(),
+                    Syaraf2.getSelectedItem().toString(), Syaraf3.getSelectedItem().toString(),
+                    Syaraf4.getSelectedItem().toString(), Pencernaan1.getSelectedItem().toString(),
+                    Pencernaan2.getSelectedItem().toString(), Pencernaan3.getSelectedItem().toString(),
+                    Pencernaan4.getSelectedItem().toString(), Pembedahan1.getSelectedItem().toString(),
+                    Pembedahan2.getSelectedItem().toString(), Hematologi1.getSelectedItem().toString(),
+                    Hematologi2.getSelectedItem().toString(), Infeksi.getSelectedItem().toString(),
+                    KodePetugas.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                JK.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " "
+                + Tanggal.getSelectedItem().toString().substring(11, 19),
+                Kardiologi1.getSelectedItem().toString(), Kardiologi2.getSelectedItem().toString(),
+                Kardiologi3.getSelectedItem().toString(), Kardiologi4.getSelectedItem().toString(),
+                Kardiologi5.getSelectedItem().toString(), Kardiologi6.getSelectedItem().toString(),
+                Pernapasan1.getSelectedItem().toString(), Pernapasan2.getSelectedItem().toString(),
+                Pernapasan3.getSelectedItem().toString(), Syaraf1.getSelectedItem().toString(),
+                Syaraf2.getSelectedItem().toString(), Syaraf3.getSelectedItem().toString(),
+                Syaraf4.getSelectedItem().toString(), Pencernaan1.getSelectedItem().toString(),
+                Pencernaan2.getSelectedItem().toString(), Pencernaan3.getSelectedItem().toString(),
+                Pencernaan4.getSelectedItem().toString(), Pembedahan1.getSelectedItem().toString(),
+                Pembedahan2.getSelectedItem().toString(), Hematologi1.getSelectedItem().toString(),
+                Hematologi2.getSelectedItem().toString(), Infeksi.getSelectedItem().toString(),
+                KodePetugas.getText(), NamaPetugas.getText()});
             LCount.setText("" + tabMode.getRowCount());
             emptTeks();
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMChecklistKriteriaMasukHCU.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMChecklistKriteriaMasukHCU.class.getName());
+
 }

@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgObatPenyakit.java
- *
- * Created on May 23, 2010, 12:40:35 AM
+* DlgObatPenyakit.java
+*
+* Created on May 23, 2010, 12:40:35 AM
  */
 package inventory;
 
@@ -37,18 +37,24 @@ import laporan.DlgCariPenyakit;
 import laporan.DlgKtgPenyakit;
 
 /**
- *
  * @author dosen
  */
 public class DlgObatPenyakit extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private String sql;
 
     /**
@@ -64,26 +70,13 @@ public class DlgObatPenyakit extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] row = {"P", "Kode Penyakit",
-            "Nama Penyakit",
-            "Ciri-ciri Penyakit",
-            "Keterangan",
-            "Kategori Penyakit",
-            "Ciri-ciri Umum",
-            "Kode Obat",
-            "Nama Obat",
-            "Jenis Obat",
-            "Harga Beli",
-            "Referensi"};
+        Object[] row = {"P", "Kode Penyakit", "Nama Penyakit", "Ciri-ciri Penyakit", "Keterangan", "Kategori Penyakit",
+            "Ciri-ciri Umum", "Kode Obat", "Nama Obat", "Jenis Obat", "Harga Beli", "Referensi"};
         tabMode = new DefaultTableModel(null, row) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Object.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -102,9 +95,9 @@ public class DlgObatPenyakit extends javax.swing.JDialog {
         };
         tbObatPenyakit.setModel(tabMode);
 
-        //tbObatPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
-        tbObatPenyakit.setPreferredScrollableViewportSize(
-                new Dimension(800, 800));
+        // tbObatPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObatPenyakit.getBackground()));
+        tbObatPenyakit.setPreferredScrollableViewportSize(new Dimension(800, 800));
         tbObatPenyakit.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         for (i = 0; i < 12; i++) {
@@ -142,8 +135,7 @@ public class DlgObatPenyakit extends javax.swing.JDialog {
         TRef.setDocument(new batasInput((byte) 60).getKata(TRef));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -180,15 +172,12 @@ public class DlgObatPenyakit extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgObatPenyakit")) {
                     if (penyakit.getTable().getSelectedRow() != -1) {
-                        kdpenyakit.setText(penyakit.getTable().getValueAt(
-                                penyakit.getTable().getSelectedRow(), 0).
-                                toString());
-                        TPenyakit.setText(penyakit.getTable().getValueAt(
-                                penyakit.getTable().getSelectedRow(), 1).
-                                toString());
-                        PenyakitCari.setText(penyakit.getTable().getValueAt(
-                                penyakit.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdpenyakit.setText(
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString());
+                        TPenyakit.setText(
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
+                        PenyakitCari.setText(
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                         tampil();
                     }
                     kdpenyakit.requestFocus();
@@ -226,10 +215,8 @@ public class DlgObatPenyakit extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgObatPenyakit")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdobat.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmobat.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdobat.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmobat.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdobat.requestFocus();
                 }
@@ -286,8 +273,7 @@ public class DlgObatPenyakit extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgObatPenyakit")) {
                     if (ktg.getTable().getSelectedRow() != -1) {
-                        KtgCari.setText(ktg.getTable().getValueAt(
-                                ktg.getTable().getSelectedRow(), 1).toString());
+                        KtgCari.setText(ktg.getTable().getValueAt(ktg.getTable().getSelectedRow(), 1).toString());
                     }
                     KtgCari.requestFocus();
                 }
@@ -334,11 +320,15 @@ public class DlgObatPenyakit extends javax.swing.JDialog {
     }
 
     private DlgCariPenyakit penyakit = new DlgCariPenyakit(null, false);
+
     private DlgKtgPenyakit ktg = new DlgKtgPenyakit(null, false);
+
     private DlgBarang barang = new DlgBarang(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1094,8 +1084,7 @@ private void btnPenyakitCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgObatPenyakit dialog = new DlgObatPenyakit(
-                    new javax.swing.JFrame(), true);
+            DlgObatPenyakit dialog = new DlgObatPenyakit(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1148,39 +1137,29 @@ private void btnPenyakitCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            sql = " nm_kategori like '%" + KtgCari.getText() + "%' "
-                    + " and nm_penyakit like '%" + PenyakitCari.getText() + "%' ";
-            ps = koneksi.prepareStatement(
-                    "select obat_penyakit.kd_penyakit,nm_penyakit,ciri_ciri,penyakit.keterangan, "
+            sql = " nm_kategori like '%" + KtgCari.getText() + "%' " + " and nm_penyakit like '%"
+                    + PenyakitCari.getText() + "%' ";
+            ps = koneksi.prepareStatement("select obat_penyakit.kd_penyakit,nm_penyakit,ciri_ciri,penyakit.keterangan, "
                     + "nm_kategori,ciri_umum,obat_penyakit.kode_brng,nama_brng,jenis.nama,h_beli,referensi "
                     + "from obat_penyakit inner join penyakit inner join kategori_penyakit inner join databarang inner join jenis "
-                    + "on penyakit.kd_ktg=kategori_penyakit.kd_ktg and "
-                    + "databarang.kdjns=jenis.kdjns and "
+                    + "on penyakit.kd_ktg=kategori_penyakit.kd_ktg and " + "databarang.kdjns=jenis.kdjns and "
                     + "obat_penyakit.kd_penyakit=penyakit.kd_penyakit and "
-                    + "obat_penyakit.kode_brng=databarang.kode_brng where "
-                    + sql + "and obat_penyakit.kd_penyakit like '%" + TCari.
-                            getText().trim() + "%' or "
-                    + sql + "and nm_penyakit like '%" + TCari.getText().trim() + "%' or "
-                    + sql + "and ciri_ciri like '%" + TCari.getText().trim() + "%' or "
-                    + sql + "and penyakit.keterangan like '%" + TCari.getText().
-                            trim() + "%' or "
-                    + sql + "and nm_kategori like '%" + TCari.getText().trim() + "%' or "
-                    + sql + "and ciri_umum like '%" + TCari.getText().trim() + "%' or "
-                    + sql + "and obat_penyakit.kode_brng like '%" + TCari.
-                            getText().trim() + "%' or "
-                    + sql + "and nama_brng like '%" + TCari.getText().trim() + "%' or "
-                    + sql + "and jenis.nama like '%" + TCari.getText().trim() + "%' or "
-                    + sql + "and referensi like '%" + TCari.getText().trim() + "%' "
+                    + "obat_penyakit.kode_brng=databarang.kode_brng where " + sql
+                    + "and obat_penyakit.kd_penyakit like '%" + TCari.getText().trim() + "%' or " + sql
+                    + "and nm_penyakit like '%" + TCari.getText().trim() + "%' or " + sql + "and ciri_ciri like '%"
+                    + TCari.getText().trim() + "%' or " + sql + "and penyakit.keterangan like '%"
+                    + TCari.getText().trim() + "%' or " + sql + "and nm_kategori like '%" + TCari.getText().trim()
+                    + "%' or " + sql + "and ciri_umum like '%" + TCari.getText().trim() + "%' or " + sql
+                    + "and obat_penyakit.kode_brng like '%" + TCari.getText().trim() + "%' or " + sql
+                    + "and nama_brng like '%" + TCari.getText().trim() + "%' or " + sql + "and jenis.nama like '%"
+                    + TCari.getText().trim() + "%' or " + sql + "and referensi like '%" + TCari.getText().trim() + "%' "
                     + "order by obat_penyakit.kd_penyakit ");
             try {
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getString(6),
-                        rs.getString(7), rs.getString(8), rs.getString(9),
-                        rs.getDouble(10), rs.getString(11)
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
+                        rs.getString(9), rs.getDouble(10), rs.getString(11)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1228,6 +1207,6 @@ private void btnPenyakitCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST
         BtnPrint.setEnabled(akses.getobat_penyakit());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgObatPenyakit.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgObatPenyakit.class.getName());
+
 }

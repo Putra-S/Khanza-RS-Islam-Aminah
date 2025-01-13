@@ -33,24 +33,33 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class DlgAuditPenangananDarah extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
-    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(
-            null, false);
-    private double menggunakan_apd_waktu_membuang_darah = 0, komponen_darah_tidak_ada_dilantai = 0, membuang_darah_pada_tempat_ditentukan = 0,
-            pembersihan_areal_tumbahan_darah = 0, apd_dibuang_di_limbah_infeksius = 0, ttlmenggunakan_apd_waktu_membuang_darah = 0, melakukan_kebersihan_tangan_setelah_prosedur = 0,
-            ttlkomponen_darah_tidak_ada_dilantai = 0, ttlmembuang_darah_pada_tempat_ditentukan = 0, ttlpembersihan_areal_tumbahan_darah = 0, ttlapd_dibuang_di_limbah_infeksius = 0,
-            ttlmelakukan_kebersihan_tangan_setelah_prosedur = 0, ttlpenilaian = 0;
+
+    private DlgCariRuangAuditKepatuhan ruang = new DlgCariRuangAuditKepatuhan(null, false);
+
+    private double menggunakan_apd_waktu_membuang_darah = 0, komponen_darah_tidak_ada_dilantai = 0,
+            membuang_darah_pada_tempat_ditentukan = 0, pembersihan_areal_tumbahan_darah = 0,
+            apd_dibuang_di_limbah_infeksius = 0, ttlmenggunakan_apd_waktu_membuang_darah = 0,
+            melakukan_kebersihan_tangan_setelah_prosedur = 0, ttlkomponen_darah_tidak_ada_dilantai = 0,
+            ttlmembuang_darah_pada_tempat_ditentukan = 0, ttlpembersihan_areal_tumbahan_darah = 0,
+            ttlapd_dibuang_di_limbah_infeksius = 0, ttlmelakukan_kebersihan_tangan_setelah_prosedur = 0,
+            ttlpenilaian = 0;
 
     /**
      * Creates new form DlgRujuk
@@ -64,16 +73,12 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tanggal Audit", "ID Ruang", "Ruang/Unit",
-            "1.Menggunakan APD Waktu Membuang Darah / Komponen Darah",
-            "2.Komponen Darah Tidak Ada Di Lantai",
+        tabMode = new DefaultTableModel(null, new Object[]{"Tanggal Audit", "ID Ruang", "Ruang/Unit",
+            "1.Menggunakan APD Waktu Membuang Darah / Komponen Darah", "2.Komponen Darah Tidak Ada Di Lantai",
             "3.Membuang Darah / Komponen Darah Pada Tempat Yang Ditentukan",
             "4.Pembersihan Areal Tumpahan Darah Dengan Clorin / Spill Kit",
             "5.APD Yang Digunakan Dibuang Di Limbah Infeksius",
-            "6.Melakukan Kebersihan Tangan Setelah Prosedur Tersebut",
-            "Ttl.Nilai(%)"
-        }) {
+            "6.Melakukan Kebersihan Tangan Setelah Prosedur Tersebut", "Ttl.Nilai(%)"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -82,7 +87,8 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -116,8 +122,7 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -154,10 +159,8 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (ruang.getTable().getSelectedRow() != -1) {
-                    KdRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 0).toString());
-                    NmRuang.setText(ruang.getTable().getValueAt(
-                            ruang.getTable().getSelectedRow(), 1).toString());
+                    KdRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 0).toString());
+                    NmRuang.setText(ruang.getTable().getValueAt(ruang.getTable().getSelectedRow(), 1).toString());
                 }
                 KdRuang.requestFocus();
             }
@@ -186,7 +189,9 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1032,8 +1037,7 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgAuditPenangananDarah dialog = new DlgAuditPenangananDarah(
-                    new javax.swing.JFrame(), true);
+            DlgAuditPenangananDarah dialog = new DlgAuditPenangananDarah(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1119,15 +1123,11 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                 }
@@ -1142,93 +1142,82 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
                 ttlpenilaian = 0;
                 i = 1;
                 while (rs.next()) {
-                    menggunakan_apd_waktu_membuang_darah = Double.parseDouble(
-                            rs.getString("menggunakan_apd_waktu_membuang_darah").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    menggunakan_apd_waktu_membuang_darah = Double
+                            .parseDouble(rs.getString("menggunakan_apd_waktu_membuang_darah")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlmenggunakan_apd_waktu_membuang_darah += menggunakan_apd_waktu_membuang_darah;
-                    komponen_darah_tidak_ada_dilantai = Double.parseDouble(rs.
-                            getString("komponen_darah_tidak_ada_dilantai").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    komponen_darah_tidak_ada_dilantai = Double
+                            .parseDouble(rs.getString("komponen_darah_tidak_ada_dilantai")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlkomponen_darah_tidak_ada_dilantai += komponen_darah_tidak_ada_dilantai;
-                    membuang_darah_pada_tempat_ditentukan = Double.parseDouble(
-                            rs.
-                                    getString(
-                                            "membuang_darah_pada_tempat_ditentukan").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    membuang_darah_pada_tempat_ditentukan = Double
+                            .parseDouble(rs.getString("membuang_darah_pada_tempat_ditentukan")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlmembuang_darah_pada_tempat_ditentukan += membuang_darah_pada_tempat_ditentukan;
-                    pembersihan_areal_tumbahan_darah = Double.parseDouble(rs.
-                            getString("pembersihan_areal_tumbahan_darah").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    pembersihan_areal_tumbahan_darah = Double
+                            .parseDouble(rs.getString("pembersihan_areal_tumbahan_darah")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlpembersihan_areal_tumbahan_darah += pembersihan_areal_tumbahan_darah;
-                    apd_dibuang_di_limbah_infeksius = Double.parseDouble(rs.
-                            getString("apd_dibuang_di_limbah_infeksius").
-                            replaceAll("Ya", "1").replaceAll("Tidak", "0"));
+                    apd_dibuang_di_limbah_infeksius = Double.parseDouble(rs.getString("apd_dibuang_di_limbah_infeksius")
+                            .replaceAll("Ya", "1")
+                            .replaceAll("Tidak", "0"));
                     ttlapd_dibuang_di_limbah_infeksius += apd_dibuang_di_limbah_infeksius;
-                    melakukan_kebersihan_tangan_setelah_prosedur = Double.
-                            parseDouble(rs.getString(
-                                    "melakukan_kebersihan_tangan_setelah_prosedur").
-                                    replaceAll("Ya", "1").replaceAll("Tidak",
-                                    "0"));
+                    melakukan_kebersihan_tangan_setelah_prosedur = Double
+                            .parseDouble(rs.getString("melakukan_kebersihan_tangan_setelah_prosedur")
+                                    .replaceAll("Ya", "1")
+                                    .replaceAll("Tidak", "0"));
                     ttlmelakukan_kebersihan_tangan_setelah_prosedur += melakukan_kebersihan_tangan_setelah_prosedur;
-                    ttlpenilaian += (((menggunakan_apd_waktu_membuang_darah + komponen_darah_tidak_ada_dilantai + membuang_darah_pada_tempat_ditentukan
-                            + pembersihan_areal_tumbahan_darah + apd_dibuang_di_limbah_infeksius + melakukan_kebersihan_tangan_setelah_prosedur) / 6) * 100);
-                    tabMode.addRow(new String[]{
-                        rs.getString("tanggal"), rs.getString("id_ruang"), rs.
-                        getString("nama_ruang"), rs.getString(
-                        "menggunakan_apd_waktu_membuang_darah"), rs.getString(
-                        "komponen_darah_tidak_ada_dilantai"),
+                    ttlpenilaian += (((menggunakan_apd_waktu_membuang_darah + komponen_darah_tidak_ada_dilantai
+                            + membuang_darah_pada_tempat_ditentukan + pembersihan_areal_tumbahan_darah
+                            + apd_dibuang_di_limbah_infeksius + melakukan_kebersihan_tangan_setelah_prosedur) / 6)
+                            * 100);
+                    tabMode.addRow(new String[]{rs.getString("tanggal"), rs.getString("id_ruang"),
+                        rs.getString("nama_ruang"), rs.getString("menggunakan_apd_waktu_membuang_darah"),
+                        rs.getString("komponen_darah_tidak_ada_dilantai"),
                         rs.getString("membuang_darah_pada_tempat_ditentukan"),
-                        rs.getString("pembersihan_areal_tumbahan_darah"), rs.
-                        getString("apd_dibuang_di_limbah_infeksius"),
-                        rs.getString(
-                        "melakukan_kebersihan_tangan_setelah_prosedur"), Math.
-                        round(
-                        ((menggunakan_apd_waktu_membuang_darah + komponen_darah_tidak_ada_dilantai
-                        + membuang_darah_pada_tempat_ditentukan + pembersihan_areal_tumbahan_darah + apd_dibuang_di_limbah_infeksius + melakukan_kebersihan_tangan_setelah_prosedur) / 6) * 100) + " %"
-                    });
+                        rs.getString("pembersihan_areal_tumbahan_darah"),
+                        rs.getString("apd_dibuang_di_limbah_infeksius"),
+                        rs.getString("melakukan_kebersihan_tangan_setelah_prosedur"),
+                        Math.round(((menggunakan_apd_waktu_membuang_darah + komponen_darah_tidak_ada_dilantai
+                        + membuang_darah_pada_tempat_ditentukan + pembersihan_areal_tumbahan_darah
+                        + apd_dibuang_di_limbah_infeksius + melakukan_kebersihan_tangan_setelah_prosedur)
+                        / 6) * 100) + " %"});
                     i++;
                 }
                 i -= 1;
                 if (i > 0) {
-                    tabMode.addRow(new String[]{
-                        "", "Ya", ":",
-                        "" + ttlmenggunakan_apd_waktu_membuang_darah,
-                        "" + ttlkomponen_darah_tidak_ada_dilantai,
-                        "" + ttlmembuang_darah_pada_tempat_ditentukan,
-                        "" + ttlpembersihan_areal_tumbahan_darah,
-                        "" + ttlapd_dibuang_di_limbah_infeksius,
+                    tabMode.addRow(new String[]{"", "Ya", ":", "" + ttlmenggunakan_apd_waktu_membuang_darah,
+                        "" + ttlkomponen_darah_tidak_ada_dilantai, "" + ttlmembuang_darah_pada_tempat_ditentukan,
+                        "" + ttlpembersihan_areal_tumbahan_darah, "" + ttlapd_dibuang_di_limbah_infeksius,
                         "" + ttlmelakukan_kebersihan_tangan_setelah_prosedur,
-                        "" + (ttlmenggunakan_apd_waktu_membuang_darah
-                        + ttlkomponen_darah_tidak_ada_dilantai + ttlmembuang_darah_pada_tempat_ditentukan + ttlpembersihan_areal_tumbahan_darah + ttlapd_dibuang_di_limbah_infeksius + ttlmelakukan_kebersihan_tangan_setelah_prosedur)
-                    });
-                    tabMode.addRow(new String[]{
-                        "", "Tidak", ":",
-                        "" + (i - ttlmenggunakan_apd_waktu_membuang_darah),
+                        "" + (ttlmenggunakan_apd_waktu_membuang_darah + ttlkomponen_darah_tidak_ada_dilantai
+                        + ttlmembuang_darah_pada_tempat_ditentukan + ttlpembersihan_areal_tumbahan_darah
+                        + ttlapd_dibuang_di_limbah_infeksius
+                        + ttlmelakukan_kebersihan_tangan_setelah_prosedur)});
+                    tabMode.addRow(new String[]{"", "Tidak", ":", "" + (i - ttlmenggunakan_apd_waktu_membuang_darah),
                         "" + (i - ttlkomponen_darah_tidak_ada_dilantai),
                         "" + (i - ttlmembuang_darah_pada_tempat_ditentukan),
                         "" + (i - ttlpembersihan_areal_tumbahan_darah),
                         "" + (i - ttlapd_dibuang_di_limbah_infeksius),
                         "" + (i - ttlmelakukan_kebersihan_tangan_setelah_prosedur),
                         "" + ((i - ttlmenggunakan_apd_waktu_membuang_darah)
-                        + (i - ttlkomponen_darah_tidak_ada_dilantai) + (i - ttlmembuang_darah_pada_tempat_ditentukan) + (i - ttlpembersihan_areal_tumbahan_darah) + (i - ttlapd_dibuang_di_limbah_infeksius) + (i - ttlmelakukan_kebersihan_tangan_setelah_prosedur))
-                    });
-                    tabMode.addRow(new String[]{
-                        "", "Rata-rata", ":", Math.round(
-                        (ttlmenggunakan_apd_waktu_membuang_darah / i) * 100) + " %",
-                        Math.round(
-                        (ttlkomponen_darah_tidak_ada_dilantai / i) * 100) + " %",
-                        Math.round(
-                        (ttlmembuang_darah_pada_tempat_ditentukan / i) * 100) + " %",
-                        Math.round(
-                        (ttlpembersihan_areal_tumbahan_darah / i) * 100) + " %",
-                        Math.round(
-                        (ttlapd_dibuang_di_limbah_infeksius / i) * 100) + " %",
-                        Math.round(
-                        (ttlmelakukan_kebersihan_tangan_setelah_prosedur / i) * 100) + " %",
-                        Math.round(ttlpenilaian / i) + " %"
-                    });
+                        + (i - ttlkomponen_darah_tidak_ada_dilantai)
+                        + (i - ttlmembuang_darah_pada_tempat_ditentukan)
+                        + (i - ttlpembersihan_areal_tumbahan_darah)
+                        + (i - ttlapd_dibuang_di_limbah_infeksius)
+                        + (i - ttlmelakukan_kebersihan_tangan_setelah_prosedur))});
+                    tabMode.addRow(new String[]{"", "Rata-rata", ":",
+                        Math.round((ttlmenggunakan_apd_waktu_membuang_darah / i) * 100) + " %",
+                        Math.round((ttlkomponen_darah_tidak_ada_dilantai / i) * 100) + " %",
+                        Math.round((ttlmembuang_darah_pada_tempat_ditentukan / i) * 100) + " %",
+                        Math.round((ttlpembersihan_areal_tumbahan_darah / i) * 100) + " %",
+                        Math.round((ttlapd_dibuang_di_limbah_infeksius / i) * 100) + " %",
+                        Math.round((ttlmelakukan_kebersihan_tangan_setelah_prosedur / i) * 100) + " %",
+                        Math.round(ttlpenilaian / i) + " %"});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1261,26 +1250,19 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().
-                    isEmpty()) {
-                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                        toString());
-                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                        toString());
-                MenggunakanApdWaktuMembuangDarah.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 3).toString());
-                KomponenDarahTidakAdaDilantai.setSelectedItem(tbObat.getValueAt(
-                        tbObat.getSelectedRow(), 4).toString());
-                MembuangDarahPadaTempatDitentukan.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 5).toString());
-                PembersihanArealTumbahanDarah.setSelectedItem(tbObat.getValueAt(
-                        tbObat.getSelectedRow(), 6).toString());
-                ApdDibuangdiLimbahInfeksius.setSelectedItem(tbObat.getValueAt(
-                        tbObat.getSelectedRow(), 7).toString());
-                MelakukanKebersihanTanganSetelahProsedur.setSelectedItem(tbObat.
-                        getValueAt(tbObat.getSelectedRow(), 8).toString());
-                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(),
-                        0).toString());
+            if (!tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().isEmpty()) {
+                KdRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+                NmRuang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+                MenggunakanApdWaktuMembuangDarah
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+                KomponenDarahTidakAdaDilantai.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+                MembuangDarahPadaTempatDitentukan
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+                PembersihanArealTumbahanDarah.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+                ApdDibuangdiLimbahInfeksius.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+                MelakukanKebersihanTanganSetelahProsedur
+                        .setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+                Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
             }
         }
     }
@@ -1312,7 +1294,9 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -1354,7 +1338,7 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -1365,6 +1349,6 @@ public class DlgAuditPenangananDarah extends javax.swing.JDialog {
         new Timer(1000, taskPerformer).start();
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            DlgAuditPenangananDarah.class.getName());
+    private static final Logger LOG = Logger.getLogger(DlgAuditPenangananDarah.class.getName());
+
 }

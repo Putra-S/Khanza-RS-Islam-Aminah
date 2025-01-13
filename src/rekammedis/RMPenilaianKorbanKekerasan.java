@@ -37,20 +37,28 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPegawai;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPegawai pemeriksa = new DlgCariPegawai(null, false);
+
     private StringBuilder htmlContent;
+
     private String finger = "";
 
     /**
@@ -63,23 +71,15 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.", "Kode/NIP",
-            "Nama Pemeriksa", "Tanggal", "Anamnesis", "Hubungan",
-            "Jml.Saudara", "Kondisi Keluarga Inti", "Hubungan Orang Terdekat",
-            "Jenis Kekerasan/Penganiayaan Yang Dialami",
-            "Tempat Kejadian Kekerasan", "Lama", "Periode",
-            "Seberapa Sering Mengalami Kekerasan / Penganiayaan",
-            "Pemicu Kekerasan / Penganiayaan",
-            "Yang Melakukan Kekerasan",
-            "Dampak Yang Terjadi Pada Korban Kekerasan",
-            "Tanda-tanda Yang Didapatkan Pada Korban Kekerasan",
-            "Memerlukan Pendampingan", "Riwayat Kelainan/Gangguan Jiwa",
-            "Pemeriksaan Kepala", "Pemeriksaan Thoraks", "Pemeriksaan Leher",
-            "Pemeriksaan Abdomen", "Pemeriksaan Genitalia",
-            "Pemeriksaan Ekstrimitas Atas", "Pemeriksaan Ekstrimitas Bawah",
-            "Pemeriksaan Anus"
-        }) {
+        tabMode = new DefaultTableModel(null, new Object[]{"No.Rawat", "No.RM", "Nama Pasien", "Tgl.Lahir", "J.K.",
+            "Kode/NIP", "Nama Pemeriksa", "Tanggal", "Anamnesis", "Hubungan", "Jml.Saudara",
+            "Kondisi Keluarga Inti", "Hubungan Orang Terdekat", "Jenis Kekerasan/Penganiayaan Yang Dialami",
+            "Tempat Kejadian Kekerasan", "Lama", "Periode", "Seberapa Sering Mengalami Kekerasan / Penganiayaan",
+            "Pemicu Kekerasan / Penganiayaan", "Yang Melakukan Kekerasan",
+            "Dampak Yang Terjadi Pada Korban Kekerasan", "Tanda-tanda Yang Didapatkan Pada Korban Kekerasan",
+            "Memerlukan Pendampingan", "Riwayat Kelainan/Gangguan Jiwa", "Pemeriksaan Kepala",
+            "Pemeriksaan Thoraks", "Pemeriksaan Leher", "Pemeriksaan Abdomen", "Pemeriksaan Genitalia",
+            "Pemeriksaan Ekstrimitas Atas", "Pemeriksaan Ekstrimitas Bawah", "Pemeriksaan Anus"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -163,49 +163,31 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
 
         TNoRw.setDocument(new batasInput((byte) 17).getKata(TNoRw));
         Hubungan.setDocument(new batasInput(30).getKata(Hubungan));
-        JumlahSaudara.setDocument(new batasInput((byte) 2).
-                getKata(JumlahSaudara));
+        JumlahSaudara.setDocument(new batasInput((byte) 2).getKata(JumlahSaudara));
         Hubungan.setDocument(new batasInput(30).getKata(Hubungan));
-        KekerasanYangDialami.setDocument(new batasInput(350).getKata(
-                KekerasanYangDialami));
-        TempatKejadian.setDocument(new batasInput((byte) 40).getKata(
-                TempatKejadian));
-        LamaKekerasan.setDocument(new batasInput((byte) 2).
-                getKata(LamaKekerasan));
-        JumlahSaudara.setDocument(new batasInput((byte) 2).
-                getKata(JumlahSaudara));
-        SeberapaSeringPenganiayaan.setDocument(new batasInput(150).getKata(
-                SeberapaSeringPenganiayaan));
-        PemicuKekerasan.
-                setDocument(new batasInput(150).getKata(PemicuKekerasan));
-        SiapaYangMelakukanKekerasan.setDocument(new batasInput(50).getKata(
-                SiapaYangMelakukanKekerasan));
-        DampakYangTerjadi.setDocument(new batasInput(200).getKata(
-                DampakYangTerjadi));
-        TandaYangDidapatkan.setDocument(new batasInput(350).getKata(
-                TandaYangDidapatkan));
+        KekerasanYangDialami.setDocument(new batasInput(350).getKata(KekerasanYangDialami));
+        TempatKejadian.setDocument(new batasInput((byte) 40).getKata(TempatKejadian));
+        LamaKekerasan.setDocument(new batasInput((byte) 2).getKata(LamaKekerasan));
+        JumlahSaudara.setDocument(new batasInput((byte) 2).getKata(JumlahSaudara));
+        SeberapaSeringPenganiayaan.setDocument(new batasInput(150).getKata(SeberapaSeringPenganiayaan));
+        PemicuKekerasan.setDocument(new batasInput(150).getKata(PemicuKekerasan));
+        SiapaYangMelakukanKekerasan.setDocument(new batasInput(50).getKata(SiapaYangMelakukanKekerasan));
+        DampakYangTerjadi.setDocument(new batasInput(200).getKata(DampakYangTerjadi));
+        TandaYangDidapatkan.setDocument(new batasInput(350).getKata(TandaYangDidapatkan));
         RiwayatKelainan.setDocument(new batasInput(50).getKata(RiwayatKelainan));
-        PemeriksaanKepala.setDocument(new batasInput(50).getKata(
-                PemeriksaanKepala));
-        PemeriksaanThoraks.setDocument(new batasInput(50).getKata(
-                PemeriksaanThoraks));
-        PemeriksaanLeher.setDocument(new batasInput(50).
-                getKata(PemeriksaanLeher));
-        PemeriksaanAbdomen.setDocument(new batasInput(50).getKata(
-                PemeriksaanAbdomen));
-        PemeriksaanGenitalia.setDocument(new batasInput(50).getKata(
-                PemeriksaanGenitalia));
-        PemeriksaanEkstrimitasAtas.setDocument(new batasInput(50).getKata(
-                PemeriksaanEkstrimitasAtas));
-        PemeriksaanEkstrimitasBawah.setDocument(new batasInput(50).getKata(
-                PemeriksaanEkstrimitasBawah));
+        PemeriksaanKepala.setDocument(new batasInput(50).getKata(PemeriksaanKepala));
+        PemeriksaanThoraks.setDocument(new batasInput(50).getKata(PemeriksaanThoraks));
+        PemeriksaanLeher.setDocument(new batasInput(50).getKata(PemeriksaanLeher));
+        PemeriksaanAbdomen.setDocument(new batasInput(50).getKata(PemeriksaanAbdomen));
+        PemeriksaanGenitalia.setDocument(new batasInput(50).getKata(PemeriksaanGenitalia));
+        PemeriksaanEkstrimitasAtas.setDocument(new batasInput(50).getKata(PemeriksaanEkstrimitasAtas));
+        PemeriksaanEkstrimitasBawah.setDocument(new batasInput(50).getKata(PemeriksaanEkstrimitasBawah));
         PemeriksaanAnus.setDocument(new batasInput(50).getKata(PemeriksaanAnus));
 
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -242,10 +224,10 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pemeriksa.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(pemeriksa.getTable().getValueAt(pemeriksa.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(pemeriksa.getTable().getValueAt(pemeriksa.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter
+                            .setText(pemeriksa.getTable().getValueAt(pemeriksa.getTable().getSelectedRow(), 0).toString());
+                    NmDokter
+                            .setText(pemeriksa.getTable().getValueAt(pemeriksa.getTable().getSelectedRow(), 1).toString());
                     BtnDokter.requestFocus();
                 }
             }
@@ -281,14 +263,15 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1816,8 +1799,7 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMPenilaianKorbanKekerasan dialog = new RMPenilaianKorbanKekerasan(
-                    new javax.swing.JFrame(), true);
+            RMPenilaianKorbanKekerasan dialog = new RMPenilaianKorbanKekerasan(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1966,15 +1948,11 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1983,35 +1961,21 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
                 }
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("nip"), rs.getString(
-                        "nama"), rs.getString("tanggal"),
-                        rs.getString("informasi"), rs.getString(
-                        "hubungan_dengan_pasien"), rs.
-                        getString("jumlah_saudara"), rs.getString(
-                        "kondisi_keluaga"), rs.getString(
-                        "hubungan_orang_terdekat"),
-                        rs.getString("kekerasan_yang_dialami"), rs.getString(
-                        "tempat_kejadian"), rs.getString("lama_kekerasan"), rs.
-                        getString("periode_kekerasan"), rs.getString(
-                        "seberapa_sering_mengalami"),
-                        rs.getString("pemicu_kekerasan"), rs.getString(
-                        "yang_melakukan_kekerasan"), rs.getString(
-                        "dampak_kekerasan"), rs.getString(
-                        "tanda_tanda_didapatkan"), rs.getString(
-                        "memerlukan_pendampingan"),
-                        rs.getString("riwayat_kelainan"), rs.getString(
-                        "pemeriksaan_kepala"), rs.getString(
-                        "pemeriksaan_thoraks"), rs.
-                        getString("pemeriksaan_leher"), rs.getString(
-                        "pemeriksaan_abdomen"),
-                        rs.getString("pemeriksaan_genitalia"), rs.getString(
-                        "pemeriksaan_ekstrimitas_atas"), rs.getString(
-                        "pemeriksaan_ekstrimitas_bawah"), rs.getString(
-                        "pemeriksaan_anus")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("nip"), rs.getString("nama"), rs.getString("tanggal"),
+                        rs.getString("informasi"), rs.getString("hubungan_dengan_pasien"),
+                        rs.getString("jumlah_saudara"), rs.getString("kondisi_keluaga"),
+                        rs.getString("hubungan_orang_terdekat"), rs.getString("kekerasan_yang_dialami"),
+                        rs.getString("tempat_kejadian"), rs.getString("lama_kekerasan"),
+                        rs.getString("periode_kekerasan"), rs.getString("seberapa_sering_mengalami"),
+                        rs.getString("pemicu_kekerasan"), rs.getString("yang_melakukan_kekerasan"),
+                        rs.getString("dampak_kekerasan"), rs.getString("tanda_tanda_didapatkan"),
+                        rs.getString("memerlukan_pendampingan"), rs.getString("riwayat_kelainan"),
+                        rs.getString("pemeriksaan_kepala"), rs.getString("pemeriksaan_thoraks"),
+                        rs.getString("pemeriksaan_leher"), rs.getString("pemeriksaan_abdomen"),
+                        rs.getString("pemeriksaan_genitalia"), rs.getString("pemeriksaan_ekstrimitas_atas"),
+                        rs.getString("pemeriksaan_ekstrimitas_bawah"), rs.getString("pemeriksaan_anus")});
                 }
             } catch (SQLException e) {
                 System.out.println("Notif : " + e);
@@ -2065,65 +2029,36 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             Jk.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    8).toString());
-            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            JumlahSaudara.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
-            KondisiKeluargaInti.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 11).toString());
-            HubunganOrangTerdekat.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            KekerasanYangDialami.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 13).toString());
-            TempatKejadian.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 14).toString());
-            LamaKekerasan.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
-            PeriodeKekerasan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 16).toString());
-            SeberapaSeringPenganiayaan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 17).toString());
-            PemicuKekerasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    18).toString());
-            SiapaYangMelakukanKekerasan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 19).toString());
-            DampakYangTerjadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    20).toString());
-            TandaYangDidapatkan.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 21).toString());
-            MemerlukanPendampingan.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 22).toString());
-            RiwayatKelainan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    23).toString());
-            PemeriksaanKepala.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    24).toString());
-            PemeriksaanThoraks.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 25).toString());
-            PemeriksaanLeher.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    26).toString());
-            PemeriksaanAbdomen.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 27).toString());
-            PemeriksaanGenitalia.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 28).toString());
-            PemeriksaanEkstrimitasAtas.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 29).toString());
-            PemeriksaanEkstrimitasBawah.setText(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 30).toString());
-            PemeriksaanAnus.setText(tbObat.getValueAt(tbObat.getSelectedRow(),
-                    31).toString());
-            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    7).toString());
+            Anamnesis.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Hubungan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            JumlahSaudara.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            KondisiKeluargaInti.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            HubunganOrangTerdekat.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            KekerasanYangDialami.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            TempatKejadian.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            LamaKekerasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            PeriodeKekerasan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            SeberapaSeringPenganiayaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            PemicuKekerasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            SiapaYangMelakukanKekerasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            DampakYangTerjadi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            TandaYangDidapatkan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 21).toString());
+            MemerlukanPendampingan.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 22).toString());
+            RiwayatKelainan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 23).toString());
+            PemeriksaanKepala.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 24).toString());
+            PemeriksaanThoraks.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 25).toString());
+            PemeriksaanLeher.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 26).toString());
+            PemeriksaanAbdomen.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 27).toString());
+            PemeriksaanGenitalia.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 28).toString());
+            PemeriksaanEkstrimitasAtas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 29).toString());
+            PemeriksaanEkstrimitasBawah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 30).toString());
+            PemeriksaanAnus.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 31).toString());
+            Valid.SetTgl2(TglAsuhan, tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
         }
     }
 
@@ -2186,11 +2121,8 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from penilaian_korban_kekerasan where no_rawat=?", 1,
-                new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from penilaian_korban_kekerasan where no_rawat=?", 1,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             LCount.setText("" + tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
@@ -2204,31 +2136,22 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
                 "no_rawat=?,tanggal=?,informasi=?,hubungan_dengan_pasien=?,jumlah_saudara=?,kondisi_keluaga=?,hubungan_orang_terdekat=?,kekerasan_yang_dialami=?,tempat_kejadian=?,lama_kekerasan=?,"
                 + "periode_kekerasan=?,seberapa_sering_mengalami=?,pemicu_kekerasan=?,yang_melakukan_kekerasan=?,dampak_kekerasan=?,tanda_tanda_didapatkan=?,memerlukan_pendampingan=?,riwayat_kelainan=?,pemeriksaan_kepala=?,pemeriksaan_thoraks=?,"
                 + "pemeriksaan_leher=?,pemeriksaan_abdomen=?,pemeriksaan_genitalia=?,pemeriksaan_ekstrimitas_atas=?,pemeriksaan_ekstrimitas_bawah=?,pemeriksaan_anus=?,nip=?",
-                28, new String[]{
-                    TNoRw.getText(), Valid.SetTgl(
-                    TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), Anamnesis.
-                    getSelectedItem().toString(),
-                    Hubungan.getText(), JumlahSaudara.getText(),
+                28,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19),
+                    Anamnesis.getSelectedItem().toString(), Hubungan.getText(), JumlahSaudara.getText(),
                     KondisiKeluargaInti.getSelectedItem().toString(),
-                    HubunganOrangTerdekat.getSelectedItem().toString(),
-                    KekerasanYangDialami.getText(),
+                    HubunganOrangTerdekat.getSelectedItem().toString(), KekerasanYangDialami.getText(),
                     TempatKejadian.getText(), LamaKekerasan.getText(),
-                    PeriodeKekerasan.getSelectedItem().toString(),
-                    SeberapaSeringPenganiayaan.getText(), PemicuKekerasan.
-                    getText(),
-                    SiapaYangMelakukanKekerasan.getText(), DampakYangTerjadi.
-                    getText(), TandaYangDidapatkan.getText(),
-                    MemerlukanPendampingan.getSelectedItem().toString(),
-                    RiwayatKelainan.getText(),
-                    PemeriksaanKepala.getText(), PemeriksaanThoraks.getText(),
-                    PemeriksaanLeher.getText(), PemeriksaanAbdomen.getText(),
-                    PemeriksaanGenitalia.getText(),
-                    PemeriksaanEkstrimitasAtas.getText(),
-                    PemeriksaanEkstrimitasBawah.getText(), PemeriksaanAnus.
-                    getText(), KdDokter.getText(), tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 0).toString()
-                }) == true) {
+                    PeriodeKekerasan.getSelectedItem().toString(), SeberapaSeringPenganiayaan.getText(),
+                    PemicuKekerasan.getText(), SiapaYangMelakukanKekerasan.getText(), DampakYangTerjadi.getText(),
+                    TandaYangDidapatkan.getText(), MemerlukanPendampingan.getSelectedItem().toString(),
+                    RiwayatKelainan.getText(), PemeriksaanKepala.getText(), PemeriksaanThoraks.getText(),
+                    PemeriksaanLeher.getText(), PemeriksaanAbdomen.getText(), PemeriksaanGenitalia.getText(),
+                    PemeriksaanEkstrimitasAtas.getText(), PemeriksaanEkstrimitasBawah.getText(),
+                    PemeriksaanAnus.getText(), KdDokter.getText(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
@@ -2236,66 +2159,37 @@ public class RMPenilaianKorbanKekerasan extends javax.swing.JDialog {
             tbObat.setValueAt(Jk.getText(), tbObat.getSelectedRow(), 4);
             tbObat.setValueAt(KdDokter.getText(), tbObat.getSelectedRow(), 5);
             tbObat.setValueAt(NmDokter.getText(), tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(
-                    Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " " + TglAsuhan.
-                    getSelectedItem().toString().substring(11, 19), tbObat.
-                    getSelectedRow(), 7);
-            tbObat.setValueAt(Anamnesis.getSelectedItem().toString(), tbObat.
-                    getSelectedRow(), 8);
+            tbObat.setValueAt(Valid.SetTgl(TglAsuhan.getSelectedItem() + "") + " "
+                    + TglAsuhan.getSelectedItem().toString().substring(11, 19), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(Anamnesis.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
             tbObat.setValueAt(Hubungan.getText(), tbObat.getSelectedRow(), 9);
-            tbObat.setValueAt(JumlahSaudara.getText(), tbObat.getSelectedRow(),
-                    10);
-            tbObat.setValueAt(KondisiKeluargaInti.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 11);
-            tbObat.
-                    setValueAt(HubunganOrangTerdekat.getSelectedItem().
-                            toString(), tbObat.getSelectedRow(), 12);
-            tbObat.setValueAt(KekerasanYangDialami.getText(), tbObat.
-                    getSelectedRow(), 13);
-            tbObat.setValueAt(TempatKejadian.getText(), tbObat.getSelectedRow(),
-                    14);
-            tbObat.setValueAt(LamaKekerasan.getText(), tbObat.getSelectedRow(),
-                    15);
-            tbObat.setValueAt(PeriodeKekerasan.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 16);
-            tbObat.setValueAt(SeberapaSeringPenganiayaan.getText(), tbObat.
-                    getSelectedRow(), 17);
-            tbObat.
-                    setValueAt(PemicuKekerasan.getText(), tbObat.
-                            getSelectedRow(), 18);
-            tbObat.setValueAt(SiapaYangMelakukanKekerasan.getText(), tbObat.
-                    getSelectedRow(), 19);
-            tbObat.setValueAt(DampakYangTerjadi.getText(), tbObat.
-                    getSelectedRow(), 20);
-            tbObat.setValueAt(TandaYangDidapatkan.getText(), tbObat.
-                    getSelectedRow(), 21);
-            tbObat.setValueAt(MemerlukanPendampingan.getSelectedItem().
-                    toString(), tbObat.getSelectedRow(), 22);
-            tbObat.
-                    setValueAt(RiwayatKelainan.getText(), tbObat.
-                            getSelectedRow(), 23);
-            tbObat.setValueAt(PemeriksaanKepala.getText(), tbObat.
-                    getSelectedRow(), 24);
-            tbObat.setValueAt(PemeriksaanThoraks.getText(), tbObat.
-                    getSelectedRow(), 25);
-            tbObat.setValueAt(PemeriksaanLeher.getText(), tbObat.
-                    getSelectedRow(), 26);
-            tbObat.setValueAt(PemeriksaanAbdomen.getText(), tbObat.
-                    getSelectedRow(), 27);
-            tbObat.setValueAt(PemeriksaanGenitalia.getText(), tbObat.
-                    getSelectedRow(), 28);
-            tbObat.setValueAt(PemeriksaanEkstrimitasAtas.getText(), tbObat.
-                    getSelectedRow(), 29);
-            tbObat.setValueAt(PemeriksaanEkstrimitasBawah.getText(), tbObat.
-                    getSelectedRow(), 30);
-            tbObat.
-                    setValueAt(PemeriksaanAnus.getText(), tbObat.
-                            getSelectedRow(), 31);
+            tbObat.setValueAt(JumlahSaudara.getText(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(KondisiKeluargaInti.getSelectedItem().toString(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(HubunganOrangTerdekat.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(KekerasanYangDialami.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(TempatKejadian.getText(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(LamaKekerasan.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(PeriodeKekerasan.getSelectedItem().toString(), tbObat.getSelectedRow(), 16);
+            tbObat.setValueAt(SeberapaSeringPenganiayaan.getText(), tbObat.getSelectedRow(), 17);
+            tbObat.setValueAt(PemicuKekerasan.getText(), tbObat.getSelectedRow(), 18);
+            tbObat.setValueAt(SiapaYangMelakukanKekerasan.getText(), tbObat.getSelectedRow(), 19);
+            tbObat.setValueAt(DampakYangTerjadi.getText(), tbObat.getSelectedRow(), 20);
+            tbObat.setValueAt(TandaYangDidapatkan.getText(), tbObat.getSelectedRow(), 21);
+            tbObat.setValueAt(MemerlukanPendampingan.getSelectedItem().toString(), tbObat.getSelectedRow(), 22);
+            tbObat.setValueAt(RiwayatKelainan.getText(), tbObat.getSelectedRow(), 23);
+            tbObat.setValueAt(PemeriksaanKepala.getText(), tbObat.getSelectedRow(), 24);
+            tbObat.setValueAt(PemeriksaanThoraks.getText(), tbObat.getSelectedRow(), 25);
+            tbObat.setValueAt(PemeriksaanLeher.getText(), tbObat.getSelectedRow(), 26);
+            tbObat.setValueAt(PemeriksaanAbdomen.getText(), tbObat.getSelectedRow(), 27);
+            tbObat.setValueAt(PemeriksaanGenitalia.getText(), tbObat.getSelectedRow(), 28);
+            tbObat.setValueAt(PemeriksaanEkstrimitasAtas.getText(), tbObat.getSelectedRow(), 29);
+            tbObat.setValueAt(PemeriksaanEkstrimitasBawah.getText(), tbObat.getSelectedRow(), 30);
+            tbObat.setValueAt(PemeriksaanAnus.getText(), tbObat.getSelectedRow(), 31);
             emptTeks();
             TabRawat.setSelectedIndex(1);
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMPenilaianKorbanKekerasan.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMPenilaianKorbanKekerasan.class.getName());
+
 }

@@ -30,8 +30,11 @@ import keuangan.Jurnal;
 public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
 
     /**
@@ -48,13 +51,21 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
      *
      */
     public DlgBarang barang = new DlgBarang(null, false);
+
     private PreparedStatement ps, ps2, pscaribeli, psdetailhibah_obat_bhp;
+
     private ResultSet rs, rs2;
+
     private double tagihan = 0;
+
     private Jurnal jur = new Jurnal();
+
     private riwayatobat Trackobat = new riwayatobat();
+
     private String aktifkanbatch = "no";
+
     private boolean sukses = true;
+
     private int i = 0;
 
     /**
@@ -74,10 +85,8 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
             aktifkanbatch = "no";
         }
 
-        Object[] row = {"Tgl.Hibah", "No.Hibah", "Asal Hibah", "Petugas",
-            "Barang",
-            "Satuan", "Jml", "Nilai Hibah(Rp)", "Subttl Hibah(Rp)",
-            "Nilai Diakui(Rp)", "Subttl Diakui(Rp)"};
+        Object[] row = {"Tgl.Hibah", "No.Hibah", "Asal Hibah", "Petugas", "Barang", "Satuan", "Jml", "Nilai Hibah(Rp)",
+            "Subttl Hibah(Rp)", "Nilai Diakui(Rp)", "Subttl Diakui(Rp)"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -138,10 +147,8 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("CariHibahObatBHP")) {
                     if (suplier.getTable().getSelectedRow() != -1) {
-                        kdsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmsup.setText(suplier.getTable().getValueAt(suplier.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                        nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsup.requestFocus();
                 }
@@ -198,10 +205,8 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("CariHibahObatBHP")) {
                     if (petugas.getTable().getSelectedRow() != -1) {
-                        kdptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmptg.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        nmptg.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                     }
                     kdptg.requestFocus();
                 }
@@ -238,10 +243,8 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("CariHibahObatBHP")) {
                     if (barang.getTable().getSelectedRow() != -1) {
-                        kdbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 1).toString());
-                        nmbar.setText(barang.getTable().getValueAt(barang.
-                                getTable().getSelectedRow(), 2).toString());
+                        kdbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 1).toString());
+                        nmbar.setText(barang.getTable().getValueAt(barang.getTable().getSelectedRow(), 2).toString());
                     }
                     kdbar.requestFocus();
                 }
@@ -298,12 +301,12 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("CariHibahObatBHP")) {
                     if (barang.jenis.getTable().getSelectedRow() != -1) {
-                        kdsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 0).
-                                toString());
-                        nmsat.setText(barang.jenis.getTable().getValueAt(
-                                barang.jenis.getTable().getSelectedRow(), 1).
-                                toString());
+                        kdsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 0)
+                                .toString());
+                        nmsat.setText(barang.jenis.getTable()
+                                .getValueAt(barang.jenis.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     kdsat.requestFocus();
                 }
@@ -340,12 +343,12 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("CariHibahObatBHP")) {
                     if (barang.industri.getTable().getSelectedRow() != -1) {
-                        KdIF.setText(barang.industri.getTable().getValueAt(
-                                barang.industri.getTable().getSelectedRow(), 0).
-                                toString());
-                        NmIF.setText(barang.industri.getTable().getValueAt(
-                                barang.industri.getTable().getSelectedRow(), 1).
-                                toString());
+                        KdIF.setText(barang.industri.getTable()
+                                .getValueAt(barang.industri.getTable().getSelectedRow(), 0)
+                                .toString());
+                        NmIF.setText(barang.industri.getTable()
+                                .getValueAt(barang.industri.getTable().getSelectedRow(), 1)
+                                .toString());
                     }
                     KdIF.requestFocus();
                 }
@@ -390,8 +393,7 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
         });
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -419,7 +421,9 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -887,13 +891,12 @@ public class InventoryCariHibahObatBHP extends javax.swing.JDialog {
         }
 }//GEN-LAST:event_BtnKeluarKeyPressed
     /*
-private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKeyPressed
-    Valid.pindah(evt,BtnCari,Nm);
-}//GEN-LAST:event_TKdKeyPressed
-*/
-
-    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuplierActionPerformed
-        akses.setform("CariHibahObatBHP");
+ * private void KdKeyPressed(java.awt.event.KeyEvent evt) { Valid.pindah(evt,BtnCari,Nm);
+ * }
+     */
+//GEN-FIRST:event_TKdKeyPressed
+    private void btnSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-LAST:event_TKdKeyPressed
+        akses.setform("CariHibahObatBHP");//GEN-FIRST:event_btnSuplierActionPerformed
         suplier.emptTeks();
         suplier.isCek();
         suplier.setSize(internalFrame1.getWidth() - 20, internalFrame1.
@@ -1327,8 +1330,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InventoryCariHibahObatBHP dialog = new InventoryCariHibahObatBHP(
-                    new javax.swing.JFrame(), true);
+            InventoryCariHibahObatBHP dialog = new InventoryCariHibahObatBHP(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1389,8 +1391,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try {
-            ps = koneksi.prepareStatement(
-                    "select hibah_obat_bhp.tgl_hibah,hibah_obat_bhp.no_hibah, "
+            ps = koneksi.prepareStatement("select hibah_obat_bhp.tgl_hibah,hibah_obat_bhp.no_hibah, "
                     + "hibah_obat_bhp.kode_pemberi,pemberihibah.nama_pemberi, "
                     + "hibah_obat_bhp.nip,petugas.nama,bangsal.nm_bangsal,hibah_obat_bhp.totalhibah,"
                     + "hibah_obat_bhp.totalnilai "
@@ -1528,16 +1529,11 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 rs = ps.executeQuery();
                 tagihan = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString("tgl_hibah"), rs.getString("no_hibah"), rs.
-                        getString("kode_pemberi") + ", " + rs.getString(
-                        "nama_pemberi"),
+                    tabMode.addRow(new Object[]{rs.getString("tgl_hibah"), rs.getString("no_hibah"),
+                        rs.getString("kode_pemberi") + ", " + rs.getString("nama_pemberi"),
                         rs.getString("nip") + ", " + rs.getString("nama"),
-                        "Pembelian di " + rs.getString("nm_bangsal") + " :", "",
-                        "", "", "", "", ""
-                    });
-                    ps2 = koneksi.prepareStatement(
-                            "select detailhibah_obat_bhp.kode_brng,databarang.nama_brng, "
+                        "Pembelian di " + rs.getString("nm_bangsal") + " :", "", "", "", "", "", ""});
+                    ps2 = koneksi.prepareStatement("select detailhibah_obat_bhp.kode_brng,databarang.nama_brng, "
                             + "detailhibah_obat_bhp.kode_sat,kodesatuan.satuan,detailhibah_obat_bhp.jumlah,detailhibah_obat_bhp.h_hibah, "
                             + "detailhibah_obat_bhp.subtotalhibah,detailhibah_obat_bhp.h_diakui,detailhibah_obat_bhp.subtotaldiakui,"
                             + "detailhibah_obat_bhp.no_batch,industrifarmasi.nama_industri,detailhibah_obat_bhp.kadaluarsa "
@@ -1584,25 +1580,19 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         rs2 = ps2.executeQuery();
                         int no = 1;
                         while (rs2.next()) {
-                            tabMode.addRow(new Object[]{"",
-                                no + ". Batch : " + rs2.getString("no_batch"),
-                                "Exp : " + rs2.getString("kadaluarsa"),
-                                "I.F. : " + rs2.getString("nama_industri"),
-                                rs2.getString("kode_brng") + ", " + rs2.
-                                getString("nama_brng"), rs2.getString("satuan"),
-                                rs2.getString("jumlah"), Valid.SetAngka(rs2.
-                                getDouble("h_hibah")),
+                            tabMode.addRow(new Object[]{"", no + ". Batch : " + rs2.getString("no_batch"),
+                                "Exp : " + rs2.getString("kadaluarsa"), "I.F. : " + rs2.getString("nama_industri"),
+                                rs2.getString("kode_brng") + ", " + rs2.getString("nama_brng"),
+                                rs2.getString("satuan"), rs2.getString("jumlah"),
+                                Valid.SetAngka(rs2.getDouble("h_hibah")),
                                 Valid.SetAngka(rs2.getDouble("subtotalhibah")),
                                 Valid.SetAngka(rs2.getDouble("h_diakui")),
                                 Valid.SetAngka(rs2.getDouble("subtotaldiakui"))});
                             no++;
                         }
-                        tabMode.addRow(
-                                new Object[]{"", "Total", ":", "", "", "",
-                                    "", "", Valid.SetAngka(rs.getDouble(
-                                            "totalhibah")), "", Valid.
-                                            SetAngka(rs.getDouble(
-                                                    "totalnilai"))});
+                        tabMode.addRow(new Object[]{"", "Total", ":", "", "", "", "", "",
+                            Valid.SetAngka(rs.getDouble("totalhibah")), "",
+                            Valid.SetAngka(rs.getDouble("totalnilai"))});
                         tagihan += rs.getDouble("totalnilai");
                     } catch (Exception e) {
                         System.out.println("Notifikasi : " + e);
@@ -1650,7 +1640,6 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InventoryCariHibahObatBHP.class.getName());
+    private static final Logger LOG = Logger.getLogger(InventoryCariHibahObatBHP.class.getName());
 
 }

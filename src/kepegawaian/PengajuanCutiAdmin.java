@@ -3,9 +3,9 @@
  */
 
  /*
- * DlgRujuk.java
- *
- * Created on 31 Mei 10, 20:19:56
+* DlgRujuk.java
+*
+* Created on 31 Mei 10, 20:19:56
  */
 package kepegawaian;
 
@@ -34,18 +34,24 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author perpustakaan
  */
 public class PengajuanCutiAdmin extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0, pilihan = 0;
+
     private double total = 0;
 
     /**
@@ -60,12 +66,10 @@ public class PengajuanCutiAdmin extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Pengajuan", "Tanggal", "Tgl Awal", "Tgl Akhir", "NIK",
-            "Diajukan Oleh", "Bidang", "Departemen", "Jenis Cuti",
-            "Alamat Tujuan",
-            "Jml Cuti", "Kepentingan Cuti", "NIK P.J.", "P.J. Terkait", "Status"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Pengajuan", "Tanggal", "Tgl Awal", "Tgl Akhir", "NIK", "Diajukan Oleh", "Bidang",
+                    "Departemen", "Jenis Cuti", "Alamat Tujuan", "Jml Cuti", "Kepentingan Cuti", "NIK P.J.",
+                    "P.J. Terkait", "Status"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -74,7 +78,8 @@ public class PengajuanCutiAdmin extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -120,8 +125,7 @@ public class PengajuanCutiAdmin extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         Jumlah.setDocument(new batasInput((byte) 3).getOnlyAngka(Jumlah));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -159,23 +163,20 @@ public class PengajuanCutiAdmin extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
                     if (pilihan == 1) {
-                        KdPetugas.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 0).toString());
-                        NmPetugas.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 1).toString());
-                        Bidang.setText(petugas.getTable().getValueAt(petugas.
-                                getTable().getSelectedRow(), 6).toString());
-                        Departemen.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 5).
-                                toString());
+                        KdPetugas
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        NmPetugas
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
+                        Bidang
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 6).toString());
+                        Departemen
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 5).toString());
                         btnPetugas.requestFocus();
                     } else if (pilihan == 2) {
-                        KdPetugasPJ.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 0).
-                                toString());
-                        NmPetugasPJ.setText(petugas.getTable().getValueAt(
-                                petugas.getTable().getSelectedRow(), 1).
-                                toString());
+                        KdPetugasPJ
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                        NmPetugasPJ
+                                .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                         btnPetugasPJ.requestFocus();
                     }
                 }
@@ -206,7 +207,9 @@ public class PengajuanCutiAdmin extends javax.swing.JDialog {
     private DlgCariPegawai petugas = new DlgCariPegawai(null, false);
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1204,8 +1207,7 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            PengajuanCutiAdmin dialog = new PengajuanCutiAdmin(
-                    new javax.swing.JFrame(), true);
+            PengajuanCutiAdmin dialog = new PengajuanCutiAdmin(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1313,82 +1315,53 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
             try {
                 if (TCari.getText().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(3, "%" + TCari.getText().trim() + "%");
-                    ps.setString(4, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(5, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(4, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(5, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(6, "%" + TCari.getText().trim() + "%");
-                    ps.setString(7, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + ""));
-                    ps.setString(8, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + ""));
+                    ps.setString(7, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(8, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(9, "%" + TCari.getText().trim() + "%");
-                    ps.setString(10, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(11, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(10, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(11, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(12, "%" + TCari.getText().trim() + "%");
-                    ps.setString(13, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(14, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(13, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(14, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(15, "%" + TCari.getText().trim() + "%");
-                    ps.setString(16, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(17, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(16, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(17, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(18, "%" + TCari.getText().trim() + "%");
-                    ps.setString(19, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(20, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(19, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(20, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(21, "%" + TCari.getText().trim() + "%");
-                    ps.setString(22, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(23, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(22, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(23, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(24, "%" + TCari.getText().trim() + "%");
-                    ps.setString(25, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(26, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(25, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(26, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(27, "%" + TCari.getText().trim() + "%");
-                    ps.setString(28, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(29, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(28, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(29, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(30, "%" + TCari.getText().trim() + "%");
-                    ps.setString(31, Valid.SetTgl(
-                            DTPCari1.getSelectedItem() + ""));
-                    ps.setString(32, Valid.SetTgl(
-                            DTPCari2.getSelectedItem() + ""));
+                    ps.setString(31, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                    ps.setString(32, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
                     ps.setString(33, "%" + TCari.getText().trim() + "%");
                 }
 
                 rs = ps.executeQuery();
                 total = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_pengajuan"), rs.getString("tanggal"),
-                        rs.getString("tanggal_awal"), rs.getString(
-                        "tanggal_akhir"),
-                        rs.getString("nik"), rs.getString("namapengaju"), rs.
-                        getString("bidang"), rs.getString("departemen"),
-                        rs.getString("urgensi"), rs.getString("alamat"), rs.
-                        getString("jumlah"), rs.getString("kepentingan"),
-                        rs.getString("nik_pj"), rs.getString("namapj"), rs.
-                        getString("status")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_pengajuan"), rs.getString("tanggal"),
+                        rs.getString("tanggal_awal"), rs.getString("tanggal_akhir"), rs.getString("nik"),
+                        rs.getString("namapengaju"), rs.getString("bidang"), rs.getString("departemen"),
+                        rs.getString("urgensi"), rs.getString("alamat"), rs.getString("jumlah"),
+                        rs.getString("kepentingan"), rs.getString("nik_pj"), rs.getString("namapj"),
+                        rs.getString("status")});
                     total += rs.getDouble("jumlah");
                 }
             } catch (Exception e) {
@@ -1425,34 +1398,20 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            NoPengajuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            Valid.SetTgl(Tgl1, tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            Valid.SetTgl(Tgl2, tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            KdPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            NmPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Bidang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
-            Departemen.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            Urgensi.setSelectedItem(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 8).toString());
-            Alamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            Jumlah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).
-                    toString());
-            Kepentingan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).
-                    toString());
-            KdPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).
-                    toString());
-            NmPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).
-                    toString());
+            NoPengajuan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            Valid.SetTgl(Tgl1, tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            Valid.SetTgl(Tgl2, tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            KdPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            NmPetugas.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Bidang.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            Departemen.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Urgensi.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            Alamat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            Jumlah.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            Kepentingan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            KdPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            NmPetugasPJ.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
         }
     }
 
@@ -1481,14 +1440,14 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_pengajuan,3),signed)),0) from pengajuan_cuti where tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "PC" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoPengajuan);
+                "select ifnull(MAX(CONVERT(RIGHT(no_pengajuan,3),signed)),0) from pengajuan_cuti where tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "PC" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoPengajuan);
     }
 
-    private static final Logger LOG = Logger.getLogger(PengajuanCutiAdmin.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(PengajuanCutiAdmin.class.getName());
 
 }

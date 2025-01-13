@@ -53,67 +53,78 @@ import org.springframework.web.client.RestTemplate;
 import simrskhanza.DlgPasien;
 
 /**
- *
  * @author dosen
  */
 public class DlgPengingatVaksin extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps3;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgPasien pasien = new DlgPasien(null, false);
+
     private String status = "", nohp = "", requestJson, URL = "";
+
     private StringBuilder htmlContent;
+
     private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
+
     private SSLContext sslContext;
+
     private SSLSocketFactory sslFactory;
+
     private SecretKeySpec secretKey;
+
     private Scheme scheme;
+
     private HttpComponentsClientHttpRequestFactory factory;
 
     /**
-     *
      * @return @throws NoSuchAlgorithmException
      * @throws KeyManagementException
      */
-    public RestTemplate getRest() throws NoSuchAlgorithmException,
-            KeyManagementException {
+    public RestTemplate getRest() throws NoSuchAlgorithmException, KeyManagementException {
         sslContext = SSLContext.getInstance("SSL");
-        TrustManager[] trustManagers = {
-            new X509TrustManager() {
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] arg0,
-                        String arg1) throws CertificateException {
-                }
-
-                @Override
-                public void checkClientTrusted(X509Certificate[] arg0,
-                        String arg1) throws CertificateException {
-                }
-
+        TrustManager[] trustManagers = {new X509TrustManager() {
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
             }
-        };
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+            }
+
+            @Override
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+            }
+
+        }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         scheme = new Scheme("https", 443, sslFactory);
         factory = new HttpComponentsClientHttpRequestFactory();
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         return new RestTemplate(factory);
     }
 
@@ -127,19 +138,11 @@ public class DlgPengingatVaksin extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "P", "Tgl.Input", "Jam Input", "No.RM", "Nama Pasien", "Tgl.Vaksin",
-            "Nama PJ", "Vaksin", "Catatan", "No.Telp/HP", "Status Kirim WA"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+        tabMode = new DefaultTableModel(null, new Object[]{"P", "Tgl.Input", "Jam Input", "No.RM", "Nama Pasien",
+            "Tgl.Vaksin", "Nama PJ", "Vaksin", "Catatan", "No.Telp/HP", "Status Kirim WA"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -158,7 +161,8 @@ public class DlgPengingatVaksin extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -193,8 +197,7 @@ public class DlgPengingatVaksin extends javax.swing.JDialog {
         TNoRM.setDocument(new batasInput((byte) 17).getKata(TNoRM));
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -234,22 +237,16 @@ public class DlgPengingatVaksin extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pasien.getTable().getSelectedRow() != -1) {
-                    TNoRM.setText(pasien.getTable().getValueAt(
-                            pasien.getTable().getSelectedRow(), 1).toString());
-                    TPasien.setText(pasien.getTable().getValueAt(pasien.
-                            getTable().getSelectedRow(), 2).toString());
+                    TNoRM.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 1).toString());
+                    TPasien.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 2).toString());
                 }
                 if (pasien.getTable2().getSelectedRow() != -1) {
-                    TNoRM.setText(pasien.getTable2().getValueAt(pasien.
-                            getTable2().getSelectedRow(), 1).toString());
-                    TPasien.setText(pasien.getTable2().getValueAt(pasien.
-                            getTable2().getSelectedRow(), 2).toString());
+                    TNoRM.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 1).toString());
+                    TPasien.setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 2).toString());
                 }
                 if (pasien.getTable3().getSelectedRow() != -1) {
-                    TNoRM.setText(pasien.getTable3().getValueAt(pasien.
-                            getTable3().getSelectedRow(), 1).toString());
-                    TPasien.setText(pasien.getTable3().getValueAt(pasien.
-                            getTable3().getSelectedRow(), 2).toString());
+                    TNoRM.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 1).toString());
+                    TPasien.setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 2).toString());
                 }
                 TNoRM.requestFocus();
             }
@@ -349,7 +346,9 @@ public class DlgPengingatVaksin extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1380,8 +1379,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgPengingatVaksin dialog = new DlgPengingatVaksin(
-                    new javax.swing.JFrame(), true);
+            DlgPengingatVaksin dialog = new DlgPengingatVaksin(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1446,43 +1444,35 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void tampil() {
         if (R2.isSelected() == true) {
-            status = " penjadwalan_vaksin.tanggal_booking between '" + Valid.
-                    SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.
-                    SetTgl(DTPCari2.getSelectedItem() + "") + "' ";
+            status = " penjadwalan_vaksin.tanggal_booking between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "")
+                    + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' ";
         } else if (R3.isSelected() == true) {
-            status = " penjadwalan_vaksin.tanggal_periksa between '" + Valid.
-                    SetTgl(DTPCari3.getSelectedItem() + "") + "' and '" + Valid.
-                    SetTgl(DTPCari4.getSelectedItem() + "") + "' ";
+            status = " penjadwalan_vaksin.tanggal_periksa between '" + Valid.SetTgl(DTPCari3.getSelectedItem() + "")
+                    + "' and '" + Valid.SetTgl(DTPCari4.getSelectedItem() + "") + "' ";
         }
         Valid.tabelKosong(tabMode);
         try {
             ps = koneksi.prepareStatement(
                     "select penjadwalan_vaksin.tanggal_booking,penjadwalan_vaksin.jam_booking,penjadwalan_vaksin.no_rkm_medis, "
-                    + "pasien.nm_pasien,penjadwalan_vaksin.tanggal_periksa,"
-                    + "penjadwalan_vaksin.jns_vaksin, "
+                    + "pasien.nm_pasien,penjadwalan_vaksin.tanggal_periksa," + "penjadwalan_vaksin.jns_vaksin, "
                     + "pasien.namakeluarga,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamatpj,pasien.kelurahanpj,pasien.kecamatanpj,pasien.no_tlp,"
                     + "pasien.kabupatenpj,pasien.propinsipj,pasien.keluarga, "
                     + "penjadwalan_vaksin.catatan,penjadwalan_vaksin.status_kirim_wa "
                     + "from penjadwalan_vaksin inner join pasien on penjadwalan_vaksin.no_rkm_medis=pasien.no_rkm_medis "
                     + "inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "
                     + "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec "
-                    + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab "
-                    + "where " + status + " and penjadwalan_vaksin.no_rkm_medis like ? or "
-                    + status + " and pasien.nm_pasien like ? order by penjadwalan_vaksin.tanggal_booking");
+                    + "inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab " + "where " + status
+                    + " and penjadwalan_vaksin.no_rkm_medis like ? or " + status
+                    + " and pasien.nm_pasien like ? order by penjadwalan_vaksin.tanggal_booking");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("tanggal_booking"), rs.getString(
-                        "jam_booking"), rs.getString("no_rkm_medis"), rs.
-                        getString("nm_pasien"),
-                        rs.getString("tanggal_periksa"), rs.getString(
-                        "namakeluarga"), rs.getString("jns_vaksin"), rs.
-                        getString("catatan"),
-                        rs.getString("no_tlp"), rs.getString("status_kirim_wa")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("tanggal_booking"), rs.getString("jam_booking"),
+                        rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), rs.getString("tanggal_periksa"),
+                        rs.getString("namakeluarga"), rs.getString("jns_vaksin"), rs.getString("catatan"),
+                        rs.getString("no_tlp"), rs.getString("status_kirim_wa")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1510,23 +1500,16 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            Valid.SetTgl(TanggalBooking, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 1).toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).
-                    toString());
-            Valid.SetTgl(TanggalPeriksa, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 5).toString());
-            JnsVaksin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).
-                    toString());
+            Valid.SetTgl(TanggalBooking, tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Valid.SetTgl(TanggalPeriksa, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            JnsVaksin.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
         }
     }
 
     /**
-     *
      * @param norm
      * @param nama
      */
@@ -1540,7 +1523,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @param norm
      * @param nama
      * @param kodepoli
@@ -1548,8 +1530,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      * @param kodedokter
      * @param namadokter
      */
-    public void setNoRm(String norm, String nama, String kodepoli,
-            String namapoli, String kodedokter, String namadokter) {
+    public void setNoRm(String norm, String nama, String kodepoli, String namapoli, String kodedokter,
+            String namadokter) {
         TNoRM.setText(norm);
         TPasien.setText(nama);
         TCari.setText(norm);
@@ -1606,16 +1588,13 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private void isBooking() {
-        if (Sequel.menyimpantf("penjadwalan_vaksin", "?,?,?,?,?,?,?,?",
-                "Pasien dan Tanggal", 8, new String[]{
-                    Valid.SetTgl(TanggalBooking.getSelectedItem() + ""),
-                    TanggalBooking.getSelectedItem().toString().
-                            substring(11, 19), TNoRM.getText(),
+        if (Sequel.menyimpantf("penjadwalan_vaksin", "?,?,?,?,?,?,?,?", "Pasien dan Tanggal", 8,
+                new String[]{Valid.SetTgl(TanggalBooking.getSelectedItem() + ""),
+                    TanggalBooking.getSelectedItem().toString().substring(11, 19), TNoRM.getText(),
                     Valid.SetTgl(TanggalPeriksa.getSelectedItem() + ""),
-                    Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + " " + TanggalBooking.
-                    getSelectedItem().toString().substring(11, 19),
-                    JnsVaksin.getText(), Catatan.getText(), "Belum"
-                }) == true) {
+                    Valid.SetTgl(TanggalPeriksa.getSelectedItem() + "") + " "
+                    + TanggalBooking.getSelectedItem().toString().substring(11, 19),
+                    JnsVaksin.getText(), Catatan.getText(), "Belum"}) == true) {
             emptTeks();
             tampil();
         }
@@ -1623,8 +1602,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void isCekPasien() {
         try {
-            ps3 = koneksi.prepareStatement(
-                    "select pasien.nm_pasien from pasien where pasien.no_rkm_medis=?");
+            ps3 = koneksi.prepareStatement("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=?");
             try {
                 ps3.setString(1, TNoRM.getText());
                 rs = ps3.executeQuery();
@@ -1639,6 +1617,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgPengingatVaksin.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgPengingatVaksin.class.getName());
+
 }

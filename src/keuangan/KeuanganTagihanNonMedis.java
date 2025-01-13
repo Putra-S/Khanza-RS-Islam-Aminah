@@ -28,23 +28,34 @@ import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private IPSRSCariSuplier suplier = new IPSRSCariSuplier(null, false);
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private int row = 0, i = 0;
+
     private String tanggaldatang = "", tanggaltempo = "";
+
     private double sisahutang = 0, cicilan = 0, bayar = 0;
+
     private WarnaTable3 warna = new WarnaTable3();
+
     private boolean sukses = true;
 
     /**
@@ -59,21 +70,12 @@ public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
         this.setLocation(8, 1);
         setSize(885, 674);
 
-        Object[] rowRwJlDr = {
-            "P", "No.Faktur", "No.Order", "Supplier", "Petugas Penerima",
-            "Tgl.Faktur", "Tgl.Datang", "Tgl.Tempo", "Tagihan",
-            "Sisa Hutang"
-        };
+        Object[] rowRwJlDr = {"P", "No.Faktur", "No.Order", "Supplier", "Petugas Penerima", "Tgl.Faktur", "Tgl.Datang",
+            "Tgl.Tempo", "Tagihan", "Sisa Hutang"};
         tabMode = new DefaultTableModel(null, rowRwJlDr) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class,
-                java.lang.Double.class
-            };
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Double.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -91,7 +93,8 @@ public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
 
         };
         tbBangsal.setModel(tabMode);
-        //tbBangsal.setDefaultRenderer(Object.class, new WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
+        // tbBangsal.setDefaultRenderer(Object.class, new
+        // WarnaTable(jPanel2.getBackground(),tbBangsal.getBackground()));
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -125,8 +128,7 @@ public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
         Keterangan.setDocument(new batasInput(150).getKata(Keterangan));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -163,10 +165,8 @@ public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (suplier.getTable().getSelectedRow() != -1) {
-                    kdsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 0).toString());
-                    nmsup.setText(suplier.getTable().getValueAt(suplier.
-                            getTable().getSelectedRow(), 1).toString());
+                    kdsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 0).toString());
+                    nmsup.setText(suplier.getTable().getValueAt(suplier.getTable().getSelectedRow(), 1).toString());
                     tampil();
                 }
                 kdsup.requestFocus();
@@ -221,10 +221,9 @@ public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    nip.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    nama_petugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    nip.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    nama_petugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 nip.requestFocus();
             }
@@ -262,8 +261,7 @@ public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
                 + ".isi6 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#FF0000;}"
                 + ".isi7 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#C8C800;}"
                 + ".isi8 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#00AA00;}"
-                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}"
-        );
+                + ".isi9 td{font: 8.5px tahoma;border:none;height:12px;background: #ffffff;color:#969696;}");
 
         Document doc = kit.createDefaultDocument();
         LoadHTML.setDocument(doc);
@@ -271,7 +269,9 @@ public class KeuanganTagihanNonMedis extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1075,8 +1075,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            KeuanganTagihanNonMedis dialog = new KeuanganTagihanNonMedis(
-                    new javax.swing.JFrame(), true);
+            KeuanganTagihanNonMedis dialog = new KeuanganTagihanNonMedis(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1151,25 +1150,25 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             tanggaldatang = "";
             tanggaltempo = "";
             if (ChkTanggalDatang.isSelected() == true) {
-                tanggaldatang = " ipsrspemesanan.tgl_pesan between '" + Valid.
-                        SetTgl(TglDatang1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(TglDatang2.getSelectedItem() + "") + "' and ";
+                tanggaldatang = " ipsrspemesanan.tgl_pesan between '" + Valid.SetTgl(TglDatang1.getSelectedItem() + "")
+                        + "' and '" + Valid.SetTgl(TglDatang2.getSelectedItem() + "") + "' and ";
             }
             if (ChkTanggalTempo.isSelected() == true) {
-                tanggaltempo = " ipsrspemesanan.tgl_tempo between '" + Valid.
-                        SetTgl(TglTempo1.getSelectedItem() + "") + "' and '" + Valid.
-                        SetTgl(TglTempo2.getSelectedItem() + "") + "' and ";
+                tanggaltempo = " ipsrspemesanan.tgl_tempo between '" + Valid.SetTgl(TglTempo1.getSelectedItem() + "")
+                        + "' and '" + Valid.SetTgl(TglTempo2.getSelectedItem() + "") + "' and ";
             }
-            ps = koneksi.prepareStatement(
-                    "select ipsrspemesanan.no_faktur,ipsrspemesanan.no_order,ipsrssuplier.nama_suplier, "
-                    + "petugas.nama,ipsrspemesanan.tgl_tempo,ipsrspemesanan.tgl_pesan,ipsrspemesanan.tgl_faktur,ipsrspemesanan.tagihan,"
-                    + "(SELECT ifnull(SUM(besar_bayar),0) FROM bayar_pemesanan_non_medis where bayar_pemesanan_non_medis.no_faktur=ipsrspemesanan.no_faktur) as bayar, "
-                    + "ipsrssuplier.nama_bank,ipsrssuplier.rekening from ipsrspemesanan inner join ipsrssuplier inner join petugas "
-                    + "on ipsrspemesanan.kode_suplier=ipsrssuplier.kode_suplier "
-                    + "and ipsrspemesanan.nip=petugas.nip where "
-                    + tanggaldatang + tanggaltempo + "(ipsrspemesanan.status='Belum Dibayar' or ipsrspemesanan.status='Belum Lunas') and ipsrssuplier.nama_suplier like ? "
-                    + (TCari.getText().trim().isEmpty() ? "" : "and (ipsrspemesanan.no_faktur like ? or ipsrspemesanan.no_order like ? or ipsrspemesanan.tgl_tempo like ? or "
-                    + "ipsrssuplier.nama_suplier like ? or petugas.nama like ?)") + " order by ipsrspemesanan.tgl_tempo ");
+            ps = koneksi
+                    .prepareStatement("select ipsrspemesanan.no_faktur,ipsrspemesanan.no_order,ipsrssuplier.nama_suplier, "
+                            + "petugas.nama,ipsrspemesanan.tgl_tempo,ipsrspemesanan.tgl_pesan,ipsrspemesanan.tgl_faktur,ipsrspemesanan.tagihan,"
+                            + "(SELECT ifnull(SUM(besar_bayar),0) FROM bayar_pemesanan_non_medis where bayar_pemesanan_non_medis.no_faktur=ipsrspemesanan.no_faktur) as bayar, "
+                            + "ipsrssuplier.nama_bank,ipsrssuplier.rekening from ipsrspemesanan inner join ipsrssuplier inner join petugas "
+                            + "on ipsrspemesanan.kode_suplier=ipsrssuplier.kode_suplier "
+                            + "and ipsrspemesanan.nip=petugas.nip where " + tanggaldatang + tanggaltempo
+                            + "(ipsrspemesanan.status='Belum Dibayar' or ipsrspemesanan.status='Belum Lunas') and ipsrssuplier.nama_suplier like ? "
+                            + (TCari.getText().trim().isEmpty() ? ""
+                            : "and (ipsrspemesanan.no_faktur like ? or ipsrspemesanan.no_order like ? or ipsrspemesanan.tgl_tempo like ? or "
+                            + "ipsrssuplier.nama_suplier like ? or petugas.nama like ?)")
+                            + " order by ipsrspemesanan.tgl_tempo ");
             try {
                 ps.setString(1, "%" + nmsup.getText().trim() + "%");
                 if (!TCari.getText().trim().isEmpty()) {
@@ -1183,15 +1182,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 sisahutang = 0;
                 cicilan = 0;
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("no_faktur"), rs.getString(
-                        "no_order"),
-                        rs.getString("nama_suplier"), rs.getString("nama"), rs.
-                        getString("tgl_faktur"),
-                        rs.getString("tgl_pesan"), rs.getString("tgl_tempo"),
-                        rs.getDouble("tagihan"), (rs.getDouble("tagihan") - rs.
-                        getDouble("bayar"))
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("no_faktur"), rs.getString("no_order"),
+                        rs.getString("nama_suplier"), rs.getString("nama"), rs.getString("tgl_faktur"),
+                        rs.getString("tgl_pesan"), rs.getString("tgl_tempo"), rs.getDouble("tagihan"),
+                        (rs.getDouble("tagihan") - rs.getDouble("bayar"))});
                     sisahutang += rs.getDouble("tagihan");
                     cicilan += rs.getDouble("bayar");
                 }
@@ -1216,8 +1210,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         bayar = 0;
         for (i = 0; i < row; i++) {
             if (tbBangsal.getValueAt(i, 0).toString().equals("true")) {
-                bayar += Double.parseDouble(tbBangsal.getValueAt(i, 9).
-                        toString());
+                bayar += Double.parseDouble(tbBangsal.getValueAt(i, 9).toString());
             }
         }
         LCount1.setText(Valid.SetAngka(bayar));
@@ -1226,8 +1219,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private void isPhoto() {
         if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(
-                    internalFrame1.getWidth() - 300, HEIGHT));
+            PanelAccor.setPreferredSize(new Dimension(internalFrame1.getWidth() - 300, HEIGHT));
             FormPhoto.setVisible(true);
             ChkAccor.setVisible(true);
         } else if (ChkAccor.isSelected() == false) {
@@ -1241,26 +1233,20 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private void panggilPhoto() {
         if (FormPhoto.isVisible() == true) {
             try {
-                ps = koneksi.prepareStatement(
-                        "select photo from bukti_pemesanan_logistik where no_faktur=?");
+                ps = koneksi.prepareStatement("select photo from bukti_pemesanan_logistik where no_faktur=?");
                 try {
-                    ps.setString(1, tbBangsal.getValueAt(tbBangsal.
-                            getSelectedRow(), 1).toString());
+                    ps.setString(1, tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 1).toString());
                     rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getString("photo").isEmpty() || rs.getString(
-                                "photo").equals("-")) {
+                        if (rs.getString("photo").isEmpty() || rs.getString("photo").equals("-")) {
                             LoadHTML.setText(
                                     "<html><body><center><br><br><font face='tahoma' size='2' color='#434343'>Kosong</font></center></body></html>");
                         } else {
-                            LoadHTML.setText(
-                                    "<html><body><center><img src='http://" + koneksiDB.
-                                            HOSTHYBRIDWEB() + ":" + koneksiDB.
-                                            PORTWEB() + "/" + koneksiDB.
-                                            HYBRIDWEB() + "/penerimaanlogistik/" + rs.
-                                            getString("photo") + "' alt='photo' width='" + (internalFrame1.
-                                    getWidth() - 340) + "' height='" + (internalFrame1.
-                                            getHeight() - 275) + "'/></center></body></html>");
+                            LoadHTML.setText("<html><body><center><img src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":"
+                                    + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/penerimaanlogistik/"
+                                    + rs.getString("photo") + "' alt='photo' width='"
+                                    + (internalFrame1.getWidth() - 340) + "' height='"
+                                    + (internalFrame1.getHeight() - 275) + "'/></center></body></html>");
                         }
                     } else {
                         LoadHTML.setText(
@@ -1284,11 +1270,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
 
     private void autoNomor() {
         Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(RIGHT(no_tagihan,3),signed)),0) from ipsrs_titip_faktur where tanggal='" + Valid.
-                        SetTgl(Tanggal.getSelectedItem() + "") + "' ",
-                "TN" + Tanggal.getSelectedItem().toString().substring(6, 10) + Tanggal.
-                getSelectedItem().toString().substring(3, 5) + Tanggal.
-                getSelectedItem().toString().substring(0, 2), 3, NoTagihan);
+                "select ifnull(MAX(CONVERT(RIGHT(no_tagihan,3),signed)),0) from ipsrs_titip_faktur where tanggal='"
+                + Valid.SetTgl(Tanggal.getSelectedItem() + "") + "' ",
+                "TN" + Tanggal.getSelectedItem().toString().substring(6, 10)
+                + Tanggal.getSelectedItem().toString().substring(3, 5)
+                + Tanggal.getSelectedItem().toString().substring(0, 2),
+                3, NoTagihan);
     }
 
     /**
@@ -1306,6 +1293,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            KeuanganTagihanNonMedis.class.getName());
+    private static final Logger LOG = Logger.getLogger(KeuanganTagihanNonMedis.class.getName());
+
 }

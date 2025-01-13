@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package keuangan;
 
@@ -44,29 +44,46 @@ import javax.swing.table.TableColumn;
 import simrskhanza.DlgCariPasien;
 
 /**
- *
  * @author dosen
  */
 public class DlgBayarPiutang extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Jurnal jur = new Jurnal();
+
     private Connection koneksi = koneksiDB.condb();
+
     private DlgCariPasien pasien = new DlgCariPasien(null, false);
+
     private double cicilan = 0, sisapiutang = 0, diskon = 0, tidakterbayar = 0;
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private String koderekening = "", kontraakun = "", status = "", Diskon_Piutang = "", Piutang_Tidak_Terbayar = "";
+
     private boolean sukses = true;
+
     private File file;
+
     private FileWriter fileWriter;
+
     private String iyem;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode response;
+
     private FileReader myObj;
+
     private int i = 0;
 
     /**
@@ -81,24 +98,19 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(628, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "Tgl.Bayar", "No.RM", "Pasien", "Cicilan(Rp)", "Keterangan",
-            "No.Tagihan", "Kode Akun", "Kontra AKun",
-            "Diskon(Rp)", "Kode Akun Diskon", "Tidak Terbayar(Rp)",
-            "Kode Akun Tidak Terbayar"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"Tgl.Bayar", "No.RM", "Pasien", "Cicilan(Rp)", "Keterangan", "No.Tagihan", "Kode Akun",
+                    "Kontra AKun", "Diskon(Rp)", "Kode Akun Diskon", "Tidak Terbayar(Rp)",
+                    "Kode Akun Tidak Terbayar"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
 
-            Class[] types = new Class[]{
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Double.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Object.class,
-                java.lang.Double.class, java.lang.Object.class,};
+            Class[] types = new Class[]{java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Double.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.Double.class,
+                java.lang.Object.class,};
 
             @Override
             public Class getColumnClass(int columnIndex) {
@@ -107,7 +119,8 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
 
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -147,17 +160,14 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
 
         NoRawat.setDocument(new batasInput((byte) 17).getKata(NoRawat));
         Cicilan.setDocument(new batasInput((byte) 15).getOnlyAngka(Cicilan));
-        DiskonBayar.setDocument(new batasInput((byte) 15).getOnlyAngka(
-                DiskonBayar));
-        TidakTerbayar.setDocument(new batasInput((byte) 15).getOnlyAngka(
-                TidakTerbayar));
+        DiskonBayar.setDocument(new batasInput((byte) 15).getOnlyAngka(DiskonBayar));
+        TidakTerbayar.setDocument(new batasInput((byte) 15).getOnlyAngka(TidakTerbayar));
         Keterangan.setDocument(new batasInput((byte) 100).getKata(Keterangan));
         Kdmem.setDocument(new batasInput((byte) 15).getKata(Kdmem));
 
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -182,121 +192,100 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
             });
         }
 
-        Cicilan.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        Cicilan.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
         });
 
-        DiskonBayar.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        DiskonBayar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
         });
 
-        TidakTerbayar.getDocument().addDocumentListener(
-                new javax.swing.event.DocumentListener() {
+        TidakTerbayar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 Sisa.setText(Valid.SetAngka(sisapiutang));
-                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().
-                        isEmpty()) && (!TidakTerbayar.getText().isEmpty())) {
-                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                            parseDouble(Cicilan.getText()) - Double.parseDouble(
-                            DiskonBayar.getText()) - Double.parseDouble(
-                            TidakTerbayar.getText())));
+                if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                        && (!TidakTerbayar.getText().isEmpty())) {
+                    Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                            - Double.parseDouble(DiskonBayar.getText()) - Double.parseDouble(TidakTerbayar.getText())));
                 }
             }
 
@@ -314,10 +303,8 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pasien.getTable().getSelectedRow() != -1) {
-                    Kdmem.setText(pasien.getTable().getValueAt(
-                            pasien.getTable().getSelectedRow(), 0).toString());
-                    Nmmem.setText(pasien.getTable().getValueAt(
-                            pasien.getTable().getSelectedRow(), 1).toString());
+                    Kdmem.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 0).toString());
+                    Nmmem.setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 1).toString());
                     sisapiutang = Sequel.cariIsiAngka(
                             "SELECT ifnull(SUM(piutang_pasien.sisapiutang),0) FROM piutang_pasien where piutang_pasien.no_rkm_medis=?",
                             Kdmem.getText())
@@ -328,13 +315,11 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
                                     "SELECT ifnull(SUM(bayar_piutang.besar_cicilan)+SUM(bayar_piutang.diskon_piutang)+SUM(bayar_piutang.tidak_terbayar),0) FROM bayar_piutang where bayar_piutang.no_rkm_medis=?",
                                     Kdmem.getText());
                     Sisa.setText(Valid.SetAngka(sisapiutang));
-                    if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.
-                            getText().isEmpty()) && (!TidakTerbayar.getText().
-                                    isEmpty())) {
-                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.
-                                parseDouble(Cicilan.getText()) - Double.
-                                parseDouble(DiskonBayar.getText()) - Double.
-                                parseDouble(TidakTerbayar.getText())));
+                    if ((!Cicilan.getText().isEmpty()) && (!DiskonBayar.getText().isEmpty())
+                            && (!TidakTerbayar.getText().isEmpty())) {
+                        Sisa.setText(Valid.SetAngka(sisapiutang - Double.parseDouble(Cicilan.getText())
+                                - Double.parseDouble(DiskonBayar.getText())
+                                - Double.parseDouble(TidakTerbayar.getText())));
                     }
                     Sequel.cariIsi(
                             "select reg_periksa.no_rawat from reg_periksa where reg_periksa.no_rkm_medis=? order by reg_periksa.tgl_registrasi desc limit 1",
@@ -382,14 +367,13 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
         isForm();
 
         try {
-            ps = koneksi.prepareStatement(
-                    "select set_akun.Diskon_Piutang,set_akun.Piutang_Tidak_Terbayar from set_akun");
+            ps = koneksi
+                    .prepareStatement("select set_akun.Diskon_Piutang,set_akun.Piutang_Tidak_Terbayar from set_akun");
             try {
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     Diskon_Piutang = rs.getString("Diskon_Piutang");
-                    Piutang_Tidak_Terbayar = rs.getString(
-                            "Piutang_Tidak_Terbayar");
+                    Piutang_Tidak_Terbayar = rs.getString("Piutang_Tidak_Terbayar");
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -407,7 +391,9 @@ public class DlgBayarPiutang extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1684,8 +1670,7 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgBayarPiutang dialog = new DlgBayarPiutang(
-                    new javax.swing.JFrame(), true);
+            DlgBayarPiutang dialog = new DlgBayarPiutang(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1780,12 +1765,9 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 ps.setString(5, "%" + TCari.getText() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        rs.getString(1), rs.getString(2), rs.getString(3), rs.
-                        getDouble(4), rs.getString(5), rs.getString(6),
-                        rs.getString(7), rs.getString(8), rs.getDouble(9), rs.
-                        getString(10), rs.getDouble(11), rs.getString(12)
-                    });
+                    tabMode.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
+                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getDouble(9),
+                        rs.getString(10), rs.getDouble(11), rs.getString(12)});
                 }
             } catch (Exception e) {
                 System.out.println("Notif :" + e);
@@ -1811,8 +1793,7 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         for (i = 0; i < tabMode.getRowCount(); i++) {
             cicilan += Valid.SetAngka(tbKamar.getValueAt(i, 3).toString());
             diskon += Valid.SetAngka(tbKamar.getValueAt(i, 8).toString());
-            tidakterbayar += Valid.
-                    SetAngka(tbKamar.getValueAt(i, 10).toString());
+            tidakterbayar += Valid.SetAngka(tbKamar.getValueAt(i, 10).toString());
         }
         LTotal.setText(Valid.SetAngka(cicilan));
         LDiskon.setText(Valid.SetAngka(diskon));
@@ -1841,15 +1822,12 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         ChkInput.setSelected(true);
         isForm();
         kontraakun = "";
-        if (Sequel.cariInteger(
-                "select count(piutang.nota_piutang) from piutang where piutang.nota_piutang=?",
+        if (Sequel.cariInteger("select count(piutang.nota_piutang) from piutang where piutang.nota_piutang=?",
                 NoRawat.getText()) == 1) {
-            kontraakun = Sequel.cariIsi(
-                    "select set_akun.Piutang_Obat from set_akun");
+            kontraakun = Sequel.cariIsi("select set_akun.Piutang_Obat from set_akun");
             AkunPiutang.removeAllItems();
-            AkunPiutang.addItem(Sequel.cariIsi(
-                    "select rekening.nm_rek from rekening where rekening.kd_rek=?",
-                    kontraakun));
+            AkunPiutang
+                    .addItem(Sequel.cariIsi("select rekening.nm_rek from rekening where rekening.kd_rek=?", kontraakun));
             sisapiutang = Sequel.cariIsiAngka(
                     "SELECT ifnull(SUM(piutang.sisapiutang),0) FROM piutang where piutang.nota_piutang=?",
                     NoRawat.getText())
@@ -1860,15 +1838,14 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             status = "obat";
         } else {
             Valid.loadCombo(AkunPiutang,
-                    "select detail_piutang_pasien.nama_bayar from detail_piutang_pasien where detail_piutang_pasien.no_rawat='" + NoRawat.
-                            getText() + "'");
-            kontraakun = Sequel.cariIsi(
-                    "select akun_piutang.kd_rek from akun_piutang where akun_piutang.nama_bayar=?",
+                    "select detail_piutang_pasien.nama_bayar from detail_piutang_pasien where detail_piutang_pasien.no_rawat='"
+                    + NoRawat.getText() + "'");
+            kontraakun = Sequel.cariIsi("select akun_piutang.kd_rek from akun_piutang where akun_piutang.nama_bayar=?",
                     AkunPiutang.getSelectedItem().toString());
             sisapiutang = Sequel.cariIsiAngka(
-                    "select detail_piutang_pasien.sisapiutang from detail_piutang_pasien where detail_piutang_pasien.no_rawat='" + NoRawat.
-                            getText() + "' and nama_bayar='" + AkunPiutang.
-                            getSelectedItem().toString() + "'");
+                    "select detail_piutang_pasien.sisapiutang from detail_piutang_pasien where detail_piutang_pasien.no_rawat='"
+                    + NoRawat.getText() + "' and nama_bayar='" + AkunPiutang.getSelectedItem().toString()
+                    + "'");
             Sisa.setText(Valid.SetAngka(sisapiutang));
             status = "pasien";
         }
@@ -1897,7 +1874,6 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     /**
-     *
      * @return
      */
     public JButton getButton() {
@@ -1933,16 +1909,14 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             file.createNewFile();
             fileWriter = new FileWriter(file);
             iyem = "";
-            ps = koneksi.prepareStatement(
-                    "select * from akun_bayar order by akun_bayar.nama_bayar");
+            ps = koneksi.prepareStatement("select * from akun_bayar order by akun_bayar.nama_bayar");
             try {
                 rs = ps.executeQuery();
                 AkunBayar.removeAllItems();
                 while (rs.next()) {
                     AkunBayar.addItem(rs.getString(1).replaceAll("\"", ""));
-                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).
-                            replaceAll("\"", "") + "\",\"KodeRek\":\"" + rs.
-                            getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
+                    iyem = iyem + "{\"NamaAkun\":\"" + rs.getString(1).replaceAll("\"", "") + "\",\"KodeRek\":\""
+                            + rs.getString(2) + "\",\"PPN\":\"" + rs.getDouble(3) + "\"},";
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
@@ -1955,8 +1929,7 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 }
             }
 
-            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.
-                    length() - 1) + "]}");
+            fileWriter.write("{\"akunbayar\":[" + iyem.substring(0, iyem.length() - 1) + "]}");
             fileWriter.flush();
             fileWriter.close();
             iyem = null;
@@ -1972,8 +1945,7 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             response = root.path("akunbayar");
             if (response.isArray()) {
                 for (JsonNode list : response) {
-                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll(
-                            "\"", ""));
+                    AkunBayar.addItem(list.path("NamaAkun").asText().replaceAll("\"", ""));
                 }
             }
             myObj.close();
@@ -1982,6 +1954,6 @@ private void BtnSeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgBayarPiutang.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgBayarPiutang.class.getName());
+
 }

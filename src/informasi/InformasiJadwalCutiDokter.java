@@ -50,69 +50,82 @@ import org.springframework.web.client.RestTemplate;
 import simrskhanza.DlgPasien;
 
 /**
- *
  * @author dosen
  */
 public class InformasiJadwalCutiDokter extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps, ps3;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private DlgCariDokter2 dokter2 = new DlgCariDokter2(null, false);
+
     private DlgPasien pasien = new DlgPasien(null, false);
+
     private String status = "", nohp = "", requestJson, URL = "", aktifjadwal = "";
+
     private StringBuilder htmlContent;
+
     private HttpHeaders headers;
+
     private HttpEntity requestEntity;
+
     private ObjectMapper mapper = new ObjectMapper();
+
     private JsonNode root;
+
     private JsonNode nameNode;
+
     private JsonNode response;
+
     private SSLContext sslContext;
+
     private SSLSocketFactory sslFactory;
+
     private SecretKeySpec secretKey;
+
     private Scheme scheme;
+
     private HttpComponentsClientHttpRequestFactory factory;
 
     /**
-     *
      * @return @throws NoSuchAlgorithmException
      * @throws KeyManagementException
      */
-    public RestTemplate getRest() throws NoSuchAlgorithmException,
-            KeyManagementException {
+    public RestTemplate getRest() throws NoSuchAlgorithmException, KeyManagementException {
         sslContext = SSLContext.getInstance("SSL");
-        TrustManager[] trustManagers = {
-            new X509TrustManager() {
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] arg0,
-                        String arg1) throws CertificateException {
-                }
-
-                @Override
-                public void checkClientTrusted(X509Certificate[] arg0,
-                        String arg1) throws CertificateException {
-                }
-
+        TrustManager[] trustManagers = {new X509TrustManager() {
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
             }
-        };
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+            }
+
+            @Override
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+            }
+
+        }};
         sslContext.init(null, trustManagers, new SecureRandom());
-        sslFactory = new SSLSocketFactory(sslContext,
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        sslFactory = new SSLSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         scheme = new Scheme("https", 443, sslFactory);
         factory = new HttpComponentsClientHttpRequestFactory();
-        factory.getHttpClient().getConnectionManager().getSchemeRegistry().
-                register(scheme);
+        factory.getHttpClient().getConnectionManager().getSchemeRegistry().register(scheme);
         return new RestTemplate(factory);
     }
 
@@ -126,20 +139,11 @@ public class InformasiJadwalCutiDokter extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "P", "Tgl.Input", "Kode Dokter", "Nama Dokter", "Tgl.Cuti",
-            "Alasan", "Catatan", "No.Rekam Medis", "Nama Pasien", "No Telp",
-            "Tanggal Periksa"
-        }) {
-            Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class,
-                java.lang.Object.class,
-                java.lang.Object.class, java.lang.Object.class
-            };
+        tabMode = new DefaultTableModel(null, new Object[]{"P", "Tgl.Input", "Kode Dokter", "Nama Dokter", "Tgl.Cuti",
+            "Alasan", "Catatan", "No.Rekam Medis", "Nama Pasien", "No Telp", "Tanggal Periksa"}) {
+            Class[] types = new Class[]{java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class};
 
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -158,7 +162,8 @@ public class InformasiJadwalCutiDokter extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -207,8 +212,7 @@ public class InformasiJadwalCutiDokter extends javax.swing.JDialog {
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         KdDokter.setDocument(new batasInput((byte) 3).getKata(KdDokter));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -248,10 +252,8 @@ public class InformasiJadwalCutiDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -285,10 +287,8 @@ public class InformasiJadwalCutiDokter extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter2.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter2.getTable().getValueAt(dokter2.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter2.getTable().getValueAt(dokter2.getTable().getSelectedRow(), 1).toString());
                 }
             }
 
@@ -312,7 +312,9 @@ public class InformasiJadwalCutiDokter extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1228,8 +1230,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InformasiJadwalCutiDokter dialog = new InformasiJadwalCutiDokter(
-                    new javax.swing.JFrame(), true);
+            InformasiJadwalCutiDokter dialog = new InformasiJadwalCutiDokter(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1293,13 +1294,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void tampil() {
         if (R2.isSelected() == true) {
-            status = " jadwal_cuti_dokter.tanggal_booking between '" + Valid.
-                    SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.
-                    SetTgl(DTPCari2.getSelectedItem() + "") + "' ";
+            status = " jadwal_cuti_dokter.tanggal_booking between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "")
+                    + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' ";
         } else if (R3.isSelected() == true) {
-            status = " jadwal_cuti_dokter.tanggal_cuti between '" + Valid.
-                    SetTgl(DTPCari3.getSelectedItem() + "") + "' and '" + Valid.
-                    SetTgl(DTPCari4.getSelectedItem() + "") + "' ";
+            status = " jadwal_cuti_dokter.tanggal_cuti between '" + Valid.SetTgl(DTPCari3.getSelectedItem() + "")
+                    + "' and '" + Valid.SetTgl(DTPCari4.getSelectedItem() + "") + "' ";
         }
         Valid.tabelKosong(tabMode);
         try {
@@ -1310,22 +1309,18 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     + "jadwal_cuti_dokter.catatan,booking_registrasi.tanggal_periksa,dokter.nm_dokter "
                     + "from jadwal_cuti_dokter inner join booking_registrasi on jadwal_cuti_dokter.kd_dokter=booking_registrasi.kd_dokter and jadwal_cuti_dokter.tanggal_cuti=booking_registrasi.tanggal_periksa "
                     + "inner join pasien on pasien.no_rkm_medis=booking_registrasi.no_rkm_medis "
-                    + "inner join dokter on jadwal_cuti_dokter.kd_dokter=dokter.kd_dokter "
-                    + "where " + status + " and jadwal_cuti_dokter.kd_dokter like ? or "
-                    + status + " and dokter.nm_dokter like ? order by jadwal_cuti_dokter.tanggal_booking");
+                    + "inner join dokter on jadwal_cuti_dokter.kd_dokter=dokter.kd_dokter " + "where " + status
+                    + " and jadwal_cuti_dokter.kd_dokter like ? or " + status
+                    + " and dokter.nm_dokter like ? order by jadwal_cuti_dokter.tanggal_booking");
             try {
                 ps.setString(1, "%" + TCari.getText().trim() + "%");
                 ps.setString(2, "%" + TCari.getText().trim() + "%");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new Object[]{
-                        false, rs.getString("tanggal_booking"), rs.getString(
-                        "kd_dokter"), rs.getString("nm_dokter"),
-                        rs.getString("tanggal_cuti"), rs.getString("alasan"),
-                        rs.getString("catatan"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("no_tlp"), rs.
-                        getString("tanggal_periksa")
-                    });
+                    tabMode.addRow(new Object[]{false, rs.getString("tanggal_booking"), rs.getString("kd_dokter"),
+                        rs.getString("nm_dokter"), rs.getString("tanggal_cuti"), rs.getString("alasan"),
+                        rs.getString("catatan"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"),
+                        rs.getString("no_tlp"), rs.getString("tanggal_periksa")});
                 }
             } catch (Exception e) {
             } finally {
@@ -1354,23 +1349,16 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            Valid.SetTgl(TanggalBooking, tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 1).toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
-            Valid.SetTgl(TanggalCuti, tbObat.getValueAt(tbObat.getSelectedRow(),
-                    4).toString());
-            Alasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
-            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).
-                    toString());
+            Valid.SetTgl(TanggalBooking, tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
+            Valid.SetTgl(TanggalCuti, tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
+            Alasan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
+            Catatan.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
         }
     }
 
     /**
-     *
      * @param norm
      * @param nama
      */
@@ -1384,7 +1372,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     /**
-     *
      * @param norm
      * @param nama
      * @param kodepoli
@@ -1392,8 +1379,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      * @param kodedokter
      * @param namadokter
      */
-    public void setNoRm(String norm, String nama, String kodepoli,
-            String namapoli, String kodedokter, String namadokter) {
+    public void setNoRm(String norm, String nama, String kodepoli, String namapoli, String kodedokter,
+            String namadokter) {
         KdDokter.setText(norm);
         NmDokter.setText(nama);
         TCari.setText(norm);
@@ -1450,14 +1437,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     private void isBooking() {
-        if (Sequel.menyimpantf("jadwal_cuti_dokter", "?,?,?,?,?,?",
-                "Pasien dan Tanggal", 6, new String[]{
-                    Valid.SetTgl(TanggalBooking.getSelectedItem() + ""),
-                    TanggalBooking.getSelectedItem().toString().
-                            substring(11, 19), KdDokter.getText(),
-                    Valid.SetTgl(TanggalCuti.getSelectedItem() + ""),
-                    Alasan.getText(), Catatan.getText()
-                }) == true) {
+        if (Sequel.menyimpantf("jadwal_cuti_dokter", "?,?,?,?,?,?", "Pasien dan Tanggal", 6,
+                new String[]{Valid.SetTgl(TanggalBooking.getSelectedItem() + ""),
+                    TanggalBooking.getSelectedItem().toString().substring(11, 19), KdDokter.getText(),
+                    Valid.SetTgl(TanggalCuti.getSelectedItem() + ""), Alasan.getText(),
+                    Catatan.getText()}) == true) {
             emptTeks();
             tampil();
         }
@@ -1465,8 +1449,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void isCekPasien() {
         try {
-            ps3 = koneksi.prepareStatement(
-                    "select pasien.nm_pasien from pasien where pasien.kd_dokter=?");
+            ps3 = koneksi.prepareStatement("select pasien.nm_pasien from pasien where pasien.kd_dokter=?");
             try {
                 ps3.setString(1, KdDokter.getText());
                 rs = ps3.executeQuery();
@@ -1479,6 +1462,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InformasiJadwalCutiDokter.class.getName());
+    private static final Logger LOG = Logger.getLogger(InformasiJadwalCutiDokter.class.getName());
+
 }

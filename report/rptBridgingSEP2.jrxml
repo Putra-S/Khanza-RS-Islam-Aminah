@@ -21,17 +21,17 @@
 	<parameter name="prb" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select bridging_sep.no_sep, bridging_sep.no_rawat,bridging_sep.nomr,bridging_sep.nama_pasien,bridging_sep.tglsep,
-bridging_sep.tglrujukan,bridging_sep.no_rujukan,bridging_sep.kdppkrujukan,
-bridging_sep.nmppkrujukan,bridging_sep.kdppkpelayanan,bridging_sep.nmppkpelayanan,
-if(bridging_sep.jnspelayanan='1','Rawat Inap','Rawat Jalan'),bridging_sep.catatan,bridging_sep.diagawal,
-bridging_sep.nmdiagnosaawal,bridging_sep.kdpolitujuan,bridging_sep.nmpolitujuan,
-if(bridging_sep.klsrawat='1','Kelas 1',if(bridging_sep.klsrawat='2','Kelas 2','Kelas 3')),
-if(bridging_sep.lakalantas='0','Kasus Kecelakaan','Bukan Kasus Kecelakaan'),concat(bridging_sep.nmkec,', ',bridging_sep.nmkab,', ',bridging_sep.nmprop) as lokasilaka,bridging_sep.user, 
-bridging_sep.tanggal_lahir,bridging_sep.peserta,bridging_sep.jkel,bridging_sep.no_kartu,
-bridging_sep.asal_rujukan,bridging_sep.eksekutif,bridging_sep.cob,bridging_sep.notelep,
-bridging_sep.tujuankunjungan,bridging_sep.flagprosedur,bridging_sep.klsnaik,bridging_sep.pembiayaan,
-bridging_sep.nmdpdjp,bridging_sep.lakalantas 
-from bridging_sep  where no_sep= $P{parameter}]]>
+		bridging_sep.tglrujukan,bridging_sep.no_rujukan,bridging_sep.kdppkrujukan,
+		bridging_sep.nmppkrujukan,bridging_sep.kdppkpelayanan,bridging_sep.nmppkpelayanan,
+		if(bridging_sep.jnspelayanan='1','Rawat Inap','Rawat Jalan'),bridging_sep.catatan,bridging_sep.diagawal,
+		bridging_sep.nmdiagnosaawal,bridging_sep.kdpolitujuan,bridging_sep.nmpolitujuan,
+		if(bridging_sep.klsrawat='1','Kelas 1',if(bridging_sep.klsrawat='2','Kelas 2','Kelas 3')),
+		if(bridging_sep.lakalantas='0','Kasus Kecelakaan','Bukan Kasus Kecelakaan'),concat(bridging_sep.nmkec,', ',bridging_sep.nmkab,', ',bridging_sep.nmprop) as lokasilaka,bridging_sep.user, 
+		bridging_sep.tanggal_lahir,bridging_sep.peserta,bridging_sep.jkel,bridging_sep.no_kartu,
+		bridging_sep.asal_rujukan,bridging_sep.eksekutif,bridging_sep.cob,bridging_sep.notelep,
+		bridging_sep.tujuankunjungan,bridging_sep.flagprosedur,bridging_sep.klsnaik,bridging_sep.pembiayaan,
+		bridging_sep.nmdpdjp,bridging_sep.lakalantas 
+		from bridging_sep  where no_sep= $P{parameter}]]>
 	</queryString>
 	<field name="no_sep" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="no_sep"/>
@@ -758,7 +758,7 @@ from bridging_sep  where no_sep= $P{parameter}]]>
 					<font fontName="Tahoma" size="8"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["- "+$F{tujuankunjungan}.replaceAll("0","Normal").replaceAll("1","Prosedur").replaceAll("2","Konsul Dokter"))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[("- "+$F{tujuankunjungan}.replaceAll("0","Normal").replaceAll("1","Prosedur").replaceAll("2","Konsul Dokter"))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="">
 				<reportElement mode="Transparent" x="400" y="159" width="132" height="20" uuid="191de774-3995-4a75-acb0-1b7038305480">

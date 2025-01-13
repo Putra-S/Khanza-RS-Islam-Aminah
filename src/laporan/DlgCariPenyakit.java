@@ -4,9 +4,9 @@
  */
 
  /*
- * DlgPenyakit.java
- *
- * Created on May 23, 2010, 12:57:16 AM
+* DlgPenyakit.java
+*
+* Created on May 23, 2010, 12:57:16 AM
  */
 package laporan;
 
@@ -29,21 +29,30 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
  * @author dosen
  */
 public class DlgCariPenyakit extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private Connection koneksi = koneksiDB.condb();
+
     private String[] hlm;
+
     private String awal = "0";
+
     private PreparedStatement ps, ps2;
+
     private ResultSet rs, rs2;
+
     public DlgPenyakit penyakit = new DlgPenyakit(null, false);
+
     private double jumlah = 0, x = 0, i = 0;
+
     private int z = 0, j = 0, mulai = 0;
 
     /**
@@ -58,8 +67,8 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
         this.setLocation(10, 2);
         setSize(656, 250);
 
-        Object[] row = {"Kode Penyakit", "Nama Penyakit", "Ciri-ciri Penyakit",
-            "Keterangan", "Kategori Penyakit", "Ciri-ciri Umum"};
+        Object[] row = {"Kode Penyakit", "Nama Penyakit", "Ciri-ciri Penyakit", "Keterangan", "Kategori Penyakit",
+            "Ciri-ciri Umum"};
         tabMode = new DefaultTableModel(null, row) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -68,7 +77,8 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
 
         };
         tbKamar.setModel(tabMode);
-        //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
+        // tbPenyakit.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (z = 0; z < 6; z++) {
@@ -90,8 +100,7 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
         TCari.setDocument(new batasInput((byte) 100).getKata(TCari));
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -121,23 +130,16 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
                     "select penyakit.kd_penyakit,penyakit.nm_penyakit,penyakit.ciri_ciri,penyakit.keterangan, "
                     + "kategori_penyakit.nm_kategori,kategori_penyakit.ciri_umum "
                     + "from kategori_penyakit inner join penyakit "
-                    + "on penyakit.kd_ktg=kategori_penyakit.kd_ktg where  "
-                    + " penyakit.kd_penyakit like ? or "
-                    + " penyakit.nm_penyakit like ? or "
-                    + " penyakit.ciri_ciri like ? or "
-                    + " penyakit.keterangan like ? or "
-                    + " kategori_penyakit.nm_kategori like ? or "
-                    + " kategori_penyakit.ciri_umum like ? "
-                    + "order by penyakit.kd_penyakit  LIMIT ?,500");
+                    + "on penyakit.kd_ktg=kategori_penyakit.kd_ktg where  " + " penyakit.kd_penyakit like ? or "
+                    + " penyakit.nm_penyakit like ? or " + " penyakit.ciri_ciri like ? or "
+                    + " penyakit.keterangan like ? or " + " kategori_penyakit.nm_kategori like ? or "
+                    + " kategori_penyakit.ciri_umum like ? " + "order by penyakit.kd_penyakit  LIMIT ?,500");
             ps2 = koneksi.prepareStatement(
                     "select count(penyakit.kd_penyakit) as jumlah from kategori_penyakit inner join penyakit "
                     + " on penyakit.kd_ktg=kategori_penyakit.kd_ktg where  "
-                    + " penyakit.kd_penyakit like ? or "
-                    + " penyakit.nm_penyakit like ? or "
-                    + " penyakit.ciri_ciri like ? or "
-                    + " penyakit.keterangan like ? or "
-                    + " kategori_penyakit.nm_kategori like ? or "
-                    + " kategori_penyakit.ciri_umum like ? "
+                    + " penyakit.kd_penyakit like ? or " + " penyakit.nm_penyakit like ? or "
+                    + " penyakit.ciri_ciri like ? or " + " penyakit.keterangan like ? or "
+                    + " kategori_penyakit.nm_kategori like ? or " + " kategori_penyakit.ciri_umum like ? "
                     + " order by penyakit.kd_penyakit");
         } catch (Exception ex) {
             System.out.println(ex);
@@ -145,7 +147,9 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -391,8 +395,7 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgCariPenyakit dialog = new DlgCariPenyakit(
-                    new javax.swing.JFrame(), true);
+            DlgCariPenyakit dialog = new DlgCariPenyakit(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -437,12 +440,8 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
             ps.setInt(7, Integer.parseInt(awal));
             rs = ps.executeQuery();
             while (rs.next()) {
-                tabMode.addRow(new String[]{rs.getString(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    rs.getString(5),
-                    rs.getString(6)});
+                tabMode.addRow(new String[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getString(5), rs.getString(6)});
             }
 
             cmbHlm.removeAllItems();
@@ -491,6 +490,6 @@ public class DlgCariPenyakit extends javax.swing.JDialog {
         BtnTambah.setEnabled(akses.getpenyakit());
     }
 
-    private static final Logger LOG = Logger.getLogger(DlgCariPenyakit.class.
-            getName());
+    private static final Logger LOG = Logger.getLogger(DlgCariPenyakit.class.getName());
+
 }

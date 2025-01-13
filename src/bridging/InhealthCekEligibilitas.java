@@ -86,8 +86,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
 
     private DlgPasien pasien = new DlgPasien(null, false);
 
-    private InhealthCekReferensiFaskes faskes = new InhealthCekReferensiFaskes(
-            null, false);
+    private InhealthCekReferensiFaskes faskes = new InhealthCekReferensiFaskes(null, false);
 
     private DlgCariPenyakit penyakit = new DlgCariPenyakit(null, false);
 
@@ -101,8 +100,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
 
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
 
-    private InhealthCariReferensiJenpelRuang kamar = new InhealthCariReferensiJenpelRuang(
-            null, false);
+    private InhealthCariReferensiJenpelRuang kamar = new InhealthCariReferensiJenpelRuang(null, false);
 
     private DlgCariCaraBayar penjab = new DlgCariCaraBayar(null, false);
 
@@ -152,8 +150,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
      */
     public DlgSatuanPolri satuanpolri = new DlgSatuanPolri(null, false);
 
-    private DlgPilihanCetakDokumen pilihan = new DlgPilihanCetakDokumen(null,
-            false);
+    private DlgPilihanCetakDokumen pilihan = new DlgPilihanCetakDokumen(null, false);
 
     /**
      *
@@ -177,8 +174,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             no_tlp = "", umur = "", namakeluarga = "", no_peserta = "", kelurahan = "", kecamatan = "", sttsumur = "",
             kabupaten = "", pekerjaanpj = "", alamatpj = "", kelurahanpj = "", kecamatanpj = "", kabupatenpj = "",
             hariawal = "", requestJson, URL = "", nosep = "", user = "", status = "Baru", propinsi = "",
-            propinsipj = "", tampilkantni = Sequel.cariIsi(
-                    "select tampilkan_tni_polri from set_tni_polri");
+            propinsipj = "", tampilkantni = Sequel.cariIsi("select tampilkan_tni_polri from set_tni_polri");
 
     private PreparedStatement ps, pskelengkapan, pscariumur, pssetalamat, pstni, pspolri;
 
@@ -249,39 +245,27 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (pasien.getTable().getSelectedRow() != -1) {
-                    if (pasien.getTable().getValueAt(pasien.getTable().
-                            getSelectedRow(), 20).toString().isEmpty()) {
-                        JOptionPane.showMessageDialog(rootPane,
-                                "Maaf pasien tidak punya Nomor Kartu...!");
+                    if (pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 20).toString().isEmpty()) {
+                        JOptionPane.showMessageDialog(rootPane, "Maaf pasien tidak punya Nomor Kartu...!");
                     } else {
                         NoKartu
-                                .setText(pasien.getTable().getValueAt(pasien.
-                                        getTable().getSelectedRow(), 20).
-                                        toString());
+                                .setText(pasien.getTable().getValueAt(pasien.getTable().getSelectedRow(), 20).toString());
                     }
                 }
                 if (pasien.getTable2().getSelectedRow() != -1) {
-                    if (pasien.getTable2().getValueAt(pasien.getTable2().
-                            getSelectedRow(), 20).toString().isEmpty()) {
-                        JOptionPane.showMessageDialog(rootPane,
-                                "Maaf pasien tidak punya Nomor Kartu...!");
+                    if (pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 20).toString().isEmpty()) {
+                        JOptionPane.showMessageDialog(rootPane, "Maaf pasien tidak punya Nomor Kartu...!");
                     } else {
                         NoKartu
-                                .setText(pasien.getTable2().getValueAt(pasien.
-                                        getTable2().getSelectedRow(), 20).
-                                        toString());
+                                .setText(pasien.getTable2().getValueAt(pasien.getTable2().getSelectedRow(), 20).toString());
                     }
                 }
                 if (pasien.getTable3().getSelectedRow() != -1) {
-                    if (pasien.getTable3().getValueAt(pasien.getTable3().
-                            getSelectedRow(), 20).toString().isEmpty()) {
-                        JOptionPane.showMessageDialog(rootPane,
-                                "Maaf pasien tidak punya Nomor Kartu...!");
+                    if (pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 20).toString().isEmpty()) {
+                        JOptionPane.showMessageDialog(rootPane, "Maaf pasien tidak punya Nomor Kartu...!");
                     } else {
                         NoKartu
-                                .setText(pasien.getTable3().getValueAt(pasien.
-                                        getTable3().getSelectedRow(), 20).
-                                        toString());
+                                .setText(pasien.getTable3().getValueAt(pasien.getTable3().getSelectedRow(), 20).toString());
                     }
                 }
             }
@@ -371,11 +355,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (faskes.getTable().getSelectedRow() != -1) {
                     KdPpkRujukan
-                            .setText(faskes.getTable().getValueAt(faskes.
-                                    getTable().getSelectedRow(), 1).toString());
+                            .setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 1).toString());
                     NmPpkRujukan
-                            .setText(faskes.getTable().getValueAt(faskes.
-                                    getTable().getSelectedRow(), 2).toString());
+                            .setText(faskes.getTable().getValueAt(faskes.getTable().getSelectedRow(), 2).toString());
                 }
                 KdPpkRujukan.requestFocus();
             }
@@ -430,22 +412,14 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (penyakit.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
                         KdPenyakit.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString());
                         NmPenyakit.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                     } else if (pilih == 2) {
                         KdPenyakit2.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 0).toString());
                         NmPenyakit2.setText(
-                                penyakit.getTable().getValueAt(penyakit.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                penyakit.getTable().getValueAt(penyakit.getTable().getSelectedRow(), 1).toString());
                     }
 
                 }
@@ -500,14 +474,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (poli.getTable().getSelectedRow() != -1) {
-                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 0).toString());
-                    TPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 1).toString());
-                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 2).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().
-                            getSelectedRow(), 3).toString());
+                    kdpoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 0).toString());
+                    TPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 1).toString());
+                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 2).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(), 3).toString());
                     isNumber();
                     KdPoli.requestFocus();
                 }
@@ -561,10 +531,8 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (penjab.getTable().getSelectedRow() != -1) {
-                    Kdpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 1).toString());
-                    nmpnj.setText(penjab.getTable().getValueAt(
-                            penjab.getTable().getSelectedRow(), 2).toString());
+                    Kdpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 1).toString());
+                    nmpnj.setText(penjab.getTable().getValueAt(penjab.getTable().getSelectedRow(), 2).toString());
                     Kdpnj.requestFocus();
                 }
             }
@@ -618,12 +586,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kab.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
-                        Kabupaten.setText(kab.getTable().getValueAt(kab.
-                                getTable().getSelectedRow(), 0).toString());
+                        Kabupaten.setText(kab.getTable().getValueAt(kab.getTable().getSelectedRow(), 0).toString());
                         Kabupaten.requestFocus();
                     } else if (pilih == 2) {
-                        KabupatenPj.setText(kab.getTable().getValueAt(kab.
-                                getTable().getSelectedRow(), 0).toString());
+                        KabupatenPj.setText(kab.getTable().getValueAt(kab.getTable().getSelectedRow(), 0).toString());
                         KabupatenPj.requestFocus();
                     }
                 }
@@ -660,12 +626,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kec.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
-                        Kecamatan.setText(kec.getTable().getValueAt(kec.
-                                getTable().getSelectedRow(), 0).toString());
+                        Kecamatan.setText(kec.getTable().getValueAt(kec.getTable().getSelectedRow(), 0).toString());
                         Kecamatan.requestFocus();
                     } else if (pilih == 2) {
-                        KecamatanPj.setText(kec.getTable().getValueAt(kec.
-                                getTable().getSelectedRow(), 0).toString());
+                        KecamatanPj.setText(kec.getTable().getValueAt(kec.getTable().getSelectedRow(), 0).toString());
                         KecamatanPj.requestFocus();
                     }
                 }
@@ -702,12 +666,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (kel.getTable().getSelectedRow() != -1) {
                     if (pilih == 1) {
-                        Kelurahan.setText(kel.getTable().getValueAt(kel.
-                                getTable().getSelectedRow(), 0).toString());
+                        Kelurahan.setText(kel.getTable().getValueAt(kel.getTable().getSelectedRow(), 0).toString());
                         Kelurahan.requestFocus();
                     } else if (pilih == 2) {
-                        KelurahanPj.setText(kel.getTable().getValueAt(kel.
-                                getTable().getSelectedRow(), 0).toString());
+                        KelurahanPj.setText(kel.getTable().getValueAt(kel.getTable().getSelectedRow(), 0).toString());
                         KelurahanPj.requestFocus();
                     }
                 }
@@ -743,10 +705,8 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    kddokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    TDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    kddokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    TDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     isNumber();
                 }
             }
@@ -781,20 +741,14 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (kamar.getTable().getSelectedRow() != -1) {
-                    if (kamar.getTable().getValueAt(kamar.getTable().
-                            getSelectedRow(), 7).toString().equals("KOSONG")) {
-                        KdKamar.setText(kamar.getTable().getValueAt(kamar.
-                                getTable().getSelectedRow(), 0).toString());
-                        NmBangsal.setText(kamar.getTable().getValueAt(kamar.
-                                getTable().getSelectedRow(), 2).toString());
-                        TBiaya.setText(kamar.getTable().getValueAt(kamar.
-                                getTable().getSelectedRow(), 6).toString());
-                        KdJenpel.setText(kamar.getTable().getValueAt(kamar.
-                                getTable().getSelectedRow(), 3).toString());
+                    if (kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 7).toString().equals("KOSONG")) {
+                        KdKamar.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 0).toString());
+                        NmBangsal.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 2).toString());
+                        TBiaya.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 6).toString());
+                        KdJenpel.setText(kamar.getTable().getValueAt(kamar.getTable().getSelectedRow(), 3).toString());
                         KdPoli.requestFocus();
                     } else {
-                        JOptionPane.showMessageDialog(null,
-                                "Maaf, status kamar isi. Silahkan cari yang kosong..!!");
+                        JOptionPane.showMessageDialog(null, "Maaf, status kamar isi. Silahkan cari yang kosong..!!");
                         KdPoli.requestFocus();
                     }
                 }
@@ -850,13 +804,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (perusahaan.getTable().getSelectedRow() != -1) {
                         kdperusahaan.setText(
-                                perusahaan.getTable().getValueAt(perusahaan.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                perusahaan.getTable().getValueAt(perusahaan.getTable().getSelectedRow(), 0).toString());
                         nmperusahaan.setText(
-                                perusahaan.getTable().getValueAt(perusahaan.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                perusahaan.getTable().getValueAt(perusahaan.getTable().getSelectedRow(), 1).toString());
                     }
                     kdperusahaan.requestFocus();
                 }
@@ -914,12 +864,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (golongantni.getTable().getSelectedRow() != -1) {
                         kdgolongantni.setText(golongantni.getTable()
-                                .getValueAt(golongantni.getTable().
-                                        getSelectedRow(), 0)
+                                .getValueAt(golongantni.getTable().getSelectedRow(), 0)
                                 .toString());
                         nmgolongantni.setText(golongantni.getTable()
-                                .getValueAt(golongantni.getTable().
-                                        getSelectedRow(), 1)
+                                .getValueAt(golongantni.getTable().getSelectedRow(), 1)
                                 .toString());
                     }
                     kdgolongantni.requestFocus();
@@ -978,13 +926,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (jabatantni.getTable().getSelectedRow() != -1) {
                         kdjabatantni.setText(
-                                jabatantni.getTable().getValueAt(jabatantni.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                jabatantni.getTable().getValueAt(jabatantni.getTable().getSelectedRow(), 0).toString());
                         nmjabatantni.setText(
-                                jabatantni.getTable().getValueAt(jabatantni.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                jabatantni.getTable().getValueAt(jabatantni.getTable().getSelectedRow(), 1).toString());
                     }
                     kdjabatantni.requestFocus();
                 }
@@ -1042,13 +986,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (satuantni.getTable().getSelectedRow() != -1) {
                         kdsatuantni.setText(
-                                satuantni.getTable().getValueAt(satuantni.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                satuantni.getTable().getValueAt(satuantni.getTable().getSelectedRow(), 0).toString());
                         nmsatuantni.setText(
-                                satuantni.getTable().getValueAt(satuantni.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                satuantni.getTable().getValueAt(satuantni.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsatuantni.requestFocus();
                 }
@@ -1106,13 +1046,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (pangkattni.getTable().getSelectedRow() != -1) {
                         kdpangkattni.setText(
-                                pangkattni.getTable().getValueAt(pangkattni.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                pangkattni.getTable().getValueAt(pangkattni.getTable().getSelectedRow(), 0).toString());
                         nmpangkattni.setText(
-                                pangkattni.getTable().getValueAt(pangkattni.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                pangkattni.getTable().getValueAt(pangkattni.getTable().getSelectedRow(), 1).toString());
                     }
                     kdpangkattni.requestFocus();
                 }
@@ -1170,12 +1106,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (golonganpolri.getTable().getSelectedRow() != -1) {
                         kdgolonganpolri.setText(golonganpolri.getTable()
-                                .getValueAt(golonganpolri.getTable().
-                                        getSelectedRow(), 0)
+                                .getValueAt(golonganpolri.getTable().getSelectedRow(), 0)
                                 .toString());
                         nmgolonganpolri.setText(golonganpolri.getTable()
-                                .getValueAt(golonganpolri.getTable().
-                                        getSelectedRow(), 1)
+                                .getValueAt(golonganpolri.getTable().getSelectedRow(), 1)
                                 .toString());
                     }
                     kdgolonganpolri.requestFocus();
@@ -1234,12 +1168,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (jabatanpolri.getTable().getSelectedRow() != -1) {
                         kdjabatanpolri.setText(jabatanpolri.getTable()
-                                .getValueAt(jabatanpolri.getTable().
-                                        getSelectedRow(), 0)
+                                .getValueAt(jabatanpolri.getTable().getSelectedRow(), 0)
                                 .toString());
                         nmjabatanpolri.setText(jabatanpolri.getTable()
-                                .getValueAt(jabatanpolri.getTable().
-                                        getSelectedRow(), 1)
+                                .getValueAt(jabatanpolri.getTable().getSelectedRow(), 1)
                                 .toString());
                     }
                     kdjabatanpolri.requestFocus();
@@ -1298,12 +1230,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (satuanpolri.getTable().getSelectedRow() != -1) {
                         kdsatuanpolri.setText(satuanpolri.getTable()
-                                .getValueAt(satuanpolri.getTable().
-                                        getSelectedRow(), 0)
+                                .getValueAt(satuanpolri.getTable().getSelectedRow(), 0)
                                 .toString());
                         nmsatuanpolri.setText(satuanpolri.getTable()
-                                .getValueAt(satuanpolri.getTable().
-                                        getSelectedRow(), 1)
+                                .getValueAt(satuanpolri.getTable().getSelectedRow(), 1)
                                 .toString());
                     }
                     kdsatuanpolri.requestFocus();
@@ -1362,12 +1292,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (pangkatpolri.getTable().getSelectedRow() != -1) {
                         kdpangkatpolri.setText(pangkatpolri.getTable()
-                                .getValueAt(pangkatpolri.getTable().
-                                        getSelectedRow(), 0)
+                                .getValueAt(pangkatpolri.getTable().getSelectedRow(), 0)
                                 .toString());
                         nmpangkatpolri.setText(pangkatpolri.getTable()
-                                .getValueAt(pangkatpolri.getTable().
-                                        getSelectedRow(), 1)
+                                .getValueAt(pangkatpolri.getTable().getSelectedRow(), 1)
                                 .toString());
                     }
                     kdpangkatpolri.requestFocus();
@@ -1426,13 +1354,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (akses.getform().equals("DlgPasien")) {
                     if (bahasa.getTable().getSelectedRow() != -1) {
                         kdbahasa
-                                .setText(bahasa.getTable().getValueAt(bahasa.
-                                        getTable().getSelectedRow(), 0).
-                                        toString());
+                                .setText(bahasa.getTable().getValueAt(bahasa.getTable().getSelectedRow(), 0).toString());
                         nmbahasa
-                                .setText(bahasa.getTable().getValueAt(bahasa.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                .setText(bahasa.getTable().getValueAt(bahasa.getTable().getSelectedRow(), 1).toString());
                     }
                     kdbahasa.requestFocus();
                 }
@@ -1489,12 +1413,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgPasien")) {
                     if (suku.getTable().getSelectedRow() != -1) {
-                        kdsuku.setText(suku.getTable().getValueAt(suku.
-                                getTable().getSelectedRow(), 0).toString());
+                        kdsuku.setText(suku.getTable().getValueAt(suku.getTable().getSelectedRow(), 0).toString());
                         nmsukubangsa
-                                .setText(suku.getTable().getValueAt(suku.
-                                        getTable().getSelectedRow(), 1).
-                                        toString());
+                                .setText(suku.getTable().getValueAt(suku.getTable().getSelectedRow(), 1).toString());
                     }
                     kdsuku.requestFocus();
                 }
@@ -1553,15 +1474,11 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                     if (propin.getTable().getSelectedRow() != -1) {
                         if (pilih == 1) {
                             Propinsi.setText(
-                                    propin.getTable().getValueAt(propin.
-                                            getTable().getSelectedRow(), 0).
-                                            toString());
+                                    propin.getTable().getValueAt(propin.getTable().getSelectedRow(), 0).toString());
                             Propinsi.requestFocus();
                         } else if (pilih == 2) {
                             PropinsiPj.setText(
-                                    propin.getTable().getValueAt(propin.
-                                            getTable().getSelectedRow(), 0).
-                                            toString());
+                                    propin.getTable().getValueAt(propin.getTable().getSelectedRow(), 0).toString());
                             PropinsiPj.requestFocus();
                         }
                     }
@@ -1599,10 +1516,8 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             public void windowClosed(WindowEvent e) {
                 if (akses.getform().equals("DlgPasien")) {
                     if (cacat.getTable().getSelectedRow() != -1) {
-                        kdcacat.setText(cacat.getTable().getValueAt(cacat.
-                                getTable().getSelectedRow(), 0).toString());
-                        nmcacat.setText(cacat.getTable().getValueAt(cacat.
-                                getTable().getSelectedRow(), 1).toString());
+                        kdcacat.setText(cacat.getTable().getValueAt(cacat.getTable().getSelectedRow(), 0).toString());
+                        nmcacat.setText(cacat.getTable().getValueAt(cacat.getTable().getSelectedRow(), 1).toString());
                     }
                     kdcacat.requestFocus();
                 }
@@ -1665,12 +1580,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
         Kabupaten.setDocument(new batasInput((byte) 60).getFilter(Kabupaten));
         Kecamatan.setDocument(new batasInput((byte) 60).getFilter(Kecamatan));
         Kelurahan.setDocument(new batasInput((byte) 60).getFilter(Kelurahan));
-        KabupatenPj.
-                setDocument(new batasInput((byte) 60).getFilter(KabupatenPj));
-        KecamatanPj.
-                setDocument(new batasInput((byte) 60).getFilter(KecamatanPj));
-        KelurahanPj.
-                setDocument(new batasInput((byte) 60).getFilter(KelurahanPj));
+        KabupatenPj.setDocument(new batasInput((byte) 60).getFilter(KabupatenPj));
+        KecamatanPj.setDocument(new batasInput((byte) 60).getFilter(KecamatanPj));
+        KelurahanPj.setDocument(new batasInput((byte) 60).getFilter(KelurahanPj));
         TNoPeserta.setDocument(new batasInput((byte) 25).getKata(TNoPeserta));
         Propinsi.setDocument(new batasInput((byte) 30).getFilter(Propinsi));
         PropinsiPj.setDocument(new batasInput((byte) 30).getFilter(PropinsiPj));
@@ -1683,14 +1595,10 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
         Catatan.setDocument(new batasInput((byte) 50).getKata(Catatan));
         LokasiLaka.setDocument(new batasInput((byte) 100).getKata(LokasiLaka));
         try {
-            KdPPK.
-                    setText(Sequel.cariIsi(
-                            "select kode_ppkinhealth from setting"));
-            NmPPK.setText(Sequel.cariIsi(
-                    "select setting.nama_instansi from setting"));
+            KdPPK.setText(Sequel.cariIsi("select kode_ppkinhealth from setting"));
+            NmPPK.setText(Sequel.cariIsi("select setting.nama_instansi from setting"));
 
-            pssetalamat = koneksi.prepareStatement(
-                    "select * from set_alamat_pasien");
+            pssetalamat = koneksi.prepareStatement("select * from set_alamat_pasien");
             try {
                 rs = pssetalamat.executeQuery();
                 while (rs.next()) {
@@ -1714,8 +1622,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 }
             }
 
-            pskelengkapan = koneksi.prepareStatement(
-                    "select * from set_kelengkapan_data_pasien");
+            pskelengkapan = koneksi.prepareStatement("select * from set_kelengkapan_data_pasien");
             try {
                 rs = pskelengkapan.executeQuery();
                 while (rs.next()) {
@@ -1771,13 +1678,11 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
         } catch (Exception e) {
             System.out.println(e);
         }
-        hariawal = Sequel.cariIsi(
-                "select set_jam_minimal.hariawal from set_jam_minimal");
+        hariawal = Sequel.cariIsi("select set_jam_minimal.hariawal from set_jam_minimal");
         pengurutan = Sequel.cariIsi("select urutan from set_urut_no_rkm_medis");
         tahun = Sequel.cariIsi("select tahun from set_urut_no_rkm_medis");
         bulan = Sequel.cariIsi("select bulan from set_urut_no_rkm_medis");
-        posisitahun = Sequel.cariIsi(
-                "select posisi_tahun_bulan from set_urut_no_rkm_medis");
+        posisitahun = Sequel.cariIsi("select posisi_tahun_bulan from set_urut_no_rkm_medis");
         try {
             user = akses.getkode().replace(" ", "").substring(0, 9);
         } catch (Exception e) {
@@ -1842,7 +1747,9 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -5067,8 +4974,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            InhealthCekEligibilitas dialog = new InhealthCekEligibilitas(
-                    new javax.swing.JFrame(), true);
+            InhealthCekEligibilitas dialog = new InhealthCekEligibilitas(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -5286,71 +5192,49 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", "application/json");
             requestJson = "{ \"token\": \"" + koneksiDB.TOKENINHEALTH() + "\"," + "\"kodeprovider\": \""
-                    + KdPPK.getText() + "\"," + "\"nokainhealth\": \"" + NoKartu.
-                    getText() + "\","
-                    + "\"tglpelayanan\": \"" + Valid.SetTgl(TanggalSEP.
-                            getSelectedItem() + "") + "\","
+                    + KdPPK.getText() + "\"," + "\"nokainhealth\": \"" + NoKartu.getText() + "\","
+                    + "\"tglpelayanan\": \"" + Valid.SetTgl(TanggalSEP.getSelectedItem() + "") + "\","
                     + "\"jenispelayanan\": \"3\"," + "\"poli\": \"UMU\"" + "}";
             HttpEntity requestEntity = new HttpEntity(requestJson, headers);
             RestTemplate rest = new RestTemplate();
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST,
-                    requestEntity, String.class).getBody());
+            JsonNode root = mapper.readTree(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
             // System.out.println("JSON : "+rest.exchange(URL, HttpMethod.POST,
             // requestEntity, String.class).getBody());
             if (root.path("ERRORCODE").asText().equals("00")) {
                 Valid.tabelKosong(tabMode);
-                tabMode.addRow(new Object[]{"No Kartu Peserta", ": " + root.
-                    path("NOKAPST").asText()});
+                tabMode.addRow(new Object[]{"No Kartu Peserta", ": " + root.path("NOKAPST").asText()});
                 TNoPeserta.setText(root.path("NOKAPST").asText());
-                tabMode.addRow(new Object[]{"Nama Peserta", ": " + root.path(
-                    "NMPST").asText()});
+                tabMode.addRow(new Object[]{"Nama Peserta", ": " + root.path("NMPST").asText()});
                 TNm.setText(root.path("NMPST").asText());
-                tabMode.addRow(new Object[]{"Tanggal Lahir", ": " + root.path(
-                    "TGLLAHIR").asText()});
+                tabMode.addRow(new Object[]{"Tanggal Lahir", ": " + root.path("TGLLAHIR").asText()});
 
                 Valid.SetTgl(DTPLahir, root.path("TGLLAHIR").asText());
                 lahir = DTPLahir.getDate();
-                birthday = lahir.toInstant().atZone(ZoneId.systemDefault()).
-                        toLocalDate();
+                birthday = lahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 p = Period.between(birthday, today);
                 p2 = ChronoUnit.DAYS.between(birthday, today);
-                TUmur.setText(String.valueOf(p.getYears()) + " Th " + String.
-                        valueOf(p.getMonths()) + " Bl "
+                TUmur.setText(String.valueOf(p.getYears()) + " Th " + String.valueOf(p.getMonths()) + " Bl "
                         + String.valueOf(p.getDays()) + " Hr");
 
-                tabMode.addRow(new Object[]{"Kode Produk", ": " + root.path(
-                    "KODEPRODUK").asText()});
-                tabMode.addRow(new Object[]{"Nama Produk", ": " + root.path(
-                    "NAMAPRODUK").asText()});
-                tabMode.addRow(new Object[]{"Kode Kelas", ": " + root.path(
-                    "KODEKELASRAWAT").asText()});
-                tabMode.addRow(new Object[]{"Nama Kelas", ": " + root.path(
-                    "NAMAKELASRAWAT").asText()});
-                tabMode.addRow(new Object[]{"Kode Badan Usaha", ": " + root.
-                    path("KODEBADANUSAHA").asText()});
-                tabMode.addRow(new Object[]{"Nama Badan Usaha", ": " + root.
-                    path("NAMABADANUSAHA").asText()});
-                tabMode.addRow(new Object[]{"Kode Provider", ": " + root.path(
-                    "KODEPROVIDER").asText()});
-                tabMode.addRow(new Object[]{"Nama Provider", ": " + root.path(
-                    "NAMAPROVIDER").asText()});
+                tabMode.addRow(new Object[]{"Kode Produk", ": " + root.path("KODEPRODUK").asText()});
+                tabMode.addRow(new Object[]{"Nama Produk", ": " + root.path("NAMAPRODUK").asText()});
+                tabMode.addRow(new Object[]{"Kode Kelas", ": " + root.path("KODEKELASRAWAT").asText()});
+                tabMode.addRow(new Object[]{"Nama Kelas", ": " + root.path("NAMAKELASRAWAT").asText()});
+                tabMode.addRow(new Object[]{"Kode Badan Usaha", ": " + root.path("KODEBADANUSAHA").asText()});
+                tabMode.addRow(new Object[]{"Nama Badan Usaha", ": " + root.path("NAMABADANUSAHA").asText()});
+                tabMode.addRow(new Object[]{"Kode Provider", ": " + root.path("KODEPROVIDER").asText()});
+                tabMode.addRow(new Object[]{"Nama Provider", ": " + root.path("NAMAPROVIDER").asText()});
                 KdPpkRujukan.setText(root.path("KODEPROVIDER").asText());
                 NmPpkRujukan.setText(root.path("NAMAPROVIDER").asText());
-                tabMode.addRow(new Object[]{"No Kartu BPJS", ": " + root.path(
-                    "NOKAPSTBPJS").asText()});
-                tabMode.addRow(new Object[]{"Kode Provider BPJS", ": " + root.
-                    path("KODEPROVIDERBPJS").asText()});
-                tabMode.addRow(new Object[]{"Nama Provider BPJS", ": " + root.
-                    path("NAMAPROVIDERBPJS").asText()});
-                tabMode.addRow(new Object[]{"Flag Peserta BPJS", ": " + root.
-                    path("FLAGPSTBPJS").asText()});
-                tabMode.addRow(new Object[]{"Produk COB", ": " + root.path(
-                    "PRODUKCOB").asText()});
+                tabMode.addRow(new Object[]{"No Kartu BPJS", ": " + root.path("NOKAPSTBPJS").asText()});
+                tabMode.addRow(new Object[]{"Kode Provider BPJS", ": " + root.path("KODEPROVIDERBPJS").asText()});
+                tabMode.addRow(new Object[]{"Nama Provider BPJS", ": " + root.path("NAMAPROVIDERBPJS").asText()});
+                tabMode.addRow(new Object[]{"Flag Peserta BPJS", ": " + root.path("FLAGPSTBPJS").asText()});
+                tabMode.addRow(new Object[]{"Produk COB", ": " + root.path("PRODUKCOB").asText()});
                 Kdpnj.setText("INH");
                 nmpnj.setText("Mandiri Inhealth");
-                ps = koneksi.prepareStatement(
-                        "select pasien.no_rkm_medis, pasien.nm_pasien, pasien.no_ktp, pasien.jk, "
+                ps = koneksi.prepareStatement("select pasien.no_rkm_medis, pasien.nm_pasien, pasien.no_ktp, pasien.jk, "
                         + "pasien.tmp_lahir, pasien.tgl_lahir,pasien.nm_ibu, pasien.alamat,kelurahan.nm_kel,kecamatan.nm_kec,kabupaten.nm_kab,propinsi.nm_prop,"
                         + "pasien.gol_darah, pasien.pekerjaan,pasien.stts_nikah,pasien.agama,pasien.tgl_daftar,pasien.no_tlp,pasien.umur,"
                         + "pasien.pnd, pasien.keluarga, pasien.namakeluarga,penjab.png_jawab,pasien.no_peserta,pasien.pekerjaanpj,"
@@ -5432,22 +5316,14 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                                 pstni.setString(1, rs.getString("no_rkm_medis"));
                                 rs2 = pstni.executeQuery();
                                 if (rs2.next()) {
-                                    kdgolongantni.setText(rs2.getString(
-                                            "golongan_tni"));
-                                    nmgolongantni.setText(rs2.getString(
-                                            "nama_golongan"));
-                                    kdsatuantni.setText(rs2.getString(
-                                            "satuan_tni"));
-                                    nmsatuantni.setText(rs2.getString(
-                                            "nama_satuan"));
-                                    kdpangkattni.setText(rs2.getString(
-                                            "pangkat_tni"));
-                                    nmpangkattni.setText(rs2.getString(
-                                            "nama_pangkat"));
-                                    kdjabatantni.setText(rs2.getString(
-                                            "jabatan_tni"));
-                                    nmjabatantni.setText(rs2.getString(
-                                            "nama_jabatan"));
+                                    kdgolongantni.setText(rs2.getString("golongan_tni"));
+                                    nmgolongantni.setText(rs2.getString("nama_golongan"));
+                                    kdsatuantni.setText(rs2.getString("satuan_tni"));
+                                    nmsatuantni.setText(rs2.getString("nama_satuan"));
+                                    kdpangkattni.setText(rs2.getString("pangkat_tni"));
+                                    nmpangkattni.setText(rs2.getString("nama_pangkat"));
+                                    kdjabatantni.setText(rs2.getString("jabatan_tni"));
+                                    nmjabatantni.setText(rs2.getString("nama_jabatan"));
                                     chkTNI.setSelected(true);
                                     chkTNIActionPerformed(null);
                                 }
@@ -5471,26 +5347,17 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                                     + "and pasien_polri.pangkat_polri=pangkat_polri.id and pasien_polri.satuan_polri=satuan_polri.id "
                                     + "and pasien_polri.jabatan_polri=jabatan_polri.id where pasien_polri.no_rkm_medis=?");
                             try {
-                                pspolri.setString(1, rs.
-                                        getString("no_rkm_medis"));
+                                pspolri.setString(1, rs.getString("no_rkm_medis"));
                                 rs2 = pspolri.executeQuery();
                                 if (rs2.next()) {
-                                    kdgolonganpolri.setText(rs2.getString(
-                                            "golongan_polri"));
-                                    nmgolonganpolri.setText(rs2.getString(
-                                            "nama_golongan"));
-                                    kdsatuanpolri.setText(rs2.getString(
-                                            "satuan_polri"));
-                                    nmsatuanpolri.setText(rs2.getString(
-                                            "nama_satuan"));
-                                    kdpangkatpolri.setText(rs2.getString(
-                                            "pangkat_polri"));
-                                    nmpangkatpolri.setText(rs2.getString(
-                                            "nama_pangkat"));
-                                    kdjabatanpolri.setText(rs2.getString(
-                                            "jabatan_polri"));
-                                    nmjabatanpolri.setText(rs2.getString(
-                                            "nama_jabatan"));
+                                    kdgolonganpolri.setText(rs2.getString("golongan_polri"));
+                                    nmgolonganpolri.setText(rs2.getString("nama_golongan"));
+                                    kdsatuanpolri.setText(rs2.getString("satuan_polri"));
+                                    nmsatuanpolri.setText(rs2.getString("nama_satuan"));
+                                    kdpangkatpolri.setText(rs2.getString("pangkat_polri"));
+                                    nmpangkatpolri.setText(rs2.getString("nama_pangkat"));
+                                    kdjabatanpolri.setText(rs2.getString("jabatan_polri"));
+                                    nmjabatanpolri.setText(rs2.getString("nama_jabatan"));
                                     chkPolri.setSelected(true);
                                     chkPolriActionPerformed(null);
                                 }
@@ -5521,14 +5388,12 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 }
             } else {
                 emptTeks();
-                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").
-                        asText());
+                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").asText());
             }
         } catch (HeadlessException | IOException | SQLException | RestClientException e) {
             System.out.println("Notifikasi Peserta : " + e);
             if (e.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(rootPane,
-                        "Koneksi ke server Inhealth terputus...!");
+                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server Inhealth terputus...!");
             }
         }
     }
@@ -5541,92 +5406,62 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 FormInput.setPreferredSize(new Dimension(955, 730));
                 if (internalFrame1.getHeight() > 530) {
                     PanelInput.setPreferredSize(new Dimension(WIDTH, 570));
-                    scrollPane2.setVerticalScrollBarPolicy(
-                            javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    scrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     if (internalFrame1.getWidth() < 960) {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                        FormKelengkapanPasien.setPreferredSize(
-                                new Dimension(952, 515));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(952,
-                                214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(952, 515));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(952, 214));
                     } else {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                        FormKelengkapanPasien.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 515));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 515));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 214));
                     }
                 } else {
-                    scrollPane2.setVerticalScrollBarPolicy(
-                            javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-                    PanelInput.setPreferredSize(new Dimension(WIDTH,
-                            internalFrame1.getHeight() - 20));
+                    scrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 20));
                     if (internalFrame1.getWidth() < 960) {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                        FormKelengkapanPasien.setPreferredSize(
-                                new Dimension(952, 515));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(952,
-                                214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(952, 515));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(952, 214));
                     } else {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                        FormKelengkapanPasien.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 515));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 515));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 214));
                     }
                 }
             } else {
                 FormInput.setPreferredSize(new Dimension(955, 580));
                 if (internalFrame1.getHeight() > 530) {
                     PanelInput.setPreferredSize(new Dimension(WIDTH, 570));
-                    scrollPane2.setVerticalScrollBarPolicy(
-                            javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    scrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     if (internalFrame1.getWidth() < 960) {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                        FormKelengkapanPasien.setPreferredSize(
-                                new Dimension(952, 365));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(952,
-                                214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(952, 365));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(952, 214));
                     } else {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                        FormKelengkapanPasien.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 365));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 365));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 214));
                     }
                 } else {
-                    scrollPane2.setVerticalScrollBarPolicy(
-                            javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-                    PanelInput.setPreferredSize(new Dimension(WIDTH,
-                            internalFrame1.getHeight() - 20));
+                    scrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 20));
                     if (internalFrame1.getWidth() < 960) {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                        FormKelengkapanPasien.setPreferredSize(
-                                new Dimension(952, 365));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(952,
-                                214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(952, 365));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(952, 214));
                     } else {
                         scrollPane2
-                                .setHorizontalScrollBarPolicy(
-                                        javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                        FormKelengkapanPasien.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 365));
-                        FormKelengkapanSEP.setPreferredSize(new Dimension(
-                                internalFrame1.getWidth() - 32, 214));
+                                .setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                        FormKelengkapanPasien.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 365));
+                        FormKelengkapanSEP.setPreferredSize(new Dimension(internalFrame1.getWidth() - 32, 214));
                     }
                 }
             }
@@ -5696,17 +5531,13 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
         Valid.autoNomer3(
                 "select ifnull(MAX(CONVERT(RIGHT(rujuk_masuk.no_rawat,4),signed)),0) from reg_periksa inner join rujuk_masuk on reg_periksa.no_rawat=rujuk_masuk.no_rawat where reg_periksa.tgl_registrasi='"
                 + Valid.SetTgl(TanggalSEP.getSelectedItem() + "") + "' ",
-                "BR/" + dateformat.format(TanggalSEP.getDate()) + "/", 4,
-                NoBalasan);
-        Valid.autoNomer3(
-                "select ifnull(MAX(CONVERT(no_reg,signed)),0) from reg_periksa where kd_dokter='"
+                "BR/" + dateformat.format(TanggalSEP.getDate()) + "/", 4, NoBalasan);
+        Valid.autoNomer3("select ifnull(MAX(CONVERT(no_reg,signed)),0) from reg_periksa where kd_dokter='"
                 + kddokter.getText() + "' and tgl_registrasi='"
-                + Valid.SetTgl(TanggalSEP.getSelectedItem() + "").substring(0,
-                        10) + "'", "", 3, TNoReg);
+                + Valid.SetTgl(TanggalSEP.getSelectedItem() + "").substring(0, 10) + "'", "", 3, TNoReg);
         Valid.autoNomer3(
                 "select ifnull(MAX(CONVERT(RIGHT(reg_periksa.no_rawat,6),signed)),0) from reg_periksa where reg_periksa.tgl_registrasi='"
-                + Valid.SetTgl(TanggalSEP.getSelectedItem() + "").substring(0,
-                        10) + "' ",
+                + Valid.SetTgl(TanggalSEP.getSelectedItem() + "").substring(0, 10) + "' ",
                 dateformat.format(TanggalSEP.getDate()) + "/", 6, TNoRw);
     }
 
@@ -5745,15 +5576,13 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
     private void autoNomor() {
         if (ChkRM.isSelected() == true) {
             if (tahun.equals("Yes")) {
-                awalantahun = DTPDaftar.getSelectedItem().toString().
-                        substring(8, 10);
+                awalantahun = DTPDaftar.getSelectedItem().toString().substring(8, 10);
             } else {
                 awalantahun = "";
             }
 
             if (bulan.equals("Yes")) {
-                awalanbulan = DTPDaftar.getSelectedItem().toString().
-                        substring(3, 5);
+                awalanbulan = DTPDaftar.getSelectedItem().toString().substring(3, 5);
             } else {
                 awalanbulan = "";
             }
@@ -5800,8 +5629,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 TNo.setText(awalantahun + awalanbulan + NoRm.getText());
             } else if (posisitahun.equals("Belakang")) {
                 if (!(awalanbulan + awalantahun).isEmpty()) {
-                    TNo.
-                            setText(NoRm.getText() + "-" + awalanbulan + awalantahun);
+                    TNo.setText(NoRm.getText() + "-" + awalanbulan + awalantahun);
                 } else {
                     TNo.setText(NoRm.getText());
                 }
@@ -5817,17 +5645,13 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             requestJson = "{ \"token\": \"" + koneksiDB.TOKENINHEALTH() + "\"," + "\"kodeprovider\": \""
                     + KdPPK.getText() + "\"," + "\"tanggalpelayanan\": \""
                     + Valid.SetTgl(TanggalSEP.getSelectedItem() + "") + "\"," + "\"jenispelayanan\": \""
-                    + JenisPelayanan.getSelectedItem().toString().
-                            substring(0, 1) + "\"," + "\"nokainhealth\": \""
-                    + NoKartu.getText() + "\"," + "\"nomormedicalreport\": \"" + TNo.
-                    getText() + "\","
+                    + JenisPelayanan.getSelectedItem().toString().substring(0, 1) + "\"," + "\"nokainhealth\": \""
+                    + NoKartu.getText() + "\"," + "\"nomormedicalreport\": \"" + TNo.getText() + "\","
                     + "\"nomorasalrujukan\": \"" + NoRujukan.getText() + "\"," + "\"kodeproviderasalrujukan\": \""
                     + KdPpkRujukan.getText() + "\"," + "\"tanggalasalrujukan\": \""
                     + Valid.SetTgl(TanggalRujuk.getSelectedItem() + "") + "\"," + "\"kodediagnosautama\": \""
-                    + KdPenyakit.getText() + "\"," + "\"poli\": \"" + KdPoli.
-                    getText() + "\"," + "\"username\": \""
-                    + user + "\"," + "\"informasitambahan\": \"" + Catatan.
-                            getText() + "\","
+                    + KdPenyakit.getText() + "\"," + "\"poli\": \"" + KdPoli.getText() + "\"," + "\"username\": \""
+                    + user + "\"," + "\"informasitambahan\": \"" + Catatan.getText() + "\","
                     + "\"kodediagnosatambahan\": \"" + KdPenyakit2.getText() + "\"," + "\"kecelakaankerja\": \""
                     + LakaLantas.getSelectedItem().toString().substring(0, 1) + "\"," + "\"kelasrawat\": \""
                     + Kelas.getSelectedItem().toString().substring(0, 3) + "\"," + "\"kodejenpelruangrawat\": \""
@@ -5836,69 +5660,45 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             HttpEntity requestEntity = new HttpEntity(requestJson, headers);
             RestTemplate rest = new RestTemplate();
             ObjectMapper mapper = new ObjectMapper();
-            requestJson = rest.exchange(URL, HttpMethod.POST, requestEntity,
-                    String.class).getBody();
+            requestJson = rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody();
             System.out.println("JSON : " + requestJson);
             JsonNode root = mapper.readTree(requestJson);
             if (root.path("ERRORCODE").asText().equals("00")) {
                 nosep = root.path("NOSJP").asText();
                 if (Sequel.menyimpantf("bridging_inhealth",
-                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
-                        "Data SJP", 35,
+                        "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data SJP", 35,
                         new String[]{nosep, TNoRw.getText(),
                             Valid.SetTgl(TanggalSEP.getSelectedItem() + "") + " "
-                            + TanggalSEP.getSelectedItem().toString().substring(
-                                    11, 19),
+                            + TanggalSEP.getSelectedItem().toString().substring(11, 19),
                             Valid.SetTgl(TanggalRujuk.getSelectedItem() + "") + " "
-                            + TanggalRujuk.getSelectedItem().toString().
-                                    substring(11, 19),
-                            NoRujukan.getText(), KdPpkRujukan.getText(),
-                            NmPpkRujukan.getText(), KdPPK.getText(),
-                            NmPPK.getText(), JenisPelayanan.getSelectedItem().
-                            toString().substring(0, 1),
-                            Catatan.getText(), KdPenyakit.getText(), NmPenyakit.
-                            getText(), KdPenyakit2.getText(),
-                            NmPenyakit2.getText(), KdPoli.getText(), NmPoli.
-                            getText(),
-                            Kelas.getSelectedItem().toString().substring(0, 3),
-                            root.path("KELASDESC").asText(),
-                            root.path("KDBU").asText(), root.path("NMBU").
-                            asText(),
-                            LakaLantas.getSelectedItem().toString().substring(0,
-                                    1), LokasiLaka.getText(), user,
-                            root.path("NOMEDICALRECORD").asText(), root.path(
-                            "NAMAPESERTA").asText(),
-                            root.path("TGLLAHIR").asText().replaceAll("T", " ").
-                                    replaceAll("Z", ""),
-                            CmbJk.getSelectedItem().toString(), root.path(
-                            "NOKAPESERTA").asText(),
-                            "0000-00-00 00:00:00", root.path("PLAN").asText(),
-                            root.path("PLANDESC").asText(),
-                            root.path("IDAKOMODASI").asText(), root.path(
-                            "TIPESJP").asText(),
+                            + TanggalRujuk.getSelectedItem().toString().substring(11, 19),
+                            NoRujukan.getText(), KdPpkRujukan.getText(), NmPpkRujukan.getText(), KdPPK.getText(),
+                            NmPPK.getText(), JenisPelayanan.getSelectedItem().toString().substring(0, 1),
+                            Catatan.getText(), KdPenyakit.getText(), NmPenyakit.getText(), KdPenyakit2.getText(),
+                            NmPenyakit2.getText(), KdPoli.getText(), NmPoli.getText(),
+                            Kelas.getSelectedItem().toString().substring(0, 3), root.path("KELASDESC").asText(),
+                            root.path("KDBU").asText(), root.path("NMBU").asText(),
+                            LakaLantas.getSelectedItem().toString().substring(0, 1), LokasiLaka.getText(), user,
+                            root.path("NOMEDICALRECORD").asText(), root.path("NAMAPESERTA").asText(),
+                            root.path("TGLLAHIR").asText().replaceAll("T", " ").replaceAll("Z", ""),
+                            CmbJk.getSelectedItem().toString(), root.path("NOKAPESERTA").asText(),
+                            "0000-00-00 00:00:00", root.path("PLAN").asText(), root.path("PLANDESC").asText(),
+                            root.path("IDAKOMODASI").asText(), root.path("TIPESJP").asText(),
                             root.path("TIPECOB").asText()}) == true) {
                     if (!nosep.isEmpty()) {
                         pilihan.tampil3();
                         if (JenisPelayanan.getSelectedIndex() == 1) {
-                            pilihan.setNoRm(TNoRw.getText(), TNo.getText(),
-                                    nosep, TNoReg.getText(), TPoli.getText(),
-                                    nmpnj.getText(), TDokter.getText(), TNm.
-                                    getText(),
-                                    Alamat.getText() + ", " + Kelurahan.
-                                    getText() + ", " + Kecamatan.getText() + ", "
+                            pilihan.setNoRm(TNoRw.getText(), TNo.getText(), nosep, TNoReg.getText(), TPoli.getText(),
+                                    nmpnj.getText(), TDokter.getText(), TNm.getText(),
+                                    Alamat.getText() + ", " + Kelurahan.getText() + ", " + Kecamatan.getText() + ", "
                                     + Kabupaten.getText(),
-                                    Saudara.getText(), Valid.SetTgl(TanggalSEP.
-                                    getSelectedItem() + ""), "ranap");
+                                    Saudara.getText(), Valid.SetTgl(TanggalSEP.getSelectedItem() + ""), "ranap");
                         } else {
-                            pilihan.setNoRm(TNoRw.getText(), TNo.getText(),
-                                    nosep, TNoReg.getText(), TPoli.getText(),
-                                    nmpnj.getText(), TDokter.getText(), TNm.
-                                    getText(),
-                                    Alamat.getText() + ", " + Kelurahan.
-                                    getText() + ", " + Kecamatan.getText() + ", "
+                            pilihan.setNoRm(TNoRw.getText(), TNo.getText(), nosep, TNoReg.getText(), TPoli.getText(),
+                                    nmpnj.getText(), TDokter.getText(), TNm.getText(),
+                                    Alamat.getText() + ", " + Kelurahan.getText() + ", " + Kecamatan.getText() + ", "
                                     + Kabupaten.getText(),
-                                    Saudara.getText(), Valid.SetTgl(TanggalSEP.
-                                    getSelectedItem() + ""), "ralan");
+                                    Saudara.getText(), Valid.SetTgl(TanggalSEP.getSelectedItem() + ""), "ralan");
                         }
 
                         pilihan.setSize(500, 400);
@@ -5914,8 +5714,7 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 if (statuspasien.equals("Baru")) {
                     Sequel.meghapus3("pasien", "no_rkm_medis", TNo.getText());
                 }
-                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").
-                        asText());
+                JOptionPane.showMessageDialog(null, root.path("ERRORDESC").asText());
                 NoKartu.requestFocus();
             }
         } catch (HeadlessException | IOException | RestClientException ex) {
@@ -5928,16 +5727,14 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             }
             System.out.println("Notifikasi Bridging : " + ex);
             if (ex.toString().contains("UnknownHostException")) {
-                JOptionPane.showMessageDialog(null,
-                        "Koneksi ke server Inhealth terputus...!");
+                JOptionPane.showMessageDialog(null, "Koneksi ke server Inhealth terputus...!");
             }
         }
     }
 
     private void inputRegistrasi() {
         try {
-            pscariumur = koneksi.prepareStatement(
-                    "select TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) as tahun, "
+            pscariumur = koneksi.prepareStatement("select TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) as tahun, "
                     + "(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) - ((TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) div 12) * 12)) as bulan, "
                     + "TIMESTAMPDIFF(DAY, DATE_ADD(DATE_ADD(tgl_lahir,INTERVAL TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) YEAR), INTERVAL TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) - ((TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) div 12) * 12) MONTH), CURDATE()) as hari "
                     + "from pasien where no_rkm_medis=?");
@@ -5976,147 +5773,93 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
 
         status = Sequel.cariIsi(
                 "select if((select count(reg_periksa.no_rkm_medis) from reg_periksa where reg_periksa.no_rkm_medis='"
-                + TNo.getText() + "' and reg_periksa.kd_poli='" + kdpoli.
-                getText() + "')>0,'Lama','Baru' )");
-        if ((JenisPelayanan.getSelectedIndex() == 0) || (JenisPelayanan.
-                getSelectedIndex() == 2)) {
+                + TNo.getText() + "' and reg_periksa.kd_poli='" + kdpoli.getText() + "')>0,'Lama','Baru' )");
+        if ((JenisPelayanan.getSelectedIndex() == 0) || (JenisPelayanan.getSelectedIndex() == 2)) {
             isPoli();
             isNumber();
-            if (Sequel.menyimpantf2("reg_periksa",
-                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 19,
-                    new String[]{TNoReg.getText(), TNoRw.getText(), Valid.
-                        SetTgl(TanggalSEP.getSelectedItem() + ""),
-                        TanggalSEP.getSelectedItem().toString().
-                                substring(11, 19), kddokter.getText(),
+            if (Sequel.menyimpantf2("reg_periksa", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 19,
+                    new String[]{TNoReg.getText(), TNoRw.getText(), Valid.SetTgl(TanggalSEP.getSelectedItem() + ""),
+                        TanggalSEP.getSelectedItem().toString().substring(11, 19), kddokter.getText(),
                         TNo.getText(), kdpoli.getText(), Saudara.getText(),
-                        AlamatPj.getText() + ", " + KelurahanPj.getText() + ", " + KecamatanPj.
-                        getText() + ", "
+                        AlamatPj.getText() + ", " + KelurahanPj.getText() + ", " + KecamatanPj.getText() + ", "
                         + KabupatenPj.getText(),
-                        klg, TBiaya.getText(), "Belum", "Lama", "Ralan", Kdpnj.
-                        getText(), umur, sttsumur,
+                        klg, TBiaya.getText(), "Belum", "Lama", "Ralan", Kdpnj.getText(), umur, sttsumur,
                         "Belum Bayar", status}) == true) {
                 UpdateUmur();
                 Sequel.menyimpan2("rujuk_masuk",
-                        "'" + TNoRw.getText() + "','" + NmPpkRujukan.getText() + "','" + Kabupaten.
-                        getText() + "','"
-                        + NoRujukan.getText() + "','0','" + NmPPK.getText() + "','" + KdPenyakit.
-                        getText()
+                        "'" + TNoRw.getText() + "','" + NmPpkRujukan.getText() + "','" + Kabupaten.getText() + "','"
+                        + NoRujukan.getText() + "','0','" + NmPPK.getText() + "','" + KdPenyakit.getText()
                         + "','-','-','" + NoBalasan.getText() + "'",
                         "No.Rujuk");
-                Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6,
-                        new String[]{KdPenyakit.getText(),
-                            NmPenyakit.getText(), NmPenyakit.getText(), "-", "-",
-                            "Tidak Menular"});
-                if (Sequel.cariInteger(
-                        "select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
+                Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6, new String[]{KdPenyakit.getText(),
+                    NmPenyakit.getText(), NmPenyakit.getText(), "-", "-", "Tidak Menular"});
+                if (Sequel.cariInteger("select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
                         + "inner join reg_periksa inner join pasien on "
                         + "diagnosa_pasien.no_rawat=reg_periksa.no_rawat and "
                         + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='"
-                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit.
-                        getText() + "'") > 0) {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit.
-                                        getText(), "Ralan", "1", "Lama"});
+                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit.getText() + "'") > 0) {
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit.getText(), "Ralan", "1", "Lama"});
                 } else {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit.
-                                        getText(), "Ralan", "1", "Baru"});
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit.getText(), "Ralan", "1", "Baru"});
                 }
-                if (Sequel.cariInteger(
-                        "select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
+                if (Sequel.cariInteger("select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
                         + "inner join reg_periksa inner join pasien on "
                         + "diagnosa_pasien.no_rawat=reg_periksa.no_rawat and "
                         + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='"
-                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit2.
-                        getText() + "'") > 0) {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit2.
-                                        getText(), "Ralan", "2", "Lama"});
+                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit2.getText() + "'") > 0) {
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit2.getText(), "Ralan", "2", "Lama"});
                 } else {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit2.
-                                        getText(), "Ralan", "2", "Baru"});
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit2.getText(), "Ralan", "2", "Baru"});
                 }
                 insertSJP();
             }
-        } else if ((JenisPelayanan.getSelectedIndex() == 1) || (JenisPelayanan.
-                getSelectedIndex() == 3)) {
+        } else if ((JenisPelayanan.getSelectedIndex() == 1) || (JenisPelayanan.getSelectedIndex() == 3)) {
             isNumber();
-            Sequel.menyimpan("poliklinik", "?,?,?,?,?", 5, new String[]{"IGDK",
-                "Unit IGD", "0", "0", "1"});
-            if (Sequel.menyimpantf2("reg_periksa",
-                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 19,
-                    new String[]{TNoReg.getText(), TNoRw.getText(), Valid.
-                        SetTgl(TanggalSEP.getSelectedItem() + ""),
-                        TanggalSEP.getSelectedItem().toString().
-                                substring(11, 19), kddokter.getText(),
+            Sequel.menyimpan("poliklinik", "?,?,?,?,?", 5, new String[]{"IGDK", "Unit IGD", "0", "0", "1"});
+            if (Sequel.menyimpantf2("reg_periksa", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 19,
+                    new String[]{TNoReg.getText(), TNoRw.getText(), Valid.SetTgl(TanggalSEP.getSelectedItem() + ""),
+                        TanggalSEP.getSelectedItem().toString().substring(11, 19), kddokter.getText(),
                         TNo.getText(), "IGDK", Saudara.getText(),
-                        AlamatPj.getText() + ", " + KelurahanPj.getText() + ", " + KecamatanPj.
-                        getText() + ", "
+                        AlamatPj.getText() + ", " + KelurahanPj.getText() + ", " + KecamatanPj.getText() + ", "
                         + KabupatenPj.getText(),
                         klg,
                         Sequel.cariIsi(
                                 "select poliklinik.registrasilama from poliklinik where poliklinik.kd_poli='IGDK'"),
-                        "Belum", "Lama", "Ralan", Kdpnj.getText(), umur,
-                        sttsumur, "Belum Bayar",
+                        "Belum", "Lama", "Ralan", Kdpnj.getText(), umur, sttsumur, "Belum Bayar",
                         status}) == true) {
                 UpdateUmur();
                 Sequel.menyimpan2("rujuk_masuk",
-                        "'" + TNoRw.getText() + "','" + NmPpkRujukan.getText() + "','" + Kabupaten.
-                        getText() + "','"
-                        + NoRujukan.getText() + "','0','" + NmPPK.getText() + "','" + KdPenyakit.
-                        getText()
+                        "'" + TNoRw.getText() + "','" + NmPpkRujukan.getText() + "','" + Kabupaten.getText() + "','"
+                        + NoRujukan.getText() + "','0','" + NmPPK.getText() + "','" + KdPenyakit.getText()
                         + "','-','-','" + NoBalasan.getText() + "'",
                         "No.Rujuk");
-                Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6,
-                        new String[]{KdPenyakit.getText(),
-                            NmPenyakit.getText(), NmPenyakit.getText(), "-", "-",
-                            "Tidak Menular"});
-                if (Sequel.cariInteger(
-                        "select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
+                Sequel.menyimpan3("penyakit", "?,?,?,?,?,?", "Penyakit", 6, new String[]{KdPenyakit.getText(),
+                    NmPenyakit.getText(), NmPenyakit.getText(), "-", "-", "Tidak Menular"});
+                if (Sequel.cariInteger("select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
                         + "inner join reg_periksa inner join pasien on "
                         + "diagnosa_pasien.no_rawat=reg_periksa.no_rawat and "
                         + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='"
-                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit.
-                        getText() + "'") > 0) {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit.
-                                        getText(), "Ralan", "1", "Lama"});
+                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit.getText() + "'") > 0) {
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit.getText(), "Ralan", "1", "Lama"});
                 } else {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit.
-                                        getText(), "Ralan", "1", "Baru"});
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit.getText(), "Ralan", "1", "Baru"});
                 }
-                if (Sequel.cariInteger(
-                        "select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
+                if (Sequel.cariInteger("select count(diagnosa_pasien.kd_penyakit) from diagnosa_pasien "
                         + "inner join reg_periksa inner join pasien on "
                         + "diagnosa_pasien.no_rawat=reg_periksa.no_rawat and "
                         + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis where " + "pasien.no_rkm_medis='"
-                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit2.
-                        getText() + "'") > 0) {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit2.
-                                        getText(), "Ralan", "2", "Lama"});
+                        + TNo.getText() + "' and diagnosa_pasien.kd_penyakit='" + KdPenyakit2.getText() + "'") > 0) {
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit2.getText(), "Ralan", "2", "Lama"});
                 } else {
-                    Sequel.
-                            menyimpan2("diagnosa_pasien", "?,?,?,?,?",
-                                    "Penyakit", 5,
-                                    new String[]{TNoRw.getText(), KdPenyakit2.
-                                        getText(), "Ralan", "2", "Baru"});
+                    Sequel.menyimpan2("diagnosa_pasien", "?,?,?,?,?", "Penyakit", 5,
+                            new String[]{TNoRw.getText(), KdPenyakit2.getText(), "Ralan", "2", "Baru"});
                 }
 
                 jmlhari = 0;
@@ -6126,19 +5869,13 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                     biaya = Double.parseDouble(TBiaya.getText());
                 }
                 if (Sequel.menyimpantf2("kamar_inap",
-                        "'" + TNoRw.getText() + "','" + KdKamar.getText() + "','" + TBiaya.
-                        getText() + "','"
-                        + KdPenyakit.getText() + "','-','" + Valid.SetTgl(
-                        TanggalSEP.getSelectedItem() + "")
-                        + "','" + TanggalSEP.getSelectedItem().toString().
-                                substring(11, 19) + "','0000-00-00',"
+                        "'" + TNoRw.getText() + "','" + KdKamar.getText() + "','" + TBiaya.getText() + "','"
+                        + KdPenyakit.getText() + "','-','" + Valid.SetTgl(TanggalSEP.getSelectedItem() + "")
+                        + "','" + TanggalSEP.getSelectedItem().toString().substring(11, 19) + "','0000-00-00',"
                         + "'00:00:00','" + jmlhari + "','" + biaya + "','-'",
                         "No.Rawat") == true) {
-                    Sequel.mengedit("reg_periksa", "no_rawat='" + TNoRw.
-                            getText() + "'", "status_lanjut='Ranap'");
-                    Sequel.mengedit("kamar",
-                            "kd_kamar='" + KdKamar.getText() + "'",
-                            "status='ISI'");
+                    Sequel.mengedit("reg_periksa", "no_rawat='" + TNoRw.getText() + "'", "status_lanjut='Ranap'");
+                    Sequel.mengedit("kamar", "kd_kamar='" + KdKamar.getText() + "'", "status='ISI'");
                     insertSJP();
                 }
             }
@@ -6160,65 +5897,45 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
             klg = "ANAK";
         }
 
-        Sequel.queryu4("insert ignore into kelurahan values(?,?)", 2,
-                new String[]{"0", Kelurahan.getText()});
-        Sequel.queryu4("insert ignore into kecamatan values(?,?)", 2,
-                new String[]{"0", Kecamatan.getText()});
-        Sequel.queryu4("insert ignore into kabupaten values(?,?)", 2,
-                new String[]{"0", Kabupaten.getText()});
-        Sequel.queryu4("insert into penjab values(?,?)", 2, new String[]{Kdpnj.
-            getText(), nmpnj.getText()});
-        Sequel.queryu4("insert ignore into propinsi values(?,?)", 2,
-                new String[]{"0", Propinsi.getText()});
+        Sequel.queryu4("insert ignore into kelurahan values(?,?)", 2, new String[]{"0", Kelurahan.getText()});
+        Sequel.queryu4("insert ignore into kecamatan values(?,?)", 2, new String[]{"0", Kecamatan.getText()});
+        Sequel.queryu4("insert ignore into kabupaten values(?,?)", 2, new String[]{"0", Kabupaten.getText()});
+        Sequel.queryu4("insert into penjab values(?,?)", 2, new String[]{Kdpnj.getText(), nmpnj.getText()});
+        Sequel.queryu4("insert ignore into propinsi values(?,?)", 2, new String[]{"0", Propinsi.getText()});
 
         if (statuspasien.equals("baru")) {
             autoNomor();
-            if (Sequel.menyimpantf2("pasien",
-                    "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
+            if (Sequel.menyimpantf2("pasien", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?",
                     "No.Rekam Medis Pasien", 36,
                     new String[]{TNo.getText(), TNm.getText(), TKtp.getText(),
-                        CmbJk.getSelectedItem().toString().substring(0, 1),
-                        TTmp.getText(),
-                        Valid.SetTgl(DTPLahir.getSelectedItem() + ""), NmIbu.
-                        getText(),
-                        Alamat.getText().replaceAll("ALAMAT", ""), CMbGd.
-                        getSelectedItem().toString(),
-                        Pekerjaan.getText(), CmbStts.getSelectedItem().
-                        toString(),
+                        CmbJk.getSelectedItem().toString().substring(0, 1), TTmp.getText(),
+                        Valid.SetTgl(DTPLahir.getSelectedItem() + ""), NmIbu.getText(),
+                        Alamat.getText().replaceAll("ALAMAT", ""), CMbGd.getSelectedItem().toString(),
+                        Pekerjaan.getText(), CmbStts.getSelectedItem().toString(),
                         cmbAgama.getSelectedItem().toString(),
                         DTPDaftar.getSelectedItem().toString().substring(6, 10) + "-"
                         + DTPDaftar.getSelectedItem().toString().substring(3, 5) + "-"
                         + DTPDaftar.getSelectedItem().toString().substring(0, 2),
-                        TTlp.getText(), TUmur.getText(), CMbPnd.
-                        getSelectedItem().toString(), klg,
-                        Saudara.getText(), Kdpnj.getText(), TNoPeserta.getText(),
-                        kel.tampil3(Kelurahan.getText()),
-                        kec.tampil3(Kecamatan.getText()), kab.tampil3(Kabupaten.
-                        getText()), PekerjaanPj.getText(),
-                        AlamatPj.getText(), KelurahanPj.getText(), KecamatanPj.
-                        getText(), KabupatenPj.getText(),
-                        kdperusahaan.getText(), kdsuku.getText(), kdbahasa.
-                        getText(), kdcacat.getText(),
-                        EMail.getText(), NIP.getText(), propin.tampil3(Propinsi.
-                        getText()),
+                        TTlp.getText(), TUmur.getText(), CMbPnd.getSelectedItem().toString(), klg,
+                        Saudara.getText(), Kdpnj.getText(), TNoPeserta.getText(), kel.tampil3(Kelurahan.getText()),
+                        kec.tampil3(Kecamatan.getText()), kab.tampil3(Kabupaten.getText()), PekerjaanPj.getText(),
+                        AlamatPj.getText(), KelurahanPj.getText(), KecamatanPj.getText(), KabupatenPj.getText(),
+                        kdperusahaan.getText(), kdsuku.getText(), kdbahasa.getText(), kdcacat.getText(),
+                        EMail.getText(), NIP.getText(), propin.tampil3(Propinsi.getText()),
                         PropinsiPj.getText()}) == true) {
                 if (chkTNI.isSelected() == true) {
                     Sequel.menyimpan2("pasien_tni", "?,?,?,?,?", "Data", 5,
-                            new String[]{TNo.getText(), kdgolongantni.getText(),
-                                kdpangkattni.getText(),
+                            new String[]{TNo.getText(), kdgolongantni.getText(), kdpangkattni.getText(),
                                 kdsatuantni.getText(), kdjabatantni.getText()});
                 }
                 if (chkPolri.isSelected() == true) {
                     Sequel.menyimpan2("pasien_polri", "?,?,?,?,?,?", "Data", 5,
-                            new String[]{TNo.getText(), kdgolonganpolri.
-                                getText(), kdpangkatpolri.getText(),
-                                kdsatuanpolri.getText(), kdjabatanpolri.
-                                getText()});
+                            new String[]{TNo.getText(), kdgolonganpolri.getText(), kdpangkatpolri.getText(),
+                                kdsatuanpolri.getText(), kdjabatanpolri.getText()});
                 }
                 if (ChkRM.isSelected() == true) {
                     Sequel.queryu2("delete from set_no_rkm_medis");
-                    Sequel.queryu2("insert into set_no_rkm_medis values(?)", 1,
-                            new String[]{TNo.getText()});
+                    Sequel.queryu2("insert into set_no_rkm_medis values(?)", 1, new String[]{TNo.getText()});
                 }
 
                 inputRegistrasi();
@@ -6226,35 +5943,25 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
                 autoNomor();
             }
         } else if (statuspasien.equals("lama")) {
-            Sequel.mengedit("pasien", "no_rkm_medis=?",
-                    "no_rkm_medis=?,nm_pasien=?,no_ktp=?,jk=?,tmp_lahir=?,"
+            Sequel.mengedit("pasien", "no_rkm_medis=?", "no_rkm_medis=?,nm_pasien=?,no_ktp=?,jk=?,tmp_lahir=?,"
                     + "tgl_lahir=?,alamat=?,gol_darah=?,pekerjaan=?,stts_nikah=?,agama=?,tgl_daftar=?,no_tlp=?,umur=?"
                     + ",pnd=?,keluarga=?,namakeluarga=?,kd_pj=?,no_peserta=?,kd_kel=?,kd_kec=?,kd_kab=?,nm_ibu=?,pekerjaanpj=?,"
                     + "alamatpj=?,kelurahanpj=?,kecamatanpj=?,kabupatenpj=?,perusahaan_pasien=?,suku_bangsa=?,bahasa_pasien=?,"
                     + "cacat_fisik=?,email=?,nip=?,kd_prop=?,propinsipj=?", 37,
                     new String[]{TNo.getText(), TNm.getText(), TKtp.getText(),
-                        CmbJk.getSelectedItem().toString().substring(0, 1),
-                        TTmp.getText(),
-                        Valid.SetTgl(DTPLahir.getSelectedItem() + ""), Alamat.
-                        getText(),
+                        CmbJk.getSelectedItem().toString().substring(0, 1), TTmp.getText(),
+                        Valid.SetTgl(DTPLahir.getSelectedItem() + ""), Alamat.getText(),
                         CMbGd.getSelectedItem().toString(), Pekerjaan.getText(),
-                        CmbStts.getSelectedItem().toString(), cmbAgama.
-                        getSelectedItem().toString(),
+                        CmbStts.getSelectedItem().toString(), cmbAgama.getSelectedItem().toString(),
                         DTPDaftar.getSelectedItem().toString().substring(6, 10) + "-"
                         + DTPDaftar.getSelectedItem().toString().substring(3, 5) + "-"
                         + DTPDaftar.getSelectedItem().toString().substring(0, 2),
-                        TTlp.getText(), TUmur.getText(), CMbPnd.
-                        getSelectedItem().toString(), klg,
-                        Saudara.getText(), Kdpnj.getText(), TNoPeserta.getText(),
-                        kel.tampil3(Kelurahan.getText()),
-                        kec.tampil3(Kecamatan.getText()), kab.tampil3(Kabupaten.
-                        getText()), NmIbu.getText(),
-                        PekerjaanPj.getText(), AlamatPj.getText(), KelurahanPj.
-                        getText(), KecamatanPj.getText(),
-                        KabupatenPj.getText(), kdperusahaan.getText(), kdsuku.
-                        getText(), kdbahasa.getText(),
-                        kdcacat.getText(), EMail.getText(), NIP.getText(),
-                        propin.tampil3(Propinsi.getText()),
+                        TTlp.getText(), TUmur.getText(), CMbPnd.getSelectedItem().toString(), klg,
+                        Saudara.getText(), Kdpnj.getText(), TNoPeserta.getText(), kel.tampil3(Kelurahan.getText()),
+                        kec.tampil3(Kecamatan.getText()), kab.tampil3(Kabupaten.getText()), NmIbu.getText(),
+                        PekerjaanPj.getText(), AlamatPj.getText(), KelurahanPj.getText(), KecamatanPj.getText(),
+                        KabupatenPj.getText(), kdperusahaan.getText(), kdsuku.getText(), kdbahasa.getText(),
+                        kdcacat.getText(), EMail.getText(), NIP.getText(), propin.tampil3(Propinsi.getText()),
                         PropinsiPj.getText(), TNo.getText()});
 
             inputRegistrasi();
@@ -6279,7 +5986,6 @@ public class InhealthCekEligibilitas extends javax.swing.JDialog {
         empt = true;
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            InhealthCekEligibilitas.class.getName());
+    private static final Logger LOG = Logger.getLogger(InhealthCekEligibilitas.class.getName());
 
 }

@@ -34,21 +34,30 @@ import kepegawaian.DlgCariDokter;
 import kepegawaian.DlgCariPetugas;
 
 /**
- *
  * @author perpustakaan
  */
 public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
 
     private final DefaultTableModel tabMode;
+
     private Connection koneksi = koneksiDB.condb();
+
     private sekuel Sequel = new sekuel();
+
     private validasi Valid = new validasi();
+
     private PreparedStatement ps;
+
     private ResultSet rs;
+
     private int i = 0;
+
     private DlgCariPetugas petugas = new DlgCariPetugas(null, false);
+
     private DlgCariDokter dokter = new DlgCariDokter(null, false);
+
     private String finger = "", finger2 = "";
+
     private String TANGGALMUNDUR = "yes";
 
     /**
@@ -57,20 +66,17 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public RMMonitoringAldrettePascaAnestesi(java.awt.Frame parent,
-            boolean modal) {
+    public RMMonitoringAldrettePascaAnestesi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(8, 1);
         setSize(800, 674);
 
-        tabMode = new DefaultTableModel(null, new Object[]{
-            "No.Rawat", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "JK", "Tanggal",
-            "1. Aktivitas", "N.K. 1", "2. Respirasi", "N.K. 2",
-            "3. Tekanan Darah", "N.K. 3", "4. Kesadaran", "N.K. 4",
-            "5. Warna Kulit", "N.K. 5", "Total", "Keluar", "Instruksi",
-            "Kode Dokter", "Nama Dokter", "NIP", "Petugas"
-        }) {
+        tabMode = new DefaultTableModel(null,
+                new Object[]{"No.Rawat", "No.R.M.", "Nama Pasien", "Tgl.Lahir", "JK", "Tanggal", "1. Aktivitas",
+                    "N.K. 1", "2. Respirasi", "N.K. 2", "3. Tekanan Darah", "N.K. 3", "4. Kesadaran", "N.K. 4",
+                    "5. Warna Kulit", "N.K. 5", "Total", "Keluar", "Instruksi", "Kode Dokter", "Nama Dokter", "NIP",
+                    "Petugas"}) {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
@@ -79,7 +85,8 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
         };
         tbObat.setModel(tabMode);
 
-        //tbObat.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
+        // tbObat.setDefaultRenderer(Object.class, new
+        // WarnaTable(panelJudul.getBackground(),tbObat.getBackground()));
         tbObat.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -143,8 +150,7 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
         TCari.setDocument(new batasInput(100).getKata(TCari));
 
         if (koneksiDB.CARICEPAT().equals("aktif")) {
-            TCari.getDocument().addDocumentListener(
-                    new javax.swing.event.DocumentListener() {
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     if (TCari.getText().length() > 2) {
@@ -181,10 +187,8 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (dokter.getTable().getSelectedRow() != -1) {
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 0).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.
-                            getTable().getSelectedRow(), 1).toString());
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 0).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(), 1).toString());
                     KdDokter.requestFocus();
                 }
             }
@@ -219,10 +223,9 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 if (petugas.getTable().getSelectedRow() != -1) {
-                    NIP.setText(petugas.getTable().getValueAt(
-                            petugas.getTable().getSelectedRow(), 0).toString());
-                    NamaPetugas.setText(petugas.getTable().getValueAt(petugas.
-                            getTable().getSelectedRow(), 1).toString());
+                    NIP.setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 0).toString());
+                    NamaPetugas
+                            .setText(petugas.getTable().getValueAt(petugas.getTable().getSelectedRow(), 1).toString());
                 }
                 NIP.requestFocus();
             }
@@ -257,7 +260,9 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1651,8 +1656,8 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMMonitoringAldrettePascaAnestesi dialog = new RMMonitoringAldrettePascaAnestesi(
-                    new javax.swing.JFrame(), true);
+            RMMonitoringAldrettePascaAnestesi dialog = new RMMonitoringAldrettePascaAnestesi(new javax.swing.JFrame(),
+                    true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1798,15 +1803,11 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
 
             try {
                 if (TCari.getText().trim().isEmpty()) {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                 } else {
-                    ps.setString(1, Valid.
-                            SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
-                    ps.setString(2, Valid.
-                            SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
+                    ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + "") + " 00:00:00");
+                    ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + "") + " 23:59:59");
                     ps.setString(3, "%" + TCari.getText() + "%");
                     ps.setString(4, "%" + TCari.getText() + "%");
                     ps.setString(5, "%" + TCari.getText() + "%");
@@ -1818,23 +1819,16 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    tabMode.addRow(new String[]{
-                        rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"),
-                        rs.getString("jk"), rs.getString("tanggal"),
-                        rs.getString("penilaian_skala1"), rs.getString(
-                        "penilaian_nilai1"), rs.getString("penilaian_skala2"),
-                        rs.getString("penilaian_nilai2"), rs.getString(
-                        "penilaian_skala3"),
-                        rs.getString("penilaian_nilai3"), rs.getString(
-                        "penilaian_skala4"), rs.getString("penilaian_nilai4"),
-                        rs.getString("penilaian_skala5"), rs.getString(
-                        "penilaian_nilai5"),
-                        rs.getString("penilaian_totalnilai"), rs.getString(
-                        "keluar"), rs.getString("instruksi"), rs.getString(
-                        "kd_dokter"), rs.getString("nm_dokter"), rs.getString(
-                        "nip"), rs.getString("nama")
-                    });
+                    tabMode.addRow(new String[]{rs.getString("no_rawat"), rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"), rs.getString("tgl_lahir"), rs.getString("jk"),
+                        rs.getString("tanggal"), rs.getString("penilaian_skala1"), rs.getString("penilaian_nilai1"),
+                        rs.getString("penilaian_skala2"), rs.getString("penilaian_nilai2"),
+                        rs.getString("penilaian_skala3"), rs.getString("penilaian_nilai3"),
+                        rs.getString("penilaian_skala4"), rs.getString("penilaian_nilai4"),
+                        rs.getString("penilaian_skala5"), rs.getString("penilaian_nilai5"),
+                        rs.getString("penilaian_totalnilai"), rs.getString("keluar"), rs.getString("instruksi"),
+                        rs.getString("kd_dokter"), rs.getString("nm_dokter"), rs.getString("nip"),
+                        rs.getString("nama")});
                 }
             } catch (Exception e) {
                 System.out.println("Notif : " + e);
@@ -1870,60 +1864,36 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
         NilaiKriteriaTotal.setText("0");
         Keluar.setText("");
         Instruksi.setText("");
-        TingkatSkor.setText(
-                "Pasien Tidak Dapat Dipindahkan Ke Ruangan Perawatan, Karena Kondisi Yang Lemah");
+        TingkatSkor.setText("Pasien Tidak Dapat Dipindahkan Ke Ruangan Perawatan, Karena Kondisi Yang Lemah");
         SkalaKriteria1.requestFocus();
     }
 
     private void getData() {
         if (tbObat.getSelectedRow() != -1) {
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).
-                    toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).
-                    toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).
-                    toString());
-            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).
-                    toString());
+            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString());
+            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString());
+            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString());
+            TglLahir.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString());
             JK.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString());
-            SkalaKriteria1.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 6).toString());
-            NilaKriteria1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).
-                    toString());
-            SkalaKriteria2.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 8).toString());
-            NilaKriteria2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).
-                    toString());
-            SkalaKriteria3.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 10).toString());
-            NilaKriteria3.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
-            SkalaKriteria4.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 12).toString());
-            NilaKriteria4.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
-            SkalaKriteria5.setSelectedItem(tbObat.getValueAt(tbObat.
-                    getSelectedRow(), 14).toString());
-            NilaKriteria5.setText(
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
-            NilaiKriteriaTotal.setText(tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 16).toString());
-            Keluar.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).
-                    toString());
-            Instruksi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).
-                    toString());
-            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).
-                    toString());
-            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).
-                    toString());
-            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(11, 13));
-            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(14, 16));
-            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString().substring(17, 19));
-            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).
-                    toString());
+            SkalaKriteria1.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString());
+            NilaKriteria1.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString());
+            SkalaKriteria2.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 8).toString());
+            NilaKriteria2.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString());
+            SkalaKriteria3.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString());
+            NilaKriteria3.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 11).toString());
+            SkalaKriteria4.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 12).toString());
+            NilaKriteria4.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 13).toString());
+            SkalaKriteria5.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 14).toString());
+            NilaKriteria5.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 15).toString());
+            NilaiKriteriaTotal.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 16).toString());
+            Keluar.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 17).toString());
+            Instruksi.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 18).toString());
+            KdDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 19).toString());
+            NmDokter.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 20).toString());
+            Jam.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(11, 13));
+            Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(14, 16));
+            Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().substring(17, 19));
+            Valid.SetTgl(Tanggal, tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString());
         }
     }
 
@@ -1940,9 +1910,7 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
                     DTPCari1.setDate(rs.getDate("tgl_registrasi"));
                     TPasien.setText(rs.getString("nm_pasien"));
                     JK.setText(rs.getString("jk"));
-                    TanggalRegistrasi.setText(
-                            rs.getString("tgl_registrasi") + " " + rs.getString(
-                            "jam_reg"));
+                    TanggalRegistrasi.setText(rs.getString("tgl_registrasi") + " " + rs.getString("jam_reg"));
                     TglLahir.setText(rs.getString("tgl_lahir"));
                 }
             } catch (Exception e) {
@@ -1961,7 +1929,6 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
     }
 
     /**
-     *
      * @param norwt
      * @param tgl2
      */
@@ -1983,8 +1950,7 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
                 ChkInput.setVisible(true);
             } else {
                 ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.
-                        getHeight() - 172));
+                PanelInput.setPreferredSize(new Dimension(WIDTH, internalFrame1.getHeight() - 172));
                 FormInput.setVisible(true);
                 ChkInput.setVisible(true);
             }
@@ -2008,8 +1974,7 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
             NamaPetugas.setText(petugas.tampil3(NIP.getText()));
             if (NamaPetugas.getText().isEmpty()) {
                 NIP.setText("");
-                JOptionPane.showMessageDialog(null,
-                        "User login bukan petugas...!!");
+                JOptionPane.showMessageDialog(null, "User login bukan petugas...!!");
             }
         }
 
@@ -2028,7 +1993,9 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
     private void jam() {
         ActionListener taskPerformer = new ActionListener() {
             private int nilai_jam;
+
             private int nilai_menit;
+
             private int nilai_detik;
 
             @Override
@@ -2070,7 +2037,7 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
                 String menit = nol_menit + Integer.toString(nilai_menit);
                 String detik = nol_detik + Integer.toString(nilai_detik);
                 // Menampilkan pada Layar
-                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                // tampil_jam.setText(" " + jam + " : " + menit + " : " + detik + " ");
                 Jam.setSelectedItem(jam);
                 Menit.setSelectedItem(menit);
                 Detik.setSelectedItem(detik);
@@ -2082,79 +2049,55 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if (Sequel.mengedittf("skor_aldrette_pasca_anestesi",
-                "tanggal=? and no_rawat=?",
+        if (Sequel.mengedittf("skor_aldrette_pasca_anestesi", "tanggal=? and no_rawat=?",
                 "no_rawat=?,tanggal=?,penilaian_skala1=?,penilaian_nilai1=?,"
                 + "penilaian_skala2=?,penilaian_nilai2=?,penilaian_skala3=?,penilaian_nilai3=?,penilaian_skala4=?,"
                 + "penilaian_nilai4=?,penilaian_skala5=?,penilaian_nilai5=?,"
                 + "penilaian_totalnilai=?,keluar=?,instruksi=?,kd_dokter=?,nip=?",
-                19, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    SkalaKriteria1.getSelectedItem().toString(), NilaKriteria1.
-                    getText(), SkalaKriteria2.getSelectedItem().toString(),
-                    NilaKriteria2.getText(), SkalaKriteria3.getSelectedItem().
-                    toString(), NilaKriteria3.getText(),
-                    SkalaKriteria4.getSelectedItem().toString(), NilaKriteria4.
-                    getText(), SkalaKriteria5.getSelectedItem().toString(),
-                    NilaKriteria5.getText(),
-                    NilaiKriteriaTotal.getText(), Keluar.getText(), Instruksi.
-                    getText(), KdDokter.getText(), NIP.getText(), tbObat.
-                    getValueAt(tbObat.getSelectedRow(), 5).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+                19,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    SkalaKriteria1.getSelectedItem().toString(), NilaKriteria1.getText(),
+                    SkalaKriteria2.getSelectedItem().toString(), NilaKriteria2.getText(),
+                    SkalaKriteria3.getSelectedItem().toString(), NilaKriteria3.getText(),
+                    SkalaKriteria4.getSelectedItem().toString(), NilaKriteria4.getText(),
+                    SkalaKriteria5.getSelectedItem().toString(), NilaKriteria5.getText(),
+                    NilaiKriteriaTotal.getText(), Keluar.getText(), Instruksi.getText(), KdDokter.getText(),
+                    NIP.getText(), tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tbObat.setValueAt(TNoRw.getText(), tbObat.getSelectedRow(), 0);
             tbObat.setValueAt(TNoRM.getText(), tbObat.getSelectedRow(), 1);
             tbObat.setValueAt(TPasien.getText(), tbObat.getSelectedRow(), 2);
             tbObat.setValueAt(TglLahir.getText(), tbObat.getSelectedRow(), 3);
             tbObat.setValueAt(JK.getText(), tbObat.getSelectedRow(), 4);
-            tbObat.setValueAt(
-                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(), tbObat.getSelectedRow(), 5);
-            tbObat.setValueAt(SkalaKriteria1.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 6);
-            tbObat.setValueAt(NilaKriteria1.getText(), tbObat.getSelectedRow(),
-                    7);
-            tbObat.setValueAt(SkalaKriteria2.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 8);
-            tbObat.setValueAt(NilaKriteria2.getText(), tbObat.getSelectedRow(),
-                    9);
-            tbObat.setValueAt(SkalaKriteria3.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 10);
-            tbObat.setValueAt(NilaKriteria3.getText(), tbObat.getSelectedRow(),
-                    11);
-            tbObat.setValueAt(SkalaKriteria4.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 12);
-            tbObat.setValueAt(NilaKriteria4.getText(), tbObat.getSelectedRow(),
-                    13);
-            tbObat.setValueAt(SkalaKriteria5.getSelectedItem().toString(),
-                    tbObat.getSelectedRow(), 14);
-            tbObat.setValueAt(NilaKriteria5.getText(), tbObat.getSelectedRow(),
-                    15);
-            tbObat.setValueAt(NilaiKriteriaTotal.getText(), tbObat.
-                    getSelectedRow(), 16);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(), tbObat.getSelectedRow(), 5);
+            tbObat.setValueAt(SkalaKriteria1.getSelectedItem().toString(), tbObat.getSelectedRow(), 6);
+            tbObat.setValueAt(NilaKriteria1.getText(), tbObat.getSelectedRow(), 7);
+            tbObat.setValueAt(SkalaKriteria2.getSelectedItem().toString(), tbObat.getSelectedRow(), 8);
+            tbObat.setValueAt(NilaKriteria2.getText(), tbObat.getSelectedRow(), 9);
+            tbObat.setValueAt(SkalaKriteria3.getSelectedItem().toString(), tbObat.getSelectedRow(), 10);
+            tbObat.setValueAt(NilaKriteria3.getText(), tbObat.getSelectedRow(), 11);
+            tbObat.setValueAt(SkalaKriteria4.getSelectedItem().toString(), tbObat.getSelectedRow(), 12);
+            tbObat.setValueAt(NilaKriteria4.getText(), tbObat.getSelectedRow(), 13);
+            tbObat.setValueAt(SkalaKriteria5.getSelectedItem().toString(), tbObat.getSelectedRow(), 14);
+            tbObat.setValueAt(NilaKriteria5.getText(), tbObat.getSelectedRow(), 15);
+            tbObat.setValueAt(NilaiKriteriaTotal.getText(), tbObat.getSelectedRow(), 16);
             tbObat.setValueAt(Keluar.getText(), tbObat.getSelectedRow(), 17);
             tbObat.setValueAt(Instruksi.getText(), tbObat.getSelectedRow(), 18);
             tbObat.setValueAt(KdDokter.getText(), tbObat.getSelectedRow(), 19);
             tbObat.setValueAt(NmDokter.getText(), tbObat.getSelectedRow(), 20);
             tbObat.setValueAt(NIP.getText(), tbObat.getSelectedRow(), 21);
-            tbObat.
-                    setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(),
-                            22);
+            tbObat.setValueAt(NamaPetugas.getText(), tbObat.getSelectedRow(), 22);
             emptTeks();
         }
     }
 
     private void hapus() {
-        if (Sequel.queryu2tf(
-                "delete from skor_aldrette_pasca_anestesi where tanggal=? and no_rawat=?",
-                2, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()
-                }) == true) {
+        if (Sequel.queryu2tf("delete from skor_aldrette_pasca_anestesi where tanggal=? and no_rawat=?", 2,
+                new String[]{tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString(),
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString()}) == true) {
             tabMode.removeRow(tbObat.getSelectedRow());
             emptTeks();
             LCount.setText("" + tabMode.getRowCount());
@@ -2165,63 +2108,48 @@ public class RMMonitoringAldrettePascaAnestesi extends javax.swing.JDialog {
 
     private void isTotalResiko() {
         try {
-            NilaiKriteriaTotal.setText((Integer.
-                    parseInt(NilaKriteria1.getText()) + Integer.parseInt(
-                    NilaKriteria2.getText()) + Integer.parseInt(NilaKriteria3.
-                    getText()) + Integer.parseInt(NilaKriteria4.getText()) + Integer.
-                    parseInt(NilaKriteria5.getText())) + "");
+            NilaiKriteriaTotal.setText((Integer.parseInt(NilaKriteria1.getText())
+                    + Integer.parseInt(NilaKriteria2.getText()) + Integer.parseInt(NilaKriteria3.getText())
+                    + Integer.parseInt(NilaKriteria4.getText()) + Integer.parseInt(NilaKriteria5.getText())) + "");
             if (Integer.parseInt(NilaiKriteriaTotal.getText()) >= 8) {
-                TingkatSkor.setText(
-                        "Pasien Bisa Dipindahkan Ke Ruangan Perawatan Bila Skor Minimal 8");
+                TingkatSkor.setText("Pasien Bisa Dipindahkan Ke Ruangan Perawatan Bila Skor Minimal 8");
             } else if (Integer.parseInt(NilaiKriteriaTotal.getText()) < 8) {
-                TingkatSkor.setText(
-                        "Pasien Tidak Dapat Dipindahkan Ke Ruangan Perawatan, Karena Kondisi Yang Lemah");
+                TingkatSkor.setText("Pasien Tidak Dapat Dipindahkan Ke Ruangan Perawatan, Karena Kondisi Yang Lemah");
             }
         } catch (Exception e) {
             NilaiKriteriaTotal.setText("0");
-            TingkatSkor.setText(
-                    "Pasien Tidak Dapat Dipindahkan Ke Ruangan Perawatan, Karena Kondisi Yang Lemah");
+            TingkatSkor.setText("Pasien Tidak Dapat Dipindahkan Ke Ruangan Perawatan, Karena Kondisi Yang Lemah");
         }
     }
 
     private void simpan() {
-        if (Sequel.menyimpantf("skor_aldrette_pasca_anestesi",
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17, new String[]{
-                    TNoRw.getText(), Valid.
-                    SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.
-                    getSelectedItem() + ":" + Menit.getSelectedItem() + ":" + Detik.
-                    getSelectedItem(),
-                    SkalaKriteria1.getSelectedItem().toString(), NilaKriteria1.
-                    getText(), SkalaKriteria2.getSelectedItem().toString(),
-                    NilaKriteria2.getText(), SkalaKriteria3.getSelectedItem().
-                    toString(), NilaKriteria3.getText(),
-                    SkalaKriteria4.getSelectedItem().toString(), NilaKriteria4.
-                    getText(), SkalaKriteria5.getSelectedItem().toString(),
-                    NilaKriteria5.getText(),
-                    NilaiKriteriaTotal.getText(), Keluar.getText(), Instruksi.
-                    getText(), KdDokter.getText(), NIP.getText()
-                }) == true) {
-            tabMode.addRow(new String[]{
-                TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.
-                getText(), JK.getText(), Valid.SetTgl(
-                Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":" + Menit.
-                getSelectedItem() + ":" + Detik.getSelectedItem(),
-                SkalaKriteria1.getSelectedItem().toString(), NilaKriteria1.
-                getText(), SkalaKriteria2.getSelectedItem().toString(),
-                NilaKriteria2.getText(), SkalaKriteria3.getSelectedItem().
-                toString(), NilaKriteria3.getText(),
-                SkalaKriteria4.getSelectedItem().toString(), NilaKriteria4.
-                getText(), SkalaKriteria5.getSelectedItem().toString(),
-                NilaKriteria5.getText(),
-                NilaiKriteriaTotal.getText(), Keluar.getText(), Instruksi.
-                getText(), KdDokter.getText(), NmDokter.getText(), NIP.getText(),
-                NamaPetugas.getText()
-            });
+        if (Sequel.menyimpantf("skor_aldrette_pasca_anestesi", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Data", 17,
+                new String[]{TNoRw.getText(),
+                    Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                    + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                    SkalaKriteria1.getSelectedItem().toString(), NilaKriteria1.getText(),
+                    SkalaKriteria2.getSelectedItem().toString(), NilaKriteria2.getText(),
+                    SkalaKriteria3.getSelectedItem().toString(), NilaKriteria3.getText(),
+                    SkalaKriteria4.getSelectedItem().toString(), NilaKriteria4.getText(),
+                    SkalaKriteria5.getSelectedItem().toString(), NilaKriteria5.getText(),
+                    NilaiKriteriaTotal.getText(), Keluar.getText(), Instruksi.getText(), KdDokter.getText(),
+                    NIP.getText()}) == true) {
+            tabMode.addRow(new String[]{TNoRw.getText(), TNoRM.getText(), TPasien.getText(), TglLahir.getText(),
+                JK.getText(),
+                Valid.SetTgl(Tanggal.getSelectedItem() + "") + " " + Jam.getSelectedItem() + ":"
+                + Menit.getSelectedItem() + ":" + Detik.getSelectedItem(),
+                SkalaKriteria1.getSelectedItem().toString(), NilaKriteria1.getText(),
+                SkalaKriteria2.getSelectedItem().toString(), NilaKriteria2.getText(),
+                SkalaKriteria3.getSelectedItem().toString(), NilaKriteria3.getText(),
+                SkalaKriteria4.getSelectedItem().toString(), NilaKriteria4.getText(),
+                SkalaKriteria5.getSelectedItem().toString(), NilaKriteria5.getText(), NilaiKriteriaTotal.getText(),
+                Keluar.getText(), Instruksi.getText(), KdDokter.getText(), NmDokter.getText(), NIP.getText(),
+                NamaPetugas.getText()});
             emptTeks();
             LCount.setText("" + tabMode.getRowCount());
         }
     }
 
-    private static final Logger LOG = Logger.getLogger(
-            RMMonitoringAldrettePascaAnestesi.class.getName());
+    private static final Logger LOG = Logger.getLogger(RMMonitoringAldrettePascaAnestesi.class.getName());
+
 }
